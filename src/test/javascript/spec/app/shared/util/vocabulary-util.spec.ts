@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
-import * as moment from 'moment';
+import moment from 'moment';
 import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Code } from 'app/shared/model/code.model';

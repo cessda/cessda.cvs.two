@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import {SERVER_API_URL} from 'app/app.constants';
-import {createRequestOption, DATE_FORMAT} from 'app/shared';
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {ICvResult} from 'app/shared/model/cv-result.model';
-import {map} from 'rxjs/operators';
-import * as moment from 'moment';
-import {IVocabularySnippet} from 'app/shared/model/vocabulary-snippet.model';
-import {ICodeSnippet} from 'app/shared/model/code-snippet.model';
-import {IConcept} from 'app/shared/model/concept.model';
-import {IVersion} from 'app/shared/model/version.model';
-import {IComment} from 'app/shared/model/comment.model';
-import {IMetadataValue} from 'app/shared/model/metadata-value.model';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption, DATE_FORMAT } from 'app/shared';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { ICvResult } from 'app/shared/model/cv-result.model';
+import { map } from 'rxjs/operators';
+import moment from 'moment';
+import { IVocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { ICodeSnippet } from 'app/shared/model/code-snippet.model';
+import { IConcept } from 'app/shared/model/concept.model';
+import { IVersion } from 'app/shared/model/version.model';
+import { IComment } from 'app/shared/model/comment.model';
+import { IMetadataValue } from 'app/shared/model/metadata-value.model';
 
 type EntityResponseVocabularyType = HttpResponse<IVocabulary>;
 type EntityResponseVersionType = HttpResponse<IVersion>;
@@ -102,7 +102,7 @@ export class EditorService {
     const copy: IVocabulary = Object.assign({}, vocabulary, {
       publicationDate:
         vocabulary.publicationDate && vocabulary.publicationDate.isValid() ? vocabulary.publicationDate.format(DATE_FORMAT) : undefined,
-      lastModified: vocabulary.lastModified && vocabulary.lastModified.isValid() ? vocabulary.lastModified.toJSON() : undefined
+      lastModified: vocabulary.lastModified && vocabulary.lastModified.isValid() ? vocabulary.lastModified.toJSON() : undefined,
     });
     return copy;
   }
@@ -124,7 +124,7 @@ export class EditorService {
     const options = createRequestOption(req);
     return this.http.get(`${this.resourceDownloadUrl}/${downloadType}/${notation}/${slNumber}`, {
       params: options,
-      responseType: 'blob'
+      responseType: 'blob',
     });
   }
 

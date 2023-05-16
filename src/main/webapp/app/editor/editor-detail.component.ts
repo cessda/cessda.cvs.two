@@ -38,7 +38,7 @@ import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabula
 import { HttpResponse } from '@angular/common/http';
 import { EditorDetailCvNewVersionDialogComponent } from 'app/editor/editor-detail-cv-new-version-dialog.component';
 import { EditorDetailCodeCsvImportDialogComponent, EditorDetailCvCommentDialogComponent } from '.';
-import * as moment from 'moment';
+import moment from 'moment';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
@@ -314,7 +314,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     const version = this.getVersionsByLanguage(lang)[0];
     return version.status === versionType;
   }
-  
+
   isAnyLangVersionInBundle(vocab: IVocabulary, lang: string, bundle?: string): boolean {
     if (bundle === undefined) {
       bundle = vocab.versionNumber;

@@ -15,7 +15,7 @@
  */
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
 import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
@@ -31,7 +31,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
@@ -153,7 +153,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             publicationDate: currentDate.format(DATE_FORMAT),
-            lastModified: currentDate.format(DATE_TIME_FORMAT)
+            lastModified: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
@@ -170,7 +170,7 @@ describe('Service Tests', () => {
           {
             id: 0,
             publicationDate: currentDate.format(DATE_FORMAT),
-            lastModified: currentDate.format(DATE_TIME_FORMAT)
+            lastModified: currentDate.format(DATE_TIME_FORMAT),
           },
           elemDefault
         );
@@ -178,7 +178,7 @@ describe('Service Tests', () => {
         const expected = Object.assign(
           {
             publicationDate: currentDate,
-            lastModified: currentDate
+            lastModified: currentDate,
           },
           returnedFromService
         );
@@ -296,7 +296,7 @@ describe('Service Tests', () => {
             definitionEs: 'BBBBBB',
             versionSv: 'BBBBBB',
             titleSv: 'BBBBBB',
-            definitionSv: 'BBBBBB'
+            definitionSv: 'BBBBBB',
           },
           elemDefault
         );
@@ -304,7 +304,7 @@ describe('Service Tests', () => {
         const expected = Object.assign(
           {
             publicationDate: currentDate,
-            lastModified: currentDate
+            lastModified: currentDate,
           },
           returnedFromService
         );
@@ -421,7 +421,7 @@ describe('Service Tests', () => {
             definitionEs: 'BBBBBB',
             versionSv: 'BBBBBB',
             titleSv: 'BBBBBB',
-            definitionSv: 'BBBBBB'
+            definitionSv: 'BBBBBB',
           },
           elemDefault
         );
@@ -429,7 +429,7 @@ describe('Service Tests', () => {
         const expected = Object.assign(
           {
             publicationDate: currentDate,
-            lastModified: currentDate
+            lastModified: currentDate,
           },
           returnedFromService
         );

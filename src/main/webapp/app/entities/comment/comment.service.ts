@@ -17,7 +17,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption, SearchWithPagination } from 'app/shared/util/request-util';
@@ -79,7 +79,7 @@ export class CommentService {
 
   protected convertDateFromClient(comment: IComment): IComment {
     const copy: IComment = Object.assign({}, comment, {
-      dateTime: comment.dateTime && comment.dateTime.isValid() ? comment.dateTime.toJSON() : undefined
+      dateTime: comment.dateTime && comment.dateTime.isValid() ? comment.dateTime.toJSON() : undefined,
     });
     return copy;
   }

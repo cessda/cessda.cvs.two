@@ -27,11 +27,11 @@ import { Comment, IComment } from 'app/shared/model/comment.model';
 import { CommentService } from 'app/entities/comment/comment.service';
 import { Observable, Subscription } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Moment } from 'moment';
 
 @Component({
-  templateUrl: './editor-detail-cv-comment-dialog.component.html'
+  templateUrl: './editor-detail-cv-comment-dialog.component.html',
 })
 export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
   isSaving: boolean;
@@ -43,11 +43,11 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
   eventSubscriber?: Subscription;
 
   quillModules: any = {
-    toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']]
+    toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']],
   };
 
   commentForm = this.fb.group({
-    content: ['', [Validators.required]]
+    content: ['', [Validators.required]],
   });
 
   constructor(
@@ -101,7 +101,7 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
       info: this.account.lastName + (this.account.firstName ? ', ' + this.account.firstName : ''),
       userId: this.account.id,
       content: this.commentForm.get(['content'])!.value,
-      versionId: this.versionParam.id
+      versionId: this.versionParam.id,
     };
     this.subscribeToSaveResponse(this.editorService.createComment(newComment));
   }

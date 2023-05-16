@@ -28,6 +28,7 @@ module.exports = {
         }
     },
     coveragePathIgnorePatterns: [
+        '/node_modules/',
         '<rootDir>/src/test/javascript'
     ],
     moduleNameMapper: mapTypescriptAliasToJestAlias(),
