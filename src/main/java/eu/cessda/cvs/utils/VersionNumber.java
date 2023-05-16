@@ -179,12 +179,19 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         return versionNumberComparator.compare(this, other);
     }
 
+    private static Comparator<VersionNumber> minorVersionNumberComparator = Comparator
+    .comparing(
+        VersionNumber::getMajorNumber, nullSafeIntegerComparator
+    ).thenComparing(
+        VersionNumber::getMinorNumber, nullSafeIntegerComparator
+    );
+
     public boolean equalMinorVersionNumber(VersionNumber other) {
-        if (other != null) {
-            return (majorNumber == null || other.majorNumber == null || majorNumber.equals(other.majorNumber))
-                && (minorNumber == null || other.minorNumber == null || minorNumber.equals(other.minorNumber));
-        }
-        return false;
+        return minorVersionNumberComparator.compare(this, other) == 0;
+    }
+
+    public boolean equalPatchVersionNumber(VersionNumber other) {
+        return versionNumberComparator.compare(this, other) == 0;
     }
 
     public VersionNumber increaseMinorNumber() {
