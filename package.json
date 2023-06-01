@@ -1,7 +1,6 @@
 {
   "name": "cvs",
-  "version": "3.1.1",
-  "description": "Description for cvs",
+  "version": "3.2.1",
   "private": true,
   "license": "UNLICENSED",
   "cacheDirectories": [
@@ -89,7 +88,6 @@
     "postcss": "8.4.22",
     "postcss-loader": "4.3.0",
     "prettier": "2.8.8",
-    "protractor": "7.0.0",
     "reflect-metadata": "0.1.13",
     "rimraf": "5.0.0",
     "sass": "1.62.1",
@@ -120,8 +118,6 @@
     "ngc": "ngc -p tsconfig.app.json",
     "cleanup": "rimraf target/classes/static/ target/classes/aot",
     "clean-www": "rimraf target/classes/static/app/{src,target/}",
-    "e2e": "protractor src/test/javascript/protractor.conf.js",
-    "postinstall": "node node_modules/protractor/bin/webdriver-manager update --gecko false",
     "start": "npm run webpack:dev",
     "start-tls": "npm run webpack:dev -- --env.tls",
     "serve": "npm run start",
