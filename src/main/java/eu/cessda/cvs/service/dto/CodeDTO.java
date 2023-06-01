@@ -19,16 +19,26 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
+
 import eu.cessda.cvs.domain.Code;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.utils.VersionNumber;
 import org.hibernate.annotations.Type;
+import org.springframework.jca.cci.core.InteractionCallback;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.http.nio.util.DirectByteBufferAllocator;
 
 /**
  * A DTO for the {@link Code} entity.
@@ -1049,6 +1059,85 @@ public class CodeDTO implements Serializable {
         return codes.stream().filter( voc -> voc.getId() == docId).findFirst();
     }
 
+    public static enum HashFunction {
+        
+        MD2("md2", DigestUtils::md2Hex),
+        MD5("md5", DigestUtils::md5Hex),
+        SHA1("sha1", DigestUtils::sha1Hex),
+        SHA256("sha256", DigestUtils::sha256Hex);
+
+        interface function {
+            String exec(String str);
+        }
+
+        private String name;
+        private function fn;
+
+        HashFunction(String name, function fn) {
+            this.name = name;
+            this.fn = fn;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public function getFn() {
+            return this.fn;
+        }
+
+        public static HashFunction fromString(String str) {
+            for (HashFunction hf : HashFunction.values()) {
+                if (hf.name.equalsIgnoreCase(str)) {
+                    return hf;
+                }
+            }
+            return null;
+        }
+    }
+
+    public static String _generateHash(HashFunction hf, String str, Integer len) {
+        
+        // default hash
+        String hash = '#' + str;
+
+        if (hf != null) {
+            hash = hf.getFn().exec(str);
+        }
+        
+        // truncate
+        if (len != null && len > 0) {
+            hash = hash.substring(0, len);
+        }
+
+        return hash;
+    }
+
+    public String generateHash(String hf, String str, Integer len) {
+        return _generateHash(HashFunction.fromString(hf), str, len);
+    }
+
+    // group 0 - hash algorithm, group 1 - truncation; i.e., keep the first n characters
+    public static final Pattern patternHashCodeUriPlaceholder = Pattern.compile("\\[CODE-HASH-([^-]+)-(\\d+)\\]", Pattern.CASE_INSENSITIVE);
+
+    public static String rewriteUri(String uri, String hf_input) {
+
+        if (uri == null || uri.isBlank()) {
+            return uri;
+        }
+
+        Matcher m = patternHashCodeUriPlaceholder.matcher(uri);
+        
+        while (m.find()) {
+            HashFunction hf = HashFunction.fromString(m.group(1));
+            Integer len = Integer.parseInt(m.group(2));
+            uri = uri.substring(0, m.start()) + _generateHash(hf, hf_input, len) + uri.substring(m.end());
+            m = patternHashCodeUriPlaceholder.matcher(uri);
+        }
+
+        return uri;
+    }
+
     public static Set<CodeDTO> generateCodesFromVersion(Set<VersionDTO> versions, boolean isForEditor){
         Map<String, CodeDTO> codeDTOsMap = new LinkedHashMap<>();
         // use to ignore version with same lang, eg. FRv2.0.2 and FRv2.0.1 only FRv.2.0.2 will be chosen
@@ -1070,6 +1159,12 @@ public class CodeDTO implements Serializable {
                     codeDTO.setId( baseCodeId + codeIndex);
                     codeDTO.setNotation( concept.getNotation());
                     codeDTO.setUri( concept.getUri() );
+                    codeDTO.setUri(
+                        rewriteUri(
+                            codeDTO.getUri(),
+                            concept.getNotation()
+                        )
+                    );
                     codeDTO.setPosition( concept.getPosition() );
                     if( concept.getParent() != null )
                         codeDTO.setParent( concept.getParent() );
