@@ -24,21 +24,16 @@ import eu.cessda.cvs.domain.Code;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.utils.VersionNumber;
 import org.hibernate.annotations.Type;
-import org.springframework.jca.cci.core.InteractionCallback;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.nio.ByteBuffer;
-import java.security.MessageDigest;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.http.nio.util.DirectByteBufferAllocator;
 
 /**
  * A DTO for the {@link Code} entity.
