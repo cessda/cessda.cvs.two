@@ -314,7 +314,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     const version = this.getVersionsByLanguage(lang)[0];
     return version.status === versionType;
   }
-  
+
   isAnyLangVersionInBundle(vocab: IVocabulary, lang: string, bundle?: string): boolean {
     if (bundle === undefined) {
       bundle = vocab.versionNumber;

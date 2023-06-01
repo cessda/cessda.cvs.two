@@ -390,7 +390,8 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     const langVersion = VocabularyUtil.getVersionNumberByLangIso(vocab, lang);
     return (
       this.vocabLangPipeKey.transform(lang) +
-      ' ' + langVersion +
+      ' ' +
+      langVersion +
       (lang === sourceLang ? ' SOURCE' : '') +
       (indexOf > 0 ? ' (' + statusInfo.substr(indexOf + 1) + ')' : '')
     );
