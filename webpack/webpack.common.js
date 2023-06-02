@@ -17,7 +17,7 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const AngularCompilerPlugin = require('@ngtools/webpack').AngularCompilerPlugin;
-const MergeJsonWebpackPlugin = require("merge-jsons-webpack-plugin");
+const MergeJsonWebpackPlugin = require('merge-jsons-webpack-plugin');
 
 const utils = require('./utils.js');
 
