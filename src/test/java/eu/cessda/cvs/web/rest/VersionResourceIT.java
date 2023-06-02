@@ -153,12 +153,12 @@ public class VersionResourceIT {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static Version createEntity(EntityManager em) {
-        Version version = new Version()
+        return new Version()
             .status(DEFAULT_STATUS)
             .itemType(DEFAULT_ITEM_TYPE)
             .language(DEFAULT_LANGUAGE)
@@ -186,16 +186,15 @@ public class VersionResourceIT {
             .ddiUsage(DEFAULT_DDI_USAGE)
             .translateAgency(DEFAULT_TRANSLATE_AGENCY)
             .translateAgencyLink(DEFAULT_TRANSLATE_AGENCY_LINK);
-        return version;
     }
     /**
      * Create an updated entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static Version createUpdatedEntity(EntityManager em) {
-        Version version = new Version()
+        return new Version()
             .status(UPDATED_STATUS)
             .itemType(UPDATED_ITEM_TYPE)
             .language(UPDATED_LANGUAGE)
@@ -223,7 +222,6 @@ public class VersionResourceIT {
             .ddiUsage(UPDATED_DDI_USAGE)
             .translateAgency(UPDATED_TRANSLATE_AGENCY)
             .translateAgencyLink(UPDATED_TRANSLATE_AGENCY_LINK);
-        return version;
     }
 
     @BeforeEach
@@ -233,7 +231,7 @@ public class VersionResourceIT {
 
     @Test
     @Transactional
-    public void createVersion() throws Exception {
+    void createVersion() throws Exception {
         int databaseSizeBeforeCreate = versionRepository.findAll().size();
 
         // Create the Version
@@ -278,7 +276,7 @@ public class VersionResourceIT {
 
     @Test
     @Transactional
-    public void createVersionWithExistingId() throws Exception {
+    void createVersionWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = versionRepository.findAll().size();
 
         // Create the Version with an existing ID
@@ -298,7 +296,7 @@ public class VersionResourceIT {
 
     @Test
     @Transactional
-    public void getAllVersions() throws Exception {
+    void getAllVersions() throws Exception {
         // Initialize the database
         versionRepository.saveAndFlush(version);
 
@@ -318,27 +316,27 @@ public class VersionResourceIT {
             .andExpect(jsonPath("$.[*].canonicalUri").value(hasItem(DEFAULT_CANONICAL_URI)))
             .andExpect(jsonPath("$.[*].uriSl").value(hasItem(DEFAULT_URI_SL)))
             .andExpect(jsonPath("$.[*].notation").value(hasItem(DEFAULT_NOTATION)))
-            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())))
-            .andExpect(jsonPath("$.[*].definition").value(hasItem(DEFAULT_DEFINITION.toString())))
+            .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE)))
+            .andExpect(jsonPath("$.[*].definition").value(hasItem(DEFAULT_DEFINITION)))
             .andExpect(jsonPath("$.[*].previousVersion").value(hasItem(DEFAULT_PREVIOUS_VERSION.intValue())))
             .andExpect(jsonPath("$.[*].initialVersion").value(hasItem(DEFAULT_INITIAL_VERSION.intValue())))
             .andExpect(jsonPath("$.[*].creator").value(hasItem(DEFAULT_CREATOR.intValue())))
             .andExpect(jsonPath("$.[*].publisher").value(hasItem(DEFAULT_PUBLISHER.intValue())))
-            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES.toString())))
-            .andExpect(jsonPath("$.[*].versionNotes").value(hasItem(DEFAULT_VERSION_NOTES.toString())))
-            .andExpect(jsonPath("$.[*].versionChanges").value(hasItem(DEFAULT_VERSION_CHANGES.toString())))
-            .andExpect(jsonPath("$.[*].discussionNotes").value(hasItem(DEFAULT_DISCUSSION_NOTES.toString())))
+            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES)))
+            .andExpect(jsonPath("$.[*].versionNotes").value(hasItem(DEFAULT_VERSION_NOTES)))
+            .andExpect(jsonPath("$.[*].versionChanges").value(hasItem(DEFAULT_VERSION_CHANGES)))
+            .andExpect(jsonPath("$.[*].discussionNotes").value(hasItem(DEFAULT_DISCUSSION_NOTES)))
             .andExpect(jsonPath("$.[*].license").value(hasItem(DEFAULT_LICENSE)))
             .andExpect(jsonPath("$.[*].licenseId").value(hasItem(DEFAULT_LICENSE_ID.intValue())))
-            .andExpect(jsonPath("$.[*].citation").value(hasItem(DEFAULT_CITATION.toString())))
-            .andExpect(jsonPath("$.[*].ddiUsage").value(hasItem(DEFAULT_DDI_USAGE.toString())))
+            .andExpect(jsonPath("$.[*].citation").value(hasItem(DEFAULT_CITATION)))
+            .andExpect(jsonPath("$.[*].ddiUsage").value(hasItem(DEFAULT_DDI_USAGE)))
             .andExpect(jsonPath("$.[*].translateAgency").value(hasItem(DEFAULT_TRANSLATE_AGENCY)))
             .andExpect(jsonPath("$.[*].translateAgencyLink").value(hasItem(DEFAULT_TRANSLATE_AGENCY_LINK)));
     }
 
     @Test
     @Transactional
-    public void getVersion() throws Exception {
+    void getVersion() throws Exception {
         // Initialize the database
         versionRepository.saveAndFlush(version);
 
@@ -358,27 +356,27 @@ public class VersionResourceIT {
             .andExpect(jsonPath("$.canonicalUri").value(DEFAULT_CANONICAL_URI))
             .andExpect(jsonPath("$.uriSl").value(DEFAULT_URI_SL))
             .andExpect(jsonPath("$.notation").value(DEFAULT_NOTATION))
-            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE.toString()))
-            .andExpect(jsonPath("$.definition").value(DEFAULT_DEFINITION.toString()))
+            .andExpect(jsonPath("$.title").value(DEFAULT_TITLE))
+            .andExpect(jsonPath("$.definition").value(DEFAULT_DEFINITION))
             .andExpect(jsonPath("$.previousVersion").value(DEFAULT_PREVIOUS_VERSION.intValue()))
             .andExpect(jsonPath("$.initialVersion").value(DEFAULT_INITIAL_VERSION.intValue()))
             .andExpect(jsonPath("$.creator").value(DEFAULT_CREATOR.intValue()))
             .andExpect(jsonPath("$.publisher").value(DEFAULT_PUBLISHER.intValue()))
-            .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES.toString()))
-            .andExpect(jsonPath("$.versionNotes").value(DEFAULT_VERSION_NOTES.toString()))
-            .andExpect(jsonPath("$.versionChanges").value(DEFAULT_VERSION_CHANGES.toString()))
-            .andExpect(jsonPath("$.discussionNotes").value(DEFAULT_DISCUSSION_NOTES.toString()))
+            .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES))
+            .andExpect(jsonPath("$.versionNotes").value(DEFAULT_VERSION_NOTES))
+            .andExpect(jsonPath("$.versionChanges").value(DEFAULT_VERSION_CHANGES))
+            .andExpect(jsonPath("$.discussionNotes").value(DEFAULT_DISCUSSION_NOTES))
             .andExpect(jsonPath("$.license").value(DEFAULT_LICENSE))
             .andExpect(jsonPath("$.licenseId").value(DEFAULT_LICENSE_ID.intValue()))
-            .andExpect(jsonPath("$.citation").value(DEFAULT_CITATION.toString()))
-            .andExpect(jsonPath("$.ddiUsage").value(DEFAULT_DDI_USAGE.toString()))
+            .andExpect(jsonPath("$.citation").value(DEFAULT_CITATION))
+            .andExpect(jsonPath("$.ddiUsage").value(DEFAULT_DDI_USAGE))
             .andExpect(jsonPath("$.translateAgency").value(DEFAULT_TRANSLATE_AGENCY))
             .andExpect(jsonPath("$.translateAgencyLink").value(DEFAULT_TRANSLATE_AGENCY_LINK));
     }
 
     @Test
     @Transactional
-    public void getNonExistingVersion() throws Exception {
+    void getNonExistingVersion() throws Exception {
         // Get the version
         restVersionMockMvc.perform(get("/api/versions/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -386,14 +384,14 @@ public class VersionResourceIT {
 
     @Test
     @Transactional
-    public void updateVersion() throws Exception {
+    void updateVersion() throws Exception {
         // Initialize the database
         versionRepository.saveAndFlush(version);
 
         int databaseSizeBeforeUpdate = versionRepository.findAll().size();
 
         // Update the version
-        Version updatedVersion = versionRepository.findById(version.getId()).get();
+        Version updatedVersion = versionRepository.findById(version.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedVersion are not directly saved in db
         em.detach(updatedVersion);
         updatedVersion
@@ -466,7 +464,7 @@ public class VersionResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingVersion() throws Exception {
+    void updateNonExistingVersion() throws Exception {
         int databaseSizeBeforeUpdate = versionRepository.findAll().size();
 
         // Create the Version
@@ -485,7 +483,7 @@ public class VersionResourceIT {
 
     @Test
     @Transactional
-    public void deleteVersion() throws Exception {
+    void deleteVersion() throws Exception {
         // Initialize the database
         versionRepository.saveAndFlush(version);
 

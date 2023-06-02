@@ -15,7 +15,7 @@
  */
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import * as moment from 'moment';
+import moment from 'moment';
 import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { VocabularyChangeService } from 'app/entities/vocabulary-change/vocabulary-change.service';
 import { IVocabularyChange, VocabularyChange } from 'app/shared/model/vocabulary-change.model';
@@ -31,7 +31,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
@@ -46,7 +46,7 @@ describe('Service Tests', () => {
       it('should find an element', () => {
         const returnedFromService = Object.assign(
           {
-            date: currentDate.format(DATE_FORMAT)
+            date: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );
@@ -62,14 +62,14 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             id: 0,
-            date: currentDate.format(DATE_FORMAT)
+            date: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );
 
         const expected = Object.assign(
           {
-            date: currentDate
+            date: currentDate,
           },
           returnedFromService
         );
@@ -90,14 +90,14 @@ describe('Service Tests', () => {
             description: 'BBBBBB',
             userId: 1,
             userName: 'BBBBBB',
-            date: currentDate.format(DATE_FORMAT)
+            date: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );
 
         const expected = Object.assign(
           {
-            date: currentDate
+            date: currentDate,
           },
           returnedFromService
         );
@@ -118,14 +118,14 @@ describe('Service Tests', () => {
             description: 'BBBBBB',
             userId: 1,
             userName: 'BBBBBB',
-            date: currentDate.format(DATE_FORMAT)
+            date: currentDate.format(DATE_FORMAT),
           },
           elemDefault
         );
 
         const expected = Object.assign(
           {
-            date: currentDate
+            date: currentDate,
           },
           returnedFromService
         );

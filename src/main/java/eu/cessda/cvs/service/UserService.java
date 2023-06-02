@@ -38,7 +38,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -313,7 +316,7 @@ public class UserService {
         Optional<User> userOpt = SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
         if( userOpt.isPresent() ){
             user = userOpt.get();
-            user.setUserAgencies( userAgencyRepository.findByUser(user.getId()).stream().collect(Collectors.toSet()));
+            user.setUserAgencies(new HashSet<>(userAgencyRepository.findByUser(user.getId())));
         }
         return Optional.ofNullable(user);
     }
@@ -344,9 +347,15 @@ public class UserService {
 
 
     private void clearUserCaches(User user) {
-        Objects.requireNonNull(cacheManager.getCache(Constants.USERS_BY_LOGIN_CACHE)).evict(user.getLogin());
+        var userByLoginCache = cacheManager.getCache(Constants.USERS_BY_LOGIN_CACHE);
+        if (userByLoginCache != null) {
+            userByLoginCache.evict(user.getLogin());
+        }
         if (user.getEmail() != null) {
-            Objects.requireNonNull(cacheManager.getCache(Constants.USERS_BY_EMAIL_CACHE)).evict(user.getEmail());
+            var userByEmailCache = cacheManager.getCache(Constants.USERS_BY_EMAIL_CACHE);
+            if (userByEmailCache != null) {
+                userByEmailCache.evict(user.getEmail());
+            }
         }
     }
 }

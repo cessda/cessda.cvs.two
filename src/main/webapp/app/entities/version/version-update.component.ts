@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import * as moment from 'moment';
-import {DATE_TIME_FORMAT} from 'app/shared/constants/input.constants';
-import {JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError} from 'ng-jhipster';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import moment from 'moment';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import {IVersion, Version} from 'app/shared/model/version.model';
-import {VersionService} from './version.service';
-import {AlertError} from 'app/shared/alert/alert-error.model';
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {VocabularyService} from 'app/entities/vocabulary/vocabulary.service';
+import { IVersion, Version } from 'app/shared/model/version.model';
+import { VersionService } from './version.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
 
 @Component({
   selector: 'jhi-version-update',
-  templateUrl: './version-update.component.html'
+  templateUrl: './version-update.component.html',
 })
 export class VersionUpdateComponent implements OnInit {
   isSaving = false;
@@ -66,7 +66,7 @@ export class VersionUpdateComponent implements OnInit {
     ddiUsage: [],
     translateAgency: [],
     translateAgencyLink: [],
-    vocabularyId: []
+    vocabularyId: [],
   });
 
   constructor(
@@ -120,15 +120,13 @@ export class VersionUpdateComponent implements OnInit {
       ddiUsage: version.ddiUsage,
       translateAgency: version.translateAgency,
       translateAgencyLink: version.translateAgencyLink,
-      vocabularyId: version.vocabularyId
+      vocabularyId: version.vocabularyId,
     });
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-      this.eventManager.broadcast(
-        new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key })
-      );
+      this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
     });
   }
 
@@ -178,7 +176,7 @@ export class VersionUpdateComponent implements OnInit {
       ddiUsage: this.editForm.get(['ddiUsage'])!.value,
       translateAgency: this.editForm.get(['translateAgency'])!.value,
       translateAgencyLink: this.editForm.get(['translateAgencyLink'])!.value,
-      vocabularyId: this.editForm.get(['vocabularyId'])!.value
+      vocabularyId: this.editForm.get(['vocabularyId'])!.value,
     };
   }
 

@@ -165,21 +165,6 @@ public interface VocabularyService {
     void indexAgencyStats( VocabularyDTO vocabulary );
 
     /**
-     * Get all of the published CV JSON path in specific version by notation
-     * @param notation
-     * @param versionNumber
-     * @return
-     */
-    Path getPublishedCvPath(String notation, String versionNumber);
-
-    /**
-     * Get all of the published CV JSON path (latest version by notation)
-     * @param notation
-     * @return
-     */
-    Path getPublishedCvPath(String notation);
-
-    /**
      * Get all of the published CVs JSON path
      */
     List<Path> getPublishedCvPaths();
@@ -248,9 +233,9 @@ public interface VocabularyService {
      *
      * @param vocabularyNotation the vocabulary notation
      * @param versionSl the Source Language version
-     * @param languageVersion combination of language anf version number. e.g en_1.0
+     * @param versionList combination of language and version number, e.g. en_1.0
      * @param downloadType one of the following file types PDF, DOCX, HTML, RDF
-     * @param request HttpServletRequest for statistical purpose
+     * @param requestURL request URL for statistical purposes
      * @return the generated file name
      */
     String generateVocabularyPublishFileDownload(
@@ -266,9 +251,9 @@ public interface VocabularyService {
      *
      * @param vocabularyNotation the vocabulary notation
      * @param versionSl the Source Language version
-     * @param languageVersion combination of language anf version number. e.g en_1.0
+     * @param versionList combination of language anf version number, e.g. en_1.0
      * @param downloadType one of the following file types PDF, DOCX, HTML, RDF
-     * @param request HttpServletRequest for statistical purpose
+     * @param requestURL request URL for statistical purposes
      * @return the generated file name
      */
     String generateVocabularyEditorFileDownload(

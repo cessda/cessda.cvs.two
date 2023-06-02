@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,30 +40,7 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     private static final Logger log = LoggerFactory.getLogger(VersionNumber.class);
 
-    public static class Deserializer extends StdDeserializer<VersionNumber> {
-
-        private static final long serialVersionUID = 1L;
-
-        public Deserializer() {
-            this(null);
-        }
-
-        public Deserializer(Class<VersionNumber> t) {
-            super(t);
-        }
-
-        @Override
-        public VersionNumber deserialize(JsonParser p, DeserializationContext ctxt)
-                throws IOException {
-            try { 
-                return VersionNumber.fromString(p.getText()); 
-            } 
-            catch (Exception e) { 
-                log.error("Error deserializing version number", e);
-            }
-            return null;
-        }
-    }
+    private static final Comparator<Integer> nullSafeIntegerComparator = Comparator.nullsFirst(Integer::compareTo);
 
     public static class Serializer extends StdSerializer<VersionNumber> {
 
@@ -84,9 +62,9 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
     }
 
     private static final long serialVersionUID = 1L;
-    
-    public static final Pattern parsePattern = Pattern.compile("^[^0-9]*([0-9]+)\\.([0-9]+)(?:\\.([0-9]+))?.*$");
-    
+
+    public static final Pattern parsePattern = Pattern.compile("^\\D*(\\d+)\\.(\\d+)(?:\\.(\\d+))?.*$");
+
     public static VersionNumber fromString(String str) {
         if (str == null) {
             return null;
@@ -111,10 +89,6 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         majorNumber = minorNumber = patchNumber = null;
     }
 
-    public VersionNumber(String str) {
-        this(VersionNumber.fromString(str));
-    }
-
     public VersionNumber(Integer majorNumber, Integer minorNumber, Integer patchNumber) {
         this.majorNumber = majorNumber;
         this.minorNumber = minorNumber;
@@ -123,10 +97,6 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     public VersionNumber(Integer majorNumber, Integer minorNumber) {
         this(majorNumber, minorNumber, 0);
-    }
-
-    public VersionNumber(VersionNumber other) {
-        this(other.majorNumber, other.minorNumber, other.patchNumber);
     }
 
     public VersionNumber(VersionNumber versionNumber, Integer patchNumber) {
@@ -163,9 +133,31 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         return versionNumber != null ? versionNumber.toString() : null;
     }
 
-    private static Comparator<Integer> nullSafeIntegerComparator = Comparator.nullsFirst(Integer::compareTo); 
+    public static class Deserializer extends StdDeserializer<VersionNumber> {
 
-    private static Comparator<VersionNumber> versionNumberComparator = Comparator
+        private static final long serialVersionUID = 1L;
+
+        public Deserializer() {
+            this(null);
+        }
+
+        public Deserializer(Class<VersionNumber> t) {
+            super(t);
+        }
+
+        @Override
+        public VersionNumber deserialize(JsonParser p, DeserializationContext ctxt) {
+            try {
+                return VersionNumber.fromString(p.getText());
+            }
+            catch (IOException e) {
+                log.error("Error deserializing version number", e);
+            }
+            return null;
+        }
+    }
+
+    private static final Comparator<VersionNumber> versionNumberComparator = Comparator
         .comparing(
             VersionNumber::getMajorNumber, nullSafeIntegerComparator
         ).thenComparing(
@@ -212,33 +204,16 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((majorNumber == null) ? 0 : majorNumber.hashCode());
-        result = prime * result + ((minorNumber == null) ? 0 : minorNumber.hashCode());
-        result = prime * result + ((patchNumber == null) ? 0 : patchNumber.hashCode());
-        return result;
+        return Objects.hash(majorNumber, minorNumber, patchNumber);
     }
 
     @Override
     public boolean equals(Object obj) {
-
-        if (this == obj) {
-            return true;
-        }
-
-        if (obj == null) {
-            return false;
-        }
-
-        if (obj.getClass() == String.class) {
-            return this.equals(VersionNumber.fromString((String) obj));
-        }
-
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-
-        return compareTo((VersionNumber) obj) == 0;
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        VersionNumber that = (VersionNumber) obj;
+        return Objects.equals(majorNumber, that.majorNumber)
+            && Objects.equals(minorNumber, that.minorNumber)
+            && Objects.equals(patchNumber, that.patchNumber);
     }
 }

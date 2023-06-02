@@ -6,6 +6,7 @@
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true,
     "removeComments": false,
     "strict": true,
     "noImplicitReturns": true,
@@ -23,6 +24,7 @@
   "angularCompilerOptions": {
     "genDir": "target/classes/aot",
     "fullTemplateTypeCheck": true,
-    "preserveWhitespaces": true
+    "preserveWhitespaces": true,
+    "strictTemplates": false
   }
 }

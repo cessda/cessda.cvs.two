@@ -84,33 +84,31 @@ public class MetadataValueResourceIT {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static MetadataValue createEntity() {
-        MetadataValue metadataValue = new MetadataValue()
+        return new MetadataValue()
             .identifier(DEFAULT_IDENTIFIER)
             .position(DEFAULT_POSITION)
             .value(DEFAULT_VALUE)
             .objectType(DEFAULT_OBJECT_TYPE)
             .objectId(DEFAULT_OBJECT_ID);
-        return metadataValue;
     }
     /**
      * Create an updated entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static MetadataValue createUpdatedEntity(EntityManager em) {
-        MetadataValue metadataValue = new MetadataValue()
+        return new MetadataValue()
             .identifier(UPDATED_IDENTIFIER)
             .position(UPDATED_POSITION)
             .value(UPDATED_VALUE)
             .objectType(UPDATED_OBJECT_TYPE)
             .objectId(UPDATED_OBJECT_ID);
-        return metadataValue;
     }
 
     @BeforeEach
@@ -120,7 +118,7 @@ public class MetadataValueResourceIT {
 
     @Test
     @Transactional
-    public void createMetadataValue() throws Exception {
+    void createMetadataValue() throws Exception {
         int databaseSizeBeforeCreate = metadataValueRepository.findAll().size();
 
         // Create the MetadataValue
@@ -143,7 +141,7 @@ public class MetadataValueResourceIT {
 
     @Test
     @Transactional
-    public void createMetadataValueWithExistingId() throws Exception {
+    void createMetadataValueWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = metadataValueRepository.findAll().size();
 
         // Create the MetadataValue with an existing ID
@@ -164,7 +162,7 @@ public class MetadataValueResourceIT {
 
     @Test
     @Transactional
-    public void getAllMetadataValues() throws Exception {
+    void getAllMetadataValues() throws Exception {
         // Initialize the database
         metadataValueRepository.saveAndFlush(metadataValue);
 
@@ -173,16 +171,16 @@ public class MetadataValueResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(metadataValue.getId().intValue())))
-            .andExpect(jsonPath("$.[*].identifier").value(hasItem(DEFAULT_IDENTIFIER.toString())))
+            .andExpect(jsonPath("$.[*].identifier").value(hasItem(DEFAULT_IDENTIFIER)))
             .andExpect(jsonPath("$.[*].position").value(hasItem( DEFAULT_POSITION )))
-            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.toString())))
+            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE)))
             .andExpect(jsonPath("$.[*].objectType").value(hasItem(DEFAULT_OBJECT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].objectId").value(hasItem(DEFAULT_OBJECT_ID.intValue())));
     }
 
     @Test
     @Transactional
-    public void getMetadataValue() throws Exception {
+    void getMetadataValue() throws Exception {
         // Initialize the database
         metadataValueRepository.saveAndFlush(metadataValue);
 
@@ -191,16 +189,16 @@ public class MetadataValueResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(metadataValue.getId().intValue()))
-            .andExpect(jsonPath("$.identifier").value(DEFAULT_IDENTIFIER.toString()))
+            .andExpect(jsonPath("$.identifier").value(DEFAULT_IDENTIFIER))
             .andExpect(jsonPath("$.position").value( DEFAULT_POSITION ))
-            .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.toString()))
+            .andExpect(jsonPath("$.value").value(DEFAULT_VALUE))
             .andExpect(jsonPath("$.objectType").value(DEFAULT_OBJECT_TYPE.toString()))
             .andExpect(jsonPath("$.objectId").value(DEFAULT_OBJECT_ID.intValue()));
     }
 
     @Test
     @Transactional
-    public void getNonExistingMetadataValue() throws Exception {
+    void getNonExistingMetadataValue() throws Exception {
         // Get the metadataValue
         restMetadataValueMockMvc.perform(get("/api/metadata-values/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -208,14 +206,14 @@ public class MetadataValueResourceIT {
 
     @Test
     @Transactional
-    public void updateMetadataValue() throws Exception {
+    void updateMetadataValue() throws Exception {
         // Initialize the database
         metadataValueRepository.saveAndFlush(metadataValue);
 
         int databaseSizeBeforeUpdate = metadataValueRepository.findAll().size();
 
         // Update the metadataValue
-        MetadataValue updatedMetadataValue = metadataValueRepository.findById(metadataValue.getId()).get();
+        MetadataValue updatedMetadataValue = metadataValueRepository.findById(metadataValue.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedMetadataValue are not directly saved in db
         em.detach(updatedMetadataValue);
         updatedMetadataValue
@@ -244,7 +242,7 @@ public class MetadataValueResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingMetadataValue() throws Exception {
+    void updateNonExistingMetadataValue() throws Exception {
         int databaseSizeBeforeUpdate = metadataValueRepository.findAll().size();
 
         // Create the MetadataValue
@@ -263,7 +261,7 @@ public class MetadataValueResourceIT {
 
     @Test
     @Transactional
-    public void deleteMetadataValue() throws Exception {
+    void deleteMetadataValue() throws Exception {
         // Initialize the database
         metadataValueRepository.saveAndFlush(metadataValue);
 

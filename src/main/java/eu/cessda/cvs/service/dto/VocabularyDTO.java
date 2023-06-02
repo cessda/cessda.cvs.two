@@ -456,7 +456,7 @@ public class VocabularyDTO implements Serializable {
     }
     @JsonSetter("versionNumber")
     public void setVersionNumber(String str) {
-        setVersionNumber(str != null ? new VersionNumber(str) : null);
+        setVersionNumber(str != null ? VersionNumber.fromString(str) : null);
     }
     public Long getInitialPublication() {
         return initialPublication;

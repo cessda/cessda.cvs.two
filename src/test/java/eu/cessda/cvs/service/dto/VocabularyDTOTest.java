@@ -22,11 +22,7 @@ import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
 
-import antlr.Version;
-
-import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -37,12 +33,13 @@ class VocabularyDTOTest {
     void switchGetterAndSetterVocabularyTest(){
         VocabularyDTO vocabularyDTO = new VocabularyDTO();
         for (Language lang : Language.values()) {
+            if (lang.equals(Language.UNKNOWN)) {
+                continue;
+            }
+
             String uuid1 = UUID.randomUUID().toString();
             String uuid2 = UUID.randomUUID().toString();
             String uuid3 = UUID.randomUUID().toString().substring(0,5);
-
-            if( lang.equals(Language.UNKNOWN))
-                continue;
 
             vocabularyDTO.setTitleDefinition(uuid1, uuid2, lang.getIso(), false);
             vocabularyDTO.setVersionByLanguage(lang.getIso(), uuid3);
@@ -163,7 +160,7 @@ class VocabularyDTOTest {
     @Test
     void setGetVersionNumberAsString() {
         VocabularyDTO vocabularyDTO = new VocabularyDTO();
-        
+
         vocabularyDTO.setVersionNumber((String) null);
         assertThat(vocabularyDTO.getVersionNumberAsString()).isNull();
 

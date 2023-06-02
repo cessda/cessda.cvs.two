@@ -63,8 +63,7 @@ public class UserAgencyServiceImpl implements UserAgencyService {
         UserAgency userAgency = userAgencyMapper.toEntity(userAgencyDTO);
 
         if( userAgencyDTO.getUserId() != null ){
-            UserAgency finalUserAgency = userAgency;
-            userRepository.findById( userAgencyDTO.getUserId() ).ifPresent(finalUserAgency::setUser);
+            userRepository.findById( userAgencyDTO.getUserId() ).ifPresent(userAgency::setUser);
         }
 
         userAgency = userAgencyRepository.save(userAgency);

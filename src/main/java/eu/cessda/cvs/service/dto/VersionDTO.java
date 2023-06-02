@@ -761,15 +761,15 @@ public class VersionDTO implements Serializable
 		preparePublishing( vocabularySnippet, licence, agency );
 
 		StringBuilder citationSb = new StringBuilder();
-		citationSb.append( agency.getName() + ". " );
+		citationSb.append(agency.getName()).append(". ");
 		citationSb
-				.append( "(" + this.publicationDate.getYear() + "). " )
-				.append( this.title + " (Version " + this.number + ") [Controlled vocabulary]. " );
+            .append("(").append(this.publicationDate.getYear()).append("). ")
+            .append(this.title).append(" (Version ").append(this.number).append(") [Controlled vocabulary]. ");
 		if ( !agency.getName().toLowerCase().contains( "cessda" ) )
 		{
 			citationSb.append( "CESSDA. " );
 		}
-		citationSb.append( this.canonicalUri + ". " );
+		citationSb.append(this.canonicalUri).append(". ");
 		this.citation = citationSb.toString();
 	}
 
@@ -778,15 +778,15 @@ public class VersionDTO implements Serializable
 		preparePublishing( vocabularySnippet, licence, agency );
 
 		StringBuilder citationSb = new StringBuilder();
-		citationSb.append( agency.getName() + ". " );
+		citationSb.append(agency.getName()).append(". ");
 		citationSb
-				.append( "(" + this.publicationDate.getYear() + "). " )
-				.append( this.notation + " [" + this.title + "] (Version " + this.number + ") [Controlled vocabulary]. " );
+            .append("(").append(this.publicationDate.getYear()).append("). ")
+            .append(this.notation).append(" [").append(this.title).append("] (Version ").append(this.number).append(") [Controlled vocabulary]. ");
 		if ( !agency.getName().toLowerCase().contains( "cessda" ) )
 		{
 			citationSb.append( "CESSDA. " );
 		}
-		citationSb.append( this.canonicalUri + ". " );
+		citationSb.append(this.canonicalUri).append(". ");
 		this.citation = citationSb.toString();
 	}
 
@@ -800,14 +800,13 @@ public class VersionDTO implements Serializable
 		this.license = licence.getName();
 		this.updateUri(agency);
 		this.updateCanonicalUri(agency);
-		this.concepts.forEach( c -> c.setUri( VocabularyUtils.generateUri( agency != null ? agency.getUriCode() : "", false, this, c ) ) );
+		this.concepts.forEach( c -> c.setUri( VocabularyUtils.generateUri( agency != null ? agency.getUriCode() : "", this, c ) ) );
 	}
 
 	public void updateUri(Agency agency) {
 		this.uri = VocabularyUtils.generateUri(
 			agency != null ? agency.getUri() : "",
-			true,
-			this,
+            this,
 			null
 		);
 	}
@@ -834,7 +833,7 @@ public class VersionDTO implements Serializable
 		return id != null;
 	}
 
-	private static Pattern patternLanguageInformation = Pattern.compile("(?::((?:" + Language.getIsos().stream().map(StringUtils::lowerCase).collect(Collectors.joining("|")) + ")-))([0-9]+\\.[0-9]+(\\.[0-9]+)?)$");
+	private static final Pattern patternLanguageInformation = Pattern.compile("(?::((?:" + Language.getIsos().stream().map(StringUtils::lowerCase).collect(Collectors.joining("|")) + ")-))([0-9]+\\.[0-9]+(\\.[0-9]+)?)$");
 
 	private static String removeLanguageInformation( String canonicalUrlInput )
 	{
@@ -850,7 +849,7 @@ public class VersionDTO implements Serializable
 	public ConceptDTO findConceptByNotation( String notation )
 	{
 		Optional<ConceptDTO> conceptDTOOptional = concepts.stream().filter( c -> c.getNotation().equals( notation ) ).findFirst();
-		return conceptDTOOptional.isPresent() ? conceptDTOOptional.get() : null;
+		return conceptDTOOptional.orElse(null);
 	}
 
 	public void setDeprecatedConceptsValidUntilVersionId(Long validUntilVersionId) {

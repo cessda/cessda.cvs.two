@@ -86,31 +86,29 @@ public class CommentResourceIT {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static Comment createEntity() {
-        Comment comment = new Comment()
+        return new Comment()
             .content(DEFAULT_CONTENT)
             .info(DEFAULT_INFO)
             .userId(DEFAULT_USER_ID)
             .dateTime(DEFAULT_DATE_TIME);
-        return comment;
     }
     /**
      * Create an updated entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static Comment createUpdatedEntity(EntityManager em) {
-        Comment comment = new Comment()
+        return new Comment()
             .content(UPDATED_CONTENT)
             .info(UPDATED_INFO)
             .userId(UPDATED_USER_ID)
             .dateTime(UPDATED_DATE_TIME);
-        return comment;
     }
 
     @BeforeEach
@@ -120,7 +118,7 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void createComment() throws Exception {
+    void createComment() throws Exception {
         int databaseSizeBeforeCreate = commentRepository.findAll().size();
 
         // Create the Comment
@@ -142,7 +140,7 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void createCommentWithExistingId() throws Exception {
+    void createCommentWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = commentRepository.findAll().size();
 
         // Create the Comment with an existing ID
@@ -163,7 +161,7 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void getAllComments() throws Exception {
+    void getAllComments() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
 
@@ -172,15 +170,15 @@ public class CommentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(comment.getId().intValue())))
-            .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT.toString())))
-            .andExpect(jsonPath("$.[*].info").value(hasItem(DEFAULT_INFO.toString())))
+            .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT)))
+            .andExpect(jsonPath("$.[*].info").value(hasItem(DEFAULT_INFO)))
             .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID.intValue())))
             .andExpect(jsonPath("$.[*].dateTime").value(hasItem(sameInstant(DEFAULT_DATE_TIME))));
     }
 
     @Test
     @Transactional
-    public void getComment() throws Exception {
+    void getComment() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
 
@@ -189,15 +187,15 @@ public class CommentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(comment.getId().intValue()))
-            .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT.toString()))
-            .andExpect(jsonPath("$.info").value(DEFAULT_INFO.toString()))
+            .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT))
+            .andExpect(jsonPath("$.info").value(DEFAULT_INFO))
             .andExpect(jsonPath("$.userId").value(DEFAULT_USER_ID.intValue()))
             .andExpect(jsonPath("$.dateTime").value(sameInstant(DEFAULT_DATE_TIME)));
     }
 
     @Test
     @Transactional
-    public void getNonExistingComment() throws Exception {
+    void getNonExistingComment() throws Exception {
         // Get the comment
         restCommentMockMvc.perform(get("/api/comments/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -205,14 +203,14 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void updateComment() throws Exception {
+    void updateComment() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
 
         int databaseSizeBeforeUpdate = commentRepository.findAll().size();
 
         // Update the comment
-        Comment updatedComment = commentRepository.findById(comment.getId()).get();
+        Comment updatedComment = commentRepository.findById(comment.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedComment are not directly saved in db
         em.detach(updatedComment);
         updatedComment
@@ -239,7 +237,7 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingComment() throws Exception {
+    void updateNonExistingComment() throws Exception {
         int databaseSizeBeforeUpdate = commentRepository.findAll().size();
 
         // Create the Comment
@@ -258,7 +256,7 @@ public class CommentResourceIT {
 
     @Test
     @Transactional
-    public void deleteComment() throws Exception {
+    void deleteComment() throws Exception {
         // Initialize the database
         commentRepository.saveAndFlush(comment);
 

@@ -105,11 +105,11 @@ public class UserResourceIT {
 
     /**
      * Create a User.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which has a required relationship to the User entity.
      */
-    public static User createEntity(EntityManager em) {
+    public static User createEntity() {
         User user = new User();
         user.setLogin(DEFAULT_LOGIN + RandomStringUtils.randomAlphabetic(5));
         user.setPassword(RandomStringUtils.random(60));
@@ -124,14 +124,14 @@ public class UserResourceIT {
 
     @BeforeEach
     public void initTest() {
-        user = createEntity(em);
+        user = createEntity();
         user.setLogin(DEFAULT_LOGIN);
         user.setEmail(DEFAULT_EMAIL);
     }
 
     @Test
     @Transactional
-    public void createUser() throws Exception {
+    void createUser() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
         // Create the User
@@ -166,7 +166,7 @@ public class UserResourceIT {
 
     @Test
     @Transactional
-    public void createUserWithExistingId() throws Exception {
+    void createUserWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = userRepository.findAll().size();
 
         ManagedUserVM managedUserVM = new ManagedUserVM();
@@ -193,7 +193,7 @@ public class UserResourceIT {
 
     @Test
     @Transactional
-    public void createUserWithExistingLogin() throws Exception {
+    void createUserWithExistingLogin() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
         int databaseSizeBeforeCreate = userRepository.findAll().size();
@@ -221,7 +221,7 @@ public class UserResourceIT {
 
     @Test
     @Transactional
-    public void createUserWithExistingEmail() throws Exception {
+    void createUserWithExistingEmail() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
         int databaseSizeBeforeCreate = userRepository.findAll().size();
@@ -249,7 +249,7 @@ public class UserResourceIT {
 
     @Test
     @Transactional
-    public void getAllUsers() throws Exception {
+    void getAllUsers() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
 
@@ -268,7 +268,7 @@ public class UserResourceIT {
 
     @Test
     @Transactional
-    public void getUser() throws Exception {
+    void getUser() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
 
@@ -290,20 +290,20 @@ public class UserResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingUser() throws Exception {
+    void getNonExistingUser() throws Exception {
         restUserMockMvc.perform(get("/api/users/unknown"))
             .andExpect(status().isNotFound());
     }
 
     @Test
     @Transactional
-    public void updateUser() throws Exception {
+    void updateUser() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
         int databaseSizeBeforeUpdate = userRepository.findAll().size();
 
         // Update the user
-        User updatedUser = userRepository.findById(user.getId()).get();
+        User updatedUser = userRepository.findById(user.getId()).orElseThrow();
 
         ManagedUserVM managedUserVM = new ManagedUserVM();
         managedUserVM.setId(updatedUser.getId());
@@ -340,13 +340,13 @@ public class UserResourceIT {
 
     @Test
     @Transactional
-    public void updateUserLogin() throws Exception {
+    void updateUserLogin() throws Exception {
         // Initialize the database
         userRepository.saveAndFlush(user);
         int databaseSizeBeforeUpdate = userRepository.findAll().size();
 
         // Update the user
-        User updatedUser = userRepository.findById(user.getId()).get();
+        User updatedUser = userRepository.findById(user.getId()).orElseThrow();
 
         ManagedUserVM managedUserVM = new ManagedUserVM();
         managedUserVM.setId(updatedUser.getId());
@@ -400,7 +400,7 @@ public class UserResourceIT {
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user
-        User updatedUser = userRepository.findById(user.getId()).get();
+        User updatedUser = userRepository.findById(user.getId()).orElseThrow();
 
         ManagedUserVM managedUserVM = new ManagedUserVM();
         managedUserVM.setId(updatedUser.getId());
@@ -442,7 +442,7 @@ public class UserResourceIT {
         userRepository.saveAndFlush(anotherUser);
 
         // Update the user
-        User updatedUser = userRepository.findById(user.getId()).get();
+        User updatedUser = userRepository.findById(user.getId()).orElseThrow();
 
         ManagedUserVM managedUserVM = new ManagedUserVM();
         managedUserVM.setId(updatedUser.getId());
@@ -532,7 +532,7 @@ public class UserResourceIT {
         assertThat(user.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);
         assertThat(user.getLastName()).isEqualTo(DEFAULT_LASTNAME);
         assertThat(user.getEmail()).isEqualTo(DEFAULT_EMAIL);
-        assertThat(user.getActivated()).isEqualTo(true);
+        assertThat(user.getActivated()).isTrue();
         assertThat(user.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
         assertThat(user.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
         assertThat(user.getCreatedBy()).isNull();
@@ -562,7 +562,7 @@ public class UserResourceIT {
         assertThat(userDTO.getFirstName()).isEqualTo(DEFAULT_FIRSTNAME);
         assertThat(userDTO.getLastName()).isEqualTo(DEFAULT_LASTNAME);
         assertThat(userDTO.getEmail()).isEqualTo(DEFAULT_EMAIL);
-        assertThat(userDTO.isActivated()).isEqualTo(true);
+        assertThat(userDTO.isActivated()).isTrue();
         assertThat(userDTO.getImageUrl()).isEqualTo(DEFAULT_IMAGEURL);
         assertThat(userDTO.getLangKey()).isEqualTo(DEFAULT_LANGKEY);
         assertThat(userDTO.getCreatedBy()).isEqualTo(DEFAULT_LOGIN);
@@ -576,10 +576,13 @@ public class UserResourceIT {
     @Test
     public void testAuthorityEquals() {
         Authority authorityA = new Authority();
-        assertThat(authorityA).isEqualTo(authorityA);
-        assertThat(authorityA).isNotEqualTo(null);
-        assertThat(authorityA).isNotEqualTo(new Object());
-        assertThat(authorityA.hashCode()).isEqualTo(0);
+
+        assertThat(authorityA)
+            .isEqualTo(authorityA)
+            .isNotEqualTo(null)
+            .isNotEqualTo(new Object());
+
+        assertThat(authorityA.hashCode()).isZero();
         assertThat(authorityA.toString()).isNotNull();
 
         Authority authorityB = new Authority();
@@ -592,8 +595,7 @@ public class UserResourceIT {
         assertThat(authorityA).isNotEqualTo(authorityB);
 
         authorityB.setName(AuthoritiesConstants.USER);
-        assertThat(authorityA).isEqualTo(authorityB);
-        assertThat(authorityA.hashCode()).isEqualTo(authorityB.hashCode());
+        assertThat(authorityA).isEqualTo(authorityB).hasSameHashCodeAs(authorityB);
     }
 
     private void assertPersistedUsers(Consumer<List<User>> userAssertion) {

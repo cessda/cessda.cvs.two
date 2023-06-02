@@ -23,6 +23,7 @@ public class VersionNumberJavaDescriptor extends AbstractTypeDescriptor<VersionN
 
     public static final VersionNumberJavaDescriptor INSTANCE = new VersionNumberJavaDescriptor();
 
+    @SuppressWarnings("unchecked") // no typesafe way to obtain cached ImmutableMutabilityPlan instance
     public VersionNumberJavaDescriptor() {
         super(VersionNumber.class, ImmutableMutabilityPlan.INSTANCE);
     }
@@ -32,6 +33,7 @@ public class VersionNumberJavaDescriptor extends AbstractTypeDescriptor<VersionN
         return VersionNumber.fromString(string);
     }
 
+    @SuppressWarnings("unchecked") // verified typesafe
     @Override
     public <X> X unwrap(VersionNumber value, Class<X> type, WrapperOptions options) {
         if (value == null)
@@ -45,10 +47,10 @@ public class VersionNumberJavaDescriptor extends AbstractTypeDescriptor<VersionN
     public <X> VersionNumber wrap(X value, WrapperOptions options) {
         if (value == null)
             return null;
-        
+
         if (value instanceof String)
             return VersionNumber.fromString(value.toString());
-        
+
         throw unknownWrap(value.getClass());
     }
 }

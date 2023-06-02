@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {JhiDataUtils} from 'ng-jhipster';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { JhiDataUtils } from 'ng-jhipster';
 
-import {IAgency} from 'app/shared/model/agency.model';
-import {AgencyService} from 'app/agency/agency.service';
-import {NgbActiveModal, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import * as moment from 'moment';
-import {Moment} from 'moment';
-import {VocabularyLanguageFromKeyPipe} from 'app/shared';
+import { IAgency } from 'app/shared/model/agency.model';
+import { AgencyService } from 'app/agency/agency.service';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import moment from 'moment';
+import { Moment } from 'moment';
+import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 
 @Component({
   selector: 'jhi-agency-detail-dialog',
-  templateUrl: './agency-detail-dialog.component.html'
+  templateUrl: './agency-detail-dialog.component.html',
 })
 export class AgencyDetailDialogComponent implements OnInit {
   agency!: IAgency;
@@ -83,7 +83,7 @@ export class AgencyDetailDialogComponent implements OnInit {
                 language: versionStatusStat.language,
                 versionNumber: versionStatusStat.versionNumber,
                 status: versionStatusStat.status,
-                date: versionStatusStat.date
+                date: versionStatusStat.date,
               });
             }
           }
@@ -133,7 +133,7 @@ export class AgencyDetailDialogComponent implements OnInit {
 
 @Component({
   selector: 'jhi-agency-detail-popup',
-  template: ''
+  template: '',
 })
 export class AgencyDetailPopupComponent implements OnInit, OnDestroy {
   protected ngbModalRef?: NgbModalRef | null;
@@ -154,15 +154,15 @@ export class AgencyDetailPopupComponent implements OnInit, OnDestroy {
         } else {
           if (reason.version === undefined) {
             this.router.navigate(['/editor/vocabulary/' + reason.nota, { outlets: { popup: null } }], {
-              queryParams: { lang: reason.lang }
+              queryParams: { lang: reason.lang },
             });
           } else {
             this.router.navigate(['/vocabulary/' + reason.nota, { outlets: { popup: null } }], {
               queryParams: {
                 lang: reason.lang,
                 v: reason.version ? reason.version : null,
-                code: reason.code ? reason.code.split('.').join('') : null
-              }
+                code: reason.code ? reason.code.split('.').join('') : null,
+              },
             });
           }
         }

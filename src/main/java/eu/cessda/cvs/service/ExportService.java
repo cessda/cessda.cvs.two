@@ -146,7 +146,9 @@ public class ExportService
     {
         ConverterProperties properties = new ConverterProperties();
         FontProvider fontProvider = new DefaultFontProvider(false, false, false);
-        fontProvider.addDirectory(this.getClass().getResource("/fonts").getPath());
+        var fontsResource = this.getClass().getResource("/fonts");
+        assert fontsResource != null;
+        fontProvider.addDirectory(fontsResource.getPath());
         properties.setFontProvider(fontProvider);
         HtmlConverter.convertToPdf(contents, outputStream, properties);
 	}

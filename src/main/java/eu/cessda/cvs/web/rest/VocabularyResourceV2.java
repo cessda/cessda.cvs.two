@@ -466,8 +466,7 @@ public class VocabularyResourceV2 {
         List<ConceptDTO> concepts = new ArrayList<>();
         final VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, VersionUtils.getSlVersionNumber(versionNumber).toString(), language + "-" + versionNumber);
         final Optional<VersionDTO> version = vocabularyDTO.getVersions().stream().findFirst();
-        if( version.isPresent() )
-            concepts.addAll( version.get().getConcepts());
+        version.ifPresent(versionDTO -> concepts.addAll(versionDTO.getConcepts()));
         return ResponseEntity.ok().body( concepts );
     }
 

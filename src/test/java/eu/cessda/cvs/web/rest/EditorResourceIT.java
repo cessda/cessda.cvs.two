@@ -276,7 +276,7 @@ class EditorResourceIT {
     }
 
     public static Agency createAgencyEntity() {
-        Agency agency = new Agency()
+        return new Agency()
             .name(INIT_AGENCY_NAME)
             .link(INIT_LINK)
             .description(INIT_DESCRIPTION)
@@ -286,7 +286,6 @@ class EditorResourceIT {
             .uri(AGENCY_URI)
             .uriCode(AGENCY_URI_CODE)
             .canonicalUri(INIT_CANONICAL_URI);
-        return agency;
     }
 
     @BeforeEach
@@ -330,10 +329,8 @@ class EditorResourceIT {
     /**
      * Since the CVS workflow is quite complex and some of the test needs existing object, e,g. (Creating TL needs Published SL)
      * all of Integration Tests for SL and TL workflow are defined here.
-     *
-     * Each part of the test will be indicated by its ActionType
-     *
-     * @throws Exception
+     * <p>
+     * Each part of the test will be indicated by its ActionType.
      */
     @Test
     @Transactional
@@ -543,9 +540,9 @@ class EditorResourceIT {
         // test with null version number and license id, should not change the licence and version number
         vocabularySnippetForEnSl.setLicenseId( null );
         vocabularySnippetForEnSl.setVersionNumberFromString(null);
-        versionUpdated = updateVersionInfoTest(version);
-        assertThat(versionUpdated.getLicenseId()).isEqualTo(license.getId());
-        assertThat(versionUpdated.getNumber()).isEqualTo(versionUpdated.getNumber());
+        Version versionUpdatedAfterUpdate = updateVersionInfoTest(version);
+        assertThat(versionUpdatedAfterUpdate.getLicenseId()).isEqualTo(license.getId());
+        assertThat(versionUpdatedAfterUpdate.getNumber()).isEqualTo(version.getNumber());
     }
 
     private Version updateVersionInfoTest(Version version) throws Exception {
@@ -556,8 +553,7 @@ class EditorResourceIT {
             .andExpect(status().isOk());
         Vocabulary testVocabulary = vocabularyRepository.findAllByNotation( version.getNotation() ).stream().findFirst().orElse(null);
         assertThat(testVocabulary).isNotNull();
-        final Version versionUpdated = getLatestVersionByNotationAndLang(vocabularyRepository.findAll(), version.getNotation(), version.getLanguage());
-        return versionUpdated;
+        return getLatestVersionByNotationAndLang(vocabularyRepository.findAll(), version.getNotation(), version.getLanguage());
     }
 
     private void compareVersionTest(Version slVersion, Version newSlVersion) throws Exception {
@@ -749,8 +745,8 @@ class EditorResourceIT {
             .content(TestUtil.convertObjectToJsonBytes(codeSnippetForDeTl)))
             .andExpect(status().isOk());
         tlConcept1 = getConceptFromVocabulary(slConceptRoot1);
-        assertThat(tlConcept1.getTitle()).isEqualTo(null);
-        assertThat(tlConcept1.getDefinition()).isEqualTo(null);
+        assertThat(tlConcept1.getTitle()).isNull();
+        assertThat(tlConcept1.getDefinition()).isNull();
     }
 
     private void editTlConceptTest(Concept slConceptRoot1, Version tlVersion, Concept tlConcept1) throws Exception {
@@ -774,7 +770,7 @@ class EditorResourceIT {
         CodeSnippet codeSnippetForDeTl = new CodeSnippet();
         codeSnippetForDeTl.setActionType( ActionType.ADD_TL_CODE );
         Concept tlConcept = tlVersion.getConcepts().stream().filter(c -> c.getNotation().equals(slConcept.getNotation()))
-            .findFirst().orElse(null);
+            .findFirst().orElseThrow();
         assertThat(tlVersion).isNotNull();
         codeSnippetForDeTl.setVersionId( tlVersion.getId() );
         codeSnippetForDeTl.setConceptId( tlConcept.getId() );
@@ -1019,7 +1015,7 @@ class EditorResourceIT {
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         slVersion = getLatestVersionByNotationAndLang(vocabularyList, slVersion.getNotation(), slVersion.getLanguage());
         final Concept slConcept = slVersion.getConcepts().stream().filter(c -> c.getNotation()
-            .equals(isSecondRootConcept ? INIT_CODE4_NOTATION: INIT_CODE_NOTATION)).findFirst().orElse(null);
+            .equals(isSecondRootConcept ? INIT_CODE4_NOTATION: INIT_CODE_NOTATION)).findFirst().orElseThrow();
         assertThat(slConcept.getParent()).isNull();
         assertThat(slConcept.getPreviousConcept()).isNull();
         assertThat(slConcept.getPosition()).isEqualTo(isSecondRootConcept ? CODE4_POSITION : CODE_POSITION);
@@ -1288,7 +1284,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void createVocabularyWithGivenIdTest() throws Exception {
+    void createVocabularyWithGivenIdTest() throws Exception {
         int databaseSizeBeforeUpdate = vocabularyRepository.findAll().size();
 
         vocabularySnippetForEnSl.setActionType( ActionType.CREATE_CV );
@@ -1308,7 +1304,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void updateVocabularyWithVersionIdNull() throws Exception {
+    void updateVocabularyWithVersionIdNull() throws Exception {
         vocabularySnippetForEnSl.setActionType( ActionType.EDIT_CV );
         // vocabularySnippet versionId is NULL
         restMockMvc.perform(put("/api/editors/vocabularies")
@@ -1320,7 +1316,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void createCodeWithExistedId() throws Exception {
+    void createCodeWithExistedId() throws Exception {
         CodeSnippet codeSnippet = new CodeSnippet();
         codeSnippet.setActionType( ActionType.CREATE_CODE );
         codeSnippet.setConceptId( 1L );
@@ -1334,7 +1330,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void forwardStatusWithVersionIdNull() throws Exception {
+    void forwardStatusWithVersionIdNull() throws Exception {
         // vocabularySnippet versionId is NULL
         restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
             .header("Authorization", jwt)
@@ -1345,7 +1341,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void forwardStatusWithActionNull() throws Exception {
+    void forwardStatusWithActionNull() throws Exception {
         // vocabularySnippet Action is NULL
         vocabularySnippetForEnSl.setVersionId(1L);
         restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
@@ -1357,7 +1353,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void createCodeWithInvalidAction() throws Exception {
+    void createCodeWithInvalidAction() throws Exception {
         vocabularySnippetForEnSl.setActionType( ActionType.REORDER_CODE );
         restMockMvc.perform(post("/api/editors/vocabularies")
             .header("Authorization", jwt)
@@ -1368,7 +1364,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void reorderCodeWithInvalidAction() throws Exception {
+    void reorderCodeWithInvalidAction() throws Exception {
         CodeSnippet codeSnippetInvalidAction = new CodeSnippet();
         codeSnippetInvalidAction.setActionType( ActionType.CREATE_CODE );
         restMockMvc.perform(post("/api/editors/codes/reorder")
@@ -1380,7 +1376,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void putCodeWithInvalidAction() throws Exception {
+    void putCodeWithInvalidAction() throws Exception {
         CodeSnippet codeSnippetInvalidAction = new CodeSnippet();
         codeSnippetInvalidAction.setActionType( ActionType.CREATE_CODE );
         restMockMvc.perform(put("/api/editors/codes")
@@ -1392,7 +1388,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void createVocabularyActionNull() throws Exception {
+    void createVocabularyActionNull() throws Exception {
         // vocabularySnippet Action is NULL
         restMockMvc.perform(post("/api/editors/vocabularies")
             .header("Authorization", jwt)
@@ -1403,7 +1399,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void updateVocabularyActionIncorrectTest() throws Exception {
+    void updateVocabularyActionIncorrectTest() throws Exception {
         // vocabularySnippet Action is NULL
         vocabularySnippetForEnSl.setVocabularyId(1L);
         vocabularySnippetForEnSl.setActionType(ActionType.CREATE_CV);

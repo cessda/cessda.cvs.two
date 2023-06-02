@@ -85,8 +85,6 @@ public class ResourceUtils {
         contextJsonLdMap.put("versionInfo", vocabularyDTO.getVersionNumber());
 
         List<Object> results = new ArrayList<>();
-        Object[] resultObj = new Object[1];
-        resultObj[0] = results;
         contextJsonLdMap.put("results", results );
 
         // concepts

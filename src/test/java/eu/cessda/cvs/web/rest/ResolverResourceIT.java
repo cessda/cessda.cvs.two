@@ -85,33 +85,31 @@ public class ResolverResourceIT {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static Resolver createEntity(EntityManager em) {
-        Resolver resolver = new Resolver()
+        return new Resolver()
             .resourceId(DEFAULT_RESOURCE_ID)
             .resourceType(DEFAULT_RESOURCE_TYPE)
             .resourceUrl(DEFAULT_RESOURCE_URL)
             .resolverType(DEFAULT_RESOLVER_TYPE)
             .resolverURI(DEFAULT_RESOLVER_URI);
-        return resolver;
     }
     /**
      * Create an updated entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static Resolver createUpdatedEntity(EntityManager em) {
-        Resolver resolver = new Resolver()
+        return new Resolver()
             .resourceId(UPDATED_RESOURCE_ID)
             .resourceType(UPDATED_RESOURCE_TYPE)
             .resourceUrl(UPDATED_RESOURCE_URL)
             .resolverType(UPDATED_RESOLVER_TYPE)
             .resolverURI(UPDATED_RESOLVER_URI);
-        return resolver;
     }
 
     @BeforeEach
@@ -121,7 +119,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void createResolver() throws Exception {
+    void createResolver() throws Exception {
         int databaseSizeBeforeCreate = resolverRepository.findAll().size();
 
         // Create the Resolver
@@ -144,7 +142,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void createResolverWithExistingId() throws Exception {
+    void createResolverWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = resolverRepository.findAll().size();
 
         // Create the Resolver with an existing ID
@@ -165,7 +163,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void checkResourceUrlIsRequired() throws Exception {
+    void checkResourceUrlIsRequired() throws Exception {
         int databaseSizeBeforeTest = resolverRepository.findAll().size();
         // set the field null
         resolver.setResourceUrl(null);
@@ -184,7 +182,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void checkResolverURIIsRequired() throws Exception {
+    void checkResolverURIIsRequired() throws Exception {
         int databaseSizeBeforeTest = resolverRepository.findAll().size();
         // set the field null
         resolver.setResolverURI(null);
@@ -203,7 +201,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void getAllResolvers() throws Exception {
+    void getAllResolvers() throws Exception {
         // Initialize the database
         resolverRepository.saveAndFlush(resolver);
 
@@ -221,7 +219,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void getResolver() throws Exception {
+    void getResolver() throws Exception {
         // Initialize the database
         resolverRepository.saveAndFlush(resolver);
 
@@ -239,7 +237,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingResolver() throws Exception {
+    void getNonExistingResolver() throws Exception {
         // Get the resolver
         restResolverMockMvc.perform(get("/api/resolvers/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -247,14 +245,14 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void updateResolver() throws Exception {
+    void updateResolver() throws Exception {
         // Initialize the database
         resolverRepository.saveAndFlush(resolver);
 
         int databaseSizeBeforeUpdate = resolverRepository.findAll().size();
 
         // Update the resolver
-        Resolver updatedResolver = resolverRepository.findById(resolver.getId()).get();
+        Resolver updatedResolver = resolverRepository.findById(resolver.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedResolver are not directly saved in db
         em.detach(updatedResolver);
         updatedResolver
@@ -283,7 +281,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingResolver() throws Exception {
+    void updateNonExistingResolver() throws Exception {
         int databaseSizeBeforeUpdate = resolverRepository.findAll().size();
 
         // Create the Resolver
@@ -302,7 +300,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void deleteResolver() throws Exception {
+    void deleteResolver() throws Exception {
         // Initialize the database
         resolverRepository.saveAndFlush(resolver);
 

@@ -141,7 +141,7 @@ public class VocabularySnippet implements Serializable {
 
     @JsonSetter("versionNumber")
     public void setVersionNumberFromString(String str) {
-        setVersionNumber(str != null ? new VersionNumber(str) : null);
+        setVersionNumber(str != null ? VersionNumber.fromString(str) : null);
     }
 
     public String getStatus() {

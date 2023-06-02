@@ -32,10 +32,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -164,14 +164,7 @@ public class VersionResource {
     @GetMapping("/search/languages")
     public ResponseEntity<List<String>> searchLanguages( @RequestParam(name = "s" ) String s) {
         log.debug("REST request search vocabulary languages");
-        try
-        {
-            s = URLDecoder.decode( s, "UTF-8" );
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            throw new IllegalStateException(e);
-        }
+        s = URLDecoder.decode( s, StandardCharsets.UTF_8);
         final List<String> status = new ArrayList<>();
         if ( !s.trim().isEmpty() )
         {

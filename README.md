@@ -174,7 +174,7 @@ For more information, refer to the [Running tests page](https://www.jhipster.tec
 
 Sonar is used to analyse code quality. You can start a local Sonar server (accessible on [localhost:9001](http://localhost:9001)) with:
 
-```Java
+```shell
 docker-compose -f src/main/docker/sonar.yml up -d
 ```
 
@@ -183,14 +183,14 @@ or by using the maven plugin.
 
 Then, run a Sonar analysis:
 
-```Java
+```shell
 ./mvnw -Pprod clean verify sonar:sonar
 ```
 
 If you need to re-run the Sonar phase, please be sure to specify at least the `initialize`
 phase since Sonar properties are loaded from the sonar-project.properties file.
 
-```Java
+```shell
 ./mvnw initialize sonar:sonar
 ```
 
