@@ -121,7 +121,7 @@
                     <input type="text" class="form-control" name="uri" id="field_uri_code" formControlName="uriCode"/>
                     <small>
                         <span>Note: Please use the similar patterns as URI, with one additional required pattern:</span><br/>
-                        <span>- [CODE] ~ This pattern is required and it will be replaced by CV short-name e.g. Demography</span><br/>
+                        <span>- [CODE] or [CODE-HASH-FUNC-LENGTH] ~ This pattern is required and it will be replaced by code notation e.g. Demography. If the latter pattern is used, it will be replaced by a generated hash code from the code notation. Supported hash functions: FUNC &isin; &#123;MD2, MD5, SHA1, SHA256&#125;, LENGTH positive number denoting the truncation of the resulting hash code to the first n characters or 0 for no truncation.</span><br/>
                         <span>For example this URI configuration https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]_[CODE]/[VERSION]/[LANGUAGE],</span><br/>
                         <span>will generate URI https://vocabularies.cessda.eu/vocabulary/TopicClassification_Demography/1.0/en</span><br/>
                     </small>
