@@ -1987,7 +1987,11 @@ public class VocabularyServiceImpl implements VocabularyService
         // The output stream is set by the calling method
         try
         {
-            exportService.generateFileByThymeleafTemplate( "export", map, downloadType, outputStream );
+            String suffix = "";
+            if (agencyDTO.getName().equals("DDI Alliance")) {
+                suffix = "-ddi";
+            }
+            exportService.generateFileByThymeleafTemplate( "export" + suffix, map, downloadType, outputStream );
             return vocabularyNotation + "-" + versionSl + "_" + versionList + "." + downloadType;
         }
         catch ( IOException | JAXBException | Docx4JException e )
