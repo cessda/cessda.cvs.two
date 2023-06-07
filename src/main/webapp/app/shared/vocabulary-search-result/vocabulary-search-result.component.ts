@@ -234,7 +234,8 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   }
 
   search(query: string, pred?: string): void {
-    this.page = 0;
+    this.page = 1;
+    this.ngbPaginationPage = 1;
     this.currentSearch = query;
     this.predicate = 'relevance';
     if (query === '') {
@@ -491,6 +492,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
         q: this.currentSearch === '' ? null : this.currentSearch,
         f: this.activeAgg === '' ? null : this.activeAgg,
         sort: this.sort(),
+        page: 1,
       },
       queryParamsHandling: 'merge',
     });
