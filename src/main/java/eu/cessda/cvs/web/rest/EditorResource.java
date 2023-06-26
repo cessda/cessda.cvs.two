@@ -37,7 +37,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -870,7 +870,7 @@ public class EditorResource {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.SKOS, ResourceUtils.getURLWithContextPath(request), outputStream );
 
-        ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
+        InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
         return ResponseEntity.ok()
@@ -896,7 +896,7 @@ public class EditorResource {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.PDF, ResourceUtils.getURLWithContextPath(request), outputStream );
 
-        ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
+        InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
         return ResponseEntity.ok()
@@ -922,7 +922,7 @@ public class EditorResource {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.HTML, ResourceUtils.getURLWithContextPath(request), outputStream );
 
-        ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
+        InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
         return ResponseEntity.ok()
