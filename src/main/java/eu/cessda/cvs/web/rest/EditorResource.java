@@ -76,10 +76,8 @@ public class EditorResource {
     public static final String INVALID_ID = "Invalid id";
     public static final String ID_EXIST = "idexists";
     public static final String ID_NULL = "idnull";
-    private final Logger log = LoggerFactory.getLogger(EditorResource.class);
-
+    private static final Logger log = LoggerFactory.getLogger(EditorResource.class);
     public static final String ATTACHMENT_FILENAME = "attachment; filename=";
-
     private static final String ENTITY_VOCABULARY_NAME = "vocabulary";
     private static final String ENTITY_VERSION_NAME = "version";
     private static final String ENTITY_CODE_NAME = "code";
@@ -875,7 +873,7 @@ public class EditorResource {
         headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
         return ResponseEntity.ok()
             .headers(headers)
-            .contentType(MediaType.parseMediaType("text/xml"))
+            .contentType(ResourceUtils.MEDIATYPE_RDF)
             .body(resource);
     }
 

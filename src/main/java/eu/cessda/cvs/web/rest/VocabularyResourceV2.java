@@ -390,7 +390,7 @@ public class VocabularyResourceV2 {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation( value = "Get a Vocabulary in JSON format" )
-    public ResponseEntity<?> getVocabularyJson(
+    public ResponseEntity<VocabularyDTO> getVocabularyJson(
         HttpServletRequest request,
         @ApiParam(
             name = "vocabulary",
@@ -604,7 +604,7 @@ public class VocabularyResourceV2 {
      */
     @GetMapping(
         value="/vocabularies/{vocabulary}/{versionNumberSl}",
-        produces = MediaType.APPLICATION_XML_VALUE
+        produces = { ResourceUtils.MEDIATYPE_RDF_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE }
     )
     @ApiOperation( value = "Get a Vocabulary in Skos RDF file" )
     public ResponseEntity<Resource> getVocabularySkosRdf(
@@ -759,7 +759,7 @@ public class VocabularyResourceV2 {
      * @param languageVersion included version to be exported with format language_version e.g en-1.0_de-1.0.1
      */
     @GetMapping("/vocabularies/rdf/{vocabulary}/{versionNumberSl}")
-    @ApiOperation( value = "Get a Vocabulary in SKOS format", hidden = true  )
+    @ApiOperation( value = "Get a Vocabulary in SKOS format", hidden = true, produces = ResourceUtils.MEDIATYPE_RDF_VALUE )
     public ResponseEntity<Resource> getVocabularyInSkos(
         HttpServletRequest request,
         @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String vocabulary,
@@ -845,7 +845,7 @@ public class VocabularyResourceV2 {
         InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName );
-        return ResponseEntity.ok().headers(headers).body(resource);
+        return ResponseEntity.ok().headers(headers).contentType(ResourceUtils.MEDIATYPE_RDF).body(resource);
     }
 
     /**
