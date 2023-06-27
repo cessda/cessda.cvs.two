@@ -15,7 +15,9 @@
  */
 package eu.cessda.cvs.web.rest.utils;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 
 /**
  * This class implements an output stream in which the data is written into a byte array.
@@ -24,9 +26,9 @@ import java.io.ByteArrayOutputStream;
  */
 public class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
     /**
-     * Returns the byte array backing this output stream.
+     * Returns an input stream with the contents of the backing byte array.
      */
-    public byte[] getBuffer() {
-        return buf;
+    public InputStream getInputStream() {
+        return new ByteArrayInputStream(buf, 0, count);
     }
 }

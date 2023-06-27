@@ -36,7 +36,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -780,7 +780,7 @@ public class VocabularyResourceV2 {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyPublishFileDownload(vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.HTML, requestURL, outputStream);
 
-        ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
+        InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
         return ResponseEntity.ok()
@@ -808,7 +808,7 @@ public class VocabularyResourceV2 {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyPublishFileDownload(vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.PDF, requestURL, outputStream );
 
-        ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
+        InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName );
         return ResponseEntity.ok()
@@ -826,7 +826,7 @@ public class VocabularyResourceV2 {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyPublishFileDownload( vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.WORD, requestURL, outputStream );
 
-        ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
+        InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName );
         return ResponseEntity.ok().headers(headers).body(resource);
@@ -842,7 +842,7 @@ public class VocabularyResourceV2 {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyPublishFileDownload( vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.SKOS, requestURL, outputStream );
 
-        ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
+        InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName );
         return ResponseEntity.ok().headers(headers).body(resource);
