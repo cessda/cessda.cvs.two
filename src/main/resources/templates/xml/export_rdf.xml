@@ -13,7 +13,7 @@
       <dcterms:description th:attr="'xml:lang'=${version.language}" th:text="${version.definition}"></dcterms:description>
      </loop>
       <owl:versionInfo th:text="${docVersion}"></owl:versionInfo>
-      <dcterms:license th:attr="'rdf:resource'=${docLicense}"/>
+      <dcterms:license th:attr="'rdf:resource'=${docLicenseUrl}"/>
       <dcterms:rights th:text="'Copyright ©' + ${agency.name} + ' ' +${year}"></dcterms:rights>
       <skos:historyNote th:if="${docVersionNotes != null and docVersionNotes != ''}" th:text="${docVersionNotes}"></skos:historyNote>
       <skos:changeNote th:if="${docVersionChanges != null and docVersionChanges != ''}" th:text="${docVersionChanges}"></skos:changeNote>

@@ -1960,6 +1960,7 @@ public class VocabularyServiceImpl implements VocabularyService
             map.put( "docNotation", vocabularyDTO.getNotation() );
             map.put( "docVersion", versionIncluded.getNumber().toString() );
             map.put( "docLicense", versionIncluded.getLicenseName() );
+            map.put( "docLicenseUrl", versionIncluded.getLicenseLink() );
             map.put( "docRight", versionIncluded.getLicenseName() );
             map.put( CODE_PATH, CodeDTO.generateCodesFromVersion( includedVersions, false ) );
         } else {

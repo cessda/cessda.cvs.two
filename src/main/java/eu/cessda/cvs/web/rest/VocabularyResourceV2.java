@@ -832,11 +832,7 @@ public class VocabularyResourceV2 {
         return ResponseEntity.ok().headers(headers).body(resource);
     }
 
-    private ResponseEntity<Resource> transformVocabularyToRdf(
-        HttpServletRequest request,
-        @PathVariable @ApiParam("the CV short definition/notation, e.g. AnalysisUnit") String vocabulary,
-        @PathVariable @ApiParam("the CV SL version, e.g. 1.0") String versionNumberSl,
-        @RequestParam(name = "languageVersion", required = false) @ApiParam("included language version, e.g. en-1.0_de-1.0.1, separated by _") String languageVersion) {
+    private ResponseEntity<Resource> transformVocabularyToRdf(HttpServletRequest request, String vocabulary, String versionNumberSl, String languageVersion) {
         String requestURL = ResourceUtils.getURLWithContextPath( request );
 
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
