@@ -91,7 +91,7 @@
     "prettier": "2.8.8",
     "reflect-metadata": "0.1.13",
     "rimraf": "5.0.0",
-    "sass": "1.62.1",
+    "sass": "1.63.6",
     "sass-loader": "8.0.2",
     "simple-progress-webpack-plugin": "2.0.0",
     "style-loader": "2.0.0",
