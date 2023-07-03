@@ -38,7 +38,7 @@
     "quill-blot-formatter": "1.0.5",
     "rxjs": "6.6.7",
     "swagger-ui-dist": "5.1.0",
-    "tslib": "2.5.0",
+    "tslib": "2.6.0",
     "zone.js": "0.10.3"
   },
   "devDependencies": {
