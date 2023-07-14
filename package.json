@@ -88,7 +88,7 @@
     "optimize-css-assets-webpack-plugin": "6.0.1",
     "postcss": "8.4.22",
     "postcss-loader": "4.3.0",
-    "prettier": "2.8.8",
+    "prettier": "3.0.0",
     "reflect-metadata": "0.1.13",
     "rimraf": "5.0.0",
     "sass": "1.63.6",
