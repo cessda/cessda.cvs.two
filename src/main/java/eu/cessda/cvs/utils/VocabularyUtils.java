@@ -15,13 +15,9 @@
  */
 package eu.cessda.cvs.utils;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import eu.cessda.cvs.domain.Concept;
 import eu.cessda.cvs.domain.Version;
 import eu.cessda.cvs.domain.Vocabulary;
-import eu.cessda.cvs.service.VocabularyNotFoundException;
 import eu.cessda.cvs.service.dto.ConceptDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
@@ -33,27 +29,18 @@ import eu.cessda.cvs.web.rest.domain.CvResult;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public final class VocabularyUtils
 {
-	private static final Logger log = LoggerFactory.getLogger( VocabularyUtils.class );
-
-	private VocabularyUtils()
+    private VocabularyUtils()
 	{
 	}
 
@@ -66,38 +53,6 @@ public final class VocabularyUtils
         Comparator.comparing( Version::getItemType )
             .thenComparing( Version::getLanguage )
             .thenComparing( Version::getNumber, Comparator.reverseOrder() );
-
-	public static VocabularyDTO generateVocabularyByPath( Path jsonPath )
-	{
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.registerModule( new JavaTimeModule() );
-		mapper.disable( SerializationFeature.WRITE_DATES_AS_TIMESTAMPS );
-
-		VocabularyDTO vocabularyDTO;
-		try ( InputStream jsonStream = Files.newInputStream( jsonPath ) )
-		{
-			vocabularyDTO = mapper.readValue( jsonStream, VocabularyDTO.class );
-			// reorder concepts
-			for ( VersionDTO version : vocabularyDTO.getVersions() )
-			{
-				version.setConcepts(
-						version.getConcepts().stream().sorted( Comparator.comparing( ConceptDTO::getPosition ) )
-								.collect( Collectors.toCollection( LinkedHashSet::new ) ) );
-			}
-
-		}
-		catch (IOException e)
-		{
-			log.error( "Couldn't generate vocabulary from JSON: {}", e.toString() );
-			throw new VocabularyNotFoundException(
-					"Published vocabulary not found, please check Vocabulary notation and SL version number!" );
-		}
-		// reorder version
-		vocabularyDTO.setVersions( vocabularyDTO.getVersions().stream().sorted( VERSION_DTO_COMPARATOR )
-				.collect( Collectors.toCollection( LinkedHashSet::new ) ) );
-
-		return vocabularyDTO;
-	}
 
 	public static VersionDTO getVersionByLangVersion( VocabularyDTO vocabularyDTO, String language, String versionNumber )
 	{

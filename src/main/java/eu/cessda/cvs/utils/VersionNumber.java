@@ -24,8 +24,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -37,8 +35,6 @@ import java.util.regex.Pattern;
 @JsonSerialize(using = VersionNumber.Serializer.class)
 @JsonDeserialize(using = VersionNumber.Deserializer.class)
 public class VersionNumber implements Comparable<VersionNumber>, Serializable {
-
-    private static final Logger log = LoggerFactory.getLogger(VersionNumber.class);
 
     private static final Comparator<Integer> nullSafeIntegerComparator = Comparator.nullsFirst(Integer::compareTo);
 
@@ -145,14 +141,8 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         }
 
         @Override
-        public VersionNumber deserialize(JsonParser p, DeserializationContext ctxt) {
-            try {
-                return VersionNumber.fromString(p.getText());
-            }
-            catch (IOException e) {
-                log.error("Error deserializing version number", e);
-            }
-            return null;
+        public VersionNumber deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+            return VersionNumber.fromString(p.getText());
         }
     }
 

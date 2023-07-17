@@ -24,7 +24,6 @@ import eu.cessda.cvs.service.MetadataFieldService;
 import eu.cessda.cvs.service.dto.MetadataValueDTO;
 import eu.cessda.cvs.web.rest.domain.SimpleResponse;
 import eu.cessda.cvs.web.rest.utils.AccessibleByteArrayOutputStream;
-import org.apache.commons.io.FileUtils;
 import org.docx4j.Docx4J;
 import org.docx4j.Docx4jProperties;
 import org.docx4j.convert.out.HTMLSettings;
@@ -42,13 +41,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.xml.bind.DatatypeConverter;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedHashSet;
@@ -157,8 +152,9 @@ public class FileUploadResource
         {
             wordMLPackage = Docx4J.load( inputStream );
         }
-        catch ( IOException e )
+        catch ( FileNotFoundException e )
         {
+            // If a FileNotFoundException is thrown, return a 404
             return ResponseEntity.status( HttpStatus.NOT_FOUND ).build();
         }
 
@@ -179,13 +175,20 @@ public class FileUploadResource
         for ( Element element : doc.select( "img" ) )
         {
             String src = element.attr( "src" );
-
             if ( !src.startsWith( "data:" ) )
             {
                 Path imageFile = Path.of( applicationProperties.getStaticFilePath(), src );
-                String imageBase64LogoData = DatatypeConverter.printBase64Binary( Files.readAllBytes( imageFile ) );
-                String type = Files.probeContentType( imageFile );
-                element.attr( "src", "data:" + type + ";base64," + imageBase64LogoData );
+                try
+                {
+                    // Attempt to load the image data from the file
+                    String imageBase64LogoData = DatatypeConverter.printBase64Binary( Files.readAllBytes( imageFile ) );
+                    String type = Files.probeContentType( imageFile );
+                    element.attr( "src", "data:" + type + ";base64," + imageBase64LogoData );
+                } catch ( IOException e ) {
+                    // Remove the image element if the image cannot be loaded
+                    log.warn( "Loading image from {} failed: {}", imageFile, e.toString() );
+                    element.remove();
+                }
             }
         }
 
@@ -195,7 +198,8 @@ public class FileUploadResource
             htmlWriter.write( doc.toString() );
         }
 
-        return ResponseEntity.status( HttpStatus.CREATED ).location( new URI( UPLOADED_FILE_URI + fileName + HTML ) )
+        return ResponseEntity.status( HttpStatus.CREATED )
+            .location( new URI( UPLOADED_FILE_URI + fileName + HTML ) )
             .build();
     }
 
@@ -205,8 +209,7 @@ public class FileUploadResource
         log.info( "Uploading file {}", fileName );
 
         File initialFile = new File( applicationProperties.getUploadFilePath() + fileName + HTML );
-        String result = FileUtils.readFileToString( initialFile, StandardCharsets.UTF_8 );
-        Document doc = Jsoup.parse( result, "UTF-8" );
+        Document doc = Jsoup.parse( initialFile, null );
         Elements elements = doc.body().children();
 
         metadataFieldService.findOneByMetadataKey( metadataKey ).ifPresent( metadataFieldDTO ->

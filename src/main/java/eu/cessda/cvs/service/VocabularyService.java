@@ -175,13 +175,6 @@ public interface VocabularyService {
     void indexAllPublished();
 
     /**
-     * Perform indexing in a published vocabulary given JSON file path
-     *
-     * @param jsonPath the VocabularyDTO JSON file path
-     */
-    void indexPublished( Path jsonPath );
-
-    /**
      * Perform indexing in a published vocabulary for the publication
      *
      * @param vocabulary the VocabularyDTO needs to be re-indexed

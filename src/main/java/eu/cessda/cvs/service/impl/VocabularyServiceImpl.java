@@ -1114,12 +1114,6 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     @Override
-    public void indexPublished( Path jsonPath ) {
-        log.info( "Indexing published vocabulary with path {}", jsonPath );
-        indexPublished( VocabularyUtils.generateVocabularyByPath( jsonPath ) );
-    }
-
-    @Override
     public void indexPublished( VocabularyDTO vocabulary ) {
         log.info( "Indexing published vocabulary with id {} and notation {}", vocabulary.getId(), vocabulary.getNotation() );
         if ( Boolean.TRUE.equals( vocabulary.isWithdrawn() ) )
