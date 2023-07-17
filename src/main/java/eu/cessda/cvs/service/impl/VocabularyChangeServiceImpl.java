@@ -27,9 +27,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Service Implementation for managing {@link VocabularyChange}.
@@ -110,9 +109,8 @@ public class VocabularyChangeServiceImpl implements VocabularyChangeService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<VocabularyChangeDTO> findByVersionId(Long versionId) {
+    public Stream<VocabularyChangeDTO> findByVersionId(Long versionId) {
         log.debug("Request to get all VocabularyChanges by versionId {}", versionId);
-        return vocabularyChangeRepository.findByVersionId(versionId).stream()
-            .map(vocabularyChangeMapper::toDto).collect(Collectors.toList());
+        return vocabularyChangeRepository.findByVersionId(versionId).map(vocabularyChangeMapper::toDto);
     }
 }

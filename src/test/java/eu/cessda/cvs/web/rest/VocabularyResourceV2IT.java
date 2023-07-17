@@ -27,10 +27,13 @@ import eu.cessda.cvs.security.jwt.TokenProvider;
 import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
+import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -204,50 +207,32 @@ class VocabularyResourceV2IT {
 
     @Test
     @Transactional
-    void getVocabulariesTest() throws Exception {
+    void getVocabulariesRedirectTest() throws Exception
+    {
         restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
-            "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
-            EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(MediaType.TEXT_HTML_VALUE))
-            .andExpect(status().isTemporaryRedirect());
+                "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
+                EditorResourceIT.INIT_VERSION_NUMBER_SL)
+                .accept(MediaType.TEXT_HTML_VALUE))
+                .andExpect(status().isTemporaryRedirect());
+    }
 
+    @ParameterizedTest
+    @Transactional
+    @ValueSource( strings = {
+        MediaType.APPLICATION_JSON_VALUE,
+        MediaType.APPLICATION_PDF_VALUE,
+        MediaType.APPLICATION_XHTML_XML_VALUE,
+        VocabularyResourceV2.DOCX_TYPE,
+        VocabularyResourceV2.JSONLD_TYPE,
+        ResourceUtils.MEDIATYPE_RDF_VALUE,
+    } )
+    void getVocabulariesTest(String mediaType) throws Exception {
         restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
             "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
             EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(MediaType.APPLICATION_XHTML_XML_VALUE))
-            .andExpect(status().isOk());
-
-        restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
-            "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
-            EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(MediaType.APPLICATION_JSON_VALUE))
+            .accept(mediaType))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
-
-        restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
-            "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
-            EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(VocabularyResourceV2.JSONLD_TYPE))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(VocabularyResourceV2.JSONLD_TYPE));
-
-        restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
-            "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
-            EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(MediaType.APPLICATION_PDF_VALUE))
-            .andExpect(status().isOk());
-
-        restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
-            "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
-            EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(VocabularyResourceV2.DOCX_TYPE))
-            .andExpect(status().isOk());
-
-        restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
-            "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
-            EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(MediaType.APPLICATION_XML_VALUE))
-            .andExpect(status().isOk());
+            .andExpect( content().contentTypeCompatibleWith( mediaType ) );
     }
 
     @Test

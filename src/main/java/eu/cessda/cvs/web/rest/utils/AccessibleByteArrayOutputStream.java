@@ -22,7 +22,7 @@ import java.io.InputStream;
 /**
  * This class implements an output stream in which the data is written into a byte array.
  * The buffer automatically grows as data is written to it.
- * The data can be retrieved using toByteArray(), getBuffer() and toString().
+ * The data can be retrieved using {@link #toByteArray()}, {@link #getInputStream()} and {@link #toString()}.
  */
 public class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
     /**

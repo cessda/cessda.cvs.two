@@ -39,6 +39,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing {@link eu.cessda.cvs.domain.Version}.
@@ -174,7 +175,7 @@ public class VersionResource {
                 status.add( split.trim() );
             }
         }
-        List<String> languagesIsos = versionService.findAllLanguagesByStatus(status);
+        List<String> languagesIsos = versionService.findAllLanguagesByStatus(status).collect(Collectors.toList());
 
         return ResponseEntity.ok().body( languagesIsos );
     }

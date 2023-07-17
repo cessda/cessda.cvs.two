@@ -17,14 +17,14 @@ package eu.cessda.cvs.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.nio.file.Path;
 
 public class FileUploadHelper {
     private FileUploadType fileUploadType;
     private MultipartFile sourceFile;
-    private String uploadBaseDirectory;
-    private File uploadedFile;
-    private File uploadedThumbFile;
+    private Path uploadBaseDirectory;
+    private Path uploadedFile;
+    private Path uploadedThumbFile;
 
     public FileUploadType getFileUploadType() {
         return fileUploadType;
@@ -32,11 +32,6 @@ public class FileUploadHelper {
 
     public void setFileUploadType(FileUploadType fileUploadType) {
         this.fileUploadType = fileUploadType;
-    }
-
-    public FileUploadHelper fileUploadType(FileUploadType fileUploadType) {
-        this.fileUploadType = fileUploadType;
-        return this;
     }
 
     public MultipartFile getSourceFile() {
@@ -47,37 +42,27 @@ public class FileUploadHelper {
         this.sourceFile = sourceFile;
     }
 
-    public FileUploadHelper sourceFile(MultipartFile sourceFile) {
-        this.sourceFile = sourceFile;
-        return this;
-    }
-
-    public String getUploadBaseDirectory() {
+    public Path getUploadBaseDirectory() {
         return uploadBaseDirectory;
     }
 
-    public void setUploadBaseDirectory(String uploadBaseDirectory) {
+    public void setUploadBaseDirectory(Path uploadBaseDirectory) {
         this.uploadBaseDirectory = uploadBaseDirectory;
     }
 
-    public FileUploadHelper uploadBaseDirectory( String uploadBaseDirectory) {
-        this.uploadBaseDirectory = uploadBaseDirectory;
-        return this;
-    }
-
-    public File getUploadedFile() {
+    public Path getUploadedFile() {
         return uploadedFile;
     }
 
-    public void setUploadedFile(File uploadedFile) {
+    public void setUploadedFile(Path uploadedFile) {
         this.uploadedFile = uploadedFile;
     }
 
-    public File getUploadedThumbFile() {
+    public Path getUploadedThumbFile() {
         return uploadedThumbFile;
     }
 
-    public void setUploadedThumbFile(File uploadedThumbFile) {
+    public void setUploadedThumbFile(Path uploadedThumbFile) {
         this.uploadedThumbFile = uploadedThumbFile;
     }
 }

@@ -29,8 +29,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 /**
  * Service Implementation for managing {@link Version}.
@@ -105,92 +106,82 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public List<VersionDTO> findAllByVocabulary(Long vocabularyId) {
+    public Stream<VersionDTO> findAllByVocabulary(Long vocabularyId) {
         log.debug("Request to get versions by vocabularyId : {}", vocabularyId);
         return versionRepository
-            .findAllByVocabulary(vocabularyId)
-            .stream()
+            .findByVocabulary(vocabularyId)
             .sorted(
                 // #398 - We need to perform sorting by version number here, since at the DB level, the sorting is based on string comparison,
                 // and some methods, which rely on ordered results may fail.
-                // For instance, if not sorted corectly, the v9.9.9 would be treated as the latest version,
+                // For instance, if not sorted correctly, the v9.9.9 would be treated as the latest version,
                 // despite there is a newer version v9.9.10.
-                VocabularyUtils.versionComparator()
+                VocabularyUtils.VERSION_COMPARATOR
             )
-            .map(versionMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+            .map(versionMapper::toDto);
     }
 
     @Override
-    public List<VersionDTO> findAllPublishedByVocabulary(Long vocabularyId) {
+    public Stream<VersionDTO> findAllPublishedByVocabulary(Long vocabularyId) {
         log.debug("Request to get versions with PUBLISHED status by vocabularyId : {}", vocabularyId);
         return versionRepository
-            .findAllPublishedByVocabulary(vocabularyId)
-            .stream()
+            .findPublishedByVocabulary(vocabularyId)
             .sorted(
                 // #398 - We need to perform sorting by version number here, since at the DB level, the sorting is based on string comparison,
                 // and some methods, which rely on ordered results may fail.
                 // For instance, if not sorted corectly, the v9.9.9 would be treated as the latest version,
                 // despite there is a newer version v9.9.10.
-                VocabularyUtils.versionComparator()
+                VocabularyUtils.VERSION_COMPARATOR
             )
-            .map(versionMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+            .map(versionMapper::toDto);
     }
 
     @Override
-    public List<VersionDTO> findOlderPublishedByVocabularyLanguageId(Long vocabularyId, String languageIso, Long versionId) {
+    public Stream<VersionDTO> findOlderPublishedByVocabularyLanguageId(Long vocabularyId, String languageIso, Long versionId) {
         log.debug("Request to get older versions with PUBLISHED status by vocabularyId {} and languageIso {}", vocabularyId, languageIso);
         return versionRepository
             .findOlderPublishedByVocabularyLanguageId(vocabularyId, languageIso, versionId)
-            .stream()
             .sorted(
                 // #398 - We need to perform sorting by version number here, since at the DB level, the sorting is based on string comparison,
                 // and some methods, which rely on ordered results may fail.
                 // For instance, if not sorted corectly, the v9.9.9 would be treated as the latest version,
                 // despite there is a newer version v9.9.10.
-                VocabularyUtils.versionComparator()
+                VocabularyUtils.VERSION_COMPARATOR
             )
-            .map(versionMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+            .map(versionMapper::toDto);
     }
 
     @Override
-    public List<VersionDTO> findAllByVocabularyAndVersionSl(Long vocabularyId, VersionNumber versionNumberSl) {
+    public Stream<VersionDTO> findAllByVocabularyAndVersionSl(Long vocabularyId, VersionNumber versionNumberSl) {
         // #398 must be a 2-number string (##.##) in order to perform string prefix search in versionRepository.findAllByVocabularyIdAndVersionNumberSl
         String slNumberPrefix = versionNumberSl.getMinorVersion();
         log.debug("Request to get versions by vocabularyId {}, versionNumberSl prefix {}", vocabularyId, slNumberPrefix);
         return versionRepository
             .findAllByVocabularyIdAndVersionNumberSl(vocabularyId, slNumberPrefix)
-            .stream()
             .sorted(
                 // #398 - We need to perform sorting by version number here, since at the DB level, the sorting is based on string comparison,
                 // and some methods, which rely on ordered results may fail.
                 // For instance, if not sorted corectly, the v9.9.9 would be treated as the latest version,
                 // despite there is a newer version v9.9.10.
-                VocabularyUtils.versionComparator()
+                VocabularyUtils.VERSION_COMPARATOR
             )
-            .map(versionMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+            .map(versionMapper::toDto);
     }
 
     @Override
-    public Set<VersionDTO> findAllPublishedByVocabularyAndVersionSl(Long vocabularyId, VersionNumber versionNumberSl) {
+    public Stream<VersionDTO> findAllPublishedByVocabularyAndVersionSl(Long vocabularyId, VersionNumber versionNumberSl) {
         // #398 must be a 2-number string (##.##) in order to perform string prefix search in versionRepository.findAllPublishedByVocabularyIdAndVersionNumberSl
         String slNumberPrefix = versionNumberSl.getMinorVersion();
         log.debug("Request to get published versions by vocabularyId {}, versionNumberSl prefix {}", vocabularyId, slNumberPrefix);
         return versionRepository
             .findAllPublishedByVocabularyIdAndVersionNumberSl( vocabularyId, slNumberPrefix )
-            .stream()
             .sorted(
                 // #398 - We need to perform sorting by version number here, since at the DB level, the sorting is based on string comparison,
                 // and some methods, which rely on ordered results may fail.
                 // For instance, if not sorted corectly, the v9.9.9 would be treated as the latest version,
                 // despite there is a newer version v9.9.10.
-                VocabularyUtils.versionComparator()
+                VocabularyUtils.VERSION_COMPARATOR
             )
-            .map(versionMapper::toDto)
-            .collect(Collectors.toCollection(LinkedHashSet::new));
+            .map(versionMapper::toDto);
     }
 
     @Override
@@ -199,24 +190,20 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public List<VersionDTO> findByUrn(String urn) {
+    public Stream<VersionDTO> findByUrn(String urn) {
         log.debug("Request to get versions with URN {}", urn);
-        return versionRepository.findByCanonicalUri(urn ).stream()
-            .map(versionMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+        return versionRepository.findByCanonicalUri(urn).map(versionMapper::toDto);
     }
 
     @Override
-    public List<VersionDTO> findByUrnStartingWith(String urn) {
+    public Stream<VersionDTO> findByUrnStartingWith(String urn) {
         log.debug("Request to get versions with URN starting with{}", urn);
-        return versionRepository.findByCanonicalUriStartingWith(urn ).stream()
-            .map(versionMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
+        return versionRepository.findByCanonicalUriStartingWith(urn).map(versionMapper::toDto);
     }
 
     @Override
-    public List<String> findAllLanguagesByStatus(List<String> status) {
+    public Stream<String> findAllLanguagesByStatus(List<String> status) {
         log.debug("Request to get languages used in vocabularies by version status {}", status);
-        return versionRepository.findAllLanguagesByStatus(status);
+        return versionRepository.findLanguagesByStatus(status);
     }
 }

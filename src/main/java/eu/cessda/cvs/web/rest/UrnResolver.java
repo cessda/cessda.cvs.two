@@ -29,6 +29,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for resolving URN
@@ -56,48 +58,56 @@ public class UrnResolver {
     public ResponseEntity<String> findUrnResolver(HttpServletRequest request,
           @PathVariable String urn, @RequestParam(name = "lang", required = false) String lang) {
         log.debug("REST request to get Resolver by URI: {}", urn);
-        ResponseEntity<String> headers;
+        Optional<ResponseEntity<String>> headers;
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 
         if( Character.isDigit( urn.charAt( urn.length() - 1) ))
             headers = getVersionByUrn(baseUrl, urn, lang);
         else
             headers = getVersionByUrnStartWith(baseUrl, urn);
-        if (headers != null) return headers;
+        if (headers.isPresent()) return headers.get();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body( "URN: " + urn + " is not found" );
     }
 
-    private ResponseEntity<String> getVersionByUrnStartWith(String baseUrl, String urn) {
-        VersionDTO versionDTO = versionService.findByUrnStartingWith(urn).stream()
-            .filter(v -> v.getStatus().equals(Status.PUBLISHED.toString())).findFirst().orElse(null);
-        if( versionDTO != null ) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(URI.create( baseUrl + "/vocabulary/" + versionDTO.getNotation()));
-            return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
-        }
-        return null;
+    private Optional<ResponseEntity<String>> getVersionByUrnStartWith(String baseUrl, String urn) {
+        return versionService.findByUrnStartingWith(urn)
+            .filter(v -> v.getStatus().equals(Status.PUBLISHED.toString())).findFirst()
+            .map(versionDTO -> {
+                HttpHeaders headers = new HttpHeaders();
+                headers.setLocation(URI.create( baseUrl + "/vocabulary/" + versionDTO.getNotation()));
+                return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+            });
     }
 
-    private ResponseEntity<String> getVersionByUrn(String baseUrl, String urn, String lang) {
-        final List<VersionDTO> versions = versionService.findByUrn(urn);
-        VersionDTO versionDTO = null;
-        String additionalQuery = "";
+    private Optional<ResponseEntity<String>> getVersionByUrn(String baseUrl, String urn, String lang) {
+        final List<VersionDTO> versions = versionService.findByUrn(urn).collect(Collectors.toList());
+        Optional<VersionDTO> versionDTOOptional = Optional.empty();
         if( lang != null ) {
-            versionDTO = versions.stream().filter(v -> v.getLanguage().equals(lang)).findFirst().orElse(null);
-        }
-        if( versionDTO == null ) {
-            versionDTO = versions.stream().filter(v -> v.getItemType().equals(ItemType.SL.toString())).findFirst().orElse(null);
-        } else {
-            additionalQuery = "&lang=" + lang;
+            versionDTOOptional = versions.stream().filter(v -> v.getLanguage().equals(lang)).findFirst();
         }
 
-        if( versionDTO != null ) {
-            HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(URI.create( baseUrl + "/vocabulary/" + versionDTO.getNotation()+ "?v=" +
-                (versionDTO.getItemType().equals(ItemType.SL.toString()) ? versionDTO.getNumber():
-                    versionDTO.getNumber().getMinorVersion()) + additionalQuery));
-            return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+        String additionalQuery;
+        if (versionDTOOptional.isPresent()) {
+            // Got a language variant
+            additionalQuery = "&lang=" + lang;
+        } else {
+            versionDTOOptional = versions.stream().filter(v -> v.getItemType().equals(ItemType.SL.toString())).findFirst();
+            additionalQuery = "";
         }
-        return null;
+
+        return versionDTOOptional.map(versionDTO -> {
+            HttpHeaders headers = new HttpHeaders();
+
+            // Derive the version number
+            String versionNumber;
+            if (versionDTO.getItemType().equals(ItemType.SL.toString())) {
+                versionNumber = versionDTO.getNumber().toString();
+            } else {
+                versionNumber = versionDTO.getNumber().getMinorVersion();
+            }
+
+            headers.setLocation(URI.create( baseUrl + "/vocabulary/" + versionDTO.getNotation() + "?v=" + versionNumber + additionalQuery));
+            return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+        });
     }
 }

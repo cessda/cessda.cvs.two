@@ -19,10 +19,10 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
-
 import eu.cessda.cvs.domain.Code;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.utils.VersionNumber;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Lob;
@@ -32,8 +32,6 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * A DTO for the {@link Code} entity.
@@ -1055,7 +1053,7 @@ public class CodeDTO implements Serializable {
     }
 
     public static enum HashFunction {
-        
+
         MD2("md2", DigestUtils::md2Hex),
         MD5("md5", DigestUtils::md5Hex),
         SHA1("sha1", DigestUtils::sha1Hex),
@@ -1065,8 +1063,8 @@ public class CodeDTO implements Serializable {
             String exec(String str);
         }
 
-        private String name;
-        private function fn;
+        private final String name;
+        private final function fn;
 
         HashFunction(String name, function fn) {
             this.name = name;
@@ -1092,14 +1090,14 @@ public class CodeDTO implements Serializable {
     }
 
     public static String _generateHash(HashFunction hf, String str, Integer len) {
-        
+
         // default hash
         String hash = '#' + str;
 
         if (hf != null) {
             hash = hf.getFn().exec(str);
         }
-        
+
         // truncate
         if (len != null && len > 0) {
             hash = hash.substring(0, len);
@@ -1122,7 +1120,7 @@ public class CodeDTO implements Serializable {
         }
 
         Matcher m = patternHashCodeUriPlaceholder.matcher(uri);
-        
+
         while (m.find()) {
             HashFunction hf = HashFunction.fromString(m.group(1));
             Integer len = Integer.parseInt(m.group(2));

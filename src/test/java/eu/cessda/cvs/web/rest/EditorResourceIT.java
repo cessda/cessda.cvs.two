@@ -551,7 +551,7 @@ class EditorResourceIT {
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
             .andExpect(status().isOk());
-        Vocabulary testVocabulary = vocabularyRepository.findAllByNotation( version.getNotation() ).stream().findFirst().orElse(null);
+        Vocabulary testVocabulary = vocabularyRepository.findByNotation( version.getNotation() ).findFirst().orElse(null);
         assertThat(testVocabulary).isNotNull();
         return getLatestVersionByNotationAndLang(vocabularyRepository.findAll(), version.getNotation(), version.getLanguage());
     }
@@ -590,7 +590,6 @@ class EditorResourceIT {
     private void deleteVocabularyOrVersion(Version versionToDelete, boolean isDeleteVocabulary) throws Exception {
         List<Vocabulary> vocabularies = vocabularyRepository.findAll();
         int vocabSizeBeforeDelete = vocabularies.size();
-        int versionSizeBeforeDelete = vocabularyRepository.findAllByNotation(versionToDelete.getNotation()).get(0).getVersions().size();
 
         // Delete version/vocab
         restMockMvc.perform(delete("/api/editors/vocabularies/{id}", versionToDelete.getId())
@@ -614,10 +613,10 @@ class EditorResourceIT {
         restMockMvc.perform(post("/api/editors/vocabularies/new-version/" + version.getId())
             .header("Authorization", jwt))
             .andExpect(status().isOk());
-        final Vocabulary vocabulary = vocabularyRepository.findAllByNotation(version.getNotation()).stream().findFirst().orElse(null);
+        final Vocabulary vocabulary = vocabularyRepository.findByNotation(version.getNotation()).findAny().orElseThrow();
         assertThat(vocabulary).isNotNull();
         // sort to make sure that the order is correct from latest to oldest
-        final List<Version> versions = vocabulary.getVersions().stream().sorted(VocabularyUtils.versionComparator()).collect(Collectors.toList());
+        final List<Version> versions = vocabulary.getVersions().stream().sorted(VocabularyUtils.VERSION_COMPARATOR).collect(Collectors.toList());
 
         final Version versionSl = versions.stream().filter(v -> v.getItemType().equals(ITEM_TYPE_SL.toString())).findFirst().orElse(null);
         assertThat(versionSl).isNotNull();
@@ -1194,7 +1193,7 @@ class EditorResourceIT {
         assertThat(testVocabulary).isNotNull();
         // sort to make sure that the order is correct from latest to oldest
         final List<Version> versions = testVocabulary.getVersions().stream()
-            .sorted(VocabularyUtils.versionComparator()).collect(Collectors.toList());
+            .sorted(VocabularyUtils.VERSION_COMPARATOR).collect(Collectors.toList());
 
         version = versions.stream().filter( v -> v.getLanguage().equals( lang))
             .findFirst().orElse(null);

@@ -95,11 +95,12 @@ public class CvsApp {
         if (StringUtils.isBlank(contextPath)) {
             contextPath = "/";
         }
-        String hostAddress = "localhost";
+        String hostAddress;
         try {
             hostAddress = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
             log.warn("The host name could not be determined, using `localhost` as fallback");
+            hostAddress = "localhost";
         }
         log.info("\n----------------------------------------------------------\n\t" +
                 "Application '{}' is running! Access URLs:\n\t" +

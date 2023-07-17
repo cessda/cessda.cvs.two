@@ -19,7 +19,6 @@ import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.config.Constants;
 import eu.cessda.cvs.domain.User;
 import io.github.jhipster.config.JHipsterProperties;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -48,6 +47,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.mockito.Mockito.*;
 
 /**
@@ -227,13 +227,11 @@ public class MailServiceIT {
     }
 
     @Test
-    public void testSendEmailWithException() {
+    void testSendEmailWithException() {
         doThrow(MailSendException.class).when(javaMailSender).send(any(MimeMessage.class));
-        try {
-            mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, false);
-        } catch (RuntimeException e) {
-            Assertions.fail("Exception shouldn't have been thrown", e);
-        }
+        assertThatCode(() ->
+            mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, false)
+        ).doesNotThrowAnyException();
     }
 
     @Test

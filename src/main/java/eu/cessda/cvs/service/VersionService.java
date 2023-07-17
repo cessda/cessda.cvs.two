@@ -22,7 +22,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Service Interface for managing {@link eu.cessda.cvs.domain.Version}.
@@ -66,7 +66,7 @@ public interface VersionService {
      * @param vocabularyId
      * @return
      */
-    List<VersionDTO> findAllByVocabulary(Long vocabularyId);
+    Stream<VersionDTO> findAllByVocabulary(Long vocabularyId);
 
     /**
      * Find all published versions by vocabularyId
@@ -74,7 +74,7 @@ public interface VersionService {
      * @param vocabularyId
      * @return
      */
-    List<VersionDTO> findAllPublishedByVocabulary(Long vocabularyId);
+    Stream<VersionDTO> findAllPublishedByVocabulary(Long vocabularyId);
 
     /**
      * Find all older published version than given versionId, from specific vocabulary and language
@@ -84,7 +84,7 @@ public interface VersionService {
      * @param versionId
      * @return
      */
-    List<VersionDTO> findOlderPublishedByVocabularyLanguageId(Long vocabularyId, String languageIso, Long versionId);
+    Stream<VersionDTO> findOlderPublishedByVocabularyLanguageId(Long vocabularyId, String languageIso, Long versionId);
 
     /**
      * Find all versions than given versionId, from specific vocabulary and language
@@ -93,7 +93,7 @@ public interface VersionService {
      * @param versionNumberSl
      * @return
      */
-    List<VersionDTO> findAllByVocabularyAndVersionSl(Long vocabularyId, VersionNumber versionNumberSl);
+    Stream<VersionDTO> findAllByVocabularyAndVersionSl(Long vocabularyId, VersionNumber versionNumberSl);
 
     /**
      * Find all published versions than given versionId, from specific vocabulary and language
@@ -102,7 +102,7 @@ public interface VersionService {
      * @param versionNumberSl
      * @return
      */
-    Set<VersionDTO> findAllPublishedByVocabularyAndVersionSl(Long vocabularyId, VersionNumber versionNumberSl);
+    Stream<VersionDTO> findAllPublishedByVocabularyAndVersionSl(Long vocabularyId, VersionNumber versionNumberSl);
 
     /**
      * Search for the version corresponding to the query.
@@ -119,19 +119,20 @@ public interface VersionService {
      * @param urn
      * @return
      */
-    List<VersionDTO> findByUrn(String urn);
+    Stream<VersionDTO> findByUrn(String urn);
 
     /**
      * Get list of versions by URN that starting with
      * @param urn
      * @return
      */
-    List<VersionDTO> findByUrnStartingWith(String urn);
+    Stream<VersionDTO> findByUrnStartingWith(String urn);
 
     /**
      * Get list of used languages by version status
+     *
      * @param status
      * @return
      */
-    List<String> findAllLanguagesByStatus(List<String> status);
+    Stream<String> findAllLanguagesByStatus(List<String> status);
 }

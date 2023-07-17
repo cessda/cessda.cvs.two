@@ -57,19 +57,15 @@ public final class VocabularyUtils
 	{
 	}
 
-	public static Comparator<VersionDTO> versionDtoComparator()
-	{
-		return Comparator.comparing( VersionDTO::getItemType )
-				.thenComparing( VersionDTO::getLanguage )
-				.thenComparing( VersionDTO::getNumber, Comparator.reverseOrder() );
-	}
+    public static final Comparator<VersionDTO> VERSION_DTO_COMPARATOR =
+        Comparator.comparing( VersionDTO::getItemType )
+            .thenComparing( VersionDTO::getLanguage )
+            .thenComparing( VersionDTO::getNumber, Comparator.reverseOrder() );
 
-	public static Comparator<Version> versionComparator()
-	{
-		return Comparator.comparing( Version::getItemType )
-				.thenComparing( Version::getLanguage )
-				.thenComparing( Version::getNumber, Comparator.reverseOrder() );
-	}
+    public static final Comparator<Version> VERSION_COMPARATOR =
+        Comparator.comparing( Version::getItemType )
+            .thenComparing( Version::getLanguage )
+            .thenComparing( Version::getNumber, Comparator.reverseOrder() );
 
 	public static VocabularyDTO generateVocabularyByPath( Path jsonPath )
 	{
@@ -97,7 +93,7 @@ public final class VocabularyUtils
 					"Published vocabulary not found, please check Vocabulary notation and SL version number!" );
 		}
 		// reorder version
-		vocabularyDTO.setVersions( vocabularyDTO.getVersions().stream().sorted( versionDtoComparator() )
+		vocabularyDTO.setVersions( vocabularyDTO.getVersions().stream().sorted( VERSION_DTO_COMPARATOR )
 				.collect( Collectors.toCollection( LinkedHashSet::new ) ) );
 
 		return vocabularyDTO;

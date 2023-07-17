@@ -63,7 +63,7 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final Pattern parsePattern = Pattern.compile("^\\D*(\\d+)\\.(\\d+)(?:\\.(\\d+))?.*$");
+    private static final Pattern parsePattern = Pattern.compile("^\\D*(\\d+)\\.(\\d+)(?:\\.(\\d+))?.*$");
 
     public static VersionNumber fromString(String str) {
         if (str == null) {
@@ -71,19 +71,18 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         }
         Matcher m = parsePattern.matcher(str);
         if (m.find()) {
-            VersionNumber v = new VersionNumber();
-            v.majorNumber = Integer.parseInt(m.group(1));
-            v.minorNumber = Integer.parseInt(m.group(2));
-            v.patchNumber = m.group(3) != null ? Integer.parseInt(m.group(3)) : 0;
-            return v;
+            int majorNumber = Integer.parseInt(m.group(1));
+            int minorNumber = Integer.parseInt(m.group(2));
+            int patchNumber = m.group(3) != null ? Integer.parseInt(m.group(3)) : 0;
+            return new VersionNumber(majorNumber, minorNumber, patchNumber);
         } else {
             throw new IllegalArgumentException("Illegal version number provided '" + str + "'");
         }
     }
 
-    private Integer majorNumber;
-    private Integer minorNumber;
-    private Integer patchNumber;
+    private final Integer majorNumber;
+    private final Integer minorNumber;
+    private final Integer patchNumber;
 
     public VersionNumber() {
         majorNumber = minorNumber = patchNumber = null;
@@ -157,12 +156,15 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         }
     }
 
-    private static final Comparator<VersionNumber> versionNumberComparator = Comparator
+    private static final Comparator<VersionNumber> minorVersionNumberComparator = Comparator
         .comparing(
             VersionNumber::getMajorNumber, nullSafeIntegerComparator
         ).thenComparing(
             VersionNumber::getMinorNumber, nullSafeIntegerComparator
-        ).thenComparing(
+        );
+
+    private static final Comparator<VersionNumber> versionNumberComparator = minorVersionNumberComparator
+        .thenComparing(
             VersionNumber::getPatchNumber, nullSafeIntegerComparator
         );
 
@@ -170,13 +172,6 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
     public int compareTo(VersionNumber other) {
         return versionNumberComparator.compare(this, other);
     }
-
-    private static Comparator<VersionNumber> minorVersionNumberComparator = Comparator
-    .comparing(
-        VersionNumber::getMajorNumber, nullSafeIntegerComparator
-    ).thenComparing(
-        VersionNumber::getMinorNumber, nullSafeIntegerComparator
-    );
 
     public boolean equalMinorVersionNumber(VersionNumber other) {
         return minorVersionNumberComparator.compare(this, other) == 0;
@@ -186,12 +181,26 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         return versionNumberComparator.compare(this, other) == 0;
     }
 
+    /**
+     * Returns a new VersionNumber with the minor version number incremented by 1,
+     * and the patch version number set to 0.
+     * @implNote if minorNumber is {@code null}, it is treated as if it is 0.
+     */
     public VersionNumber increaseMinorNumber() {
-        return new VersionNumber(majorNumber, minorNumber + 1, 0);
+        return new VersionNumber(majorNumber,
+            Objects.requireNonNullElse(minorNumber, 0) + 1,
+            0
+        );
     }
 
+    /**
+     * Returns a new VersionNumber with the patch version number incremented by 1.
+     * @implNote if patchNumber is {@code null}, it is treated as if it is 0.
+     */
     public VersionNumber increasePatchNumber() {
-        return new VersionNumber(majorNumber, minorNumber, patchNumber + 1);
+        return new VersionNumber(majorNumber, minorNumber,
+            Objects.requireNonNullElse(patchNumber, 0) + 1
+        );
     }
 
     public VersionNumber increasePatch(VersionNumber currentSlNumber) {
