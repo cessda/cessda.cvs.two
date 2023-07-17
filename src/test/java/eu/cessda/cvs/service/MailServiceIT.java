@@ -47,7 +47,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 /**
@@ -229,9 +229,9 @@ public class MailServiceIT {
     @Test
     void testSendEmailWithException() {
         doThrow(MailSendException.class).when(javaMailSender).send(any(MimeMessage.class));
-        assertThatCode(() ->
+        assertThatThrownBy(() ->
             mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, false)
-        ).doesNotThrowAnyException();
+        ).isInstanceOf( MailSendException.class );
     }
 
     @Test

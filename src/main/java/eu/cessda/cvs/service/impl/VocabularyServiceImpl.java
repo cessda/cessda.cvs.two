@@ -1103,10 +1103,12 @@ public class VocabularyServiceImpl implements VocabularyService
 
     @Override
     public List<Path> getPublishedCvPaths() {
-        try ( Stream<Path> paths = Files.walk( Paths.get( applicationProperties.getVocabJsonPath() ), 2 ) ) {
-            return paths.filter( Files::isRegularFile ).collect( Collectors.toList() );
+        try ( Stream<Path> paths = Files.find(
+            Paths.get( applicationProperties.getVocabJsonPath() ), 2, (p, a) -> a.isRegularFile()
+        ) ) {
+            return paths.collect( Collectors.toList() );
         } catch (IOException e) {
-            log.error( e.getMessage() );
+            log.error( "Failed to retrieve a list of published CVs: {}", e.getMessage() );
             return Collections.emptyList();
         }
     }
