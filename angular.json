@@ -36,8 +36,16 @@
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/main/webapp/favicon.ico", "src/main/webapp/content"],
             "styles": ["src/main/webapp/content/scss/global.scss"],
-            "scripts": []
-          }
+            "scripts": [],
+            "aot": false,
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "defaultConfiguration": ""
         }
       }
     }
