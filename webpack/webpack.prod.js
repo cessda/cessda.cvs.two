@@ -16,7 +16,6 @@
 const webpack = require('webpack');
 const webpackMerge = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -126,8 +125,7 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
                         toplevel: true
                     }
                 }
-            }),
-            new OptimizeCSSAssetsPlugin({})
+            })
         ]
     },
     plugins: [
