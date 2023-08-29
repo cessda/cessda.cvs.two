@@ -67,12 +67,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
         chunkFilename: 'app/[id].chunk.js'
     },
     module: {
-        rules: [{
-            test: /\.(j|t)s$/,
-            enforce: 'pre',
-            loader: 'eslint-loader',
-            exclude: /node_modules/
-        },
+        rules: [
         {
             test: /\.scss$/,
             use: ['to-string-loader', 'css-loader', 'postcss-loader', {
