@@ -16,7 +16,7 @@
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const AngularCompilerPlugin = require('@ngtools/webpack').AngularCompilerPlugin;
+const AngularWebpackPlugin = require('@ngtools/webpack').AngularWebpackPlugin;
 const MergeJsonWebpackPlugin = require('merge-jsons-webpack-plugin');
 
 const utils = require('./utils.js');
@@ -76,7 +76,6 @@ module.exports = (options) => ({
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: `'${options.env}'`,
         BUILD_TIMESTAMP: `'${new Date().getTime()}'`,
         // APP_VERSION is passed as an environment variable from the Gradle / Maven build tasks.
         VERSION: `'${process.env.hasOwnProperty('APP_VERSION') ? process.env.APP_VERSION : 'DEV'}'`,
@@ -134,10 +133,8 @@ module.exports = (options) => ({
       inject: 'body',
       base: '/',
     }),
-    new AngularCompilerPlugin({
-      mainPath: utils.root('src/main/webapp/app/app.main.ts'),
-      tsConfigPath: utils.root('tsconfig.app.json'),
-      sourceMap: true
+    new AngularWebpackPlugin({
+      tsconfig: utils.root('tsconfig.app.json')
     })
   ]
 });

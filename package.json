@@ -104,7 +104,7 @@
     "webpack": "5.88.2",
     "webpack-bundle-analyzer": "4.9.0",
     "webpack-cli": "4.10.0",
-    "webpack-dev-server": "3.11.3",
+    "webpack-dev-server": "4.15.1",
     "webpack-merge": "4.2.2",
     "workbox-webpack-plugin": "7.0.0",
     "write-file-webpack-plugin": "4.5.1"
@@ -122,8 +122,7 @@
     "build": "npm run webpack:prod",
     "test": "jest --coverage --config src/test/javascript/jest.conf.js",
     "test:watch": "npm run test -- --watch",
-    "webpack:dev": "webpack-dev-server --config webpack/webpack.dev.js --inline --hot --port=9060 --watch-content-base",
-    "webpack:dev-verbose": "webpack-dev-server --config webpack/webpack.dev.js --inline --hot --port=9060 --watch-content-base --profile --progress",
+    "webpack:dev": "webpack-dev-server --config webpack/webpack.dev.js --hot --port=9060",
     "webpack:build:main": "webpack --config webpack/webpack.dev.js",
     "webpack:build": "npm run cleanup && npm run webpack:build:main",
     "webpack:prod:main": "webpack --config webpack/webpack.prod.js --profile",

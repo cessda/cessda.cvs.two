@@ -29,7 +29,9 @@ const ENV = 'development';
 module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     devtool: 'eval-source-map',
     devServer: {
-        contentBase: './target/classes/static/',
+        devMiddleware: {
+            stats: options.stats,
+        },
         proxy: [{
             context: [
                 '/api',
@@ -46,13 +48,15 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
             secure: false,
             changeOrigin: options.tls
         }],
-        stats: options.stats,
-        watchOptions: {
-            ignored: /node_modules/
+        static: {
+            directory: './target/classes/static/',
+            watch: {
+                ignored: /node_modules/
+            }
         },
         https: options.tls,
         historyApiFallback: {
-          disableDotRule: true
+            disableDotRule: true
         },
     },
     entry: {
@@ -66,21 +70,21 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     },
     module: {
         rules: [
-        {
-            test: /\.scss$/,
-            use: ['to-string-loader', 'css-loader', 'postcss-loader', {
-                loader: 'sass-loader',
-                options: { implementation: sass }
-            }],
-            exclude: /(vendor\.scss|global\.scss)/
-        },
-        {
-            test: /(vendor\.scss|global\.scss)/,
-            use: ['style-loader', 'css-loader', 'postcss-loader', {
-                loader: 'sass-loader',
-                options: { implementation: sass }
+            {
+                test: /\.scss$/,
+                use: ['to-string-loader', 'css-loader', 'postcss-loader', {
+                    loader: 'sass-loader',
+                    options: { implementation: sass }
+                }],
+                exclude: /(vendor\.scss|global\.scss)/
+            },
+            {
+                test: /(vendor\.scss|global\.scss)/,
+                use: ['style-loader', 'css-loader', 'postcss-loader', {
+                    loader: 'sass-loader',
+                    options: { implementation: sass }
+                }]
             }]
-        }]
     },
     stats: process.env.JHI_DISABLE_WEBPACK_LOGS ? 'none' : options.stats,
     plugins: [
@@ -117,9 +121,9 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
             path.resolve(__dirname, './src/main/webapp/')
         ),
         new writeFilePlugin(),
-        new webpack.WatchIgnorePlugin([
-            utils.root('src/test'),
-        ])
+        new webpack.WatchIgnorePlugin({
+            paths: [utils.root('src/test')]
+        })
     ].filter(Boolean),
     mode: 'development'
 });
