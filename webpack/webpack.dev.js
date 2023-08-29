@@ -87,9 +87,7 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     plugins: [
         process.env.JHI_DISABLE_WEBPACK_LOGS
             ? null
-            : new SimpleProgressWebpackPlugin({
-                format: options.stats === 'minimal' ? 'compact' : 'expanded'
-              }),
+            : new SimpleProgressWebpackPlugin({ format: 'compact' }),
         new BrowserSyncPlugin({
             https: options.tls,
             host: 'localhost',
