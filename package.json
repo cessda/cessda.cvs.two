@@ -30,10 +30,10 @@
     "ngx-chips": "2.2.2",
     "ngx-cookie-service": "11.0.2",
     "ngx-infinite-scroll": "10.0.1",
-    "ngx-quill": "13.4.0",
+    "ngx-quill": "15.0.0",
     "ngx-text-diff": "0.6.0",
     "ngx-webstorage": "7.0.1",
-    "quill": "2.0.0-dev.4",
+    "quill": "1.3.7",
     "quill-better-table": "1.2.10",
     "quill-blot-formatter": "1.0.5",
     "rxjs": "6.6.7",
@@ -43,6 +43,11 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~12.2.18",
+    "@angular-eslint/builder": "12.7.0",
+    "@angular-eslint/eslint-plugin": "12.7.0",
+    "@angular-eslint/eslint-plugin-template": "12.7.0",
+    "@angular-eslint/schematics": "12.7.0",
+    "@angular-eslint/template-parser": "12.7.0",
     "@angular/cli": "12.2.18",
     "@angular/compiler-cli": "12.2.17",
     "@ngtools/webpack": "^12.2.18",
@@ -55,20 +60,17 @@
     "@types/mocha": "10.0.1",
     "@types/node": "16.18.25",
     "@types/webpack-merge": "4.1.5",
-    "@typescript-eslint/eslint-plugin": "4.0.0",
-    "@typescript-eslint/eslint-plugin-tslint": "4.33.0",
-    "@typescript-eslint/parser": "3.10.1",
+    "@typescript-eslint/eslint-plugin": "4.28.2",
+    "@typescript-eslint/parser": "4.28.2",
     "autoprefixer": "10.4.14",
     "browser-sync": "2.29.1",
     "browser-sync-webpack-plugin": "2.3.0",
     "chai": "4.3.7",
     "chai-as-promised": "7.1.1",
     "chai-string": "1.5.0",
-    "codelyzer": "^6.0.0",
     "copy-webpack-plugin": "6.4.1",
     "css-loader": "3.6.0",
-    "eslint": "6.8.0",
-    "eslint-config-jhipster": "0.0.1",
+    "eslint": "7.26.0",
     "eslint-config-prettier": "6.15.0",
     "file-loader": "6.2.0",
     "html-loader": "1.3.2",
@@ -78,7 +80,6 @@
     "jest-date-mock": "1.0.8",
     "jest-junit": "16.0.0",
     "jest-preset-angular": "11.1.2",
-    "jest-sonar-reporter": "2.0.0",
     "lint-staged": "14.0.1",
     "merge-jsons-webpack-plugin": "2.0.1",
     "mini-css-extract-plugin": "1.6.2",
@@ -98,9 +99,7 @@
     "to-string-loader": "1.2.0",
     "ts-loader": "9.2.1",
     "ts-node": "10.9.1",
-    "tslint": "6.1.3",
     "typescript": "4.3.5",
-    "webdriver-manager": "12.1.9",
     "webpack": "5.88.2",
     "webpack-bundle-analyzer": "4.9.0",
     "webpack-cli": "4.10.0",
@@ -131,16 +130,6 @@
     "prepare": "husky install"
   },
   "overrides": {
-    "eslint-config-jhipster": {
-      "@typescript-eslint/parser": ">=2.0.0",
-      "@typescript-eslint/eslint-plugin": ">=2.0.0",
-      "eslint": ">=6.1.0",
-      "eslint-config-prettier": ">=6.1.0",
-      "typescript": ">=3.4.5",
-      "prettier": ">=1.18.2",
-      "husky": ">=3.0.5",
-      "lint-staged": ">=9.2.5"
-    },
     "ng-jhipster": {
       "@angular/common": ">=10.0.0",
       "@angular/core": ">=10.0.0",
@@ -157,9 +146,5 @@
       "tslib": ">=1.10.0"
     },
     "quill": "2.0.0-dev.4"
-  },
-  "jestSonar": {
-    "reportPath": "target/test-results/jest",
-    "reportFile": "TESTS-results-sonar.xml"
   }
 }
