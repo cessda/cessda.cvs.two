@@ -36,11 +36,13 @@ module.exports = (options) => ({
       {
         test: /\.m?js$/,
         resolve: {
+            // Webpack requires .mjs to have fully specified imports (i.e. with file extension),
+            // but some dependencies do this incorrectly. Disable fullySpecified to work around this.
            fullySpecified: false,
         },
       },
       {
-        test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
+        test: /\.[jt]sx?$/,
         loader: '@ngtools/webpack'
       },
       {
@@ -74,9 +76,7 @@ module.exports = (options) => ({
         options: {
           name: 'manifest.webapp'
         }
-      },
-      // Ignore warnings about System.import in Angular
-      { test: /[\/\\]@angular[\/\\].+\.js$/, parser: { system: true } },
+      }
     ]
   },
   plugins: [
@@ -140,7 +140,8 @@ module.exports = (options) => ({
       base: '/',
     }),
     new AngularWebpackPlugin({
-      tsconfig: utils.root('tsconfig.app.json')
+      tsconfig: utils.root('tsconfig.app.json'),
+      jitMode: true
     })
   ]
 });
