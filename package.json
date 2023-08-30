@@ -95,7 +95,7 @@
     "sass": "1.63.6",
     "sass-loader": "8.0.2",
     "simple-progress-webpack-plugin": "2.0.0",
-    "style-loader": "2.0.0",
+    "style-loader": "3.3.3",
     "terser-webpack-plugin": "4.2.3",
     "thread-loader": "3.0.4",
     "to-string-loader": "1.2.0",
