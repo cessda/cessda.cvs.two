@@ -84,7 +84,7 @@
     "jest-preset-angular": "11.1.2",
     "lint-staged": "14.0.1",
     "merge-jsons-webpack-plugin": "2.0.1",
-    "mini-css-extract-plugin": "1.6.2",
+    "mini-css-extract-plugin": "2.7.6",
     "mocha": "10.2.0",
     "moment-locales-webpack-plugin": "1.2.0",
     "postcss": "8.4.22",
