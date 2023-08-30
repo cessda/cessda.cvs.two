@@ -34,6 +34,12 @@ module.exports = (options) => ({
   module: {
     rules: [
       {
+        test: /\.m?js$/,
+        resolve: {
+           fullySpecified: false,
+        },
+      },
+      {
         test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
         loader: '@ngtools/webpack'
       },
