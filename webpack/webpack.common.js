@@ -34,12 +34,20 @@ module.exports = (options) => ({
   module: {
     rules: [
       {
-        test: /\.m?js$/,
+        test: /\.[cm]?js$/,
         resolve: {
             // Webpack requires .mjs to have fully specified imports (i.e. with file extension),
             // but some dependencies do this incorrectly. Disable fullySpecified to work around this.
            fullySpecified: false,
         },
+        use: {
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+            compact: false,
+            plugins: ['@angular/compiler-cli/linker/babel'],
+          },
+        }
       },
       {
         test: /\.[jt]sx?$/,
@@ -140,8 +148,7 @@ module.exports = (options) => ({
       base: '/',
     }),
     new AngularWebpackPlugin({
-      tsconfig: utils.root('tsconfig.app.json'),
-      jitMode: true
+      tsconfig: utils.root('tsconfig.app.json')
     })
   ]
 });
