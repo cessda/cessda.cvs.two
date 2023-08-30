@@ -51,7 +51,6 @@ Navbar
     background-color: #4e4d56;
     height: 36px;
     .navbar-inner {
-    
       margin: 0 auto;
       width: 100%;
       display: flex;
@@ -92,7 +91,6 @@ Navbar
   .navbar-middle {
     width: 100%;
     .navbar-inner {
-     
       margin: 0 auto;
       width: 100%;
       display: flex;
@@ -154,7 +152,6 @@ Navbar
     height: 50px;
 
     .navbar-inner {
-
       margin: 0 auto;
       width: 100%;
       display: flex;
@@ -168,10 +165,6 @@ Navbar
       }
       .nav-item {
         .nav-link {
-          
-          
-          
-          
           padding: 0 13px;
           color: #fff;
           text-decoration: none;
@@ -183,7 +176,6 @@ Navbar
         .nav-link:hover {
           border: none;
         }
-     
       }
       .secondary-menu {
         display: block;
@@ -234,7 +226,7 @@ Navbar
 
 @media screen and (min-width: 768px) {
   .navbar {
-    background: url(/content/images/line-background.png) no-repeat 100% 36px;
+    background: url(../../../content/images/line-background.png) no-repeat 100% 36px;
     background-size: 176px;
     .navbar-top {
       .navbar-inner {
