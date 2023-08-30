@@ -26,7 +26,28 @@
         }
       },
       "prefix": "jhi",
-      "architect": {}
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "target/classes/app",
+            "index": "src/main/webapp/index.html",
+            "main": "src/main/webapp/app/app.main.ts",
+            "tsConfig": "tsconfig.app.json",
+            "assets": ["src/main/webapp/favicon.ico", "src/main/webapp/content"],
+            "styles": ["src/main/webapp/content/scss/global.scss"],
+            "scripts": [],
+            "aot": false,
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "defaultConfiguration": ""
+        }
+      }
     }
   },
   "defaultProject": "cvs",

@@ -17,9 +17,7 @@ const webpack = require('webpack');
 const writeFilePlugin = require('write-file-webpack-plugin');
 const webpackMerge = require('webpack-merge');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const SimpleProgressWebpackPlugin = require('simple-progress-webpack-plugin');
-const WebpackNotifierPlugin = require('webpack-notifier');
 const path = require('path');
 const sass = require('sass');
 
@@ -31,7 +29,9 @@ const ENV = 'development';
 module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     devtool: 'eval-source-map',
     devServer: {
-        contentBase: './target/classes/static/',
+        devMiddleware: {
+            stats: options.stats,
+        },
         proxy: [{
             context: [
                 '/api',
@@ -48,13 +48,15 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
             secure: false,
             changeOrigin: options.tls
         }],
-        stats: options.stats,
-        watchOptions: {
-            ignored: /node_modules/
+        static: {
+            directory: './target/classes/static/',
+            watch: {
+                ignored: /node_modules/
+            }
         },
         https: options.tls,
         historyApiFallback: {
-          disableDotRule: true
+            disableDotRule: true
         },
     },
     entry: {
@@ -68,30 +70,27 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
     },
     module: {
         rules: [
-        {
-            test: /\.scss$/,
-            use: ['to-string-loader', 'css-loader', 'postcss-loader', {
-                loader: 'sass-loader',
-                options: { implementation: sass }
-            }],
-            exclude: /(vendor\.scss|global\.scss)/
-        },
-        {
-            test: /(vendor\.scss|global\.scss)/,
-            use: ['style-loader', 'css-loader', 'postcss-loader', {
-                loader: 'sass-loader',
-                options: { implementation: sass }
+            {
+                test: /\.scss$/,
+                use: ['to-string-loader', 'css-loader', 'postcss-loader', {
+                    loader: 'sass-loader',
+                    options: { implementation: sass }
+                }],
+                exclude: /(vendor\.scss|global\.scss)/
+            },
+            {
+                test: /(vendor\.scss|global\.scss)/,
+                use: ['style-loader', 'css-loader', 'postcss-loader', {
+                    loader: 'sass-loader',
+                    options: { implementation: sass }
+                }]
             }]
-        }]
     },
     stats: process.env.JHI_DISABLE_WEBPACK_LOGS ? 'none' : options.stats,
     plugins: [
         process.env.JHI_DISABLE_WEBPACK_LOGS
             ? null
-            : new SimpleProgressWebpackPlugin({
-                format: options.stats === 'minimal' ? 'compact' : 'expanded'
-              }),
-        new FriendlyErrorsWebpackPlugin(),
+            : new SimpleProgressWebpackPlugin({ format: 'compact' }),
         new BrowserSyncPlugin({
             https: options.tls,
             host: 'localhost',
@@ -122,12 +121,8 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
             path.resolve(__dirname, './src/main/webapp/')
         ),
         new writeFilePlugin(),
-        new webpack.WatchIgnorePlugin([
-            utils.root('src/test'),
-        ]),
-        new WebpackNotifierPlugin({
-            title: 'JHipster',
-            contentImage: path.join(__dirname, 'logo-jhipster.png')
+        new webpack.WatchIgnorePlugin({
+            paths: [utils.root('src/test')]
         })
     ].filter(Boolean),
     mode: 'development'
