@@ -12,7 +12,7 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-patch"]
-      - dependency-name: "@angular*
+      - dependency-name: "@angular*"
         update-types: ["version-update:semver-major"]
   - package-ecosystem: "maven" # See documentation for possible values
     directory: "/" # Location of package manifests
