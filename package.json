@@ -53,7 +53,7 @@
     "@angular/cli": "12.2.18",
     "@angular/compiler-cli": "12.2.17",
     "@ngtools/webpack": "^12.2.18",
-    "@openapitools/openapi-generator-cli": "2.6.0",
+    "@openapitools/openapi-generator-cli": "2.7.0",
     "@types/babel__traverse": "7.18.1",
     "@types/chai": "4.3.4",
     "@types/chai-string": "1.4.2",
