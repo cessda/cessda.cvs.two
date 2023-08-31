@@ -37,8 +37,8 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
     },
     output: {
         path: utils.root('target/classes/static/'),
-        filename: 'app/[name].[hash].bundle.js',
-        chunkFilename: 'app/[id].[hash].chunk.js'
+        filename: 'app/[name].[fullhash].bundle.js',
+        chunkFilename: 'app/[id].[fullhash].chunk.js'
     },
     module: {
         rules: [
@@ -91,7 +91,6 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
         minimizer: [
             new TerserPlugin({
                 parallel: true,
-                cache: true,
                 // sourceMap: true, // Enable source maps. Please note that this will slow down the build
                 terserOptions: {
                     ecma: 6,
