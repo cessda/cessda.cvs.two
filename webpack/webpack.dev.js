@@ -59,10 +59,6 @@ module.exports = (options) => webpackMerge(commonConfig({ env: ENV }), {
             disableDotRule: true
         },
     },
-    entry: {
-        global: './src/main/webapp/content/scss/global.scss',
-        main: './src/main/webapp/app/app.main'
-    },
     output: {
         path: utils.root('target/classes/static/'),
         filename: 'app/[name].bundle.js',

@@ -22,6 +22,10 @@ const MergeJsonWebpackPlugin = require('merge-jsons-webpack-plugin');
 const utils = require('./utils.js');
 
 module.exports = (options) => ({
+  entry: {
+    global: './src/main/webapp/content/scss/global.scss',
+    main: './src/main/webapp/app/app.main'
+  },
   resolve: {
     extensions: ['.ts', '.js'],
     modules: ['node_modules'],
