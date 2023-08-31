@@ -88,7 +88,7 @@
     "mocha": "10.2.0",
     "moment-locales-webpack-plugin": "1.2.0",
     "postcss": "8.4.22",
-    "postcss-loader": "4.3.0",
+    "postcss-loader": "7.3.3",
     "prettier": "3.0.0",
     "reflect-metadata": "0.1.13",
     "rimraf": "5.0.0",
