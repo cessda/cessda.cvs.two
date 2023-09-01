@@ -1,0 +1,870 @@
+{
+  "activate": {
+    "title": "Aktivizim",
+    "messages": {
+      "success": "<strong>Përdoruesi juaj u aktivizua.</strong> Ju lutem ",
+      "error": "<strong>Përdoruesi juaj nuk mund të aktivizohet.</strong> Ju lutem përdorni formularin për tu regjistruar."
+    }
+  },
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "Activity Logs",
+        "createLabel": "Krijo një të ri Activity Log",
+        "createOrEditLabel": "Krijo ose përpuno një Activity Log",
+        "notFound": "No Activity Logs found"
+      },
+      "created": "Një Activity Log i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Activity Log u përpunua me identifikues {{ param }}",
+      "deleted": "Një Activity Log u fshi me identifikues {{ param }}",
+      "delete": { "question": "Jeni i sigurtë që doni të fshini Activity Log {{ id }}?" },
+      "detail": { "title": "Activity Log" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    },
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Krijo një të ri Agency",
+        "createOrEditLabel": "Krijo ose përpuno një Agency",
+        "notFound": "No Agencies found"
+      },
+      "created": "Një Agency i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Agency u përpunua me identifikues {{ param }}",
+      "deleted": "Një Agency u fshi me identifikues {{ param }}",
+      "delete": { "question": "Jeni i sigurtë që doni të fshini Agency {{ id }}?" },
+      "detail": { "title": "Agency" },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    },
+    "AgencyRole": {
+      "null": "",
+      "ADMIN": "ADMIN",
+      "VIEW": "VIEW",
+      "ADMIN_SL": "ADMIN_SL",
+      "ADMIN_TL": "ADMIN_TL",
+      "ADMIN_CONTENT": "ADMIN_CONTENT"
+    },
+    "code": {
+      "home": {
+        "title": "Codes",
+        "createLabel": "Krijo një të ri Code",
+        "createOrEditLabel": "Krijo ose përpuno një Code",
+        "notFound": "No Codes found"
+      },
+      "created": "Një Code i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Code u përpunua me identifikues {{ param }}",
+      "deleted": "Një Code u fshi me identifikues {{ param }}",
+      "delete": { "question": "Jeni i sigurtë që doni të fshini Code {{ id }}?" },
+      "detail": { "title": "Code" },
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv"
+    },
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Krijo një të ri Comment",
+        "createOrEditLabel": "Krijo ose përpuno një Comment",
+        "search": "Kërko për Comment",
+        "notFound": "No Comments found"
+      },
+      "created": "Një Comment i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Comment u përpunua me identifikues {{ param }}",
+      "deleted": "Një Comment u fshi me identifikues {{ param }}",
+      "delete": { "question": "Jeni i sigurtë që doni të fshini Comment {{ id }}?" },
+      "detail": { "title": "Comment" },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    },
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Krijo një të ri Concept",
+        "createOrEditLabel": "Krijo ose përpuno një Concept",
+        "notFound": "No Concepts found"
+      },
+      "created": "Një Concept i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Concept u përpunua me identifikues {{ param }}",
+      "deleted": "Një Concept u fshi me identifikues {{ param }}",
+      "delete": { "question": "Jeni i sigurtë që doni të fshini Concept {{ id }}?" },
+      "detail": { "title": "Concept" },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    },
+    "conceptChange": {
+      "home": {
+        "title": "Concept Changes",
+        "createLabel": "Krijo një të ri Concept Change",
+        "createOrEditLabel": "Krijo ose përpuno një Concept Change",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "Një Concept Change i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Concept Change u përpunua me identifikues {{ param }}",
+      "deleted": "Një Concept Change u fshi me identifikues {{ param }}",
+      "delete": { "question": "Jeni i sigurtë që doni të fshini Concept Change {{ id }}?" },
+      "detail": { "title": "Concept Change" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    },
+    "Language": {
+      "null": "",
+      "ALBANIAN": "ALBANIAN",
+      "BOSNIAN": "BOSNIAN",
+      "BULGARIAN": "BULGARIAN",
+      "CROATIAN": "CROATIAN",
+      "CZECH": "CZECH",
+      "DANISH": "DANISH",
+      "DUTCH": "DUTCH",
+      "ENGLISH": "ENGLISH",
+      "ESTONIAN": "ESTONIAN",
+      "FINNISH": "FINNISH",
+      "FRENCH": "FRENCH",
+      "GERMAN": "GERMAN",
+      "GREEK": "GREEK",
+      "HUNGARIAN": "HUNGARIAN",
+      "ITALIAN": "ITALIAN",
+      "JAPANESE": "JAPANESE",
+      "LITHUANIAN": "LITHUANIAN",
+      "MACEDONIAN": "MACEDONIAN",
+      "NORWEGIAN": "NORWEGIAN",
+      "POLISH": "POLISH",
+      "PORTUGUESE": "PORTUGUESE",
+      "ROMANIAN": "ROMANIAN",
+      "RUSSIAN": "RUSSIAN",
+      "SERBIAN": "SERBIAN",
+      "SLOVAK": "SLOVAK",
+      "SLOVENIAN": "SLOVENIAN",
+      "SPANISH": "SPANISH",
+      "SWEDISH": "SWEDISH"
+    },
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Krijo një të ri Licence",
+        "createOrEditLabel": "Krijo ose përpuno një Licence",
+        "notFound": "No Licences found"
+      },
+      "created": "Një Licence i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Licence u përpunua me identifikues {{ param }}",
+      "deleted": "Një Licence u fshi me identifikues {{ param }}",
+      "delete": { "question": "Jeni i sigurtë që doni të fshini Licence {{ id }}?" },
+      "detail": { "title": "Licence" },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo"
+    },
+    "metadataField": {
+      "home": {
+        "title": "Metadata Fields",
+        "createLabel": "Krijo një të ri Metadata Field",
+        "createOrEditLabel": "Krijo ose përpuno një Metadata Field",
+        "notFound": "No Metadata Fields found"
+      },
+      "created": "Një Metadata Field i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Metadata Field u përpunua me identifikues {{ param }}",
+      "deleted": "Një Metadata Field u fshi me identifikues {{ param }}",
+      "delete": { "question": "Jeni i sigurtë që doni të fshini Metadata Field {{ id }}?" },
+      "detail": { "title": "Metadata Field" },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    },
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Krijo një të ri Metadata Value",
+        "createOrEditLabel": "Krijo ose përpuno një Metadata Value",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "Një Metadata Value i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Metadata Value u përpunua me identifikues {{ param }}",
+      "deleted": "Një Metadata Value u fshi me identifikues {{ param }}",
+      "delete": { "question": "Jeni i sigurtë që doni të fshini Metadata Value {{ id }}?" },
+      "detail": { "title": "Metadata Value" },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    },
+    "ObjectType": { "null": "", "AGENCY": "AGENCY", "GROUP": "GROUP", "SYSTEM": "SYSTEM" },
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Krijo një të ri Resolver",
+        "createOrEditLabel": "Krijo ose përpuno një Resolver",
+        "notFound": "No Resolvers found"
+      },
+      "created": "Një Resolver i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Resolver u përpunua me identifikues {{ param }}",
+      "deleted": "Një Resolver u fshi me identifikues {{ param }}",
+      "delete": { "question": "Jeni i sigurtë që doni të fshini Resolver {{ id }}?" },
+      "detail": { "title": "Resolver" },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    },
+    "ResolverType": { "null": "", "DOI": "DOI", "URN": "URN" },
+    "ResourceType": { "null": "", "VOCABULARY": "VOCABULARY" },
+    "userAgency": {
+      "home": {
+        "title": "User Agencies",
+        "createLabel": "Krijo një të ri User Agency",
+        "createOrEditLabel": "Krijo ose përpuno një User Agency",
+        "notFound": "No User Agencies found"
+      },
+      "created": "Një User Agency i ri u krijua me identifikues {{ param }}",
+      "updated": "Një User Agency u përpunua me identifikues {{ param }}",
+      "deleted": "Një User Agency u fshi me identifikues {{ param }}",
+      "delete": { "question": "Jeni i sigurtë që doni të fshini User Agency {{ id }}?" },
+      "detail": { "title": "User Agency" },
+      "agencyRole": "Agency Role",
+      "language": "Language",
+      "agency": "Agency"
+    },
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Krijo një të ri Version",
+        "createOrEditLabel": "Krijo ose përpuno një Version",
+        "notFound": "No Versions found"
+      },
+      "created": "Një Version i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Version u përpunua me identifikues {{ param }}",
+      "deleted": "Një Version u fshi me identifikues {{ param }}",
+      "delete": { "question": "Jeni i sigurtë që doni të fshini Version {{ id }}?" },
+      "detail": { "title": "Version" },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    },
+    "vocabulary": {
+      "home": {
+        "title": "Vocabularies",
+        "createLabel": "Krijo një të ri Vocabulary",
+        "createOrEditLabel": "Krijo ose përpuno një Vocabulary",
+        "notFound": "No Vocabularies found"
+      },
+      "created": "Një Vocabulary i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Vocabulary u përpunua me identifikues {{ param }}",
+      "deleted": "Një Vocabulary u fshi me identifikues {{ param }}",
+      "delete": { "question": "Jeni i sigurtë që doni të fshini Vocabulary {{ id }}?" },
+      "detail": { "title": "Vocabulary" },
+      "status": "Status",
+      "uri": "Uri",
+      "notation": "Notation",
+      "versionNumber": "Version Number",
+      "initialPublication": "Initial Publication",
+      "previousPublication": "Previous Publication",
+      "archived": "Archived",
+      "withdrawn": "Withdrawn",
+      "discoverable": "Discoverable",
+      "sourceLanguage": "Source Language",
+      "agencyId": "Agency Id",
+      "agencyName": "Agency Name",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "notes": "Notes",
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "versionBs": "Version Bs",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "versionBg": "Version Bg",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "versionHr": "Version Hr",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "versionCs": "Version Cs",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "versionDa": "Version Da",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "versionNl": "Version Nl",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "versionEn": "Version En",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "versionEt": "Version Et",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "versionFi": "Version Fi",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "versionFr": "Version Fr",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "versionDe": "Version De",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "versionEl": "Version El",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "versionHu": "Version Hu",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "versionIt": "Version It",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "versionJa": "Version Ja",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "versionLt": "Version Lt",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "versionMk": "Version Mk",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "versionNo": "Version No",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "versionPl": "Version Pl",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "versionPt": "Version Pt",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "versionRo": "Version Ro",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "versionRu": "Version Ru",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "versionSr": "Version Sr",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "versionSk": "Version Sk",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "versionSl": "Version Sl",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "versionEs": "Version Es",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "versionSv": "Version Sv",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv",
+      "version": "Version"
+    },
+    "vocabularyChange": {
+      "home": {
+        "title": "Vocabulary Changes",
+        "createLabel": "Krijo një të ri Vocabulary Change",
+        "createOrEditLabel": "Krijo ose përpuno një Vocabulary Change",
+        "notFound": "No Vocabulary Changes found"
+      },
+      "created": "Një Vocabulary Change i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Vocabulary Change u përpunua me identifikues {{ param }}",
+      "deleted": "Një Vocabulary Change u fshi me identifikues {{ param }}",
+      "delete": { "question": "Jeni i sigurtë që doni të fshini Vocabulary Change {{ id }}?" },
+      "detail": { "title": "Vocabulary Change" },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  },
+  "audits": {
+    "title": "Audite",
+    "filter": {
+      "title": "Filtro me datë",
+      "from": "nga",
+      "to": "deri",
+      "button": { "weeks": "Javë", "today": "sot", "clear": "fshi", "close": "mbyll" }
+    },
+    "table": {
+      "header": { "principal": "Përdorues", "date": "Data", "status": "Statusi", "data": "Të dhëna të tjera" },
+      "data": { "remoteAddress": "Adresa e jashtëme: " }
+    },
+    "notFound": "No audit found"
+  },
+  "configuration": { "title": "Konfigurimi", "filter": "Filtro (me prefiks)", "table": { "prefix": "Prefiksi", "properties": "Tipare" } },
+  "error": {
+    "title": "Faqe e gabuar!",
+    "http": {
+      "400": "Kërkesë e gabuar.",
+      "403": "Ju nuk jeni i autorizuar tek kjo faqe.",
+      "404": "Faqja e kërkuar nuk ekziston.",
+      "405": "Folja HTTP që ju përdorët nuk mbulohet nga kjo URL.",
+      "500": "Gabim i brëndshëm i serverit."
+    },
+    "concurrencyFailure": "Një përdorues tjetër ndryshoi këto të dhëna në të njëjtën kohë me ju. Ndryshimet u refuzuan.",
+    "validation": "Gavim me validimin në server.",
+    "internalServerError": "Gabim i brëndshëm në server",
+    "server.not.reachable": "Serveri nuk është i arritshëm",
+    "url.not.found": "Nuk u gjet",
+    "NotNull": "Fusha {{ fieldName }} nuk mund të jetë bosh!",
+    "Size": "Fusha {{ fieldName }} nuk i përmbush kërkesat për min/maks!",
+    "userexists": "Përdoruesi është marrë nga dikush tjetër!",
+    "emailexists": "Emaili është marrë nga dikush tjetër!",
+    "idexists": "Një {{ entityName }} i ri nuk mund të ketë të njëjtën ID",
+    "idnull": "ID e pavlefshme",
+    "file": {
+      "could.not.extract": "Could not extract file",
+      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+    }
+  },
+  "global": {
+    "title": "Cvs",
+    "browsehappy": "Ju po përdorni një browser të <strong>vjetëruar</strong>. Ju lutem <a href=\"http://browsehappy.com/?locale=en\">përditësoni browserin tuan</a> për të përmirësuar eksperiencën tuaj.",
+    "menu": {
+      "home": "Kreu",
+      "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "entities": {
+        "main": "Entitete",
+        "vocabulary": "Vocabulary",
+        "code": "Code",
+        "version": "Version",
+        "concept": "Concept",
+        "conceptChange": "Concept Change",
+        "activityLog": "Activity Log",
+        "licence": "Licence",
+        "metadataField": "Metadata Field",
+        "metadataValue": "Metadata Value",
+        "resolver": "Resolver",
+        "vocabularyChange": "Vocabulary Change",
+        "agency": "Agency",
+        "userAgency": "User Agency",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+      },
+      "account": {
+        "main": "Konto",
+        "settings": "Mjedisi",
+        "password": "Fjalëkalimi",
+        "sessions": "Seancat",
+        "login": "Hyrje",
+        "logout": "Dalje",
+        "register": "Regjistrim"
+      },
+      "admin": {
+        "main": "Administrim",
+        "userManagement": "Menaxhimi i përdoruesëve",
+        "tracker": "Gjurmimi i përdoruesëve",
+        "metrics": "Metrikat",
+        "health": "Shëndeti",
+        "configuration": "Konfigurimi",
+        "logs": "Logs",
+        "audits": "Auditet",
+        "apidocs": "API",
+        "database": "Database",
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "language": "Gjuha"
+    },
+    "form": {
+      "username.label": "Përdoruesi",
+      "username.placeholder": "Përdoruesi juaj",
+      "currentpassword.label": "Fjalëkalimi aktual",
+      "currentpassword.placeholder": "Fjalëkalimi aktual",
+      "newpassword.label": "Fjalëkalimi i ri",
+      "newpassword.placeholder": "Fjalëkalimi i ri",
+      "confirmpassword.label": "Konfirmoni fjalëkalimin e ri",
+      "confirmpassword.placeholder": "Konfirmoni fjalëkalimin e ri",
+      "email.label": "E-mail",
+      "email.placeholder": "E-maili juaj"
+    },
+    "messages": {
+      "info": {
+        "authenticated": {
+          "prefix": "Në qoftë se dëshironi ",
+          "link": "futuni",
+          "suffix": ", ju mund të përdorni konton standarde:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\")."
+        },
+        "register": { "noaccount": "A keni një ende konto?", "link": "Regjistroni një konto të re" }
+      },
+      "error": { "dontmatch": "Fjalëkalimi dhe konfirmimi nuk përputhen!" },
+      "validate": {
+        "newpassword": {
+          "required": "Kërkohet fjalëkalimi juaj.",
+          "minlength": "Fjalëkalimi juaj duhet të jetë të paktën 4 gërma.",
+          "maxlength": "Fjalëkalimi jauj nuk mund të jetë më i gjatë se 50 gërma.",
+          "strength": "Fuqia e fjalëkalimit:"
+        },
+        "confirmpassword": {
+          "required": "Kërkohet konfirmimi i fjalëkalimit tuaj.",
+          "minlength": "Konfirmimi i fjalëkalimit tuaj duhet të jetë të paktën 4 gërma.",
+          "maxlength": "Konfirmimi i fjalëkalimit tuaj nuk mund të jetë më i gjatë se 50 gërma."
+        },
+        "email": {
+          "required": "Kërkohet emaili juaj.",
+          "invalid": "Emali juaj nuk është i vlefshëm.",
+          "minlength": "Emaili juaj duhet të jetë të paktën 4 gërma.",
+          "maxlength": "Emaili jauj nuk mund të jetë më i gjatë se 50 gërma."
+        }
+      }
+    },
+    "field": { "id": "ID" },
+    "ribbon": { "dev": "Zhvillim" },
+    "item-count": "Duke treguar {{first}} - {{second}} nga {{total}} artikuj."
+  },
+  "entity": {
+    "action": {
+      "addblob": "Shto blob",
+      "addimage": "Shto foto",
+      "back": "Mbrapsht",
+      "cancel": "Anullo",
+      "delete": "Fshi",
+      "edit": "Përpuno",
+      "open": "Hap",
+      "save": "Ruaj",
+      "view": "Trego"
+    },
+    "detail": { "field": "Fusha", "value": "Vlera" },
+    "delete": { "title": "Konfirmoni veprimin e fshirjes" },
+    "validation": {
+      "required": "Fusha është e domosdoshme.",
+      "minlength": "Kjo fushë duhet të jetë të paktën {{ min }} gërma.",
+      "maxlength": "Kjo fushë nuk mund të jetë më e gjatë se {{ max }} gërma.",
+      "min": "Kjo fushë duhet të jetë të paktën {{ min }}.",
+      "max": "Kjo fushë nuk mund të jetë më shumë se {{ max }}.",
+      "minbytes": "Kjo fushë duhet të jetë të paktën {{ min }} bytes.",
+      "maxbytes": "Kjo fushë nuk mund të jetë më shumë se {{ max }} bytes.",
+      "pattern": "Kjo fushë duhet të ndjeki modelin {{ pattern }}.",
+      "number": "Kjo fushë duhet të jetë një numër.",
+      "datetimelocal": "Kjo fushë duhet të jetë një datë dhe kohë.",
+      "patternLogin": "Kjo fushë mund të ketë vetëm gërma, numra dhe adresa e-mali."
+    }
+  },
+  "footer": "Ky është rrjeshti fundit",
+  "health": {
+    "title": "Kontrolli shendetit",
+    "refresh.button": "Rifresko",
+    "stacktrace": "Stacktrace",
+    "details": { "details": "Detaje", "properties": "Tipare", "name": "Emri", "value": "Vlera", "error": "Gabim" },
+    "indicator": { "diskSpace": "Disk space", "mail": "Email", "db": "Database" },
+    "table": { "service": "Emri i sherbimit", "status": "Statusi" },
+    "status": { "UNKNOWN": "UNKNOWN", "UP": "UP", "DOWN": "DOWN" }
+  },
+  "home": {
+    "title": "Mirëseerdhët në, Java Hipster!",
+    "subtitle": "Ky është kreu juaj",
+    "logged": { "message": "Ju jeni futur si \"{{username}}\"." },
+    "question": "Në qoftë se keni ndonjë pyetje rreth JHipster:",
+    "link": {
+      "homepage": "Kreu i JHipster",
+      "stackoverflow": "JHipster tek Stack Overflow",
+      "bugtracker": "JHipster bug tracker",
+      "chat": "JHipster dhoma e chatit publik",
+      "follow": "ndiq @jhipster në Twitter"
+    },
+    "like": "Në qoftë se ju pëlqen JHipster, mos harroni të na jepni një yll në",
+    "github": "GitHub"
+  },
+  "login": {
+    "title": "Futuni",
+    "form": { "password": "Fjalëkalimi", "password.placeholder": "Fjalëkalimi juaj", "rememberme": "Më kujtoni", "button": "Futu" },
+    "messages": {
+      "error": { "authentication": "<strong>S'mund të futeni!</strong> Ju lutem kontrolloni kredencialet dhe provojeni sërisht." }
+    },
+    "password": { "forgot": "Keni harruar fjalëkalimin?" }
+  },
+  "logs": { "title": "Logs", "nbloggers": "Ka {{ total }} loggers.", "filter": "Filter", "table": { "name": "Emri", "level": "Niveli" } },
+  "metrics": {
+    "title": "Metrikat e aplikacionit",
+    "refresh.button": "Rifresko",
+    "updating": "Duke përditësuar...",
+    "jvm": {
+      "title": "Metrikat e JVM",
+      "memory": { "title": "Kujtesa", "total": "Kujtesa e përgjithshme", "heap": "Kujtesa Heap", "nonheap": "Kujtesa Non-Heap" },
+      "threads": {
+        "title": "Threads",
+        "all": "Të gjitha",
+        "runnable": "Runnable",
+        "timedwaiting": "Pritje e matur",
+        "waiting": "Duke pritur",
+        "blocked": "Bllokuar",
+        "dump": {
+          "title": "Lëroji threads",
+          "id": "Id: ",
+          "blockedtime": "Koha e bllokuar",
+          "blockedcount": "Numri i bllokuar",
+          "waitedtime": "Koha e pritur",
+          "waitedcount": "Numri i prituar",
+          "lockname": "Emri i lock",
+          "stacktrace": "Stacktrace",
+          "show": "Trego Stacktrace",
+          "hide": "Fshih Stacktrace"
+        }
+      },
+      "gc": {
+        "title": "Garbage collections",
+        "marksweepcount": "Mark Sweep count",
+        "marksweeptime": "Mark Sweep time",
+        "scavengecount": "Scavenge count",
+        "scavengetime": "Scavenge time"
+      },
+      "http": {
+        "title": "Kërkesat HTTP (ngjarje për sekond)",
+        "active": "Kërkesa aktive:",
+        "total": "Kërkesa në total:",
+        "table": { "code": "Code", "count": "Numëri", "mean": "Mesi", "average": "Mesatarja" },
+        "code": { "ok": "Ok", "notfound": "Nuk u gjet", "servererror": "Gabim në server" }
+      }
+    },
+    "servicesstats": {
+      "title": "Statistikat e shërbimeve (matur në milisekonda)",
+      "table": {
+        "name": "Emri i shërbimit",
+        "count": "Numri",
+        "mean": "Mesi",
+        "min": "Min",
+        "max": "Maks",
+        "p50": "p50",
+        "p75": "p75",
+        "p95": "p95",
+        "p99": "p99"
+      }
+    },
+    "cache": {
+      "title": "Statistikat e Cache",
+      "cachename": "Emri i Cache",
+      "hits": "Cache Qëlluar",
+      "misses": "Cache Gabuar",
+      "gets": "Cache Gets",
+      "puts": "Cache Puts",
+      "removals": "Cache Heqje",
+      "evictions": "Cache Nxjerrje",
+      "hitPercent": "Cache Qëlluar %",
+      "missPercent": "Cache Miss %",
+      "averageGetTime": "Koha kthimit mesatare (µs)",
+      "averagePutTime": "Koha vendosjes mesatare (µs)",
+      "averageRemoveTime": "Koha fshirjes mesatare (µs)"
+    },
+    "datasource": {
+      "usage": "Përdorimi",
+      "title": "Statistikat e DataSource (kohë në milisekonda)",
+      "name": "Përdorimi i Pool",
+      "count": "Numri",
+      "mean": "Mesi",
+      "min": "Min",
+      "max": "Maks",
+      "p50": "p50",
+      "p75": "p75",
+      "p95": "p95",
+      "p99": "p99"
+    }
+  },
+  "password": {
+    "title": "Fjalëkalimi për [<strong>{{username}}</strong>]",
+    "form": { "button": "Ruaj" },
+    "messages": {
+      "error": "<strong>Ndodhi një gabim!</strong> Fjalëkalimi nuk mund të ndryshohej.",
+      "success": "<strong>Fjalëkalimi i ndryshua!</strong>"
+    }
+  },
+  "register": {
+    "title": "Regjistrimi",
+    "form": { "button": "Regjistrohu" },
+    "messages": {
+      "validate": {
+        "login": {
+          "required": "Kërkohet përdoruesi.",
+          "minlength": "Përdoruesi duhet të jetë të paktën 1 gërmë.",
+          "maxlength": "Përdoruesi nuk mund të jetë më i gjatë se 50 gërma.",
+          "pattern": "Përdoruesi mund të ketë vetëm gërma dhe numra."
+        }
+      },
+      "success": "<strong>Regjistrimi u ruajt!</strong> Ju lutem kontrolloni E-mailin.",
+      "error": {
+        "fail": "<strong>Regjistrimi dështoi!</strong> Ju lutemi provojeni sërisht më vonë.",
+        "userexists": "<strong>Përdoruesi është i zënë!</strong> Ju lutem zgjidhni një tjetër.",
+        "emailexists": "<strong>Email është i zënë!</strong> Ju lutem zgjidhni një tjetër."
+      }
+    }
+  },
+  "reset": {
+    "request": {
+      "title": "Rivendos fjalëkalimin",
+      "form": { "button": "Revendos fjalëkalimin" },
+      "messages": {
+        "info": "Vendosni emaili që përdorët gjatë regjistrimit",
+        "success": "Kontrolloni emialin tuaj për detajet e rivendosjes së fjalëkalimit.",
+        "notfound": "<strong>Emaili nuk egziston!</strong> Ju lutem kontrollojeni dhe provoni sërisht"
+      }
+    },
+    "finish": {
+      "title": "Rivendos fjalëkalimin",
+      "form": { "button": "Validoni fjalëkalimin e ri" },
+      "messages": {
+        "info": "Zgjidhni fjalëkalim të ri",
+        "success": "<strong>Fjalëkalimi juaj u rivendos.</strong> Ju lutem ",
+        "keymissing": "Çelësi i rivendosjes mungon.",
+        "error": "Fjalëkalimi juaj nuk mund të rivendosej. Kujtoni që kërkesa për rivendosje është e vlefshme vetëm 24 orë."
+      }
+    }
+  },
+  "sessions": {
+    "title": "Seksione aktive për [<strong>{{username}}</strong>]",
+    "table": { "ipaddress": "Adresa e IP", "useragent": "User Agent", "date": "Data", "button": "Zhvlerëso" },
+    "messages": {
+      "success": "<strong>Seksioni u zhvlerësua!</strong>",
+      "error": "<strong>Ndodhi një gabim!</strong> Ky seksion nuk mund të zhvlerësohej."
+    }
+  },
+  "settings": {
+    "title": "Mjedisi për përdoruesin [<strong>{{username}}</strong>]",
+    "form": {
+      "firstname": "Emri",
+      "firstname.placeholder": "Emri juar",
+      "lastname": "Mbiemri",
+      "lastname.placeholder": "Mbiemri juaj",
+      "language": "Gjuha",
+      "button": "Ruaj"
+    },
+    "messages": {
+      "error": {
+        "fail": "<strong>Ndodhi një gabim!</strong> Mjedisi nuk mund të ruhej.",
+        "emailexists": "<strong>Email është i zënë!</strong> Ju lutem zgjidhni një tjetër."
+      },
+      "success": "<strong>Mjedisi u ruajt!</strong>",
+      "validate": {
+        "firstname": {
+          "required": "Kërkohet emri juaj.",
+          "minlength": "Duhet që emri juaj të jetë të paktën 1 gërmë",
+          "maxlength": "Emri juaj nuk mund të jetë më shumë se 50 gërma"
+        },
+        "lastname": {
+          "required": "Kërkohet mbiemri juaj.",
+          "minlength": "Duhet që mbiemri juaj të jetë të paktën 1 gërmë",
+          "maxlength": "Mbiemri juaj nuk mund të jetë më shumë se 50 gërma"
+        }
+      }
+    }
+  },
+  "userManagement": {
+    "home": { "title": "Përdorues", "createLabel": "Krijo përdorues të ri", "createOrEditLabel": "Krijo ose përpuno një përdorues" },
+    "created": "Një përdorues me identifikimin {{ param }} u krijua",
+    "updated": "Një përdorues me identifikimin {{ param }} u përditësua",
+    "deleted": "Një përdorues me identifikimin {{ param }} u fshi",
+    "delete": { "question": "Jeni i sigurtë që doni të fshini përdoruesin {{ login }}?" },
+    "detail": { "title": "Përdorues" },
+    "login": "Futu",
+    "firstName": "Emri",
+    "lastName": "Mbiemri",
+    "email": "Email",
+    "activated": "Aktivizuar",
+    "deactivated": "Çaktivizuar",
+    "profiles": "Profilet",
+    "langKey": "Gjuha",
+    "createdBy": "Krijuar nga",
+    "createdDate": "Data krijimit",
+    "lastModifiedBy": "Ndryshuar nga",
+    "lastModifiedDate": "Ndryshuar më"
+  }
+}

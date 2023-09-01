@@ -1,0 +1,872 @@
+{
+  "activate": {
+    "title": "Aktivácia",
+    "messages": {
+      "success": "<strong>Váš používateľský účet bol aktivovaný.</strong> ",
+      "error": "<strong>Váš používateľský účet nemohol byť aktivovaný.</strong> Prosím použite registračný formulár pre prihlásenie."
+    }
+  },
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "Activity Logs",
+        "createLabel": "Pridať Activity Log",
+        "createOrEditLabel": "Pridať alebo upraviť Activity Log",
+        "notFound": "No Activity Logs found"
+      },
+      "created": "Bol vytvorený potomok entity Activity Log s identifikátorom {{ param }}",
+      "updated": "Potomok entity Activity Log s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Activity Log s identifikátorom {{ param }} bol vymazaný.",
+      "delete": { "question": "Ste si istý, že chcete vymazať Activity Log {{ id }}?" },
+      "detail": { "title": "Activity Log" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    },
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Pridať Agency",
+        "createOrEditLabel": "Pridať alebo upraviť Agency",
+        "notFound": "No Agencies found"
+      },
+      "created": "Bol vytvorený potomok entity Agency s identifikátorom {{ param }}",
+      "updated": "Potomok entity Agency s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Agency s identifikátorom {{ param }} bol vymazaný.",
+      "delete": { "question": "Ste si istý, že chcete vymazať Agency {{ id }}?" },
+      "detail": { "title": "Agency" },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    },
+    "AgencyRole": {
+      "null": "",
+      "ADMIN": "ADMIN",
+      "VIEW": "VIEW",
+      "ADMIN_SL": "ADMIN_SL",
+      "ADMIN_TL": "ADMIN_TL",
+      "ADMIN_CONTENT": "ADMIN_CONTENT"
+    },
+    "code": {
+      "home": {
+        "title": "Codes",
+        "createLabel": "Pridať Code",
+        "createOrEditLabel": "Pridať alebo upraviť Code",
+        "notFound": "No Codes found"
+      },
+      "created": "Bol vytvorený potomok entity Code s identifikátorom {{ param }}",
+      "updated": "Potomok entity Code s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Code s identifikátorom {{ param }} bol vymazaný.",
+      "delete": { "question": "Ste si istý, že chcete vymazať Code {{ id }}?" },
+      "detail": { "title": "Code" },
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv"
+    },
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Pridať Comment",
+        "createOrEditLabel": "Pridať alebo upraviť Comment",
+        "search": "Vyhľadať Comment",
+        "notFound": "No Comments found"
+      },
+      "created": "Bol vytvorený potomok entity Comment s identifikátorom {{ param }}",
+      "updated": "Potomok entity Comment s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Comment s identifikátorom {{ param }} bol vymazaný.",
+      "delete": { "question": "Ste si istý, že chcete vymazať Comment {{ id }}?" },
+      "detail": { "title": "Comment" },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    },
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Pridať Concept",
+        "createOrEditLabel": "Pridať alebo upraviť Concept",
+        "notFound": "No Concepts found"
+      },
+      "created": "Bol vytvorený potomok entity Concept s identifikátorom {{ param }}",
+      "updated": "Potomok entity Concept s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Concept s identifikátorom {{ param }} bol vymazaný.",
+      "delete": { "question": "Ste si istý, že chcete vymazať Concept {{ id }}?" },
+      "detail": { "title": "Concept" },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    },
+    "conceptChange": {
+      "home": {
+        "title": "Concept Changes",
+        "createLabel": "Pridať Concept Change",
+        "createOrEditLabel": "Pridať alebo upraviť Concept Change",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "Bol vytvorený potomok entity Concept Change s identifikátorom {{ param }}",
+      "updated": "Potomok entity Concept Change s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Concept Change s identifikátorom {{ param }} bol vymazaný.",
+      "delete": { "question": "Ste si istý, že chcete vymazať Concept Change {{ id }}?" },
+      "detail": { "title": "Concept Change" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    },
+    "Language": {
+      "null": "",
+      "ALBANIAN": "ALBANIAN",
+      "BOSNIAN": "BOSNIAN",
+      "BULGARIAN": "BULGARIAN",
+      "CROATIAN": "CROATIAN",
+      "CZECH": "CZECH",
+      "DANISH": "DANISH",
+      "DUTCH": "DUTCH",
+      "ENGLISH": "ENGLISH",
+      "ESTONIAN": "ESTONIAN",
+      "FINNISH": "FINNISH",
+      "FRENCH": "FRENCH",
+      "GERMAN": "GERMAN",
+      "GREEK": "GREEK",
+      "HUNGARIAN": "HUNGARIAN",
+      "ITALIAN": "ITALIAN",
+      "JAPANESE": "JAPANESE",
+      "LITHUANIAN": "LITHUANIAN",
+      "MACEDONIAN": "MACEDONIAN",
+      "NORWEGIAN": "NORWEGIAN",
+      "POLISH": "POLISH",
+      "PORTUGUESE": "PORTUGUESE",
+      "ROMANIAN": "ROMANIAN",
+      "RUSSIAN": "RUSSIAN",
+      "SERBIAN": "SERBIAN",
+      "SLOVAK": "SLOVAK",
+      "SLOVENIAN": "SLOVENIAN",
+      "SPANISH": "SPANISH",
+      "SWEDISH": "SWEDISH"
+    },
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Pridať Licence",
+        "createOrEditLabel": "Pridať alebo upraviť Licence",
+        "notFound": "No Licences found"
+      },
+      "created": "Bol vytvorený potomok entity Licence s identifikátorom {{ param }}",
+      "updated": "Potomok entity Licence s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Licence s identifikátorom {{ param }} bol vymazaný.",
+      "delete": { "question": "Ste si istý, že chcete vymazať Licence {{ id }}?" },
+      "detail": { "title": "Licence" },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo"
+    },
+    "metadataField": {
+      "home": {
+        "title": "Metadata Fields",
+        "createLabel": "Pridať Metadata Field",
+        "createOrEditLabel": "Pridať alebo upraviť Metadata Field",
+        "notFound": "No Metadata Fields found"
+      },
+      "created": "Bol vytvorený potomok entity Metadata Field s identifikátorom {{ param }}",
+      "updated": "Potomok entity Metadata Field s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Metadata Field s identifikátorom {{ param }} bol vymazaný.",
+      "delete": { "question": "Ste si istý, že chcete vymazať Metadata Field {{ id }}?" },
+      "detail": { "title": "Metadata Field" },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    },
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Pridať Metadata Value",
+        "createOrEditLabel": "Pridať alebo upraviť Metadata Value",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "Bol vytvorený potomok entity Metadata Value s identifikátorom {{ param }}",
+      "updated": "Potomok entity Metadata Value s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Metadata Value s identifikátorom {{ param }} bol vymazaný.",
+      "delete": { "question": "Ste si istý, že chcete vymazať Metadata Value {{ id }}?" },
+      "detail": { "title": "Metadata Value" },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    },
+    "ObjectType": { "null": "", "AGENCY": "AGENCY", "GROUP": "GROUP", "SYSTEM": "SYSTEM" },
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Pridať Resolver",
+        "createOrEditLabel": "Pridať alebo upraviť Resolver",
+        "notFound": "No Resolvers found"
+      },
+      "created": "Bol vytvorený potomok entity Resolver s identifikátorom {{ param }}",
+      "updated": "Potomok entity Resolver s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Resolver s identifikátorom {{ param }} bol vymazaný.",
+      "delete": { "question": "Ste si istý, že chcete vymazať Resolver {{ id }}?" },
+      "detail": { "title": "Resolver" },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    },
+    "ResolverType": { "null": "", "DOI": "DOI", "URN": "URN" },
+    "ResourceType": { "null": "", "VOCABULARY": "VOCABULARY" },
+    "userAgency": {
+      "home": {
+        "title": "User Agencies",
+        "createLabel": "Pridať User Agency",
+        "createOrEditLabel": "Pridať alebo upraviť User Agency",
+        "notFound": "No User Agencies found"
+      },
+      "created": "Bol vytvorený potomok entity User Agency s identifikátorom {{ param }}",
+      "updated": "Potomok entity User Agency s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity User Agency s identifikátorom {{ param }} bol vymazaný.",
+      "delete": { "question": "Ste si istý, že chcete vymazať User Agency {{ id }}?" },
+      "detail": { "title": "User Agency" },
+      "agencyRole": "Agency Role",
+      "language": "Language",
+      "agency": "Agency"
+    },
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Pridať Version",
+        "createOrEditLabel": "Pridať alebo upraviť Version",
+        "notFound": "No Versions found"
+      },
+      "created": "Bol vytvorený potomok entity Version s identifikátorom {{ param }}",
+      "updated": "Potomok entity Version s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Version s identifikátorom {{ param }} bol vymazaný.",
+      "delete": { "question": "Ste si istý, že chcete vymazať Version {{ id }}?" },
+      "detail": { "title": "Version" },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    },
+    "vocabulary": {
+      "home": {
+        "title": "Vocabularies",
+        "createLabel": "Pridať Vocabulary",
+        "createOrEditLabel": "Pridať alebo upraviť Vocabulary",
+        "notFound": "No Vocabularies found"
+      },
+      "created": "Bol vytvorený potomok entity Vocabulary s identifikátorom {{ param }}",
+      "updated": "Potomok entity Vocabulary s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Vocabulary s identifikátorom {{ param }} bol vymazaný.",
+      "delete": { "question": "Ste si istý, že chcete vymazať Vocabulary {{ id }}?" },
+      "detail": { "title": "Vocabulary" },
+      "status": "Status",
+      "uri": "Uri",
+      "notation": "Notation",
+      "versionNumber": "Version Number",
+      "initialPublication": "Initial Publication",
+      "previousPublication": "Previous Publication",
+      "archived": "Archived",
+      "withdrawn": "Withdrawn",
+      "discoverable": "Discoverable",
+      "sourceLanguage": "Source Language",
+      "agencyId": "Agency Id",
+      "agencyName": "Agency Name",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "notes": "Notes",
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "versionBs": "Version Bs",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "versionBg": "Version Bg",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "versionHr": "Version Hr",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "versionCs": "Version Cs",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "versionDa": "Version Da",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "versionNl": "Version Nl",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "versionEn": "Version En",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "versionEt": "Version Et",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "versionFi": "Version Fi",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "versionFr": "Version Fr",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "versionDe": "Version De",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "versionEl": "Version El",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "versionHu": "Version Hu",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "versionIt": "Version It",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "versionJa": "Version Ja",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "versionLt": "Version Lt",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "versionMk": "Version Mk",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "versionNo": "Version No",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "versionPl": "Version Pl",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "versionPt": "Version Pt",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "versionRo": "Version Ro",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "versionRu": "Version Ru",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "versionSr": "Version Sr",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "versionSk": "Version Sk",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "versionSl": "Version Sl",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "versionEs": "Version Es",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "versionSv": "Version Sv",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv",
+      "version": "Version"
+    },
+    "vocabularyChange": {
+      "home": {
+        "title": "Vocabulary Changes",
+        "createLabel": "Pridať Vocabulary Change",
+        "createOrEditLabel": "Pridať alebo upraviť Vocabulary Change",
+        "notFound": "No Vocabulary Changes found"
+      },
+      "created": "Bol vytvorený potomok entity Vocabulary Change s identifikátorom {{ param }}",
+      "updated": "Potomok entity Vocabulary Change s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Vocabulary Change s identifikátorom {{ param }} bol vymazaný.",
+      "delete": { "question": "Ste si istý, že chcete vymazať Vocabulary Change {{ id }}?" },
+      "detail": { "title": "Vocabulary Change" },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  },
+  "audits": {
+    "title": "Audity",
+    "filter": {
+      "title": "Filtrovať podľa dátumu",
+      "from": "od",
+      "to": "do",
+      "button": { "weeks": "Týždne", "today": "dnes", "clear": "vymazať", "close": "zatvoriť" }
+    },
+    "table": {
+      "header": { "principal": "Používateľ", "date": "Dátum", "status": "Stav", "data": "Doplňujúce informácie" },
+      "data": { "remoteAddress": "Vzdialená adresa:" }
+    },
+    "notFound": "No audit found"
+  },
+  "configuration": {
+    "title": "Konfigurácia",
+    "filter": "Filtrovať (podľa predpony)",
+    "table": { "prefix": "Predpona", "properties": "Vlastnosti" }
+  },
+  "error": {
+    "title": "Chybová stránka!",
+    "http": {
+      "400": "Bad request.",
+      "403": "Nie ste oprávnení pristupovať k tejto stránke.",
+      "404": "Stránka neexistuje.",
+      "405": "The HTTP verb you used is not supported for this URL.",
+      "500": "Internal server error."
+    },
+    "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
+    "validation": "Validation error on the server.",
+    "internalServerError": "Internal server error",
+    "server.not.reachable": "Server je nedostupný",
+    "url.not.found": "Not found",
+    "NotNull": "Pole {{ fieldName }} nemôže byť prázdne!",
+    "Size": "Pole {{ fieldName }} nespĺňa požiadavku minimálnej alebo maximálnej veľkosti!",
+    "userexists": "Zadané používateľské meno už niekto používa!",
+    "emailexists": "Zadaný email už niekto používa!",
+    "idexists": "Nová entita {{ entityName }} ešte nemôže mať ID",
+    "idnull": "Invalid ID",
+    "file": {
+      "could.not.extract": "Could not extract file",
+      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+    }
+  },
+  "global": {
+    "title": "Cvs",
+    "browsehappy": "Používate <strong>zastaraný</strong> prehliadač. Prosím <a href=\"http://browsehappy.com/?locale=en\">aktualizujte svoj prehliadač</a> pre zlepšenie použiteľnosti.",
+    "menu": {
+      "home": "Domov",
+      "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "entities": {
+        "main": "Entity",
+        "vocabulary": "Vocabulary",
+        "code": "Code",
+        "version": "Version",
+        "concept": "Concept",
+        "conceptChange": "Concept Change",
+        "activityLog": "Activity Log",
+        "licence": "Licence",
+        "metadataField": "Metadata Field",
+        "metadataValue": "Metadata Value",
+        "resolver": "Resolver",
+        "vocabularyChange": "Vocabulary Change",
+        "agency": "Agency",
+        "userAgency": "User Agency",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+      },
+      "account": {
+        "main": "Účet",
+        "settings": "Nastavenia",
+        "password": "Heslo",
+        "sessions": "Sedenia",
+        "login": "Prihlásenie",
+        "logout": "Odhlásiť sa",
+        "register": "Registrácia"
+      },
+      "admin": {
+        "main": "Administrácia",
+        "userManagement": "Správa používateľov",
+        "tracker": "Sledovanie používateľov",
+        "metrics": "Metriky",
+        "health": "Stav systému",
+        "configuration": "Konfigurácia",
+        "logs": "Logy",
+        "audits": "Audity",
+        "apidocs": "API",
+        "database": "Databáza",
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "language": "Jazyk"
+    },
+    "form": {
+      "username.label": "Používateľské meno",
+      "username.placeholder": "Vaše používateľské meno",
+      "newpassword.label": "Nové heslo",
+      "newpassword.placeholder": "Nové heslo",
+      "confirmpassword.label": "Potvrdenie nového hesla",
+      "confirmpassword.placeholder": "Potvrdenie nového hesla",
+      "email.label": "Email",
+      "email.placeholder": "Váš email"
+    },
+    "messages": {
+      "info": {
+        "authenticated": {
+          "prefix": "Ak sa chcete ",
+          "link": "prihlásiť",
+          "suffix": ", môžete vyskúšať predvolené účty:<br/>- Administrátor (meno=\"admin\" a heslo=\"admin\") <br/>- Používateľ (meno=\"user\" a heslo=\"user\")."
+        },
+        "register": { "noaccount": "Ešte nemáte účet?", "link": "Zaregistrujte si nový účet." }
+      },
+      "error": { "dontmatch": "Nové heslo a potvrdenie nového hesla sa nezhodujú!" },
+      "validate": {
+        "newpassword": {
+          "required": "Heslo je povinné.",
+          "minlength": "Vaše heslo musí mať aspoň 4 znakov.",
+          "maxlength": "Vaše heslo nemôže byť dlhšie ako 50 znakov.",
+          "strength": "Sila hesla:"
+        },
+        "confirmpassword": {
+          "required": "Potvrdenie hesla je povinné.",
+          "minlength": "Vaše potvrdenie hesla musí mať aspoň 4 znakov.",
+          "maxlength": "Vaše potvrdenie hesla nemôže byť dlhšie ako 50 znakov."
+        },
+        "email": {
+          "required": "Email je povinný.",
+          "invalid": "Zadaný email nie je validný.",
+          "minlength": "Váš email musí mať aspoň 5 znakov.",
+          "maxlength": "Váš email nemôže byť dlhší ako 50 znakov."
+        }
+      }
+    },
+    "field": { "id": "ID" },
+    "ribbon": { "dev": "Development" },
+    "item-count": "Showing {{first}} - {{second}} of {{total}} items."
+  },
+  "entity": {
+    "action": {
+      "addblob": "Vložiť blob",
+      "addimage": "Vložiť obrázok",
+      "back": "Späť",
+      "cancel": "Zrušiť",
+      "delete": "Odstrániť",
+      "edit": "Upraviť",
+      "open": "Open",
+      "save": "Uložiť",
+      "view": "Detaily"
+    },
+    "detail": { "field": "Pole", "value": "Hodnota" },
+    "delete": { "title": "Potvrdenie odstránenia" },
+    "validation": {
+      "required": "Toto pole je povinné.",
+      "minlength": "Toto pole musí mať aspoň {{ min }} znakov.",
+      "maxlength": "Toto pole nemôže byť dlhšie ako {{ max }} znakov.",
+      "min": "Toto pole musí mať hodnotu vyššiu ako {{ min }}.",
+      "max": "Toto pole nemôže mať vyššiu hodnotu ako {{ max }}.",
+      "minbytes": "Toto pole musí mať viac ako {{ min }} bajtov.",
+      "maxbytes": "Toto pole nemôže mať viac ako {{ max }} bajtov.",
+      "pattern": "Toto pole musí spĺňať vzor {{ pattern }}.",
+      "number": "Toto pole by malo obsahovať číslo.",
+      "datetimelocal": "Toto pole by malo obsahovať dátum a čas."
+    }
+  },
+  "footer": "Toto je vaše zápätie",
+  "health": {
+    "title": "Kontrola stavu",
+    "refresh.button": "Obnoviť",
+    "stacktrace": "Stacktrace",
+    "details": { "details": "Detaily", "properties": "Vlastnosti", "name": "Názov", "value": "Hodnota", "error": "Chyba" },
+    "indicator": { "diskSpace": "Diskový priestor", "mail": "Email", "db": "Databáza" },
+    "table": { "service": "Názov služby", "status": "Stav" },
+    "status": { "UNKNOWN": "UNKNOWN", "UP": "Spustené", "DOWN": "Zastavené" }
+  },
+  "home": {
+    "title": "Vitajte, Java Hipster!",
+    "subtitle": "Toto je vaša domovská stránka",
+    "logged": { "message": "Ste prihlásený ako \"{{username}}\"." },
+    "question": "Ak máte nejaké otázky o JHipster:",
+    "link": {
+      "homepage": "Domovská stránka JHipster",
+      "stackoverflow": "JHipster v službe Stack Overflow",
+      "bugtracker": "Nahlasovanie chýb JHipster",
+      "chat": "Verejná chatovacia miestnosť JHipster",
+      "follow": "Sledovať @jhipster v službe Twitter"
+    },
+    "like": "Ak sa vám JHipster páči, nezabudnite nám dať hviezdičku v službe",
+    "github": "GitHub"
+  },
+  "login": {
+    "title": "Prihlásenie",
+    "form": { "password": "Heslo", "password.placeholder": "Vaše heslo", "rememberme": "Zapamätať", "button": "Prihlásiť sa" },
+    "messages": {
+      "error": { "authentication": "<strong>Prihlásenie zlyhalo!</strong> Prosím skontrolujte vaše prihlasovacie údaje a skúste to znovu." }
+    },
+    "password": { "forgot": "Zabudli ste heslo?" }
+  },
+  "logs": {
+    "title": "Logy",
+    "nbloggers": "Spustených {{ total }} loggerov.",
+    "filter": "Filtrovať",
+    "table": { "name": "Názov", "level": "Úroveň" }
+  },
+  "metrics": {
+    "title": "Metriky aplikácie",
+    "refresh.button": "Aktualizovať",
+    "updating": "Aktualizácia...",
+    "jvm": {
+      "title": "JVM Metriky",
+      "memory": { "title": "Pamäť", "total": "Celková Pamäť", "heap": "Heap Pamäť", "nonheap": "Non-Heap Pamäť" },
+      "threads": {
+        "title": "Vlákna",
+        "all": "Všetky",
+        "runnable": "Runnable",
+        "timedwaiting": "Čas čakania",
+        "waiting": "Čakanie",
+        "blocked": "Blokovaný",
+        "dump": {
+          "title": "Threads dump",
+          "id": "Id: ",
+          "blockedtime": "Čas Blokovania",
+          "blockedcount": "Počet Blokovaní",
+          "waitedtime": "Čas Čakania",
+          "waitedcount": "Počet Čakaní",
+          "lockname": "Názov zámku",
+          "stacktrace": "Stacktrace",
+          "show": "Zobrazit Stacktrace",
+          "hide": "Skryť Stacktrace"
+        }
+      },
+      "gc": {
+        "title": "Garbage kolekcie",
+        "marksweepcount": "Počet Mark Sweep",
+        "marksweeptime": "Čas Mark Sweep",
+        "scavengecount": "Počet Scavenge",
+        "scavengetime": "Čas Scavenge"
+      },
+      "http": {
+        "title": "HTTP požiadavky (udalostí za sekundu)",
+        "active": "Aktívne požiadavky:",
+        "total": "Všetky požiadavky:",
+        "table": { "code": "Kód", "count": "Počet", "mean": "Priemer (Mean)", "average": "Priemer (Average)" },
+        "code": { "ok": "OK", "notfound": "Nebolo nájdené", "servererror": "Chyba Serveru" }
+      }
+    },
+    "servicesstats": {
+      "title": "Štatistika služieb (čas v milisekundách)",
+      "table": {
+        "name": "Názov služby",
+        "count": "Počet",
+        "mean": "Priemer",
+        "min": "Min",
+        "max": "Max",
+        "p50": "p50",
+        "p75": "p75",
+        "p95": "p95",
+        "p99": "p99"
+      }
+    },
+    "cache": {
+      "title": "Cache štatistiky",
+      "cachename": "Meno cache",
+      "hits": "Zásahy",
+      "misses": "Minutia",
+      "evictions": "Počet eviction"
+    },
+    "datasource": {
+      "usage": "Používanie",
+      "title": "DataSource štatistiky (čas v milisekundách)",
+      "name": "Využitie poolu",
+      "count": "Počet",
+      "mean": "Priemer",
+      "min": "Min",
+      "max": "Max",
+      "p50": "p50",
+      "p75": "p75",
+      "p95": "p95",
+      "p99": "p99"
+    }
+  },
+  "password": {
+    "title": "Heslo pre [<strong>{{username}}</strong>]",
+    "form": { "button": "Uložiť" },
+    "messages": {
+      "error": "<strong>Vyskytla sa chyba!</strong> Heslo nemohlo byť zmenené.",
+      "success": "<strong>Heslo bolo zmenené!</strong>"
+    }
+  },
+  "register": {
+    "title": "Registrácia",
+    "form": { "button": "Registrovať" },
+    "messages": {
+      "validate": {
+        "login": {
+          "required": "Používateľské meno už existuje.",
+          "minlength": "Používateľské meno musí mať aspoň 1 znak.",
+          "maxlength": "Používateľské meno nesmie byť dlhšie ako 50 znakov.",
+          "pattern": "Používateľské meno môže obsahovať len malé písmená a číslice."
+        }
+      },
+      "success": "<strong>Registrácia uložená!</strong> Pre potvrdenie registrácie si prosím skontrolujte vašu emailovú schránku.",
+      "error": {
+        "fail": "<strong>Registrácia zlyhala!</strong> Vyskúšajte to prosím neskôr.",
+        "userexists": "<strong>Používateľské meno už existuje!</strong> Prosím, zvoľte iné meno.",
+        "emailexists": "<strong>Email sa už používa!</strong> Prosím, zvoľte iný email."
+      }
+    }
+  },
+  "reset": {
+    "request": {
+      "title": "Obnoviť heslo",
+      "form": { "button": "Obnoviť heslo" },
+      "messages": {
+        "info": "Zadajte emailovú adresu, ktorú ste použili pri registrácii",
+        "success": "Na Váš email sme Vám poslali informácie o tom ako si môžete obnoviť Vaše heslo.",
+        "notfound": "<strong>Emailová adresa nebola registrovaná!</strong> Prosím skontrolujte alebo skúste zadať znovu."
+      }
+    },
+    "finish": {
+      "title": "Obnoviť heslo",
+      "form": { "button": "Overiť nové heslo" },
+      "messages": {
+        "info": "Vyberte si nové heslo",
+        "success": "<strong>Vaše heslo bolo obnovené.</strong> Môžete sa ",
+        "keymissing": "Chýba kľúč na obnovenie hesla.",
+        "error": "Vaše heslo nemohlo byť obnovené. Požiadavka na obnovenie hesla je platná len 24 hodín."
+      }
+    }
+  },
+  "sessions": {
+    "title": "Aktívne sedenia používateľa [<strong>{{username}}</strong>]",
+    "table": { "ipaddress": "IP adresa", "useragent": "User Agent", "date": "Dátum", "button": "Zrušiť" },
+    "messages": {
+      "success": "<strong>Sedenie bolo zrušené!</strong>",
+      "error": "<strong>Vyskytla sa chyba!</strong> Sedenie nemohlo byť zrušené."
+    }
+  },
+  "settings": {
+    "title": "Nastavenia používateľa [<strong>{{username}}</strong>]",
+    "form": {
+      "firstname": "Krstné meno",
+      "firstname.placeholder": "Vaše krstné meno meno",
+      "lastname": "Priezvisko",
+      "lastname.placeholder": "Vaše priezvisko",
+      "language": "Jazyk",
+      "button": "Uložiť"
+    },
+    "messages": {
+      "error": {
+        "fail": "<strong>Vyskytla sa chyba!</strong> Nastavenia sa nepodarilo uložiť.",
+        "emailexists": "<strong>Emailová adresa sa už používa!</strong> Prosím použite inú adresu."
+      },
+      "success": "<strong>Nastavenia boli uložené!</strong>",
+      "validate": {
+        "firstname": {
+          "required": "Krstné meno je povinné.",
+          "minlength": "Krstné meno musí obsahovať aspoň 1 znak",
+          "maxlength": "Krstné meno nemôže byť dlhšie ako 50 znakov"
+        },
+        "lastname": {
+          "required": "Priezvisko je povinné.",
+          "minlength": "Priezvisko musí obsahovať aspoň 1 znak",
+          "maxlength": "Priezvisko nemôže byť dlhšie ako 50 znakov"
+        }
+      }
+    }
+  },
+  "userManagement": {
+    "home": {
+      "title": "Používatelia",
+      "createLabel": "Vytvoriť nového používateľa",
+      "createOrEditLabel": "Vytvoriť alebo upraviť používateľa"
+    },
+    "created": "Bol vytvorený nový používateľ s identifikátorom {{ param }}",
+    "updated": "Bol aktualizovaný používateľ s identifikátorom {{ param }}",
+    "deleted": "Bol vymazaný používateľ s identifikátorom {{ param }}",
+    "delete": { "question": "Ste si istí, že chcete zmazať používateľa {{ login }}?" },
+    "detail": { "title": "Používateľ" },
+    "login": "Používateľské meno",
+    "firstName": "Krstné meno",
+    "lastName": "Priezvisko",
+    "email": "Email",
+    "activated": "Aktívny",
+    "deactivated": "Neaktívny",
+    "profiles": "Profily",
+    "langKey": "Jazyk",
+    "createdBy": "Vytvoril/a",
+    "createdDate": "Vytvorené",
+    "lastModifiedBy": "Upravil/a",
+    "lastModifiedDate": "Upravené"
+  }
+}

@@ -1,0 +1,860 @@
+{
+  "activate": {
+    "title": "Aktivering",
+    "messages": {
+      "success": "<strong>Ditt användarnamn har blivit aktiverat.</strong>. Vänligen ",
+      "error": "<strong>Ditt användarnamn kunde inte aktiveras.</strong> Använd gärna registreringsformuläret."
+    }
+  },
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "Activity Logs",
+        "createLabel": "Skapa en ny Activity Log",
+        "createOrEditLabel": "Skapa eller ändra en Activity Log",
+        "notFound": "No Activity Logs found"
+      },
+      "created": "En ny Activity Log är skapad med id {{ param }}",
+      "updated": "En Activity Log är uppdaterad med id  {{ param }}",
+      "deleted": "En Activity Log är borttagen med id  {{ param }}",
+      "delete": { "question": "Är du säker på att du vill ta bort Activity Log {{ id }}?" },
+      "detail": { "title": "Activity Log" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    },
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Skapa en ny Agency",
+        "createOrEditLabel": "Skapa eller ändra en Agency",
+        "notFound": "No Agencies found"
+      },
+      "created": "En ny Agency är skapad med id {{ param }}",
+      "updated": "En Agency är uppdaterad med id  {{ param }}",
+      "deleted": "En Agency är borttagen med id  {{ param }}",
+      "delete": { "question": "Är du säker på att du vill ta bort Agency {{ id }}?" },
+      "detail": { "title": "Agency" },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    },
+    "AgencyRole": {
+      "null": "",
+      "ADMIN": "ADMIN",
+      "VIEW": "VIEW",
+      "ADMIN_SL": "ADMIN_SL",
+      "ADMIN_TL": "ADMIN_TL",
+      "ADMIN_CONTENT": "ADMIN_CONTENT"
+    },
+    "code": {
+      "home": {
+        "title": "Codes",
+        "createLabel": "Skapa en ny Code",
+        "createOrEditLabel": "Skapa eller ändra en Code",
+        "notFound": "No Codes found"
+      },
+      "created": "En ny Code är skapad med id {{ param }}",
+      "updated": "En Code är uppdaterad med id  {{ param }}",
+      "deleted": "En Code är borttagen med id  {{ param }}",
+      "delete": { "question": "Är du säker på att du vill ta bort Code {{ id }}?" },
+      "detail": { "title": "Code" },
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv"
+    },
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Skapa en ny Comment",
+        "createOrEditLabel": "Skapa eller ändra en Comment",
+        "search": "Sök efter Comment",
+        "notFound": "No Comments found"
+      },
+      "created": "En ny Comment är skapad med id {{ param }}",
+      "updated": "En Comment är uppdaterad med id  {{ param }}",
+      "deleted": "En Comment är borttagen med id  {{ param }}",
+      "delete": { "question": "Är du säker på att du vill ta bort Comment {{ id }}?" },
+      "detail": { "title": "Comment" },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    },
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Skapa en ny Concept",
+        "createOrEditLabel": "Skapa eller ändra en Concept",
+        "notFound": "No Concepts found"
+      },
+      "created": "En ny Concept är skapad med id {{ param }}",
+      "updated": "En Concept är uppdaterad med id  {{ param }}",
+      "deleted": "En Concept är borttagen med id  {{ param }}",
+      "delete": { "question": "Är du säker på att du vill ta bort Concept {{ id }}?" },
+      "detail": { "title": "Concept" },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    },
+    "conceptChange": {
+      "home": {
+        "title": "Concept Changes",
+        "createLabel": "Skapa en ny Concept Change",
+        "createOrEditLabel": "Skapa eller ändra en Concept Change",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "En ny Concept Change är skapad med id {{ param }}",
+      "updated": "En Concept Change är uppdaterad med id  {{ param }}",
+      "deleted": "En Concept Change är borttagen med id  {{ param }}",
+      "delete": { "question": "Är du säker på att du vill ta bort Concept Change {{ id }}?" },
+      "detail": { "title": "Concept Change" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    },
+    "Language": {
+      "null": "",
+      "ALBANIAN": "ALBANIAN",
+      "BOSNIAN": "BOSNIAN",
+      "BULGARIAN": "BULGARIAN",
+      "CROATIAN": "CROATIAN",
+      "CZECH": "CZECH",
+      "DANISH": "DANISH",
+      "DUTCH": "DUTCH",
+      "ENGLISH": "ENGLISH",
+      "ESTONIAN": "ESTONIAN",
+      "FINNISH": "FINNISH",
+      "FRENCH": "FRENCH",
+      "GERMAN": "GERMAN",
+      "GREEK": "GREEK",
+      "HUNGARIAN": "HUNGARIAN",
+      "ITALIAN": "ITALIAN",
+      "JAPANESE": "JAPANESE",
+      "LITHUANIAN": "LITHUANIAN",
+      "MACEDONIAN": "MACEDONIAN",
+      "NORWEGIAN": "NORWEGIAN",
+      "POLISH": "POLISH",
+      "PORTUGUESE": "PORTUGUESE",
+      "ROMANIAN": "ROMANIAN",
+      "RUSSIAN": "RUSSIAN",
+      "SERBIAN": "SERBIAN",
+      "SLOVAK": "SLOVAK",
+      "SLOVENIAN": "SLOVENIAN",
+      "SPANISH": "SPANISH",
+      "SWEDISH": "SWEDISH"
+    },
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Skapa en ny Licence",
+        "createOrEditLabel": "Skapa eller ändra en Licence",
+        "notFound": "No Licences found"
+      },
+      "created": "En ny Licence är skapad med id {{ param }}",
+      "updated": "En Licence är uppdaterad med id  {{ param }}",
+      "deleted": "En Licence är borttagen med id  {{ param }}",
+      "delete": { "question": "Är du säker på att du vill ta bort Licence {{ id }}?" },
+      "detail": { "title": "Licence" },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo"
+    },
+    "metadataField": {
+      "home": {
+        "title": "Metadata Fields",
+        "createLabel": "Skapa en ny Metadata Field",
+        "createOrEditLabel": "Skapa eller ändra en Metadata Field",
+        "notFound": "No Metadata Fields found"
+      },
+      "created": "En ny Metadata Field är skapad med id {{ param }}",
+      "updated": "En Metadata Field är uppdaterad med id  {{ param }}",
+      "deleted": "En Metadata Field är borttagen med id  {{ param }}",
+      "delete": { "question": "Är du säker på att du vill ta bort Metadata Field {{ id }}?" },
+      "detail": { "title": "Metadata Field" },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    },
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Skapa en ny Metadata Value",
+        "createOrEditLabel": "Skapa eller ändra en Metadata Value",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "En ny Metadata Value är skapad med id {{ param }}",
+      "updated": "En Metadata Value är uppdaterad med id  {{ param }}",
+      "deleted": "En Metadata Value är borttagen med id  {{ param }}",
+      "delete": { "question": "Är du säker på att du vill ta bort Metadata Value {{ id }}?" },
+      "detail": { "title": "Metadata Value" },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    },
+    "ObjectType": { "null": "", "AGENCY": "AGENCY", "GROUP": "GROUP", "SYSTEM": "SYSTEM" },
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Skapa en ny Resolver",
+        "createOrEditLabel": "Skapa eller ändra en Resolver",
+        "notFound": "No Resolvers found"
+      },
+      "created": "En ny Resolver är skapad med id {{ param }}",
+      "updated": "En Resolver är uppdaterad med id  {{ param }}",
+      "deleted": "En Resolver är borttagen med id  {{ param }}",
+      "delete": { "question": "Är du säker på att du vill ta bort Resolver {{ id }}?" },
+      "detail": { "title": "Resolver" },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    },
+    "ResolverType": { "null": "", "DOI": "DOI", "URN": "URN" },
+    "ResourceType": { "null": "", "VOCABULARY": "VOCABULARY" },
+    "userAgency": {
+      "home": {
+        "title": "User Agencies",
+        "createLabel": "Skapa en ny User Agency",
+        "createOrEditLabel": "Skapa eller ändra en User Agency",
+        "notFound": "No User Agencies found"
+      },
+      "created": "En ny User Agency är skapad med id {{ param }}",
+      "updated": "En User Agency är uppdaterad med id  {{ param }}",
+      "deleted": "En User Agency är borttagen med id  {{ param }}",
+      "delete": { "question": "Är du säker på att du vill ta bort User Agency {{ id }}?" },
+      "detail": { "title": "User Agency" },
+      "agencyRole": "Agency Role",
+      "language": "Language",
+      "agency": "Agency"
+    },
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Skapa en ny Version",
+        "createOrEditLabel": "Skapa eller ändra en Version",
+        "notFound": "No Versions found"
+      },
+      "created": "En ny Version är skapad med id {{ param }}",
+      "updated": "En Version är uppdaterad med id  {{ param }}",
+      "deleted": "En Version är borttagen med id  {{ param }}",
+      "delete": { "question": "Är du säker på att du vill ta bort Version {{ id }}?" },
+      "detail": { "title": "Version" },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    },
+    "vocabulary": {
+      "home": {
+        "title": "Vocabularies",
+        "createLabel": "Skapa en ny Vocabulary",
+        "createOrEditLabel": "Skapa eller ändra en Vocabulary",
+        "notFound": "No Vocabularies found"
+      },
+      "created": "En ny Vocabulary är skapad med id {{ param }}",
+      "updated": "En Vocabulary är uppdaterad med id  {{ param }}",
+      "deleted": "En Vocabulary är borttagen med id  {{ param }}",
+      "delete": { "question": "Är du säker på att du vill ta bort Vocabulary {{ id }}?" },
+      "detail": { "title": "Vocabulary" },
+      "status": "Status",
+      "uri": "Uri",
+      "notation": "Notation",
+      "versionNumber": "Version Number",
+      "initialPublication": "Initial Publication",
+      "previousPublication": "Previous Publication",
+      "archived": "Archived",
+      "withdrawn": "Withdrawn",
+      "discoverable": "Discoverable",
+      "sourceLanguage": "Source Language",
+      "agencyId": "Agency Id",
+      "agencyName": "Agency Name",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "notes": "Notes",
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "versionBs": "Version Bs",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "versionBg": "Version Bg",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "versionHr": "Version Hr",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "versionCs": "Version Cs",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "versionDa": "Version Da",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "versionNl": "Version Nl",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "versionEn": "Version En",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "versionEt": "Version Et",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "versionFi": "Version Fi",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "versionFr": "Version Fr",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "versionDe": "Version De",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "versionEl": "Version El",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "versionHu": "Version Hu",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "versionIt": "Version It",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "versionJa": "Version Ja",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "versionLt": "Version Lt",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "versionMk": "Version Mk",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "versionNo": "Version No",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "versionPl": "Version Pl",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "versionPt": "Version Pt",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "versionRo": "Version Ro",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "versionRu": "Version Ru",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "versionSr": "Version Sr",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "versionSk": "Version Sk",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "versionSl": "Version Sl",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "versionEs": "Version Es",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "versionSv": "Version Sv",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv",
+      "version": "Version"
+    },
+    "vocabularyChange": {
+      "home": {
+        "title": "Vocabulary Changes",
+        "createLabel": "Skapa en ny Vocabulary Change",
+        "createOrEditLabel": "Skapa eller ändra en Vocabulary Change",
+        "notFound": "No Vocabulary Changes found"
+      },
+      "created": "En ny Vocabulary Change är skapad med id {{ param }}",
+      "updated": "En Vocabulary Change är uppdaterad med id  {{ param }}",
+      "deleted": "En Vocabulary Change är borttagen med id  {{ param }}",
+      "delete": { "question": "Är du säker på att du vill ta bort Vocabulary Change {{ id }}?" },
+      "detail": { "title": "Vocabulary Change" },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  },
+  "audits": {
+    "title": "Granskningar",
+    "filter": {
+      "title": "Filter per datum",
+      "from": "från",
+      "to": "till",
+      "button": { "weeks": "Veckor", "today": "idag", "clear": "rensa", "close": "stäng" }
+    },
+    "table": {
+      "header": { "principal": "Användare", "date": "Datum", "status": "Status", "data": "Extra data" },
+      "data": { "remoteAddress": "Fjärradress:" }
+    }
+  },
+  "configuration": {
+    "title": "Konfigurering",
+    "filter": "Filter (via prefix)",
+    "table": { "prefix": "Prefix", "properties": "Egenskaper" }
+  },
+  "error": {
+    "title": "Felsida!",
+    "http": {
+      "400": "Bad request.",
+      "403": "Du har inte behörighet till att komma åt sidan.",
+      "404": "Sidan existerar inte.",
+      "405": "The HTTP verb you used is not supported for this URL.",
+      "500": "Internal server error."
+    },
+    "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
+    "validation": "Validation error on the server.",
+    "internalServerError": "Internal server error",
+    "server.not.reachable": "Servern kan inte nås",
+    "url.not.found": "Not found",
+    "NotNull": "Fält {{fieldName}} kan inte vara tomt!",
+    "Size": "Fält {{fieldName}} uppfyller inte min/max-storlekskravet!",
+    "userexists": "Användarnamnet är upptaget!",
+    "emailexists": "E-postadressen är redan registrerad!",
+    "idexists": "En ny {{entityName}} kan inte redan ha ett ID",
+    "idnull": "Invalid ID",
+    "file": {
+      "could.not.extract": "Could not extract file",
+      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+    }
+  },
+  "global": {
+    "title": "Cvs",
+    "browsehappy": "Du använder en <strong>gammal webbläsare</strong>. <a href=\"http://browsehappy.com/?locale=en\">Uppgradera din webbläsare</a> för bästa upplevelse.",
+    "menu": {
+      "home": "Hem",
+      "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "entities": {
+        "main": "Entiter",
+        "vocabulary": "Vocabulary",
+        "code": "Code",
+        "version": "Version",
+        "concept": "Concept",
+        "conceptChange": "Concept Change",
+        "activityLog": "Activity Log",
+        "licence": "Licence",
+        "metadataField": "Metadata Field",
+        "metadataValue": "Metadata Value",
+        "resolver": "Resolver",
+        "vocabularyChange": "Vocabulary Change",
+        "agency": "Agency",
+        "userAgency": "User Agency",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+      },
+      "account": {
+        "main": "Konto",
+        "settings": "Inställningar",
+        "password": "Lösenord",
+        "sessions": "Sessioner",
+        "login": "Logga in",
+        "logout": "Logga ut",
+        "register": "Registrera"
+      },
+      "admin": {
+        "main": "Administration",
+        "userManagement": "Hantera användare",
+        "tracker": "Användarspårning",
+        "metrics": "Mätningar",
+        "health": "Status",
+        "configuration": "Konfigurering",
+        "logs": "Loggar",
+        "audits": "Granskningar",
+        "apidocs": "API",
+        "database": "Databas",
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "language": "Språk"
+    },
+    "form": {
+      "username.label": "Användarnamn",
+      "username.placeholder": "Ditt användarnamn",
+      "newpassword.label": "Nytt lösenord",
+      "newpassword.placeholder": "Nytt lösenord",
+      "confirmpassword.label": "Konfirmera nytt lösenord",
+      "confirmpassword.placeholder": "Konfirmera det nya lösenordet",
+      "email.label": "E-post",
+      "email.placeholder": "Din e-post"
+    },
+    "messages": {
+      "info": {
+        "authenticated": {
+          "prefix": "Om du vill ",
+          "link": "logga in",
+          "suffix": " - prova med standard kontot:<br/>- Administratör (användarnamn=\"admin\" och lösenord=\"admin\") <br/>- Användare (login=\"user\" och lösenord=\"user\")."
+        },
+        "register": { "noaccount": "Har du inget konto?", "link": "Du kan registrera ett konto" }
+      },
+      "error": { "dontmatch": "Lösenorden stämmer inte med varandra!" },
+      "validate": {
+        "newpassword": {
+          "required": "Du måste fylla i ett lösenord",
+          "minlength": "Ditt lösenord måste vara 4 tecken",
+          "maxlength": "Ditt lösenord kan inte vara längre än 50 tecken",
+          "strength": "Lösenordsstyrka:"
+        },
+        "confirmpassword": {
+          "required": "Du måste bekräfta ditt lösenord",
+          "minlength": "Ditt konfirmationslösenord måste vara 4 tecken långt",
+          "maxlength": "Ditt konfirmationslösenord kan inte vara längre än 50 tecken"
+        },
+        "email": {
+          "required": "Din måste fylla i din e-post",
+          "invalid": "Din e-post adress är inte giltig.",
+          "minlength": "Din e-post måste vara minst 5 tecken",
+          "maxlength": "Din e-post får inte vara längre än 50 tecken"
+        }
+      }
+    },
+    "field": { "id": "ID" },
+    "ribbon": { "dev": "Development" },
+    "item-count": "Visar {{first}} - {{second}} av {{total}} träffar."
+  },
+  "entity": {
+    "action": {
+      "addblob": "Lägg till blob",
+      "addimage": "Lägg till bild",
+      "back": "Tillbaka",
+      "cancel": "Avbryt",
+      "delete": "Ta bort",
+      "edit": "Ändra",
+      "open": "Open",
+      "save": "Spara",
+      "view": "Titta"
+    },
+    "detail": { "field": "Fält", "value": "Värde" },
+    "delete": { "title": "Bekräfta bortagningen" },
+    "validation": {
+      "required": "Du måste fylla i detta fält",
+      "minlength": "Detta fält måste vara {{min}} tecken",
+      "maxlength": "Detta fält kan inte vara längre än {{max}} tecken",
+      "min": "Detta fält måste vara större än {{min}}",
+      "max": "Detta fält måste vara mindre än {{max}}",
+      "minbytes": "Detta fält måste vara större än {{min}} bytes",
+      "maxbytes": "Detta fält måste vara mindre än {{max}} bytes",
+      "pattern": "Detta fält måste följa mönstret {{pattern}}",
+      "number": "Detta fält måste vara ett tal",
+      "datetimelocal": "Detta fält måste vara ett datum och en tid"
+    }
+  },
+  "footer": "Detta är din footer",
+  "health": {
+    "title": "Statuskontroller",
+    "refresh.button": "Uppdatera",
+    "stacktrace": "Stacktrace",
+    "details": { "details": "Detaljer", "properties": "Egenskaper", "name": "Namn", "value": "Värde", "error": "Fel" },
+    "indicator": { "diskSpace": "Diskutrymme", "mail": "E-post", "db": "Databas" },
+    "table": { "service": "Service namn", "status": "Status" },
+    "status": { "UNKNOWN": "UNKNOWN", "UP": "UPP", "DOWN": "NED" }
+  },
+  "home": {
+    "title": "Välkommen Java Hipster!",
+    "subtitle": "Det här är din hemsida",
+    "logged": { "message": "Du är inloggad som \"{{username}}\"." },
+    "question": "Om du har några frågor om JHipster:",
+    "link": {
+      "homepage": "JHipsters hemsida",
+      "stackoverflow": "JHipster på Stack Overflow",
+      "bugtracker": "JHipster bughanterare",
+      "chat": "JHipster public chat room",
+      "follow": "kontakta @jhipster på Twitter"
+    },
+    "like": "Om du gillar JHipster, glöm inte att ge oss en stjärna på",
+    "github": "GitHub"
+  },
+  "login": {
+    "title": "Logga in",
+    "form": { "password": "Lösenord", "password.placeholder": "Ditt lösenord", "rememberme": "Kom ihåg mig", "button": "Logga in" },
+    "messages": {
+      "error": {
+        "authentication": "<strong>Inloggningen misslyckades!</strong> Kontrollera ditt användarnamn och lösenord och prova igen."
+      }
+    },
+    "password": { "forgot": "Har du glömt ditt lösenord?" }
+  },
+  "logs": {
+    "title": "Loggar",
+    "nbloggers": "Det finns totalt {{ total }} loggar.",
+    "filter": "Filter",
+    "table": { "name": "Namn", "level": "Nivå" }
+  },
+  "metrics": {
+    "title": "Applikationsmätningar",
+    "refresh.button": "Uppdatera",
+    "updating": "Uppdaterar...",
+    "jvm": {
+      "title": "Mätningar av JVM",
+      "memory": { "title": "Minne", "total": "Totalt minne", "heap": "Heap minne", "nonheap": "Non-Heap minne" },
+      "threads": {
+        "title": "Trådar",
+        "all": "Alla",
+        "runnable": "Körbara",
+        "timedwaiting": "Timed waiting",
+        "waiting": "Waiting",
+        "blocked": "Blocked",
+        "dump": {
+          "title": "Threads dump",
+          "id": "Id: ",
+          "blockedtime": "Blocked Time",
+          "blockedcount": "Blocked Count",
+          "waitedtime": "Waited Time",
+          "waitedcount": "Waited Count",
+          "lockname": "Lock name",
+          "stacktrace": "Stacktrace",
+          "show": "Visa",
+          "hide": "Göm"
+        }
+      },
+      "gc": {
+        "title": "Garbage collections",
+        "marksweepcount": "Mark Sweep count",
+        "marksweeptime": "Mark Sweep time",
+        "scavengecount": "Scavenge count",
+        "scavengetime": "Scavenge time"
+      },
+      "http": {
+        "title": "HTTP requests (händelser/sekund)",
+        "active": "Aktiva requests:",
+        "total": "Totalt antal requests:",
+        "table": { "code": "Kod", "count": "Antal", "mean": "Medelvärde", "average": "Genomsnitt" },
+        "code": { "ok": "Ok", "notfound": "Not found", "servererror": "Server Error" }
+      }
+    },
+    "servicesstats": {
+      "title": "Services statistik (tid i millisekund)",
+      "table": {
+        "name": "Service namn",
+        "count": "Antal",
+        "mean": "Medelvärde",
+        "min": "Min",
+        "max": "Max",
+        "p50": "p50",
+        "p75": "p75",
+        "p95": "p95",
+        "p99": "p99"
+      }
+    },
+    "cache": { "title": "Cache statistik", "cachename": "Cache namn", "hits": "Träffar", "misses": "Missar", "evictions": "Utkastade" },
+    "datasource": {
+      "usage": "Usage",
+      "title": "DataSource statistics (time in millisecond)",
+      "name": "Pool usage",
+      "count": "Count",
+      "mean": "Mean",
+      "min": "Min",
+      "max": "Max",
+      "p50": "p50",
+      "p75": "p75",
+      "p95": "p95",
+      "p99": "p99"
+    }
+  },
+  "password": {
+    "title": "Lösenord för [<strong>{{username}}</strong>]",
+    "form": { "button": "Spara" },
+    "messages": { "error": "<strong>Det blev fel!</strong> Lösenordet kunde inte ändras.", "success": "<strong>Lösenord ändrat!</strong>" }
+  },
+  "register": {
+    "title": "Registrering",
+    "form": { "button": "Registrera" },
+    "messages": {
+      "validate": {
+        "login": {
+          "required": "Du måste fylla i ett användarnamn",
+          "minlength": "Ditt användarnamn måste vara minst ett tecken",
+          "maxlength": "Ditt användarnamn kan inte vara längre än 50 tecken",
+          "pattern": "Ditt användarnamn kan endast innehålla små bokstäver och siffror"
+        }
+      },
+      "success": "<strong>Användarnamn sparat!</strong> Kontrollera din e-post för konfirmation.",
+      "error": {
+        "fail": "<strong>Registreringen misslyckades!</strong> Prova gärna igen senare.",
+        "userexists": "<strong>Användarnamnet finns redan!</strong> Prova gärna ett annat användarnamn.",
+        "emailexists": "<strong>Mailadressen är redan använd!</strong> Prova gärna en annan mailadress."
+      }
+    }
+  },
+  "reset": {
+    "request": {
+      "title": "Återställ ditt lösenord",
+      "form": { "button": "Återställ lösenord" },
+      "messages": {
+        "info": "Ange mailadressen du använde för att registrera dig",
+        "success": "Kolla din mail för detaljer om hur du återställer ditt lösenord.",
+        "notfound": "<strong>Mailadressen är inte registrerad!</strong> Vänligen försök igen"
+      }
+    },
+    "finish": {
+      "title": "Återställ lösenord",
+      "form": { "button": "Bekräfta nytt lösenord" },
+      "messages": {
+        "info": "Välj ett nytt lösenord",
+        "success": "<strong>Ditt lösenord är återställt.</strong> Vänligen ",
+        "keymissing": "Återställningsnyckeln saknas.",
+        "error": "Ditt lösenord kunde inte återställas. Kom ihåg att en lösenordsåterställning endast är giltlig i 24 hours."
+      }
+    }
+  },
+  "sessions": {
+    "title": "Aktiva sessioner för [<strong>{{username}}</strong>]",
+    "table": { "ipaddress": "IP-adress", "useragent": "User Agent", "date": "Datum", "button": "Logga ut" },
+    "messages": {
+      "success": "<strong>Sessionen utloggad!</strong>",
+      "error": "<strong>Det blev fel!</strong> Sessionen kunde inte loggas ut."
+    }
+  },
+  "settings": {
+    "title": "Användarinställningar för [<strong>{{username}}</strong>]",
+    "form": {
+      "firstname": "Förnamn",
+      "firstname.placeholder": "Ditt förnamn",
+      "lastname": "Efternamn",
+      "lastname.placeholder": "Ditt efternamn",
+      "language": "Språk",
+      "button": "Save"
+    },
+    "messages": {
+      "error": {
+        "fail": "<strong>Det blev fel!</strong> Inställningar kunde inte sparas.",
+        "emailexists": "<strong>Mailadressen används redan!</strong> Vänligen använd en annan."
+      },
+      "success": "<strong>Inställningar sparade!</strong>",
+      "validate": {
+        "firstname": {
+          "required": "Ditt förnamn krävs.",
+          "minlength": "Ditt förnamn måste vara minst 1 tecken",
+          "maxlength": "Ditt förnamn kan inte vara längre än 50 tecken"
+        },
+        "lastname": {
+          "required": "Ditt efternamn krävs.",
+          "minlength": "Ditt efternamn måste vara längre än 1 tecken",
+          "maxlength": "Ditt efternamn kan inte vara längre än 50 tecken"
+        }
+      }
+    }
+  },
+  "userManagement": {
+    "home": { "title": "Användare", "createLabel": "Skapa en ny användare", "createOrEditLabel": "Skapa eller ändra en användare" },
+    "created": "En ny användare är skapad med ID {{ param }}",
+    "updated": "En användare är uppdaterad med ID {{ param }}",
+    "deleted": "En användare är bortagen med ID {{ param }}",
+    "delete": { "question": "Är du säker på att du vill ta bort användare {{ login }}?" },
+    "detail": { "title": "Användare" },
+    "login": "Inloggning",
+    "firstName": "Förnamn",
+    "lastName": "Efternamn",
+    "email": "Mailadress",
+    "activated": "Aktiverad",
+    "deactivated": "Inaktiverad",
+    "profiles": "Profiler",
+    "langKey": "Språk",
+    "createdBy": "Skapad av",
+    "createdDate": "Skapad datum",
+    "lastModifiedBy": "Ändrad av",
+    "lastModifiedDate": "Ändrat datum"
+  }
+}

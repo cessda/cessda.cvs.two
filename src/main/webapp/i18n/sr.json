@@ -1,0 +1,874 @@
+{
+  "activate": {
+    "title": "Aktivacija",
+    "messages": {
+      "success": "<strong>Vaš nalog je aktiviran.</strong> Molimo Vas ",
+      "error": "<strong>Vaš nalog ne može biti aktiviran.</strong> Molimo vas popunite registracioni formular kako biste se prijavili."
+    }
+  },
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "Activity Logs",
+        "createLabel": "Kreiraj novi Activity Log",
+        "createOrEditLabel": "Kreirajte ili izmenite Activity Log",
+        "notFound": "No Activity Logs found"
+      },
+      "created": "Kreiran je novi Activity Log pod nazivom {{ param }}",
+      "updated": "Activity Log pod nazivom {{ param }} je ažuriran",
+      "deleted": "Activity Log pod nazivom {{ param }} je obrisan",
+      "delete": { "question": "Da li ste sigurni da želite da obrišete Activity Log pod nazivom {{ id }}?" },
+      "detail": { "title": "Activity Log" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    },
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Kreiraj novi Agency",
+        "createOrEditLabel": "Kreirajte ili izmenite Agency",
+        "notFound": "No Agencies found"
+      },
+      "created": "Kreiran je novi Agency pod nazivom {{ param }}",
+      "updated": "Agency pod nazivom {{ param }} je ažuriran",
+      "deleted": "Agency pod nazivom {{ param }} je obrisan",
+      "delete": { "question": "Da li ste sigurni da želite da obrišete Agency pod nazivom {{ id }}?" },
+      "detail": { "title": "Agency" },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    },
+    "AgencyRole": {
+      "null": "",
+      "ADMIN": "ADMIN",
+      "VIEW": "VIEW",
+      "ADMIN_SL": "ADMIN_SL",
+      "ADMIN_TL": "ADMIN_TL",
+      "ADMIN_CONTENT": "ADMIN_CONTENT"
+    },
+    "code": {
+      "home": {
+        "title": "Codes",
+        "createLabel": "Kreiraj novi Code",
+        "createOrEditLabel": "Kreirajte ili izmenite Code",
+        "notFound": "No Codes found"
+      },
+      "created": "Kreiran je novi Code pod nazivom {{ param }}",
+      "updated": "Code pod nazivom {{ param }} je ažuriran",
+      "deleted": "Code pod nazivom {{ param }} je obrisan",
+      "delete": { "question": "Da li ste sigurni da želite da obrišete Code pod nazivom {{ id }}?" },
+      "detail": { "title": "Code" },
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv"
+    },
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Kreiraj novi Comment",
+        "createOrEditLabel": "Kreirajte ili izmenite Comment",
+        "search": "Potražite Comment",
+        "notFound": "No Comments found"
+      },
+      "created": "Kreiran je novi Comment pod nazivom {{ param }}",
+      "updated": "Comment pod nazivom {{ param }} je ažuriran",
+      "deleted": "Comment pod nazivom {{ param }} je obrisan",
+      "delete": { "question": "Da li ste sigurni da želite da obrišete Comment pod nazivom {{ id }}?" },
+      "detail": { "title": "Comment" },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    },
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Kreiraj novi Concept",
+        "createOrEditLabel": "Kreirajte ili izmenite Concept",
+        "notFound": "No Concepts found"
+      },
+      "created": "Kreiran je novi Concept pod nazivom {{ param }}",
+      "updated": "Concept pod nazivom {{ param }} je ažuriran",
+      "deleted": "Concept pod nazivom {{ param }} je obrisan",
+      "delete": { "question": "Da li ste sigurni da želite da obrišete Concept pod nazivom {{ id }}?" },
+      "detail": { "title": "Concept" },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    },
+    "conceptChange": {
+      "home": {
+        "title": "Concept Changes",
+        "createLabel": "Kreiraj novi Concept Change",
+        "createOrEditLabel": "Kreirajte ili izmenite Concept Change",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "Kreiran je novi Concept Change pod nazivom {{ param }}",
+      "updated": "Concept Change pod nazivom {{ param }} je ažuriran",
+      "deleted": "Concept Change pod nazivom {{ param }} je obrisan",
+      "delete": { "question": "Da li ste sigurni da želite da obrišete Concept Change pod nazivom {{ id }}?" },
+      "detail": { "title": "Concept Change" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    },
+    "Language": {
+      "null": "",
+      "ALBANIAN": "ALBANIAN",
+      "BOSNIAN": "BOSNIAN",
+      "BULGARIAN": "BULGARIAN",
+      "CROATIAN": "CROATIAN",
+      "CZECH": "CZECH",
+      "DANISH": "DANISH",
+      "DUTCH": "DUTCH",
+      "ENGLISH": "ENGLISH",
+      "ESTONIAN": "ESTONIAN",
+      "FINNISH": "FINNISH",
+      "FRENCH": "FRENCH",
+      "GERMAN": "GERMAN",
+      "GREEK": "GREEK",
+      "HUNGARIAN": "HUNGARIAN",
+      "ITALIAN": "ITALIAN",
+      "JAPANESE": "JAPANESE",
+      "LITHUANIAN": "LITHUANIAN",
+      "MACEDONIAN": "MACEDONIAN",
+      "NORWEGIAN": "NORWEGIAN",
+      "POLISH": "POLISH",
+      "PORTUGUESE": "PORTUGUESE",
+      "ROMANIAN": "ROMANIAN",
+      "RUSSIAN": "RUSSIAN",
+      "SERBIAN": "SERBIAN",
+      "SLOVAK": "SLOVAK",
+      "SLOVENIAN": "SLOVENIAN",
+      "SPANISH": "SPANISH",
+      "SWEDISH": "SWEDISH"
+    },
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Kreiraj novi Licence",
+        "createOrEditLabel": "Kreirajte ili izmenite Licence",
+        "notFound": "No Licences found"
+      },
+      "created": "Kreiran je novi Licence pod nazivom {{ param }}",
+      "updated": "Licence pod nazivom {{ param }} je ažuriran",
+      "deleted": "Licence pod nazivom {{ param }} je obrisan",
+      "delete": { "question": "Da li ste sigurni da želite da obrišete Licence pod nazivom {{ id }}?" },
+      "detail": { "title": "Licence" },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo"
+    },
+    "metadataField": {
+      "home": {
+        "title": "Metadata Fields",
+        "createLabel": "Kreiraj novi Metadata Field",
+        "createOrEditLabel": "Kreirajte ili izmenite Metadata Field",
+        "notFound": "No Metadata Fields found"
+      },
+      "created": "Kreiran je novi Metadata Field pod nazivom {{ param }}",
+      "updated": "Metadata Field pod nazivom {{ param }} je ažuriran",
+      "deleted": "Metadata Field pod nazivom {{ param }} je obrisan",
+      "delete": { "question": "Da li ste sigurni da želite da obrišete Metadata Field pod nazivom {{ id }}?" },
+      "detail": { "title": "Metadata Field" },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    },
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Kreiraj novi Metadata Value",
+        "createOrEditLabel": "Kreirajte ili izmenite Metadata Value",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "Kreiran je novi Metadata Value pod nazivom {{ param }}",
+      "updated": "Metadata Value pod nazivom {{ param }} je ažuriran",
+      "deleted": "Metadata Value pod nazivom {{ param }} je obrisan",
+      "delete": { "question": "Da li ste sigurni da želite da obrišete Metadata Value pod nazivom {{ id }}?" },
+      "detail": { "title": "Metadata Value" },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    },
+    "ObjectType": { "null": "", "AGENCY": "AGENCY", "GROUP": "GROUP", "SYSTEM": "SYSTEM" },
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Kreiraj novi Resolver",
+        "createOrEditLabel": "Kreirajte ili izmenite Resolver",
+        "notFound": "No Resolvers found"
+      },
+      "created": "Kreiran je novi Resolver pod nazivom {{ param }}",
+      "updated": "Resolver pod nazivom {{ param }} je ažuriran",
+      "deleted": "Resolver pod nazivom {{ param }} je obrisan",
+      "delete": { "question": "Da li ste sigurni da želite da obrišete Resolver pod nazivom {{ id }}?" },
+      "detail": { "title": "Resolver" },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    },
+    "ResolverType": { "null": "", "DOI": "DOI", "URN": "URN" },
+    "ResourceType": { "null": "", "VOCABULARY": "VOCABULARY" },
+    "userAgency": {
+      "home": {
+        "title": "User Agencies",
+        "createLabel": "Kreiraj novi User Agency",
+        "createOrEditLabel": "Kreirajte ili izmenite User Agency",
+        "notFound": "No User Agencies found"
+      },
+      "created": "Kreiran je novi User Agency pod nazivom {{ param }}",
+      "updated": "User Agency pod nazivom {{ param }} je ažuriran",
+      "deleted": "User Agency pod nazivom {{ param }} je obrisan",
+      "delete": { "question": "Da li ste sigurni da želite da obrišete User Agency pod nazivom {{ id }}?" },
+      "detail": { "title": "User Agency" },
+      "agencyRole": "Agency Role",
+      "language": "Language",
+      "agency": "Agency"
+    },
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Kreiraj novi Version",
+        "createOrEditLabel": "Kreirajte ili izmenite Version",
+        "notFound": "No Versions found"
+      },
+      "created": "Kreiran je novi Version pod nazivom {{ param }}",
+      "updated": "Version pod nazivom {{ param }} je ažuriran",
+      "deleted": "Version pod nazivom {{ param }} je obrisan",
+      "delete": { "question": "Da li ste sigurni da želite da obrišete Version pod nazivom {{ id }}?" },
+      "detail": { "title": "Version" },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    },
+    "vocabulary": {
+      "home": {
+        "title": "Vocabularies",
+        "createLabel": "Kreiraj novi Vocabulary",
+        "createOrEditLabel": "Kreirajte ili izmenite Vocabulary",
+        "notFound": "No Vocabularies found"
+      },
+      "created": "Kreiran je novi Vocabulary pod nazivom {{ param }}",
+      "updated": "Vocabulary pod nazivom {{ param }} je ažuriran",
+      "deleted": "Vocabulary pod nazivom {{ param }} je obrisan",
+      "delete": { "question": "Da li ste sigurni da želite da obrišete Vocabulary pod nazivom {{ id }}?" },
+      "detail": { "title": "Vocabulary" },
+      "status": "Status",
+      "uri": "Uri",
+      "notation": "Notation",
+      "versionNumber": "Version Number",
+      "initialPublication": "Initial Publication",
+      "previousPublication": "Previous Publication",
+      "archived": "Archived",
+      "withdrawn": "Withdrawn",
+      "discoverable": "Discoverable",
+      "sourceLanguage": "Source Language",
+      "agencyId": "Agency Id",
+      "agencyName": "Agency Name",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "notes": "Notes",
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "versionBs": "Version Bs",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "versionBg": "Version Bg",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "versionHr": "Version Hr",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "versionCs": "Version Cs",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "versionDa": "Version Da",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "versionNl": "Version Nl",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "versionEn": "Version En",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "versionEt": "Version Et",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "versionFi": "Version Fi",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "versionFr": "Version Fr",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "versionDe": "Version De",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "versionEl": "Version El",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "versionHu": "Version Hu",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "versionIt": "Version It",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "versionJa": "Version Ja",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "versionLt": "Version Lt",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "versionMk": "Version Mk",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "versionNo": "Version No",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "versionPl": "Version Pl",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "versionPt": "Version Pt",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "versionRo": "Version Ro",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "versionRu": "Version Ru",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "versionSr": "Version Sr",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "versionSk": "Version Sk",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "versionSl": "Version Sl",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "versionEs": "Version Es",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "versionSv": "Version Sv",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv",
+      "version": "Version"
+    },
+    "vocabularyChange": {
+      "home": {
+        "title": "Vocabulary Changes",
+        "createLabel": "Kreiraj novi Vocabulary Change",
+        "createOrEditLabel": "Kreirajte ili izmenite Vocabulary Change",
+        "notFound": "No Vocabulary Changes found"
+      },
+      "created": "Kreiran je novi Vocabulary Change pod nazivom {{ param }}",
+      "updated": "Vocabulary Change pod nazivom {{ param }} je ažuriran",
+      "deleted": "Vocabulary Change pod nazivom {{ param }} je obrisan",
+      "delete": { "question": "Da li ste sigurni da želite da obrišete Vocabulary Change pod nazivom {{ id }}?" },
+      "detail": { "title": "Vocabulary Change" },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  },
+  "audits": {
+    "title": "Revizije",
+    "filter": {
+      "title": "Filtriranje po datumu",
+      "from": "od",
+      "to": "do",
+      "button": { "weeks": "Nedelje", "today": "danas", "clear": "poništi", "close": "zatvori" }
+    },
+    "table": {
+      "header": { "principal": "Korisnik", "date": "Datum", "status": "Stanje", "data": "Dodatni podaci" },
+      "data": { "remoteAddress": "Adresa pristupa:" }
+    },
+    "notFound": "No audit found"
+  },
+  "configuration": {
+    "title": "Konfiguracija",
+    "filter": "Filter (po prefiksu)",
+    "table": { "prefix": "Prefiks", "properties": "Osobine" }
+  },
+  "error": {
+    "title": "Greška!",
+    "http": {
+      "400": "Bad request.",
+      "403": "Nemate dozvolu za pristupanje ovoj stranici.",
+      "404": "Stranica ne postoji.",
+      "405": "The HTTP verb you used is not supported for this URL.",
+      "500": "Internal server error."
+    },
+    "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
+    "validation": "Validation error on the server.",
+    "internalServerError": "Internal server error",
+    "server.not.reachable": "Server nije dostupan",
+    "url.not.found": "Stranica nije pronađena",
+    "NotNull": "Polje {{ fieldName }} ne može biti prazno!",
+    "Size": "Polje {{ fieldName }} ne zadovoljava minimalna i maksimalna ograničenja!",
+    "userexists": "Korisiničko ime već postoji!",
+    "emailexists": "Email je već upotrebljen!",
+    "idexists": "Novi {{ entityName }} ne može sadržati ID",
+    "idnull": "Invalid ID",
+    "file": {
+      "could.not.extract": "Could not extract file",
+      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+    }
+  },
+  "global": {
+    "title": "Cvs",
+    "browsehappy": "Koristite <strong>zastareli</strong> pretraživač. Molimo vas <a href=\"http://browsehappy.com/?locale=en\">nadogradite pretraživač</a> kako biste poboljšali Vaše iskustvo.",
+    "menu": {
+      "home": "Početna stranica",
+      "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "entities": {
+        "main": "Entiteti",
+        "vocabulary": "Vocabulary",
+        "code": "Code",
+        "version": "Version",
+        "concept": "Concept",
+        "conceptChange": "Concept Change",
+        "activityLog": "Activity Log",
+        "licence": "Licence",
+        "metadataField": "Metadata Field",
+        "metadataValue": "Metadata Value",
+        "resolver": "Resolver",
+        "vocabularyChange": "Vocabulary Change",
+        "agency": "Agency",
+        "userAgency": "User Agency",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+      },
+      "account": {
+        "main": "Profil",
+        "settings": "Podešavanja",
+        "password": "Lozinka",
+        "sessions": "Sesije",
+        "login": "Prijavi me",
+        "logout": "Odjavi me",
+        "register": "Registruj me"
+      },
+      "admin": {
+        "main": "Administracija",
+        "userManagement": "Korisnički manadžment",
+        "tracker": "Praćenje korisnika",
+        "metrics": "Metrika",
+        "health": "Ispravnost sistema",
+        "configuration": "Konfiguracija",
+        "logs": "Logovi",
+        "audits": "Revizije",
+        "apidocs": "API",
+        "database": "Baza podataka",
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "language": "Jezik"
+    },
+    "form": {
+      "username.label": "Korisničko ime",
+      "username.placeholder": "Vaše korisničko ime",
+      "newpassword.label": "Nova lozinka",
+      "newpassword.placeholder": "Vaša nova lozinka",
+      "confirmpassword.label": "Potvrdite lozinku",
+      "confirmpassword.placeholder": "Potvrdite vašu lozinku",
+      "email.label": "Email",
+      "email.placeholder": "Vaš email"
+    },
+    "messages": {
+      "info": {
+        "authenticated": {
+          "prefix": "Ako želite da se ",
+          "link": "prijavite",
+          "suffix": ", možete probati sa univerzanlnim korisničkim nalozima:<br/>- Administrator (korisničko ime=\"admin\" i lozinka=\"admin\") <br/>- User (korisničko ime=\"user\" i lozinka=\"user\")."
+        },
+        "register": { "noaccount": "Još uvek nemate profil?", "link": "Registrujte svoj profil" }
+      },
+      "error": { "dontmatch": "Lozinke se ne poklapaju!" },
+      "validate": {
+        "newpassword": {
+          "required": "Lozinka je obavezna.",
+          "minlength": "Korisničko ime mora imati najmanje 4 karaktera.",
+          "maxlength": "Lozinka ne može biti duže od 50 karaktera.",
+          "strength": "Jačina lozinke:"
+        },
+        "confirmpassword": {
+          "required": "Potvrda lozinke je obavezna.",
+          "minlength": "Potvrda lozinke mora imati najmanje 4 karaktera.",
+          "maxlength": "Potvrda lozinke ne može biti duža od 50 karaktera."
+        },
+        "email": {
+          "required": "Vaš email je obavezan.",
+          "invalid": "Vaš email is neispravan.",
+          "minlength": "Vaš email mora imati najmanje 5 karaktera.",
+          "maxlength": "Vaš email ne može biti duži od 50 karaktera."
+        }
+      }
+    },
+    "field": { "id": "ID" },
+    "ribbon": { "dev": "Razvojno okruženje" },
+    "item-count": "Showing {{first}} - {{second}} of {{total}} items."
+  },
+  "entity": {
+    "action": {
+      "addblob": "Dodaj blob",
+      "addimage": "Dodaj sliku",
+      "back": "Nazad",
+      "cancel": "Otkaži",
+      "delete": "Obriši",
+      "edit": "Izmeni",
+      "open": "Otvori",
+      "save": "Sačuvaj",
+      "view": "Pregled"
+    },
+    "detail": { "field": "Polje", "value": "Vrednost" },
+    "delete": { "title": "Potvrdi brisanje" },
+    "validation": {
+      "required": "Polje je obavezno.",
+      "minlength": "Polje mora biti veće od {{ min }} karaktera.",
+      "maxlength": "Polje ne može biti duže od {{ max }} karaktera.",
+      "min": "Polje mora biti veče od {{ min }}.",
+      "max": "Polje ne sme biti veće od {{ max }}.",
+      "minbytes": "Polje mora biti veće od {{ min }} bajtova.",
+      "maxbytes": "Polje ne može biti veće od {{ max }} bajtova.",
+      "pattern": "Polje mora da sledi obrazac {{ pattern }}.",
+      "number": "Polje mora biti broj.",
+      "datetimelocal": "Polje mora biti datum i vreme."
+    }
+  },
+  "footer": "Ovo je vaše podnožje",
+  "health": {
+    "title": "Ispravnost sistema",
+    "refresh.button": "Osveži",
+    "stacktrace": "Stacktrace",
+    "details": { "details": "Detalji", "properties": "Osobine", "name": "Ime", "value": "Vrednost", "error": "Greška" },
+    "indicator": { "diskSpace": "Veličina diska", "mail": "Email", "db": "SQL baza podataka" },
+    "table": { "service": "Ime servisa", "status": "Status" },
+    "status": { "UNKNOWN": "UNKNOWN", "UP": "AKTIVAN", "DOWN": "NEAKTIVAN" }
+  },
+  "home": {
+    "title": "Dobrodošli, Java Hipsteru!",
+    "subtitle": "Ovo je Vaša početna stranica",
+    "logged": { "message": "Prijavljeni ste kao korisnik \"{{username}}\"." },
+    "question": "Ako imate bilo kakva pitanja o JHipster-u:",
+    "link": {
+      "homepage": "JHipster početna stranica",
+      "stackoverflow": "JHipster na Stack Overflow",
+      "bugtracker": "JHipster tragač za greškama",
+      "chat": "JHipster javni čet",
+      "follow": "pratite @jhipster na Twitter-u"
+    },
+    "like": "Ako Vam se dopada JHipster, ne zaboravite da nam date zvezdicu na",
+    "github": "GitHub-u"
+  },
+  "login": {
+    "title": "Prijava",
+    "form": { "password": "Lozinka", "password.placeholder": "Lozinka", "rememberme": "Zapamti me", "button": "Prijavi me" },
+    "messages": { "error": { "authentication": "<strong>Prijava je neuspešna!</strong> Korisničko ime i/ili lozinka nisu ispavni." } },
+    "password": { "forgot": "Da li ste zaboravili lozinku?" }
+  },
+  "logs": {
+    "title": "Logovi",
+    "nbloggers": "Postoji {{ total }} logera.",
+    "filter": "Filter",
+    "table": { "name": "Naziv", "level": "Nivo" }
+  },
+  "metrics": {
+    "title": "Metrika aplikacije",
+    "refresh.button": "Osveži",
+    "updating": "Osvežavanje...",
+    "jvm": {
+      "title": "JVM metrika",
+      "memory": { "title": "Memorija", "total": "Ukupna memorija", "heap": "Heap memorija", "nonheap": "Non-Heap memorija" },
+      "threads": {
+        "title": "Niti",
+        "all": "Sve",
+        "runnable": "Runnable",
+        "timedwaiting": "Vreme čekanja",
+        "waiting": "Čekanje",
+        "blocked": "Blokirano",
+        "dump": {
+          "title": "Niti",
+          "id": "Id: ",
+          "blockedtime": "Blokirano vreme",
+          "blockedcount": "Broj blokiranih",
+          "waitedtime": "Vreme čekanja",
+          "waitedcount": "Broj čekanja",
+          "lockname": "Lock ime",
+          "stacktrace": "Stacktrace",
+          "show": "Prikaži Stacktrace",
+          "hide": "Sakri Stacktrace"
+        }
+      },
+      "gc": {
+        "title": "Garbage collections",
+        "marksweepcount": "Mark Sweep count",
+        "marksweeptime": "Mark Sweep time",
+        "scavengecount": "Scavenge count",
+        "scavengetime": "Scavenge time"
+      },
+      "http": {
+        "title": "HTTP zahtevi (dogodjaji po sekundi)",
+        "active": "Aktivni zahtevi:",
+        "total": "Ukupno zahteva:",
+        "table": { "code": "Code", "count": "Broj", "mean": "Sredja Vrednost", "average": "Prosek" },
+        "code": { "ok": "Ok", "notfound": "Nije nađen", "servererror": "Server greška" }
+      }
+    },
+    "servicesstats": {
+      "title": "Statistika servisa (vreme u milisekundama)",
+      "table": {
+        "name": "Service name",
+        "count": "Broj",
+        "mean": "Mean",
+        "min": "Min",
+        "max": "Maks",
+        "p50": "p50",
+        "p75": "p75",
+        "p95": "p95",
+        "p99": "p99"
+      }
+    },
+    "cache": {
+      "title": "Keš statistika",
+      "cachename": "Cache name",
+      "hits": "Cache Hits",
+      "misses": "Cache Misses",
+      "gets": "Cache Gets",
+      "puts": "Cache Puts",
+      "removals": "Cache Removals",
+      "evictions": "Cache Evictions",
+      "hitPercent": "Cache Hit %",
+      "missPercent": "Cache Miss %",
+      "averageGetTime": "Average get time (µs)",
+      "averagePutTime": "Average put time (µs)",
+      "averageRemoveTime": "Average remove time (µs)"
+    },
+    "datasource": {
+      "usage": "Potrošnja",
+      "title": "DataSource statistika (vreme u milisekundama)",
+      "name": "Pool usage",
+      "count": "Broj",
+      "mean": "Mean",
+      "min": "Min",
+      "max": "Max",
+      "p50": "p50",
+      "p75": "p75",
+      "p95": "p95",
+      "p99": "p99"
+    }
+  },
+  "password": {
+    "title": "Lozinka za [<strong>{{username}}</strong>]",
+    "form": { "button": "Sačuvaj" },
+    "messages": {
+      "error": "<strong>Došlo je do greške!</strong> Lozinka ne može biti promenjena.",
+      "success": "<strong>Lozinka je promenjena!</strong>"
+    }
+  },
+  "register": {
+    "title": "Registracija",
+    "form": { "button": "Registruj me" },
+    "messages": {
+      "validate": {
+        "login": {
+          "required": "Korisničko ime je obavezno.",
+          "minlength": "Korisničko ime mora imati najmanje jedan karakter.",
+          "maxlength": "Korisničko ime ne može biti duže od 50 karaktera.",
+          "pattern": "Korisničko ime sme sadržati samo mala slova i cifre."
+        }
+      },
+      "success": "<strong>Registracija je uspešna!</strong> Molimo Vas proverite svoj email kako biste je potvrdili.",
+      "error": {
+        "fail": "<strong>Registracija je neuspešna!</strong> Molimo Vas pokušajte kasnije.",
+        "userexists": "<strong>Korisničko ime već postoji!</strong> Molimo Vas odaberite drugo.",
+        "emailexists": "<strong>Email je već upotrebljen!</strong> Molimo Vas odaberite drugi."
+      }
+    }
+  },
+  "reset": {
+    "request": {
+      "title": "Promena lozinke",
+      "form": { "button": "Promeni lozinku" },
+      "messages": {
+        "info": "Unesite email adresu koju ste koristili prilikom registracije",
+        "success": "Proverite Vašu email adresu kako biste videli uputstva za promenu lozinke.",
+        "notfound": "<strong>Email adresa nije registrovana!</strong> Molimo Vas pokušajte ponovo"
+      }
+    },
+    "finish": {
+      "title": "Promena lozinke",
+      "form": { "button": "Potvrdi lozinku" },
+      "messages": {
+        "info": "Unesi novu lozinku",
+        "success": "<strong>Vaša lozinka je uspešno promenjena.</strong> Molimo Vas ",
+        "keymissing": "Nedostaje kljuc za promenu.",
+        "error": "Vaša lozinka nije promenjena. Ne zaboravite da zahtev za promenu lozinke važi samo 24 sata."
+      }
+    }
+  },
+  "sessions": {
+    "title": "Aktivne sesije za [<strong>{{username}}</strong>]",
+    "table": { "ipaddress": "IP adresa", "useragent": "Pretraživač", "date": "Datum", "button": "Prekini" },
+    "messages": {
+      "success": "<strong>Sesija prekinuta!</strong>",
+      "error": "<strong>Došlo je do greške!</strong> Sesija ne može biti prekinuta."
+    }
+  },
+  "settings": {
+    "title": "Podešavanja za [<strong>{{username}}</strong>]",
+    "form": {
+      "firstname": "Ime",
+      "firstname.placeholder": "Vaše ime",
+      "lastname": "Prezime",
+      "lastname.placeholder": "Vaše prezime",
+      "language": "Jezik",
+      "button": "Sačuvaj"
+    },
+    "messages": {
+      "error": {
+        "fail": "<strong>Došlo je do greške!</strong> Izmene ne mogu biti sačuvane.",
+        "emailexists": "<strong>Email je već upotrebljen!</strong> Molimo Vas odaberite drugi."
+      },
+      "success": "<strong>Izmene su sačuvane!</strong>",
+      "validate": {
+        "firstname": {
+          "required": "Ime je obavezno.",
+          "minlength": "Ime mora imati najmanje jedan karakter.",
+          "maxlength": "Vaše ime ne može biti duže od 50 karaktera."
+        },
+        "lastname": {
+          "required": "Prezime je obavezno.",
+          "minlength": "Prezime mora imati najmanje jedan karakter.",
+          "maxlength": "Prezime ne može biti duže od 50 karaktera."
+        }
+      }
+    }
+  },
+  "userManagement": {
+    "home": { "title": "Korisnici", "createLabel": "Kreiraj novog korisnika", "createOrEditLabel": "Kreiraj ili izmeni korisnika" },
+    "created": "Kreiran je novi korisnik {{ param }}",
+    "updated": "Korisnik {{ param }} je izmenjen",
+    "deleted": "Korisnik {{ param }} je obrisan",
+    "delete": { "question": "Da li ste sigurni da želite da obrišite korisnika {{ login }}?" },
+    "detail": { "title": "Korisnik" },
+    "login": "Korisničko ime",
+    "firstName": "Ime",
+    "lastName": "Prezime",
+    "email": "Email",
+    "activated": "Aktiviran",
+    "deactivated": "Deaktiviran",
+    "profiles": "Profili",
+    "langKey": "Jezik",
+    "createdBy": "Korisnika kreirao",
+    "createdDate": "Datum kreiranja",
+    "lastModifiedBy": "Korisnika izmenio",
+    "lastModifiedDate": "Datum izmene"
+  }
+}

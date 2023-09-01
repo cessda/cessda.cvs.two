@@ -1,0 +1,876 @@
+{
+  "activate": {
+    "title": "Activare",
+    "messages": {
+      "success": "<strong>Contul dumneavoastră a fost activat.</strong> Vă rugăm să vă autentificați",
+      "error": "<strong>Contul dumneavoastră nu a putut fi activat.</strong> Vă rugăm să folosiți formularul de înregistrare."
+    }
+  },
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "Activity Logs",
+        "createLabel": "Creeare o nouă entitate Activity Log",
+        "createOrEditLabel": "Creeare sau editare Activity Log",
+        "notFound": "No Activity Logs found"
+      },
+      "created": "A fost creată o nouă entitate Activity Log cu identificatorul {{ param }}",
+      "updated": "Activity Log cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Activity Log cu identificatorul {{ param }} a fost ștearsă",
+      "delete": { "question": "Sunteți sigur că doriți să ștergeți Activity Log {{ id }}?" },
+      "detail": { "title": "Activity Log" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    },
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Creeare o nouă entitate Agency",
+        "createOrEditLabel": "Creeare sau editare Agency",
+        "notFound": "No Agencies found"
+      },
+      "created": "A fost creată o nouă entitate Agency cu identificatorul {{ param }}",
+      "updated": "Agency cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Agency cu identificatorul {{ param }} a fost ștearsă",
+      "delete": { "question": "Sunteți sigur că doriți să ștergeți Agency {{ id }}?" },
+      "detail": { "title": "Agency" },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    },
+    "AgencyRole": {
+      "null": "",
+      "ADMIN": "ADMIN",
+      "VIEW": "VIEW",
+      "ADMIN_SL": "ADMIN_SL",
+      "ADMIN_TL": "ADMIN_TL",
+      "ADMIN_CONTENT": "ADMIN_CONTENT"
+    },
+    "code": {
+      "home": {
+        "title": "Codes",
+        "createLabel": "Creeare o nouă entitate Code",
+        "createOrEditLabel": "Creeare sau editare Code",
+        "notFound": "No Codes found"
+      },
+      "created": "A fost creată o nouă entitate Code cu identificatorul {{ param }}",
+      "updated": "Code cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Code cu identificatorul {{ param }} a fost ștearsă",
+      "delete": { "question": "Sunteți sigur că doriți să ștergeți Code {{ id }}?" },
+      "detail": { "title": "Code" },
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv"
+    },
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Creeare o nouă entitate Comment",
+        "createOrEditLabel": "Creeare sau editare Comment",
+        "search": "Căutare după Comment",
+        "notFound": "No Comments found"
+      },
+      "created": "A fost creată o nouă entitate Comment cu identificatorul {{ param }}",
+      "updated": "Comment cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Comment cu identificatorul {{ param }} a fost ștearsă",
+      "delete": { "question": "Sunteți sigur că doriți să ștergeți Comment {{ id }}?" },
+      "detail": { "title": "Comment" },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    },
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Creeare o nouă entitate Concept",
+        "createOrEditLabel": "Creeare sau editare Concept",
+        "notFound": "No Concepts found"
+      },
+      "created": "A fost creată o nouă entitate Concept cu identificatorul {{ param }}",
+      "updated": "Concept cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Concept cu identificatorul {{ param }} a fost ștearsă",
+      "delete": { "question": "Sunteți sigur că doriți să ștergeți Concept {{ id }}?" },
+      "detail": { "title": "Concept" },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    },
+    "conceptChange": {
+      "home": {
+        "title": "Concept Changes",
+        "createLabel": "Creeare o nouă entitate Concept Change",
+        "createOrEditLabel": "Creeare sau editare Concept Change",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "A fost creată o nouă entitate Concept Change cu identificatorul {{ param }}",
+      "updated": "Concept Change cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Concept Change cu identificatorul {{ param }} a fost ștearsă",
+      "delete": { "question": "Sunteți sigur că doriți să ștergeți Concept Change {{ id }}?" },
+      "detail": { "title": "Concept Change" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    },
+    "Language": {
+      "null": "",
+      "ALBANIAN": "ALBANIAN",
+      "BOSNIAN": "BOSNIAN",
+      "BULGARIAN": "BULGARIAN",
+      "CROATIAN": "CROATIAN",
+      "CZECH": "CZECH",
+      "DANISH": "DANISH",
+      "DUTCH": "DUTCH",
+      "ENGLISH": "ENGLISH",
+      "ESTONIAN": "ESTONIAN",
+      "FINNISH": "FINNISH",
+      "FRENCH": "FRENCH",
+      "GERMAN": "GERMAN",
+      "GREEK": "GREEK",
+      "HUNGARIAN": "HUNGARIAN",
+      "ITALIAN": "ITALIAN",
+      "JAPANESE": "JAPANESE",
+      "LITHUANIAN": "LITHUANIAN",
+      "MACEDONIAN": "MACEDONIAN",
+      "NORWEGIAN": "NORWEGIAN",
+      "POLISH": "POLISH",
+      "PORTUGUESE": "PORTUGUESE",
+      "ROMANIAN": "ROMANIAN",
+      "RUSSIAN": "RUSSIAN",
+      "SERBIAN": "SERBIAN",
+      "SLOVAK": "SLOVAK",
+      "SLOVENIAN": "SLOVENIAN",
+      "SPANISH": "SPANISH",
+      "SWEDISH": "SWEDISH"
+    },
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Creeare o nouă entitate Licence",
+        "createOrEditLabel": "Creeare sau editare Licence",
+        "notFound": "No Licences found"
+      },
+      "created": "A fost creată o nouă entitate Licence cu identificatorul {{ param }}",
+      "updated": "Licence cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Licence cu identificatorul {{ param }} a fost ștearsă",
+      "delete": { "question": "Sunteți sigur că doriți să ștergeți Licence {{ id }}?" },
+      "detail": { "title": "Licence" },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo"
+    },
+    "metadataField": {
+      "home": {
+        "title": "Metadata Fields",
+        "createLabel": "Creeare o nouă entitate Metadata Field",
+        "createOrEditLabel": "Creeare sau editare Metadata Field",
+        "notFound": "No Metadata Fields found"
+      },
+      "created": "A fost creată o nouă entitate Metadata Field cu identificatorul {{ param }}",
+      "updated": "Metadata Field cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Metadata Field cu identificatorul {{ param }} a fost ștearsă",
+      "delete": { "question": "Sunteți sigur că doriți să ștergeți Metadata Field {{ id }}?" },
+      "detail": { "title": "Metadata Field" },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    },
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Creeare o nouă entitate Metadata Value",
+        "createOrEditLabel": "Creeare sau editare Metadata Value",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "A fost creată o nouă entitate Metadata Value cu identificatorul {{ param }}",
+      "updated": "Metadata Value cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Metadata Value cu identificatorul {{ param }} a fost ștearsă",
+      "delete": { "question": "Sunteți sigur că doriți să ștergeți Metadata Value {{ id }}?" },
+      "detail": { "title": "Metadata Value" },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    },
+    "ObjectType": { "null": "", "AGENCY": "AGENCY", "GROUP": "GROUP", "SYSTEM": "SYSTEM" },
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Creeare o nouă entitate Resolver",
+        "createOrEditLabel": "Creeare sau editare Resolver",
+        "notFound": "No Resolvers found"
+      },
+      "created": "A fost creată o nouă entitate Resolver cu identificatorul {{ param }}",
+      "updated": "Resolver cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Resolver cu identificatorul {{ param }} a fost ștearsă",
+      "delete": { "question": "Sunteți sigur că doriți să ștergeți Resolver {{ id }}?" },
+      "detail": { "title": "Resolver" },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    },
+    "ResolverType": { "null": "", "DOI": "DOI", "URN": "URN" },
+    "ResourceType": { "null": "", "VOCABULARY": "VOCABULARY" },
+    "userAgency": {
+      "home": {
+        "title": "User Agencies",
+        "createLabel": "Creeare o nouă entitate User Agency",
+        "createOrEditLabel": "Creeare sau editare User Agency",
+        "notFound": "No User Agencies found"
+      },
+      "created": "A fost creată o nouă entitate User Agency cu identificatorul {{ param }}",
+      "updated": "User Agency cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "User Agency cu identificatorul {{ param }} a fost ștearsă",
+      "delete": { "question": "Sunteți sigur că doriți să ștergeți User Agency {{ id }}?" },
+      "detail": { "title": "User Agency" },
+      "agencyRole": "Agency Role",
+      "language": "Language",
+      "agency": "Agency"
+    },
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Creeare o nouă entitate Version",
+        "createOrEditLabel": "Creeare sau editare Version",
+        "notFound": "No Versions found"
+      },
+      "created": "A fost creată o nouă entitate Version cu identificatorul {{ param }}",
+      "updated": "Version cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Version cu identificatorul {{ param }} a fost ștearsă",
+      "delete": { "question": "Sunteți sigur că doriți să ștergeți Version {{ id }}?" },
+      "detail": { "title": "Version" },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    },
+    "vocabulary": {
+      "home": {
+        "title": "Vocabularies",
+        "createLabel": "Creeare o nouă entitate Vocabulary",
+        "createOrEditLabel": "Creeare sau editare Vocabulary",
+        "notFound": "No Vocabularies found"
+      },
+      "created": "A fost creată o nouă entitate Vocabulary cu identificatorul {{ param }}",
+      "updated": "Vocabulary cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Vocabulary cu identificatorul {{ param }} a fost ștearsă",
+      "delete": { "question": "Sunteți sigur că doriți să ștergeți Vocabulary {{ id }}?" },
+      "detail": { "title": "Vocabulary" },
+      "status": "Status",
+      "uri": "Uri",
+      "notation": "Notation",
+      "versionNumber": "Version Number",
+      "initialPublication": "Initial Publication",
+      "previousPublication": "Previous Publication",
+      "archived": "Archived",
+      "withdrawn": "Withdrawn",
+      "discoverable": "Discoverable",
+      "sourceLanguage": "Source Language",
+      "agencyId": "Agency Id",
+      "agencyName": "Agency Name",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "notes": "Notes",
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "versionBs": "Version Bs",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "versionBg": "Version Bg",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "versionHr": "Version Hr",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "versionCs": "Version Cs",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "versionDa": "Version Da",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "versionNl": "Version Nl",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "versionEn": "Version En",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "versionEt": "Version Et",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "versionFi": "Version Fi",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "versionFr": "Version Fr",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "versionDe": "Version De",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "versionEl": "Version El",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "versionHu": "Version Hu",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "versionIt": "Version It",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "versionJa": "Version Ja",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "versionLt": "Version Lt",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "versionMk": "Version Mk",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "versionNo": "Version No",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "versionPl": "Version Pl",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "versionPt": "Version Pt",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "versionRo": "Version Ro",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "versionRu": "Version Ru",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "versionSr": "Version Sr",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "versionSk": "Version Sk",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "versionSl": "Version Sl",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "versionEs": "Version Es",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "versionSv": "Version Sv",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv",
+      "version": "Version"
+    },
+    "vocabularyChange": {
+      "home": {
+        "title": "Vocabulary Changes",
+        "createLabel": "Creeare o nouă entitate Vocabulary Change",
+        "createOrEditLabel": "Creeare sau editare Vocabulary Change",
+        "notFound": "No Vocabulary Changes found"
+      },
+      "created": "A fost creată o nouă entitate Vocabulary Change cu identificatorul {{ param }}",
+      "updated": "Vocabulary Change cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Vocabulary Change cu identificatorul {{ param }} a fost ștearsă",
+      "delete": { "question": "Sunteți sigur că doriți să ștergeți Vocabulary Change {{ id }}?" },
+      "detail": { "title": "Vocabulary Change" },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  },
+  "audits": {
+    "title": "Audit",
+    "filter": {
+      "title": "Filtru date",
+      "from": "de la",
+      "to": "până la",
+      "button": { "weeks": "Săptămâni", "today": "azi", "clear": "ștergere", "close": "închidere" }
+    },
+    "table": {
+      "header": { "principal": "Utilizator", "date": "Data", "status": "Stare", "data": "Informații adiționale" },
+      "data": { "remoteAddress": "Adresa:" }
+    },
+    "notFound": "No audit found"
+  },
+  "configuration": {
+    "title": "Configurare",
+    "filter": "Filtru (după prefix)",
+    "table": { "prefix": "Prefix", "properties": "Proprietăți" }
+  },
+  "error": {
+    "title": "Pagină eroare!",
+    "http": {
+      "400": "Bad request.",
+      "403": "Nu sunteți autorizat pentru accesarea acestei pagini.",
+      "404": "Pagina nu există.",
+      "405": "The HTTP verb you used is not supported for this URL.",
+      "500": "Internal server error."
+    },
+    "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
+    "validation": "Validation error on the server.",
+    "internalServerError": "Eroare internă a serverului",
+    "server.not.reachable": "Serverul este indisponibil",
+    "url.not.found": "Nu a fost găsit",
+    "NotNull": "Câmpul {{fieldName}} nu poate fi gol!",
+    "Size": "Câmpul {{fieldName}} nu corespunde cerințelor de dimensiune minimă/maximă!",
+    "userexists": "Numele de utilizator există deja!",
+    "emailexists": "Emailul este deja folosit!",
+    "idexists": "O nouă entitate {{entityName}} nu poate avea un ID existent",
+    "idnull": "Invalid ID",
+    "file": {
+      "could.not.extract": "Could not extract file",
+      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+    }
+  },
+  "global": {
+    "title": "Cvs",
+    "browsehappy": "Folosiți un browser <strong>vechi</strong>. Va rugăm <a href=\"http://browsehappy.com/?locale=en\"> să îl actualizați</a> pentru o experiență îmbunătațită.",
+    "menu": {
+      "home": "Acasă",
+      "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "entities": {
+        "main": "Entități",
+        "bankAccount": "ContBancar",
+        "label": "Etichetă",
+        "operation": "Operație",
+        "vocabulary": "Vocabulary",
+        "code": "Code",
+        "version": "Version",
+        "concept": "Concept",
+        "conceptChange": "Concept Change",
+        "activityLog": "Activity Log",
+        "licence": "Licence",
+        "metadataField": "Metadata Field",
+        "metadataValue": "Metadata Value",
+        "resolver": "Resolver",
+        "vocabularyChange": "Vocabulary Change",
+        "agency": "Agency",
+        "userAgency": "User Agency",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+      },
+      "account": {
+        "main": "Cont",
+        "settings": "Setări",
+        "password": "Parolă",
+        "sessions": "Sesiuni",
+        "login": "Autentificare",
+        "logout": "Ieșire",
+        "register": "Înregistrare"
+      },
+      "admin": {
+        "main": "Administrare",
+        "userManagement": "Gestiune utilizatori",
+        "tracker": "Informații utilizatori",
+        "metrics": "Metrici",
+        "health": "Stare",
+        "configuration": "Configurare",
+        "logs": "Jurnal",
+        "audits": "Audit",
+        "apidocs": "API",
+        "database": "Bază de date",
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "services": { "main": "Servicii" },
+      "articles": { "main": "Articole" },
+      "language": "Limbă"
+    },
+    "form": {
+      "username.label": "Utilizator",
+      "username.placeholder": "Numele de utilizator",
+      "currentpassword.label": "Current password",
+      "currentpassword.placeholder": "Current password",
+      "newpassword.label": "Parolă nouă",
+      "newpassword.placeholder": "Parolă nouă",
+      "confirmpassword.label": "Confirma parolă",
+      "confirmpassword.placeholder": "Confirmați noua parolă",
+      "email.label": "Email",
+      "email.placeholder": "Emailul dumneavoastră"
+    },
+    "messages": {
+      "info": {
+        "authenticated": {
+          "prefix": "Dacă doriți să vă ",
+          "link": "autentificați",
+          "suffix": ", puteți încerca conturile implicite:<br/>- Administrator (login=\"admin\" și parola=\"admin\") <br/>- Utilizator (login=\"user\" și parola=\"user\")."
+        },
+        "register": { "noaccount": "Încă nu aveți un cont?", "link": "Înregistrați un cont nou" }
+      },
+      "error": { "dontmatch": "Parola și confirmarea ei nu corespund!" },
+      "validate": {
+        "newpassword": {
+          "required": "Parola dumneavoastră este necesară.",
+          "minlength": "Parola dumneavoastră trebuie să aibă cel puțin 4 caractere.",
+          "maxlength": "Parola dumneavoastră poate avea maxim 50 de caractere.",
+          "strength": "Complexitatea parolei:"
+        },
+        "confirmpassword": {
+          "required": "Confirmarea parolei este necesară.",
+          "minlength": "Confirmarea parolei trebuie să aibă cel puțin 4 caractere.",
+          "maxlength": "Confirmarea parolei poate avea maxim 50 de caractere."
+        },
+        "email": {
+          "required": "Emailul dumneavoastră este necesar.",
+          "invalid": "Email invalid.",
+          "minlength": "Emailul dumneavoastră trebuie să aibă cel puțin 5 caractere",
+          "maxlength": "Emailul dumneavoastră nu poate avea mai mult de 50 de caractere."
+        }
+      }
+    },
+    "field": { "id": "ID" },
+    "ribbon": { "dev": "Development" },
+    "item-count": "Se afișează {{first}} - {{second}} din {{total}} elemente."
+  },
+  "entity": {
+    "action": {
+      "addblob": "Adăugare blob",
+      "addimage": "Adăugare imagine",
+      "back": "Înapoi",
+      "cancel": "Anulare",
+      "delete": "Ștergere",
+      "edit": "Editare",
+      "open": "Deschidere",
+      "save": "Salvare",
+      "view": "Vizualizare"
+    },
+    "detail": { "field": "Câmp", "value": "Valoare" },
+    "delete": { "title": "Confirmați operația de ștergere" },
+    "validation": {
+      "required": "Acest câmp este necesar.",
+      "minlength": "Acest câmp nu poate fi mai scurt de {{min}} caractere.",
+      "maxlength": "Acest câmp nu poate fi mai lung de {{max}} caractere.",
+      "min": "Acest câmp trebuie să aibă o valoare mai mare decât {{min}}.",
+      "max": "Acest câmp trebuie să aibă o valoare mai mică decât {{max}}.",
+      "minbytes": "Acest câmp nu poate să fie mai mic de {{min}} bytes.",
+      "maxbytes": "Acest câmp nu poate să fie mai mare de {{max}} bytes.",
+      "pattern": "Acest câmp trebuie să corespundă șablonului {{pattern}}.",
+      "number": "Acest câmp trebuie să fie numeric.",
+      "datetimelocal": "Acest câmp trebuie să conțină data și ora."
+    }
+  },
+  "footer": "Acesta este subsolul paginii dumneavoastră",
+  "health": {
+    "title": "Starea aplicației",
+    "refresh.button": "Reîncărcare",
+    "stacktrace": "Stacktrace",
+    "details": { "details": "Detalii", "properties": "Proprietăți", "name": "Nume", "value": "Valoare", "error": "Eroare" },
+    "indicator": { "diskSpace": "Spațiu disc", "mail": "Email", "db": "Bază de date" },
+    "table": { "service": "Nume serviciu", "status": "Stare" },
+    "status": { "UNKNOWN": "UNKNOWN", "UP": "Sus", "DOWN": "Jos" }
+  },
+  "home": {
+    "title": "Bun venit, Java Hipster!",
+    "subtitle": "Aceasta este pagina ta de start",
+    "logged": { "message": "Ești autentificat cu numele de utilizator \"{{username}}\"." },
+    "question": "Dacă ai orice întrebări în legatură cu JHipster:",
+    "link": {
+      "homepage": "Pagina JHipster",
+      "stackoverflow": "JHipster pe Stack Overflow",
+      "bugtracker": "JHipster bug tracker",
+      "chat": "Camera de chat publică pentru JHipster",
+      "follow": "Contactează @jhipster pe Twitter"
+    },
+    "like": "Dacă iți place JHipster nu uita să ne dai o stea pe",
+    "github": "GitHub"
+  },
+  "login": {
+    "title": "Autentificare",
+    "form": {
+      "password": "Parolă",
+      "password.placeholder": "Parola dumneavoastră",
+      "rememberme": "Reautentificare automată",
+      "button": "Autentificare"
+    },
+    "messages": {
+      "error": {
+        "authentication": "<strong>Autentificarea nu a reușit!</strong>. Va rugăm să vă verificați credențialele și să încercați din nou."
+      }
+    },
+    "password": { "forgot": "V-ați uitat parola?" }
+  },
+  "logs": {
+    "title": "Jurnale",
+    "nbloggers": "Sunt {{ total }} jurnale.",
+    "filter": "Filtru",
+    "table": { "name": "Nume", "level": "Nivel" }
+  },
+  "metrics": {
+    "title": "Metrici aplicație",
+    "refresh.button": "Recreare",
+    "updating": "Se recreează...",
+    "jvm": {
+      "title": "Metrici JVM",
+      "memory": { "title": "Memorie", "total": "Memorie totală", "heap": "Memorie tip heap", "nonheap": "Memorie tip non-heap" },
+      "threads": {
+        "title": "Threads",
+        "all": "Toate",
+        "runnable": "Runnable",
+        "timedwaiting": "Timed waiting",
+        "waiting": "Waiting",
+        "blocked": "Blocked",
+        "dump": {
+          "title": "Threads dump",
+          "id": "Id: ",
+          "blockedtime": "Blocked Time",
+          "blockedcount": "Blocked Count",
+          "waitedtime": "Waited Time",
+          "waitedcount": "Waited Count",
+          "lockname": "Lock name",
+          "stacktrace": "Stacktrace",
+          "show": "Afișare",
+          "hide": "Ascundere"
+        }
+      },
+      "gc": {
+        "title": "Garbage collections",
+        "marksweepcount": "Mark Sweep count",
+        "marksweeptime": "Mark Sweep time",
+        "scavengecount": "Scavenge count",
+        "scavengetime": "Scavenge time"
+      },
+      "http": {
+        "title": "Conexiuni HTTP (evenimente pe secundă)",
+        "active": "Conexiuni Active:",
+        "total": "Conexiuni Totale:",
+        "table": { "code": "Cod", "count": "Număr", "mean": "Medie aritmetică", "average": "Medie" },
+        "code": { "ok": "Ok", "notfound": "Negăsit", "servererror": "Eroare server" }
+      }
+    },
+    "servicesstats": {
+      "title": "Statistici servicii (timpi in milisecunde)",
+      "table": {
+        "name": "Nume serviciu",
+        "count": "Număr",
+        "mean": "Medie",
+        "min": "Min",
+        "max": "Max",
+        "p50": "p50",
+        "p75": "p75",
+        "p95": "p95",
+        "p99": "p99"
+      }
+    },
+    "cache": { "title": "Statistici cache", "cachename": "Nume cache", "hits": "Hits", "misses": "Misses", "evictions": "Evictions" },
+    "datasource": {
+      "usage": "Folosire",
+      "title": "Statistici sursă date (timpi in milisecunde)",
+      "name": "Folosire pool",
+      "count": "Număr",
+      "mean": "Medie",
+      "min": "Min",
+      "max": "Max",
+      "p50": "p50",
+      "p75": "p75",
+      "p95": "p95",
+      "p99": "p99"
+    }
+  },
+  "password": {
+    "title": "Parola pentru [<strong>{{username}}</strong>]",
+    "form": { "button": "Salvare" },
+    "messages": {
+      "error": "<strong>Eroare!</strong> Parola nu a putut fi modificată.",
+      "success": "<strong>Parola a fost modificată!</strong>"
+    }
+  },
+  "register": {
+    "title": "Înregistrare",
+    "form": { "button": "Înregistrare" },
+    "messages": {
+      "validate": {
+        "login": {
+          "required": "Numele de utilizator este necesar.",
+          "minlength": "Numele de utilizator nu poate fi mai scurt de 1 caracter.",
+          "maxlength": "Numele de utilizator nu poate fi mai lung de 50 caractere.",
+          "pattern": "Numele de utilizator poate conține doar litere mici și numere."
+        }
+      },
+      "success": "<strong>Înregistrare salvată!</strong> Vă rugăm să vă verificați emailul pentru confirmare.",
+      "error": {
+        "fail": "<strong>Inregistrare eșuată!</strong> Vă rugăm să încercați mai tarziu.",
+        "userexists": "<strong>Acest nume de utilizator este deja folosit de altcineva!</strong> Vă rugăm să alegeți altul.",
+        "emailexists": "<strong>Acest email a mai fost folosit!</strong> Vă rugăm să alegeți altul."
+      }
+    }
+  },
+  "reset": {
+    "request": {
+      "title": "Resetați parola dumneavoastră",
+      "form": { "button": "Resetare parolă" },
+      "messages": {
+        "info": "Introduceți adresa de email folosită la înregistrare",
+        "success": "Verificați-vă emailul pentru instrucțiunile de schimbare a parolei.",
+        "notfound": "<strong>Adresa de email nu a fost găsită</strong>. Vă rugăm verificați și să încercați din nou."
+      }
+    },
+    "finish": {
+      "title": "Resetare parolă",
+      "form": { "button": "Validate parolă nouă" },
+      "messages": {
+        "info": "Alegeți o nouă parolă",
+        "success": "<strong>Parola dumneavoastra a fost resetată</strong>. Vă rugăm să vă autentificați.",
+        "keymissing": "Cheia de resetare lipsește.",
+        "error": "Parola dumneavoastră nu a fost resetată. Vă reamintim că o cerere de resetare este valabilă doar 24 de ore."
+      }
+    }
+  },
+  "sessions": {
+    "title": "Sesiuni active pentru [<strong>{{username}}</strong>]",
+    "table": { "ipaddress": "Adresa IP", "useragent": "User Agent", "date": "Data", "button": "Invalidare" },
+    "messages": {
+      "success": "<strong>Sesiune invalidată!</strong>",
+      "error": "<strong>Eroare!</strong> Sesiunea nu a putut fi invalidată."
+    }
+  },
+  "settings": {
+    "title": "Setări pentru [<strong>{{username}}</strong>]",
+    "form": {
+      "firstname": "Prenume",
+      "firstname.placeholder": "Prenumele dumneavoastră",
+      "lastname": "Nume",
+      "lastname.placeholder": "Numele dumneavoastră",
+      "language": "Limbă",
+      "button": "Salvare"
+    },
+    "messages": {
+      "error": {
+        "fail": "<strong>Eroare!</strong> Setările nu au putut fi salvate.",
+        "emailexists": "<strong>Acest email a mai fost folosit!</strong> Vă rugăm să alegeți altul."
+      },
+      "success": "<strong>Setări salvate!</strong>",
+      "validate": {
+        "firstname": {
+          "required": "Prenumele dumneavoastră este necesar",
+          "minlength": "Prenumele nu poate fi mai scurt de 1 caracter",
+          "maxlength": "Prenumele nu poate fi mai lung de 50 de caractere"
+        },
+        "lastname": {
+          "required": "Numele dumneavoastră este necesar",
+          "minlength": "Numele nu poate fi mai scurt de 1 caracter",
+          "maxlength": "Numele nu poate fi mai lung de 50 caractere"
+        }
+      }
+    }
+  },
+  "userManagement": {
+    "home": { "title": "Utilizatori", "createLabel": "Creare utilizator nou", "createOrEditLabel": "Creare sau editare utilizator" },
+    "created": "A fost creat un utilizator nou cu identificatorul {{ param }}",
+    "updated": "Utilizatorul cu identificatorul {{ param }} a fost actualizat",
+    "deleted": "Utilizatorul cu identificatorul {{ param }} a fost șters",
+    "delete": { "question": "Sunteți sigur că doriți să stergeți utilizatorul {{ login }}?" },
+    "detail": { "title": "Utilizator" },
+    "login": "Cont",
+    "firstName": "Prenume",
+    "lastName": "Nume",
+    "email": "Email",
+    "activated": "Activat",
+    "deactivated": "Dezactivat",
+    "profiles": "Profil",
+    "langKey": "Limbă",
+    "createdBy": "Creat de",
+    "createdDate": "Creat la data",
+    "lastModifiedBy": "Modifica de",
+    "lastModifiedDate": "Modificat la data"
+  }
+}

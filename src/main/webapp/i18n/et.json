@@ -1,0 +1,880 @@
+{
+  "activate": {
+    "title": "Aktiveerimine",
+    "messages": {
+      "success": "<strong>Teie konto on aktiveeritud.</strong> Palun ",
+      "error": "<strong>Teie kontot ei saanud aktiveerida.</strong> Palun kasutage registreerumiseks registreerimisvormi."
+    }
+  },
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "Activity Logs",
+        "createLabel": "Lisa uus Activity Log",
+        "createOrEditLabel": "Lisa või muuda Activity Log",
+        "notFound": "No Activity Logs found"
+      },
+      "created": "Uus Activity Log on loodud identifikaatoriga {{ param }}",
+      "updated": "Activity Log identifikaatoriga {{ param }} on muudetud",
+      "deleted": "Activity Log identifikaatoriga {{ param }} on kustutatud",
+      "delete": { "question": "Kas olete kindel, et soovite kustutada Activity Log {{ id }}?" },
+      "detail": { "title": "Activity Log" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    },
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Lisa uus Agency",
+        "createOrEditLabel": "Lisa või muuda Agency",
+        "notFound": "No Agencies found"
+      },
+      "created": "Uus Agency on loodud identifikaatoriga {{ param }}",
+      "updated": "Agency identifikaatoriga {{ param }} on muudetud",
+      "deleted": "Agency identifikaatoriga {{ param }} on kustutatud",
+      "delete": { "question": "Kas olete kindel, et soovite kustutada Agency {{ id }}?" },
+      "detail": { "title": "Agency" },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    },
+    "AgencyRole": {
+      "null": "",
+      "ADMIN": "ADMIN",
+      "VIEW": "VIEW",
+      "ADMIN_SL": "ADMIN_SL",
+      "ADMIN_TL": "ADMIN_TL",
+      "ADMIN_CONTENT": "ADMIN_CONTENT"
+    },
+    "code": {
+      "home": {
+        "title": "Codes",
+        "createLabel": "Lisa uus Code",
+        "createOrEditLabel": "Lisa või muuda Code",
+        "notFound": "No Codes found"
+      },
+      "created": "Uus Code on loodud identifikaatoriga {{ param }}",
+      "updated": "Code identifikaatoriga {{ param }} on muudetud",
+      "deleted": "Code identifikaatoriga {{ param }} on kustutatud",
+      "delete": { "question": "Kas olete kindel, et soovite kustutada Code {{ id }}?" },
+      "detail": { "title": "Code" },
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv"
+    },
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Lisa uus Comment",
+        "createOrEditLabel": "Lisa või muuda Comment",
+        "search": "Otsi Comment",
+        "notFound": "No Comments found"
+      },
+      "created": "Uus Comment on loodud identifikaatoriga {{ param }}",
+      "updated": "Comment identifikaatoriga {{ param }} on muudetud",
+      "deleted": "Comment identifikaatoriga {{ param }} on kustutatud",
+      "delete": { "question": "Kas olete kindel, et soovite kustutada Comment {{ id }}?" },
+      "detail": { "title": "Comment" },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    },
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Lisa uus Concept",
+        "createOrEditLabel": "Lisa või muuda Concept",
+        "notFound": "No Concepts found"
+      },
+      "created": "Uus Concept on loodud identifikaatoriga {{ param }}",
+      "updated": "Concept identifikaatoriga {{ param }} on muudetud",
+      "deleted": "Concept identifikaatoriga {{ param }} on kustutatud",
+      "delete": { "question": "Kas olete kindel, et soovite kustutada Concept {{ id }}?" },
+      "detail": { "title": "Concept" },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    },
+    "conceptChange": {
+      "home": {
+        "title": "Concept Changes",
+        "createLabel": "Lisa uus Concept Change",
+        "createOrEditLabel": "Lisa või muuda Concept Change",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "Uus Concept Change on loodud identifikaatoriga {{ param }}",
+      "updated": "Concept Change identifikaatoriga {{ param }} on muudetud",
+      "deleted": "Concept Change identifikaatoriga {{ param }} on kustutatud",
+      "delete": { "question": "Kas olete kindel, et soovite kustutada Concept Change {{ id }}?" },
+      "detail": { "title": "Concept Change" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    },
+    "Language": {
+      "null": "",
+      "ALBANIAN": "ALBANIAN",
+      "BOSNIAN": "BOSNIAN",
+      "BULGARIAN": "BULGARIAN",
+      "CROATIAN": "CROATIAN",
+      "CZECH": "CZECH",
+      "DANISH": "DANISH",
+      "DUTCH": "DUTCH",
+      "ENGLISH": "ENGLISH",
+      "ESTONIAN": "ESTONIAN",
+      "FINNISH": "FINNISH",
+      "FRENCH": "FRENCH",
+      "GERMAN": "GERMAN",
+      "GREEK": "GREEK",
+      "HUNGARIAN": "HUNGARIAN",
+      "ITALIAN": "ITALIAN",
+      "JAPANESE": "JAPANESE",
+      "LITHUANIAN": "LITHUANIAN",
+      "MACEDONIAN": "MACEDONIAN",
+      "NORWEGIAN": "NORWEGIAN",
+      "POLISH": "POLISH",
+      "PORTUGUESE": "PORTUGUESE",
+      "ROMANIAN": "ROMANIAN",
+      "RUSSIAN": "RUSSIAN",
+      "SERBIAN": "SERBIAN",
+      "SLOVAK": "SLOVAK",
+      "SLOVENIAN": "SLOVENIAN",
+      "SPANISH": "SPANISH",
+      "SWEDISH": "SWEDISH"
+    },
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Lisa uus Licence",
+        "createOrEditLabel": "Lisa või muuda Licence",
+        "notFound": "No Licences found"
+      },
+      "created": "Uus Licence on loodud identifikaatoriga {{ param }}",
+      "updated": "Licence identifikaatoriga {{ param }} on muudetud",
+      "deleted": "Licence identifikaatoriga {{ param }} on kustutatud",
+      "delete": { "question": "Kas olete kindel, et soovite kustutada Licence {{ id }}?" },
+      "detail": { "title": "Licence" },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo"
+    },
+    "metadataField": {
+      "home": {
+        "title": "Metadata Fields",
+        "createLabel": "Lisa uus Metadata Field",
+        "createOrEditLabel": "Lisa või muuda Metadata Field",
+        "notFound": "No Metadata Fields found"
+      },
+      "created": "Uus Metadata Field on loodud identifikaatoriga {{ param }}",
+      "updated": "Metadata Field identifikaatoriga {{ param }} on muudetud",
+      "deleted": "Metadata Field identifikaatoriga {{ param }} on kustutatud",
+      "delete": { "question": "Kas olete kindel, et soovite kustutada Metadata Field {{ id }}?" },
+      "detail": { "title": "Metadata Field" },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    },
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Lisa uus Metadata Value",
+        "createOrEditLabel": "Lisa või muuda Metadata Value",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "Uus Metadata Value on loodud identifikaatoriga {{ param }}",
+      "updated": "Metadata Value identifikaatoriga {{ param }} on muudetud",
+      "deleted": "Metadata Value identifikaatoriga {{ param }} on kustutatud",
+      "delete": { "question": "Kas olete kindel, et soovite kustutada Metadata Value {{ id }}?" },
+      "detail": { "title": "Metadata Value" },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    },
+    "ObjectType": { "null": "", "AGENCY": "AGENCY", "GROUP": "GROUP", "SYSTEM": "SYSTEM" },
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Lisa uus Resolver",
+        "createOrEditLabel": "Lisa või muuda Resolver",
+        "notFound": "No Resolvers found"
+      },
+      "created": "Uus Resolver on loodud identifikaatoriga {{ param }}",
+      "updated": "Resolver identifikaatoriga {{ param }} on muudetud",
+      "deleted": "Resolver identifikaatoriga {{ param }} on kustutatud",
+      "delete": { "question": "Kas olete kindel, et soovite kustutada Resolver {{ id }}?" },
+      "detail": { "title": "Resolver" },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    },
+    "ResolverType": { "null": "", "DOI": "DOI", "URN": "URN" },
+    "ResourceType": { "null": "", "VOCABULARY": "VOCABULARY" },
+    "userAgency": {
+      "home": {
+        "title": "User Agencies",
+        "createLabel": "Lisa uus User Agency",
+        "createOrEditLabel": "Lisa või muuda User Agency",
+        "notFound": "No User Agencies found"
+      },
+      "created": "Uus User Agency on loodud identifikaatoriga {{ param }}",
+      "updated": "User Agency identifikaatoriga {{ param }} on muudetud",
+      "deleted": "User Agency identifikaatoriga {{ param }} on kustutatud",
+      "delete": { "question": "Kas olete kindel, et soovite kustutada User Agency {{ id }}?" },
+      "detail": { "title": "User Agency" },
+      "agencyRole": "Agency Role",
+      "language": "Language",
+      "agency": "Agency"
+    },
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Lisa uus Version",
+        "createOrEditLabel": "Lisa või muuda Version",
+        "notFound": "No Versions found"
+      },
+      "created": "Uus Version on loodud identifikaatoriga {{ param }}",
+      "updated": "Version identifikaatoriga {{ param }} on muudetud",
+      "deleted": "Version identifikaatoriga {{ param }} on kustutatud",
+      "delete": { "question": "Kas olete kindel, et soovite kustutada Version {{ id }}?" },
+      "detail": { "title": "Version" },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    },
+    "vocabulary": {
+      "home": {
+        "title": "Vocabularies",
+        "createLabel": "Lisa uus Vocabulary",
+        "createOrEditLabel": "Lisa või muuda Vocabulary",
+        "notFound": "No Vocabularies found"
+      },
+      "created": "Uus Vocabulary on loodud identifikaatoriga {{ param }}",
+      "updated": "Vocabulary identifikaatoriga {{ param }} on muudetud",
+      "deleted": "Vocabulary identifikaatoriga {{ param }} on kustutatud",
+      "delete": { "question": "Kas olete kindel, et soovite kustutada Vocabulary {{ id }}?" },
+      "detail": { "title": "Vocabulary" },
+      "status": "Status",
+      "uri": "Uri",
+      "notation": "Notation",
+      "versionNumber": "Version Number",
+      "initialPublication": "Initial Publication",
+      "previousPublication": "Previous Publication",
+      "archived": "Archived",
+      "withdrawn": "Withdrawn",
+      "discoverable": "Discoverable",
+      "sourceLanguage": "Source Language",
+      "agencyId": "Agency Id",
+      "agencyName": "Agency Name",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "notes": "Notes",
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "versionBs": "Version Bs",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "versionBg": "Version Bg",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "versionHr": "Version Hr",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "versionCs": "Version Cs",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "versionDa": "Version Da",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "versionNl": "Version Nl",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "versionEn": "Version En",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "versionEt": "Version Et",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "versionFi": "Version Fi",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "versionFr": "Version Fr",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "versionDe": "Version De",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "versionEl": "Version El",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "versionHu": "Version Hu",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "versionIt": "Version It",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "versionJa": "Version Ja",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "versionLt": "Version Lt",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "versionMk": "Version Mk",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "versionNo": "Version No",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "versionPl": "Version Pl",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "versionPt": "Version Pt",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "versionRo": "Version Ro",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "versionRu": "Version Ru",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "versionSr": "Version Sr",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "versionSk": "Version Sk",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "versionSl": "Version Sl",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "versionEs": "Version Es",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "versionSv": "Version Sv",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv",
+      "version": "Version"
+    },
+    "vocabularyChange": {
+      "home": {
+        "title": "Vocabulary Changes",
+        "createLabel": "Lisa uus Vocabulary Change",
+        "createOrEditLabel": "Lisa või muuda Vocabulary Change",
+        "notFound": "No Vocabulary Changes found"
+      },
+      "created": "Uus Vocabulary Change on loodud identifikaatoriga {{ param }}",
+      "updated": "Vocabulary Change identifikaatoriga {{ param }} on muudetud",
+      "deleted": "Vocabulary Change identifikaatoriga {{ param }} on kustutatud",
+      "delete": { "question": "Kas olete kindel, et soovite kustutada Vocabulary Change {{ id }}?" },
+      "detail": { "title": "Vocabulary Change" },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  },
+  "audits": {
+    "title": "Audit",
+    "filter": {
+      "title": "Kuupäeva filter",
+      "from": "alates",
+      "to": "kuni",
+      "button": { "weeks": "Nädalad", "today": "täna", "clear": "tühjenda", "close": "sule" }
+    },
+    "table": {
+      "header": { "principal": "Kasutaja", "date": "Kuupäev", "status": "Olek", "data": "Lisaandmed" },
+      "data": { "remoteAddress": "IP aadress:" }
+    },
+    "notFound": "No audit found"
+  },
+  "configuration": {
+    "title": "Konfiguratsioon",
+    "filter": "Filter (prefiksi alusel)",
+    "table": { "prefix": "Prefiks", "properties": "Omadused" }
+  },
+  "error": {
+    "title": "Vealeht!",
+    "http": {
+      "400": "Bad request.",
+      "403": "Teil puuduvad õigused selle lehe nägemiseks.",
+      "404": "Lehte ei ole olemas.",
+      "405": "The HTTP verb you used is not supported for this URL.",
+      "500": "Internal server error."
+    },
+    "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
+    "validation": "Validation error on the server.",
+    "internalServerError": "Serveri sisemine viga",
+    "server.not.reachable": "Server pole kättesaadav",
+    "url.not.found": "Ei leitud",
+    "NotNull": "Väli {{ fieldName }} ei tohi olla tühi!",
+    "Size": "Välja {{ fieldName }} väärtus ei vasta min/max väärtuse nõuetele!",
+    "userexists": "Kasutajanimi on juba kasutuses!",
+    "emailexists": "E-posti aadress on juba kasutuses!",
+    "idexists": "Uue {{ entityName }} ID välja väärtus peab olema tühi",
+    "idnull": "Invalid ID",
+    "file": {
+      "could.not.extract": "Ei saanud faili eraldada",
+      "not.image": "Ootasime, et fail on pilt, aga faili tüüp on \"{{ fileType }}\""
+    }
+  },
+  "global": {
+    "title": "Cvs",
+    "browsehappy": "Te kasutate <strong>vananenud</strong> veebilehitsejat. Kasutuskogemuse parandamiseks palun <a href=\"http://browsehappy.com/?locale=et\">uuendage oma veebilehitsejat</a>.",
+    "menu": {
+      "home": "Avaleht",
+      "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "entities": {
+        "main": "Olemid",
+        "vocabulary": "Vocabulary",
+        "code": "Code",
+        "version": "Version",
+        "concept": "Concept",
+        "conceptChange": "Concept Change",
+        "activityLog": "Activity Log",
+        "licence": "Licence",
+        "metadataField": "Metadata Field",
+        "metadataValue": "Metadata Value",
+        "resolver": "Resolver",
+        "vocabularyChange": "Vocabulary Change",
+        "agency": "Agency",
+        "userAgency": "User Agency",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+      },
+      "account": {
+        "main": "Konto",
+        "settings": "Sätted",
+        "password": "Salasõna",
+        "sessions": "Sessioonid",
+        "login": "Logi sisse",
+        "logout": "Logi välja",
+        "register": "Registreeru"
+      },
+      "admin": {
+        "main": "Administreerimine",
+        "userManagement": "Kasutajate haldus",
+        "tracker": "Kasutajate jälgimine",
+        "metrics": "Meetrika",
+        "health": "Tervis",
+        "configuration": "Konfiguratsioon",
+        "logs": "Logid",
+        "audits": "Audit",
+        "apidocs": "API",
+        "database": "Andmebaas",
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "language": "Keel"
+    },
+    "form": {
+      "username.label": "Kasutajanimi",
+      "username.placeholder": "Teie kasutajanimi",
+      "currentpassword.label": "Current password",
+      "currentpassword.placeholder": "Current password",
+      "newpassword.label": "Uus salasõna",
+      "newpassword.placeholder": "Uus salasõna",
+      "confirmpassword.label": "Uus salasõna uuesti",
+      "confirmpassword.placeholder": "Uus salasõna uuesti",
+      "email.label": "E-posti aadress",
+      "email.placeholder": "Teie e-posti aadress"
+    },
+    "messages": {
+      "info": {
+        "authenticated": {
+          "prefix": "Kui te soovite ",
+          "link": "sisse logida",
+          "suffix": ", siis võite kasutada vaikekontosid:<br/>- Administraator (kasutajanimi=\"admin\" ja salasõna=\"admin\") <br/>- Kasutaja (kasutajanimi=\"user\" ja salasõna=\"user\")."
+        },
+        "register": { "noaccount": "Teil pole veel kontot?", "link": "Registreerige uus konto" }
+      },
+      "error": { "dontmatch": "Salasõna ja selle kordus erinevad!" },
+      "validate": {
+        "newpassword": {
+          "required": "Salasõna on kohustuslik.",
+          "minlength": "Salasõna pikkus peab olema vähemalt 4 sümbolit.",
+          "maxlength": "Salasõna ei tohi olla pikem kui 50 sümbolit.",
+          "strength": "Salasõna tugevus:"
+        },
+        "confirmpassword": {
+          "required": "Salasõna kordus on kohustuslik.",
+          "minlength": "Salasõna kordus peab olema vähemalt 4 sümbolit.",
+          "maxlength": "Salasõna kordus ei tohi olla pikem kui 50 sümbolit."
+        },
+        "email": {
+          "required": "E-posti aadress on kohustuslik.",
+          "invalid": "Ebakorrektne e-posti aadress.",
+          "minlength": "E-posti aadressi pikkus peab olema vähemalt 5 sümbolit.",
+          "maxlength": "E-posti aadressi pikkus ei tohi olla üle 50 sümboli."
+        }
+      }
+    },
+    "field": { "id": "ID" },
+    "ribbon": { "dev": "Arendus" },
+    "item-count": "Showing {{first}} - {{second}} of {{total}} items."
+  },
+  "entity": {
+    "action": {
+      "addblob": "Lisa binaarne objekt",
+      "addimage": "Lisa pilt",
+      "back": "Tagasi",
+      "cancel": "Katkesta",
+      "delete": "Kustuta",
+      "edit": "Muuda",
+      "open": "Ava",
+      "save": "Salvesta",
+      "view": "Vaata"
+    },
+    "detail": { "field": "Väli", "value": "Väärtus" },
+    "delete": { "title": "Kinnita kustutamine" },
+    "validation": {
+      "required": "See väli on kohustuslik.",
+      "minlength": "Selle välja pikkus peab olema vähemalt {{ min }} sümbolit.",
+      "maxlength": "Selle välja pikkus ei tohi olla üle {{ max }} sümboli.",
+      "min": "Selle välja väärtus peab olema vähemalt {{ min }}.",
+      "max": "Selle välja väärtus ei tohi olla suurem kui {{ max }}.",
+      "minbytes": "Selles väljas peab olema vähemalt {{ min }} baiti.",
+      "maxbytes": "Selles väljas ei tohi olla üle {{ max }} baidi.",
+      "pattern": "Selle välja väärtus peab vastama mallile {{ pattern }}.",
+      "number": "Selle välja väärtus peab olema number.",
+      "datetimelocal": "Selles väljas peab olema kuupäev ja kellaaeg."
+    }
+  },
+  "footer": "See on teie jalus",
+  "health": {
+    "title": "Tervisekontrollid",
+    "refresh.button": "Värskenda",
+    "stacktrace": "Stacktrace",
+    "details": { "details": "Detailid", "properties": "Omadused", "name": "Nimetus", "value": "Väärtus", "error": "Viga" },
+    "indicator": { "diskSpace": "Kettaruum", "mail": "E-post", "db": "Andmebaas" },
+    "table": { "service": "Teenuse nimi", "status": "Seisund" },
+    "status": { "UNKNOWN": "UNKNOWN", "UP": "UP", "DOWN": "DOWN" }
+  },
+  "home": {
+    "title": "Tere tulemast, Java Hipster!",
+    "subtitle": "See on teie avaleht",
+    "logged": { "message": "Olete sisse logitud kasutajana \"{{username}}\"." },
+    "question": "Kui teil on küsimusi JHipster kohta:",
+    "link": {
+      "homepage": "JHipster koduleht",
+      "stackoverflow": "JHipster Stack Overflow-s",
+      "bugtracker": "JHipster veahaldus",
+      "chat": "JHipster avalik jututuba",
+      "follow": "jälgi @jhipster Twitteris"
+    },
+    "like": "Kui teile meeldib JHipster, siis ärge unustage anda meile tähte",
+    "github": "GitHub-is"
+  },
+  "login": {
+    "title": "Logi sisse",
+    "form": { "password": "Salasõna", "password.placeholder": "Teie salasõna", "rememberme": "Jäta mind meelde", "button": "Logi sisse" },
+    "messages": {
+      "error": {
+        "authentication": "<strong>Sisselogimine ebaõnnestus!</strong> Palun kontrollige kasutajanime ja parooli ning proovige uuesti."
+      }
+    },
+    "password": { "forgot": "Kas unustasite salasõna?" }
+  },
+  "logs": {
+    "title": "Logid",
+    "nbloggers": "Kokku on {{ total }} logijat.",
+    "filter": "Filter",
+    "table": { "name": "Nimi", "level": "Tase" }
+  },
+  "metrics": {
+    "title": "Rakenduse meetrika",
+    "refresh.button": "Värskenda",
+    "updating": "Uuendame...",
+    "jvm": {
+      "title": "JVM meetrika",
+      "memory": { "title": "Mälu", "total": "Kogu mälu", "heap": "Heap Memory", "nonheap": "Non-Heap Memory" },
+      "threads": {
+        "title": "Lõimed",
+        "all": "Kõik",
+        "runnable": "Käivitatud",
+        "timedwaiting": "Ajaga ootel",
+        "waiting": "Määramatult ootel",
+        "blocked": "Blokeeritud",
+        "dump": {
+          "title": "Lõimede tõmmis",
+          "id": "Id: ",
+          "blockedtime": "Blokeeritud aeg",
+          "blockedcount": "Blokeerimiste arv",
+          "waitedtime": "Oodatud aeg",
+          "waitedcount": "Ootamiste arv",
+          "lockname": "Luku nimi",
+          "stacktrace": "Stacktrace",
+          "show": "Näita Stacktrace",
+          "hide": "Peida Stacktrace"
+        }
+      },
+      "gc": {
+        "title": "Garbage collections",
+        "marksweepcount": "Mark Sweep count",
+        "marksweeptime": "Mark Sweep time",
+        "scavengecount": "Scavenge count",
+        "scavengetime": "Scavenge time"
+      },
+      "http": {
+        "title": "HTTP päringud (sündmusi sekundis)",
+        "active": "Aktiivsed päringud:",
+        "total": "Kokku päringuid:",
+        "table": { "code": "Kood", "count": "Arv", "mean": "Keskväärtus", "average": "Keskmine" },
+        "code": { "ok": "Ok", "notfound": "Ei leitud", "servererror": "Serveri viga" }
+      }
+    },
+    "servicesstats": {
+      "title": "Teenuste statistika (aeg on millisekundites)",
+      "table": {
+        "name": "Teenuse nimi",
+        "count": "Arv",
+        "mean": "Keskväärtus",
+        "min": "Min",
+        "max": "Maks",
+        "p50": "p50",
+        "p75": "p75",
+        "p95": "p95",
+        "p99": "p99"
+      }
+    },
+    "cache": {
+      "title": "Cache statistics",
+      "cachename": "Cache name",
+      "hits": "Cache Hits",
+      "misses": "Cache Misses",
+      "gets": "Cache Gets",
+      "puts": "Cache Puts",
+      "removals": "Cache Removals",
+      "evictions": "Cache Evictions",
+      "hitPercent": "Cache Hit %",
+      "missPercent": "Cache Miss %",
+      "averageGetTime": "Average get time (µs)",
+      "averagePutTime": "Average put time (µs)",
+      "averageRemoveTime": "Average remove time (µs)"
+    },
+    "datasource": {
+      "usage": "Kasutus",
+      "title": "Andmeallika statistika (aeg on millisekundites)",
+      "name": "Puuli kasutamine",
+      "count": "Arv",
+      "mean": "Keskväärtus",
+      "min": "Min",
+      "max": "Maks",
+      "p50": "p50",
+      "p75": "p75",
+      "p95": "p95",
+      "p99": "p99"
+    }
+  },
+  "password": {
+    "title": "Salasõna kasutajale [<strong>{{username}}</strong>]",
+    "form": { "button": "Salvesta" },
+    "messages": {
+      "error": "<strong>Tekkis viga!</strong> Salasõna muutmine ebaõnnestus.",
+      "success": "<strong>Salasõna muudetud!</strong>"
+    }
+  },
+  "register": {
+    "title": "Registreerimine",
+    "form": { "button": "Registreeri" },
+    "messages": {
+      "validate": {
+        "login": {
+          "required": "Kasutajanimi on kohustuslik.",
+          "minlength": "Kasutajanime pikkus peab olema vähemalt 1 sümbol.",
+          "maxlength": "Kasutajanimi ei tohi olla pikem kui 50 sümbolit.",
+          "pattern": "Kasutajanimi tohib sisaldada ainult väiketähti ja numbreid."
+        }
+      },
+      "success": "<strong>Registreering on salvestatud!</strong> Kinnituseks kontrollige oma e-posti.",
+      "error": {
+        "fail": "<strong>Registreerimine ebaõnnestus!</strong> Palun proovige hiljem uuesti.",
+        "userexists": "<strong>Kasutajanimi on juba kasutuses!</strong> Palun valige teine kasutajanimi.",
+        "emailexists": "<strong>E-posti aadress on juba kasutuses!</strong> Palun valige teine e-posti aadress."
+      }
+    }
+  },
+  "reset": {
+    "request": {
+      "title": "Muuda oma salasõna",
+      "form": { "button": "Muuda salasõna" },
+      "messages": {
+        "info": "Sisestage registreerimisel kasutatud e-posti aadress",
+        "success": "Kontrollige oma e-posti, et saada infot, kuidas salasõna ära muuta.",
+        "notfound": "<strong>E-posti aadress pole registreeritud!</strong> Palun kontrollige üle ja proovige uuesti"
+      }
+    },
+    "finish": {
+      "title": "Muuda salasõna",
+      "form": { "button": "Kinnita uus salasõna" },
+      "messages": {
+        "info": "Valige uus salasõna",
+        "success": "<strong>Teie salasõna on muudetud.</strong> Palun ",
+        "keymissing": "Muutmise võti puudub.",
+        "error": "Teie salasõna ei saanud ära muuta. Pidage meeles, et salasõna muutmise tellimus kehtib ainult 24 tundi."
+      }
+    }
+  },
+  "sessions": {
+    "title": "Kasutaja [<strong>{{username}}</strong>] aktiivsed sessioonid",
+    "table": { "ipaddress": "IP aadress", "useragent": "Veebilehitseja", "date": "Kuupäev", "button": "Lõpeta sessioon" },
+    "messages": {
+      "success": "<strong>Sessioon lõpetatud!</strong>",
+      "error": "<strong>Tekkis viga!</strong> Sessiooni ei saanud lõpetada."
+    }
+  },
+  "settings": {
+    "title": "Kasutaja [<strong>{{username}}</strong>] sätted",
+    "form": {
+      "firstname": "Eesnimi",
+      "firstname.placeholder": "Teie eesnimi",
+      "lastname": "Perekonnanimi",
+      "lastname.placeholder": "Teie perekonnanimi",
+      "language": "Keel",
+      "button": "Salvesta"
+    },
+    "messages": {
+      "error": {
+        "fail": "<strong>Tekkis viga!</strong> Sätteid ei saanud salvestada.",
+        "emailexists": "<strong>E-posti aadress on juba kasutuses!</strong> Palun valige teine."
+      },
+      "success": "<strong>Sätted salvestatud!</strong>",
+      "validate": {
+        "firstname": {
+          "required": "Eesnimi on kohustuslik.",
+          "minlength": "Eesnime pikkus peab olema vähemalt 1 sümbol",
+          "maxlength": "Eesnime pikkus ei tohi olla üle 50 sümboli"
+        },
+        "lastname": {
+          "required": "Perekonnanimi on kohustuslik.",
+          "minlength": "Perekonnanime pikkus peab olema vähemalt 1 sümbol",
+          "maxlength": "Perekonnanime pikkus ei tohi olla üle 50 sümboli"
+        }
+      }
+    }
+  },
+  "userManagement": {
+    "home": { "title": "Kasutajad", "createLabel": "Lisa uus kasutaja", "createOrEditLabel": "Lisa või muuda kasutaja" },
+    "created": "Loodi uus kasutaja identifikaatoriga {{ param }}",
+    "updated": "Identifikaatoriga {{ param }} kasutaja on muudetud",
+    "deleted": "Identifikaatoriga {{ param }} kasutaja on kustutatud",
+    "delete": { "question": "Kas olete kindel, et soovite kasutaja {{ login }} kustutada?" },
+    "detail": { "title": "Kasutaja" },
+    "login": "Kasutajanimi",
+    "firstName": "Eesnimi",
+    "lastName": "Perekonnanimi",
+    "email": "E-post",
+    "activated": "Aktiveeritud",
+    "deactivated": "Deaktiveeritud",
+    "profiles": "Profiilid",
+    "langKey": "Keel",
+    "createdBy": "Lisaja",
+    "createdDate": "Lisamise aeg",
+    "lastModifiedBy": "Viimane muutja",
+    "lastModifiedDate": "Viimase muutmise aeg"
+  }
+}

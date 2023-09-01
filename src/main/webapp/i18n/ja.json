@@ -1,0 +1,853 @@
+{
+  "activate": {
+    "title": "アクティベーション",
+    "messages": {
+      "success": "<strong>あなたのアカウントはアクティベートされました。</strong> ",
+      "error": "<strong>あなたのアカウントはアクティベートされませんでした。</strong>サインアップするために登録フォームを使ってサインアップしてください。"
+    }
+  },
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "ActivityLogs",
+        "createLabel": "Activity Log を追加",
+        "createOrEditLabel": "Activity Logを追加または編集",
+        "notFound": "No Activity Logs found"
+      },
+      "created": "A new Activity Log is created with identifier {{ param }}",
+      "updated": "A Activity Log is updated with identifier {{ param }}",
+      "deleted": "A Activity Log is deleted with identifier {{ param }}",
+      "delete": { "question": "Activity Log {{ id }}を削除してもよろしいですか？" },
+      "detail": { "title": "Activity Log" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    },
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Agency を追加",
+        "createOrEditLabel": "Agencyを追加または編集",
+        "notFound": "No Agencies found"
+      },
+      "created": "A new Agency is created with identifier {{ param }}",
+      "updated": "A Agency is updated with identifier {{ param }}",
+      "deleted": "A Agency is deleted with identifier {{ param }}",
+      "delete": { "question": "Agency {{ id }}を削除してもよろしいですか？" },
+      "detail": { "title": "Agency" },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    },
+    "AgencyRole": {
+      "null": "",
+      "ADMIN": "ADMIN",
+      "VIEW": "VIEW",
+      "ADMIN_SL": "ADMIN_SL",
+      "ADMIN_TL": "ADMIN_TL",
+      "ADMIN_CONTENT": "ADMIN_CONTENT"
+    },
+    "code": {
+      "home": { "title": "Codes", "createLabel": "Code を追加", "createOrEditLabel": "Codeを追加または編集", "notFound": "No Codes found" },
+      "created": "A new Code is created with identifier {{ param }}",
+      "updated": "A Code is updated with identifier {{ param }}",
+      "deleted": "A Code is deleted with identifier {{ param }}",
+      "delete": { "question": "Code {{ id }}を削除してもよろしいですか？" },
+      "detail": { "title": "Code" },
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv"
+    },
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Comment を追加",
+        "createOrEditLabel": "Commentを追加または編集",
+        "search": "Search for Comment",
+        "notFound": "No Comments found"
+      },
+      "created": "A new Comment is created with identifier {{ param }}",
+      "updated": "A Comment is updated with identifier {{ param }}",
+      "deleted": "A Comment is deleted with identifier {{ param }}",
+      "delete": { "question": "Comment {{ id }}を削除してもよろしいですか？" },
+      "detail": { "title": "Comment" },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    },
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Concept を追加",
+        "createOrEditLabel": "Conceptを追加または編集",
+        "notFound": "No Concepts found"
+      },
+      "created": "A new Concept is created with identifier {{ param }}",
+      "updated": "A Concept is updated with identifier {{ param }}",
+      "deleted": "A Concept is deleted with identifier {{ param }}",
+      "delete": { "question": "Concept {{ id }}を削除してもよろしいですか？" },
+      "detail": { "title": "Concept" },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    },
+    "conceptChange": {
+      "home": {
+        "title": "ConceptChanges",
+        "createLabel": "Concept Change を追加",
+        "createOrEditLabel": "Concept Changeを追加または編集",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "A new Concept Change is created with identifier {{ param }}",
+      "updated": "A Concept Change is updated with identifier {{ param }}",
+      "deleted": "A Concept Change is deleted with identifier {{ param }}",
+      "delete": { "question": "Concept Change {{ id }}を削除してもよろしいですか？" },
+      "detail": { "title": "Concept Change" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    },
+    "Language": {
+      "null": "",
+      "ALBANIAN": "ALBANIAN",
+      "BOSNIAN": "BOSNIAN",
+      "BULGARIAN": "BULGARIAN",
+      "CROATIAN": "CROATIAN",
+      "CZECH": "CZECH",
+      "DANISH": "DANISH",
+      "DUTCH": "DUTCH",
+      "ENGLISH": "ENGLISH",
+      "ESTONIAN": "ESTONIAN",
+      "FINNISH": "FINNISH",
+      "FRENCH": "FRENCH",
+      "GERMAN": "GERMAN",
+      "GREEK": "GREEK",
+      "HUNGARIAN": "HUNGARIAN",
+      "ITALIAN": "ITALIAN",
+      "JAPANESE": "JAPANESE",
+      "LITHUANIAN": "LITHUANIAN",
+      "MACEDONIAN": "MACEDONIAN",
+      "NORWEGIAN": "NORWEGIAN",
+      "POLISH": "POLISH",
+      "PORTUGUESE": "PORTUGUESE",
+      "ROMANIAN": "ROMANIAN",
+      "RUSSIAN": "RUSSIAN",
+      "SERBIAN": "SERBIAN",
+      "SLOVAK": "SLOVAK",
+      "SLOVENIAN": "SLOVENIAN",
+      "SPANISH": "SPANISH",
+      "SWEDISH": "SWEDISH"
+    },
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Licence を追加",
+        "createOrEditLabel": "Licenceを追加または編集",
+        "notFound": "No Licences found"
+      },
+      "created": "A new Licence is created with identifier {{ param }}",
+      "updated": "A Licence is updated with identifier {{ param }}",
+      "deleted": "A Licence is deleted with identifier {{ param }}",
+      "delete": { "question": "Licence {{ id }}を削除してもよろしいですか？" },
+      "detail": { "title": "Licence" },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo"
+    },
+    "metadataField": {
+      "home": {
+        "title": "MetadataFields",
+        "createLabel": "Metadata Field を追加",
+        "createOrEditLabel": "Metadata Fieldを追加または編集",
+        "notFound": "No Metadata Fields found"
+      },
+      "created": "A new Metadata Field is created with identifier {{ param }}",
+      "updated": "A Metadata Field is updated with identifier {{ param }}",
+      "deleted": "A Metadata Field is deleted with identifier {{ param }}",
+      "delete": { "question": "Metadata Field {{ id }}を削除してもよろしいですか？" },
+      "detail": { "title": "Metadata Field" },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    },
+    "metadataValue": {
+      "home": {
+        "title": "MetadataValues",
+        "createLabel": "Metadata Value を追加",
+        "createOrEditLabel": "Metadata Valueを追加または編集",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "A new Metadata Value is created with identifier {{ param }}",
+      "updated": "A Metadata Value is updated with identifier {{ param }}",
+      "deleted": "A Metadata Value is deleted with identifier {{ param }}",
+      "delete": { "question": "Metadata Value {{ id }}を削除してもよろしいですか？" },
+      "detail": { "title": "Metadata Value" },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    },
+    "ObjectType": { "null": "", "AGENCY": "AGENCY", "GROUP": "GROUP", "SYSTEM": "SYSTEM" },
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Resolver を追加",
+        "createOrEditLabel": "Resolverを追加または編集",
+        "notFound": "No Resolvers found"
+      },
+      "created": "A new Resolver is created with identifier {{ param }}",
+      "updated": "A Resolver is updated with identifier {{ param }}",
+      "deleted": "A Resolver is deleted with identifier {{ param }}",
+      "delete": { "question": "Resolver {{ id }}を削除してもよろしいですか？" },
+      "detail": { "title": "Resolver" },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    },
+    "ResolverType": { "null": "", "DOI": "DOI", "URN": "URN" },
+    "ResourceType": { "null": "", "VOCABULARY": "VOCABULARY" },
+    "userAgency": {
+      "home": {
+        "title": "UserAgencies",
+        "createLabel": "User Agency を追加",
+        "createOrEditLabel": "User Agencyを追加または編集",
+        "notFound": "No User Agencies found"
+      },
+      "created": "A new User Agency is created with identifier {{ param }}",
+      "updated": "A User Agency is updated with identifier {{ param }}",
+      "deleted": "A User Agency is deleted with identifier {{ param }}",
+      "delete": { "question": "User Agency {{ id }}を削除してもよろしいですか？" },
+      "detail": { "title": "User Agency" },
+      "agencyRole": "Agency Role",
+      "language": "Language",
+      "agency": "Agency"
+    },
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Version を追加",
+        "createOrEditLabel": "Versionを追加または編集",
+        "notFound": "No Versions found"
+      },
+      "created": "A new Version is created with identifier {{ param }}",
+      "updated": "A Version is updated with identifier {{ param }}",
+      "deleted": "A Version is deleted with identifier {{ param }}",
+      "delete": { "question": "Version {{ id }}を削除してもよろしいですか？" },
+      "detail": { "title": "Version" },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    },
+    "vocabulary": {
+      "home": {
+        "title": "Vocabularies",
+        "createLabel": "Vocabulary を追加",
+        "createOrEditLabel": "Vocabularyを追加または編集",
+        "notFound": "No Vocabularies found"
+      },
+      "created": "A new Vocabulary is created with identifier {{ param }}",
+      "updated": "A Vocabulary is updated with identifier {{ param }}",
+      "deleted": "A Vocabulary is deleted with identifier {{ param }}",
+      "delete": { "question": "Vocabulary {{ id }}を削除してもよろしいですか？" },
+      "detail": { "title": "Vocabulary" },
+      "status": "Status",
+      "uri": "Uri",
+      "notation": "Notation",
+      "versionNumber": "Version Number",
+      "initialPublication": "Initial Publication",
+      "previousPublication": "Previous Publication",
+      "archived": "Archived",
+      "withdrawn": "Withdrawn",
+      "discoverable": "Discoverable",
+      "sourceLanguage": "Source Language",
+      "agencyId": "Agency Id",
+      "agencyName": "Agency Name",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "notes": "Notes",
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "versionBs": "Version Bs",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "versionBg": "Version Bg",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "versionHr": "Version Hr",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "versionCs": "Version Cs",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "versionDa": "Version Da",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "versionNl": "Version Nl",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "versionEn": "Version En",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "versionEt": "Version Et",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "versionFi": "Version Fi",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "versionFr": "Version Fr",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "versionDe": "Version De",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "versionEl": "Version El",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "versionHu": "Version Hu",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "versionIt": "Version It",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "versionJa": "Version Ja",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "versionLt": "Version Lt",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "versionMk": "Version Mk",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "versionNo": "Version No",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "versionPl": "Version Pl",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "versionPt": "Version Pt",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "versionRo": "Version Ro",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "versionRu": "Version Ru",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "versionSr": "Version Sr",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "versionSk": "Version Sk",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "versionSl": "Version Sl",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "versionEs": "Version Es",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "versionSv": "Version Sv",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv",
+      "version": "Version"
+    },
+    "vocabularyChange": {
+      "home": {
+        "title": "VocabularyChanges",
+        "createLabel": "Vocabulary Change を追加",
+        "createOrEditLabel": "Vocabulary Changeを追加または編集",
+        "notFound": "No Vocabulary Changes found"
+      },
+      "created": "A new Vocabulary Change is created with identifier {{ param }}",
+      "updated": "A Vocabulary Change is updated with identifier {{ param }}",
+      "deleted": "A Vocabulary Change is deleted with identifier {{ param }}",
+      "delete": { "question": "Vocabulary Change {{ id }}を削除してもよろしいですか？" },
+      "detail": { "title": "Vocabulary Change" },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  },
+  "audits": {
+    "title": "監査",
+    "filter": {
+      "title": "日付でフィルター",
+      "from": "from",
+      "to": "to",
+      "button": { "weeks": "週", "today": "今日", "clear": "クリアー", "close": "閉じる" }
+    },
+    "table": {
+      "header": { "principal": "ユーザー", "date": "日時", "status": "ステータス", "data": "エクストラデータ" },
+      "data": { "remoteAddress": "リモートアドレス:" }
+    },
+    "notFound": "No audit found"
+  },
+  "configuration": { "title": "設定", "filter": "フィルター (by prefix)", "table": { "prefix": "Prefix", "properties": "プロパティ" } },
+  "error": {
+    "title": "エラーページ!",
+    "http": {
+      "400": "Bad request.",
+      "403": "このページヘのアクセスは許可されていません。",
+      "404": "ページが存在しません。",
+      "405": "The HTTP verb you used is not supported for this URL.",
+      "500": "Internal server error."
+    },
+    "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
+    "validation": "Validation error on the server.",
+    "internalServerError": "Internal server error",
+    "server.not.reachable": "Server not reachable",
+    "url.not.found": "Not found",
+    "NotNull": "Field {{fieldName}} cannot be empty!",
+    "Size": "Field {{fieldName}} does not meet min/max size requirements!",
+    "userexists": "Login name already used!",
+    "emailexists": "Email is already in use!",
+    "idexists": "A new {{entityName}} cannot already have an ID",
+    "idnull": "Invalid ID",
+    "file": {
+      "could.not.extract": "Could not extract file",
+      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+    }
+  },
+  "global": {
+    "title": "Cvs",
+    "browsehappy": "<strong>古い</strong>ブラウザーが使われています。より良い体験を得るために<a href=\"http://browsehappy.com/?locale=en\">ブラウザをアップデート</a>してください。",
+    "menu": {
+      "home": "ホーム",
+      "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "entities": {
+        "main": "エンティティ",
+        "vocabulary": "Vocabulary",
+        "code": "Code",
+        "version": "Version",
+        "concept": "Concept",
+        "conceptChange": "Concept Change",
+        "activityLog": "Activity Log",
+        "licence": "Licence",
+        "metadataField": "Metadata Field",
+        "metadataValue": "Metadata Value",
+        "resolver": "Resolver",
+        "vocabularyChange": "Vocabulary Change",
+        "agency": "Agency",
+        "userAgency": "User Agency",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+      },
+      "account": {
+        "main": "アカウント",
+        "settings": "設定",
+        "password": "パスワード",
+        "sessions": "セッション",
+        "login": "認証",
+        "logout": "ログアウト",
+        "register": "登録"
+      },
+      "admin": {
+        "main": "管理",
+        "userManagement": "User management",
+        "tracker": "ユーザートラッカー",
+        "metrics": "メトリクス",
+        "health": "ヘルスステータス",
+        "configuration": "設定",
+        "logs": "ログ",
+        "audits": "監査",
+        "apidocs": "API",
+        "database": "データベース",
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "language": "言語"
+    },
+    "form": {
+      "username.label": "ユーザー名",
+      "username.placeholder": "ユーザー名",
+      "currentpassword.label": "Current password",
+      "currentpassword.placeholder": "Current password",
+      "newpassword.label": "新しいパスワード",
+      "newpassword.placeholder": "新しいパスワード",
+      "confirmpassword.label": "新しいパスワード(確認)",
+      "confirmpassword.placeholder": "新しいパスワード(確認)",
+      "email.label": "メールアドレス",
+      "email.placeholder": "あなたのメールアドレス"
+    },
+    "messages": {
+      "info": {
+        "authenticated": {
+          "prefix": "",
+          "link": "認証",
+          "suffix": "を試したければ, デフォルトアカウント:<br/>- 管理者 (ユーザー名=\"admin\", パスワード=\"admin\") <br/>- ユーザー (login=\"user\", password=\"user\")."
+        },
+        "register": { "noaccount": "アカウントをまだお持ちでないですか?", "link": "アカウントを登録する" }
+      },
+      "error": { "dontmatch": "パスワードが一致しません!" },
+      "validate": {
+        "newpassword": {
+          "required": "パスワードを入力してください。",
+          "minlength": "パスワードは4文字以上で入力してください。",
+          "maxlength": "パスワードは50文字以下で入力してください。",
+          "strength": "パスワード強度:"
+        },
+        "confirmpassword": {
+          "required": "パスワード(確認)を入力してください。",
+          "minlength": "パスワード(確認)は4文字以上で入力してください。",
+          "maxlength": "パスワード(確認)は50文字以下で入力してください。"
+        },
+        "email": {
+          "required": "メールアドレスを入力してください。",
+          "invalid": "正しいメールアドレスを入力してください。",
+          "minlength": "メールアドレスは5文字以上で入力してください。",
+          "maxlength": "メールアドレスは50文字以下で入力してください。"
+        }
+      }
+    },
+    "field": { "id": "ID" },
+    "ribbon": { "dev": "Development" },
+    "item-count": "Showing {{first}} - {{second}} of {{total}} items."
+  },
+  "entity": {
+    "action": {
+      "addblob": "Add blob",
+      "addimage": "Add image",
+      "back": "戻る",
+      "cancel": "キャンセル",
+      "delete": "削除",
+      "edit": "編集",
+      "open": "Open",
+      "save": "保存",
+      "view": "表示"
+    },
+    "detail": { "field": "フィールド", "value": "値" },
+    "delete": { "title": "削除の確認" },
+    "validation": {
+      "required": "This field is required.",
+      "minlength": "This field is required to be at least {{min}} characters.",
+      "maxlength": "This field cannot be longer than {{max}} characters.",
+      "min": "This field should be more than {{min}}.",
+      "max": "This field cannot be more than {{max}}.",
+      "minbytes": "This field should be more than {{min}} bytes.",
+      "maxbytes": "This field cannot be more than {{max}} bytes.",
+      "pattern": "This field should follow pattern {{pattern}}.",
+      "number": "This field should be a number.",
+      "datetimelocal": "This field should be a date and time."
+    }
+  },
+  "footer": "フッターです",
+  "health": {
+    "title": "ヘルスチェック",
+    "refresh.button": "リロード",
+    "stacktrace": "スタックトレース",
+    "details": { "details": "Details", "properties": "Properties", "name": "Name", "value": "Value", "error": "Error" },
+    "indicator": { "diskSpace": "ディスクスペース", "mail": "メール", "db": "データベース" },
+    "table": { "service": "サービス名", "status": "ステータス" },
+    "status": { "UNKNOWN": "UNKNOWN", "UP": "UP", "DOWN": "DOWN" }
+  },
+  "home": {
+    "title": "ようこそ, Java Hipster!",
+    "subtitle": "ここはトップページです。",
+    "logged": { "message": "\"{{username}}\"としてログインしています。" },
+    "question": "JHipsterに関して質問があれば:",
+    "link": {
+      "homepage": "JHipsterのサイト",
+      "stackoverflow": "Stack Overflow のJHipster",
+      "bugtracker": "JHipsterのバグトラッカー",
+      "chat": "JHipster public chat room",
+      "follow": "Twitterの @jhipster"
+    },
+    "like": "JHipsterを気に入ったら、是非スターをつけてください。",
+    "github": "GitHub"
+  },
+  "login": {
+    "title": "認証",
+    "form": { "password": "パスワード", "password.placeholder": "パスワード", "rememberme": "自動ログイン", "button": "ログイン" },
+    "messages": { "error": { "authentication": "<strong>ログイン失敗!</strong> パスワードをチェックして再度入力してください。" } },
+    "password": { "forgot": "Did you forget your password?" }
+  },
+  "logs": {
+    "title": "ログ",
+    "nbloggers": "合計 {{ total }} 件のログがあります",
+    "filter": "フィルター",
+    "table": { "name": "Name", "level": "Level" }
+  },
+  "metrics": {
+    "title": "アプリケーションメトリクス",
+    "refresh.button": "リロード",
+    "updating": "更新中...",
+    "jvm": {
+      "title": "JVMメトリクス",
+      "memory": { "title": "Memory", "total": "Total Memory", "heap": "Heap Memory", "nonheap": "Non-Heap Memory" },
+      "threads": {
+        "title": "スレッド",
+        "all": "ALL",
+        "runnable": "Runnable",
+        "timedwaiting": "Timed waiting",
+        "waiting": "Waiting",
+        "blocked": "Blocked",
+        "dump": {
+          "title": "スレッドダンプ",
+          "id": "Id: ",
+          "blockedtime": "Blocked Time",
+          "blockedcount": "Blocked Count",
+          "waitedtime": "Waited Time",
+          "waitedcount": "Waited Count",
+          "lockname": "Lock name",
+          "stacktrace": "Stacktrace",
+          "show": "表示",
+          "hide": "隠す"
+        }
+      },
+      "gc": {
+        "title": "ガベージコレクション",
+        "marksweepcount": "Mark Sweep count",
+        "marksweeptime": "Mark Sweep time",
+        "scavengecount": "Scavenge count",
+        "scavengetime": "Scavenge time"
+      },
+      "http": {
+        "title": "HTTPリクエスト数 (イベント/秒)",
+        "active": "アクティブリクエスト数:",
+        "total": "トータルリクエススト数:",
+        "table": { "code": "Code", "count": "Count", "mean": "Mean", "average": "Average" },
+        "code": { "ok": "Ok", "notfound": "Not found", "servererror": "Server Error" }
+      }
+    },
+    "servicesstats": {
+      "title": "サービス統計 (回/ミリ秒)",
+      "table": {
+        "name": "Service name",
+        "count": "Count",
+        "mean": "Mean",
+        "min": "Min",
+        "max": "Max",
+        "p50": "p50",
+        "p75": "p75",
+        "p95": "p95",
+        "p99": "p99"
+      }
+    },
+    "cache": { "title": "Cache統計", "cachename": "Cache name", "hits": "Hits", "misses": "Misses", "evictions": "Evictions" },
+    "datasource": {
+      "usage": "使用状況",
+      "title": "データベース統計 (回/ミリ秒)",
+      "name": "Pool usage",
+      "count": "Count",
+      "mean": "Mean",
+      "min": "Min",
+      "max": "Max",
+      "p50": "p50",
+      "p75": "p75",
+      "p95": "p95",
+      "p99": "p99"
+    }
+  },
+  "password": {
+    "title": "[<strong>{{username}}</strong>]のパスワード",
+    "form": { "button": "保存" },
+    "messages": {
+      "error": "<strong>エラーが発生しました!</strong> パスワードは更新されませんでした。",
+      "success": "<strong>パスワードが更新されました!</strong>"
+    }
+  },
+  "register": {
+    "title": "登録",
+    "form": { "button": "登録する" },
+    "messages": {
+      "validate": {
+        "login": {
+          "required": "ユーザー名が必要です。",
+          "minlength": "ユーザー名は1文字以上で入力してください",
+          "maxlength": "ユーザー名は50文字以下で入力してください",
+          "pattern": "ユーザー名は小文字あるいは数字で入力してください"
+        }
+      },
+      "success": "<strong>登録が完了しました!</strong> 送られたメールを確認して下さい。",
+      "error": {
+        "fail": "<strong>登録が失敗しました!</strong> 後ほど再度登録を行ってください。",
+        "userexists": "<strong>ユーザー名が既に登録されています!</strong> 別のユーザー名を使用してください。",
+        "emailexists": "<strong>メールアドレスが既に登録されています!</strong> 別のメールアドレスを使用してください。"
+      }
+    }
+  },
+  "reset": {
+    "request": {
+      "title": "Reset your password",
+      "form": { "button": "Reset password" },
+      "messages": {
+        "info": "Enter the email address you used to register",
+        "success": "Check your emails for details on how to reset your password.",
+        "notfound": "<strong>Email address isn't registered!</strong> Please check and try again"
+      }
+    },
+    "finish": {
+      "title": "Reset password",
+      "form": { "button": "Validate new password" },
+      "messages": {
+        "info": "Choose a new password",
+        "success": "<strong>Your password has been reset.</strong> Please ",
+        "keymissing": "The reset key is missing.",
+        "error": "Your password couldn't be reset. Remember a password request is only valid for 24 hours."
+      }
+    }
+  },
+  "sessions": {
+    "title": "[<strong>{{username}}</strong>]のアクティブセッション",
+    "table": { "ipaddress": "IPアドレス", "useragent": "User Agent", "date": "日時", "button": "無効にする" },
+    "messages": {
+      "success": "<strong>セッションが無効になりました!</strong>",
+      "error": "<strong>エラーが発生しました!</strong> セッションを無効化できませんでした。"
+    }
+  },
+  "settings": {
+    "title": "[<strong>{{username}}</strong>]の設定",
+    "form": {
+      "firstname": "名",
+      "firstname.placeholder": "名",
+      "lastname": "姓",
+      "lastname.placeholder": "姓",
+      "language": "言語",
+      "button": "保存する"
+    },
+    "messages": {
+      "error": {
+        "fail": "<strong>エラーが発生しました!</strong> 設定は保存されませんでした。",
+        "emailexists": "<strong>メールアドレスが既に使われています!</strong> 別のメールアドレスを使用してください。"
+      },
+      "success": "<strong>設定を保存しました!</strong>",
+      "validate": {
+        "firstname": {
+          "required": "名を入力してください",
+          "minlength": "名は1文字以上で入力してください",
+          "maxlength": "名は50文字以下で入力してください"
+        },
+        "lastname": {
+          "required": "姓を入力してください",
+          "minlength": "姓は1文字以上で入力してください",
+          "maxlength": "姓は50文字以下で入力してください"
+        }
+      }
+    }
+  },
+  "userManagement": {
+    "home": { "title": "Users", "createLabel": "Create a new user", "createOrEditLabel": "Create or edit a user" },
+    "created": "A new user is created with identifier {{ param }}",
+    "updated": "A user is updated with identifier {{ param }}",
+    "deleted": "A user is deleted with identifier {{ param }}",
+    "delete": { "question": "Are you sure you want to delete user {{ login }}?" },
+    "detail": { "title": "User" },
+    "login": "Login",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "activated": "Activated",
+    "deactivated": "Deactivated",
+    "profiles": "Profiles",
+    "langKey": "Language",
+    "createdBy": "Created by",
+    "createdDate": "Created date",
+    "lastModifiedBy": "Modified by",
+    "lastModifiedDate": "Modified date"
+  }
+}

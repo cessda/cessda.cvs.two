@@ -15,4 +15,8 @@
  */
 import 'zone.js';
 import '@angular/localize/init';
-require('../manifest.webapp');
+
+// Define window.process for conponents trying to use process.env
+(window as any).process = {
+  env: {},
+};

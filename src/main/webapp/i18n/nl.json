@@ -1,0 +1,873 @@
+{
+  "activate": {
+    "title": "Activatie",
+    "messages": {
+      "success": "<strong>Uw gebuiker werd geactiveerd.</strong> Gelieve te ",
+      "error": "<strong>Uw gebruiker kon niet geactiveerd worden.</strong> Gelieve het registratie formulier te gebruiken om zich in te schrijven."
+    }
+  },
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "Activity Logs",
+        "createLabel": "Maak een nieuwe Activity Log",
+        "createOrEditLabel": "Maak of wijzig een Activity Log",
+        "notFound": "No Activity Logs found"
+      },
+      "created": "A new Activity Log is created with identifier {{ param }}",
+      "updated": "A Activity Log is updated with identifier {{ param }}",
+      "deleted": "A Activity Log is deleted with identifier {{ param }}",
+      "delete": { "question": "Bent u zeker dat u Activity Log {{ id }} wilt verwijderen?" },
+      "detail": { "title": "Activity Log" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    },
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Maak een nieuwe Agency",
+        "createOrEditLabel": "Maak of wijzig een Agency",
+        "notFound": "No Agencies found"
+      },
+      "created": "A new Agency is created with identifier {{ param }}",
+      "updated": "A Agency is updated with identifier {{ param }}",
+      "deleted": "A Agency is deleted with identifier {{ param }}",
+      "delete": { "question": "Bent u zeker dat u Agency {{ id }} wilt verwijderen?" },
+      "detail": { "title": "Agency" },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    },
+    "AgencyRole": {
+      "null": "",
+      "ADMIN": "ADMIN",
+      "VIEW": "VIEW",
+      "ADMIN_SL": "ADMIN_SL",
+      "ADMIN_TL": "ADMIN_TL",
+      "ADMIN_CONTENT": "ADMIN_CONTENT"
+    },
+    "code": {
+      "home": {
+        "title": "Codes",
+        "createLabel": "Maak een nieuwe Code",
+        "createOrEditLabel": "Maak of wijzig een Code",
+        "notFound": "No Codes found"
+      },
+      "created": "A new Code is created with identifier {{ param }}",
+      "updated": "A Code is updated with identifier {{ param }}",
+      "deleted": "A Code is deleted with identifier {{ param }}",
+      "delete": { "question": "Bent u zeker dat u Code {{ id }} wilt verwijderen?" },
+      "detail": { "title": "Code" },
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv"
+    },
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Maak een nieuwe Comment",
+        "createOrEditLabel": "Maak of wijzig een Comment",
+        "search": "Search for Comment",
+        "notFound": "No Comments found"
+      },
+      "created": "A new Comment is created with identifier {{ param }}",
+      "updated": "A Comment is updated with identifier {{ param }}",
+      "deleted": "A Comment is deleted with identifier {{ param }}",
+      "delete": { "question": "Bent u zeker dat u Comment {{ id }} wilt verwijderen?" },
+      "detail": { "title": "Comment" },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    },
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Maak een nieuwe Concept",
+        "createOrEditLabel": "Maak of wijzig een Concept",
+        "notFound": "No Concepts found"
+      },
+      "created": "A new Concept is created with identifier {{ param }}",
+      "updated": "A Concept is updated with identifier {{ param }}",
+      "deleted": "A Concept is deleted with identifier {{ param }}",
+      "delete": { "question": "Bent u zeker dat u Concept {{ id }} wilt verwijderen?" },
+      "detail": { "title": "Concept" },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    },
+    "conceptChange": {
+      "home": {
+        "title": "Concept Changes",
+        "createLabel": "Maak een nieuwe Concept Change",
+        "createOrEditLabel": "Maak of wijzig een Concept Change",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "A new Concept Change is created with identifier {{ param }}",
+      "updated": "A Concept Change is updated with identifier {{ param }}",
+      "deleted": "A Concept Change is deleted with identifier {{ param }}",
+      "delete": { "question": "Bent u zeker dat u Concept Change {{ id }} wilt verwijderen?" },
+      "detail": { "title": "Concept Change" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    },
+    "Language": {
+      "null": "",
+      "ALBANIAN": "ALBANIAN",
+      "BOSNIAN": "BOSNIAN",
+      "BULGARIAN": "BULGARIAN",
+      "CROATIAN": "CROATIAN",
+      "CZECH": "CZECH",
+      "DANISH": "DANISH",
+      "DUTCH": "DUTCH",
+      "ENGLISH": "ENGLISH",
+      "ESTONIAN": "ESTONIAN",
+      "FINNISH": "FINNISH",
+      "FRENCH": "FRENCH",
+      "GERMAN": "GERMAN",
+      "GREEK": "GREEK",
+      "HUNGARIAN": "HUNGARIAN",
+      "ITALIAN": "ITALIAN",
+      "JAPANESE": "JAPANESE",
+      "LITHUANIAN": "LITHUANIAN",
+      "MACEDONIAN": "MACEDONIAN",
+      "NORWEGIAN": "NORWEGIAN",
+      "POLISH": "POLISH",
+      "PORTUGUESE": "PORTUGUESE",
+      "ROMANIAN": "ROMANIAN",
+      "RUSSIAN": "RUSSIAN",
+      "SERBIAN": "SERBIAN",
+      "SLOVAK": "SLOVAK",
+      "SLOVENIAN": "SLOVENIAN",
+      "SPANISH": "SPANISH",
+      "SWEDISH": "SWEDISH"
+    },
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Maak een nieuwe Licence",
+        "createOrEditLabel": "Maak of wijzig een Licence",
+        "notFound": "No Licences found"
+      },
+      "created": "A new Licence is created with identifier {{ param }}",
+      "updated": "A Licence is updated with identifier {{ param }}",
+      "deleted": "A Licence is deleted with identifier {{ param }}",
+      "delete": { "question": "Bent u zeker dat u Licence {{ id }} wilt verwijderen?" },
+      "detail": { "title": "Licence" },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo"
+    },
+    "metadataField": {
+      "home": {
+        "title": "Metadata Fields",
+        "createLabel": "Maak een nieuwe Metadata Field",
+        "createOrEditLabel": "Maak of wijzig een Metadata Field",
+        "notFound": "No Metadata Fields found"
+      },
+      "created": "A new Metadata Field is created with identifier {{ param }}",
+      "updated": "A Metadata Field is updated with identifier {{ param }}",
+      "deleted": "A Metadata Field is deleted with identifier {{ param }}",
+      "delete": { "question": "Bent u zeker dat u Metadata Field {{ id }} wilt verwijderen?" },
+      "detail": { "title": "Metadata Field" },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    },
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Maak een nieuwe Metadata Value",
+        "createOrEditLabel": "Maak of wijzig een Metadata Value",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "A new Metadata Value is created with identifier {{ param }}",
+      "updated": "A Metadata Value is updated with identifier {{ param }}",
+      "deleted": "A Metadata Value is deleted with identifier {{ param }}",
+      "delete": { "question": "Bent u zeker dat u Metadata Value {{ id }} wilt verwijderen?" },
+      "detail": { "title": "Metadata Value" },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    },
+    "ObjectType": { "null": "", "AGENCY": "AGENCY", "GROUP": "GROUP", "SYSTEM": "SYSTEM" },
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Maak een nieuwe Resolver",
+        "createOrEditLabel": "Maak of wijzig een Resolver",
+        "notFound": "No Resolvers found"
+      },
+      "created": "A new Resolver is created with identifier {{ param }}",
+      "updated": "A Resolver is updated with identifier {{ param }}",
+      "deleted": "A Resolver is deleted with identifier {{ param }}",
+      "delete": { "question": "Bent u zeker dat u Resolver {{ id }} wilt verwijderen?" },
+      "detail": { "title": "Resolver" },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    },
+    "ResolverType": { "null": "", "DOI": "DOI", "URN": "URN" },
+    "ResourceType": { "null": "", "VOCABULARY": "VOCABULARY" },
+    "userAgency": {
+      "home": {
+        "title": "User Agencies",
+        "createLabel": "Maak een nieuwe User Agency",
+        "createOrEditLabel": "Maak of wijzig een User Agency",
+        "notFound": "No User Agencies found"
+      },
+      "created": "A new User Agency is created with identifier {{ param }}",
+      "updated": "A User Agency is updated with identifier {{ param }}",
+      "deleted": "A User Agency is deleted with identifier {{ param }}",
+      "delete": { "question": "Bent u zeker dat u User Agency {{ id }} wilt verwijderen?" },
+      "detail": { "title": "User Agency" },
+      "agencyRole": "Agency Role",
+      "language": "Language",
+      "agency": "Agency"
+    },
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Maak een nieuwe Version",
+        "createOrEditLabel": "Maak of wijzig een Version",
+        "notFound": "No Versions found"
+      },
+      "created": "A new Version is created with identifier {{ param }}",
+      "updated": "A Version is updated with identifier {{ param }}",
+      "deleted": "A Version is deleted with identifier {{ param }}",
+      "delete": { "question": "Bent u zeker dat u Version {{ id }} wilt verwijderen?" },
+      "detail": { "title": "Version" },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    },
+    "vocabulary": {
+      "home": {
+        "title": "Vocabularies",
+        "createLabel": "Maak een nieuwe Vocabulary",
+        "createOrEditLabel": "Maak of wijzig een Vocabulary",
+        "notFound": "No Vocabularies found"
+      },
+      "created": "A new Vocabulary is created with identifier {{ param }}",
+      "updated": "A Vocabulary is updated with identifier {{ param }}",
+      "deleted": "A Vocabulary is deleted with identifier {{ param }}",
+      "delete": { "question": "Bent u zeker dat u Vocabulary {{ id }} wilt verwijderen?" },
+      "detail": { "title": "Vocabulary" },
+      "status": "Status",
+      "uri": "Uri",
+      "notation": "Notation",
+      "versionNumber": "Version Number",
+      "initialPublication": "Initial Publication",
+      "previousPublication": "Previous Publication",
+      "archived": "Archived",
+      "withdrawn": "Withdrawn",
+      "discoverable": "Discoverable",
+      "sourceLanguage": "Source Language",
+      "agencyId": "Agency Id",
+      "agencyName": "Agency Name",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "notes": "Notes",
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "versionBs": "Version Bs",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "versionBg": "Version Bg",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "versionHr": "Version Hr",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "versionCs": "Version Cs",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "versionDa": "Version Da",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "versionNl": "Version Nl",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "versionEn": "Version En",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "versionEt": "Version Et",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "versionFi": "Version Fi",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "versionFr": "Version Fr",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "versionDe": "Version De",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "versionEl": "Version El",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "versionHu": "Version Hu",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "versionIt": "Version It",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "versionJa": "Version Ja",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "versionLt": "Version Lt",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "versionMk": "Version Mk",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "versionNo": "Version No",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "versionPl": "Version Pl",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "versionPt": "Version Pt",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "versionRo": "Version Ro",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "versionRu": "Version Ru",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "versionSr": "Version Sr",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "versionSk": "Version Sk",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "versionSl": "Version Sl",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "versionEs": "Version Es",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "versionSv": "Version Sv",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv",
+      "version": "Version"
+    },
+    "vocabularyChange": {
+      "home": {
+        "title": "Vocabulary Changes",
+        "createLabel": "Maak een nieuwe Vocabulary Change",
+        "createOrEditLabel": "Maak of wijzig een Vocabulary Change",
+        "notFound": "No Vocabulary Changes found"
+      },
+      "created": "A new Vocabulary Change is created with identifier {{ param }}",
+      "updated": "A Vocabulary Change is updated with identifier {{ param }}",
+      "deleted": "A Vocabulary Change is deleted with identifier {{ param }}",
+      "delete": { "question": "Bent u zeker dat u Vocabulary Change {{ id }} wilt verwijderen?" },
+      "detail": { "title": "Vocabulary Change" },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  },
+  "audits": {
+    "title": "Audits",
+    "filter": {
+      "title": "Filteren op datum",
+      "from": "van",
+      "to": "tot",
+      "button": { "weeks": "Weken", "today": "vandaag", "clear": "leeg", "close": "sluiten" }
+    },
+    "table": {
+      "header": { "principal": "Gebruiker", "date": "Datum", "status": "Status", "data": "Meer informatie" },
+      "data": { "remoteAddress": "Remote Adres:" }
+    },
+    "notFound": "No audit found"
+  },
+  "configuration": {
+    "title": "Configuratie",
+    "filter": "Filteren (op voorvoegsel)",
+    "table": { "prefix": "Voorvoegsel", "properties": "Eigenschappen" }
+  },
+  "error": {
+    "title": "Foutpagina!",
+    "http": {
+      "400": "Bad request.",
+      "403": "U bent niet bevoegd om de pagina te openen.",
+      "404": "De pagina bestaat niet.",
+      "405": "The HTTP verb you used is not supported for this URL.",
+      "500": "Internal server error."
+    },
+    "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
+    "validation": "Validation error on the server.",
+    "internalServerError": "Internal server error",
+    "server.not.reachable": "Server not reachable",
+    "url.not.found": "Not found",
+    "NotNull": "Field {{fieldName}} cannot be empty!",
+    "Size": "Field {{fieldName}} does not meet min/max size requirements!",
+    "userexists": "Login name already used!",
+    "emailexists": "Email is already in use!",
+    "idexists": "A new {{entityName}} cannot already have an ID",
+    "idnull": "Invalid ID",
+    "file": {
+      "could.not.extract": "Could not extract file",
+      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+    }
+  },
+  "global": {
+    "title": "Cvs",
+    "browsehappy": "U gebruikt een <strong>verouderde</strong> browser. <a href=\"http://browsehappy.com/?locale=en\">upgrade uw browser</a> om de bruikbaarheid te verbeteren.",
+    "menu": {
+      "home": "Startpagina",
+      "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "entities": {
+        "main": "Entiteiten",
+        "vocabulary": "Vocabulary",
+        "code": "Code",
+        "version": "Version",
+        "concept": "Concept",
+        "conceptChange": "Concept Change",
+        "activityLog": "Activity Log",
+        "licence": "Licence",
+        "metadataField": "Metadata Field",
+        "metadataValue": "Metadata Value",
+        "resolver": "Resolver",
+        "vocabularyChange": "Vocabulary Change",
+        "agency": "Agency",
+        "userAgency": "User Agency",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+      },
+      "account": {
+        "main": "Gebruiker",
+        "settings": "Instellingen",
+        "password": "Wachtwoord",
+        "sessions": "Sessions",
+        "login": "Aanmelden",
+        "logout": "Afmelden",
+        "register": "Registreren"
+      },
+      "admin": {
+        "main": "Administrator",
+        "userManagement": "User management",
+        "tracker": "User tracker",
+        "metrics": "Statistieken",
+        "health": "Status",
+        "configuration": "Configuration",
+        "logs": "Logboek",
+        "audits": "Audits",
+        "apidocs": "API",
+        "database": "Databank",
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "language": "Taal"
+    },
+    "form": {
+      "username.label": "Username",
+      "username.placeholder": "Uw username",
+      "currentpassword.label": "Current password",
+      "currentpassword.placeholder": "Current password",
+      "newpassword.label": "Nieuw wachtwoord",
+      "newpassword.placeholder": "Nieuw wachtwoord",
+      "confirmpassword.label": "Nieuw wachtwoord bevestigen",
+      "confirmpassword.placeholder": "Bevestig het nieuwe wachtwoord",
+      "email.label": "Email",
+      "email.placeholder": "Uw email"
+    },
+    "messages": {
+      "info": {
+        "authenticated": {
+          "prefix": "Indien u wilt ",
+          "link": "aanmelden",
+          "suffix": ", dan kan u de standaard gebruikers proberen:<br/>- Administrator (login=\"admin\" en wachtwoord=\"admin\") <br/>- Gebruiker (login=\"user\" en wachtwoord=\"user\")."
+        },
+        "register": { "noaccount": "U heeft nog geen gebruiker?", "link": "Registreer een nieuwe gebruiker" }
+      },
+      "error": { "dontmatch": "Het wachtwoord en zijn bevestiging komen niet overeen!" },
+      "validate": {
+        "newpassword": {
+          "required": "Uw wachtwoord is vereist.",
+          "minlength": "Uw wachtwoord moet minstens 4 tekens lang zijn.",
+          "maxlength": "Uw wachtwoord kan niet langer zijn dan 50 tekens.",
+          "strength": "Wachtwoord sterkte:"
+        },
+        "confirmpassword": {
+          "required": "Uw wachtwoord bevestiging is vereist.",
+          "minlength": "Uw wachtwoord bevestiging moet minstens 4 tekens lang zijn.",
+          "maxlength": "Uw wachtwoord bevestiging kan niet langer zijn dan 50 tekens."
+        },
+        "email": {
+          "required": "Uw email is vereist.",
+          "invalid": "Uw email is ongeldig.",
+          "minlength": "Uw email moet minstens 5 tekens lang zijn.",
+          "maxlength": "Uw email kan niet langer zijn dan 50 tekens."
+        }
+      }
+    },
+    "field": { "id": "ID" },
+    "ribbon": { "dev": "Ontwikkeling" },
+    "item-count": "Resultaat {{first}} - {{second}} van {{total}} items."
+  },
+  "entity": {
+    "action": {
+      "back": "Terug",
+      "cancel": "Annuleren",
+      "delete": "Verwijderen",
+      "edit": "Wijzigen",
+      "open": "Open",
+      "save": "Opslaan",
+      "view": "View"
+    },
+    "detail": { "field": "Veld", "value": "Waarde" },
+    "delete": { "title": "Bevestig wisbewerking" },
+    "validation": {
+      "required": "Dit veld is vereist.",
+      "minlength": "Dit veld moet minstens {{min}} tekens lang zijn.",
+      "maxlength": "Dit veld kan niet langer zijn dan {{max}} tekens.",
+      "min": "Dit veld moet minstens {{min}} zijn.",
+      "max": "Dit veld kan niet langer zijn dan {{max}}.",
+      "pattern": "Dit veld zou het patroon moeten volgen {{pattern}}.",
+      "number": "Dit veld zou een getal moeten zijn.",
+      "datetimelocal": "Dit veld zou een datum en tijd moeten zijn."
+    }
+  },
+  "footer": "Dit is uw voettekst",
+  "health": {
+    "title": "Status controle",
+    "refresh.button": "Ververs",
+    "stacktrace": "Stacktrace",
+    "details": { "details": "Details", "properties": "Eigenschappen", "name": "Naam", "value": "Waarde", "error": "Fout" },
+    "indicator": { "diskSpace": "Schijfruimte", "mail": "Email", "db": "Databank" },
+    "table": { "service": "Dienstnaam", "status": "Status" },
+    "status": { "UNKNOWN": "UNKNOWN", "UP": "UP", "DOWN": "DOWN" }
+  },
+  "home": {
+    "title": "Welkom, Java Hipster!",
+    "subtitle": "Dit is uw startpagina",
+    "logged": { "message": "U bent aangemeld als gebruiker \"{{username}}\"." },
+    "question": "Indien u vragen hebt over JHipster:",
+    "link": {
+      "homepage": "JHipster startpagina",
+      "stackoverflow": "JHipster op Stack Overflow",
+      "bugtracker": "JHipster bug tracker",
+      "chat": "JHipster publieke chatruimte",
+      "follow": "contacteer @jhipster op Twitter"
+    },
+    "like": "Als u JHipster leuk vindt, vergeet dan niet om ons een ster te geven op",
+    "github": "GitHub"
+  },
+  "login": {
+    "title": "Aanmelden",
+    "form": {
+      "password": "Wachtwoord",
+      "password.placeholder": "Uw wachtwoord",
+      "rememberme": "Automatisch Aanmelden",
+      "button": "Aanmelden"
+    },
+    "messages": {
+      "error": {
+        "authentication": "<strong>Aanmelden mislukt!</strong> Gelieve uw gegevens te controleren en vervolgens opnieuw te proberen."
+      }
+    },
+    "password": { "forgot": "Bent u uw wachtwoord vergeten?" }
+  },
+  "logs": {
+    "title": "Logboek",
+    "nbloggers": "Er zijn {{ total }} loggers.",
+    "filter": "Filter",
+    "table": { "name": "Naam", "level": "Level" }
+  },
+  "metrics": {
+    "title": "Applicatie Statistieken",
+    "refresh.button": "Ververs",
+    "updating": "Bijwerken...",
+    "jvm": {
+      "title": "JVM Statistieken",
+      "memory": { "title": "Geheugen", "total": "Totaal Geheugen", "heap": "Heap Geheugen", "nonheap": "Non-Heap Geheugen" },
+      "threads": {
+        "title": "Threads",
+        "all": "Alle",
+        "runnable": "Runnable",
+        "timedwaiting": "Wachttijd",
+        "waiting": "Wachten",
+        "blocked": "Geblokkeerd",
+        "dump": {
+          "title": "Threads dump",
+          "id": "Id: ",
+          "blockedtime": "Geblokkeerde Tijd",
+          "blockedcount": "Geblokkeerd Aantal",
+          "waitedtime": "Gewachte Time",
+          "waitedcount": "Gewachte aantal",
+          "lockname": "Lock name",
+          "stacktrace": "Stacktrace",
+          "show": "Toon",
+          "hide": "Verberg"
+        }
+      },
+      "gc": {
+        "title": "Garbage collections",
+        "marksweepcount": "Mark Sweep aantal",
+        "marksweeptime": "Mark Sweep tijd",
+        "scavengecount": "Scavenge aantal",
+        "scavengetime": "Scavenge tijd"
+      },
+      "http": {
+        "title": "HTTP verzoeken (gebeurtenissen per seconde)",
+        "active": "Actieve verzoeken:",
+        "total": "Totaal verzoeken:",
+        "table": { "code": "Code", "count": "Aantal", "mean": "Mediaan", "average": "Gemiddelde" },
+        "code": { "ok": "Ok", "notfound": "Niet gevonden", "servererror": "Server Fout" }
+      }
+    },
+    "servicesstats": {
+      "title": "Services statistieken (tijd in milliseconden)",
+      "table": {
+        "name": "Dienstnaam",
+        "count": "Aantal",
+        "mean": "Mediaan",
+        "min": "Min",
+        "max": "Max",
+        "p50": "p50",
+        "p75": "p75",
+        "p95": "p95",
+        "p99": "p99"
+      }
+    },
+    "cache": {
+      "title": "Cache statistieken",
+      "cachename": "Cache naam",
+      "hits": "Hits",
+      "misses": "Misses",
+      "evictions": "Uitzetting aantal"
+    },
+    "datasource": {
+      "usage": "Gebruik",
+      "title": "DataSource statistieken (tijd in milliseconden)",
+      "name": "Pool usage",
+      "count": "Aantal",
+      "mean": "Mediaan",
+      "min": "Min",
+      "max": "Max",
+      "p50": "p50",
+      "p75": "p75",
+      "p95": "p95",
+      "p99": "p99"
+    }
+  },
+  "password": {
+    "title": "Wachtwoord voor [<strong>{{username}}</strong>]",
+    "form": { "button": "Opslaan" },
+    "messages": {
+      "error": "<strong>Er is een fout opgetreden!</strong> Het wachtwoord kan niet worden gewijzigd.",
+      "success": "<strong>Wachtwoord gewijzigd!</strong>"
+    }
+  },
+  "register": {
+    "title": "Registratie",
+    "form": { "button": "Registreer" },
+    "messages": {
+      "validate": {
+        "login": {
+          "required": "Uw login is vereist.",
+          "minlength": "Uw login moet minstens 1 tekens lang zijn",
+          "maxlength": "Uw login kan niet langer zijn dan 50 tekens.",
+          "pattern": "Uw login kan alleen kleine letters en cijfers bevatten.."
+        }
+      },
+      "success": "<strong>Registratie opgeslaan!</strong> Gelieve uw email te controlleren ter bevestiging.",
+      "error": {
+        "fail": "<strong>Registratie mislukt!</strong> Probeer het later opnieuw.",
+        "userexists": "<strong>Login naam is al geregistreerd!</strong> Gelieve een andere te kiezen.",
+        "emailexists": "<strong>Email is al in gebruik!</strong> Gelieve een andere te kiezen."
+      }
+    }
+  },
+  "reset": {
+    "request": {
+      "title": "Reset uw wachtwoord",
+      "form": { "button": "Reset wachtwoord" },
+      "messages": {
+        "info": "Geef het emailadres dat u gebruikte om te registreren",
+        "success": "Controleer uw emails voor meer informatie over hoe u uw wachtwoord kan resetten.",
+        "notfound": "<strong>Emailadres is niet geregistreerd!</strong> Gelieve het te controleren en opnieuw te proberen"
+      }
+    },
+    "finish": {
+      "title": "Reset wachtwoord",
+      "form": { "button": "Valideer nieuw wachtwoord" },
+      "messages": {
+        "info": "Kies een nieuw wachtwoord",
+        "success": "<strong>Uw wachtwoord is gereset.</strong> Om in te loggen, klik ",
+        "keymissing": "De reset sleutel ontbreekt.",
+        "error": "Uw wachtwoord kon niet gereset worden. Vergeet niet dat een wachtwoord verzoek slechts 24 uur geldig is."
+      }
+    }
+  },
+  "sessions": {
+    "title": "Actieve sessies voor [<strong>{{username}}</strong>]",
+    "table": { "ipaddress": "IP adres", "useragent": "User Agent", "date": "datum", "button": "Ongeldig maken" },
+    "messages": {
+      "success": "<strong>Sessie ongeldig gemaakt!</strong>",
+      "error": "<strong>Er is een fout opgetreden!</strong> De sessie kon niet worden ongeldig gemaakt.."
+    }
+  },
+  "settings": {
+    "title": "Gebruikersinstellingen voor [<strong>{{username}}</strong>]",
+    "form": {
+      "firstname": "Voornaam",
+      "firstname.placeholder": "Uw voornaam",
+      "lastname": "Achternaam",
+      "lastname.placeholder": "Uw achternaam",
+      "language": "Taal",
+      "button": "Opslaan"
+    },
+    "messages": {
+      "error": {
+        "fail": "<strong>Er is een fout opgetreden!</strong> Instellingen kunnen niet worden opgeslagen.",
+        "emailexists": "<strong>Email is al in gebruik!</strong> Gelieve een andere te kiezen."
+      },
+      "success": "<strong>Instellingen opgeslagen!</strong>",
+      "validate": {
+        "firstname": {
+          "required": "Uw voornaam is vereist.",
+          "minlength": "Uw voornaam moet minstens 1 tekens lang zijn",
+          "maxlength": "Uw voornaam kan niet langer zijn dan 50 tekens"
+        },
+        "lastname": {
+          "required": "Uw achternaam is vereist.",
+          "minlength": "Uw achternaam moet minstens 1 tekens lang zijn",
+          "maxlength": "Uw achternaam kan niet langer zijn dan 50 tekens"
+        }
+      }
+    }
+  },
+  "userManagement": {
+    "home": { "title": "Gebruikers", "createLabel": "Creëer een nieuwe gebruiker", "createOrEditLabel": "Creëer of editeer een gebruiker" },
+    "created": "Een nieuwe gebruiker is aangemaakt met id {{ param }}",
+    "updated": "Een gebruiker is geüpdatet met id {{ param }}",
+    "deleted": "Een gebruiker is verwijderd met id {{ param }}",
+    "delete": { "question": "Bent u zeker dat u gebruiker {{ login }} wil verwijderen?" },
+    "detail": { "title": "Gebruiker" },
+    "login": "Login",
+    "firstName": "Voornaam",
+    "lastName": "Achternaam",
+    "email": "Email",
+    "activated": "Geactiveerd",
+    "deactivated": "Gedeactiveerd",
+    "profiles": "Profielen",
+    "langKey": "Taal",
+    "createdBy": "Aangemaakt door",
+    "createdDate": "Aanmaak datum",
+    "lastModifiedBy": "Laatst aangepast door",
+    "lastModifiedDate": "Laatst aangepast datum"
+  }
+}
