@@ -18,5 +18,7 @@ import '@angular/localize/init';
 
 // Define window.process for conponents trying to use process.env
 (window as any).process = {
-  env: {},
+  env: {
+    BUILD_TIMESTAMP: '',
+  },
 };

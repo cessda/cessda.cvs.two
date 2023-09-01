@@ -1328,3 +1328,8 @@ button.invisible-button:focus {
     padding-left: 27px;
   }
 }
+
+// Workaround for https://github.com/ng-bootstrap/ng-bootstrap/issues/2686
+ngb-modal-backdrop {
+  z-index: 1050 !important;
+}
