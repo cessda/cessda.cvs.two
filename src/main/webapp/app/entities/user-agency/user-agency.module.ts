@@ -24,8 +24,7 @@ import { UserAgencyDeleteDialogComponent } from './user-agency-delete-dialog.com
 import { userAgencyRoute } from './user-agency.route';
 
 @NgModule({
-  imports: [CvsSharedModule, RouterModule.forChild(userAgencyRoute)],
-  declarations: [UserAgencyComponent, UserAgencyDetailComponent, UserAgencyUpdateComponent, UserAgencyDeleteDialogComponent],
-  entryComponents: [UserAgencyDeleteDialogComponent]
+    imports: [CvsSharedModule, RouterModule.forChild(userAgencyRoute)],
+    declarations: [UserAgencyComponent, UserAgencyDetailComponent, UserAgencyUpdateComponent, UserAgencyDeleteDialogComponent]
 })
 export class CvsUserAgencyModule {}

@@ -24,8 +24,7 @@ import {LicenceDeleteDialogComponent} from './licence-delete-dialog.component';
 import {licenceRoute} from './licence.route';
 
 @NgModule({
-  imports: [CvsSharedModule, RouterModule.forChild(licenceRoute)],
-  declarations: [LicenceComponent, LicenceDetailComponent, LicenceUpdateComponent, LicenceDeleteDialogComponent],
-  entryComponents: [LicenceDeleteDialogComponent]
+    imports: [CvsSharedModule, RouterModule.forChild(licenceRoute)],
+    declarations: [LicenceComponent, LicenceDetailComponent, LicenceUpdateComponent, LicenceDeleteDialogComponent]
 })
 export class CvsLicenceModule {}

@@ -24,8 +24,7 @@ import { MetadataFieldDeleteDialogComponent } from './metadata-field-delete-dial
 import { metadataFieldRoute } from './metadata-field.route';
 
 @NgModule({
-  imports: [CvsSharedModule, RouterModule.forChild(metadataFieldRoute)],
-  declarations: [MetadataFieldComponent, MetadataFieldDetailComponent, MetadataFieldUpdateComponent, MetadataFieldDeleteDialogComponent],
-  entryComponents: [MetadataFieldDeleteDialogComponent]
+    imports: [CvsSharedModule, RouterModule.forChild(metadataFieldRoute)],
+    declarations: [MetadataFieldComponent, MetadataFieldDetailComponent, MetadataFieldUpdateComponent, MetadataFieldDeleteDialogComponent]
 })
 export class CvsMetadataFieldModule {}

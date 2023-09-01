@@ -24,13 +24,12 @@ import { VocabularyChangeDeleteDialogComponent } from './vocabulary-change-delet
 import { vocabularyChangeRoute } from './vocabulary-change.route';
 
 @NgModule({
-  imports: [CvsSharedModule, RouterModule.forChild(vocabularyChangeRoute)],
-  declarations: [
-    VocabularyChangeComponent,
-    VocabularyChangeDetailComponent,
-    VocabularyChangeUpdateComponent,
-    VocabularyChangeDeleteDialogComponent
-  ],
-  entryComponents: [VocabularyChangeDeleteDialogComponent]
+    imports: [CvsSharedModule, RouterModule.forChild(vocabularyChangeRoute)],
+    declarations: [
+        VocabularyChangeComponent,
+        VocabularyChangeDetailComponent,
+        VocabularyChangeUpdateComponent,
+        VocabularyChangeDeleteDialogComponent
+    ]
 })
 export class CvsVocabularyChangeModule {}

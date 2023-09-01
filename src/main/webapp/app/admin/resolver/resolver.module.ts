@@ -24,8 +24,7 @@ import {ResolverDeleteDialogComponent} from './resolver-delete-dialog.component'
 import {resolverRoute} from './resolver.route';
 
 @NgModule({
-  imports: [CvsSharedModule, RouterModule.forChild(resolverRoute)],
-  declarations: [ResolverComponent, ResolverDetailComponent, ResolverUpdateComponent, ResolverDeleteDialogComponent],
-  entryComponents: [ResolverDeleteDialogComponent]
+    imports: [CvsSharedModule, RouterModule.forChild(resolverRoute)],
+    declarations: [ResolverComponent, ResolverDetailComponent, ResolverUpdateComponent, ResolverDeleteDialogComponent]
 })
 export class CvsResolverModule {}

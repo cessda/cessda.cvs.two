@@ -25,14 +25,13 @@ import { agencyRoute } from './agency.route';
 import { PieChartModule } from '@swimlane/ngx-charts';
 
 @NgModule({
-  imports: [CvsSharedModule, RouterModule.forChild(agencyRoute), PieChartModule],
-  declarations: [
-    AgencyComponent,
-    AgencyDetailDialogComponent,
-    AgencyUpdateComponent,
-    AgencyDeleteDialogComponent,
-    AgencyDetailPopupComponent
-  ],
-  entryComponents: [AgencyDeleteDialogComponent, AgencyDetailPopupComponent]
+    imports: [CvsSharedModule, RouterModule.forChild(agencyRoute), PieChartModule],
+    declarations: [
+        AgencyComponent,
+        AgencyDetailDialogComponent,
+        AgencyUpdateComponent,
+        AgencyDeleteDialogComponent,
+        AgencyDetailPopupComponent
+    ]
 })
 export class CvsAgencyModule {}
