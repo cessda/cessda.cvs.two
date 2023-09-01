@@ -62,7 +62,7 @@
                                     <fa-icon [icon]="'plus'"></fa-icon>
                                     <span>Add Cv</span>
                                 </button>
-                            </div-->   
+                            </div-->
                             <div *ngIf="(enableAddTl && !(version!.status === 'READY_TO_PUBLISH' || version!.status === 'PUBLISHED'))">
                                 <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL','ADMIN_CONTENT'], language:tlLanguageStatus}"
                                         class="btn sk-select-min sk-input-f mtop10" (click)="openAddEditCvPopup( true, false )">
@@ -136,7 +136,7 @@
                                     <fa-icon [icon]="'trash'"></fa-icon>
                                     <span>Delete {{version!.itemType}} {{version!.language}}</span>
                                 </button>
-                            </div>  
+                            </div>
                         </div>
 
                         <div *ngIf="!(concept !== null && concept.deprecated)">
@@ -177,14 +177,14 @@
                                                     <span>Move code</span>
                                                 </button>
                                             </div>
-                                            <div *ngIf="(getSlMajorVersionNumber() == 1 && getSlMinorVersionNumber() > 0) || getSlMajorVersionNumber() > 1">
+                                            <div *ngIf="(getSlMajorVersionNumber() === 1 && getSlMinorVersionNumber() > 0) || getSlMajorVersionNumber() > 1">
                                                 <button *jhiHasAnyAgencyAuthority="{actionType:'DEPRECATE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
                                                         class="btn sk-select-min-btn btn-warning sk-input-f mtop20" (click)="openDeprecateCodePopup()">
                                                     <fa-icon [icon]="'wind'"></fa-icon>
                                                     <span>Deprecate code</span>
                                                 </button>
                                             </div>
-                                            <div *ngIf="concept!.introducedInVersionId != null && concept!.introducedInVersionId == version!.id && version!.status !== 'PUBLISHED'">
+                                            <div *ngIf="concept!.introducedInVersionId !== null && concept!.introducedInVersionId === version!.id && version!.status !== 'PUBLISHED'">
                                                 <button *jhiHasAnyAgencyAuthority="{actionType:'DELETE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
                                                         class="btn sk-select-min sk-input-f btn-danger mtop20" (click)="openDeleteCodePopup()">
                                                     <fa-icon [icon]="'trash'"></fa-icon>
@@ -245,7 +245,7 @@
                     <jhi-alert></jhi-alert>
                     <div class="row-detail">
                         <div class="label-column">
-                            <div class="vocab-logo" *ngIf="vocabulary!.agencyLogo != null">
+                            <div class="vocab-logo" *ngIf="vocabulary!.agencyLogo !== null">
                                 <img [src]="'/content/images/agency/' + vocabulary!.agencyLogo" width="120px" alt="logo {{vocabulary!.agencyName}}"/>
                             </div>
                         </div>

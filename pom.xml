@@ -928,13 +928,13 @@
                                 </goals>
                             </execution>
                             <execution>
-                                <id>webpack build dev</id>
+                                <id>angular build dev</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
                                 <phase>generate-resources</phase>
                                 <configuration>
-                                    <arguments>run webpack:build</arguments>
+                                    <arguments>run build-dev</arguments>
                                     <environmentVariables>
                                         <APP_VERSION>${project.version}</APP_VERSION>
                                     </environmentVariables>
@@ -1034,7 +1034,7 @@
                                 </goals>
                                 <phase>test</phase>
                                 <configuration>
-                                    <arguments>run webpack:test</arguments>
+                                    <arguments>test</arguments>
                                     <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
                                 </configuration>
                             </execution>
@@ -1045,7 +1045,7 @@
                                 </goals>
                                 <phase>generate-resources</phase>
                                 <configuration>
-                                    <arguments>run webpack:prod</arguments>
+                                    <arguments>run build-prod</arguments>
                                     <environmentVariables>
                                         <APP_VERSION>${project.version}</APP_VERSION>
                                     </environmentVariables>

@@ -16,6 +16,7 @@
 @import 'bootstrap-variables';
 @import '~bootstrap/scss/functions';
 @import '~bootstrap/scss/variables';
+@import 'vendor';
 
 /* ==============================================================
 Bootstrap tweaks
@@ -35,8 +36,20 @@ textarea,
 button {
   font-size: 100%;
   font-weight: 400;
-  font-family: BlinkMacSystemFont, -apple-system, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-    Helvetica, Arial, sans-serif;
+  font-family:
+    BlinkMacSystemFont,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    Fira Sans,
+    Droid Sans,
+    Helvetica Neue,
+    Helvetica,
+    Arial,
+    sans-serif;
 }
 
 h2 {

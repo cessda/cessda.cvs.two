@@ -13,7 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/* after changing this file run 'npm run webpack:build' */
-
-// Quill -rich-text
-import 'quill/dist/quill.js';
+module.exports = [
+  {
+    context: [
+      '/api',
+      '/v1',
+      '/v2',
+      '/services',
+      '/management',
+      '/swagger-resources',
+      '/v2/api-docs',
+      '/h2-console',
+      '/auth'
+    ],
+    target: 'http://localhost:8080',
+    secure: false,
+  }
+]
