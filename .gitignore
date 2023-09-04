@@ -126,6 +126,13 @@ Desktop.ini
 ######################
 # Others
 ######################
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+/typings
+testem.log
 *.class
 *.*~
 *~

@@ -2,7 +2,7 @@
   "name": "cvs",
   "version": "3.2.1",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "cacheDirectories": [
     "node_modules"
   ],
@@ -89,7 +89,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build-dev": "ng build --configuration development",
-    "test": "jest --config src/test/javascript/jest.conf.js",
+    "test": "jest --coverage --config src/test/javascript/jest.conf.js",
     "test:watch": "npm run test -- --watch",
     "build-prod": "ng build --configuration production",
     "prepare": "husky install"
@@ -109,7 +109,6 @@
       "@angular/cdk": ">=6.0.0",
       "rxjs": "^6.3.3",
       "tslib": ">=1.10.0"
-    },
-    "quill": "2.0.0-dev.4"
+    }
   }
 }
