@@ -21,6 +21,7 @@ module.exports = {
     setupFilesAfterEnv: ['<rootDir>/src/test/javascript/jest.ts'],
     cacheDirectory: '<rootDir>/target/jest-cache',
     coverageDirectory: '<rootDir>/target/test-results/',
+    coverageProvider: 'v8',
     globals: {
         'ts-jest': {
             stringifyContentPathRegex: '\\.html$',
