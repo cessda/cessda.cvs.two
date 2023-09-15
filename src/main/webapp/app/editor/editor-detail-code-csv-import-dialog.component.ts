@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, ElementRef, ViewChild} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {EditorService} from 'app/editor/editor.service';
-import {IVersion} from 'app/shared/model/version.model';
-import {Router} from '@angular/router';
-import {Concept, IConcept} from 'app/shared/model/concept.model';
-import {Subscription} from 'rxjs';
-import {JhiEventManager} from 'ng-jhipster';
-import {CodeSnippet, ICodeSnippet} from 'app/shared/model/code-snippet.model';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { EditorService } from 'app/editor/editor.service';
+import { IVersion } from 'app/shared/model/version.model';
+import { Router } from '@angular/router';
+import { Concept, IConcept } from 'app/shared/model/concept.model';
+import { Subscription } from 'rxjs';
+import { JhiEventManager } from 'ng-jhipster';
+import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
 
 @Component({
-  templateUrl: './editor-detail-code-csv-import-dialog.component.html'
+  templateUrl: './editor-detail-code-csv-import-dialog.component.html',
 })
 export class EditorDetailCodeCsvImportDialogComponent {
   @ViewChild('csvInput', { static: true }) csvInput!: ElementRef;
@@ -57,7 +57,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
     protected editorService: EditorService,
     public activeModal: NgbActiveModal,
     private router: Router,
-    protected eventManager: JhiEventManager
+    protected eventManager: JhiEventManager,
   ) {
     this.csvImportWorkflow = 'UPLOAD';
     this.importAll = true;
@@ -78,9 +78,12 @@ export class EditorDetailCodeCsvImportDialogComponent {
 
   onFileSelect(input: EventTarget): void {
     this.resetConceptsAndCodeSnippets();
-    const file = (input as HTMLInputElement).files![0];
+    const files = (input as HTMLInputElement).files;
+    if (!files) {
+      return;
+    }
     const fileReader = new FileReader();
-    fileReader.readAsText(file, 'UTF-8');
+    fileReader.readAsText(files[0], 'UTF-8');
     this.importAll = true;
     this.isImportError = false;
     fileReader.onload = () => {
@@ -124,20 +127,24 @@ export class EditorDetailCodeCsvImportDialogComponent {
   }
 
   // see https://www.bennadel.com/blog/1504-ask-ben-parsing-csv-strings-with-javascript-exec-regular-expression-command.htm
-  parseCSVToArray (csvString: string, delimiter?: string): any[] {
-    delimiter = (delimiter || ','); // user-supplied delimiter or default comma
+  parseCSVToArray(csvString: string, delimiter?: string): any[] {
+    delimiter = delimiter || ','; // user-supplied delimiter or default comma
 
     const pattern = new RegExp( // regular expression to parse the CSV values.
-      ( // Delimiters:
-        "(\\" + delimiter + "|\\r?\\n|\\r|^)" +
+    // Delimiters:
+      '(\\' +
+        delimiter +
+        '|\\r?\\n|\\r|^)' +
         // Quoted fields.
-        "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+        '(?:"([^"]*(?:""[^"]*)*)"|' +
         // Standard fields.
-        "([^\"\\" + delimiter + "\\r\\n]*))"
-      ), "gi"
+        '([^"\\' +
+        delimiter +
+        '\\r\\n]*))',
+      'gi',
     );
 
-    const rows: string[][] = [[]];  // array to hold our data. First row is column headers.
+    const rows: string[][] = [[]]; // array to hold our data. First row is column headers.
 
     // #316 -->
     if (!csvString) {
@@ -149,22 +156,22 @@ export class EditorDetailCodeCsvImportDialogComponent {
     // array to hold our individual pattern matching groups:
     let matches; // false if we don't find any matches
     // Loop until we no longer find a regular expression match
-    while ((matches = pattern.exec( csvString )) !== null) {
+    while ((matches = pattern.exec(csvString)) !== null) {
       const matchedDelimiter = matches[1]; // Get the matched delimiter
       // Check if the delimiter has a length (and is not the start of string)
       // and if it matches field delimiter. If not, it is a row delimiter.
       if (matchedDelimiter.length && matchedDelimiter !== delimiter) {
         // Since this is a new row of data, add an empty row to the array.
-        rows.push( [] );
+        rows.push([]);
       }
       let matchedValue;
       // Once we have eliminated the delimiter, check to see
       // what kind of value was captured (quoted or unquoted):
-      if (matches[2]) { // found quoted value. unescape any double quotes.
-        matchedValue = matches[2].replace(
-          new RegExp( "\"\"", "g" ), "\""
-        );
-      } else { // found a non-quoted value
+      if (matches[2]) {
+        // found quoted value. unescape any double quotes.
+        matchedValue = matches[2].replace(new RegExp('""', 'g'), '"');
+      } else {
+        // found a non-quoted value
         matchedValue = matches[3];
       }
       // Now that we have our value string, let's add
@@ -251,7 +258,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
           position: conceptPosition,
           title: this.csvContents[i][1],
           definition: this.csvContents[i][2],
-          visible: false
+          visible: false,
         };
         this.concepts.push(newConcept);
         this.codeSnippets.push(this.createCodeFromConcept(newConcept));
@@ -275,7 +282,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
     this.isSaving = true;
     this.editorService.createBatchCode(this.codeSnippets).subscribe(
       (res: HttpResponse<IConcept[]>) => this.onSaveSuccess(res.headers, res.body),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 
@@ -308,7 +315,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
       notation: concept.notation,
       versionId: concept.versionId,
       title: concept.title,
-      definition: concept.definition
+      definition: concept.definition,
     };
   }
 
@@ -323,7 +330,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
       definition: concept.definition,
       position: concept.position,
       changeType: 'Code added',
-      changeDesc: concept.notation
+      changeDesc: concept.notation,
     };
   }
 }

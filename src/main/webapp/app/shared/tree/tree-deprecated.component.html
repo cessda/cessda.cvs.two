@@ -17,7 +17,7 @@
 -->
 <div *ngFor="let concept of conceptList">
     <ul *ngIf="concept.parent === parentNotation" class="concept-tree ul-level-{{level!}}">
-        <li [attr.id]="concept.deprecated ? 'code_' + concept.notation.split('.').join('') : null">
+        <li [attr.id]="concept.deprecated ? 'code_' + concept.notation!.split('.').join('') : null">
             <div *ngIf="concept.deprecated" class="concept-row">
                 <!-- Column 1 -->
                 <span class="column1"><a href="{{concept.uri}}" target="_blank" rel="noopener">{{concept.uri}}</a></span>
@@ -28,7 +28,7 @@
                 <!-- Column 4 -->
                 <span class="column2">{{concept.validFrom}}</span>
                 <!-- Column 5 -->
-                <span class="column2">{{concept.validUntil}}</span>                
+                <span class="column2">{{concept.validUntil}}</span>
             </div>
             <jhi-tree-deprecated *ngIf="isConceptHasChildren(concept.notation,conceptList)"
                       [ngClass]="{'display-none': concept.visible}"

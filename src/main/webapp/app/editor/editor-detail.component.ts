@@ -115,14 +115,16 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     ],
   };
 
+  downloadFormGroup = this.fb.group({
+    skosItems: [],
+    pdfItems: [],
+    htmlItems: [],
+    docxItems: [],
+  });
+
   editorDetailForm = this.fb.group({
     tabSelected: [],
-    downloadFormGroup: this.fb.group({
-      skosItems: [],
-      pdfItems: [],
-      htmlItems: [],
-      docxItems: [],
-    }),
+    downloadFormGroup: this.downloadFormGroup,
     ddiUsage: [],
     translateAgency: [],
     translateAgencyLink: [
@@ -130,7 +132,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       [
         Validators.required,
         Validators.pattern(
-          '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})'
+          '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
         ),
       ],
     ],
@@ -157,7 +159,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     private _ngZone: NgZone,
     protected modalService: NgbModal,
     protected eventManager: JhiEventManager,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe
+    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
   ) {
     this.initialTabSelected = 'detail';
     this.currentSelectedCode = '';
@@ -495,7 +497,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   openAddEditCvPopup(isNew: boolean, isSlForm: boolean): void {
-    this.ngbModalRef = this.modalService.open(EditorDetailCvAddEditDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef = this.modalService.open(EditorDetailCvAddEditDialogComponent, { size: 'xl', backdrop: 'static' });
     this.ngbModalRef.componentInstance.vocabularyParam = this.vocabulary;
     this.ngbModalRef.componentInstance.isNew = isNew;
     this.ngbModalRef.componentInstance.isSlForm = isSlForm;
@@ -511,25 +513,25 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   openForwardStatusCvPopup(): void {
-    this.ngbModalRef = this.modalService.open(EditorDetailCvForwardStatusDialogComponent as Component, {
+    this.ngbModalRef = this.modalService.open(EditorDetailCvForwardStatusDialogComponent, {
       size: 'xl',
       backdrop: 'static',
     });
     this.ngbModalRef.componentInstance.vocabularyParam = this.vocabulary;
     this.ngbModalRef.componentInstance.versionParam = this.version;
-    this.ngbModalRef.componentInstance.isSlForm = this.version!.itemType === 'SL';
+    this.ngbModalRef.componentInstance.isSlForm = this.version?.itemType === 'SL';
     const slVersion = this.getSlVersion();
     this.ngbModalRef.componentInstance.slVersionNumber = slVersion.number;
   }
 
   openCreateNewCvVersionPopup(): void {
-    this.ngbModalRef = this.modalService.open(EditorDetailCvNewVersionDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef = this.modalService.open(EditorDetailCvNewVersionDialogComponent, { size: 'xl', backdrop: 'static' });
     this.ngbModalRef.componentInstance.vocabularyParam = this.vocabulary;
     this.ngbModalRef.componentInstance.versionParam = this.version;
   }
 
   openDeleteCvPopup(): void {
-    this.ngbModalRef = this.modalService.open(EditorDetailCvDeleteDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef = this.modalService.open(EditorDetailCvDeleteDialogComponent, { size: 'xl', backdrop: 'static' });
     this.ngbModalRef.componentInstance.vocabularyParam = this.vocabulary;
     this.ngbModalRef.componentInstance.versionParam = this.version;
   }
@@ -545,7 +547,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   openAddEditCodePopup(isNew: boolean, codeInsertMode?: string): void {
-    this.ngbModalRef = this.modalService.open(EditorDetailCodeAddEditDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef = this.modalService.open(EditorDetailCodeAddEditDialogComponent, { size: 'xl', backdrop: 'static' });
     this.ngbModalRef.componentInstance.versionParam = this.version;
     this.ngbModalRef.componentInstance.conceptParam = this.concept;
     this.ngbModalRef.componentInstance.isNew = isNew;
@@ -578,7 +580,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   openDeprecateCodeWindow(): void {
-    this.ngbModalRef = this.modalService.open(EditorDetailCodeDeprecateDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef = this.modalService.open(EditorDetailCodeDeprecateDialogComponent, { size: 'xl', backdrop: 'static' });
     this.ngbModalRef.componentInstance.versionParam = this.version;
     this.ngbModalRef.componentInstance.conceptParam = this.concept;
     this.ngbModalRef.componentInstance.isSlForm = this.version!.itemType === 'SL';
@@ -590,27 +592,27 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   openDeleteCodeWindow(): void {
-    this.ngbModalRef = this.modalService.open(EditorDetailCodeDeleteDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef = this.modalService.open(EditorDetailCodeDeleteDialogComponent, { size: 'xl', backdrop: 'static' });
     this.ngbModalRef.componentInstance.versionParam = this.version;
     this.ngbModalRef.componentInstance.conceptParam = this.concept;
     this.ngbModalRef.componentInstance.isSlForm = this.version!.itemType === 'SL';
   }
 
   openCsvImportCodeWindow(): void {
-    this.ngbModalRef = this.modalService.open(EditorDetailCodeCsvImportDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef = this.modalService.open(EditorDetailCodeCsvImportDialogComponent, { size: 'xl', backdrop: 'static' });
     this.ngbModalRef.componentInstance.vocabularyParam = this.vocabulary;
     this.ngbModalRef.componentInstance.versionParam = this.version;
     this.ngbModalRef.componentInstance.isSlForm = this.version!.itemType === 'SL';
   }
 
   openReorderCode(): void {
-    this.ngbModalRef = this.modalService.open(EditorDetailCodeReorderDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef = this.modalService.open(EditorDetailCodeReorderDialogComponent, { size: 'xl', backdrop: 'static' });
     this.ngbModalRef.componentInstance.versionParam = this.version;
     this.ngbModalRef.componentInstance.conceptParam = this.concept;
   }
 
   openCvCommentPopup(): void {
-    this.ngbModalRef = this.modalService.open(EditorDetailCvCommentDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef = this.modalService.open(EditorDetailCvCommentDialogComponent, { size: 'xl', backdrop: 'static' });
     this.ngbModalRef.componentInstance.vocabularyParam = this.vocabulary;
     this.ngbModalRef.componentInstance.versionParam = this.version;
   }
@@ -721,7 +723,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     // specify how you want to handle null values here
     const header = ['Code value', 'Code term', 'Code definition'];
     const csv = this.version!.concepts!.map(concept =>
-      [this.escapeCsvContent(concept.notation), this.escapeCsvContent(concept.title), this.escapeCsvContent(concept.definition)].join(',')
+      [this.escapeCsvContent(concept.notation), this.escapeCsvContent(concept.title), this.escapeCsvContent(concept.definition)].join(','),
     );
     csv.unshift(header.join(','));
 

@@ -35,6 +35,7 @@ import { DiffContent, DiffResults } from 'ngx-text-diff/lib/ngx-text-diff.model'
 import { IComment } from 'app/shared/model/comment.model';
 import { VocabularyChangeService } from 'app/entities/vocabulary-change/vocabulary-change.service';
 import { IVocabularyChange } from 'app/shared/model/vocabulary-change.model';
+import { QuillModule } from 'ngx-quill';
 
 @Component({
   selector: 'jhi-editor-detail-cv-forward-status-dialog',
@@ -46,8 +47,8 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   isVersionInvalid: boolean;
   account!: Account;
   languages: string[] = [];
-  vocabularyParam?: IVocabulary;
-  versionParam?: IVersion;
+  vocabularyParam: IVocabulary = {};
+  versionParam: IVersion = {};
   isSlForm?: boolean;
   slVersionNumber!: string;
   proposedPatchNumber = 0;
@@ -74,7 +75,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   contentObservable: Subject<DiffContent> = new Subject<DiffContent>();
   contentObservable$: Observable<DiffContent> = this.contentObservable.asObservable();
 
-  quillSimpleModule: any = {
+  quillSimpleModule: QuillModule = {
     toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']],
   };
 
@@ -94,7 +95,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
   ) {
     this.isSaving = false;
     this.isVersionInvalid = false;
@@ -161,7 +162,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   private fillForm(): void {
     if (this.isSlForm) {
       this.cvForwardStatusForm.patchValue({
-        versionNumberSl: VocabularyUtil.getSlMajorMinorVersionNumber(this.versionParam!.number!)
+        versionNumberSl: VocabularyUtil.getSlMajorMinorVersionNumber(this.versionParam!.number!),
       });
     }
     if (this.versionParam!.licenseId) {
@@ -186,7 +187,11 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   }
 
   private fillVersionChanges(): void {
-    if (this.cvForwardStatusForm.contains('versionChanges') && this.versionParam!.previousVersion !== undefined && this.versionParam!.previousVersion !== 0) {
+    if (
+      this.cvForwardStatusForm.contains('versionChanges') &&
+      this.versionParam!.previousVersion !== undefined &&
+      this.versionParam!.previousVersion !== 0
+    ) {
       if (this.versionParam!.versionChanges) {
         this.cvForwardStatusForm.patchValue({
           versionChanges: this.versionParam!.versionChanges,
@@ -235,7 +240,8 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         this.isVersionInvalid = VocabularyUtil.compareVersionNumbers(vocabularySnippet.versionNumber, this.versionParam!.number!) === -1;
       } else {
         this.missingTranslations = [];
-        vocabularySnippet.versionNumber = VocabularyUtil.getSlMajorMinorVersionNumber(this.slVersionNumber) + '.' + this.proposedPatchNumber;
+        vocabularySnippet.versionNumber =
+          VocabularyUtil.getSlMajorMinorVersionNumber(this.slVersionNumber) + '.' + this.proposedPatchNumber;
         this.versionParam!.concepts!.forEach(c => {
           if (!c.deprecated) {
             if (!c.title || c.title === null || c.title === '') {
@@ -279,7 +285,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   forwardStatus(): void {
     this.isSaving = true;
     const vocabularySnippet = this.createFromForm();
-    if (!this.  isVersionInvalid && this.missingTranslations.length === 0) {
+    if (!this.isVersionInvalid && this.missingTranslations.length === 0) {
       this.subscribeToSaveResponse(this.editorService.forwardStatusVocabulary(vocabularySnippet));
     } else {
       this.isSaving = false;

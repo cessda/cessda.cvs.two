@@ -49,11 +49,12 @@
         </div>
     </div>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="comments?.length === 0">
+    <div class="alert alert-warning" id="no-result" *ngIf="comments?.length === 0; else elseBlock">
         <span jhiTranslate="cvsApp.comment.home.notFound">No comments found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="comments?.length > 0">
+    <ng-template #elseBlock>
+    <div class="table-responsive" id="entities">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
@@ -72,7 +73,7 @@
                     <td>{{ comment.info }}</td>
                     <td>{{ comment.content }}</td>
                     <td>{{ comment.userId }}</td>
-                    <td>{{ comment.dateTime | date:'medium' }}</td>
+                    <td>{{ comment.dateTime?.toDate() | date:'medium' }}</td>
                     <td>
                         <div *ngIf="comment.versionId">
                             <a [routerLink]="['/entity/version', comment.versionId , 'view']" >{{ comment.versionId }}</a>
@@ -106,7 +107,7 @@
         </table>
     </div>
 
-    <div *ngIf="comments?.length > 0">
+    <div>
         <div class="row justify-content-center">
             <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
@@ -115,4 +116,6 @@
             <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
+
+    </ng-template>
 </div>

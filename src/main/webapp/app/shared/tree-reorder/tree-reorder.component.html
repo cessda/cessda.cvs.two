@@ -17,7 +17,7 @@
 -->
 <div *ngFor="let concept of conceptList">
     <ul *ngIf="concept.deprecated === deprecated && concept.parent === parentNotation" class="concept-tree ul-level-{{level!}}">
-        <li id="code_{{concept.notation.split('.').join('')}}">
+        <li id="code_{{concept.notation!.split('.').join('')}}">
             <div class="concept-row" (click)="selectConcept(concept)" [ngClass]="{ 'active': concept.notation === activeConceptNotation,
             'reorder': concept.status === 'REORDER', 'text-muted': concept.status === 'UNSELECTABLE', 'pivot': concept.status === 'PIVOT',
             'to-be-inserted': concept.status === 'TO_BE_INSERTED'}">

@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnInit} from '@angular/core';
-import {HttpEventType, HttpResponse} from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError} from 'ng-jhipster';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import {Agency, IAgency} from 'app/shared/model/agency.model';
-import {AgencyService} from './agency.service';
-import {AlertError} from 'app/shared/alert/alert-error.model';
-import {FileUploadService} from 'app/shared/upload/file-upload.service';
-import {ILicence} from 'app/shared/model/licence.model';
-import {LicenceService} from 'app/admin/licence/licence.service';
+import { Agency, IAgency } from 'app/shared/model/agency.model';
+import { AgencyService } from './agency.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { FileUploadService } from 'app/shared/upload/file-upload.service';
+import { ILicence } from 'app/shared/model/licence.model';
+import { LicenceService } from 'app/admin/licence/licence.service';
 
 @Component({
   selector: 'jhi-agency-update',
-  templateUrl: './agency-update.component.html'
+  templateUrl: './agency-update.component.html',
 })
 export class AgencyUpdateComponent implements OnInit {
   isSaving = false;
@@ -41,7 +41,7 @@ export class AgencyUpdateComponent implements OnInit {
   progress: {
     percentage: number;
   } = {
-    percentage: 0
+    percentage: 0,
   };
 
   editForm = this.fb.group({
@@ -52,15 +52,15 @@ export class AgencyUpdateComponent implements OnInit {
       [
         Validators.required,
         Validators.pattern(
-          '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})'
-        )
-      ]
+          '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
+        ),
+      ],
     ],
     description: [],
     licenseId: [],
     uri: [null, [Validators.maxLength(255)]],
     uriCode: [null, [Validators.maxLength(255)]],
-    canonicalUri: [null, [Validators.maxLength(255)]]
+    canonicalUri: [null, [Validators.maxLength(255)]],
   });
 
   constructor(
@@ -70,7 +70,7 @@ export class AgencyUpdateComponent implements OnInit {
     protected agencyService: AgencyService,
     protected activatedRoute: ActivatedRoute,
     protected fileUploadService: FileUploadService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -79,7 +79,7 @@ export class AgencyUpdateComponent implements OnInit {
         .query({
           page: 0,
           size: 50,
-          sort: ['id,asc']
+          sort: ['id,asc'],
         })
         .subscribe((res: HttpResponse<ILicence[]>) => {
           this.licences = res.body!;
@@ -97,16 +97,14 @@ export class AgencyUpdateComponent implements OnInit {
       licenseId: agency.licenseId,
       uri: agency.uri,
       uriCode: agency.uriCode,
-      canonicalUri: agency.canonicalUri
+      canonicalUri: agency.canonicalUri,
     });
     this.currentImage = agency.logopath;
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-      this.eventManager.broadcast(
-        new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key })
-      );
+      this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
     });
   }
 
@@ -135,7 +133,7 @@ export class AgencyUpdateComponent implements OnInit {
       licenseId: +this.editForm.get(['licenseId'])!.value,
       uri: this.editForm.get(['uri'])!.value,
       uriCode: this.editForm.get(['uriCode'])!.value,
-      canonicalUri: this.editForm.get(['canonicalUri'])!.value
+      canonicalUri: this.editForm.get(['canonicalUri'])!.value,
     };
     if (agency.licenseId) {
       agency.license = this.licences!.filter(l => l.id === agency.licenseId)[0].name;
@@ -146,7 +144,7 @@ export class AgencyUpdateComponent implements OnInit {
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IAgency>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 
@@ -159,8 +157,8 @@ export class AgencyUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  selectFile(selectFileEvent: { target: { files: FileList | undefined } }): void {
-    this.selectedFiles = selectFileEvent.target.files;
+  selectFile(selectFileEvent: Event): void {
+    this.selectedFiles = (selectFileEvent.target as HTMLInputElement).files || undefined;
     this.progress.percentage = 0;
     this.currentFileUpload = this.selectedFiles!.item(0);
     this.fileUploadService.uploadAgencyImage(this.currentFileUpload!).subscribe(event => {

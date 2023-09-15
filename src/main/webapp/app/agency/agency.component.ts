@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {IAgency} from 'app/shared/model/agency.model';
+import { IAgency } from 'app/shared/model/agency.model';
 
-import {ITEMS_PER_PAGE} from 'app/shared/constants/pagination.constants';
-import {AgencyService} from './agency.service';
-import {AgencyDeleteDialogComponent} from './agency-delete-dialog.component';
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
+import { AgencyService } from './agency.service';
+import { AgencyDeleteDialogComponent } from './agency-delete-dialog.component';
 
 @Component({
   selector: 'jhi-agency',
-  templateUrl: './agency.component.html'
+  templateUrl: './agency.component.html',
 })
 export class AgencyComponent implements OnInit, OnDestroy {
-  agencies?: IAgency[];
+  agencies: IAgency[] = [];
   eventSubscriber?: Subscription;
   currentSearch: string;
   totalItems = 0;
@@ -47,7 +47,7 @@ export class AgencyComponent implements OnInit, OnDestroy {
     protected dataUtils: JhiDataUtils,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -64,11 +64,11 @@ export class AgencyComponent implements OnInit, OnDestroy {
           page: pageToLoad - 1,
           query: this.currentSearch,
           size: this.itemsPerPage,
-          sort: this.sort()
+          sort: this.sort(),
         })
         .subscribe(
           (res: HttpResponse<IAgency[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-          () => this.onError()
+          () => this.onError(),
         );
       return;
     }
@@ -77,11 +77,11 @@ export class AgencyComponent implements OnInit, OnDestroy {
       .query({
         page: 0,
         size: 200,
-        sort: ['name,asc']
+        sort: ['name,asc'],
       })
       .subscribe(
         (res: HttpResponse<IAgency[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
+        () => this.onError(),
       );
   }
 
@@ -111,9 +111,8 @@ export class AgencyComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackId(index: number, item: IAgency): number {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    return item.id!;
+  trackId(_index: number, item: IAgency): number {
+    return item.id || -1;
   }
 
   registerChangeInAgencies(): void {

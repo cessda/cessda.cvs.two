@@ -49,11 +49,12 @@
         </div>
     </div>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="vocabularies?.length === 0">
+    <div class="alert alert-warning" id="no-result" *ngIf="vocabularies?.length === 0; else elseBlock">
         <span jhiTranslate="cvsApp.vocabulary.home.notFound">No vocabularies found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="vocabularies?.length > 0">
+    <ng-template #elseBlock>
+    <div class="table-responsive" id="entities">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
@@ -177,8 +178,8 @@
                     <td>{{ vocabulary.agencyId }}</td>
                     <td>{{ vocabulary.agencyName }}</td>
                     <td>{{ vocabulary.agencyLogo }}</td>
-                    <td>{{ vocabulary.publicationDate | date:'mediumDate' }}</td>
-                    <td>{{ vocabulary.lastModified | date:'medium' }}</td>
+                    <td>{{ vocabulary.publicationDate?.toDate() | date:'mediumDate' }}</td>
+                    <td>{{ vocabulary.lastModified?.toDate() | date:'medium' }}</td>
                     <td>{{ vocabulary.notes }}</td>
                     <td>{{ vocabulary.versionSq }}</td>
                     <td>{{ vocabulary.titleSq }}</td>
@@ -292,7 +293,7 @@
         </table>
     </div>
 
-    <div *ngIf="vocabularies?.length > 0">
+    <div>
         <div class="row justify-content-center">
             <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
@@ -301,4 +302,5 @@
             <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
+    </ng-template>
 </div>

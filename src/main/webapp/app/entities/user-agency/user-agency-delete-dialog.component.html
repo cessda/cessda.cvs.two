@@ -15,7 +15,7 @@
     limitations under the License.
 
 -->
-<form *ngIf="userAgency" name="deleteForm" (ngSubmit)="confirmDelete(userAgency?.id!)">
+<form *ngIf="userAgency && userAgency.id" name="deleteForm" (ngSubmit)="confirmDelete(userAgency.id)">
     <div class="modal-header">
         <h4 class="modal-title" jhiTranslate="entity.delete.title">Confirm delete operation</h4>
 
