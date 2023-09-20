@@ -49,11 +49,12 @@
         </div>
     </div>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="userAgencies?.length === 0">
+    <div class="alert alert-warning" id="no-result" *ngIf="userAgencies?.length === 0; else elseBlock">
         <span jhiTranslate="cvsApp.userAgency.home.notFound">No userAgencies found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="userAgencies?.length > 0">
+    <ng-template #elseBlock>
+    <div class="table-responsive" id="entities">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
@@ -102,7 +103,7 @@
         </table>
     </div>
 
-    <div *ngIf="userAgencies?.length > 0">
+    <div>
         <div class="row justify-content-center">
             <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
@@ -111,4 +112,5 @@
             <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
+    </ng-template>
 </div>

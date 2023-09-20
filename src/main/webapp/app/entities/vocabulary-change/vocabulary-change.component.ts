@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {IVocabularyChange} from 'app/shared/model/vocabulary-change.model';
+import { IVocabularyChange } from 'app/shared/model/vocabulary-change.model';
 
-import {ITEMS_PER_PAGE} from 'app/shared/constants/pagination.constants';
-import {VocabularyChangeService} from './vocabulary-change.service';
-import {VocabularyChangeDeleteDialogComponent} from './vocabulary-change-delete-dialog.component';
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
+import { VocabularyChangeService } from './vocabulary-change.service';
+import { VocabularyChangeDeleteDialogComponent } from './vocabulary-change-delete-dialog.component';
 
 @Component({
   selector: 'jhi-vocabulary-change',
-  templateUrl: './vocabulary-change.component.html'
+  templateUrl: './vocabulary-change.component.html',
 })
 export class VocabularyChangeComponent implements OnInit, OnDestroy {
   vocabularyChanges?: IVocabularyChange[];
@@ -47,7 +47,7 @@ export class VocabularyChangeComponent implements OnInit, OnDestroy {
     protected dataUtils: JhiDataUtils,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -64,11 +64,11 @@ export class VocabularyChangeComponent implements OnInit, OnDestroy {
           page: pageToLoad - 1,
           query: this.currentSearch,
           size: this.itemsPerPage,
-          sort: this.sort()
+          sort: this.sort(),
         })
         .subscribe(
           (res: HttpResponse<IVocabularyChange[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-          () => this.onError()
+          () => this.onError(),
         );
       return;
     }
@@ -77,11 +77,11 @@ export class VocabularyChangeComponent implements OnInit, OnDestroy {
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
-        sort: this.sort()
+        sort: this.sort(),
       })
       .subscribe(
         (res: HttpResponse<IVocabularyChange[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
+        () => this.onError(),
       );
   }
 
@@ -107,8 +107,7 @@ export class VocabularyChangeComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackId(index: number, item: IVocabularyChange): number {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+  trackId(_index: number, item: IVocabularyChange): number {
     return item.id!;
   }
 
@@ -138,8 +137,8 @@ export class VocabularyChangeComponent implements OnInit, OnDestroy {
         page: this.page,
         size: this.itemsPerPage,
         search: this.currentSearch,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
+        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
+      },
     });
     this.vocabularyChanges = data || [];
   }

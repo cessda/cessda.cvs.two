@@ -46,7 +46,7 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     private homeService: HomeService,
     private editorService: EditorService,
     protected eventManager: JhiEventManager,
-    private _ngZone: NgZone
+    private _ngZone: NgZone,
   ) {
     this.downloadCheckboxes = [];
     this.skosSelected = [];
@@ -119,7 +119,8 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     this.downloadEditorVocabularyFile('html', this.getCheckedItems(this.htmlSelected), 'text/html');
   }
 
-  toggleSelectAll(downloadType: string, checked: boolean): void {
+  toggleSelectAll(downloadType: string, event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
     switch (downloadType) {
       case 'skos':
         this.skosSelected.fill(checked);
@@ -149,15 +150,21 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     return selectedVersion;
   }
 
-  updateCheckboxValue(i: number, lang: string, versionNumber: string): void {
+  updateCheckboxValue(i: number, lang: string, event: Event): void {
+    const versionNumber = (event.target as HTMLInputElement).value;
     this.downloadCheckboxes[i] = lang + '-' + versionNumber;
+  }
+
+  updateSelection(array: boolean[], i: number, event: Event) {
+    const checked = (event.target as HTMLInputElement).checked;
+    array[i] = checked;
   }
 
   downloadDocx(): void {
     this.downloadEditorVocabularyFile(
       'docx',
       this.getCheckedItems(this.docxSelected),
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     );
   }
 

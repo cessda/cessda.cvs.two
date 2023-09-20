@@ -26,19 +26,23 @@ import { AlertError } from './alert-error.model';
   template: `
     <div class="alerts" role="alert">
       <div *ngFor="let alert of alerts" [ngClass]="setClasses(alert)">
-        <ngb-alert *ngIf="alert && alert.type && alert.msg" [type]="alert.type" (close)="alert.close(alerts)">
+        <ngb-alert *ngIf="alert && alert.type && alert.msg" [type]="alert.type" (close)="alert.close && alert.close(alerts)">
           <pre [innerHTML]="alert.msg"></pre>
         </ngb-alert>
       </div>
     </div>
-  `
+  `,
 })
 export class AlertErrorComponent implements OnDestroy {
   alerts: JhiAlert[] = [];
   errorListener: Subscription;
   httpErrorListener: Subscription;
 
-  constructor(private alertService: JhiAlertService, private eventManager: JhiEventManager, translateService: TranslateService) {
+  constructor(
+    private alertService: JhiAlertService,
+    private eventManager: JhiEventManager,
+    translateService: TranslateService,
+  ) {
     this.errorListener = eventManager.subscribe('cvsApp.error', (response: JhiEventWithContent<AlertError>) => {
       const errorResponse = response.content;
       this.addErrorAlert(errorResponse.message, errorResponse.key, errorResponse.params);
@@ -125,7 +129,7 @@ export class AlertErrorComponent implements OnDestroy {
       params: data,
       timeout: 5000,
       toast: this.alertService.isToast(),
-      scoped: true
+      scoped: true,
     };
 
     this.alerts.push(this.alertService.addAlert(newAlert, this.alerts));

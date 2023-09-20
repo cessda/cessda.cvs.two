@@ -20,10 +20,10 @@
     <tr>
         <th scope="col"><label>Language</label></th>
         <th scope="col" class="tac"><label>Version</label></th>
-        <th scope="col" class="tac"><input type="checkbox" [checked]="!(skosSelected.indexOf(false) > -1)" name="skosGrp" id="skosGrp" (change)="toggleSelectAll('skos', $event.target.checked)"/><label for="skosGrp">SKOS</label></th>
-        <th scope="col" class="tac"><input type="checkbox" [checked]="!(pdfSelected.indexOf(false) > -1)" name="pdfGrp" id="pdfGrp" (change)="toggleSelectAll('pdf', $event.target.checked)"/><label for="pdfGrp">PDF</label></th>
-        <th scope="col" class="tac"><input type="checkbox" [checked]="!(htmlSelected.indexOf(false) > -1)" name="htmlGrp" id="htmlGrp" (change)="toggleSelectAll('html', $event.target.checked)"/><label for="htmlGrp">HTML</label></th>
-        <th *ngIf="enableDocxExport" scope="col" class="tac"><input type="checkbox" [checked]="!(docxSelected.indexOf(false) > -1)" name="docxGrp" id="docxGrp" (change)="toggleSelectAll('docx', $event.target.checked)"/><label for="docxGrp">DOCX</label></th>
+        <th scope="col" class="tac"><input type="checkbox" [checked]="!(skosSelected.indexOf(false) > -1)" name="skosGrp" id="skosGrp" (change)="toggleSelectAll('skos', $event)"/><label for="skosGrp">SKOS</label></th>
+        <th scope="col" class="tac"><input type="checkbox" [checked]="!(pdfSelected.indexOf(false) > -1)" name="pdfGrp" id="pdfGrp" (change)="toggleSelectAll('pdf', $event)"/><label for="pdfGrp">PDF</label></th>
+        <th scope="col" class="tac"><input type="checkbox" [checked]="!(htmlSelected.indexOf(false) > -1)" name="htmlGrp" id="htmlGrp" (change)="toggleSelectAll('html', $event)"/><label for="htmlGrp">HTML</label></th>
+        <th *ngIf="enableDocxExport" scope="col" class="tac"><input type="checkbox" [checked]="!(docxSelected.indexOf(false) > -1)" name="docxGrp" id="docxGrp" (change)="toggleSelectAll('docx', $event)"/><label for="docxGrp">DOCX</label></th>
     </tr>
     </thead>
     <tbody>
@@ -37,7 +37,7 @@
                                             </span>
                                         </span>
             <ng-template #versionDropDown>
-                <select (change)="updateCheckboxValue(i, lang, $event.target.value)">
+                <select (change)="updateCheckboxValue(i, lang, $event)">
                     <option *ngFor="let version of getVersionsByLang(lang)!" value="{{version!.number}}">{{version!.number}}</option>
                 </select>
             </ng-template>
@@ -46,11 +46,11 @@
             The {{lang | vocabularyLanguageFromKey}} {{getSlMajorMinorVersionNumber(slVersionNumber)}}.x has not been released yet. You can export the previous version
             <a [routerLink]="['/vocabulary', notation ]" [queryParams]="{v:getVersionsByLang(lang)![0].number, lang:lang, tab:'export'}" target="_blank">here</a>.
         </td>
-        <ng-container *ngIf="getVersionsByLang(lang)![0].number!.startsWith(getSlMajorMinorVersionNumber(slVersionNumber))">
-            <td class="tac"><input type="checkbox" [checked]="skosSelected[i]" name="skosItems" formControlName="skosItems" value="{{downloadCheckboxes[i]}}" (change)="skosSelected[i] = $event.target.checked"/></td>
-            <td class="tac"><input type="checkbox" [checked]="pdfSelected[i]" name="pdfItems" formControlName="pdfItems" value="{{downloadCheckboxes[i]}}" (change)="pdfSelected[i] = $event.target.checked"/></td>
-            <td class="tac"><input type="checkbox" [checked]="htmlSelected[i]" name="htmlItems" formControlName="htmlItems" value="{{downloadCheckboxes[i]}}" (change)="htmlSelected[i] = $event.target.checked"/></td>
-            <td *ngIf="enableDocxExport" class="tac"><input type="checkbox" [checked]="docxSelected[i]" name="docxItems" formControlName="docxItems" value="{{downloadCheckboxes[i]}}" (change)="docxSelected[i] = $event.target.checked"/></td>
+        <ng-container *ngIf="getVersionsByLang(lang)[0].number!.startsWith(getSlMajorMinorVersionNumber(slVersionNumber))">
+            <td class="tac"><input type="checkbox" [checked]="skosSelected[i]" name="skosItems" formControlName="skosItems" value="{{downloadCheckboxes[i]}}" (change)="updateSelection(skosSelected, i, $event)"/></td>
+            <td class="tac"><input type="checkbox" [checked]="pdfSelected[i]" name="pdfItems" formControlName="pdfItems" value="{{downloadCheckboxes[i]}}" (change)="updateSelection(pdfSelected, i, $event)"/></td>
+            <td class="tac"><input type="checkbox" [checked]="htmlSelected[i]" name="htmlItems" formControlName="htmlItems" value="{{downloadCheckboxes[i]}}" (change)="updateSelection(htmlSelected, i, $event)"/></td>
+            <td *ngIf="enableDocxExport" class="tac"><input type="checkbox" [checked]="docxSelected[i]" name="docxItems" formControlName="docxItems" value="{{downloadCheckboxes[i]}}" (change)="updateSelection(docxSelected, i, $event)"/></td>
         </ng-container>
 
     </tr>

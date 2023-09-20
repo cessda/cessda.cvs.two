@@ -61,7 +61,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
       '',
       [
         Validators.pattern(
-          '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})'
+          '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
         ),
       ],
     ],
@@ -76,7 +76,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
   ) {
     this.isSaving = false;
     this.isSubmitting = false;
@@ -246,7 +246,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      response => this.processError(response)
+      response => this.processError(response),
     );
   }
 
@@ -269,5 +269,9 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
       this.errorNotationExists = true;
       this.isSaving = false;
     }
+  }
+
+  changeLanguage(event: Event) {
+    this.selectedLanguage = (event.target as HTMLSelectElement).value;
   }
 }

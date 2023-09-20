@@ -13,24 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnInit} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {EditorService} from 'app/editor/editor.service';
-import {IVersion} from 'app/shared/model/version.model';
-import {Router} from '@angular/router';
-import {IConcept} from 'app/shared/model/concept.model';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Observable, Subscription} from 'rxjs';
-import {JhiEventManager} from 'ng-jhipster';
-import {CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
-import {HttpResponse} from '@angular/common/http';
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
+import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { EditorService } from 'app/editor/editor.service';
+import { IVersion } from 'app/shared/model/version.model';
+import { Router } from '@angular/router';
+import { IConcept } from 'app/shared/model/concept.model';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
+import { JhiEventManager } from 'ng-jhipster';
+import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
+import { HttpResponse } from '@angular/common/http';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
 
 @Component({
   selector: 'jhi-editor-detail-code-deprecate-dialog',
-  templateUrl: './editor-detail-code-deprecate-dialog.component.html'
+  templateUrl: './editor-detail-code-deprecate-dialog.component.html',
 })
-export class EditorDetailCodeDeprecateDialogComponent implements OnInit {
+export class EditorDetailCodeDeprecateDialogComponent {
   versionParam!: IVersion;
   conceptParam!: IConcept;
   eventSubscriber?: Subscription;
@@ -44,7 +44,7 @@ export class EditorDetailCodeDeprecateDialogComponent implements OnInit {
   codeSnippet?: ICodeSnippet;
 
   deprecateCodeForm = this.fb.group({
-    replacingCodeId: ['', [Validators.required]]
+    replacingCodeId: ['', [Validators.required]],
   });
 
   constructor(
@@ -58,10 +58,6 @@ export class EditorDetailCodeDeprecateDialogComponent implements OnInit {
     this.isConfirmedReplacementYes = false;
     this.isConfirmedReplacementNo = false;
     this.replacingCodeId = null;
-  }
-
-  ngOnInit(): void {
-    // This is intentional
   }
 
   clear(): void {
@@ -106,7 +102,7 @@ export class EditorDetailCodeDeprecateDialogComponent implements OnInit {
           actionType: 'DEPRECATE_CODE',
           versionId: this.versionParam.id,
           conceptId: this.conceptParam.id,
-          replacedById: this.replacingCodeId
+          replacedById: this.replacingCodeId,
         };
         this.editorService.deprecateCode(this.codeSnippet).subscribe(() => {
           this.router.navigate(['/editor/vocabulary/' + this.versionParam.notation]);

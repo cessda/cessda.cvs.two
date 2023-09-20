@@ -366,9 +366,9 @@
                     <div class="vocab-lang" style="float: right">
                         <ng-container *ngFor="let lang of getUniqueVersionLang()!">
                             <!-- determine multiple version with same lang -->
-                            <span *ngIf="getVersionsByLanguage(lang)!.length === 1; else buttonDropDown">
+                            <span *ngIf="getVersionsByLanguage(lang).length === 1; else buttonDropDown">
                                 <button *ngFor="let v of getVersionsByLanguage(lang)!"
-                                        (click)="setActiveVersion( v!.language, v!.number)"
+                                        (click)="setActiveVersion(v.language!, v.number)"
                                         class="vocab-lang-button"
                                         [ngClass]="{
                                         'active': lang === vocabulary!.selectedLang,
@@ -563,7 +563,7 @@
                                     </div>
 
                                     <div class="editor-comparator" *ngIf="version!.previousVersion && version!.status === 'PUBLISHED'">
-                                        <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="version!.language + '-' + version!.number"
+                                        <jhi-version-compare [notation]="vocabulary!.notation!" [langVersion1]="version!.language + '-' + version!.number"
                                                              [langVersion2]="version!.language + '-' + version!.versionHistories![0].version"
                                                              [dataSource]="'JSON'">
                                         </jhi-version-compare>
@@ -581,7 +581,7 @@
                                     <fa-icon *ngIf="!vh.visible" icon="caret-right"></fa-icon>
                                     <span>{{version!.language}}: {{vh.version}} </span>
                                     <span>&nbsp;&nbsp;&nbsp; Published: {{vh.date}}</span>
-                                    <a *ngIf="!vh.version.startsWith(getSlMajorMinorVersionNumber())" [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionNumber(vh.version), lang:vocabulary!.selectedLang}">
+                                    <a *ngIf="!vh.version?.startsWith(getSlMajorMinorVersionNumber())" [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionNumber(vh.version), lang:vocabulary!.selectedLang}">
                                         <fa-icon icon="external-link-alt"></fa-icon>
                                     </a>
                                 </a>
@@ -608,13 +608,13 @@
 
                                     <div class="editor-comparator" *ngIf="i < version!.versionHistories!.length -1">
                                         <ng-container *ngIf="vh.prevVersion">
-                                            <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="version!.language + '-' + vh.version"
+                                            <jhi-version-compare [notation]="vocabulary!.notation!" [langVersion1]="version!.language + '-' + vh.version"
                                                                  [langVersion2]="version!.language + '-' + version!.versionHistories![i + 1].version"
                                                                  [dataSource]="'JSON'">
                                             </jhi-version-compare>
                                         </ng-container>
                                         <div *ngIf="!vh.prevVersion && i !== version!.versionHistories!.length" class="acc-header option-label col-12 mtop10">
-                                            Prev-next comparison not available, due to {{version!.language}}-{{getMissingTlVersion(vh.version)}} missing!
+                                            Prev-next comparison not available, due to {{version!.language}}-{{getMissingTlVersion(vh.version!)}} missing!
                                         </div>
                                     </div>
                                 </div>
@@ -781,10 +781,10 @@
                             <jhi-vocabulary-download
                                 [appScope]="appScope"
                                 [enableDocxExport]="enableDocxExport"
-                                [versions]="vocabulary!.versions"
+                                [versions]="vocabulary?.versions || []"
                                 [slVersionNumber]="getSlVersionNumber()"
-                                [downloadFormGroup]="editorDetailForm.controls.downloadFormGroup"
-                                [notation]="vocabulary!.notation"
+                                [downloadFormGroup]="downloadFormGroup"
+                                [notation]="vocabulary!.notation!"
                             ></jhi-vocabulary-download>
                         </div>
                     </div>

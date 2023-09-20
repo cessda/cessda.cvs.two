@@ -15,7 +15,7 @@
     limitations under the License.
 
 -->
-<form *ngIf="metadataField" name="deleteForm" (ngSubmit)="confirmDelete(metadataField?.id!)">
+<form *ngIf="metadataField && metadataField.id" name="deleteForm" (ngSubmit)="confirmDelete(metadataField.id)">
     <div class="modal-header">
         <h4 class="modal-title" jhiTranslate="entity.delete.title">Confirm delete operation</h4>
 

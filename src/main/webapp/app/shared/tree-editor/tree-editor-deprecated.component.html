@@ -17,7 +17,7 @@
 -->
 <div *ngFor="let concept of conceptList">
     <ul *ngIf="concept.parent === parentNotation" class="concept-tree ul-level-{{level!}}">
-        <li [attr.id]="concept.deprecated ? 'code_' + concept.notation.split('.').join('') : null" [ngClass]="{'y-bgr': !concept.title}">
+        <li [attr.id]="concept.deprecated ? 'code_' + concept.notation!.split('.').join('') : null" [ngClass]="{'y-bgr': !concept.title}">
             <div *ngIf="concept.deprecated" class="concept-row" [ngClass]="{ 'active': concept.notation === activeConceptNotation}">
                 <!-- Column 1 -->
                 <span class="column1"><a href="{{concept.uri}}" target="_blank" rel="noopener">{{concept.uri}}</a></span>

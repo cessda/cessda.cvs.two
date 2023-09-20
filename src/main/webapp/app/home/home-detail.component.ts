@@ -43,7 +43,7 @@ export class HomeDetailComponent implements OnInit {
 
   appScope: AppScope = AppScope.PUBLICATION;
 
-  vocabulary: IVocabulary | null = null;
+  vocabulary: IVocabulary = {};
 
   isDetailCollapse = true;
   isVersionCollapse = true;
@@ -67,16 +67,19 @@ export class HomeDetailComponent implements OnInit {
   contentObservable: Subject<DiffContent> = new Subject<DiffContent>();
   contentObservable$: Observable<DiffContent> = this.contentObservable.asObservable();
 
+  downloadFormGroup = this.fb.group({
+    downloadCheckboxes: [],
+    skosItems: [],
+    pdfItems: [],
+    htmlItems: [],
+    docxItems: [],
+  });
+
   detailForm = this.fb.group({
     tabSelected: [],
-    downloadFormGroup: this.fb.group({
-      downloadCheckboxes: [],
-      skosItems: [],
-      pdfItems: [],
-      htmlItems: [],
-      docxItems: [],
-    }),
+    downloadFormGroup: this.downloadFormGroup,
   });
+
   constructor(
     protected dataUtils: JhiDataUtils,
     protected activatedRoute: ActivatedRoute,
@@ -86,7 +89,7 @@ export class HomeDetailComponent implements OnInit {
     private routeEventsService: RouteEventsService,
     private _ngZone: NgZone,
     protected eventManager: JhiEventManager,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe
+    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
   ) {
     this.initialTabSelected = 'detail';
     this.currentSelectedCode = '';
@@ -112,36 +115,37 @@ export class HomeDetailComponent implements OnInit {
   }
 
   setVocabularyLangVersion(language: string, number: string): void {
-    this.vocabulary!.selectedLang = language;
-    this.vocabulary!.selectedVersion = number;
+    this.vocabulary.selectedLang = language;
+    this.vocabulary.selectedVersion = number;
     this.eventManager.broadcast({ name: 'closeComparison', content: true });
   }
 
   getLatestVersionNumber(): string {
-    const lang = this.vocabulary!.sourceLanguage!;
-    return String(VocabularyUtil.getVersionNumberByLangIso(this.vocabulary!, lang));
+    const lang = this.vocabulary.sourceLanguage!;
+    return String(VocabularyUtil.getVersionNumberByLangIso(this.vocabulary, lang));
   }
 
   getSlVersion(): IVersion {
-    return VocabularyUtil.getSlVersionOfVocabulary(this.vocabulary!);
+    return VocabularyUtil.getSlVersionOfVocabulary(this.vocabulary);
   }
 
   getSlVersionNumber(vnumber?: string): string {
     if (vnumber) {
       return VocabularyUtil.getSlVersionNumber(vnumber);
     } else {
-      return VocabularyUtil.getSlVersionNumberOfVocabulary(this.vocabulary!);
+      return VocabularyUtil.getSlVersionNumberOfVocabulary(this.vocabulary);
     }
   }
 
   getVersionByLangNumber(versionNumber?: string): IVersion {
-    return VocabularyUtil.getVersionByLangAndNumber(this.vocabulary!, versionNumber);
+    return VocabularyUtil.getVersionByLangAndNumber(this.vocabulary, versionNumber);
   }
 
   getUniqueVersionLang(): string[] {
     let uniqueLang: string[] = [];
-    this.vocabulary!.versions!.forEach(v => {
-      if (v.number!.startsWith(this.vocabulary!.versions![0].number!) && !uniqueLang.some(l => l === v.language)) {
+    this.vocabulary.versions?.forEach(v => {
+      const number = this.vocabulary.versions?.at(0)?.number || '';
+      if (v.number?.startsWith(number) && !uniqueLang.some(l => l === v.language)) {
         uniqueLang.push(v.language!);
       }
     });
@@ -149,8 +153,8 @@ export class HomeDetailComponent implements OnInit {
     // commented by #375 -->
     // uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
     // <-- commented by #375
-    this.vocabulary!.versions!.forEach(v => {
-      if (!v.number!.startsWith(this.vocabulary!.versions![0].number!) && !uniqueLang.some(l => l === v.language)) {
+    this.vocabulary.versions?.forEach(v => {
+      if (!v.number?.startsWith(this.vocabulary.versions![0].number!) && !uniqueLang.some(l => l === v.language)) {
         uniqueLang.push(v.language!);
       }
     });
@@ -161,7 +165,7 @@ export class HomeDetailComponent implements OnInit {
   }
 
   getVersionsByLanguage(lang?: string): IVersion[] {
-    return this.vocabulary!.versions!.filter(v => v.language === lang);
+    return this.vocabulary.versions!.filter(v => v.language === lang);
   }
   getFormattedVersionTooltip(version?: IVersion, sourceLang?: string): string {
     return (
@@ -258,24 +262,24 @@ export class HomeDetailComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ vocabulary }) => {
       VocabularyUtil.convertVocabularyToThreeDigitVersionNumer(vocabulary);
       this.vocabulary = vocabulary;
-      if (this.vocabulary!.selectedCode) {
-        this.currentSelectedCode = this.vocabulary!.selectedCode;
+      if (this.vocabulary.selectedCode) {
+        this.currentSelectedCode = this.vocabulary.selectedCode;
       }
       if (this.initialLangSelect !== null) {
-        if (!this.vocabulary!.versions!.some(v => v.language === this.initialLangSelect)) {
-          this.vocabulary!.selectedLang = this.vocabulary!.sourceLanguage!;
+        if (!this.vocabulary.versions?.some(v => v.language === this.initialLangSelect)) {
+          this.vocabulary.selectedLang = this.vocabulary.sourceLanguage!;
         } else {
-          this.vocabulary!.selectedLang = this.initialLangSelect!;
+          this.vocabulary.selectedLang = this.initialLangSelect!;
         }
       }
-      if (this.vocabulary!.selectedVersion == null) {
-        if (this.vocabulary!.selectedLang !== null) {
-          this.vocabulary!.selectedVersion = VocabularyUtil.getVersionByLang(this.vocabulary!).number;
+      if (this.vocabulary.selectedVersion === null) {
+        if (this.vocabulary.selectedLang !== null) {
+          this.vocabulary.selectedVersion = VocabularyUtil.getVersionByLang(this.vocabulary).number;
         }
       }
 
       if (this.currentSelectedCode !== '') {
-        this.isShowingDeprecatedCodes = this.getVersionsByLanguage(this.vocabulary!.selectedLang).some(version => {
+        this.isShowingDeprecatedCodes = this.getVersionsByLanguage(this.vocabulary.selectedLang).some(version => {
           return version.concepts?.some(concept => {
             return concept.deprecated;
           });
@@ -294,8 +298,8 @@ export class HomeDetailComponent implements OnInit {
         });
       }
 
-      this.newerVersionNumber = this.vocabulary!.status === 'PUBLISHED' ? this.vocabulary!.versionNumber! : this.getLatestVersionNumber();
-      if (VocabularyUtil.compareVersionNumbers(this.newerVersionNumber, this.vocabulary!.versions![0].number!) <= 0) {
+      this.newerVersionNumber = this.vocabulary.status === 'PUBLISHED' ? this.vocabulary.versionNumber! : this.getLatestVersionNumber();
+      if (VocabularyUtil.compareVersionNumbers(this.newerVersionNumber, this.vocabulary.versions![0].number!) <= 0) {
         this.newerVersionNumber = null;
       }
     });
@@ -323,7 +327,7 @@ export class HomeDetailComponent implements OnInit {
       return VocabularyUtil.getSlMajorMinorVersionNumber(this.getSlVersion().versionHistories![0].version!) + '.x';
     }
     let i = 0;
-    this.getSlVersion().versionHistories!.forEach(function (vhSl, index): void {
+    this.getSlVersion().versionHistories?.forEach(function (vhSl, index): void {
       if (VocabularyUtil.compareVersionNumbers(version, vhSl.version!) === 0) {
         i = index + 1;
       }

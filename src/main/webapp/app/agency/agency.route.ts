@@ -18,7 +18,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
 import { JhiResolvePagingParams } from 'ng-jhipster';
 import { EMPTY, Observable, of } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
@@ -30,20 +30,23 @@ import { AgencyUpdateComponent } from './agency-update.component';
 
 @Injectable({ providedIn: 'root' })
 export class AgencyResolve implements Resolve<IAgency> {
-  constructor(private service: AgencyService, private router: Router) {}
+  constructor(
+    private service: AgencyService,
+    private router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IAgency> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        flatMap((agency: HttpResponse<Agency>) => {
+        mergeMap((agency: HttpResponse<Agency>) => {
           if (agency.body) {
             return of(agency.body);
           } else {
             this.router.navigate(['404']);
             return EMPTY;
           }
-        })
+        }),
       );
     }
     return of(new Agency());
