@@ -33,7 +33,9 @@ pipeline {
                 stage('Build Project') {
                     steps {
                         withMaven {
-                            sh "./mvnw clean install -Pprod"
+                            configFileProvider([configFile(fileId: 'be684558-5540-4ad6-a155-7c1b4278abc0', targetLocation: '.npmrc')]) {
+                                sh "./mvnw clean install -Pprod"
+                            }
                         }
                     }
                     when { branch 'main' }
@@ -42,7 +44,9 @@ pipeline {
                 stage('Test Project') {
                     steps {
                         withMaven {
-                            sh './mvnw clean verify -Pprod'
+                            configFileProvider([configFile(fileId: 'be684558-5540-4ad6-a155-7c1b4278abc0', targetLocation: '.npmrc')]) {
+                                sh './mvnw clean verify -Pprod'
+                            }
                         }
                     }
                     when { not { branch 'main' } }
