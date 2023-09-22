@@ -27,13 +27,15 @@ describe('Component Tests', () => {
     let comp: CommentDetailComponent;
     let fixture: ComponentFixture<CommentDetailComponent>;
     let dataUtils: JhiDataUtils;
-    const route = ({ data: of({ comment: new Comment(123) }) } as any) as ActivatedRoute;
+    const route = {
+      data: of({ comment: new Comment(123, undefined, undefined, undefined, undefined, undefined) }),
+    } as any as ActivatedRoute;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [CommentDetailComponent],
-        providers: [{ provide: ActivatedRoute, useValue: route }]
+        providers: [{ provide: ActivatedRoute, useValue: route }],
       })
         .overrideTemplate(CommentDetailComponent, '')
         .compileComponents();

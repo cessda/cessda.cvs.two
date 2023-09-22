@@ -39,7 +39,7 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new Comment(0, 'AAAAAAA', 'AAAAAAA', 0, currentDate);
+      elemDefault = new Comment(0, 'AAAAAAA', 'AAAAAAA', 0, currentDate, 0);
     });
 
     describe('Service methods', () => {
@@ -48,7 +48,7 @@ describe('Service Tests', () => {
           {
             dateTime: currentDate.format(DATE_TIME_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         service.find(123).subscribe(resp => (expectedResult = resp.body));
@@ -64,17 +64,17 @@ describe('Service Tests', () => {
             id: 0,
             dateTime: currentDate.format(DATE_TIME_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign(
           {
             dateTime: currentDate,
           },
-          returnedFromService
+          returnedFromService,
         );
 
-        service.create(new Comment()).subscribe(resp => (expectedResult = resp.body));
+        service.create({}).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
@@ -89,14 +89,14 @@ describe('Service Tests', () => {
             userId: 1,
             dateTime: currentDate.format(DATE_TIME_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign(
           {
             dateTime: currentDate,
           },
-          returnedFromService
+          returnedFromService,
         );
 
         service.update(expected).subscribe(resp => (expectedResult = resp.body));
@@ -114,14 +114,14 @@ describe('Service Tests', () => {
             userId: 1,
             dateTime: currentDate.format(DATE_TIME_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign(
           {
             dateTime: currentDate,
           },
-          returnedFromService
+          returnedFromService,
         );
 
         service.query().subscribe(resp => (expectedResult = resp.body));

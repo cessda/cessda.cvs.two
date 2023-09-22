@@ -45,7 +45,7 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
             vocabulary.body.selectedLang = vocabulary.body.sourceLanguage;
             return of(vocabulary.body);
           } else {
-            this.router.navigate(['404']);
+            this.router.navigate(['404'], { skipLocationChange: true });
             return EMPTY;
           }
         }),

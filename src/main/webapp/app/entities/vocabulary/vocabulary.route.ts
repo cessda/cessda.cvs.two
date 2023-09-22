@@ -30,7 +30,10 @@ import { VocabularyUpdateComponent } from './vocabulary-update.component';
 
 @Injectable({ providedIn: 'root' })
 export class VocabularyResolve implements Resolve<IVocabulary> {
-  constructor(private service: VocabularyService, private router: Router) {}
+  constructor(
+    private service: VocabularyService,
+    private router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IVocabulary> | Observable<never> {
     const id = route.params['id'];
@@ -40,10 +43,10 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
           if (vocabulary.body) {
             return of(vocabulary.body);
           } else {
-            this.router.navigate(['404']);
+            this.router.navigate(['404'], { skipLocationChange: true });
             return EMPTY;
           }
-        })
+        }),
       );
     }
     return of(new Vocabulary());
@@ -55,49 +58,49 @@ export const vocabularyRoute: Routes = [
     path: '',
     component: VocabularyComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams
+      pagingParams: JhiResolvePagingParams,
     },
     data: {
       authorities: [Authority.USER],
       defaultSort: 'id,asc',
-      pageTitle: 'cvsApp.vocabulary.home.title'
+      pageTitle: 'cvsApp.vocabulary.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: VocabularyDetailComponent,
     resolve: {
-      vocabulary: VocabularyResolve
+      vocabulary: VocabularyResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.vocabulary.home.title'
+      pageTitle: 'cvsApp.vocabulary.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: VocabularyUpdateComponent,
     resolve: {
-      vocabulary: VocabularyResolve
+      vocabulary: VocabularyResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.vocabulary.home.title'
+      pageTitle: 'cvsApp.vocabulary.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: VocabularyUpdateComponent,
     resolve: {
-      vocabulary: VocabularyResolve
+      vocabulary: VocabularyResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.vocabulary.home.title'
+      pageTitle: 'cvsApp.vocabulary.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

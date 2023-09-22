@@ -26,11 +26,11 @@ export interface IComment {
 
 export class Comment implements IComment {
   constructor(
-    public id?: number,
-    public info?: string,
-    public content?: any,
-    public userId?: number,
-    public dateTime?: Moment,
-    public versionId?: number
+    public id: number | undefined,
+    public info: string | undefined,
+    public content: any | undefined,
+    public userId: number | undefined,
+    public dateTime: Moment | undefined,
+    public versionId: number | undefined,
   ) {}
 }

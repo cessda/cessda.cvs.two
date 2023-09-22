@@ -64,7 +64,7 @@
                     <td><small>{{ audit.principal }}</small></td>
                     <td>{{ audit.type }}</td>
                     <td>
-                        <span *ngIf="audit.data" ng-show="audit.data.message">{{ audit.data["message"] }}</span>
+                        <span *ngIf="audit.data" ng-show="audit.data.message">{{ audit.data.message }}</span>
                         <span *ngIf="audit.data" ng-show="audit.data.remoteAddress"><span jhiTranslate="audits.table.data.remoteAddress">Remote Address</span> {{ audit.data.remoteAddress }}</span>
                     </td>
                 </tr>

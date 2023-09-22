@@ -43,7 +43,7 @@ export class ConceptResolve implements Resolve<IConcept> {
           if (concept.body) {
             return of(concept.body);
           } else {
-            this.router.navigate(['404']);
+            this.router.navigate(['404'], { skipLocationChange: true });
             return EMPTY;
           }
         }),

@@ -30,7 +30,10 @@ import { VocabularyChangeUpdateComponent } from './vocabulary-change-update.comp
 
 @Injectable({ providedIn: 'root' })
 export class VocabularyChangeResolve implements Resolve<IVocabularyChange> {
-  constructor(private service: VocabularyChangeService, private router: Router) {}
+  constructor(
+    private service: VocabularyChangeService,
+    private router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IVocabularyChange> | Observable<never> {
     const id = route.params['id'];
@@ -40,10 +43,10 @@ export class VocabularyChangeResolve implements Resolve<IVocabularyChange> {
           if (vocabularyChange.body) {
             return of(vocabularyChange.body);
           } else {
-            this.router.navigate(['404']);
+            this.router.navigate(['404'], { skipLocationChange: true });
             return EMPTY;
           }
-        })
+        }),
       );
     }
     return of(new VocabularyChange());
@@ -55,49 +58,49 @@ export const vocabularyChangeRoute: Routes = [
     path: '',
     component: VocabularyChangeComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams
+      pagingParams: JhiResolvePagingParams,
     },
     data: {
       authorities: [Authority.USER],
       defaultSort: 'id,asc',
-      pageTitle: 'cvsApp.vocabularyChange.home.title'
+      pageTitle: 'cvsApp.vocabularyChange.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: VocabularyChangeDetailComponent,
     resolve: {
-      vocabularyChange: VocabularyChangeResolve
+      vocabularyChange: VocabularyChangeResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.vocabularyChange.home.title'
+      pageTitle: 'cvsApp.vocabularyChange.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: VocabularyChangeUpdateComponent,
     resolve: {
-      vocabularyChange: VocabularyChangeResolve
+      vocabularyChange: VocabularyChangeResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.vocabularyChange.home.title'
+      pageTitle: 'cvsApp.vocabularyChange.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: VocabularyChangeUpdateComponent,
     resolve: {
-      vocabularyChange: VocabularyChangeResolve
+      vocabularyChange: VocabularyChangeResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.vocabularyChange.home.title'
+      pageTitle: 'cvsApp.vocabularyChange.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

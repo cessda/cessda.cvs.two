@@ -37,7 +37,7 @@ export class AccountService {
     private sessionStorage: SessionStorageService,
     private http: HttpClient,
     private stateStorageService: StateStorageService,
-    private router: Router
+    private router: Router,
   ) {}
 
   save(account: Account): Observable<{}> {
@@ -161,7 +161,7 @@ export class AccountService {
             this.navigateToStoredUrl();
           }
         }),
-        shareReplay()
+        shareReplay(),
       );
     }
     return this.accountCache$;
@@ -189,9 +189,7 @@ export class AccountService {
 
   getUserAgencies(): string[] {
     const agencies: string[] = [];
-    this.userIdentity!.userAgencies.forEach(agency => {
-      agencies.push(agency['agencyName']);
-    });
+    this.userIdentity && this.userIdentity.userAgencies.forEach(agency => agency.agencyName && agencies.push(agency.agencyName));
     return agencies;
   }
 

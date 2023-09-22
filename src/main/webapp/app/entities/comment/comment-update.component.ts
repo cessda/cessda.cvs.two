@@ -52,7 +52,7 @@ export class CommentUpdateComponent implements OnInit {
     protected commentService: CommentService,
     protected versionService: VersionService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -99,22 +99,24 @@ export class CommentUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IComment {
-    return {
-      ...new Comment(),
-      id: this.editForm.get(['id'])!.value,
-      info: this.editForm.get(['info'])!.value,
-      content: this.editForm.get(['content'])!.value,
-      userId: this.editForm.get(['userId'])!.value,
-      dateTime: this.editForm.get(['dateTime'])!.value ? moment(this.editForm.get(['dateTime'])!.value, DATE_TIME_FORMAT) : undefined,
-      versionId: this.editForm.get(['versionId'])!.value,
-    };
+  private createFromForm(): Comment {
+    // Extract dateTime to its own variable so that it can be truthy-tested
+    const dateTime = this.editForm.get(['dateTime'])?.value;
+
+    return new Comment(
+      this.editForm.get(['id'])?.value,
+      this.editForm.get(['info'])?.value,
+      this.editForm.get(['content'])?.value,
+      this.editForm.get(['userId'])?.value,
+      dateTime ? moment(dateTime, DATE_TIME_FORMAT) : undefined,
+      this.editForm.get(['versionId'])?.value,
+    );
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IComment>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 

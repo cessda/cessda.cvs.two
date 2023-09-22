@@ -43,13 +43,13 @@ describe('Component Tests', () => {
                     pagingParams: {
                       predicate: 'id',
                       reverse: false,
-                      page: 0
-                    }
-                  })
-              }
-            }
-          }
-        ]
+                      page: 0,
+                    },
+                  }),
+              },
+            },
+          },
+        ],
       })
         .overrideTemplate(CommentComponent, '')
         .compileComponents();
@@ -65,10 +65,10 @@ describe('Component Tests', () => {
       spyOn(service, 'query').and.returnValue(
         of(
           new HttpResponse({
-            body: [new Comment(123)],
-            headers
-          })
-        )
+            body: [new Comment(123, undefined, undefined, undefined, undefined, undefined)],
+            headers,
+          }),
+        ),
       );
 
       // WHEN
@@ -85,10 +85,10 @@ describe('Component Tests', () => {
       spyOn(service, 'query').and.returnValue(
         of(
           new HttpResponse({
-            body: [new Comment(123)],
-            headers
-          })
-        )
+            body: [new Comment(123, undefined, undefined, undefined, undefined, undefined)],
+            headers,
+          }),
+        ),
       );
 
       // WHEN

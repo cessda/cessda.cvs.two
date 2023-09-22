@@ -19,10 +19,12 @@ import { Router, ActivatedRouteSnapshot, NavigationEnd, NavigationError } from '
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 import { AccountService } from 'app/core/auth/account.service';
+import { zip } from 'rxjs';
+import { map, merge, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'jhi-main',
-  templateUrl: './main.component.html'
+  templateUrl: './main.component.html',
 })
 export class MainComponent implements OnInit {
   private renderer: Renderer2;
@@ -32,7 +34,7 @@ export class MainComponent implements OnInit {
     private titleService: Title,
     private router: Router,
     private translateService: TranslateService,
-    rootRenderer: RendererFactory2
+    rootRenderer: RendererFactory2,
   ) {
     this.renderer = rootRenderer.createRenderer(document.querySelector('html'), null);
   }
@@ -66,10 +68,17 @@ export class MainComponent implements OnInit {
   }
 
   private updateTitle(): void {
-    let pageTitle = this.getPageTitle(this.router.routerState.snapshot.root);
+    const pageTitle = this.getPageTitle(this.router.routerState.snapshot.root);
     if (!pageTitle) {
-      pageTitle = 'global.title';
+      this.translateService.get('global.title').subscribe(title => this.titleService.setTitle(title));
+    } else {
+      zip(this.translateService.get(pageTitle), this.translateService.get('global.title')).subscribe(title => {
+        if (title[0] == title[1]) {
+          return this.titleService.setTitle(`${title[0]}`);
+        } else {
+          return this.titleService.setTitle(`${title[0]} - ${title[1]}`);
+        }
+      });
     }
-    this.translateService.get(pageTitle).subscribe(title => this.titleService.setTitle(title));
   }
 }

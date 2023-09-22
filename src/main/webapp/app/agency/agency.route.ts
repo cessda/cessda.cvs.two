@@ -43,7 +43,7 @@ export class AgencyResolve implements Resolve<IAgency> {
           if (agency.body) {
             return of(agency.body);
           } else {
-            this.router.navigate(['404']);
+            this.router.navigate(['404'], { skipLocationChange: true });
             return EMPTY;
           }
         }),

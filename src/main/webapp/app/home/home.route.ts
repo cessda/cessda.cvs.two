@@ -13,22 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-import {ActivatedRouteSnapshot, Resolve, Router, Routes} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
 
-import {EMPTY, Observable, of} from 'rxjs';
-import {flatMap} from 'rxjs/operators';
-
-import {HomeComponent} from './home.component';
-import {IVocabulary, Vocabulary} from 'app/shared/model/vocabulary.model';
-import {JhiResolvePagingParams} from 'ng-jhipster';
-import {HomeService} from 'app/home/home.service';
-import {HomeDetailComponent} from 'app/home/home-detail.component';
+import { EMPTY, Observable, of } from 'rxjs';
+import { HomeComponent } from './home.component';
+import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
+import { JhiResolvePagingParams } from 'ng-jhipster';
+import { HomeService } from 'app/home/home.service';
+import { HomeDetailComponent } from 'app/home/home-detail.component';
+import { mergeMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class VocabularyResolve implements Resolve<IVocabulary> {
-  constructor(private service: HomeService, private router: Router) {}
+  constructor(
+    private service: HomeService,
+    private router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IVocabulary> | Observable<never> {
     let notation = route.params['notation'];
@@ -46,26 +48,24 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
     if (route.queryParams.v) version = route.queryParams.v;
     if (route.queryParams.lang) lang = route.queryParams.lang;
     if (notation) {
-      const queryString: any = {}
+      const queryString: any = {};
       if (version !== '') {
         queryString.v = version;
       }
-      return this.service
-        .getVocabulary(notation, queryString)
-        .pipe(
-          flatMap((vocabulary: HttpResponse<Vocabulary>) => {
-            if (vocabulary.body) {
-              vocabulary.body.selectedLang = lang !== '' ? lang : vocabulary.body.sourceLanguage;
-              if (code !== '') {
-                vocabulary.body.selectedCode = code;
-              }
-              return of(vocabulary.body);
-            } else {
-              this.router.navigate(['404']);
-              return EMPTY;
+      return this.service.getVocabulary(notation, queryString).pipe(
+        mergeMap((vocabulary: HttpResponse<Vocabulary>) => {
+          if (vocabulary.body) {
+            vocabulary.body.selectedLang = lang !== '' ? lang : vocabulary.body.sourceLanguage;
+            if (code !== '') {
+              vocabulary.body.selectedCode = code;
             }
-          })
-        );
+            return of(vocabulary.body);
+          } else {
+            this.router.navigate(['404'], { skipLocationChange: true });
+            return EMPTY;
+          }
+        }),
+      );
     }
     return of(new Vocabulary());
   }
@@ -76,44 +76,44 @@ export const HOME_ROUTE: Routes = [
     path: '',
     component: HomeComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams
+      pagingParams: JhiResolvePagingParams,
     },
     data: {
       authorities: [],
-      pageTitle: 'home.title'
-    }
+      pageTitle: 'home.title',
+    },
   },
   {
     path: 'vocabulary/:notation',
     component: HomeDetailComponent,
     resolve: {
-      vocabulary: VocabularyResolve
+      vocabulary: VocabularyResolve,
     },
     data: {
-      pageTitle: 'home.title'
+      pageTitle: 'home.title',
     },
-    runGuardsAndResolvers: 'always'
+    runGuardsAndResolvers: 'always',
   },
   {
     path: 'vocabulary/:notation/:version',
     component: HomeDetailComponent,
     resolve: {
-      vocabulary: VocabularyResolve
+      vocabulary: VocabularyResolve,
     },
     data: {
-      pageTitle: 'home.title'
+      pageTitle: 'home.title',
     },
-    runGuardsAndResolvers: 'always'
+    runGuardsAndResolvers: 'always',
   },
   {
     path: 'vocabulary/:notation/:version/:lang',
     component: HomeDetailComponent,
     resolve: {
-      vocabulary: VocabularyResolve
+      vocabulary: VocabularyResolve,
     },
     data: {
-      pageTitle: 'home.title'
+      pageTitle: 'home.title',
     },
-    runGuardsAndResolvers: 'always'
-  }
+    runGuardsAndResolvers: 'always',
+  },
 ];

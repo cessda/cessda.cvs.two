@@ -13,22 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-import {ActivatedRouteSnapshot, Resolve, Router, Routes} from '@angular/router';
-import {JhiResolvePagingParams} from 'ng-jhipster';
-import {EMPTY, Observable, of} from 'rxjs';
-import {flatMap} from 'rxjs/operators';
-import {UserRouteAccessService} from 'app/core/auth/user-route-access-service';
-import {IResolver, Resolver} from 'app/shared/model/resolver.model';
-import {ResolverService} from './resolver.service';
-import {ResolverComponent} from './resolver.component';
-import {ResolverDetailComponent} from './resolver-detail.component';
-import {ResolverUpdateComponent} from './resolver-update.component';
+import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import { JhiResolvePagingParams } from 'ng-jhipster';
+import { EMPTY, Observable, of } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { IResolver, Resolver } from 'app/shared/model/resolver.model';
+import { ResolverService } from './resolver.service';
+import { ResolverComponent } from './resolver.component';
+import { ResolverDetailComponent } from './resolver-detail.component';
+import { ResolverUpdateComponent } from './resolver-update.component';
 
 @Injectable({ providedIn: 'root' })
 export class ResolverResolve implements Resolve<IResolver> {
-  constructor(private service: ResolverService, private router: Router) {}
+  constructor(
+    private service: ResolverService,
+    private router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IResolver> | Observable<never> {
     const id = route.params['id'];
@@ -38,10 +41,10 @@ export class ResolverResolve implements Resolve<IResolver> {
           if (resolver.body) {
             return of(resolver.body);
           } else {
-            this.router.navigate(['404']);
+            this.router.navigate(['404'], { skipLocationChange: true });
             return EMPTY;
           }
-        })
+        }),
       );
     }
     return of(new Resolver());
@@ -53,45 +56,45 @@ export const resolverRoute: Routes = [
     path: '',
     component: ResolverComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams
+      pagingParams: JhiResolvePagingParams,
     },
     data: {
       defaultSort: 'id,asc',
-      pageTitle: 'cvsApp.resolver.home.title'
+      pageTitle: 'cvsApp.resolver.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: ResolverDetailComponent,
     resolve: {
-      resolver: ResolverResolve
+      resolver: ResolverResolve,
     },
     data: {
-      pageTitle: 'cvsApp.resolver.home.title'
+      pageTitle: 'cvsApp.resolver.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: ResolverUpdateComponent,
     resolve: {
-      resolver: ResolverResolve
+      resolver: ResolverResolve,
     },
     data: {
-      pageTitle: 'cvsApp.resolver.home.title'
+      pageTitle: 'cvsApp.resolver.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: ResolverUpdateComponent,
     resolve: {
-      resolver: ResolverResolve
+      resolver: ResolverResolve,
     },
     data: {
-      pageTitle: 'cvsApp.resolver.home.title'
+      pageTitle: 'cvsApp.resolver.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

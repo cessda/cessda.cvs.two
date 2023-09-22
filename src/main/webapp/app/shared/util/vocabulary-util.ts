@@ -20,6 +20,7 @@ import { IVersion } from 'app/shared/model/version.model';
 import { IConcept } from 'app/shared/model/concept.model';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
+import { VersionNumber } from '../model/version-number.model';
 
 export default class VocabularyUtil {
   static getTitleDefByLangIso(item: IVocabulary | ICode, langIso: string): string[] {
@@ -144,7 +145,7 @@ export default class VocabularyUtil {
       case 'sv':
         return item.versionSv;
       default:
-        return item.versionEn;
+        throw new TypeError(`Invalid langIso ${langIso}`);
     }
   }
 
@@ -156,40 +157,34 @@ export default class VocabularyUtil {
     return vocab.versions!.filter(v => v.itemType === 'SL')[0];
   }
 
-  static parseVersionNumber(vnumber: string): any {
+  static parseVersionNumber(vnumber: string): VersionNumber {
     const regex = /^([0-9]+)\.([0-9]+)(?:\.([0-9]+))?/g;
     const matches = regex.exec(vnumber);
     if (matches) {
-      return {
-        //'sl': matches[1] + '.' + matches[2] + '.' + '0',
-        sl: matches[1] + '.' + matches[2] + '.' + matches[3],
-        'sl-major': Number(matches[1]),
-        'sl-minor': Number(matches[2]),
-        patch: Number(matches[3]),
-      };
+      return new VersionNumber(Number(matches[1]), Number(matches[2]), Number(matches[3]));
     }
     throw new Error('Invalid version number format');
   }
 
   static getSlVersionNumber(vnumber: string): string {
-    return this.parseVersionNumber(vnumber)['sl'];
+    return this.parseVersionNumber(vnumber).toString();
   }
 
   static getSlMajorMinorVersionNumber(vnumber: string): string {
     const vnumberParsed = this.parseVersionNumber(vnumber);
-    return vnumberParsed['sl-major'] + '.' + vnumberParsed['sl-minor'];
+    return `${vnumberParsed.major}.${vnumberParsed.minor}`;
   }
 
   static getSlMajorVersionNumber(vnumber: string): number {
-    return this.parseVersionNumber(vnumber)['sl-major'];
+    return this.parseVersionNumber(vnumber).major;
   }
 
   static getSlMinorVersionNumber(vnumber: string): number {
-    return this.parseVersionNumber(vnumber)['sl-minor'];
+    return this.parseVersionNumber(vnumber).minor;
   }
 
   static getTlVersionNumber(vnumber: string): number {
-    return this.parseVersionNumber(vnumber)['patch'];
+    return this.parseVersionNumber(vnumber).patch;
   }
 
   static getSlVersionNumberOfVocabulary(vocab: IVocabulary): string {
@@ -199,14 +194,14 @@ export default class VocabularyUtil {
 
   static getSlMajorVersionNumberOfVersion(version: IVersion): number {
     if (version.number) {
-      return this.parseVersionNumber(version.number)['sl-major'];
+      return this.parseVersionNumber(version.number).major;
     }
     return -1;
   }
 
   static getSlMinorVersionNumberOfVersion(version: IVersion): number {
     if (version.number) {
-      return this.parseVersionNumber(version.number)['sl-minor'];
+      return this.parseVersionNumber(version.number).minor;
     }
     return -1;
   }
@@ -222,7 +217,7 @@ export default class VocabularyUtil {
     } else if (vocab.selectedVersion) {
       vocab.selectedVersion = this.threeDigitVersionNumber(vocab.selectedVersion);
       return vocab.versions!.filter(
-        v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number) === vocab.selectedVersion
+        v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number) === vocab.selectedVersion,
       )[0];
     }
     return VocabularyUtil.getVersionByLang(vocab);
@@ -262,16 +257,16 @@ export default class VocabularyUtil {
   }
 
   static compareVersionNumbers(v1: string, v2: string): number {
-    v1 = this.parseVersionNumber(this.threeDigitVersionNumber(v1)!);
-    v2 = this.parseVersionNumber(this.threeDigitVersionNumber(v2)!);
-    const cmpResult = this.compareArrays([v1['sl-major'], v1['sl-minor']], [v2['sl-major'], v2['sl-minor']]);
+    const v1Parsed = this.parseVersionNumber(this.threeDigitVersionNumber(v1)!);
+    const v2Parsed = this.parseVersionNumber(this.threeDigitVersionNumber(v2)!);
+    const cmpResult = this.compareArrays([v1Parsed.major, v1Parsed.minor], [v2Parsed.major, v2Parsed.minor]);
     if (cmpResult !== 0) {
       return cmpResult;
     }
-    if (v1['patch'] === 0 || v2['patch'] === 0) {
+    if (v1Parsed.patch === 0 || v2Parsed.patch === 0) {
       return 0;
     }
-    return this.compareArrays([v1['patch']], [v2['patch']]);
+    return this.compareArrays([v1Parsed.patch], [v2Parsed.patch]);
   }
 
   static compareSlVersionNumbers(v1: string, v2: string): number {
@@ -297,7 +292,7 @@ export default class VocabularyUtil {
     // convert languages to enum so it can be sorted
     languages.forEach(l => {
       if (l !== sourceLang) {
-        sortedLangIsos.push(LanguageIso[l]);
+        sortedLangIsos.push(LanguageIso[l as keyof typeof LanguageIso]);
       }
     });
     sortedLangIsos.sort((a, b) => a - b);

@@ -30,7 +30,10 @@ import { VersionUpdateComponent } from './version-update.component';
 
 @Injectable({ providedIn: 'root' })
 export class VersionResolve implements Resolve<IVersion> {
-  constructor(private service: VersionService, private router: Router) {}
+  constructor(
+    private service: VersionService,
+    private router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IVersion> | Observable<never> {
     const id = route.params['id'];
@@ -40,10 +43,10 @@ export class VersionResolve implements Resolve<IVersion> {
           if (version.body) {
             return of(version.body);
           } else {
-            this.router.navigate(['404']);
+            this.router.navigate(['404'], { skipLocationChange: true });
             return EMPTY;
           }
-        })
+        }),
       );
     }
     return of(new Version());
@@ -55,49 +58,49 @@ export const versionRoute: Routes = [
     path: '',
     component: VersionComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams
+      pagingParams: JhiResolvePagingParams,
     },
     data: {
       authorities: [Authority.USER],
       defaultSort: 'id,asc',
-      pageTitle: 'cvsApp.version.home.title'
+      pageTitle: 'cvsApp.version.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: VersionDetailComponent,
     resolve: {
-      version: VersionResolve
+      version: VersionResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.version.home.title'
+      pageTitle: 'cvsApp.version.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: VersionUpdateComponent,
     resolve: {
-      version: VersionResolve
+      version: VersionResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.version.home.title'
+      pageTitle: 'cvsApp.version.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: VersionUpdateComponent,
     resolve: {
-      version: VersionResolve
+      version: VersionResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.version.home.title'
+      pageTitle: 'cvsApp.version.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

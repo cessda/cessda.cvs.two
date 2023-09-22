@@ -58,7 +58,7 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
     private router: Router,
     protected eventManager: JhiEventManager,
     private fb: FormBuilder,
-    private _ngZone: NgZone
+    private _ngZone: NgZone,
   ) {
     this.isSaving = false;
   }
@@ -97,7 +97,6 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
   saveComment(): void {
     this.isSaving = true;
     const newComment = {
-      ...new Comment(),
       info: this.account.lastName + (this.account.firstName ? ', ' + this.account.firstName : ''),
       userId: this.account.id,
       content: this.commentForm.get(['content'])!.value,
@@ -109,7 +108,7 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IComment>>): void {
     result.subscribe(
       response => this.onSaveSuccess(response.body!),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 

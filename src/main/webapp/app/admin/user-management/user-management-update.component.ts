@@ -189,13 +189,14 @@ export class UserManagementUpdateComponent implements OnInit {
           '? The agency-role addition will only be completed after the form is saved.',
       )
     ) {
-      const userAgency = {
-        ...new UserAgency(),
-        userId: this.user.id,
-        agencyRole: this.selectedAgencyRole,
-        agencyId: this.selectedAgencyId,
-        language: this.selectedLanguage !== '' ? this.selectedLanguage : undefined,
-      };
+      const userAgency = new UserAgency(
+        undefined,
+        this.user.id,
+        undefined,
+        this.selectedAgencyRole as UserAgency['agencyRole'],
+        this.selectedLanguage !== '' ? this.selectedLanguage : undefined,
+        this.selectedAgencyId,
+      );
       this.user.userAgencies!.push(userAgency);
     }
   }

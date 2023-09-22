@@ -45,9 +45,12 @@ export class SpyObject {
   }
 
   spy(name: string): GuinessCompatibleSpy {
+    //@ts-expect-error
     if (!this[name]) {
+      //@ts-expect-error
       this[name] = this.createGuinnessCompatibleSpy(name);
     }
+    //@ts-expect-error
     return this[name];
   }
 

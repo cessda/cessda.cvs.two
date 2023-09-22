@@ -122,7 +122,7 @@
                         </div>
                     </div>
 
-                    <div *ngIf="activeAggAgency!.length !== 0 || activeAggStatus!.length !== 0" class="filter-panel acc-header">
+                    <div *ngIf="activeAggAgency.length !== 0 || activeAggStatus.length !== 0" class="filter-panel acc-header">
                         <button (click)="clearFilterAndReload()" class="btn sk-select-min sk-input-f">
                             <span class="option-label">Clear filter </span>
                         </button>
@@ -149,7 +149,7 @@
                 </ng-container>
             </div>
             <div class="result-column">
-                <div class="alert alert-warning" *ngIf="vocabularies?.length === 0; else elseBlock;">
+                <div class="alert alert-warning" *ngIf="vocabularies.length === 0; else elseBlock;">
                     <span jhiTranslate="cvsApp.vocabulary.home.notFound">No vocabularies found</span>
                 </div>
                 <ng-template #elseBlock>

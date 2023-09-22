@@ -30,14 +30,14 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
       service = injector.get(UserAgencyService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new UserAgency(0, 1, AgencyRole.ADMIN, Language.ALBANIAN);
+      elemDefault = new UserAgency(0, 1, undefined, AgencyRole.ADMIN, Language.ALBANIAN);
     });
 
     describe('Service methods', () => {
@@ -54,9 +54,9 @@ describe('Service Tests', () => {
       it('should create a UserAgency', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
@@ -72,9 +72,9 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             agencyRole: 'BBBBBB',
-            language: 'BBBBBB'
+            language: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
@@ -90,9 +90,9 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             agencyRole: 'BBBBBB',
-            language: 'BBBBBB'
+            language: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);

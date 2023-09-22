@@ -30,7 +30,10 @@ import { MetadataFieldUpdateComponent } from './metadata-field-update.component'
 
 @Injectable({ providedIn: 'root' })
 export class MetadataFieldResolve implements Resolve<IMetadataField> {
-  constructor(private service: MetadataFieldService, private router: Router) {}
+  constructor(
+    private service: MetadataFieldService,
+    private router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IMetadataField> | Observable<never> {
     const id = route.params['id'];
@@ -40,10 +43,10 @@ export class MetadataFieldResolve implements Resolve<IMetadataField> {
           if (metadataField.body) {
             return of(metadataField.body);
           } else {
-            this.router.navigate(['404']);
+            this.router.navigate(['404'], { skipLocationChange: true });
             return EMPTY;
           }
-        })
+        }),
       );
     }
     return of(new MetadataField());
@@ -55,49 +58,49 @@ export const metadataFieldRoute: Routes = [
     path: '',
     component: MetadataFieldComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams
+      pagingParams: JhiResolvePagingParams,
     },
     data: {
       authorities: [Authority.USER],
       defaultSort: 'id,asc',
-      pageTitle: 'cvsApp.metadataField.home.title'
+      pageTitle: 'cvsApp.metadataField.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: MetadataFieldDetailComponent,
     resolve: {
-      metadataField: MetadataFieldResolve
+      metadataField: MetadataFieldResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.metadataField.home.title'
+      pageTitle: 'cvsApp.metadataField.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: MetadataFieldUpdateComponent,
     resolve: {
-      metadataField: MetadataFieldResolve
+      metadataField: MetadataFieldResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.metadataField.home.title'
+      pageTitle: 'cvsApp.metadataField.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: MetadataFieldUpdateComponent,
     resolve: {
-      metadataField: MetadataFieldResolve
+      metadataField: MetadataFieldResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.metadataField.home.title'
+      pageTitle: 'cvsApp.metadataField.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

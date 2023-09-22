@@ -16,11 +16,19 @@
 export interface IUserAgency {
   id?: number;
   userId?: number;
-  agencyRole?: string;
+  agencyName?: string;
+  agencyRole?: 'ADMIN' | 'VIEW' | 'ADMIN_SL' | 'ADMIN_TL' | 'ADMIN_CONTENT';
   language?: string;
   agencyId?: number;
 }
 
 export class UserAgency implements IUserAgency {
-  constructor(public id?: number, public userId?: number, public agencyRole?: string, public language?: string, public agencyId?: number) {}
+  constructor(
+    public id?: number,
+    public userId?: number,
+    public agency?: string,
+    public agencyRole?: 'ADMIN' | 'VIEW' | 'ADMIN_SL' | 'ADMIN_TL' | 'ADMIN_CONTENT',
+    public language?: string,
+    public agencyId?: number,
+  ) {}
 }

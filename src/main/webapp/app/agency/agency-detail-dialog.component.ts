@@ -23,15 +23,15 @@ import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import moment from 'moment';
 import { Moment } from 'moment';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
+import { VocabStat } from 'app/shared/model/vocab-stat.model';
 
 @Component({
   selector: 'jhi-agency-detail-dialog',
   templateUrl: './agency-detail-dialog.component.html',
 })
 export class AgencyDetailDialogComponent implements OnInit {
-  agency!: IAgency;
-  agencyStatistic?: any;
-  vocabStats: any[] = [];
+  agency: IAgency = {};
+  vocabStats: VocabStat[] = [];
   unpublishedVersions: any[] = [];
   languageComposition: any[] = [];
   numberCvPublished: number;
@@ -45,7 +45,7 @@ export class AgencyDetailDialogComponent implements OnInit {
     protected agencyService: AgencyService,
     public activeModal: NgbActiveModal,
     private router: Router,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe
+    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
   ) {
     this.numberCvPublished = 0;
     this.numberCvVersionSlPublished = 0;
@@ -59,43 +59,45 @@ export class AgencyDetailDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.agencyService.statistic(this.agency.id!).subscribe(res => {
-      this.agencyStatistic = res.body;
-      this.vocabStats = this.agencyStatistic.vocabStats;
+    if (!this.agency.id) {
+      return;
+    }
 
-      if (this.vocabStats !== undefined) {
-        const langComposition = {};
-        for (const vocabStat of this.vocabStats) {
-          let hasAnySlPublished = false;
-          for (const versionStatusStat of vocabStat.versionStatusStats) {
-            langComposition[versionStatusStat.language] = (langComposition[versionStatusStat.language] || 0) + 1;
-            if (versionStatusStat.status === 'PUBLISHED') {
-              if (versionStatusStat.type === 'SL') {
-                hasAnySlPublished = true;
-                this.numberCvVersionSlPublished++;
-              } else {
-                this.numberCvVersionTlPublished++;
-              }
+    this.agencyService.statistic(this.agency.id).subscribe(res => {
+      const agencyStatistic = res.body;
+      this.vocabStats = agencyStatistic?.vocabStats || [];
+
+      const langComposition: Record<string, number> = {};
+      for (const vocabStat of this.vocabStats) {
+        let hasAnySlPublished = false;
+        for (const versionStatusStat of vocabStat.versionStatusStats) {
+          langComposition[versionStatusStat.language] = (langComposition[versionStatusStat.language] || 0) + 1;
+          if (versionStatusStat.status === 'PUBLISHED') {
+            if (versionStatusStat.type === 'SL') {
+              hasAnySlPublished = true;
+              this.numberCvVersionSlPublished++;
             } else {
-              this.unpublishedVersions.push({
-                cv: vocabStat.notation,
-                type: versionStatusStat.type,
-                language: versionStatusStat.language,
-                versionNumber: versionStatusStat.versionNumber,
-                status: versionStatusStat.status,
-                date: versionStatusStat.date,
-              });
+              this.numberCvVersionTlPublished++;
             }
+          } else {
+            this.unpublishedVersions.push({
+              cv: vocabStat.notation,
+              type: versionStatusStat.type,
+              language: versionStatusStat.language,
+              versionNumber: versionStatusStat.versionNumber,
+              status: versionStatusStat.status,
+              date: versionStatusStat.date,
+            });
           }
-          if (hasAnySlPublished) {
-            this.numberCvPublished++;
+        }
+        if (hasAnySlPublished) {
+          this.numberCvPublished++;
+        }
+        for (const versionCodeStat of vocabStat.versionCodeStats) {
+          if (versionCodeStat.versionNumber === vocabStat.currentVersion) {
+            this.numberCodePublished += versionCodeStat.codes.length;
           }
-          for (const versionCodeStat of vocabStat.versionCodeStats) {
-            if (versionCodeStat.versionNumber === vocabStat.currentVersion) {
-              this.numberCodePublished += versionCodeStat.codes.length;
-            }
-            this.numberCodeVersionPublished += versionCodeStat.codes.length;
-          }
+          this.numberCodeVersionPublished += versionCodeStat.codes.length;
         }
 
         Object.keys(langComposition).forEach(key => {
@@ -122,7 +124,7 @@ export class AgencyDetailDialogComponent implements OnInit {
 
   getVersionStatus(vocab: any, versionNumber: any): any {
     return vocab.versionStatusStats.filter(
-      (vss: { versionNumber: string; status: string }) => vss.versionNumber.startsWith(versionNumber) && vss.status === 'PUBLISHED'
+      (vss: { versionNumber: string; status: string }) => vss.versionNumber.startsWith(versionNumber) && vss.status === 'PUBLISHED',
     );
   }
 
@@ -138,7 +140,11 @@ export class AgencyDetailDialogComponent implements OnInit {
 export class AgencyDetailPopupComponent implements OnInit, OnDestroy {
   protected ngbModalRef?: NgbModalRef | null;
 
-  constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
+  constructor(
+    protected activatedRoute: ActivatedRoute,
+    protected router: Router,
+    protected modalService: NgbModal,
+  ) {}
 
   ngOnInit(): void {
     this.ngbModalRef = this.modalService.open(AgencyDetailDialogComponent as Component, { size: 'xl', backdrop: 'static' });
@@ -167,7 +173,7 @@ export class AgencyDetailPopupComponent implements OnInit, OnDestroy {
           }
         }
         this.ngbModalRef = null;
-      }
+      },
     );
   }
 

@@ -30,7 +30,10 @@ import { UserAgencyUpdateComponent } from './user-agency-update.component';
 
 @Injectable({ providedIn: 'root' })
 export class UserAgencyResolve implements Resolve<IUserAgency> {
-  constructor(private service: UserAgencyService, private router: Router) {}
+  constructor(
+    private service: UserAgencyService,
+    private router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IUserAgency> | Observable<never> {
     const id = route.params['id'];
@@ -40,10 +43,10 @@ export class UserAgencyResolve implements Resolve<IUserAgency> {
           if (userAgency.body) {
             return of(userAgency.body);
           } else {
-            this.router.navigate(['404']);
+            this.router.navigate(['404'], { skipLocationChange: true });
             return EMPTY;
           }
-        })
+        }),
       );
     }
     return of(new UserAgency());
@@ -55,49 +58,49 @@ export const userAgencyRoute: Routes = [
     path: '',
     component: UserAgencyComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams
+      pagingParams: JhiResolvePagingParams,
     },
     data: {
       authorities: [Authority.USER],
       defaultSort: 'id,asc',
-      pageTitle: 'cvsApp.userAgency.home.title'
+      pageTitle: 'cvsApp.userAgency.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: UserAgencyDetailComponent,
     resolve: {
-      userAgency: UserAgencyResolve
+      userAgency: UserAgencyResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.userAgency.home.title'
+      pageTitle: 'cvsApp.userAgency.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: UserAgencyUpdateComponent,
     resolve: {
-      userAgency: UserAgencyResolve
+      userAgency: UserAgencyResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.userAgency.home.title'
+      pageTitle: 'cvsApp.userAgency.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: UserAgencyUpdateComponent,
     resolve: {
-      userAgency: UserAgencyResolve
+      userAgency: UserAgencyResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.userAgency.home.title'
+      pageTitle: 'cvsApp.userAgency.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

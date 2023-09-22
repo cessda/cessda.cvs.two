@@ -45,9 +45,9 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
 
   account: Account | null = null;
 
-  vocabularies?: IVocabulary[];
+  vocabularies: IVocabulary[] = [];
   eventSubscriber?: Subscription;
-  currentSearch?: string;
+  currentSearch: string = '';
   links: any;
 
   totalItems = 0;
@@ -60,9 +60,9 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
 
   aggAgencyBucket: IBucket[] = [];
   aggStatusBucket: IBucket[] = [];
-  activeAggAgency?: string[];
-  activeAggLanguage?: string[];
-  activeAggStatus?: string[];
+  activeAggAgency: string[] = [];
+  activeAggLanguage: string[] = [];
+  activeAggStatus: string[] = [];
   activeAgg = '';
 
   isAggAgencyCollapsed = false;
@@ -92,10 +92,6 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
   ) {
-    this.currentSearch = '';
-    this.activeAggAgency = [];
-    this.activeAggLanguage = [];
-    this.activeAggStatus = [];
     this.activatedRoute.queryParams.subscribe(params => {
       if (params['q']) {
         this.currentSearch = params['q'];
@@ -195,12 +191,12 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     const pageToLoad: number = page ? page : this.page;
     if (this.appScope === AppScope.EDITOR) {
       this.editorService.search(this.getSearchRequest(page ? page : this.page)).subscribe(
-        (res: HttpResponse<ICvResult>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        (res: HttpResponse<ICvResult>) => this.onSuccess(res.body!, res.headers, pageToLoad),
         () => this.onError(),
       );
     } else {
       this.homeService.search(this.getSearchRequest(page ? page : this.page)).subscribe(
-        (res: HttpResponse<ICvResult>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        (res: HttpResponse<ICvResult>) => this.onSuccess(res.body!, res.headers, pageToLoad),
         () => this.onError(),
       );
     }
@@ -216,17 +212,17 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     };
   }
 
-  protected onSuccess(data: ICvResult | null, headers: HttpHeaders, page: number): void {
+  protected onSuccess(data: ICvResult, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
-    this.vocabularies = data!.vocabularies;
+    this.vocabularies = data.vocabularies || [];
     // assign selectedLang if still null
-    this.vocabularies!.forEach(v => {
+    this.vocabularies.forEach(v => {
       if (v.selectedLang === null) {
         v.selectedLang = v.sourceLanguage;
       }
     });
-    this.updateForm(data!.aggrs!);
+    this.updateForm(data.aggrs || []);
     this.eventManager.broadcast({ name: 'onSearching', content: false });
   }
 
@@ -444,25 +440,25 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   }
 
   onAddAgency(addedItem: TagModel): void {
-    this.activeAggAgency!.push(addedItem['k']);
+    this.activeAggAgency.push((addedItem as TagModelClass)['k']);
     this.buildFilterAndRefreshSearch();
   }
 
   onRemoveAgency(removedItem: TagModel): void {
-    this.activeAggAgency!.forEach((item, index) => {
-      if (item === removedItem['k']) this.activeAggAgency!.splice(index, 1);
+    this.activeAggAgency.forEach((item, index) => {
+      if (item === (removedItem as TagModelClass)['k']) this.activeAggAgency!.splice(index, 1);
     });
     this.buildFilterAndRefreshSearch();
   }
 
   onAddStatus(addedItem: TagModel): void {
-    this.activeAggStatus!.push(addedItem['k']);
+    this.activeAggStatus.push((addedItem as TagModelClass)['k']);
     this.buildFilterAndRefreshSearch();
   }
 
   onRemoveStatus(removedItem: TagModel): void {
-    this.activeAggStatus!.forEach((item, index) => {
-      if (item === removedItem['k']) {
+    this.activeAggStatus.forEach((item, index) => {
+      if (item === (removedItem as TagModelClass)['k']) {
         this.activeAggStatus!.splice(index, 1);
       }
     });

@@ -9,7 +9,6 @@
     "strict": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "suppressImplicitAnyIndexErrors": true,
     "skipLibCheck": true,
     "lib": ["es2018", "dom"],
     "baseUrl": "./",
