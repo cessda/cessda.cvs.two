@@ -20,8 +20,7 @@ pipeline {
     }
 
     stages {
-        // Building on main
-        stage('Compile Angular') {
+        stage('Node.JS') {
             agent {
                 docker {
                     image 'node:14'
@@ -53,7 +52,7 @@ pipeline {
                 }
             }
         }
-        stage('Compile Java') {
+        stage('JDK') {
             agent {
                 docker {
                     image 'eclipse-temurin:11'
@@ -61,7 +60,8 @@ pipeline {
                 }
             }
             stages {
-                stage('Build Project') {
+                // Building on main
+                stage('Build Maven Project') {
                     steps {
                         withMaven {
                             sh "./mvnw install -Pci"
@@ -70,7 +70,7 @@ pipeline {
                     when { branch 'main' }
                 }
                 // Not running on main - test only (for PRs and integration branches)
-                stage('Test Project') {
+                stage('Test Maven Project') {
                     steps {
                         withMaven {
                             sh './mvnw verify -Pci'
