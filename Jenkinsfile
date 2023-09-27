@@ -24,7 +24,7 @@ pipeline {
         stage('Compile Angular') {
             agent {
                 docker {
-                    image 'node:14'
+                    image 'node:16'
                     reuseNode true
                 }
             }
