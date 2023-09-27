@@ -36,6 +36,11 @@ pipeline {
                         }
                     }
                 }
+                stage('Compile Angular') {
+                    steps {
+                        sh 'npm run build-prod'
+                    }
+                }
                 stage('Run Jest tests') {
                     steps {
                         sh 'npm test'
@@ -44,11 +49,6 @@ pipeline {
                         always {
                             junit 'target/test-results/TESTS-results-jest.xml'
                         }
-                    }
-                }
-                stage('Compile Angular') {
-                    steps {
-                        sh 'npm run build-prod'
                     }
                 }
             }
