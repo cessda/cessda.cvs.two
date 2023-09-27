@@ -836,6 +836,7 @@
                         <exclude>**/?/**</exclude>
                         <exclude>cvs.jh</exclude>
                         <exclude>src/main/webapp/manifest.webapp</exclude>
+                        <exclude>.config/**</exclude>
                     </excludes>
                     <mapping>
                         <cff>SCRIPT_STYLE</cff>
