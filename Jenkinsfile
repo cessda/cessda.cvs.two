@@ -31,7 +31,7 @@ pipeline {
             stages {
                 stage('Install NPM dependencies') {
                     steps {
-                        configFileProvider([configFile('be684558-5540-4ad6-a155-7c1b4278abc0')]) {
+                        configFileProvider([configFile(fileId: 'be684558-5540-4ad6-a155-7c1b4278abc0', targetLocation: '.npmrc')]) {
                             sh 'npm ci'
                         }
                     }
