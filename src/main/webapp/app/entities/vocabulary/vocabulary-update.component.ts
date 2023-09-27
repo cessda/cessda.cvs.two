@@ -144,7 +144,7 @@ export class VocabularyUpdateComponent implements OnInit {
     protected eventManager: JhiEventManager,
     protected vocabularyService: VocabularyService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -286,7 +286,6 @@ export class VocabularyUpdateComponent implements OnInit {
 
   private createFromForm(): IVocabulary {
     return {
-      ...new Vocabulary(),
       id: this.editForm.get(['id'])!.value,
       status: this.editForm.get(['status'])!.value,
       uri: this.editForm.get(['uri'])!.value,
@@ -396,7 +395,7 @@ export class VocabularyUpdateComponent implements OnInit {
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 

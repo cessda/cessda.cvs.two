@@ -30,12 +30,6 @@ import { IVersion } from 'app/shared/model/version.model';
 import { IComment } from 'app/shared/model/comment.model';
 import { IMetadataValue } from 'app/shared/model/metadata-value.model';
 
-type EntityResponseVocabularyType = HttpResponse<IVocabulary>;
-type EntityResponseVersionType = HttpResponse<IVersion>;
-type EntityResponseConceptType = HttpResponse<IConcept>;
-type EntityResponseCommentType = HttpResponse<IComment>;
-type EntityResponseMetadataValueType = HttpResponse<IMetadataValue>;
-
 @Injectable({ providedIn: 'root' })
 export class EditorService {
   public resourceVocabularyUrl = SERVER_API_URL + 'api/vocabularies';
@@ -48,53 +42,53 @@ export class EditorService {
 
   constructor(protected http: HttpClient) {}
 
-  createVocabulary(vocabularySnippet: IVocabularySnippet): Observable<EntityResponseVocabularyType> {
+  createVocabulary(vocabularySnippet: IVocabularySnippet): Observable<HttpResponse<IVocabulary>> {
     return this.http
       .post<IVocabulary>(this.resourceEditorVocabularyUrl, vocabularySnippet, { observe: 'response' })
-      .pipe(map((res: EntityResponseVocabularyType) => this.convertVocabularyDateFromServer(res)));
+      .pipe(map((res: HttpResponse<IVocabulary>) => this.convertVocabularyDateFromServer(res)));
   }
 
-  createNewVersion(id: number): Observable<EntityResponseVersionType> {
+  createNewVersion(id: number): Observable<HttpResponse<IVersion>> {
     return this.http.post<IVersion>(this.resourceEditorVocabularyUrl + '/new-version/' + id, null, { observe: 'response' });
   }
 
-  updateVocabulary(vocabularySnippet: IVocabularySnippet): Observable<EntityResponseVocabularyType> {
+  updateVocabulary(vocabularySnippet: IVocabularySnippet): Observable<HttpResponse<IVocabulary>> {
     return this.http
       .put<IVocabulary>(this.resourceEditorVocabularyUrl, vocabularySnippet, { observe: 'response' })
-      .pipe(map((res: EntityResponseVocabularyType) => this.convertVocabularyDateFromServer(res)));
+      .pipe(map(res => this.convertVocabularyDateFromServer(res)));
   }
 
-  forwardStatusVocabulary(vocabularySnippet: IVocabularySnippet): Observable<EntityResponseVersionType> {
+  forwardStatusVocabulary(vocabularySnippet: IVocabularySnippet): Observable<HttpResponse<IVersion>> {
     return this.http.put<IVersion>(this.resourceEditorVocabularyUrl + '/forward-status', vocabularySnippet, { observe: 'response' });
   }
 
-  deleteVocabulary(versionId: number): Observable<HttpResponse<{}>> {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  deleteVocabulary(versionId: number): Observable<HttpResponse<Object>> {
     return this.http.delete(`${this.resourceEditorVocabularyUrl}/${versionId}`, { observe: 'response' });
   }
 
-  createCode(codeSnippet: ICodeSnippet): Observable<EntityResponseConceptType> {
-    return this.http
-      .post<IConcept>(this.resourceEditorCodeUrl, codeSnippet, { observe: 'response' })
-      .pipe(map((res: EntityResponseConceptType) => this.convertVocabularyDateFromServer(res)));
+  createCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<IConcept>> {
+    return this.http.post<IConcept>(this.resourceEditorCodeUrl, codeSnippet, { observe: 'response' });
   }
 
   createBatchCode(codeSnippets: ICodeSnippet[]): Observable<HttpResponse<IConcept[]>> {
     return this.http.post<IConcept[]>(`${this.resourceEditorCodeUrl}/batch`, codeSnippets, { observe: 'response' });
   }
 
-  updateCode(codeSnippet: ICodeSnippet): Observable<EntityResponseConceptType> {
+  updateCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<IConcept>> {
     return this.http.put<IConcept>(this.resourceEditorCodeUrl, codeSnippet, { observe: 'response' });
   }
 
-  reorderCode(codeSnippet: ICodeSnippet): Observable<EntityResponseVersionType> {
+  reorderCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<IVersion>> {
     return this.http.post<IVersion>(this.resourceEditorCodeUrl + '/reorder', codeSnippet, { observe: 'response' });
   }
 
-  deprecateCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<{}>> {
+  deprecateCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<IConcept>> {
     return this.http.post<IConcept>(this.resourceEditorCodeUrl + '/deprecate', codeSnippet, { observe: 'response' });
   }
 
-  deleteCode(conceptId: number): Observable<HttpResponse<{}>> {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  deleteCode(conceptId: number): Observable<HttpResponse<Object>> {
     return this.http.delete(`${this.resourceEditorCodeUrl}/${conceptId}`, { observe: 'response' });
   }
 
@@ -128,21 +122,22 @@ export class EditorService {
     });
   }
 
-  createComment(comment: IComment): Observable<EntityResponseCommentType> {
+  createComment(comment: IComment): Observable<HttpResponse<IComment>> {
     return this.http
       .post<IComment>(this.resourceEditorCommentUrl, comment, { observe: 'response' })
-      .pipe(map((res: EntityResponseConceptType) => this.convertCommentDateFromServer(res)));
+      .pipe(map((res: HttpResponse<IComment>) => this.convertCommentDateFromServer(res)));
   }
 
-  updateComment(comment: IComment): Observable<EntityResponseCommentType> {
+  updateComment(comment: IComment): Observable<HttpResponse<IComment>> {
     return this.http.put<IComment>(this.resourceEditorCommentUrl, comment, { observe: 'response' });
   }
 
-  deleteComment(commentId: number): Observable<HttpResponse<{}>> {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  deleteComment(commentId: number): Observable<HttpResponse<Object>> {
     return this.http.delete(`${this.resourceEditorCommentUrl}/${commentId}`, { observe: 'response' });
   }
 
-  protected convertVocabularyDateFromServer(res: EntityResponseVocabularyType): EntityResponseVocabularyType {
+  protected convertVocabularyDateFromServer(res: HttpResponse<IVocabulary>): HttpResponse<IVocabulary> {
     if (res.body) {
       res.body.publicationDate = res.body.publicationDate ? moment(res.body.publicationDate) : undefined;
       res.body.lastModified = res.body.lastModified ? moment(res.body.lastModified) : undefined;
@@ -150,22 +145,23 @@ export class EditorService {
     return res;
   }
 
-  protected convertCommentDateFromServer(res: EntityResponseCommentType): EntityResponseCommentType {
+  protected convertCommentDateFromServer(res: HttpResponse<IComment>): HttpResponse<IComment> {
     if (res.body) {
       res.body.dateTime = res.body.dateTime ? moment(res.body.dateTime) : undefined;
     }
     return res;
   }
 
-  createAppMetadata(metadataValue: IMetadataValue): Observable<EntityResponseMetadataValueType> {
+  createAppMetadata(metadataValue: IMetadataValue): Observable<HttpResponse<IMetadataValue>> {
     return this.http.post<IMetadataValue>(this.resourceEditorMetadataUrl, metadataValue, { observe: 'response' });
   }
 
-  updateAppMetadata(metadataValue: IMetadataValue): Observable<EntityResponseMetadataValueType> {
+  updateAppMetadata(metadataValue: IMetadataValue): Observable<HttpResponse<IMetadataValue>> {
     return this.http.put<IMetadataValue>(this.resourceEditorMetadataUrl, metadataValue, { observe: 'response' });
   }
 
-  deleteAppMetadata(metadataValueId: number): Observable<HttpResponse<{}>> {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  deleteAppMetadata(metadataValueId: number): Observable<HttpResponse<Object>> {
     return this.http.delete(`${this.resourceEditorMetadataUrl}/${metadataValueId}`, { observe: 'response' });
   }
 }

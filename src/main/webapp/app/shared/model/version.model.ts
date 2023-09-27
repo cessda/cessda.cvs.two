@@ -20,8 +20,8 @@ import { IComment } from 'app/shared/model/comment.model';
 
 export interface IVersion {
   id?: number;
-  status?: string;
-  itemType?: string;
+  status: string;
+  itemType: string;
   language?: string;
   publicationDate?: Moment;
   lastModified?: Moment;
@@ -30,26 +30,23 @@ export interface IVersion {
   canonicalUri?: string;
   uriSl?: string;
   notation?: string;
-  titleSl?: any;
-  title?: any;
-  definitionSl?: any;
-  definition?: any;
+  title?: string;
+  definition?: string;
   previousVersion?: number;
   initialVersion?: number;
   creator?: number;
   publisher?: number;
-  notesSl?: any;
-  notes?: any;
-  versionNotes?: any;
-  versionChanges?: any;
-  discussionNotes?: any;
+  notes?: string;
+  versionNotes?: string;
+  versionChanges?: string;
+  discussionNotes?: string;
   license?: string;
   licenseId?: number;
   licenseName?: string;
   licenseLink?: string;
   licenseLogo?: string;
-  citation?: any;
-  ddiUsage?: any;
+  citation?: string;
+  ddiUsage?: string;
   translateAgency?: string;
   translateAgencyLink?: string;
   concepts?: IConcept[];
@@ -62,8 +59,8 @@ export interface IVersion {
 export class Version implements IVersion {
   constructor(
     public id?: number,
-    public status?: string,
-    public itemType?: string,
+    public status: string = 'DRAFT',
+    public itemType: string = 'SL',
     public language?: string,
     public publicationDate?: Moment,
     public lastModified?: Moment,
@@ -72,32 +69,29 @@ export class Version implements IVersion {
     public canonicalUri?: string,
     public uriSl?: string,
     public notation?: string,
-    public titleSl?: any,
-    public title?: any,
-    public definitionSl?: any,
-    public definition?: any,
+    public title?: string,
+    public definition?: string,
     public previousVersion?: number,
     public initialVersion?: number,
     public creator?: number,
     public publisher?: number,
-    public notesSl?: any,
-    public notes?: any,
-    public versionNotes?: any,
-    public versionChanges?: any,
-    public discussionNotes?: any,
+    public notes?: string,
+    public versionNotes?: string,
+    public versionChanges?: string,
+    public discussionNotes?: string,
     public license?: string,
     public licenseId?: number,
     public licenseName?: string,
     public licenseLink?: string,
     public licenseLogo?: string,
-    public citation?: any,
-    public ddiUsage?: any,
+    public citation?: string,
+    public ddiUsage?: string,
     public translateAgency?: string,
     public translateAgencyLink?: string,
-    public concepts?: IConcept[],
-    public comments?: IComment[],
+    public concepts: IConcept[] = [],
+    public comments: IComment[] = [],
     public vocabularyId?: number,
-    public versionHistories?: IVersionHistory[],
-    public languageSl?: string
+    public versionHistories: IVersionHistory[] = [],
+    public languageSl?: string,
   ) {}
 }

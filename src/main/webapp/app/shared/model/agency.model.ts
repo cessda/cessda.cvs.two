@@ -19,7 +19,7 @@ export interface IAgency {
   id?: number;
   name?: string;
   link?: string;
-  description?: any;
+  description?: string;
   logopath?: string;
   license?: string;
   licenseId?: number;
@@ -35,14 +35,14 @@ export class Agency implements IAgency {
     public id?: number,
     public name?: string,
     public link?: string,
-    public description?: any,
+    public description?: string,
     public logopath?: string,
     public license?: string,
     public licenseId?: number,
     public uri?: string,
     public uriCode?: string,
     public canonicalUri?: string,
-    public userAgencies?: IUserAgency[],
-    public deletable?: boolean
+    public userAgencies: IUserAgency[] = [],
+    public deletable?: boolean,
   ) {}
 }

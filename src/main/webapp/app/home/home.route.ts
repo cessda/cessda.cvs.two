@@ -19,7 +19,7 @@ import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router
 
 import { EMPTY, Observable, of } from 'rxjs';
 import { HomeComponent } from './home.component';
-import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
 import { JhiResolvePagingParams } from 'ng-jhipster';
 import { HomeService } from 'app/home/home.service';
 import { HomeDetailComponent } from 'app/home/home-detail.component';
@@ -32,42 +32,45 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
     private router: Router,
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IVocabulary> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<IVocabulary> {
     let notation = route.params['notation'];
-    const codeIndex = (notation as string).indexOf('_');
+
+    if (typeof notation !== 'string') {
+      return EMPTY;
+    }
+
+    const codeIndex = notation.indexOf('_');
     let code = '';
     if (codeIndex > 0) {
-      code = (notation as string)
+      code = notation
         .substring(codeIndex + 1)
         .split('.')
         .join('');
-      notation = (notation as string).substring(0, codeIndex);
+      notation = notation.substring(0, codeIndex);
     }
     let version = '';
     let lang = '';
     if (route.queryParams.v) version = route.queryParams.v;
     if (route.queryParams.lang) lang = route.queryParams.lang;
-    if (notation) {
-      const queryString: any = {};
-      if (version !== '') {
-        queryString.v = version;
-      }
-      return this.service.getVocabulary(notation, queryString).pipe(
-        mergeMap((vocabulary: HttpResponse<Vocabulary>) => {
-          if (vocabulary.body) {
-            vocabulary.body.selectedLang = lang !== '' ? lang : vocabulary.body.sourceLanguage;
-            if (code !== '') {
-              vocabulary.body.selectedCode = code;
-            }
-            return of(vocabulary.body);
-          } else {
-            this.router.navigate(['404'], { skipLocationChange: true });
-            return EMPTY;
-          }
-        }),
-      );
+
+    const queryString: Record<string, string> = {};
+    if (version !== '') {
+      queryString.v = version;
     }
-    return of(new Vocabulary());
+    return this.service.getVocabulary(notation, queryString).pipe(
+      mergeMap((vocabulary: HttpResponse<IVocabulary>) => {
+        if (vocabulary.body) {
+          vocabulary.body.selectedLang = lang !== '' ? lang : vocabulary.body.sourceLanguage;
+          if (code !== '') {
+            vocabulary.body.selectedCode = code;
+          }
+          return of(vocabulary.body);
+        } else {
+          this.router.navigate(['404'], { skipLocationChange: true });
+          return EMPTY;
+        }
+      }),
+    );
   }
 }
 

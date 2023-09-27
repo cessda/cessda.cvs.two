@@ -35,7 +35,7 @@ export const createRequestOption = (req?: any): HttpParams => {
         options = options.set(key, req[key]);
       }
     });
-    if (req.sort) {
+    if (Array.isArray(req.sort)) {
       req.sort.forEach((val: string) => {
         options = options.append('sort', val);
       });

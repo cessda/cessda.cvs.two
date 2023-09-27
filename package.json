@@ -89,9 +89,9 @@
     "start": "ng serve",
     "build": "ng build",
     "build-dev": "ng build --configuration development",
+    "build-prod": "ng build --configuration production",
     "test": "jest --config src/test/javascript/jest.conf.js",
     "test:watch": "npm run test -- --watch",
-    "build-prod": "ng build --configuration production",
     "prepare": "husky install"
   },
   "overrides": {

@@ -53,8 +53,6 @@ describe('Service Tests', () => {
         'AAAAAAA',
         'AAAAAAA',
         'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
         0,
         0,
         0,
@@ -64,12 +62,11 @@ describe('Service Tests', () => {
         'AAAAAAA',
         'AAAAAAA',
         'AAAAAAA',
-        'AAAAAAA',
         0,
         'AAAAAAA',
         'AAAAAAA',
         'AAAAAAA',
-        'AAAAAAA'
+        'AAAAAAA',
       );
     });
 
@@ -80,7 +77,7 @@ describe('Service Tests', () => {
             publicationDate: currentDate.format(DATE_FORMAT),
             lastModified: currentDate.format(DATE_TIME_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         service.find(123).subscribe(resp => (expectedResult = resp.body));
@@ -97,7 +94,7 @@ describe('Service Tests', () => {
             publicationDate: currentDate.format(DATE_FORMAT),
             lastModified: currentDate.format(DATE_TIME_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign(
@@ -105,7 +102,7 @@ describe('Service Tests', () => {
             publicationDate: currentDate,
             lastModified: currentDate,
           },
-          returnedFromService
+          returnedFromService,
         );
 
         service.create(new Version()).subscribe(resp => (expectedResult = resp.body));
@@ -145,7 +142,7 @@ describe('Service Tests', () => {
             translateAgency: 'BBBBBB',
             translateAgencyLink: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign(
@@ -153,7 +150,7 @@ describe('Service Tests', () => {
             publicationDate: currentDate,
             lastModified: currentDate,
           },
-          returnedFromService
+          returnedFromService,
         );
 
         service.update(expected).subscribe(resp => (expectedResult = resp.body));
@@ -193,7 +190,7 @@ describe('Service Tests', () => {
             translateAgency: 'BBBBBB',
             translateAgencyLink: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign(
@@ -201,7 +198,7 @@ describe('Service Tests', () => {
             publicationDate: currentDate,
             lastModified: currentDate,
           },
-          returnedFromService
+          returnedFromService,
         );
 
         service.query().subscribe(resp => (expectedResult = resp.body));

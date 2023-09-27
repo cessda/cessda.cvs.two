@@ -19,8 +19,8 @@ export interface IConcept {
   id?: number;
   uri?: string;
   notation?: string;
-  title?: any;
-  definition?: any;
+  title?: string;
+  definition?: string;
   previousConcept?: number;
   slConcept?: number;
   parent?: string;
@@ -34,8 +34,8 @@ export interface IConcept {
   visible?: boolean;
   titleSl?: any;
   definitionSl?: any;
-  status?: string,
-  validFrom?: Moment | null,
+  status?: string;
+  validFrom?: Moment | null;
   validUntil?: Moment | null;
 }
 
@@ -61,7 +61,7 @@ export class Concept implements IConcept {
     public definitionSl?: any,
     public status?: string,
     public validFrom?: Moment | null,
-    public validUntil?: Moment | null
+    public validUntil?: Moment | null,
   ) {
     this.parent = '';
     // used as flag for tree open collapse

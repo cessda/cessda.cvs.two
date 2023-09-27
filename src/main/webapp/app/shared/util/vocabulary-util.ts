@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import { ICode } from 'app/shared/model/code.model';
 import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
 import { IVersion } from 'app/shared/model/version.model';
@@ -86,7 +86,7 @@ export default class VocabularyUtil {
     }
   }
 
-  static getVersionNumberByLangIso(item: IVocabulary | ICode, langIso: string): String {
+  static getVersionNumberByLangIso(item: IVocabulary | ICode, langIso: string): string {
     switch (langIso) {
       case 'sq':
         return item.versionSq;
@@ -149,7 +149,7 @@ export default class VocabularyUtil {
     }
   }
 
-  static getStatus(vocab: IVocabulary): String {
+  static getStatus(vocab: IVocabulary): string {
     return vocab.status!;
   }
 
@@ -213,11 +213,11 @@ export default class VocabularyUtil {
   static getVersionByLangAndNumber(vocab: IVocabulary, versionNumber?: string): IVersion {
     if (versionNumber) {
       versionNumber = this.threeDigitVersionNumber(versionNumber);
-      return vocab.versions!.filter(v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number) === versionNumber)[0];
+      return vocab.versions!.filter(v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number!) === versionNumber)[0];
     } else if (vocab.selectedVersion) {
       vocab.selectedVersion = this.threeDigitVersionNumber(vocab.selectedVersion);
       return vocab.versions!.filter(
-        v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number) === vocab.selectedVersion,
+        v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number!) === vocab.selectedVersion,
       )[0];
     }
     return VocabularyUtil.getVersionByLang(vocab);
@@ -257,8 +257,8 @@ export default class VocabularyUtil {
   }
 
   static compareVersionNumbers(v1: string, v2: string): number {
-    const v1Parsed = this.parseVersionNumber(this.threeDigitVersionNumber(v1)!);
-    const v2Parsed = this.parseVersionNumber(this.threeDigitVersionNumber(v2)!);
+    const v1Parsed = this.parseVersionNumber(this.threeDigitVersionNumber(v1));
+    const v2Parsed = this.parseVersionNumber(this.threeDigitVersionNumber(v2));
     const cmpResult = this.compareArrays([v1Parsed.major, v1Parsed.minor], [v2Parsed.major, v2Parsed.minor]);
     if (cmpResult !== 0) {
       return cmpResult;
@@ -354,19 +354,24 @@ export default class VocabularyUtil {
     return count;
   }
 
-  static threeDigitVersionNumber(number: string | undefined): string | undefined {
-    if (number && this.countMatches(number, '.') === 1) {
-      number += '.0';
+  static threeDigitVersionNumber(number: string): string {
+    if (this.countMatches(number, '.') === 1) {
+      return number + '.0';
+    } else {
+      return number;
     }
-    return number;
   }
 
-  static convertVocabularyToThreeDigitVersionNumer(vocabulary: IVocabulary | undefined): void {
-    if (vocabulary) {
+  static convertVocabularyToThreeDigitVersionNumer(vocabulary: IVocabulary): void {
+    if (vocabulary.versionNumber) {
       vocabulary.versionNumber = this.threeDigitVersionNumber(vocabulary.versionNumber);
-      vocabulary.versions!.forEach(v => {
-        v.number = this.threeDigitVersionNumber(v.number);
-      });
+      if (vocabulary.versions) {
+        vocabulary.versions.forEach(v => {
+          if (v.number) {
+            v.number = this.threeDigitVersionNumber(v.number);
+          }
+        });
+      }
     }
   }
 
@@ -380,7 +385,7 @@ export default class VocabularyUtil {
    * @returns
    */
   static isAnyVersionInBundle(versions: IVersion[], bundle: string): boolean {
-    for (var version of versions) {
+    for (const version of versions) {
       if (version.number === bundle) {
         return true;
       }

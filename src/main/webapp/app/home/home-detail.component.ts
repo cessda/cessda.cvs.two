@@ -54,8 +54,8 @@ export class HomeDetailComponent implements OnInit {
 
   isCurrentVersionHistoryOpen = true;
 
-  initialTabSelected?: string;
-  initialLangSelect = null;
+  initialTabSelected: string | undefined;
+  initialLangSelect: string | undefined = undefined;
   newerVersionNumber: string | null = null;
 
   currentSelectedCode?: string;
@@ -121,7 +121,10 @@ export class HomeDetailComponent implements OnInit {
   }
 
   getLatestVersionNumber(): string {
-    const lang = this.vocabulary.sourceLanguage!;
+    const lang = this.vocabulary.sourceLanguage;
+    if (!lang) {
+      throw TypeError('lang is undefined');
+    }
     return String(VocabularyUtil.getVersionNumberByLangIso(this.vocabulary, lang));
   }
 
@@ -143,21 +146,26 @@ export class HomeDetailComponent implements OnInit {
 
   getUniqueVersionLang(): string[] {
     let uniqueLang: string[] = [];
-    this.vocabulary.versions?.forEach(v => {
-      const number = this.vocabulary.versions?.at(0)?.number || '';
-      if (v.number?.startsWith(number) && !uniqueLang.some(l => l === v.language)) {
-        uniqueLang.push(v.language!);
-      }
-    });
-    // sort only the SL & TLs in the current version
-    // commented by #375 -->
-    // uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
-    // <-- commented by #375
-    this.vocabulary.versions?.forEach(v => {
-      if (!v.number?.startsWith(this.vocabulary.versions![0].number!) && !uniqueLang.some(l => l === v.language)) {
-        uniqueLang.push(v.language!);
-      }
-    });
+    if (this.vocabulary.versions) {
+      const versions = this.vocabulary.versions;
+      const number = versions[0].number;
+
+      this.vocabulary.versions.forEach(v => {
+        if (v.language && v.number?.startsWith(number || '') && !uniqueLang.some(l => l === v.language)) {
+          uniqueLang.push(v.language);
+        }
+      });
+
+      // sort only the SL & TLs in the current version
+      // commented by #375 -->
+      // uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
+      // <-- commented by #375
+      this.vocabulary.versions.forEach(v => {
+        if (v.language && (!number || !v.number?.startsWith(number)) && !uniqueLang.some(l => l === v.language)) {
+          uniqueLang.push(v.language);
+        }
+      });
+    }
     // added by #375 -->
     uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
     // <-- added by #375
@@ -177,11 +185,15 @@ export class HomeDetailComponent implements OnInit {
   }
 
   isAnyLangVersionInBundle(vocab: IVocabulary, lang: string, bundle?: string): boolean {
-    if (bundle === undefined) {
-      bundle = vocab.versionNumber;
+    if (!bundle) {
+      if (vocab.versionNumber) {
+        bundle = vocab.versionNumber;
+      } else {
+        throw new TypeError('vocab.versionNumber is not a string');
+      }
     }
     const versions = this.getVersionsByLanguage(lang);
-    return VocabularyUtil.isAnyVersionInBundle(versions, bundle!);
+    return VocabularyUtil.isAnyVersionInBundle(versions, bundle);
   }
 
   hasDeprecatedConcepts(concepts: IConcept[] | undefined): boolean {
@@ -265,11 +277,11 @@ export class HomeDetailComponent implements OnInit {
       if (this.vocabulary.selectedCode) {
         this.currentSelectedCode = this.vocabulary.selectedCode;
       }
-      if (this.initialLangSelect !== null) {
-        if (!this.vocabulary.versions?.some(v => v.language === this.initialLangSelect)) {
-          this.vocabulary.selectedLang = this.vocabulary.sourceLanguage!;
+      if (this.initialLangSelect) {
+        if (this.vocabulary.sourceLanguage && !(this.vocabulary.versions || []).some(v => v.language === this.initialLangSelect)) {
+          this.vocabulary.selectedLang = this.vocabulary.sourceLanguage;
         } else {
-          this.vocabulary.selectedLang = this.initialLangSelect!;
+          this.vocabulary.selectedLang = this.initialLangSelect;
         }
       }
       if (this.vocabulary.selectedVersion === null) {
@@ -286,20 +298,36 @@ export class HomeDetailComponent implements OnInit {
         });
         this._ngZone.runOutsideAngular(() => {
           setTimeout(() => {
-            const element = document.querySelector('#code_' + this.currentSelectedCode);
-            element!.scrollIntoView({ behavior: 'smooth' });
-            element!.classList.add('highlight');
+            const elementSelector = '#code_' + this.currentSelectedCode;
+            const element = document.querySelector(elementSelector);
+            if (!element) {
+              throw new TypeError(`element ${elementSelector} is null`);
+            }
+            element.scrollIntoView({ behavior: 'smooth' });
+            element.classList.add('highlight');
             this._ngZone.runOutsideAngular(() => {
               window.setTimeout(() => {
-                element!.classList.remove('highlight');
+                element.classList.remove('highlight');
               }, 5000);
             });
           }, 1500);
         });
       }
 
-      this.newerVersionNumber = this.vocabulary.status === 'PUBLISHED' ? this.vocabulary.versionNumber! : this.getLatestVersionNumber();
-      if (VocabularyUtil.compareVersionNumbers(this.newerVersionNumber, this.vocabulary.versions![0].number!) <= 0) {
+      if (this.vocabulary.status === 'PUBLISHED') {
+        if (this.vocabulary.versionNumber) {
+          this.newerVersionNumber = this.vocabulary.versionNumber;
+        } else {
+          throw new TypeError('this.vocabulary.versionNumber is not a string');
+        }
+      } else {
+        this.newerVersionNumber = this.getLatestVersionNumber();
+      }
+
+      if (
+        this.vocabulary.versions &&
+        VocabularyUtil.compareVersionNumbers(this.newerVersionNumber, this.vocabulary.versions[0].number!) <= 0
+      ) {
         this.newerVersionNumber = null;
       }
     });

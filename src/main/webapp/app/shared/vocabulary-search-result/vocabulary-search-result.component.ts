@@ -23,14 +23,14 @@ import { Account } from 'app/core/user/account.model';
 import { IVocabulary } from 'app/shared/model/vocabulary.model';
 import { Observable, of, Subscription } from 'rxjs';
 import { AGGR_AGENCY, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
-import { IBucket } from 'app/shared/model/bucket';
+import { Bucket } from 'app/shared/model/bucket';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ICode } from 'app/shared/model/code.model';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ICvResult } from 'app/shared/model/cv-result.model';
-import { IAggr } from 'app/shared/model/aggr';
+import { Aggr } from 'app/shared/model/aggr';
 import { HomeService } from 'app/home/home.service';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 import { TagModel, TagModelClass } from 'ngx-chips/core/accessor';
@@ -47,7 +47,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
 
   vocabularies: IVocabulary[] = [];
   eventSubscriber?: Subscription;
-  currentSearch: string = '';
+  currentSearch = '';
   links: any;
 
   totalItems = 0;
@@ -58,8 +58,8 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
-  aggAgencyBucket: IBucket[] = [];
-  aggStatusBucket: IBucket[] = [];
+  aggAgencyBucket: Bucket[] = [];
+  aggStatusBucket: Bucket[] = [];
   activeAggAgency: string[] = [];
   activeAggLanguage: string[] = [];
   activeAggStatus: string[] = [];
@@ -332,7 +332,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     });
   }
 
-  updateForm(aggrs: IAggr[]): void {
+  updateForm(aggrs: Aggr[]): void {
     // patch value for sort and size
     this.searchForm.patchValue({
       size: this.itemsPerPage,
@@ -342,33 +342,37 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     aggrs.forEach(aggr => {
       if (aggr.field === AGGR_AGENCY) {
         // format bucket and add as autocomplete and patch form value
-        this.aggAgencyBucket = this.formatBuckets(aggr.buckets!.concat(aggr.filteredBuckets!));
+        this.aggAgencyBucket = this.formatBuckets(aggr.buckets.concat(aggr.filteredBuckets));
         this.searchForm.patchValue({ aggAgency: this.prepareActiveBuckets(this.aggAgencyBucket, aggr) });
       } else if (aggr.field === AGGR_STATUS) {
-        this.aggStatusBucket = this.formatBuckets(aggr.buckets!.concat(aggr.filteredBuckets!));
+        this.aggStatusBucket = this.formatBuckets(aggr.buckets.concat(aggr.filteredBuckets));
         this.searchForm.patchValue({ aggStatus: this.prepareActiveBuckets(this.aggStatusBucket, aggr) });
       }
     });
   }
-  private prepareActiveBuckets(buckets: IBucket[], aggr: IAggr): IBucket[] {
-    const activeBucket: IBucket[] = [];
-    aggr.values!.forEach(activeVal => {
-      activeBucket.push(buckets.find(b => b.k === activeVal)!);
+  private prepareActiveBuckets(buckets: Bucket[], aggr: Aggr): Bucket[] {
+    const activeBucket: Bucket[] = [];
+    aggr.values.forEach(activeVal => {
+      buckets.forEach(b => {
+        if (b.k === activeVal) {
+          activeBucket.push(b);
+        }
+      });
     });
     return activeBucket;
   }
 
-  private formatBucketLanguages(buckets: IBucket[]): IBucket[] {
+  private formatBucketLanguages(buckets: Bucket[]): Bucket[] {
     if (buckets !== undefined && buckets.length > 0) {
       buckets.forEach(bucket => {
         bucket.value = bucket.k;
-        bucket.display = this.vocabLangPipeKey.transform(bucket.k!) + ' (' + bucket.v + ')';
+        bucket.display = this.vocabLangPipeKey.transform(bucket.k) + ' (' + bucket.v + ')';
       });
     }
     return buckets;
   }
 
-  private formatBuckets(buckets: IBucket[]): IBucket[] {
+  private formatBuckets(buckets: Bucket[]): Bucket[] {
     if (buckets !== undefined && buckets.length > 0) {
       buckets.forEach(bucket => {
         bucket.value = bucket.k;
@@ -395,7 +399,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     );
   }
 
-  public formatFilterText(value: any): Observable<object> {
+  public formatFilterText(value: any): Observable<any> {
     value.name = value.f;
     return of(value);
   }
