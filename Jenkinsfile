@@ -52,31 +52,16 @@ pipeline {
                 }
             }
         }
-        stage('JDK') {
+        stage('Compile Java') {
             agent {
                 docker {
                     image 'eclipse-temurin:11'
                     reuseNode true
                 }
             }
-            stages {
-                // Building on main
-                stage('Build Maven Project') {
-                    steps {
-                        withMaven {
-                            sh "./mvnw install -Pci"
-                        }
-                    }
-                    when { branch 'main' }
-                }
-                // Not running on main - test only (for PRs and integration branches)
-                stage('Test Maven Project') {
-                    steps {
-                        withMaven {
-                            sh './mvnw verify -Pci'
-                        }
-                    }
-                    when { not { branch 'main' } }
+            steps {
+                withMaven {
+                    sh "./mvnw verify -Pci"
                 }
             }
         }
