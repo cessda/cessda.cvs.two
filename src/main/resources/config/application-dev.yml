@@ -20,11 +20,17 @@ logging:
     eu.cessda.cvs: DEBUG
 
 management:
+  endpoint:
+    health:
+      show-details: WHEN_AUTHORIZED
+      roles: ['ROLE_ADMIN', 'ROLE_ADMIN_TECHNICAL']
   health:
     elasticsearch:
       enabled: false
 
 spring:
+  main:
+    allow-bean-definition-overriding: true
   profiles:
     active: dev
     include:
@@ -42,7 +48,7 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/cvs?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3311/cvs?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
     username: root
     password:
     hikari:
@@ -64,7 +70,7 @@ spring:
   data:
     elasticsearch:
       cluster-name: docker-cluster
-      cluster-nodes: 127.0.0.1:9300
+      cluster-nodes: 127.0.0.1:9303
       properties:
         path:
           logs: target/elasticsearch/log

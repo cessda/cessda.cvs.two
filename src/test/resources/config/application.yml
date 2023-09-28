@@ -46,7 +46,7 @@ spring:
   data:
     elasticsearch:
       cluster-name: docker-cluster
-      cluster-nodes: 127.0.0.1:9300
+      cluster-nodes: 127.0.0.1:9303
       properties:
         path:
           logs: target/elasticsearch/log
