@@ -22,20 +22,20 @@ import { flatMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IMetadataValue, MetadataValue } from 'app/shared/model/metadata-value.model';
+import { MetadataValue } from 'app/shared/model/metadata-value.model';
 import { MetadataValueService } from './metadata-value.service';
 import { MetadataValueComponent } from './metadata-value.component';
 import { MetadataValueDetailComponent } from './metadata-value-detail.component';
 import { MetadataValueUpdateComponent } from './metadata-value-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class MetadataValueResolve implements Resolve<IMetadataValue> {
+export class MetadataValueResolve implements Resolve<MetadataValue> {
   constructor(
     private service: MetadataValueService,
     private router: Router,
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IMetadataValue> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<MetadataValue> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
@@ -49,7 +49,7 @@ export class MetadataValueResolve implements Resolve<IMetadataValue> {
         }),
       );
     }
-    return of(new MetadataValue());
+    return of({});
   }
 }
 

@@ -39,7 +39,7 @@ export class AgencyResolve implements Resolve<IAgency> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        mergeMap((agency: HttpResponse<Agency>) => {
+        mergeMap(agency => {
           if (agency.body) {
             return of(agency.body);
           } else {

@@ -18,22 +18,22 @@ package eu.cessda.cvs.web.rest.domain;
 import java.io.Serializable;
 
 public class Bucket implements Serializable {
-    private String k;
-    private Long v;
+    private static final long serialVersionUID = -2917096094815938793L;
+
+    private final String k;
+    private final Long v;
+
+    public Bucket( String k, Long v )
+    {
+        this.k = k;
+        this.v = v;
+    }
 
     public String getK() {
         return k;
     }
 
-    public void setK(String k) {
-        this.k = k;
-    }
-
     public Long getV() {
         return v;
-    }
-
-    public void setV(Long v) {
-        this.v = v;
     }
 }

@@ -271,7 +271,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     }
   }
 
-  changeLanguage(event: Event) {
+  changeLanguage(event: Event): void {
     this.selectedLanguage = (event.target as HTMLSelectElement).value;
   }
 }

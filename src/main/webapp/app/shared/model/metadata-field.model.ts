@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { IMetadataValue } from 'app/shared/model/metadata-value.model';
+import { MetadataValue } from 'app/shared/model/metadata-value.model';
 import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
 
 export interface IMetadataField {
@@ -21,7 +21,7 @@ export interface IMetadataField {
   metadataKey?: string;
   description?: any;
   objectType?: ObjectType;
-  metadataValues?: IMetadataValue[];
+  metadataValues?: MetadataValue[];
 }
 
 export class MetadataField implements IMetadataField {
@@ -30,6 +30,6 @@ export class MetadataField implements IMetadataField {
     public metadataKey?: string,
     public description?: any,
     public objectType?: ObjectType,
-    public metadataValues?: IMetadataValue[]
+    public metadataValues?: MetadataValue[],
   ) {}
 }

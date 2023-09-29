@@ -13,20 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
-import {JhiEventManager} from 'ng-jhipster';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {HttpResponse} from '@angular/common/http';
-import {IMetadataValue} from 'app/shared/model/metadata-value.model';
-import {ObjectType} from 'app/shared/model/enumerations/object-type.model';
-import {EditorService} from 'app/editor/editor.service';
-import {IMetadataField} from 'app/shared/model/metadata-field.model';
-
-interface Quill {
-  getModule(moduleName: string): BetterTableModule;
-}
+import { JhiEventManager } from 'ng-jhipster';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
+import { MetadataValue } from 'app/shared/model/metadata-value.model';
+import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
+import { EditorService } from 'app/editor/editor.service';
+import { IMetadataField } from 'app/shared/model/metadata-field.model';
+import Quill from 'quill';
 
 interface BetterTableModule {
   insertTable(rows: number, columns: number): void;
@@ -35,17 +32,16 @@ interface BetterTableModule {
 @Component({
   selector: 'jhi-metadata-item',
   templateUrl: './metadata-item.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MetadataItemComponent implements OnInit {
   @Input() metadataField?: IMetadataField;
-  @Input() metadataValue!: IMetadataValue;
+  @Input() metadataValue!: MetadataValue;
   @Input() isWriting!: boolean;
   @Input() position!: number;
   @Input() newTabLink!: boolean;
 
-  // @ts-ignore
-  public quill: Quill;
+  public quill: Quill | undefined;
 
   isSaving = false;
   isTableInsertOptVisible = false;
@@ -55,23 +51,29 @@ export class MetadataItemComponent implements OnInit {
     position: ['', [Validators.required]],
     content: ['', [Validators.minLength(30)]],
     tableRow: [],
-    tableColumn: []
+    tableColumn: [],
   });
 
-  constructor(protected editorService: EditorService, protected eventManager: JhiEventManager, private fb: FormBuilder) {}
+  constructor(
+    protected editorService: EditorService,
+    protected eventManager: JhiEventManager,
+    private fb: FormBuilder,
+  ) {}
 
-  private get tableModule(): BetterTableModule {
-    return this.quill.getModule("better-table");
+  private getTableModule(): BetterTableModule {
+    if (!this.quill) {
+      throw new TypeError('quill is undefined - possibly not initialised');
+    }
+    return this.quill.getModule('better-table');
   }
 
   public editorCreated(event: Quill): void {
     this.quill = event;
-    // @ts-ignore
     this.quill.clipboard.dangerouslyPasteHTML(this.metadataForm.get(['content'])!.value);
   }
 
   insertTable(): void {
-    this.tableModule.insertTable(this.metadataForm.get(['tableRow'])!.value, this.metadataForm.get(['tableColumn'])!.value);
+    this.getTableModule().insertTable(this.metadataForm.get(['tableRow'])!.value, this.metadataForm.get(['tableColumn'])!.value);
     this.isTableInsertOptVisible = false;
   }
 
@@ -85,14 +87,14 @@ export class MetadataItemComponent implements OnInit {
       position: this.metadataValue.position ? this.metadataValue.position : this.position,
       content: this.metadataValue.value,
       tableRow: 3,
-      tableColumn: 3
+      tableColumn: 3,
     });
   }
 
   cancel(): void {
     this.isWriting = false;
     this.metadataForm.patchValue({
-      content: this.metadataValue.value
+      content: this.metadataValue.value,
     });
   }
 
@@ -106,14 +108,14 @@ export class MetadataItemComponent implements OnInit {
     });
   }
 
-  private createFromForm(): IMetadataValue {
+  private createFromForm() {
     return {
       ...this.metadataValue,
-      identifier: this.metadataForm.get(['identifier'])!.value,
-      position: this.metadataForm.get(['position'])!.value ? this.metadataForm.get(['position'])!.value : this.position,
-      value: this.metadataForm.get(['content'])!.value,
+      identifier: this.metadataForm.get(['identifier'])!.value as string,
+      position: (this.metadataForm.get(['position'])!.value ? this.metadataForm.get(['position'])!.value : this.position) as number,
+      value: this.metadataForm.get(['content'])!.value as string,
       objectType: ObjectType.SYSTEM,
-      metadataKey: this.metadataField!.metadataKey
+      metadataKey: this.metadataField!.metadataKey,
     };
   }
 
@@ -122,9 +124,9 @@ export class MetadataItemComponent implements OnInit {
     const metadataValue = this.createFromForm();
     if (!this.newTabLink) {
       // remove any target="_blank"
-      metadataValue.value = (metadataValue.value as string).split(' rel="noopener noreferrer" target="_blank"').join('');
+      metadataValue.value = metadataValue.value.split(' rel="noopener noreferrer" target="_blank"').join('');
       this.metadataForm.patchValue({
-        content: metadataValue.value
+        content: metadataValue.value,
       });
     }
     if (this.metadataValue.id !== undefined) {
@@ -134,14 +136,14 @@ export class MetadataItemComponent implements OnInit {
     }
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IMetadataValue>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<unknown>>): void {
     result.subscribe(
-      response => this.onSaveSuccess(response.body!),
-      () => this.onSaveError()
+      () => this.onSaveSuccess(),
+      () => this.onSaveError(),
     );
   }
 
-  protected onSaveSuccess(newComment: IMetadataValue): void {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.isWriting = false;
     this.eventManager.broadcast('metadataListModification');

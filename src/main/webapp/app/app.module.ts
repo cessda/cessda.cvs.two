@@ -38,11 +38,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // ngx-quill rich text
 import { QuillConfig, QuillModule } from 'ngx-quill';
-// @ts-ignore
-import * as Quill from 'quill';
-// @ts-ignore
+import Quill from 'quill';
+// @ts-expect-error - missing types
 import QuillBetterTable from 'quill-better-table';
-// @ts-ignore
 import BlotFormatter from 'quill-blot-formatter';
 // ngx-text-diff
 import { ScrollingModule } from '@angular/cdk/scrolling';
@@ -54,7 +52,7 @@ Quill.register(
     'modules/better-table': QuillBetterTable,
     'modules/blotFormatter': BlotFormatter,
   },
-  true
+  true,
 );
 
 const quillConfig: QuillConfig = {

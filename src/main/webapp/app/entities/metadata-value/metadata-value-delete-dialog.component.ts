@@ -17,19 +17,19 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { IMetadataValue } from 'app/shared/model/metadata-value.model';
+import { MetadataValue } from 'app/shared/model/metadata-value.model';
 import { MetadataValueService } from './metadata-value.service';
 
 @Component({
-  templateUrl: './metadata-value-delete-dialog.component.html'
+  templateUrl: './metadata-value-delete-dialog.component.html',
 })
 export class MetadataValueDeleteDialogComponent {
-  metadataValue?: IMetadataValue;
+  metadataValue?: MetadataValue;
 
   constructor(
     protected metadataValueService: MetadataValueService,
     public activeModal: NgbActiveModal,
-    protected eventManager: JhiEventManager
+    protected eventManager: JhiEventManager,
   ) {}
 
   cancel(): void {

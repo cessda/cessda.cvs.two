@@ -23,12 +23,13 @@ import { JhiEventManager } from 'ng-jhipster';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
-import { Comment, IComment } from 'app/shared/model/comment.model';
+import { IComment } from 'app/shared/model/comment.model';
 import { CommentService } from 'app/entities/comment/comment.service';
 import { Observable, Subscription } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import moment from 'moment';
 import { Moment } from 'moment';
+import { QuillModules } from 'ngx-quill';
 
 @Component({
   templateUrl: './editor-detail-cv-comment-dialog.component.html',
@@ -42,7 +43,7 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
 
   eventSubscriber?: Subscription;
 
-  quillModules: any = {
+  quillModules: QuillModules = {
     toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']],
   };
 

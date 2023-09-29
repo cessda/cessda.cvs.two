@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
 import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { ICvResult } from 'app/shared/model/cv-result.model';
+import { CvResult } from 'app/shared/model/cv-result.model';
 
 type EntityResponseType = HttpResponse<IVocabulary>;
 
@@ -38,9 +38,9 @@ export class HomeService {
     return this.http.get<IVocabulary>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  search(req?: Record<string, string>): Observable<HttpResponse<ICvResult>> {
+  search(req?: Record<string, string>): Observable<HttpResponse<CvResult>> {
     const options = createRequestOption(req);
-    return this.http.get<ICvResult>(this.resourceSearchUrl, { params: options, observe: 'response' });
+    return this.http.get<CvResult>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }
 
   getVocabularyFile(notation: string, req?: Record<string, string>): Observable<HttpResponse<IVocabulary>> {

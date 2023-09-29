@@ -15,11 +15,10 @@
  */
 
 import { Injectable } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
 
 import { EMPTY, Observable, of } from 'rxjs';
-import { flatMap, mergeMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import { EditorComponent } from './editor.component';
 import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
@@ -40,7 +39,7 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
     const notation = route.params['notation'];
     if (notation) {
       return this.service.getVocabulary(notation).pipe(
-        mergeMap((vocabulary: HttpResponse<Vocabulary>) => {
+        mergeMap(vocabulary => {
           if (vocabulary.body) {
             vocabulary.body.selectedLang = vocabulary.body.sourceLanguage;
             return of(vocabulary.body);

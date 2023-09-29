@@ -49,7 +49,7 @@
         <div class="row-content">
             <div class="row-details">
                 <div class="row-detail form-group">
-                    <div class="btn-group btn-group-toggle" ngbRadioGroup name="insert-choice" [(ngModel)]="insertMode" (ngModelChange)="updateTreePreview($event)">
+                    <div class="btn-group btn-group-toggle" ngbRadioGroup name="insert-choice" [(ngModel)]="insertMode" (ngModelChange)="updateTreePreview()">
                         <label ngbButtonLabel class="btn-primary">
                             <input ngbButton type="radio" value="after"> Insert after
                         </label>

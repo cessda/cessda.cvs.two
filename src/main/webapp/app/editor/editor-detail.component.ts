@@ -43,6 +43,9 @@ import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
+import { Quill } from 'quill';
+import { QuillModules } from 'ngx-quill';
+import { AgencyRole } from 'app/shared/model/enumerations/agency-role.model';
 
 @Component({
   selector: 'jhi-editor-detail',
@@ -99,11 +102,11 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   isShowingDeprecatedCodes = false;
 
-  codeTlActionRoles = ['ADMIN', 'ADMIN_TL', 'ADMIN_CONTENT'];
+  codeTlActionRoles: AgencyRole[] = ['ADMIN', 'ADMIN_TL', 'ADMIN_CONTENT'];
 
   noOfComments = 0;
 
-  quillModules: any = {
+  quillModules: QuillModules = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],
       ['blockquote'],
@@ -141,12 +144,9 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     versionChanges: [],
   });
 
-  // @ts-ignore
-  public versionNotesEditor: Quill;
-  // @ts-ignore
-  public versionChangesEditor: Quill;
-  // @ts-ignore
-  public ddiUsageEditor: Quill;
+  public versionNotesEditor: Quill | undefined;
+  public versionChangesEditor: Quill | undefined;
+  public ddiUsageEditor: Quill | undefined;
 
   constructor(
     private accountService: AccountService,
@@ -783,30 +783,24 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  // @ts-ignore
   onVersionNotesEditorCreated(event: Quill): void {
     this.versionNotesEditor = event;
     if (this.editorDetailForm.get(['versionNotes'])!.value) {
-      // @ts-ignore
-      this.versionNotesEditor.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['versionNotes']).value);
+      this.versionNotesEditor.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['versionNotes'])!.value);
     }
   }
 
-  // @ts-ignore
   onVersionChangesEditorCreated(event: Quill): void {
     this.versionChangesEditor = event;
     if (this.editorDetailForm.get(['versionChanges'])!.value) {
-      // @ts-ignore
-      this.versionChangesEditor.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['versionChanges']).value);
+      this.versionChangesEditor.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['versionChanges'])!.value);
     }
   }
 
-  // @ts-ignore
   onDdiUsageEditorCreated(event: Quill): void {
     this.ddiUsageEditor = event;
     if (this.editorDetailForm.get(['ddiUsage'])!.value) {
-      // @ts-ignore
-      this.ddiUsageEditor.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['ddiUsage']).value);
+      this.ddiUsageEditor.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['ddiUsage'])!.value);
     }
   }
 }

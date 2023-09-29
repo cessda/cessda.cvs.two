@@ -1,3 +1,5 @@
+import { AgencyRole } from './enumerations/agency-role.model';
+
 /*
  * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
@@ -17,7 +19,7 @@ export interface IUserAgency {
   id?: number;
   userId?: number;
   agencyName?: string;
-  agencyRole?: 'ADMIN' | 'VIEW' | 'ADMIN_SL' | 'ADMIN_TL' | 'ADMIN_CONTENT';
+  agencyRole?: AgencyRole;
   language?: string;
   agencyId?: number;
 }
@@ -27,7 +29,7 @@ export class UserAgency implements IUserAgency {
     public id?: number,
     public userId?: number,
     public agency?: string,
-    public agencyRole?: 'ADMIN' | 'VIEW' | 'ADMIN_SL' | 'ADMIN_TL' | 'ADMIN_CONTENT',
+    public agencyRole?: AgencyRole,
     public language?: string,
     public agencyId?: number,
   ) {}

@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError} from 'ng-jhipster';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import {IMetadataValue, MetadataValue} from 'app/shared/model/metadata-value.model';
-import {MetadataValueService} from './metadata-value.service';
-import {AlertError} from 'app/shared/alert/alert-error.model';
-import {IMetadataField} from 'app/shared/model/metadata-field.model';
-import {MetadataFieldService} from 'app/entities/metadata-field/metadata-field.service';
+import { MetadataValue } from 'app/shared/model/metadata-value.model';
+import { MetadataValueService } from './metadata-value.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { IMetadataField } from 'app/shared/model/metadata-field.model';
+import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field.service';
 
 @Component({
   selector: 'jhi-metadata-value-update',
-  templateUrl: './metadata-value-update.component.html'
+  templateUrl: './metadata-value-update.component.html',
 })
 export class MetadataValueUpdateComponent implements OnInit {
   isSaving = false;
@@ -42,7 +42,7 @@ export class MetadataValueUpdateComponent implements OnInit {
     value: [],
     objectType: [],
     objectId: [],
-    metadataFieldId: []
+    metadataFieldId: [],
   });
 
   constructor(
@@ -51,7 +51,7 @@ export class MetadataValueUpdateComponent implements OnInit {
     protected metadataValueService: MetadataValueService,
     protected metadataFieldService: MetadataFieldService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -62,7 +62,7 @@ export class MetadataValueUpdateComponent implements OnInit {
     });
   }
 
-  updateForm(metadataValue: IMetadataValue): void {
+  updateForm(metadataValue: MetadataValue): void {
     this.editForm.patchValue({
       id: metadataValue.id,
       identifier: metadataValue.identifier,
@@ -70,15 +70,13 @@ export class MetadataValueUpdateComponent implements OnInit {
       value: metadataValue.value,
       objectType: metadataValue.objectType,
       objectId: metadataValue.objectId,
-      metadataFieldId: metadataValue.metadataFieldId
+      metadataFieldId: metadataValue.metadataFieldId,
     });
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-      this.eventManager.broadcast(
-        new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key })
-      );
+      this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
     });
   }
 
@@ -96,23 +94,22 @@ export class MetadataValueUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IMetadataValue {
+  private createFromForm(): MetadataValue {
     return {
-      ...new MetadataValue(),
       id: this.editForm.get(['id'])!.value,
       identifier: this.editForm.get(['identifier'])!.value,
       position: this.editForm.get(['position'])!.value,
       value: this.editForm.get(['value'])!.value,
       objectType: this.editForm.get(['objectType'])!.value,
       objectId: this.editForm.get(['objectId'])!.value,
-      metadataFieldId: this.editForm.get(['metadataFieldId'])!.value
+      metadataFieldId: this.editForm.get(['metadataFieldId'])!.value,
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IMetadataValue>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<MetadataValue>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 

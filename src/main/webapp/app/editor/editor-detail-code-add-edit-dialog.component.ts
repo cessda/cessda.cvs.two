@@ -26,7 +26,7 @@ import { Account } from 'app/core/user/account.model';
 import { CODE_ALREADY_EXIST_TYPE } from 'app/shared';
 import { EditorService } from 'app/editor/editor.service';
 import { IVersion } from 'app/shared/model/version.model';
-import { Concept, IConcept } from 'app/shared/model/concept.model';
+import { IConcept } from 'app/shared/model/concept.model';
 import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
 import { EditorDetailCvAddEditConfirmModalComponent } from 'app/editor/editor-detail-code-add-edit-confirm.component';
 
@@ -68,7 +68,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private modalService: NgbModal,
-    private _ngZone: NgZone
+    private _ngZone: NgZone,
   ) {
     this.isSaving = false;
     this.isSubmitting = false;
@@ -227,11 +227,11 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     return index;
   }
 
-  private getConceptInsertionAddress(): [any, number] {
-    let refConceptId = null;
+  private getConceptInsertionAddress(): [number | undefined, number] {
+    let refConceptId = undefined;
     let relativePos = 1;
-    if (this.conceptParam !== null) {
-      refConceptId = this.conceptParam!.id;
+    if (this.conceptParam) {
+      refConceptId = this.conceptParam.id;
     }
     if (this.codeInsertMode === 'INSERT_BEFORE') {
       relativePos = 0;
@@ -277,7 +277,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IConcept>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      response => this.processError(response)
+      response => this.processError(response),
     );
   }
 
@@ -314,8 +314,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
 
     const pos = this.calculatePosition();
 
-    const newConcept = {
-      ...new Concept(),
+    const newConcept: IConcept = {
       status: 'TO_BE_INSERTED',
       position: pos,
     };
@@ -336,7 +335,9 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     this._ngZone.runOutsideAngular(() => {
       setTimeout(() => {
         const element = document.querySelector('.to-be-inserted');
-        element!.scrollIntoView({ behavior: 'smooth' });
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
       }, 500);
     });
   }

@@ -38,8 +38,8 @@ export class EditorDetailCodeCsvImportDialogComponent {
   codeSnippets: ICodeSnippet[] = [];
   eventSubscriber?: Subscription;
   isSlForm?: boolean;
-  csvHeaders: any[] = [];
-  csvContents: any[] = [];
+  csvHeaders: string[] = [];
+  csvContents: string[][] = [];
   markedRows: boolean[] = [];
 
   // UPLOAD ~ file upload visible
@@ -68,12 +68,6 @@ export class EditorDetailCodeCsvImportDialogComponent {
 
   clear(): void {
     this.activeModal.dismiss();
-  }
-
-  onFileLoad(fileLoadedEvent: any): void {
-    const textFromFileLoaded = fileLoadedEvent.target.result;
-    this.csvContents = textFromFileLoaded;
-    alert(this.csvContents);
   }
 
   onFileSelect(input: EventTarget): void {
@@ -111,13 +105,13 @@ export class EditorDetailCodeCsvImportDialogComponent {
     this.codeSnippets = [];
   }
 
-  backToUploadStage($element: any): void {
+  backToUploadStage($element: HTMLHeadingElement): void {
     this.csvImportWorkflow = 'UPLOAD';
     this.csvInput.nativeElement.value = '';
     $element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
   }
 
-  backToSelectStage($element: any): void {
+  backToSelectStage($element: HTMLHeadingElement): void {
     this.csvImportWorkflow = 'SELECT';
     $element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
   }
@@ -127,11 +121,11 @@ export class EditorDetailCodeCsvImportDialogComponent {
   }
 
   // see https://www.bennadel.com/blog/1504-ask-ben-parsing-csv-strings-with-javascript-exec-regular-expression-command.htm
-  parseCSVToArray(csvString: string, delimiter?: string): any[] {
+  parseCSVToArray(csvString: string, delimiter?: string): string[][] {
     delimiter = delimiter || ','; // user-supplied delimiter or default comma
 
     const pattern = new RegExp( // regular expression to parse the CSV values.
-    // Delimiters:
+      // Delimiters:
       '(\\' +
         delimiter +
         '|\\r?\\n|\\r|^)' +
@@ -181,7 +175,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
     return rows; // Return the parsed data Array
   }
 
-  getDataRecordsArrayFromCSVFile(csvRecordsArray: any): any {
+  getDataRecordsArrayFromCSVFile(csvRecordsArray: string[][]): string[][] {
     // TL only allow existing code notations
     const existingCode: string[] = [];
     this.ignoredRows = 0;
@@ -192,7 +186,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
       });
     }
 
-    const csvArr = [];
+    const csvArr: string[][] = [];
     for (let i = 1; i < csvRecordsArray.length; i++) {
       const splittedContent = csvRecordsArray[i];
       if (splittedContent && splittedContent.length > 2 && splittedContent[0].trim() !== '' && splittedContent[1].trim() !== '') {
@@ -206,16 +200,16 @@ export class EditorDetailCodeCsvImportDialogComponent {
     return csvArr;
   }
 
-  getHeaderArray(csvRecordsArr: any): any {
+  getHeaderArray(csvRecordsArr: string[][]): string[] {
     const headers = csvRecordsArr[0];
-    const headerArray = new Array(3).fill('');
-    for (let j = 0; j < headers.length; j++) {
-      headerArray[j] = headers[j];
+    const headerArray = Array<string>(3);
+    for (let i = 0; i < headers.length; i++) {
+      headerArray[i] = headers[i];
     }
     return headerArray;
   }
 
-  createCodePreview($element: any): void {
+  createCodePreview($element: HTMLHeadingElement): void {
     this.resetConceptsAndCodeSnippets();
 
     for (let i = 0; i < this.csvContents.length; i++) {

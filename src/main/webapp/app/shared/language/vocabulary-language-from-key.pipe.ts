@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({ name: 'vocabularyLanguageFromKey' })
 export class VocabularyLanguageFromKeyPipe implements PipeTransform {
-  private vocabLanguages: { [key: string]: { name: string; rtl?: boolean } } = {
+  private vocabLanguages: Record<string, { name: string; rtl?: boolean }> = {
     sq: { name: 'Albanian (sq)' },
     bs: { name: 'Bosnian (bs)' },
     bg: { name: 'Bulgarian (bg)' },
@@ -45,7 +45,7 @@ export class VocabularyLanguageFromKeyPipe implements PipeTransform {
     sk: { name: 'Slovak (sk)' },
     sl: { name: 'Slovenian (sl)' },
     es: { name: 'Spanish (es)' },
-    sv: { name: 'Swedish (sv)' }
+    sv: { name: 'Swedish (sv)' },
   };
 
   transform(lang: string): string {

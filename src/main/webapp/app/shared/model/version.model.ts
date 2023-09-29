@@ -53,7 +53,10 @@ export interface IVersion {
   comments?: IComment[];
   vocabularyId?: number;
   versionHistories?: IVersionHistory[];
+  titleSl?: string;
   languageSl?: string;
+  definitionSl?: string;
+  notesSl?: string;
 }
 
 export class Version implements IVersion {

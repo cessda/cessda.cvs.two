@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption, DATE_FORMAT } from 'app/shared';
 import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { ICvResult } from 'app/shared/model/cv-result.model';
+import { CvResult } from 'app/shared/model/cv-result.model';
 import { map } from 'rxjs/operators';
 import moment from 'moment';
 import { IVocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
@@ -28,7 +28,7 @@ import { ICodeSnippet } from 'app/shared/model/code-snippet.model';
 import { IConcept } from 'app/shared/model/concept.model';
 import { IVersion } from 'app/shared/model/version.model';
 import { IComment } from 'app/shared/model/comment.model';
-import { IMetadataValue } from 'app/shared/model/metadata-value.model';
+import { MetadataValue } from 'app/shared/model/metadata-value.model';
 
 @Injectable({ providedIn: 'root' })
 export class EditorService {
@@ -101,9 +101,9 @@ export class EditorService {
     return copy;
   }
 
-  search(req?: any): Observable<HttpResponse<ICvResult>> {
+  search(req?: any): Observable<HttpResponse<CvResult>> {
     const options = createRequestOption(req);
-    return this.http.get<ICvResult>(this.resourceEditorSearchUrl, { params: options, observe: 'response' });
+    return this.http.get<CvResult>(this.resourceEditorSearchUrl, { params: options, observe: 'response' });
   }
 
   getVocabulary(notation: string): Observable<HttpResponse<IVocabulary>> {
@@ -152,12 +152,12 @@ export class EditorService {
     return res;
   }
 
-  createAppMetadata(metadataValue: IMetadataValue): Observable<HttpResponse<IMetadataValue>> {
-    return this.http.post<IMetadataValue>(this.resourceEditorMetadataUrl, metadataValue, { observe: 'response' });
+  createAppMetadata(metadataValue: MetadataValue): Observable<HttpResponse<MetadataValue>> {
+    return this.http.post<MetadataValue>(this.resourceEditorMetadataUrl, metadataValue, { observe: 'response' });
   }
 
-  updateAppMetadata(metadataValue: IMetadataValue): Observable<HttpResponse<IMetadataValue>> {
-    return this.http.put<IMetadataValue>(this.resourceEditorMetadataUrl, metadataValue, { observe: 'response' });
+  updateAppMetadata(metadataValue: MetadataValue): Observable<HttpResponse<MetadataValue>> {
+    return this.http.put<MetadataValue>(this.resourceEditorMetadataUrl, metadataValue, { observe: 'response' });
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-types

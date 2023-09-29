@@ -19,7 +19,7 @@ import { EditorService } from 'app/editor/editor.service';
 import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field.service';
 import { METADATA_KEY_ABOUT, METADATA_KEY_API } from 'app/shared/constants/metadata.constants';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { IMetadataValue, MetadataValue } from 'app/shared/model/metadata-value.model';
+import { MetadataValue } from 'app/shared/model/metadata-value.model';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { ActivatedRoute } from '@angular/router';
@@ -36,8 +36,8 @@ export class CustomPageComponent implements OnInit, OnDestroy {
   metadataKey = METADATA_KEY_API;
 
   metadataField?: IMetadataField | null;
-  metadataValues: IMetadataValue[] = [];
-  metadataValueMenu?: IMetadataValue;
+  metadataValues: MetadataValue[] = [];
+  metadataValueMenu?: MetadataValue;
 
   enableDocxExport = false;
   generatingFile = false;
@@ -116,7 +116,7 @@ export class CustomPageComponent implements OnInit, OnDestroy {
   }
 
   addSection(): void {
-    this.metadataField!.metadataValues!.push(new MetadataValue());
+    this.metadataField!.metadataValues!.push({});
   }
 
   ngOnDestroy(): void {
@@ -127,11 +127,11 @@ export class CustomPageComponent implements OnInit, OnDestroy {
 
   fillSections(): void {
     this.fileUploadService.fillMetadataWithHtmlFile(this.uploadFileName, this.metadataKey).subscribe(
-      (res: HttpResponse<SimpleResponse>) => {
+      () => {
         this.refreshContent();
         location.reload();
       },
-      error => {
+      () => {
         this.uploadFileStatus = 'There is a problem!. Please try again later';
       },
     );

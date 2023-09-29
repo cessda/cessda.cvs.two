@@ -17,7 +17,6 @@ import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { UserAgencyService } from 'app/entities/user-agency/user-agency.service';
 import { IUserAgency, UserAgency } from 'app/shared/model/user-agency.model';
-import { AgencyRole } from 'app/shared/model/enumerations/agency-role.model';
 import { Language } from 'app/shared/model/enumerations/language.model';
 
 describe('Service Tests', () => {
@@ -37,7 +36,7 @@ describe('Service Tests', () => {
       service = injector.get(UserAgencyService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new UserAgency(0, 1, undefined, AgencyRole.ADMIN, Language.ALBANIAN);
+      elemDefault = new UserAgency(0, 1, undefined, 'ADMIN', Language.ALBANIAN);
     });
 
     describe('Service methods', () => {

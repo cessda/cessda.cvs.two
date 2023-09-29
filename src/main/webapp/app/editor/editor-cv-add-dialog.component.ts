@@ -60,7 +60,7 @@ export class EditorCvAddDialogComponent implements OnInit {
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
   ) {
     this.isSaving = false;
   }
@@ -159,7 +159,7 @@ export class EditorCvAddDialogComponent implements OnInit {
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>, notation: string): void {
     result.subscribe(
       () => this.onSaveSuccess(notation),
-      response => this.processError(response)
+      response => this.processError(response),
     );
   }
 
@@ -186,25 +186,29 @@ export class EditorCvAddDialogComponent implements OnInit {
   template: '',
 })
 export class EditorCvAddPopupComponent implements OnInit, OnDestroy {
-  protected ngbModalRef?: NgbModalRef | null;
+  protected ngbModalRef: NgbModalRef | undefined;
 
-  constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
+  constructor(
+    protected activatedRoute: ActivatedRoute,
+    protected router: Router,
+    protected modalService: NgbModal,
+  ) {}
 
   ngOnInit(): void {
-    this.ngbModalRef = this.modalService.open(EditorCvAddDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef = this.modalService.open(EditorCvAddDialogComponent, { size: 'xl', backdrop: 'static' });
     this.ngbModalRef.result.then(
-      result => {
+      () => {
         this.router.navigate(['/editor', { outlets: { popup: null } }]);
-        this.ngbModalRef = null;
+        this.ngbModalRef = undefined;
       },
-      reason => {
+      () => {
         this.router.navigate(['/editor', { outlets: { popup: null } }]);
-        this.ngbModalRef = null;
-      }
+        this.ngbModalRef = undefined;
+      },
     );
   }
 
   ngOnDestroy(): void {
-    this.ngbModalRef = null;
+    this.ngbModalRef = undefined;
   }
 }

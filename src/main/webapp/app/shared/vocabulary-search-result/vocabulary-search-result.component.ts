@@ -29,7 +29,7 @@ import { LoginModalService } from 'app/core/login/login-modal.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ICode } from 'app/shared/model/code.model';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ICvResult } from 'app/shared/model/cv-result.model';
+import { CvResult } from 'app/shared/model/cv-result.model';
 import { Aggr } from 'app/shared/model/aggr';
 import { HomeService } from 'app/home/home.service';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
@@ -191,12 +191,12 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     const pageToLoad: number = page ? page : this.page;
     if (this.appScope === AppScope.EDITOR) {
       this.editorService.search(this.getSearchRequest(page ? page : this.page)).subscribe(
-        (res: HttpResponse<ICvResult>) => this.onSuccess(res.body!, res.headers, pageToLoad),
+        (res: HttpResponse<CvResult>) => this.onSuccess(res.body!, res.headers, pageToLoad),
         () => this.onError(),
       );
     } else {
       this.homeService.search(this.getSearchRequest(page ? page : this.page)).subscribe(
-        (res: HttpResponse<ICvResult>) => this.onSuccess(res.body!, res.headers, pageToLoad),
+        (res: HttpResponse<CvResult>) => this.onSuccess(res.body!, res.headers, pageToLoad),
         () => this.onError(),
       );
     }
@@ -212,7 +212,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     };
   }
 
-  protected onSuccess(data: ICvResult, headers: HttpHeaders, page: number): void {
+  protected onSuccess(data: CvResult, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.vocabularies = data.vocabularies || [];

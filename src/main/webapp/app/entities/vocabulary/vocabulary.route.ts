@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
 import { JhiResolvePagingParams } from 'ng-jhipster';
 import { Observable, of, EMPTY } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
@@ -39,7 +38,7 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        flatMap((vocabulary: HttpResponse<Vocabulary>) => {
+        mergeMap(vocabulary => {
           if (vocabulary.body) {
             return of(vocabulary.body);
           } else {
