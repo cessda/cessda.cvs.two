@@ -1989,7 +1989,7 @@ public class VocabularyServiceImpl implements VocabularyService
         try
         {
             String suffix = "";
-            if (agencyDTO.getName().equals("DDI Alliance")) {
+            if (agencyDTO.getName().equals("DDI Alliance") && downloadType.equals(ExportService.DownloadType.SKOS)) {
                 suffix = "-ddi";
             }
             exportService.generateFileByThymeleafTemplate( "export" + suffix, map, downloadType, outputStream );
