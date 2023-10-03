@@ -18,28 +18,28 @@ import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
 import { JhiResolvePagingParams } from 'ng-jhipster';
 import { Observable, of, EMPTY } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { flatMap, mergeMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IMetadataField, MetadataField } from 'app/shared/model/metadata-field.model';
+import { MetadataField } from 'app/shared/model/metadata-field.model';
 import { MetadataFieldService } from './metadata-field.service';
 import { MetadataFieldComponent } from './metadata-field.component';
 import { MetadataFieldDetailComponent } from './metadata-field-detail.component';
 import { MetadataFieldUpdateComponent } from './metadata-field-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class MetadataFieldResolve implements Resolve<IMetadataField> {
+export class MetadataFieldResolve implements Resolve<MetadataField> {
   constructor(
     private service: MetadataFieldService,
     private router: Router,
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IMetadataField> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<MetadataField> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        flatMap((metadataField: HttpResponse<MetadataField>) => {
+        mergeMap((metadataField: HttpResponse<MetadataField>) => {
           if (metadataField.body) {
             return of(metadataField.body);
           } else {
@@ -49,7 +49,10 @@ export class MetadataFieldResolve implements Resolve<IMetadataField> {
         }),
       );
     }
-    return of(new MetadataField());
+    return of({
+      metadataKey: '',
+      metadataValues: [],
+    });
   }
 }
 

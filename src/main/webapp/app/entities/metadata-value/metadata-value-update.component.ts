@@ -24,7 +24,7 @@ import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } 
 import { MetadataValue } from 'app/shared/model/metadata-value.model';
 import { MetadataValueService } from './metadata-value.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
-import { IMetadataField } from 'app/shared/model/metadata-field.model';
+import { MetadataField } from 'app/shared/model/metadata-field.model';
 import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field.service';
 
 @Component({
@@ -33,7 +33,7 @@ import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field
 })
 export class MetadataValueUpdateComponent implements OnInit {
   isSaving = false;
-  metadatafields: IMetadataField[] = [];
+  metadatafields: MetadataField[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -58,7 +58,7 @@ export class MetadataValueUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ metadataValue }) => {
       this.updateForm(metadataValue);
 
-      this.metadataFieldService.query().subscribe((res: HttpResponse<IMetadataField[]>) => (this.metadatafields = res.body || []));
+      this.metadataFieldService.query().subscribe((res: HttpResponse<MetadataField[]>) => (this.metadatafields = res.body || []));
     });
   }
 
@@ -122,7 +122,7 @@ export class MetadataValueUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: IMetadataField): any {
+  trackById(index: number, item: MetadataField): any {
     return item.id;
   }
 }

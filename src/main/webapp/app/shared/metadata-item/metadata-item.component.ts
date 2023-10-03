@@ -22,7 +22,7 @@ import { HttpResponse } from '@angular/common/http';
 import { MetadataValue } from 'app/shared/model/metadata-value.model';
 import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
 import { EditorService } from 'app/editor/editor.service';
-import { IMetadataField } from 'app/shared/model/metadata-field.model';
+import { MetadataField } from 'app/shared/model/metadata-field.model';
 import Quill from 'quill';
 
 interface BetterTableModule {
@@ -35,7 +35,7 @@ interface BetterTableModule {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MetadataItemComponent implements OnInit {
-  @Input() metadataField?: IMetadataField;
+  @Input() metadataField?: MetadataField;
   @Input() metadataValue!: MetadataValue;
   @Input() isWriting!: boolean;
   @Input() position!: number;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { IMetadataField, MetadataField } from 'app/shared/model/metadata-field.model';
+import { MetadataField } from 'app/shared/model/metadata-field.model';
 import { EditorService } from 'app/editor/editor.service';
 import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field.service';
 import { METADATA_KEY_ABOUT, METADATA_KEY_API } from 'app/shared/constants/metadata.constants';
@@ -24,7 +24,6 @@ import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { ActivatedRoute } from '@angular/router';
 import { FileUploadService } from 'app/shared/upload/file-upload.service';
-import { SimpleResponse } from 'app/shared/model/simple-response.model';
 
 @Component({
   selector: 'jhi-custom-page',
@@ -35,18 +34,17 @@ export class CustomPageComponent implements OnInit, OnDestroy {
 
   metadataKey = METADATA_KEY_API;
 
-  metadataField?: IMetadataField | null;
+  metadataField: MetadataField | null = null;
   metadataValues: MetadataValue[] = [];
-  metadataValueMenu?: MetadataValue;
+  metadataValueMenu: MetadataValue | undefined;
 
   enableDocxExport = false;
   generatingFile = false;
 
-  eventSubscriber?: Subscription;
+  eventSubscriber: Subscription | undefined;
 
-  selectedFiles?: FileList;
   progress: { percentage: number } = { percentage: 0 };
-  currentFileUpload?: File | null;
+  currentFileUpload: File | null = null;
 
   uploadFileStatus = '';
   inDocxProgress = false;
@@ -75,38 +73,44 @@ export class CustomPageComponent implements OnInit, OnDestroy {
   }
 
   selectFile(selectFileEvent: Event): void {
-    this.selectedFiles = (selectFileEvent.target as HTMLInputElement).files || undefined;
+    const selectedFiles = (selectFileEvent.target as HTMLInputElement).files;
+    if (!selectedFiles) {
+      return;
+    }
+
+    this.currentFileUpload = selectedFiles.item(0);
+    if (!this.currentFileUpload) {
+      return;
+    }
+
     this.inDocxProgress = true;
     this.uploadFileStatus = 'uploading DOCX file...';
     this.progress.percentage = 0;
-    this.currentFileUpload = this.selectedFiles!.item(0);
-    this.fileUploadService.uploadFile(this.currentFileUpload!).subscribe(event => {
+    this.fileUploadService.uploadFile(this.currentFileUpload).subscribe(event => {
       if (event.type === HttpEventType.UploadProgress) {
-        this.progress.percentage = Math.round((100 * event.loaded) / event.total!);
+        this.progress.percentage = Math.round((100 * event.loaded) / (event.total || 0));
       } else if (event instanceof HttpResponse) {
         this.uploadFileStatus = 'Uploading complete, extracting DOCX to HTML... Please wait!';
-        const fileName = event.body!.toString();
+        const fileName = String(event.body);
         this.fileUploadService.convertDocsToHtml(fileName).subscribe(
-          (res: HttpResponse<SimpleResponse>) => {
+          () => {
             this.uploadFileStatus = 'Docx contents is extracted. See the results:';
             this.uploadFileName = fileName;
           },
-          error => {
+          () => {
             this.uploadFileStatus = 'There is a problem!. Please try again later';
           },
         );
       }
     });
-
-    this.selectedFiles = undefined;
   }
 
   private refreshContent(): void {
-    this.metadataFieldService.findByKey(this.metadataKey).subscribe((res: HttpResponse<IMetadataField>) => {
+    this.metadataFieldService.findByKey(this.metadataKey).subscribe((res: HttpResponse<MetadataField>) => {
       if (res.body !== null) {
         this.metadataField = res.body;
       } else {
-        this.metadataField = { ...new MetadataField(), metadataKey: this.metadataKey, metadataValues: [] };
+        this.metadataField = { metadataKey: this.metadataKey, metadataValues: [] };
       }
       if (this.metadataField && this.metadataField.metadataValues) {
         this.metadataValues = this.metadataField.metadataValues;
@@ -116,7 +120,7 @@ export class CustomPageComponent implements OnInit, OnDestroy {
   }
 
   addSection(): void {
-    this.metadataField!.metadataValues!.push({});
+    this.metadataField!.metadataValues.push({});
   }
 
   ngOnDestroy(): void {
@@ -153,8 +157,8 @@ export class CustomPageComponent implements OnInit, OnDestroy {
 
   private generateDownloadFile(res: Blob, mimeType: string, fileFormat: string): void {
     const newBlob = new Blob([res], { type: mimeType });
-    if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
-      (window.navigator as any).msSaveOrOpenBlob(newBlob);
+    if (window.navigator && (window.navigator.msSaveOrOpenBlob as typeof window.navigator.msSaveOrOpenBlob | undefined)) {
+      window.navigator.msSaveOrOpenBlob(newBlob);
       return;
     }
     const data = window.URL.createObjectURL(newBlob);
@@ -166,7 +170,7 @@ export class CustomPageComponent implements OnInit, OnDestroy {
     }
     link.download = fileTitle + '.' + fileFormat;
     link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-    setTimeout(function (): void {
+    setTimeout(() => {
       window.URL.revokeObjectURL(data);
       link.remove();
     }, 100);
