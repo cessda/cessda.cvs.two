@@ -659,8 +659,8 @@ public class VocabularyResourceV2 {
     }
 
     /**
-     * {@code GET  /vocabularies/html/:vocabulary/:versionNumberSl} : Get Vocabulary in
-     * a HTML file of vocabulary {vocabulary} with version {versionNumberSl} with included versions {languageVersion}.
+     * {@code GET  /vocabularies/json/:vocabulary/:versionNumberSl} : Get Vocabulary in
+     * a JSON file of vocabulary {vocabulary} with version {versionNumberSl} with included versions {languageVersion}.
      * Hidden from Swagger due to API for CVS front-end
      *
      * @param vocabulary
@@ -712,7 +712,7 @@ public class VocabularyResourceV2 {
      * @param vocabulary
      * @param versionNumberSl
      * @param languageVersion
-     * @return Vocabulary in HTML format
+     * @return Vocabulary in PDF format
      *
      */
     @GetMapping("/vocabularies/pdf/{vocabulary}/{versionNumberSl}")
@@ -735,7 +735,7 @@ public class VocabularyResourceV2 {
      * @param vocabulary
      * @param versionNumberSl
      * @param languageVersion
-     * @return Vocabulary in HTML format
+     * @return Vocabulary in DOCX format
      *
      */
     @GetMapping("/vocabularies/docx/{vocabulary}/{versionNumberSl}")
@@ -757,6 +757,7 @@ public class VocabularyResourceV2 {
      * @param vocabulary controlled vocabulary
      * @param versionNumberSl controlled vocabulary version
      * @param languageVersion included version to be exported with format language_version e.g en-1.0_de-1.0.1
+     * @return Vocabulary in SKOS/RDF format
      */
     @GetMapping("/vocabularies/rdf/{vocabulary}/{versionNumberSl}")
     @ApiOperation( value = "Get a Vocabulary in SKOS format", hidden = true, produces = ResourceUtils.MEDIATYPE_RDF_VALUE )

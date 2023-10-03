@@ -224,6 +224,7 @@ class EditorResourceIT {
         vocabularySnippet.setTitle( INIT_TITLE_EN );
         vocabularySnippet.setDefinition( INIT_DEFINITION_EN );
         vocabularySnippet.setNotes( INIT_NOTES );
+        vocabularySnippet.setDdiUsage(EDIT_DDI_USAGE);
         return vocabularySnippet;
     }
 
