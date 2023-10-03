@@ -28,13 +28,13 @@ import eu.cessda.cvs.repository.VocabularyRepository;
 import eu.cessda.cvs.repository.search.VocabularyEditorSearchRepository;
 import eu.cessda.cvs.security.AuthoritiesConstants;
 import eu.cessda.cvs.security.jwt.TokenProvider;
-import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 import eu.cessda.cvs.service.mapper.AgencyMapper;
 import eu.cessda.cvs.service.mapper.VocabularyEditorMapper;
 import eu.cessda.cvs.service.mapper.VocabularyMapper;
 import eu.cessda.cvs.utils.VersionNumber;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -409,9 +409,6 @@ public class VocabularyResourceIT {
 
     @Autowired
     private VocabularyEditorMapper vocabularyEditorMapper;
-
-    @Autowired
-    private VocabularyService vocabularyService;
 
     @Autowired
     private VocabularyEditorSearchRepository mockVocabularyEditorSearchRepository;
@@ -1367,7 +1364,7 @@ public class VocabularyResourceIT {
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSizeBeforeDelete - 1);
     }
-
+ 
     @Test
     @Transactional
     void shouldUpdateVocabularyLogoOnAgencyUpdate() throws Exception

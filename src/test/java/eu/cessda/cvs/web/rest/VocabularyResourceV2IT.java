@@ -24,9 +24,13 @@ import eu.cessda.cvs.repository.UserRepository;
 import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.security.AuthoritiesConstants;
 import eu.cessda.cvs.security.jwt.TokenProvider;
+import eu.cessda.cvs.service.ExportService;
+import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
+import eu.cessda.cvs.web.rest.utils.ResourceUtils;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,7 +46,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -76,6 +83,9 @@ class VocabularyResourceV2IT {
 
     @Autowired
     private AuthenticationManagerBuilder authenticationManagerBuilder;
+
+    @Autowired
+    private VersionService versionService;
 
     @Autowired
     private VocabularyService vocabularyService;
@@ -141,7 +151,15 @@ class VocabularyResourceV2IT {
             vocabularySnippetSl.setActionType( ActionType.CREATE_CV );
             vocabularySnippetSl.setAgencyId(agency.getId());
             vocabularyDTO = vocabularyService.saveVocabulary(vocabularySnippetSl);
+            vocabularyDTO.setUri("XXXX");
             VersionDTO versionDTO = vocabularyDTO.getVersions().iterator().next();
+            versionDTO.setCanonicalUri("YYYY");
+            versionDTO.setDdiUsage("ZZZZ");
+            versionDTO.setUriSl("SSSS");
+            versionDTO.setUri("TTTT");
+            versionService.save(versionDTO);
+
+            vocabularyService.save(vocabularyDTO);
 
             CodeSnippet codeSnippetForSl = EditorResourceIT.createCodeSnippet( EditorResourceIT.INIT_CODE_NOTATION,
                 EditorResourceIT.INIT_CODE_TITLE, EditorResourceIT.INIT_CODE_DEF, EditorResourceIT.CODE_POSITION, null );
@@ -292,5 +310,59 @@ class VocabularyResourceV2IT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
     }
 
+    @Test
+    @Transactional
+    void exportVocabulariesPublishedTest() throws Exception {
+        // Retireve the SKOS output
+        restMockMvc.perform(get("/v2/vocabularies/rdf/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
+            .accept(ResourceUtils.MEDIATYPE_RDF_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(ResourceUtils.MEDIATYPE_RDF_VALUE));
+        
+        // Retireve the HTML output
+        restMockMvc.perform(get("/v2/vocabularies/html/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
+            .accept(MediaType.TEXT_HTML_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.TEXT_HTML_VALUE));
+        
+        // Retireve the JSON output
+        restMockMvc.perform(get("/v2/vocabularies/json/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
+            .accept(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+        
+        // Retireve the JSONDL output
+        restMockMvc.perform(get("/v2/vocabularies/jsonld/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
+            .accept(VocabularyResourceV2.JSONLD_TYPE))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(VocabularyResourceV2.JSONLD_TYPE));
+        
+        // Retireve the PDF output
+        restMockMvc.perform(get("/v2/vocabularies/pdf/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
+            .accept(MediaType.APPLICATION_PDF_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_PDF_VALUE));
+        
+        // Retireve the DOCX output
+        restMockMvc.perform(get("/v2/vocabularies/docx/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
+            .accept(ExportService.DownloadType.WORD.getMediaType()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(ExportService.DownloadType.WORD.getMediaType()));
+    }
 
+    @Test
+    @Transactional
+    void exportSKOSVocabularyNotContainsNull() throws Exception  {
+        final MvcResult result;
+        final CharSequence charSequence = "null";
+        // Retrieve the SKOS export
+        restMockMvc.perform(get("/v2/vocabularies/rdf/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
+            .accept(ResourceUtils.MEDIATYPE_RDF_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(ResourceUtils.MEDIATYPE_RDF_VALUE));
+        
+        result = restMockMvc.perform(get("/v2/vocabularies/rdf/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)).andReturn();
+        String content = result.getResponse().getContentAsString();
+        assertThat(content).doesNotContain(charSequence);
+    }
 }

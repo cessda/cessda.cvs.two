@@ -659,7 +659,7 @@ public class VocabularyResourceV2 {
     }
 
     /**
-     * {@code GET  /vocabularies/html/:vocabulary/:versionNumberSl} : Get Vocabulary in
+     * {@code GET  /vocabularies/json/:vocabulary/:versionNumberSl} : Get Vocabulary in
      * a HTML file of vocabulary {vocabulary} with version {versionNumberSl} with included versions {languageVersion}.
      * Hidden from Swagger due to API for CVS front-end
      *
@@ -712,7 +712,7 @@ public class VocabularyResourceV2 {
      * @param vocabulary
      * @param versionNumberSl
      * @param languageVersion
-     * @return Vocabulary in HTML format
+     * @return Vocabulary in PDF format
      *
      */
     @GetMapping("/vocabularies/pdf/{vocabulary}/{versionNumberSl}")
