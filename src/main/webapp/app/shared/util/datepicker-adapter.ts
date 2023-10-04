@@ -18,8 +18,7 @@
  */
 import { Injectable } from '@angular/core';
 import { NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { Moment } from 'moment';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 
 @Injectable()
 export class NgbDateMomentAdapter extends NgbDateAdapter<Moment> {

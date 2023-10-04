@@ -169,7 +169,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
       // what kind of value was captured (quoted or unquoted):
       if (matches[2]) {
         // found quoted value. unescape any double quotes.
-        matchedValue = matches[2].replace(new RegExp('""', 'g'), '"');
+        matchedValue = matches[2].replace(/""/g, '"');
       } else {
         // found a non-quoted value
         matchedValue = matches[3];

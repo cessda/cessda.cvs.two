@@ -33,7 +33,7 @@ import { ICvResult } from 'app/shared/model/cv-result.model';
 import { IAggr } from 'app/shared/model/aggr';
 import { HomeService } from 'app/home/home.service';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
-import { TagModel, TagModelClass } from 'ngx-chips/core/accessor';
+import { TagModel } from 'ngx-chips/core/accessor';
 
 @Component({
   selector: 'jhi-vocabulary-search-result',

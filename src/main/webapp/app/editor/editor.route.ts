@@ -19,7 +19,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
 
 import { EMPTY, Observable, of } from 'rxjs';
-import { flatMap, mergeMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import { EditorComponent } from './editor.component';
 import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
