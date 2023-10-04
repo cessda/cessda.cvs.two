@@ -149,7 +149,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   private onSuccess(users: User[] | null, headers: HttpHeaders): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.users = users || [];
-    this.users!.forEach(u => {
+    this.users.forEach(u => {
       if (u.userAgencies && u.userAgencies.length > 0) {
         u.userAgencies.sort((ua1, ua2) =>
           this.userAgencyToCompare(ua1) < this.userAgencyToCompare(ua2)
