@@ -17,7 +17,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'jhi-about',
-  templateUrl: './about.component.html',
+  template: '<jhi-custom-page [pageType]="\'about\'"></jhi-custom-page>',
 })
 export class AboutComponent {
   constructor() {}
