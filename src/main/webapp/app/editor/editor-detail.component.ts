@@ -28,7 +28,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EditorDetailCvAddEditDialogComponent } from 'app/editor/editor-detail-cv-add-edit-dialog.component';
 import { EditorDetailCvDeleteDialogComponent } from 'app/editor/editor-detail-cv-delete-dialog.component';
 import { EditorDetailCodeAddEditDialogComponent } from 'app/editor/editor-detail-code-add-edit-dialog.component';
-import { Concept, IConcept } from 'app/shared/model/concept.model';
+import { Concept } from 'app/shared/model/concept.model';
 import { Observable, Subscription } from 'rxjs';
 import { EditorDetailCodeDeprecateDialogComponent } from 'app/editor/editor-detail-code-deprecate-dialog.component';
 import { EditorDetailCodeDeleteDialogComponent } from 'app/editor/editor-detail-code-delete-dialog.component';
@@ -67,7 +67,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   vocabulary: IVocabulary | null = null;
   version: IVersion | null = null;
-  concept: IConcept | null = null;
+  concept: Concept | null = null;
 
   isDetailCollapse = true;
   isVersionCollapse = true;
@@ -230,7 +230,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       versionChanges: this.version.versionChanges,
     });
 
-    this.noOfComments = this.version.comments!.length;
+    this.noOfComments = this.version.comments ? this.version.comments.length : 0;
 
     this.codeTlActionRoles = ['ADMIN', 'ADMIN_TL', 'ADMIN_CONTENT'];
 
@@ -242,28 +242,33 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       const slVersion = this.getSlVersion();
       this.version.languageSl = slVersion.language;
 
-      const slConcepts = slVersion.concepts;
+      // Initialise concept versions if undefined
+      if (!this.version.concepts) {
+        this.version.concepts = [];
+      }
 
-      for (let i = 0; i < slConcepts!.length; i++) {
-        const tlCodes = this.version.concepts!.filter(c => c.notation === slConcepts![i].notation);
+      const slConcepts = slVersion.concepts || [];
+
+      for (let i = 0; i < slConcepts.length; i++) {
+        const tlCodes = this.version.concepts.filter(c => c.notation === slConcepts[i].notation);
         if (tlCodes.length) {
-          tlCodes[0].position = slConcepts![i].position;
-          tlCodes[0].parent = slConcepts![i].parent ? slConcepts![i].parent : undefined;
-          tlCodes[0].titleSl = slConcepts![i].title;
-          tlCodes[0].definitionSl = slConcepts![i].definition;
+          tlCodes[0].position = slConcepts[i].position;
+          tlCodes[0].parent = slConcepts[i].parent ? slConcepts[i].parent : undefined;
+          tlCodes[0].titleSl = slConcepts[i].title;
+          tlCodes[0].definitionSl = slConcepts[i].definition;
         } else {
           // TL code not found, generate new one from SL
-          const nonExistTlCode = {
-            ...new Concept(),
-            position: slConcepts![i].position,
-            parent: slConcepts![i].parent ? slConcepts![i].parent : undefined,
-            notation: slConcepts![i].notation,
-            titleSl: slConcepts![i].title,
-            definitionSl: slConcepts![i].definition,
-            slConcept: slConcepts![i].id,
+          const nonExistTlCode: Concept = {
+            visible: true,
+            position: slConcepts[i].position,
+            parent: slConcepts[i].parent ? slConcepts[i].parent : undefined,
+            notation: slConcepts[i].notation,
+            titleSl: slConcepts[i].title,
+            definitionSl: slConcepts[i].definition,
+            slConcept: slConcepts[i].id,
           };
           // insert
-          this.version.concepts!.splice(i, 0, nonExistTlCode);
+          this.version.concepts.splice(i, 0, nonExistTlCode);
         }
       }
     } else {
@@ -273,8 +278,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
         this.enableAddTl = false;
       }
       // check all versions if there is any READY_TO_PUBLISH state for TL
-      for (const vocab of this.vocabulary!.versions!) {
-        if (vocab.status! === 'READY_TO_PUBLISH') {
+      for (const vocab of this.vocabulary?.versions || []) {
+        if (vocab.status === 'READY_TO_PUBLISH') {
           this.enablePublishTl = true;
           break;
         } else {
@@ -288,7 +293,12 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   getUniqueVersionLang(): string[] {
     const uniqueLang: string[] = [];
-    this.vocabulary!.versions!.forEach(v => {
+
+    if (!this.vocabulary?.versions) {
+      return [];
+    }
+
+    this.vocabulary.versions.forEach(v => {
       if (!uniqueLang.some(l => l === v.language)) {
         uniqueLang.push(v.language!);
       }
@@ -297,17 +307,23 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   getVersionsByLanguage(lang?: string): IVersion[] {
-    return this.vocabulary!.versions!.filter(v => v.language === lang);
+    if (!this.vocabulary?.versions) {
+      return [];
+    }
+
+    return this.vocabulary.versions.filter(v => v.language === lang);
   }
-  getFormattedVersionTooltip(version?: IVersion, sourceLang?: string): string {
+
+  getFormattedVersionTooltip(version: IVersion, sourceLang?: string): string {
     return (
-      this.vocabLangPipeKey.transform(version!.language!) +
+      this.vocabLangPipeKey.transform(version.language!) +
       ' v.' +
-      (version!.status === 'PUBLISHED' ? '' : version!.status + '-') +
-      version!.number +
-      (version!.language === sourceLang ? ' SOURCE' : '')
+      (version.status === 'PUBLISHED' ? '' : version.status + '-') +
+      version.number +
+      (version.language === sourceLang ? ' SOURCE' : '')
     );
   }
+
   getServerUrl(): string {
     return window.location.origin;
   }
@@ -319,13 +335,13 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   isAnyLangVersionInBundle(vocab: IVocabulary, lang: string, bundle?: string): boolean {
     if (bundle === undefined) {
-      bundle = vocab.versionNumber;
+      bundle = vocab.versionNumber!;
     }
     const versions = this.getVersionsByLanguage(lang);
-    return VocabularyUtil.isAnyVersionInBundle(versions, bundle!);
+    return VocabularyUtil.isAnyVersionInBundle(versions, bundle);
   }
 
-  hasDeprecatedConcepts(concepts: IConcept[]): boolean {
+  hasDeprecatedConcepts(concepts: Concept[]): boolean {
     return VocabularyUtil.hasDeprecatedConcepts(concepts);
   }
 
@@ -402,7 +418,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     });
     this.activatedRoute.data.subscribe(({ vocabulary }) => {
       VocabularyUtil.convertVocabularyToThreeDigitVersionNumer(vocabulary);
-      this.vocabulary = vocabulary;
+      this.vocabulary = vocabulary as IVocabulary;
       this.availableLanguages = VocabularyUtil.getAvailableCvLanguage(vocabulary.versions);
       this.accountService.identity().subscribe(account => {
         if (account) {
@@ -421,17 +437,17 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
         }
       });
       if (this.initialLangSelect !== null) {
-        if (!this.vocabulary!.versions!.some(v => v.language === this.initialLangSelect)) {
-          this.setActiveVersion(this.vocabulary!.sourceLanguage!);
+        if (!this.vocabulary.versions!.some(v => v.language === this.initialLangSelect)) {
+          this.setActiveVersion(this.vocabulary.sourceLanguage!);
         } else {
           this.setActiveVersion(this.initialLangSelect!);
         }
       } else {
-        this.setActiveVersion(this.vocabulary!.selectedLang!);
+        this.setActiveVersion(this.vocabulary.selectedLang!);
       }
-      if (this.vocabulary!.selectedVersion == null) {
-        if (this.vocabulary!.selectedLang !== null) {
-          this.vocabulary!.selectedVersion = VocabularyUtil.getVersionByLang(this.vocabulary!).number;
+      if (this.vocabulary.selectedVersion) {
+        if (!this.vocabulary.selectedLang) {
+          this.vocabulary.selectedVersion = VocabularyUtil.getVersionByLang(this.vocabulary).number;
         }
       }
 
@@ -462,11 +478,16 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       this._ngZone.runOutsideAngular(() => {
         setTimeout(() => {
           const element = document.querySelector('#code_' + this.currentSelectedCode);
-          element!.scrollIntoView({ behavior: 'smooth' });
-          element!.classList.add('highlight');
+
+          if (!element) {
+            return;
+          }
+
+          element.scrollIntoView({ behavior: 'smooth' });
+          element.classList.add('highlight');
           this._ngZone.runOutsideAngular(() => {
             window.setTimeout(() => {
-              element!.classList.remove('highlight');
+              element.classList.remove('highlight');
             }, 5000);
           });
         }, 1500);
@@ -475,7 +496,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   private subscribeSelectConceptEvent(): void {
-    this.eventSubscriber = this.eventManager.subscribe('selectConcept', (response: JhiEventWithContent<IConcept>) => {
+    this.eventSubscriber = this.eventManager.subscribe('selectConcept', (response: JhiEventWithContent<Concept>) => {
       this.concept = response.content;
     });
     this.eventSubscriber2 = this.eventManager.subscribe('deselectConcept', () => {

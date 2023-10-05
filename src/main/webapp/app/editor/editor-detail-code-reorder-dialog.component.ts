@@ -18,7 +18,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditorService } from 'app/editor/editor.service';
 import { IVersion } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
-import { IConcept } from 'app/shared/model/concept.model';
+import { Concept } from 'app/shared/model/concept.model';
 import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
@@ -29,15 +29,15 @@ import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
 export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy {
   isSaving: boolean;
   versionParam!: IVersion;
-  conceptParam!: IConcept;
-  selectedConceptToPlace!: IConcept;
+  conceptParam!: Concept;
+  selectedConceptToPlace!: Concept;
   eventSubscriber?: Subscription;
   codeSnippet?: ICodeSnippet;
   insertMode = 'after';
 
-  conceptsToMove?: IConcept[] = [];
-  conceptsToPlace?: IConcept[] = [];
-  conceptsToPlaceTemp?: IConcept[] = [];
+  conceptsToMove?: Concept[] = [];
+  conceptsToPlace?: Concept[] = [];
+  conceptsToPlaceTemp?: Concept[] = [];
 
   constructor(
     protected editorService: EditorService,
@@ -101,7 +101,7 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
     this.conceptsToPlaceTemp = clonedConcepts.filter(c => !this.conceptsToMove!.includes(c));
     this.conceptsToPlace = [...this.conceptsToPlaceTemp];
 
-    this.eventSubscriber = this.eventManager.subscribe('selectReorderConcept', (response: JhiEventWithContent<IConcept>) => {
+    this.eventSubscriber = this.eventManager.subscribe('selectReorderConcept', (response: JhiEventWithContent<Concept>) => {
       this.selectedConceptToPlace = response.content;
       this.updatePreview();
     });

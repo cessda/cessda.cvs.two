@@ -18,7 +18,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditorService } from 'app/editor/editor.service';
 import { IVersion } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
-import { Concept, IConcept } from 'app/shared/model/concept.model';
+import { Concept } from 'app/shared/model/concept.model';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
@@ -34,7 +34,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
 
   vocabularyParam!: IVocabulary;
   versionParam!: IVersion;
-  concepts: IConcept[] = [];
+  concepts: Concept[] = [];
   codeSnippets: ICodeSnippet[] = [];
   eventSubscriber?: Subscription;
   isSlForm?: boolean;
@@ -50,7 +50,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
   importAll: boolean;
   isImportError: boolean;
   resultInfo?: string;
-  resultBody: IConcept[] = [];
+  resultBody: Concept[] = [];
   ignoredRows: number;
 
   constructor(
@@ -224,7 +224,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
         this.codeSnippets.push(this.editCodeFromConcept(concept));
       } else {
         let conceptPosition = this.concepts.length;
-        let parentConcept: IConcept | undefined;
+        let parentConcept: Concept | undefined;
         const parentIndex = this.csvContents[i][0].lastIndexOf('.');
         if (parentIndex > 1) {
           // parent need at least 2 character
@@ -245,8 +245,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
             this.concepts.filter(c => c.position! >= conceptPosition).forEach(c => (c.position = c.position! + 1));
           }
         }
-        const newConcept = {
-          ...new Concept(),
+        const newConcept: Concept = {
           notation: this.csvContents[i][0],
           parent: parentConcept !== undefined ? parentConcept.notation : undefined,
           position: conceptPosition,
@@ -262,7 +261,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
     $element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
   }
 
-  findLastChildForPosition(parentConcept: IConcept): IConcept {
+  findLastChildForPosition(parentConcept: Concept): Concept {
     const lastChild = this.concepts
       .filter(c => c.parent === parentConcept.notation)
       .reduce((prevConcept, nextConcept) => (prevConcept.position! > nextConcept.position! ? prevConcept : nextConcept));
@@ -275,13 +274,13 @@ export class EditorDetailCodeCsvImportDialogComponent {
   doCsvImport(): void {
     this.isSaving = true;
     this.editorService.createBatchCode(this.codeSnippets).subscribe(
-      (res: HttpResponse<IConcept[]>) => this.onSaveSuccess(res.headers, res.body),
+      (res: HttpResponse<Concept[]>) => this.onSaveSuccess(res.headers, res.body),
       () => this.onSaveError(),
     );
   }
 
-  protected onSaveSuccess(headers: HttpHeaders, body: IConcept[] | null): void {
-    this.resultInfo = headers.get('import-status') ? headers.get('import-status')! : '';
+  protected onSaveSuccess(headers: HttpHeaders, body: Concept[] | null): void {
+    this.resultInfo = headers.get('import-status') || '';
     this.resultBody = body === null ? [] : body;
     this.isSaving = false;
     this.csvImportWorkflow = 'RESULT';
@@ -301,7 +300,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
     this.isSaving = false;
   }
 
-  private editCodeFromConcept(concept: IConcept): ICodeSnippet {
+  private editCodeFromConcept(concept: Concept): ICodeSnippet {
     return {
       ...new CodeSnippet(),
       actionType: 'ADD_TL_CODE',
@@ -313,7 +312,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
     };
   }
 
-  private createCodeFromConcept(concept: IConcept): ICodeSnippet {
+  private createCodeFromConcept(concept: Concept): ICodeSnippet {
     return {
       ...new CodeSnippet(),
       actionType: 'CREATE_CODE',

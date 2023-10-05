@@ -25,7 +25,7 @@ import { map } from 'rxjs/operators';
 import moment from 'moment';
 import { IVocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
 import { ICodeSnippet } from 'app/shared/model/code-snippet.model';
-import { IConcept } from 'app/shared/model/concept.model';
+import { Concept } from 'app/shared/model/concept.model';
 import { IVersion } from 'app/shared/model/version.model';
 import { IComment } from 'app/shared/model/comment.model';
 import { MetadataValue } from 'app/shared/model/metadata-value.model';
@@ -67,24 +67,24 @@ export class EditorService {
     return this.http.delete(`${this.resourceEditorVocabularyUrl}/${versionId}`, { observe: 'response' });
   }
 
-  createCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<IConcept>> {
-    return this.http.post<IConcept>(this.resourceEditorCodeUrl, codeSnippet, { observe: 'response' });
+  createCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<Concept>> {
+    return this.http.post<Concept>(this.resourceEditorCodeUrl, codeSnippet, { observe: 'response' });
   }
 
-  createBatchCode(codeSnippets: ICodeSnippet[]): Observable<HttpResponse<IConcept[]>> {
-    return this.http.post<IConcept[]>(`${this.resourceEditorCodeUrl}/batch`, codeSnippets, { observe: 'response' });
+  createBatchCode(codeSnippets: ICodeSnippet[]): Observable<HttpResponse<Concept[]>> {
+    return this.http.post<Concept[]>(`${this.resourceEditorCodeUrl}/batch`, codeSnippets, { observe: 'response' });
   }
 
-  updateCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<IConcept>> {
-    return this.http.put<IConcept>(this.resourceEditorCodeUrl, codeSnippet, { observe: 'response' });
+  updateCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<Concept>> {
+    return this.http.put<Concept>(this.resourceEditorCodeUrl, codeSnippet, { observe: 'response' });
   }
 
   reorderCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<IVersion>> {
     return this.http.post<IVersion>(this.resourceEditorCodeUrl + '/reorder', codeSnippet, { observe: 'response' });
   }
 
-  deprecateCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<IConcept>> {
-    return this.http.post<IConcept>(this.resourceEditorCodeUrl + '/deprecate', codeSnippet, { observe: 'response' });
+  deprecateCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<Concept>> {
+    return this.http.post<Concept>(this.resourceEditorCodeUrl + '/deprecate', codeSnippet, { observe: 'response' });
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-types

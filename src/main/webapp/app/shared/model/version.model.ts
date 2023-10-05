@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Moment } from 'moment';
-import { IConcept } from 'app/shared/model/concept.model';
+import { Concept } from 'app/shared/model/concept.model';
 import { IVersionHistory } from 'app/shared/model/version-history';
 import { IComment } from 'app/shared/model/comment.model';
 
@@ -49,7 +49,7 @@ export interface IVersion {
   ddiUsage?: string;
   translateAgency?: string;
   translateAgencyLink?: string;
-  concepts?: IConcept[];
+  concepts?: Concept[];
   comments?: IComment[];
   vocabularyId?: number;
   versionHistories?: IVersionHistory[];
@@ -91,7 +91,7 @@ export class Version implements IVersion {
     public ddiUsage?: string,
     public translateAgency?: string,
     public translateAgencyLink?: string,
-    public concepts: IConcept[] = [],
+    public concepts: Concept[] = [],
     public comments: IComment[] = [],
     public vocabularyId?: number,
     public versionHistories: IVersionHistory[] = [],

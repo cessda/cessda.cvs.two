@@ -18,7 +18,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditorService } from 'app/editor/editor.service';
 import { IVersion } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
-import { IConcept } from 'app/shared/model/concept.model';
+import { Concept } from 'app/shared/model/concept.model';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -32,15 +32,15 @@ import { IVocabulary } from 'app/shared/model/vocabulary.model';
 })
 export class EditorDetailCodeDeprecateDialogComponent {
   versionParam!: IVersion;
-  conceptParam!: IConcept;
+  conceptParam!: Concept;
   eventSubscriber?: Subscription;
   isSlForm?: boolean;
   isConfirmedDeprecation?: boolean;
   isConfirmedReplacementYes?: boolean;
   isConfirmedReplacementNo?: boolean;
-  conceptList!: IConcept[];
+  conceptList!: Concept[];
   replacingCodeId: number | null;
-  replacingCode?: IConcept;
+  replacingCode?: Concept;
   codeSnippet?: ICodeSnippet;
 
   deprecateCodeForm = this.fb.group({

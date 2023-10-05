@@ -17,7 +17,7 @@ import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import { ICode } from 'app/shared/model/code.model';
 import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
 import { IVersion } from 'app/shared/model/version.model';
-import { IConcept } from 'app/shared/model/concept.model';
+import { Concept } from 'app/shared/model/concept.model';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 import { VersionNumber } from '../model/version-number.model';
@@ -223,11 +223,11 @@ export default class VocabularyUtil {
     return VocabularyUtil.getVersionByLang(vocab);
   }
 
-  static isConceptHasChildren(notation: string, concepts: IConcept[]): boolean {
+  static isConceptHasChildren(notation: string, concepts: Concept[]): boolean {
     return concepts.filter(c => c.parent === notation).length > 0;
   }
 
-  static hasDeprecatedConcepts(concepts: IConcept[] | undefined): boolean {
+  static hasDeprecatedConcepts(concepts: Concept[] | undefined): boolean {
     return concepts !== undefined ? concepts.filter(c => c.deprecated === true).length > 0 : false;
   }
 

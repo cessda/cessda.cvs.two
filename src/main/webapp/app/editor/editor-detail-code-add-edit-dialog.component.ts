@@ -26,7 +26,7 @@ import { Account } from 'app/core/user/account.model';
 import { CODE_ALREADY_EXIST_TYPE } from 'app/shared';
 import { EditorService } from 'app/editor/editor.service';
 import { IVersion } from 'app/shared/model/version.model';
-import { IConcept } from 'app/shared/model/concept.model';
+import { Concept } from 'app/shared/model/concept.model';
 import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
 import { EditorDetailCvAddEditConfirmModalComponent } from 'app/editor/editor-detail-code-add-edit-confirm.component';
 
@@ -42,14 +42,14 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   errorCodeExists = false;
   codeSnippet?: ICodeSnippet;
   versionParam!: IVersion;
-  conceptParam?: IConcept;
+  conceptParam?: Concept;
   codeInsertMode?: string;
   isNew?: boolean;
   isSlForm?: boolean;
   isEnablePreview: boolean;
 
-  conceptsToPlace?: IConcept[] = [];
-  conceptsToPlaceTemp?: IConcept[] = [];
+  conceptsToPlace?: Concept[] = [];
+  conceptsToPlaceTemp?: Concept[] = [];
 
   codeAddEditForm = this.fb.group({
     notation: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(240), Validators.pattern('^[_+A-Za-z0-9-]*$')]],
@@ -274,7 +274,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     }
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IConcept>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Concept>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
       response => this.processError(response),
@@ -308,28 +308,37 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
       return;
     }
 
-    this.conceptsToPlace = [...this.conceptsToPlaceTemp!]; // shallow copy for preview
+    this.conceptsToPlace = [...(this.conceptsToPlaceTemp || [])]; // shallow copy for preview
 
-    this.codeInsertMode = this.codeAddEditForm.get('codeInsertMode')!.value;
+    this.codeInsertMode = this.codeAddEditForm.get('codeInsertMode')?.value;
 
     const pos = this.calculatePosition();
 
-    const newConcept: IConcept = {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const notationFormValue: string = this.codeAddEditForm.get(['notation'])!.value;
+
+    let parent: string | undefined;
+    let notation: string;
+
+    if (this.codeInsertMode === 'INSERT_AS_ROOT') {
+      parent = undefined;
+      notation = notationFormValue;
+    } else if (this.codeInsertMode === 'INSERT_AS_CHILD') {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      parent = this.conceptParam!.notation;
+      notation = parent + '.' + notationFormValue;
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      parent = this.conceptParam!.parent;
+      notation = (parent !== undefined ? parent + '.' : '') + notationFormValue;
+    }
+
+    const newConcept: Concept = {
+      notation: notation,
+      parent: parent,
       status: 'TO_BE_INSERTED',
       position: pos,
     };
-
-    if (this.codeInsertMode === 'INSERT_AS_ROOT') {
-      newConcept.parent = undefined;
-      newConcept.notation = this.codeAddEditForm.get(['notation'])!.value;
-    } else if (this.codeInsertMode === 'INSERT_AS_CHILD') {
-      newConcept.parent = this.conceptParam!.notation;
-      newConcept.notation = newConcept.parent + '.' + this.codeAddEditForm.get(['notation'])!.value;
-    } else {
-      newConcept.parent = this.conceptParam!.parent;
-      newConcept.notation =
-        (newConcept.parent !== undefined ? newConcept.parent + '.' : '') + this.codeAddEditForm.get(['notation'])!.value;
-    }
 
     this.conceptsToPlace.splice(pos, 0, newConcept);
     this._ngZone.runOutsideAngular(() => {

@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError} from 'ng-jhipster';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import {Concept, IConcept} from 'app/shared/model/concept.model';
-import {ConceptService} from './concept.service';
-import {AlertError} from 'app/shared/alert/alert-error.model';
-import {IVersion} from 'app/shared/model/version.model';
-import {VersionService} from 'app/entities/version/version.service';
+import { Concept } from 'app/shared/model/concept.model';
+import { ConceptService } from './concept.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { IVersion } from 'app/shared/model/version.model';
+import { VersionService } from 'app/entities/version/version.service';
 
 @Component({
   selector: 'jhi-concept-update',
-  templateUrl: './concept-update.component.html'
+  templateUrl: './concept-update.component.html',
 })
 export class ConceptUpdateComponent implements OnInit {
   isSaving = false;
@@ -45,7 +45,7 @@ export class ConceptUpdateComponent implements OnInit {
     slConcept: [],
     parent: [null, [Validators.maxLength(240)]],
     position: [],
-    versionId: []
+    versionId: [],
   });
 
   constructor(
@@ -54,7 +54,7 @@ export class ConceptUpdateComponent implements OnInit {
     protected conceptService: ConceptService,
     protected versionService: VersionService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -65,7 +65,7 @@ export class ConceptUpdateComponent implements OnInit {
     });
   }
 
-  updateForm(concept: IConcept): void {
+  updateForm(concept: Concept): void {
     this.editForm.patchValue({
       id: concept.id,
       uri: concept.uri,
@@ -76,15 +76,13 @@ export class ConceptUpdateComponent implements OnInit {
       slConcept: concept.slConcept,
       parent: concept.parent,
       position: concept.position,
-      versionId: concept.versionId
+      versionId: concept.versionId,
     });
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-      this.eventManager.broadcast(
-        new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key })
-      );
+      this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
     });
   }
 
@@ -102,26 +100,26 @@ export class ConceptUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IConcept {
+  private createFromForm(): Concept {
     return {
-      ...new Concept(),
-      id: this.editForm.get(['id'])!.value,
-      uri: this.editForm.get(['uri'])!.value,
-      notation: this.editForm.get(['notation'])!.value,
-      title: this.editForm.get(['title'])!.value,
-      definition: this.editForm.get(['definition'])!.value,
-      previousConcept: this.editForm.get(['previousConcept'])!.value,
-      slConcept: this.editForm.get(['slConcept'])!.value,
-      parent: this.editForm.get(['parent'])!.value,
-      position: this.editForm.get(['position'])!.value,
-      versionId: this.editForm.get(['versionId'])!.value
+      visible: true,
+      id: this.editForm.get(['id'])?.value,
+      uri: this.editForm.get(['uri'])?.value,
+      notation: this.editForm.get(['notation'])?.value || '',
+      title: this.editForm.get(['title'])?.value,
+      definition: this.editForm.get(['definition'])?.value,
+      previousConcept: this.editForm.get(['previousConcept'])?.value,
+      slConcept: this.editForm.get(['slConcept'])?.value,
+      parent: this.editForm.get(['parent'])?.value || '',
+      position: this.editForm.get(['position'])?.value,
+      versionId: this.editForm.get(['versionId'])?.value,
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IConcept>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Concept>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 
@@ -134,7 +132,7 @@ export class ConceptUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: IVersion): any {
-    return item.id;
+  trackById(index: number, item: IVersion): number {
+    return item.id || index;
   }
 }
