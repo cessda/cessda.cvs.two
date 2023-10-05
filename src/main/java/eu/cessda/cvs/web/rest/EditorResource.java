@@ -16,6 +16,7 @@
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.config.ApplicationProperties;
+import eu.cessda.cvs.config.audit.AuditEventPublisher;
 import eu.cessda.cvs.domain.CodeSnippet;
 import eu.cessda.cvs.domain.Vocabulary;
 import eu.cessda.cvs.domain.VocabularySnippet;
@@ -32,11 +33,16 @@ import eu.cessda.cvs.web.rest.domain.CvResult;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import eu.cessda.cvs.web.rest.utils.AccessibleByteArrayOutputStream;
 import eu.cessda.cvs.web.rest.utils.ResourceUtils;
+
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -50,13 +56,16 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -66,6 +75,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 public class EditorResource {
+
+    @Autowired
+    private AuditEventPublisher auditPublisher;
 
     public static final String UNABLE_TO_FIND_VERSION = "Unable to find version with Id ";
     public static final String UNABLE_TO_FIND_CONCEPT = "Unable to find concept with Id ";
@@ -103,10 +115,12 @@ public class EditorResource {
 
     private final VocabularyChangeService vocabularyChangeService;
 
+    private final AgencyService agencyService;
+
     @SuppressWarnings("squid:S107") // since constructor params are autowired
     public EditorResource(VocabularyService vocabularyService, VersionService versionService, ConceptService conceptService,
                           CommentService commentService, MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
-                          ApplicationProperties applicationProperties, VocabularyChangeService vocabularyChangeService) {
+                          ApplicationProperties applicationProperties, VocabularyChangeService vocabularyChangeService, AgencyService agencyService) {
         this.vocabularyService = vocabularyService;
         this.versionService = versionService;
         this.conceptService = conceptService;
@@ -115,6 +129,7 @@ public class EditorResource {
         this.metadataValueService = metadataValueService;
         this.applicationProperties = applicationProperties;
         this.vocabularyChangeService = vocabularyChangeService;
+        this.agencyService = agencyService;
     }
 
     /**
@@ -144,6 +159,22 @@ public class EditorResource {
         }
 
         VocabularyDTO result = vocabularyService.saveVocabulary( vocabularySnippet );
+
+        //notify the auditing mechanism
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("agency_name", agencyService.findOne(vocabularySnippet.getAgencyId()).get().getName());
+        map.put("title", vocabularySnippet.getTitle());
+        map.put("type", vocabularySnippet.getItemType());
+        map.put("version", vocabularySnippet.getVersionNumber());
+        map.put("language", vocabularySnippet.getLanguage());
+        map.put("status", vocabularySnippet.getStatus());
+        map.put("notation", vocabularySnippet.getNotation());
+        map.put("definition", vocabularySnippet.getDefinition());
+        if (vocabularySnippet.getNotes() != null && !vocabularySnippet.getNotes().equalsIgnoreCase("")) {
+            map.put("notes", vocabularySnippet.getNotes());
+        }
+        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), vocabularySnippet.getActionType().name(), map));
+
         return ResponseEntity.created(new URI("/api/vocabularies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_VOCABULARY_NAME, result.getNotation()))
             .body(result);
@@ -156,9 +187,20 @@ public class EditorResource {
      * @return the created vocabulary version
      */
     @PostMapping("/editors/vocabularies/new-version/{id}")
-    public ResponseEntity<VersionDTO> createNewVocabularyVersion(@PathVariable Long id){
+    public ResponseEntity<VersionDTO> createNewVocabularyVersion(@PathVariable Long id) {
         log.debug("REST request to create new Vocabulary with version ID: {}", id);
         VersionDTO result = vocabularyService.createNewVersion( id );
+
+        //notify the auditing mechanism
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("agency_name", vocabularyService.findOne(result.getVocabularyId()).get().getAgencyName());
+        map.put("title", result.getTitle());
+        map.put("type", result.getItemType());
+        map.put("version", vocabularyService.findOne(result.getVocabularyId()).get().getVersionNumber());
+        map.put("language", result.getLanguage());
+
+        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "CREATE_CV", map));
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_VERSION_NAME, result.getNotation()))
             .body(result);
@@ -190,6 +232,40 @@ public class EditorResource {
             throw new IllegalArgumentException( "Incorrect ActionType" + vocabularySnippet.getActionType() );
         }
         VocabularyDTO result = vocabularyService.saveVocabulary(vocabularySnippet);
+
+        // versionService.findOne(vocabularySnippet.getVersionId()).get()
+        //notify the auditing mechanism
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        //map.put("agency_name", agencyService.findOne(result.getAgencyId()).get().getName());
+        map.put("agency_name", result.getAgencyName());
+        map.put("type", vocabularySnippet.getItemType());
+        map.put("language", vocabularySnippet.getLanguage());
+
+        if (result.getVersionByLanguage(vocabularySnippet.getLanguage()) != null) {
+            map.put("version", result.getVersionByLanguage(vocabularySnippet.getLanguage()).split("_")[0]);
+            map.put("status", result.getVersionByLanguage(vocabularySnippet.getLanguage()).split("_")[1]);
+        } else {
+            // map.put("version", "");
+            map.put("status", result.getStatus());
+        }
+
+        map.put("title", result.getTitleByLanguage(vocabularySnippet.getLanguage()));
+        // map.put("title", vocabularySnippet.getTitle());
+
+        // map.put("status1", result.getVersionByLanguage(vocabularySnippet.getLanguage()));
+        // map.put("status2", vocabularySnippet.getVersionNumber() + "_" + vocabularySnippet.getStatus());
+        // map.put("status3", result.getStatus());
+
+        // if (vocabularySnippet.getActionType().equals(ActionType.EDIT_NOTE_CV)) {
+        //     if (result.getNotes() != null && !result.getNotes().equalsIgnoreCase("")) {
+        //         map.put("notes", result.getNotes());
+        //     }
+        // } else {
+        //     map.put("title", vocabularySnippet.getTitle());
+        //     map.put("version", vocabularySnippet.getVersionNumber());
+        //     map.put("definition", vocabularySnippet.getDefinition());
+        // }
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VOCABULARY_NAME, result.getNotation()))
             .body(result);
@@ -209,6 +285,21 @@ public class EditorResource {
     public ResponseEntity<VersionDTO> forwardStatusVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) {
         log.debug("REST request to update forward status Vocabulary : {}", vocabularySnippet);
         VersionDTO versionDTO = vocabularyService.forwardStatus(vocabularySnippet);
+
+        //notify the auditing mechanism
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        // map.put("agency_name", agencyService.findOne(result.getAgencyId()).get().getName());
+        map.put("agency_name", agencyService.findOne(vocabularySnippet.getAgencyId()).get().getName());
+        map.put("type", vocabularySnippet.getItemType());
+        map.put("language", vocabularySnippet.getLanguage());
+        map.put("status",vocabularyService.findOne(vocabularySnippet.getVocabularyId()).get().getStatus());
+
+        map.put("title", vocabularySnippet.getTitle());
+        map.put("version", vocabularySnippet.getVersionNumber());
+        map.put("definition", vocabularySnippet.getDefinition());
+
+        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), vocabularySnippet.getActionType().name(), map));
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VERSION_NAME, versionDTO.getNotation()))
             .body(versionDTO);
