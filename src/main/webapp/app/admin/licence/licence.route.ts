@@ -18,26 +18,26 @@ import { HttpResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
 import { JhiResolvePagingParams } from 'ng-jhipster';
 import { EMPTY, Observable, of } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { ILicence, Licence } from 'app/shared/model/licence.model';
+import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from './licence.service';
 import { LicenceComponent } from './licence.component';
 import { LicenceDetailComponent } from './licence-detail.component';
 import { LicenceUpdateComponent } from './licence-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class LicenceResolve implements Resolve<ILicence> {
+export class LicenceResolve implements Resolve<Licence> {
   constructor(
     private service: LicenceService,
     private router: Router,
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<ILicence> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Licence> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        flatMap((licence: HttpResponse<Licence>) => {
+        mergeMap((licence: HttpResponse<Licence>) => {
           if (licence.body) {
             return of(licence.body);
           } else {
@@ -47,7 +47,7 @@ export class LicenceResolve implements Resolve<ILicence> {
         }),
       );
     }
-    return of(new Licence());
+    return of({ name: '' });
   }
 }
 

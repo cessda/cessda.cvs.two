@@ -25,7 +25,7 @@ import { Agency, IAgency } from 'app/shared/model/agency.model';
 import { AgencyService } from './agency.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { FileUploadService } from 'app/shared/upload/file-upload.service';
-import { ILicence } from 'app/shared/model/licence.model';
+import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from 'app/admin/licence/licence.service';
 
 @Component({
@@ -37,7 +37,7 @@ export class AgencyUpdateComponent implements OnInit {
   selectedFiles?: FileList;
   currentFileUpload?: File | null;
   currentImage?: string;
-  licences?: ILicence[];
+  licences?: Licence[];
   progress: {
     percentage: number;
   } = {
@@ -81,7 +81,7 @@ export class AgencyUpdateComponent implements OnInit {
           size: 50,
           sort: ['id,asc'],
         })
-        .subscribe((res: HttpResponse<ILicence[]>) => {
+        .subscribe((res: HttpResponse<Licence[]>) => {
           this.licences = res.body!;
           this.updateForm(agency);
         });

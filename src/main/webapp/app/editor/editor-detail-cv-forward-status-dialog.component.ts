@@ -28,7 +28,7 @@ import { Account } from 'app/core/user/account.model';
 import { EditorService } from 'app/editor/editor.service';
 import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
 import { IVersion, Version } from 'app/shared/model/version.model';
-import { ILicence } from 'app/shared/model/licence.model';
+import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from 'app/admin/licence/licence.service';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { DiffContent, DiffResults } from 'ngx-text-diff/lib/ngx-text-diff.model';
@@ -43,7 +43,7 @@ import { Quill } from 'quill';
   templateUrl: './editor-detail-cv-forward-status-dialog.component.html',
 })
 export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
-  licences?: ILicence[];
+  licences?: Licence[];
   isSaving: boolean;
   isVersionInvalid: boolean;
   account!: Account;
@@ -130,7 +130,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
               size: 50,
               sort: ['id,asc'],
             })
-            .subscribe((res: HttpResponse<ILicence[]>) => {
+            .subscribe((res: HttpResponse<Licence[]>) => {
               this.licences = res.body!;
               this.fillForm();
             });
