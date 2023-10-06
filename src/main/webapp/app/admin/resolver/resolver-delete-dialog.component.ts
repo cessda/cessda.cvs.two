@@ -17,16 +17,20 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { IResolver } from 'app/shared/model/resolver.model';
+import { Resolver } from 'app/shared/model/resolver.model';
 import { ResolverService } from './resolver.service';
 
 @Component({
-  templateUrl: './resolver-delete-dialog.component.html'
+  templateUrl: './resolver-delete-dialog.component.html',
 })
 export class ResolverDeleteDialogComponent {
-  resolver?: IResolver;
+  resolver?: Resolver;
 
-  constructor(protected resolverService: ResolverService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
+  constructor(
+    protected resolverService: ResolverService,
+    public activeModal: NgbActiveModal,
+    protected eventManager: JhiEventManager,
+  ) {}
 
   cancel(): void {
     this.activeModal.dismiss();

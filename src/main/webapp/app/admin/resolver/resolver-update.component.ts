@@ -16,16 +16,16 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { IResolver, Resolver } from 'app/shared/model/resolver.model';
+import { Resolver } from 'app/shared/model/resolver.model';
 import { ResolverService } from './resolver.service';
 
 @Component({
   selector: 'jhi-resolver-update',
-  templateUrl: './resolver-update.component.html'
+  templateUrl: './resolver-update.component.html',
 })
 export class ResolverUpdateComponent implements OnInit {
   isSaving = false;
@@ -36,10 +36,14 @@ export class ResolverUpdateComponent implements OnInit {
     resourceType: [],
     resourceUrl: [null, [Validators.required]],
     resolverType: [],
-    resolverURI: [null, [Validators.required]]
+    resolverURI: [null, [Validators.required]],
   });
 
-  constructor(protected resolverService: ResolverService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(
+    protected resolverService: ResolverService,
+    protected activatedRoute: ActivatedRoute,
+    private fb: FormBuilder,
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ resolver }) => {
@@ -47,14 +51,14 @@ export class ResolverUpdateComponent implements OnInit {
     });
   }
 
-  updateForm(resolver: IResolver): void {
+  updateForm(resolver: Resolver): void {
     this.editForm.patchValue({
       id: resolver.id,
       resourceId: resolver.resourceId,
       resourceType: resolver.resourceType,
       resourceUrl: resolver.resourceUrl,
       resolverType: resolver.resolverType,
-      resolverURI: resolver.resolverURI
+      resolverURI: resolver.resolverURI,
     });
   }
 
@@ -72,22 +76,23 @@ export class ResolverUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IResolver {
+  private createFromForm(): Resolver {
     return {
-      ...new Resolver(),
-      id: this.editForm.get(['id'])!.value,
-      resourceId: this.editForm.get(['resourceId'])!.value,
-      resourceType: this.editForm.get(['resourceType'])!.value,
+      id: this.editForm.get(['id'])?.value,
+      resourceId: this.editForm.get(['resourceId'])?.value,
+      resourceType: this.editForm.get(['resourceType'])?.value,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       resourceUrl: this.editForm.get(['resourceUrl'])!.value,
-      resolverType: this.editForm.get(['resolverType'])!.value,
-      resolverURI: this.editForm.get(['resolverURI'])!.value
+      resolverType: this.editForm.get(['resolverType'])?.value,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      resolverURI: this.editForm.get(['resolverURI'])!.value,
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IResolver>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Resolver>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 

@@ -23,7 +23,7 @@
             <div>
                 <jhi-alert-error></jhi-alert-error>
 
-                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                <div class="form-group" [hidden]="!editForm.get('id')?.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
@@ -45,7 +45,7 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.resolver.resourceUrl" for="field_resourceUrl">Resource Url</label>
                     <input type="text" class="form-control" name="resourceUrl" id="field_resourceUrl"
                            formControlName="resourceUrl"/>
-                    <div *ngIf="editForm.get('resourceUrl')!.invalid && (editForm.get('resourceUrl')!.dirty || editForm.get('resourceUrl')!.touched)">
+                    <div *ngIf="editForm.get('resourceUrl')?.invalid && (editForm.get('resourceUrl')?.dirty || editForm.get('resourceUrl')?.touched)">
                         <small class="form-text text-danger"
                                *ngIf="editForm.get('resourceUrl')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
@@ -65,7 +65,7 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.resolver.resolverURI" for="field_resolverURI">Resolver URI</label>
                     <input type="text" class="form-control" name="resolverURI" id="field_resolverURI"
                            formControlName="resolverURI"/>
-                    <div *ngIf="editForm.get('resolverURI')!.invalid && (editForm.get('resolverURI')!.dirty || editForm.get('resolverURI')!.touched)">
+                    <div *ngIf="editForm.get('resolverURI')?.invalid && (editForm.get('resolverURI')?.dirty || editForm.get('resolverURI')?.touched)">
                         <small class="form-text text-danger"
                                *ngIf="editForm.get('resolverURI')?.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
