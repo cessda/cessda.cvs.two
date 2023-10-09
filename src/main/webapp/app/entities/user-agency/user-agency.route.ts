@@ -22,20 +22,20 @@ import { flatMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IUserAgency, UserAgency } from 'app/shared/model/user-agency.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 import { UserAgencyService } from './user-agency.service';
 import { UserAgencyComponent } from './user-agency.component';
 import { UserAgencyDetailComponent } from './user-agency-detail.component';
 import { UserAgencyUpdateComponent } from './user-agency-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class UserAgencyResolve implements Resolve<IUserAgency> {
+export class UserAgencyResolve implements Resolve<UserAgency> {
   constructor(
     private service: UserAgencyService,
     private router: Router,
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IUserAgency> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<UserAgency> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
@@ -49,7 +49,7 @@ export class UserAgencyResolve implements Resolve<IUserAgency> {
         }),
       );
     }
-    return of(new UserAgency());
+    return of({});
   }
 }
 

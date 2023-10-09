@@ -20,7 +20,7 @@ import { ActivatedRoute } from '@angular/router';
 import { LANGUAGES } from 'app/core/language/language.constants';
 import { User } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
-import { IUserAgency, UserAgency } from 'app/shared/model/user-agency.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 import { HttpResponse } from '@angular/common/http';
 import { IAgency } from 'app/shared/model/agency.model';
 import { AgencyService } from 'app/agency/agency.service';
@@ -35,11 +35,11 @@ export class UserManagementUpdateComponent implements OnInit {
   authorities: string[] = [];
   isSaving = false;
 
-  agencies?: IAgency[];
+  agencies: IAgency[] = [];
 
-  selectedAgencyId?: number;
-  selectedAgencyRole?: string;
-  selectedLanguage?: string;
+  selectedAgencyId: number;
+  selectedAgencyRole: string;
+  selectedLanguage: string;
 
   editForm = this.fb.group({
     id: [],
@@ -92,17 +92,17 @@ export class UserManagementUpdateComponent implements OnInit {
         sort: ['name,asc'],
       })
       .subscribe((res: HttpResponse<IAgency[]>) => {
-        this.agencies = res.body!;
-        this.selectedAgencyId = this.agencies[0].id!;
+        this.agencies = res.body || [];
+        this.selectedAgencyId = this.agencies[0].id || 1;
       });
   }
 
-  userAgencyToCompare(ua: IUserAgency): string {
+  userAgencyToCompare(ua: UserAgency): string {
     return ua.agencyId! + ua.agencyRole! + (ua.language ? ua.language : '');
   }
 
   getAgencyName(agencyId: number): string {
-    if (this.agencies === undefined) {
+    if (this.agencies.length === 0) {
       return agencyId + '';
     }
     return this.agencies.filter(a => a.id === agencyId)[0].name!;
@@ -160,7 +160,7 @@ export class UserManagementUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  deleteAgencyRole(ua: IUserAgency): void {
+  deleteAgencyRole(ua: UserAgency): void {
     if (
       confirm(
         'Are you sure to delete agency role ' +
@@ -171,9 +171,11 @@ export class UserManagementUpdateComponent implements OnInit {
           '? The agency-role deletion will only be completed after the form is saved.',
       )
     ) {
-      const index = this.user.userAgencies!.indexOf(ua);
-      if (index > -1) {
-        this.user.userAgencies!.splice(index, 1);
+      if (this.user.userAgencies) {
+        const index = this.user.userAgencies.indexOf(ua);
+        if (index > -1) {
+          this.user.userAgencies.splice(index, 1);
+        }
       }
     }
   }
@@ -182,26 +184,28 @@ export class UserManagementUpdateComponent implements OnInit {
     if (
       confirm(
         'Are you sure to add agency role ' +
-          this.getAgencyName(this.selectedAgencyId!) +
+          this.getAgencyName(this.selectedAgencyId) +
           ': ' +
           this.selectedAgencyRole +
-          (this.selectedLanguage !== '' ? '-' + this.selectedLanguage! : '') +
+          (this.selectedLanguage !== '' ? '-' + this.selectedLanguage : '') +
           '? The agency-role addition will only be completed after the form is saved.',
       )
     ) {
-      const userAgency = new UserAgency(
-        undefined,
-        this.user.id,
-        undefined,
-        this.selectedAgencyRole as UserAgency['agencyRole'],
-        this.selectedLanguage !== '' ? this.selectedLanguage : undefined,
-        this.selectedAgencyId,
-      );
-      this.user.userAgencies!.push(userAgency);
+      const userAgency: UserAgency = {
+        userId: this.user.id,
+        agencyRole: this.selectedAgencyRole as UserAgency['agencyRole'],
+        // Filter out ''
+        language: this.selectedLanguage || undefined,
+        agencyId: this.selectedAgencyId,
+      };
+      if (!this.user.userAgencies) {
+        this.user.userAgencies = [];
+      }
+      this.user.userAgencies.push(userAgency);
     }
   }
 
-  getValue(event: Event) {
+  getValue(event: Event): string {
     return (event.target as HTMLSelectElement).value;
   }
 }

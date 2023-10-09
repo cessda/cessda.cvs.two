@@ -15,22 +15,11 @@ import { AgencyRole } from './enumerations/agency-role.model';
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export interface IUserAgency {
+export interface UserAgency {
   id?: number;
   userId?: number;
   agencyName?: string;
   agencyRole?: AgencyRole;
   language?: string;
   agencyId?: number;
-}
-
-export class UserAgency implements IUserAgency {
-  constructor(
-    public id?: number,
-    public userId?: number,
-    public agency?: string,
-    public agencyRole?: AgencyRole,
-    public language?: string,
-    public agencyId?: number,
-  ) {}
 }

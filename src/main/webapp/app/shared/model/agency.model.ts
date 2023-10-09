@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { IUserAgency } from 'app/shared/model/user-agency.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 
 export interface IAgency {
   id?: number;
@@ -26,7 +26,7 @@ export interface IAgency {
   uri?: string;
   uriCode?: string;
   canonicalUri?: string;
-  userAgencies?: IUserAgency[];
+  userAgencies?: UserAgency[];
   deletable?: boolean;
 }
 
@@ -42,7 +42,7 @@ export class Agency implements IAgency {
     public uri?: string,
     public uriCode?: string,
     public canonicalUri?: string,
-    public userAgencies: IUserAgency[] = [],
+    public userAgencies: UserAgency[] = [],
     public deletable?: boolean,
   ) {}
 }

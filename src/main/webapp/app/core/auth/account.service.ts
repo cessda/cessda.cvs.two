@@ -24,7 +24,7 @@ import { StateStorageService } from 'app/core/auth/state-storage.service';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { Account } from 'app/core/user/account.model';
-import { IUserAgency } from 'app/shared/model/user-agency.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -122,7 +122,7 @@ export class AccountService {
     let hasAuth = false;
     if (agencyId === 0) {
       // only check for agencyRoles
-      return this.userIdentity!.userAgencies.some((userAgency: IUserAgency) => agencyRoles.includes(userAgency.agencyRole!));
+      return this.userIdentity!.userAgencies.some((userAgency: UserAgency) => agencyRoles.includes(userAgency.agencyRole!));
     } else {
       // check for agency, roles and language
       this.userIdentity!.userAgencies.forEach(userAgency => {

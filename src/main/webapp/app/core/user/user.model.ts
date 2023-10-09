@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {IUserAgency} from 'app/shared/model/user-agency.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 
 export interface IUser {
   id?: any;
@@ -29,7 +29,7 @@ export interface IUser {
   lastModifiedBy?: string;
   lastModifiedDate?: Date;
   password?: string;
-  userAgencies?: IUserAgency[];
+  userAgencies?: UserAgency[];
 }
 
 export class User implements IUser {
@@ -47,6 +47,6 @@ export class User implements IUser {
     public lastModifiedBy?: string,
     public lastModifiedDate?: Date,
     public password?: string,
-    public userAgencies?: IUserAgency[]
+    public userAgencies?: UserAgency[],
   ) {}
 }

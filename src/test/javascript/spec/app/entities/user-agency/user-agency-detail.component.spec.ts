@@ -19,19 +19,18 @@ import { of } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
 import { UserAgencyDetailComponent } from 'app/entities/user-agency/user-agency-detail.component';
-import { UserAgency } from 'app/shared/model/user-agency.model';
 
 describe('Component Tests', () => {
   describe('UserAgency Management Detail Component', () => {
     let comp: UserAgencyDetailComponent;
     let fixture: ComponentFixture<UserAgencyDetailComponent>;
-    const route = ({ data: of({ userAgency: new UserAgency(123) }) } as any) as ActivatedRoute;
+    const route = { data: of({ userAgency: { id: 123 } }) } as unknown as ActivatedRoute;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [UserAgencyDetailComponent],
-        providers: [{ provide: ActivatedRoute, useValue: route }]
+        providers: [{ provide: ActivatedRoute, useValue: route }],
       })
         .overrideTemplate(UserAgencyDetailComponent, '')
         .compileComponents();

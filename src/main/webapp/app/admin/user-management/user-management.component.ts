@@ -29,7 +29,7 @@ import { User } from 'app/core/user/user.model';
 import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
 import { IAgency } from 'app/shared/model/agency.model';
 import { AgencyService } from 'app/agency/agency.service';
-import { IUserAgency } from 'app/shared/model/user-agency.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -162,7 +162,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     });
   }
 
-  userAgencyToCompare(ua: IUserAgency): string {
+  userAgencyToCompare(ua: UserAgency): string {
     return ua.agencyId! + ua.agencyRole! + (ua.language ? ua.language : '');
   }
 }
