@@ -1958,6 +1958,7 @@ public class VocabularyServiceImpl implements VocabularyService
             map.put( "docId", uriSl );
             map.put( "docVersionOf", vocabularyDTO.getUri() );
             map.put( "docNotation", vocabularyDTO.getNotation() );
+            map.put( "docSourceLanguage", vocabularyDTO.getSourceLanguage() );
             map.put( "docVersion", versionIncluded.getNumber().toString() );
             map.put( "docLicense", versionIncluded.getLicenseName() );
             map.put( "docLicenseUrl", versionIncluded.getLicenseLink() );
