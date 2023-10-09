@@ -1054,21 +1054,21 @@ public class CodeDTO implements Serializable {
         return codes.stream().filter( voc -> voc.getId() == docId).findFirst();
     }
 
-    public static enum HashFunction {
+    public enum HashFunction {
         
         MD2("md2", DigestUtils::md2Hex),
         MD5("md5", DigestUtils::md5Hex),
         SHA1("sha1", DigestUtils::sha1Hex),
         SHA256("sha256", DigestUtils::sha256Hex);
 
-        interface function {
+        interface Function {
             String exec(String str);
         }
 
         private String name;
-        private function fn;
+        private Function fn;
 
-        HashFunction(String name, function fn) {
+        HashFunction(String name, Function fn) {
             this.name = name;
             this.fn = fn;
         }
@@ -1077,7 +1077,7 @@ public class CodeDTO implements Serializable {
             return this.name;
         }
 
-        public function getFn() {
+        public Function getFn() {
             return this.fn;
         }
 
@@ -1091,7 +1091,7 @@ public class CodeDTO implements Serializable {
         }
     }
 
-    public static String _generateHash(HashFunction hf, String str, Integer len) {
+    public static String generateHash(HashFunction hf, String str, Integer len) {
         
         // default hash
         String hash = '#' + str;
@@ -1108,14 +1108,14 @@ public class CodeDTO implements Serializable {
         return hash;
     }
 
-    public String generateHash(String hf, String str, Integer len) {
-        return _generateHash(HashFunction.fromString(hf), str, len);
+    public String callGenerateHash(String hf, String str, Integer len) {
+        return generateHash(HashFunction.fromString(hf), str, len);
     }
 
     // group 0 - hash algorithm, group 1 - truncation; i.e., keep the first n characters
     public static final Pattern patternHashCodeUriPlaceholder = Pattern.compile("\\[CODE-HASH-([^-]+)-(\\d+)\\]", Pattern.CASE_INSENSITIVE);
 
-    public static String rewriteUri(String uri, String hf_input) {
+    public static String rewriteUri(String uri, String hfInput) {
 
         if (uri == null || uri.isBlank()) {
             return uri;
@@ -1126,7 +1126,7 @@ public class CodeDTO implements Serializable {
         while (m.find()) {
             HashFunction hf = HashFunction.fromString(m.group(1));
             Integer len = Integer.parseInt(m.group(2));
-            uri = uri.substring(0, m.start()) + _generateHash(hf, hf_input, len) + uri.substring(m.end());
+            uri = uri.substring(0, m.start()) + generateHash(hf, hfInput, len) + uri.substring(m.end());
             m = patternHashCodeUriPlaceholder.matcher(uri);
         }
 
