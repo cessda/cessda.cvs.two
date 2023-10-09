@@ -6,11 +6,12 @@
 >
    <rdf:Description th:attr="'rdf:about'=${docId}">
       <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
-      <dcterms:isVersionOf th:attr="'rdf:resource'=${docVersionOf}"/>
-      <skos:notation th:text="${docNotation}"></skos:notation>
+      <dcterms:isVersionOf th:attr="'rdf:resource'=${#strings.endsWith(docVersionOf, '/') ? docVersionOf : docVersionOf + '/'}"/>
+      <skos:notation th:attr="'xml:lang'=${docSourceLanguage}" th:text="${docNotation}"></skos:notation>
      <loop th:remove="tag" th:each="version, iterStat: ${versions}">
       <dcterms:title th:attr="'xml:lang'=${version.language}" th:text="${version.title}"></dcterms:title>
       <dcterms:description th:attr="'xml:lang'=${version.language}" th:text="${version.definition}"></dcterms:description>
+      <skos:prefLabel th:attr="'xml:lang'=${version.language}" th:text="${version.title}"></skos:prefLabel>
      </loop>
       <owl:versionInfo th:text="${docVersion}"></owl:versionInfo>
       <dcterms:license th:attr="'rdf:resource'=${docLicenseUrl}"/>
