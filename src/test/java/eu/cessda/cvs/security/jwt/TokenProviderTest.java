@@ -18,7 +18,6 @@ package eu.cessda.cvs.security.jwt;
 import eu.cessda.cvs.security.AuthoritiesConstants;
 import io.github.jhipster.config.JHipsterProperties;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,18 +28,18 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.security.Key;
+import javax.crypto.SecretKey;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TokenProviderTest {
+class TokenProviderTest {
 
     private static final long ONE_MINUTE = 60000;
 
-    private Key key;
+    private SecretKey key;
     private TokenProvider tokenProvider;
 
     @BeforeEach
@@ -50,24 +49,25 @@ public class TokenProviderTest {
             .decode("fd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8"));
 
         ReflectionTestUtils.setField(tokenProvider, "key", key);
+        ReflectionTestUtils.setField(tokenProvider, "jwtParser", Jwts.parser().verifyWith( key ).build());
         ReflectionTestUtils.setField(tokenProvider, "tokenValidityInMilliseconds", ONE_MINUTE);
     }
 
     @Test
-    public void testReturnFalseWhenJWThasInvalidSignature() {
+    void testReturnFalseWhenJWThasInvalidSignature() {
         boolean isTokenValid = tokenProvider.validateToken(createTokenWithDifferentSignature());
 
-        assertThat(isTokenValid).isEqualTo(false);
+        assertThat(isTokenValid).isFalse();
     }
 
     @Test
-    public void testReturnFalseWhenJWTisMalformed() {
+    void testReturnFalseWhenJWTisMalformed() {
         Authentication authentication = createAuthentication();
         String token = tokenProvider.createToken(authentication, false);
         String invalidToken = token.substring(1);
         boolean isTokenValid = tokenProvider.validateToken(invalidToken);
 
-        assertThat(isTokenValid).isEqualTo(false);
+        assertThat(isTokenValid).isFalse();
     }
 
     @Test
@@ -79,23 +79,23 @@ public class TokenProviderTest {
 
         boolean isTokenValid = tokenProvider.validateToken(token);
 
-        assertThat(isTokenValid).isEqualTo(false);
+        assertThat(isTokenValid).isFalse();
     }
 
     @Test
-    public void testReturnFalseWhenJWTisUnsupported() {
+    void testReturnFalseWhenJWTisUnsupported() {
         String unsupportedToken = createUnsupportedToken();
 
         boolean isTokenValid = tokenProvider.validateToken(unsupportedToken);
 
-        assertThat(isTokenValid).isEqualTo(false);
+        assertThat(isTokenValid).isFalse();
     }
 
     @Test
-    public void testReturnFalseWhenJWTisInvalid() {
+    void testReturnFalseWhenJWTisInvalid() {
         boolean isTokenValid = tokenProvider.validateToken("");
 
-        assertThat(isTokenValid).isEqualTo(false);
+        assertThat(isTokenValid).isFalse();
     }
 
     private Authentication createAuthentication() {
@@ -106,19 +106,19 @@ public class TokenProviderTest {
 
     private String createUnsupportedToken() {
         return Jwts.builder()
-            .setPayload("payload")
-            .signWith(key, SignatureAlgorithm.HS512)
+            .content("payload")
+            .signWith(key, Jwts.SIG.HS512)
             .compact();
     }
 
     private String createTokenWithDifferentSignature() {
-        Key otherKey = Keys.hmacShaKeyFor(Decoders.BASE64
+        SecretKey otherKey = Keys.hmacShaKeyFor(Decoders.BASE64
             .decode("Xfd54a45s65fds737b9aafcb3412e07ed99b267f33413274720ddbb7f6c5e64e9f14075f2d7ed041592f0b7657baf8"));
 
         return Jwts.builder()
-            .setSubject("anonymous")
-            .signWith(otherKey, SignatureAlgorithm.HS512)
-            .setExpiration(new Date(new Date().getTime() + ONE_MINUTE))
+            .subject("anonymous")
+            .signWith(otherKey, Jwts.SIG.HS512)
+            .expiration(new Date(new Date().getTime() + ONE_MINUTE))
             .compact();
     }
 }

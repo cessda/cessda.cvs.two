@@ -135,7 +135,7 @@
         <!-- Exclude Web app content, where static CVs in JSON files stored -->
         <sonar.exclusions>src/main/resources/**/*,src/main/webapp/content/**/*</sonar.exclusions>
         <springfox.version>2.9.2</springfox.version>
-        <jjwt.version>0.11.5</jjwt.version>
+        <jjwt.version>0.12.2</jjwt.version>
     </properties>
 
     <dependencyManagement>
@@ -837,6 +837,7 @@
                         <exclude>cvs.jh</exclude>
                         <exclude>src/main/webapp/manifest.webapp</exclude>
                         <exclude>.config/**</exclude>
+                        <exclude>.angular/cache</exclude>
                     </excludes>
                     <mapping>
                         <cff>SCRIPT_STYLE</cff>
