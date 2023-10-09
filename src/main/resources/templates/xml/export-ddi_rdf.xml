@@ -27,7 +27,7 @@
       <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
       <owl:deprecated th:if="${code.deprecated}" rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean" th:text="${code.deprecated}"></owl:deprecated>
       <skos:inScheme th:attr="'rdf:resource'=${docId}"/>
-      <skos:notation th:text="${code.notation}"></skos:notation>
+      <skos:notation th:attr="'xml:lang'=${docSourceLanguage}" th:text="${code.notation}"></skos:notation>
     <loop th:remove="tag" th:each="version, iterStat: ${versions}">
       <skos:prefLabel th:attr="'xml:lang'=${version.language}" th:text="${code.getTitleByLanguage(version.language)}"></skos:prefLabel>
       <skos:definition th:attr="'xml:lang'=${version.language}" th:text="${code.getDefinitionByLanguage(version.language)}"></skos:definition>
