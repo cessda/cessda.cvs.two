@@ -20,24 +20,6 @@ pipeline {
     }
 
     stages {
-        stage('Compile Java') {
-            agent {
-                docker {
-                    image 'eclipse-temurin:11'
-                    reuseNode true
-                }
-            }
-            steps {
-                withMaven {
-                    sh "./mvnw clean verify -Pci"
-                }
-            }
-        }
-        stage('Record Issues') {
-            steps {
-                recordIssues aggregatingResults: true, tools: [java()]
-            }
-        }
         stage('Node.JS') {
             agent {
                 docker {
@@ -68,6 +50,24 @@ pipeline {
                         }
                     }
                 }
+            }
+        }
+        stage('Compile Java') {
+            agent {
+                docker {
+                    image 'eclipse-temurin:11'
+                    reuseNode true
+                }
+            }
+            steps {
+                withMaven {
+                    sh "./mvnw verify -Pci"
+                }
+            }
+        }
+        stage('Record Issues') {
+            steps {
+                recordIssues aggregatingResults: true, tools: [java()]
             }
         }
         stage('Run Sonar Scan') {
