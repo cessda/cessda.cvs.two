@@ -23,7 +23,7 @@ import { IVocabulary } from 'app/shared/model/vocabulary.model';
 import { CvResult } from 'app/shared/model/cv-result.model';
 import { map } from 'rxjs/operators';
 import moment from 'moment';
-import { IVocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
 import { ICodeSnippet } from 'app/shared/model/code-snippet.model';
 import { Concept } from 'app/shared/model/concept.model';
 import { IVersion } from 'app/shared/model/version.model';
@@ -42,7 +42,7 @@ export class EditorService {
 
   constructor(protected http: HttpClient) {}
 
-  createVocabulary(vocabularySnippet: IVocabularySnippet): Observable<HttpResponse<IVocabulary>> {
+  createVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<IVocabulary>> {
     return this.http
       .post<IVocabulary>(this.resourceEditorVocabularyUrl, vocabularySnippet, { observe: 'response' })
       .pipe(map((res: HttpResponse<IVocabulary>) => this.convertVocabularyDateFromServer(res)));
@@ -52,13 +52,13 @@ export class EditorService {
     return this.http.post<IVersion>(this.resourceEditorVocabularyUrl + '/new-version/' + id, null, { observe: 'response' });
   }
 
-  updateVocabulary(vocabularySnippet: IVocabularySnippet): Observable<HttpResponse<IVocabulary>> {
+  updateVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<IVocabulary>> {
     return this.http
       .put<IVocabulary>(this.resourceEditorVocabularyUrl, vocabularySnippet, { observe: 'response' })
       .pipe(map(res => this.convertVocabularyDateFromServer(res)));
   }
 
-  forwardStatusVocabulary(vocabularySnippet: IVocabularySnippet): Observable<HttpResponse<IVersion>> {
+  forwardStatusVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<IVersion>> {
     return this.http.put<IVersion>(this.resourceEditorVocabularyUrl + '/forward-status', vocabularySnippet, { observe: 'response' });
   }
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
@@ -30,7 +31,8 @@ import { Account } from 'app/core/user/account.model';
 import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
 import { VOCABULARY_ALREADY_EXIST_TYPE } from 'app/shared';
 import { EditorService } from 'app/editor/editor.service';
-import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
   selector: 'jhi-editor-cv-add-dialog',
@@ -75,8 +77,8 @@ export class EditorCvAddDialogComponent implements OnInit {
       .subscribe((res: HttpResponse<IAgency[]>) => {
         this.agencies = res.body ? this.filterAgencies(res.body) : [];
         // select first agency
-        this.cvAddForm.patchValue({ agency: this.agencies[0].id! });
-        this.updateLanguageCheckbox(this.agencies[0].id!);
+        this.cvAddForm.patchValue({ agency: this.agencies[0].id });
+        this.updateLanguageCheckbox(this.agencies[0].id);
       });
   }
 
@@ -97,7 +99,7 @@ export class EditorCvAddDialogComponent implements OnInit {
     return ags;
   }
 
-  updateLanguageCheckbox(agencyId: number): void {
+  updateLanguageCheckbox(agencyId: number | undefined): void {
     this.languages = [];
     if (this.accountService.isAdmin()) {
       for (const langIso in LanguageIso) {
@@ -131,13 +133,11 @@ export class EditorCvAddDialogComponent implements OnInit {
     });
   }
 
-  private createFromForm(): IVocabularySnippet {
-    const selectedAgencyId = this.cvAddForm.get(['agency'])!.value;
-    const selectedAgency = this.agencies.find(a => a.id === +selectedAgencyId);
+  private createFromForm(): VocabularySnippet {
+    const selectedAgencyId = Number(this.cvAddForm.get(['agency'])!.value);
     return {
-      ...new VocabularySnippet(),
-      actionType: 'CREATE_CV',
-      agencyId: selectedAgency!.id,
+      actionType: ActionType.CREATE_CV,
+      agencyId: selectedAgencyId,
       language: this.cvAddForm.get(['sourceLanguage'])!.value,
       itemType: 'SL',
       notation: this.cvAddForm.get(['notation'])!.value,

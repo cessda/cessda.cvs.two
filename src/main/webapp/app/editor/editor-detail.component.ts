@@ -34,7 +34,7 @@ import { EditorDetailCodeDeprecateDialogComponent } from 'app/editor/editor-deta
 import { EditorDetailCodeDeleteDialogComponent } from 'app/editor/editor-detail-code-delete-dialog.component';
 import { EditorDetailCodeReorderDialogComponent } from 'app/editor/editor-detail-code-reorder-dialog.component';
 import { EditorDetailCvForwardStatusDialogComponent } from 'app/editor/editor-detail-cv-forward-status-dialog.component';
-import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
 import { HttpResponse } from '@angular/common/http';
 import { EditorDetailCvNewVersionDialogComponent } from 'app/editor/editor-detail-cv-new-version-dialog.component';
 import { EditorDetailCodeCsvImportDialogComponent, EditorDetailCvCommentDialogComponent } from '.';
@@ -46,6 +46,7 @@ import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 import { Quill } from 'quill';
 import { QuillModules } from 'ngx-quill';
 import { AgencyRole } from 'app/shared/model/enumerations/agency-role.model';
+import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
   selector: 'jhi-editor-detail',
@@ -93,7 +94,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   enableDocxExport = false;
 
-  protected ngbModalRef?: NgbModalRef | null;
+  protected ngbModalRef: NgbModalRef | null = null;
 
   isCurrentVersionInfoEdit = false;
   isDdiUsageEdit = false;
@@ -640,8 +641,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   saveDdiUsage(): void {
     const vocabSnippet = {
-      ...new VocabularySnippet(),
-      actionType: 'EDIT_DDI_CV',
+      actionType: ActionType.EDIT_DDI_CV,
       agencyId: this.vocabulary!.agencyId,
       vocabularyId: this.vocabulary!.id,
       versionId: this.version!.id,
@@ -654,8 +654,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   saveTranslateIdentity(): void {
     const vocabSnippet = {
-      ...new VocabularySnippet(),
-      actionType: 'EDIT_IDENTITY_CV',
+      actionType: ActionType.EDIT_IDENTITY_CV,
       agencyId: this.vocabulary!.agencyId,
       vocabularyId: this.vocabulary!.id,
       versionId: this.version!.id,
@@ -671,9 +670,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   saveNotes(): void {
-    const vocabSnippet = {
-      ...new VocabularySnippet(),
-      actionType: 'EDIT_NOTE_CV',
+    const vocabSnippet: VocabularySnippet = {
+      actionType: ActionType.EDIT_NOTE_CV,
       agencyId: this.vocabulary!.agencyId,
       vocabularyId: this.vocabulary!.id,
       versionId: this.version!.id,
@@ -685,33 +683,32 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   saveCurrentVersionInfo(): void {
-    const vocabSnippet = {
-      ...new VocabularySnippet(),
-      actionType: 'EDIT_VERSION_INFO_CV',
-      agencyId: this.vocabulary!.agencyId,
-      vocabularyId: this.vocabulary!.id,
-      versionId: this.version!.id,
-      language: this.version!.language,
-      itemType: this.version!.itemType,
+    const vocabSnippet: VocabularySnippet = {
+      actionType: ActionType.EDIT_VERSION_INFO_CV,
+      agencyId: this.vocabulary?.agencyId,
+      vocabularyId: this.vocabulary?.id,
+      versionId: this.version?.id,
+      language: this.version?.language,
+      itemType: this.version?.itemType,
       versionNotes: this.editorDetailForm.get(['versionNotes'])!.value,
       versionChanges: this.editorDetailForm.get(['versionChanges'])!.value,
     };
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
   }
 
-  subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>, vocabSnippet: IVocabularySnippet): void {
+  subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>, vocabSnippet: VocabularySnippet): void {
     result.subscribe(() => {
-      if (vocabSnippet.actionType === 'EDIT_DDI_CV') {
+      if (vocabSnippet.actionType === ActionType.EDIT_DDI_CV) {
         this.isDdiUsageEdit = !this.isDdiUsageEdit;
         this.version!.ddiUsage = vocabSnippet.ddiUsage;
-      } else if (vocabSnippet.actionType === 'EDIT_IDENTITY_CV') {
+      } else if (vocabSnippet.actionType === ActionType.EDIT_IDENTITY_CV) {
         this.isIdentityEdit = !this.isIdentityEdit;
         this.version!.translateAgency = vocabSnippet.translateAgency;
         this.version!.translateAgencyLink = vocabSnippet.translateAgencyLink;
-      } else if (vocabSnippet.actionType === 'EDIT_NOTE_CV') {
+      } else if (vocabSnippet.actionType === ActionType.EDIT_NOTE_CV) {
         this.isNotesEdit = !this.isNotesEdit;
         this.version!.notes = vocabSnippet.notes;
-      } else if (vocabSnippet.actionType === 'EDIT_VERSION_INFO_CV') {
+      } else if (vocabSnippet.actionType === ActionType.EDIT_VERSION_INFO_CV) {
         this.isCurrentVersionInfoEdit = !this.isCurrentVersionInfoEdit;
         this.version!.versionNotes = vocabSnippet.versionNotes;
         this.version!.versionChanges = vocabSnippet.versionChanges;

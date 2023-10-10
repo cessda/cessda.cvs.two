@@ -28,26 +28,27 @@ import { Account } from 'app/core/user/account.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { VOCABULARY_ALREADY_EXIST_TYPE } from 'app/shared';
 import { EditorService } from 'app/editor/editor.service';
-import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
 import { IVersion } from 'app/shared/model/version.model';
+import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
   selector: 'jhi-editor-detail-cv-add-edit-dialog',
   templateUrl: './editor-detail-cv-add-edit-dialog.component.html',
 })
 export class EditorDetailCvAddEditDialogComponent implements OnInit {
-  isSaving: boolean;
-  isSubmitting: boolean;
+  isSaving = false;
+  isSubmitting = false;
   account!: Account;
   languages: string[] = [];
   errorNotationExists = false;
   notation? = '';
-  vocabularySnippet?: IVocabularySnippet;
+  vocabularySnippet?: VocabularySnippet;
   vocabularyParam?: IVocabulary;
   versionParam?: IVersion;
   versionSlParam?: IVersion;
-  isNew?: boolean;
-  isSlForm?: boolean;
+  isNew = false;
+  isSlForm = false;
   selectedLanguage = '';
 
   cvAddEditForm = this.fb.group({
@@ -77,10 +78,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     protected eventManager: JhiEventManager,
     private fb: FormBuilder,
     private router: Router,
-  ) {
-    this.isSaving = false;
-    this.isSubmitting = false;
-  }
+  ) {}
 
   updateLanguageCheckbox(agencyId: number): void {
     // for Add new CV set taken language with []
@@ -173,12 +171,11 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     });
   }
 
-  private createFromForm(): IVocabularySnippet {
+  private createFromForm(): VocabularySnippet {
     if (this.isNew) {
       if (this.isSlForm) {
         return {
-          ...new VocabularySnippet(),
-          actionType: 'CREATE_CV',
+          actionType: ActionType.CREATE_CV,
           agencyId: this.vocabularyParam!.agencyId,
           language: this.cvAddEditForm.get(['language'])!.value,
           itemType: 'SL',
@@ -191,8 +188,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
         };
       } else {
         return {
-          ...new VocabularySnippet(),
-          actionType: 'ADD_TL_CV',
+          actionType: ActionType.ADD_TL_CV,
           agencyId: this.vocabularyParam!.agencyId,
           language: this.cvAddEditForm.get(['language'])!.value,
           itemType: 'TL',
@@ -211,7 +207,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     } else {
       return {
         ...this.vocabularySnippet,
-        actionType: 'EDIT_CV',
+        actionType: ActionType.EDIT_CV,
         vocabularyId: this.vocabularyParam!.id,
         versionId: this.versionParam!.id,
         language: this.versionParam!.language,

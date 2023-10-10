@@ -21,7 +21,7 @@ import { FormBuilder } from '@angular/forms';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Account } from 'app/core/user/account.model';
 import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { Observable, of, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AGGR_AGENCY, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
 import { Bucket } from 'app/shared/model/bucket';
 import { AccountService } from 'app/core/auth/account.service';
@@ -33,7 +33,8 @@ import { CvResult } from 'app/shared/model/cv-result.model';
 import { Aggr } from 'app/shared/model/aggr';
 import { HomeService } from 'app/home/home.service';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
-import { TagModel } from 'ngx-chips/core/accessor';
+import { TagModel, TagModelClass } from 'ngx-chips/core/accessor';
+import { PublicationSearchType } from 'app/layouts/navbar/navbar.component';
 
 @Component({
   selector: 'jhi-vocabulary-search-result',
@@ -48,7 +49,6 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   vocabularies: IVocabulary[] = [];
   eventSubscriber?: Subscription;
   currentSearch = '';
-  links: any;
 
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -202,13 +202,13 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getSearchRequest(pageToLoad: number): any {
+  private getSearchRequest(pageToLoad: number) {
     return {
       q: this.currentSearch,
       f: this.activeAgg,
-      page: pageToLoad - 1,
-      size: this.itemsPerPage,
-      sort: this.sort(),
+      page: String(pageToLoad - 1),
+      size: String(this.itemsPerPage),
+      sort: this.sort().toString(),
     };
   }
 
@@ -241,7 +241,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     }
     this.clearFilter();
     if (pred) {
-      this.activeAggLanguage!.push(pred);
+      this.activeAggLanguage.push(pred);
     }
     this.buildFilterAndRefreshSearch();
   }
@@ -256,12 +256,14 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     let adminAgencies: string[] = [];
     adminAgencies = this.accountService.getUserAgencies();
     adminAgencies.forEach(agency => {
-      this.activeAggAgency?.push(agency);
+      this.activeAggAgency.push(agency);
     });
 
     if (adminAgencies.length < 1) {
-      this.aggAgencyBucket!.forEach(agency => {
-        this.activeAggAgency?.push(agency.value!);
+      this.aggAgencyBucket.forEach(agency => {
+        if (agency.value) {
+          this.activeAggAgency.push(agency.value);
+        }
       });
     }
 
@@ -327,7 +329,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   }
 
   private registerCvSearchEvent(): void {
-    this.eventSubscriber = this.eventManager.subscribe('doCvPublicationSearch', (response: JhiEventWithContent<any>) => {
+    this.eventSubscriber = this.eventManager.subscribe('doCvPublicationSearch', (response: JhiEventWithContent<PublicationSearchType>) => {
       this.search(response.content.term, response.content.lang);
     });
   }
@@ -350,6 +352,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   private prepareActiveBuckets(buckets: Bucket[], aggr: Aggr): Bucket[] {
     const activeBucket: Bucket[] = [];
     aggr.values.forEach(activeVal => {
@@ -360,16 +363,6 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
       });
     });
     return activeBucket;
-  }
-
-  private formatBucketLanguages(buckets: Bucket[]): Bucket[] {
-    if (buckets !== undefined && buckets.length > 0) {
-      buckets.forEach(bucket => {
-        bucket.value = bucket.k;
-        bucket.display = this.vocabLangPipeKey.transform(bucket.k) + ' (' + bucket.v + ')';
-      });
-    }
-    return buckets;
   }
 
   private formatBuckets(buckets: Bucket[]): Bucket[] {
@@ -397,11 +390,6 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
       (lang === sourceLang ? ' SOURCE' : '') +
       (indexOf > 0 ? ' (' + statusInfo.substr(indexOf + 1) + ')' : '')
     );
-  }
-
-  public formatFilterText(value: any): Observable<any> {
-    value.name = value.f;
-    return of(value);
   }
 
   loadPageClicked(pageNo: number): void {
@@ -450,7 +438,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
 
   onRemoveAgency(removedItem: TagModel): void {
     this.activeAggAgency.forEach((item, index) => {
-      if (item === (removedItem as TagModelClass)['k']) this.activeAggAgency!.splice(index, 1);
+      if (item === (removedItem as TagModelClass)['k']) this.activeAggAgency.splice(index, 1);
     });
     this.buildFilterAndRefreshSearch();
   }
@@ -463,7 +451,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   onRemoveStatus(removedItem: TagModel): void {
     this.activeAggStatus.forEach((item, index) => {
       if (item === (removedItem as TagModelClass)['k']) {
-        this.activeAggStatus!.splice(index, 1);
+        this.activeAggStatus.splice(index, 1);
       }
     });
     this.buildFilterAndRefreshSearch();
@@ -475,20 +463,20 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
       this.filterAdminAgencies();
     }
 
-    if (this.activeAggAgency!.length > 0 && !this.isLanguageAdmin()) {
-      this.activeAgg = 'agency:' + this.activeAggAgency!.join(',');
+    if (this.activeAggAgency.length > 0 && !this.isLanguageAdmin()) {
+      this.activeAgg = 'agency:' + this.activeAggAgency.join(',');
     }
-    if (this.activeAggLanguage!.length > 0) {
-      if (this.activeAggAgency!.length > 0 && !this.isLanguageAdmin()) {
+    if (this.activeAggLanguage.length > 0) {
+      if (this.activeAggAgency.length > 0 && !this.isLanguageAdmin()) {
         this.activeAgg += ';';
       }
-      this.activeAgg += 'language:' + this.activeAggLanguage!.join(',');
+      this.activeAgg += 'language:' + this.activeAggLanguage.join(',');
     }
-    if (this.activeAggStatus!.length > 0) {
-      if ((this.activeAggAgency!.length > 0 && !this.isLanguageAdmin()) || this.activeAggLanguage!.length > 0) {
+    if (this.activeAggStatus.length > 0) {
+      if ((this.activeAggAgency.length > 0 && !this.isLanguageAdmin()) || this.activeAggLanguage.length > 0) {
         this.activeAgg += ';';
       }
-      this.activeAgg += 'status:' + this.activeAggStatus!.join(',');
+      this.activeAgg += 'status:' + this.activeAggStatus.join(',');
     }
 
     this.router.navigate([], {
