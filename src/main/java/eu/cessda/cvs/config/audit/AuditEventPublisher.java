@@ -82,8 +82,12 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                 map.put("cv_type", vocabularySnippet.getItemType());
                 map.put("cv_language", vocabularySnippet.getLanguage());
                 map.put("cv_definition", vocabularySnippet.getDefinition());
-                map.put("cv_change_type", vocabularySnippet.getChangeType());
-                map.put("cv_change_description", vocabularySnippet.getChangeDesc());
+                if (vocabularySnippet.getChangeType() != null) {
+                    map.put("cv_change_type", vocabularySnippet.getChangeType());
+                }
+                if (vocabularySnippet.getChangeDesc() != null) {
+                    map.put("cv_change_description", vocabularySnippet.getChangeDesc());
+                }
                 break;
             case "UPDATE_VOCABULARY_EDIT_DDI_CV":
                 map.put("cv_type", vocabularySnippet.getItemType());
