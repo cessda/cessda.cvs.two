@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError} from 'ng-jhipster';
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import {IVocabularyChange, VocabularyChange} from 'app/shared/model/vocabulary-change.model';
-import {VocabularyChangeService} from './vocabulary-change.service';
-import {AlertError} from 'app/shared/alert/alert-error.model';
+import { VocabularyChange } from 'app/shared/model/vocabulary-change.model';
+import { VocabularyChangeService } from './vocabulary-change.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'jhi-vocabulary-change-update',
-  templateUrl: './vocabulary-change-update.component.html'
+  templateUrl: './vocabulary-change-update.component.html',
 })
 export class VocabularyChangeUpdateComponent implements OnInit {
   isSaving = false;
-  dateDp: any;
+  dateDp: NgbInputDatepicker | undefined;
 
   editForm = this.fb.group({
     id: [],
@@ -41,7 +41,7 @@ export class VocabularyChangeUpdateComponent implements OnInit {
     description: [],
     userId: [],
     userName: [null, [Validators.maxLength(120)]],
-    date: []
+    date: [],
   });
 
   constructor(
@@ -49,7 +49,7 @@ export class VocabularyChangeUpdateComponent implements OnInit {
     protected eventManager: JhiEventManager,
     protected vocabularyChangeService: VocabularyChangeService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -58,7 +58,7 @@ export class VocabularyChangeUpdateComponent implements OnInit {
     });
   }
 
-  updateForm(vocabularyChange: IVocabularyChange): void {
+  updateForm(vocabularyChange: VocabularyChange): void {
     this.editForm.patchValue({
       id: vocabularyChange.id,
       vocabularyId: vocabularyChange.vocabularyId,
@@ -67,15 +67,13 @@ export class VocabularyChangeUpdateComponent implements OnInit {
       description: vocabularyChange.description,
       userId: vocabularyChange.userId,
       userName: vocabularyChange.userName,
-      date: vocabularyChange.date
+      date: vocabularyChange.date,
     });
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-      this.eventManager.broadcast(
-        new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key })
-      );
+      this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
     });
   }
 
@@ -93,9 +91,8 @@ export class VocabularyChangeUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IVocabularyChange {
+  private createFromForm(): VocabularyChange {
     return {
-      ...new VocabularyChange(),
       id: this.editForm.get(['id'])!.value,
       vocabularyId: this.editForm.get(['vocabularyId'])!.value,
       versionId: this.editForm.get(['versionId'])!.value,
@@ -103,14 +100,14 @@ export class VocabularyChangeUpdateComponent implements OnInit {
       description: this.editForm.get(['description'])!.value,
       userId: this.editForm.get(['userId'])!.value,
       userName: this.editForm.get(['userName'])!.value,
-      date: this.editForm.get(['date'])!.value
+      date: this.editForm.get(['date'])!.value,
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IVocabularyChange>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<VocabularyChange>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 

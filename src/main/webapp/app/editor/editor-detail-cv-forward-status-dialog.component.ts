@@ -34,7 +34,7 @@ import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { DiffContent, DiffResults } from 'ngx-text-diff/lib/ngx-text-diff.model';
 import { IComment } from 'app/shared/model/comment.model';
 import { VocabularyChangeService } from 'app/entities/vocabulary-change/vocabulary-change.service';
-import { IVocabularyChange } from 'app/shared/model/vocabulary-change.model';
+import { VocabularyChange } from 'app/shared/model/vocabulary-change.model';
 import { QuillModule } from 'ngx-quill';
 import { Quill } from 'quill';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
@@ -56,7 +56,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   proposedPatchNumber = 0;
   missingTranslations: string[] = [];
   comments: IComment[] | undefined = [];
-  vocabularyChanges: IVocabularyChange[] | null = [];
+  vocabularyChanges: VocabularyChange[] | null = [];
 
   public versionNotesEditor: Quill | undefined;
   public versionChangesEditor: Quill | undefined;
@@ -149,7 +149,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
             this.contentObservable.next(newContent);
             this.comparePrevVersion = res.headers.get('X-Prev-Cv-Version')!;
           });
-          this.vocabularyChangeService.getByVersionId(this.versionParam.id!).subscribe((res: HttpResponse<IVocabularyChange[]>) => {
+          this.vocabularyChangeService.getByVersionId(this.versionParam.id!).subscribe((res: HttpResponse<VocabularyChange[]>) => {
             this.vocabularyChanges = res.body!;
             this.fillVersionNotes();
             this.fillVersionChanges();
