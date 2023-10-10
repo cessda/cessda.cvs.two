@@ -30,7 +30,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             this.publisher.publishEvent(new AuditApplicationEvent(event));
     }
 
-    public void publish(String user, VocabularyDTO vocabulary, VersionDTO version, VocabularySnippet vocabularySnippet, ConceptDTO conceptDTO, ConceptDTO replacingConceptDTO, CodeSnippet codeSnippet, String action) {
+    public void publish(String user, VocabularyDTO vocabulary, VersionDTO version, VocabularySnippet vocabularySnippet, ConceptDTO concept, ConceptDTO replacingConceptDTO, CodeSnippet codeSnippet, String action) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         if (vocabulary != null) {
             map.put("cv_agency_name", vocabulary.getAgencyName());
@@ -171,13 +171,13 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                 map.put("cv_title", version.getTitle());
                 map.put("cv_language", version.getLanguage());
                 map.put("cv_type", version.getItemType());
-                map.put("code_title", conceptDTO.getTitle());
+                map.put("code_title", concept.getTitle());
                 break;
             case "DEPRECATE_CODE":
                 map.put("cv_title", version.getTitle());
                 map.put("cv_language", version.getLanguage());
                 map.put("cv_type", version.getItemType());
-                map.put("code_title", conceptDTO.getTitle());
+                map.put("code_title", concept.getTitle());
                 if (replacingConceptDTO != null) {
                     map.put("replaced_by_title", replacingConceptDTO.getTitle());
                 }
@@ -186,7 +186,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                 map.put("cv_title", version.getTitle());
                 map.put("cv_language", version.getLanguage());
                 map.put("cv_type", version.getItemType());
-                map.put("code_title", conceptDTO.getTitle());
+                //map.put("code_title", concept.getTitle());
                 break;
             default:    
         }

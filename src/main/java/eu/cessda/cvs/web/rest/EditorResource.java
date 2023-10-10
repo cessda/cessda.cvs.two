@@ -682,6 +682,11 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + codeSnippet.getVersionId() ));
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
             .orElseThrow( () -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + versionDTO.getVocabularyId() ));
+        
+            //notify the auditing mechanism
+        /*ConceptDTO conceptDTO = conceptService.findOne(codeSnippet.getConceptId())
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_CONCEPT + codeSnippet.getConceptId()));*/
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, null, null, codeSnippet, ActionType.REORDER_CODE.name());
 
         // check if user authorized to reorder VocabularyResource
         SecurityUtils.checkResourceAuthorization(ActionType.REORDER_CODE,
@@ -692,16 +697,17 @@ public class EditorResource {
             ConceptDTO concept = versionDTO.getConcepts().stream().filter(c -> c.getId().equals(codeSnippet.getConceptStructureIds().get(finalI))).findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("Unable to find code/concept with Id " + codeSnippet.getConceptStructureIds().get(finalI)));
 
-            String newNotation = codeSnippet.getConceptStructures().get( finalI );
+            String newNotation = codeSnippet.getConceptStructures().get(finalI);
             int dotIndex = newNotation.lastIndexOf('.');
             if (dotIndex < 0) {
                 concept.setParent( null );
             } else {
                 concept.setParent( newNotation.substring(0, dotIndex));
             }
-            concept.setNotation( newNotation );
+            concept.setNotation(newNotation);
             concept.setPosition(i);
         }
+
         // save
         versionService.save(versionDTO);
         // reindex
