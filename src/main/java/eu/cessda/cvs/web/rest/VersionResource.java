@@ -15,15 +15,22 @@
  */
 package eu.cessda.cvs.web.rest;
 
+import eu.cessda.cvs.config.audit.AuditEventPublisher;
 import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.dto.VersionDTO;
+import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
+
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -32,11 +39,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +55,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class VersionResource {
+
+    @Autowired
+    private AuditEventPublisher auditPublisher;
 
     private final Logger log = LoggerFactory.getLogger(VersionResource.class);
 
@@ -74,6 +86,18 @@ public class VersionResource {
             throw new BadRequestAlertException("A new version cannot already have an ID", ENTITY_NAME, "idexists");
         }
         VersionDTO result = versionService.save(versionDTO);
+
+        //notify the auditing mechanism
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("language", result.getLanguage());
+        map.put("definition", result.getDefinition());
+        map.put("notation", result.getNotation());
+        map.put("version", result.getNumberAsString());
+        map.put("title", result.getTitle());
+        map.put("publisher", result.getPublisher());
+        map.put("status", result.getStatus());
+        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "VERSION_CREATED", map));
+
         return ResponseEntity.created(new URI("/api/versions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -95,6 +119,18 @@ public class VersionResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         VersionDTO result = versionService.save(versionDTO);
+
+        //notify the auditing mechanism
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("language", result.getLanguage());
+        map.put("definition", result.getDefinition());
+        map.put("notation", result.getNotation());
+        map.put("version", result.getNumberAsString());
+        map.put("title", result.getTitle());
+        map.put("publisher", result.getPublisher());
+        map.put("status", result.getStatus());
+        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "VERSION_UPDATED", map));
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, versionDTO.getId().toString()))
             .body(result);
@@ -136,6 +172,20 @@ public class VersionResource {
     @DeleteMapping("/versions/{id}")
     public ResponseEntity<Void> deleteVersion(@PathVariable Long id) {
         log.debug("REST request to delete Version : {}", id);
+
+        Optional<VersionDTO> versionDTO = versionService.findOne(id);
+
+        //notify the auditing mechanism
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("language", versionDTO.get().getLanguage());
+        map.put("definition", versionDTO.get().getDefinition());
+        map.put("notation", versionDTO.get().getNotation());
+        map.put("version", versionDTO.get().getNumberAsString());
+        map.put("title", versionDTO.get().getTitle());
+        map.put("publisher", versionDTO.get().getPublisher());
+        map.put("status", versionDTO.get().getStatus());
+        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "VERSION_DELETED", map));
+
         versionService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }

@@ -161,19 +161,7 @@ public class EditorResource {
         VocabularyDTO result = vocabularyService.saveVocabulary( vocabularySnippet );
 
         //notify the auditing mechanism
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("agency_name", agencyService.findOne(vocabularySnippet.getAgencyId()).get().getName());
-        map.put("title", vocabularySnippet.getTitle());
-        map.put("type", vocabularySnippet.getItemType());
-        map.put("version", vocabularySnippet.getVersionNumber());
-        map.put("language", vocabularySnippet.getLanguage());
-        map.put("status", vocabularySnippet.getStatus());
-        map.put("notation", vocabularySnippet.getNotation());
-        map.put("definition", vocabularySnippet.getDefinition());
-        if (vocabularySnippet.getNotes() != null && !vocabularySnippet.getNotes().equalsIgnoreCase("")) {
-            map.put("notes", vocabularySnippet.getNotes());
-        }
-        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), vocabularySnippet.getActionType().name(), map));
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), result, null, vocabularySnippet, null, null, null, "CREATE_VOCABULARY");
 
         return ResponseEntity.created(new URI("/api/vocabularies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_VOCABULARY_NAME, result.getNotation()))
@@ -189,17 +177,10 @@ public class EditorResource {
     @PostMapping("/editors/vocabularies/new-version/{id}")
     public ResponseEntity<VersionDTO> createNewVocabularyVersion(@PathVariable Long id) {
         log.debug("REST request to create new Vocabulary with version ID: {}", id);
-        VersionDTO result = vocabularyService.createNewVersion( id );
-
+        VersionDTO result = vocabularyService.createNewVersion(id);
+        
         //notify the auditing mechanism
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("agency_name", vocabularyService.findOne(result.getVocabularyId()).get().getAgencyName());
-        map.put("title", result.getTitle());
-        map.put("type", result.getItemType());
-        map.put("version", vocabularyService.findOne(result.getVocabularyId()).get().getVersionNumber());
-        map.put("language", result.getLanguage());
-
-        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "CREATE_CV", map));
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, result, null, null, null, null, "CREATE_NEW_VOCABULARY_VERSION");
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_VERSION_NAME, result.getNotation()))
@@ -233,38 +214,10 @@ public class EditorResource {
         }
         VocabularyDTO result = vocabularyService.saveVocabulary(vocabularySnippet);
 
-        // versionService.findOne(vocabularySnippet.getVersionId()).get()
         //notify the auditing mechanism
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        //map.put("agency_name", agencyService.findOne(result.getAgencyId()).get().getName());
-        map.put("agency_name", result.getAgencyName());
-        map.put("type", vocabularySnippet.getItemType());
-        map.put("language", vocabularySnippet.getLanguage());
-
-        if (result.getVersionByLanguage(vocabularySnippet.getLanguage()) != null) {
-            map.put("version", result.getVersionByLanguage(vocabularySnippet.getLanguage()).split("_")[0]);
-            map.put("status", result.getVersionByLanguage(vocabularySnippet.getLanguage()).split("_")[1]);
-        } else {
-            // map.put("version", "");
-            map.put("status", result.getStatus());
-        }
-
-        map.put("title", result.getTitleByLanguage(vocabularySnippet.getLanguage()));
-        // map.put("title", vocabularySnippet.getTitle());
-
-        // map.put("status1", result.getVersionByLanguage(vocabularySnippet.getLanguage()));
-        // map.put("status2", vocabularySnippet.getVersionNumber() + "_" + vocabularySnippet.getStatus());
-        // map.put("status3", result.getStatus());
-
-        // if (vocabularySnippet.getActionType().equals(ActionType.EDIT_NOTE_CV)) {
-        //     if (result.getNotes() != null && !result.getNotes().equalsIgnoreCase("")) {
-        //         map.put("notes", result.getNotes());
-        //     }
-        // } else {
-        //     map.put("title", vocabularySnippet.getTitle());
-        //     map.put("version", vocabularySnippet.getVersionNumber());
-        //     map.put("definition", vocabularySnippet.getDefinition());
-        // }
+        VocabularyDTO vocabularyDTO = vocabularyService.findOne(vocabularySnippet.getVocabularyId())
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVersionId()));
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, null, vocabularySnippet, null, null, null, "UPDATE_VOCABULARY_" + vocabularySnippet.getActionType());
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VOCABULARY_NAME, result.getNotation()))
@@ -287,19 +240,10 @@ public class EditorResource {
         VersionDTO versionDTO = vocabularyService.forwardStatus(vocabularySnippet);
 
         //notify the auditing mechanism
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        // map.put("agency_name", agencyService.findOne(result.getAgencyId()).get().getName());
-        map.put("agency_name", agencyService.findOne(vocabularySnippet.getAgencyId()).get().getName());
-        map.put("type", vocabularySnippet.getItemType());
-        map.put("language", vocabularySnippet.getLanguage());
-        map.put("status",vocabularyService.findOne(vocabularySnippet.getVocabularyId()).get().getStatus());
-
-        map.put("title", vocabularySnippet.getTitle());
-        map.put("version", vocabularySnippet.getVersionNumber());
-        map.put("definition", vocabularySnippet.getDefinition());
-
-        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), vocabularySnippet.getActionType().name(), map));
-
+        VocabularyDTO vocabularyDTO = vocabularyService.findOne(vocabularySnippet.getVocabularyId())
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVersionId()));
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, vocabularySnippet, null, null, null, vocabularySnippet.getActionType().name());
+        
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VERSION_NAME, versionDTO.getNotation()))
             .body(versionDTO);
@@ -354,9 +298,16 @@ public class EditorResource {
         } else {
             if( versionDTO.isInitialVersion() ) {
                 // delete whole vocabulary
+                //notify the auditing mechanism
+                auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, null, null, null, "DELETE_WHOLE_VOCABULARY");
+
                 vocabularyService.delete(versionDTO.getVocabularyId());
             } else {
                 // delete version SL and related TLs
+
+                //notify the auditing mechanism
+                auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, null, null, null, "DELETE_VOCABULARY_SL_AND_RELATED_TL(S)_VERSION");
+
                 VersionDTO finalVersionDTO = versionDTO;
                 List<VersionDTO> versionDTOs = vocabularyDTO.getVersions().stream().filter(v -> v.getNumber().equalPatchVersionNumber(finalVersionDTO.getNumber())).collect(Collectors.toList());
                 versionDTOs.forEach(vocabularyDTO.getVersions()::remove);
@@ -373,7 +324,7 @@ public class EditorResource {
                 // indexing editor
                 vocabularyService.indexEditor(vocabularyDTO);
 
-                if( versionDTO.getStatus().equals( Status.PUBLISHED.toString())) {
+                if( versionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
                     // remove published JSON file, re-create the JSON file and re-index for published vocabulary
                     vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
                     vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
@@ -395,7 +346,7 @@ public class EditorResource {
             } else {
                 // check if there is previous version
                 VersionDTO versionPrevDTO = null;
-                if ( versionDTO.getPreviousVersion() != null )
+                if (versionDTO.getPreviousVersion() != null)
                     versionPrevDTO = versionService.findOne(versionDTO.getPreviousVersion()).orElse(null);
                 if( versionPrevDTO != null) {
                     vocabularyDTO.setTitleDefinition(versionPrevDTO.getTitle(), versionPrevDTO.getDefinition(), versionPrevDTO.getLanguage(), false);
@@ -403,6 +354,10 @@ public class EditorResource {
                 }
             }
         }
+
+        //notify the auditing mechanism
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, null, null, null, "DELETE_TL_VOCABULARY");
+
         vocabularyDTO.removeVersion( versionDTO );
         vocabularyDTO = vocabularyService.save(vocabularyDTO);
         vocabularyService.indexEditor( vocabularyDTO );
@@ -432,7 +387,13 @@ public class EditorResource {
             throw new BadRequestAlertException("A new code/concept cannot already have an ID", ENTITY_CODE_NAME, ID_EXIST);
         }
 
-        ConceptDTO result = vocabularyService.saveCode( codeSnippet );
+        ConceptDTO result = vocabularyService.saveCode(codeSnippet);
+        
+        //notify the auditing mechanism
+        VersionDTO versionDTO = versionService.findOne(codeSnippet.getVersionId())
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + codeSnippet.getVersionId()));
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO, null, result, null, codeSnippet, "CREATE_CODE");
+
         return ResponseEntity.created(new URI("/api/concepts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_CODE_NAME, result.getNotation()))
             .body(result);
@@ -458,7 +419,7 @@ public class EditorResource {
 
         // reject if version status is published
         if (versionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
-            throw new IllegalArgumentException( "Unable to add Code " + codeSnippets[0].getNotation() + ", Version is already PUBLISHED" );
+            throw new IllegalArgumentException("Unable to add Code " + codeSnippets[0].getNotation() + ", Version is already PUBLISHED");
         }
 
         final Long vocabularyId = versionDTO.getVocabularyId();
@@ -466,10 +427,10 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException("Unable to add Vocabulary " + vocabularyId));
 
         // check for authorization
-        if( codeSnippets[0].getActionType().equals( ActionType.CREATE_CODE))
+        if (codeSnippets[0].getActionType().equals( ActionType.CREATE_CODE))
             SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CODE,
                 vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
-        else if( codeSnippets[0].getActionType().equals( ActionType.ADD_TL_CODE))
+        else if (codeSnippets[0].getActionType().equals( ActionType.ADD_TL_CODE))
             SecurityUtils.checkResourceAuthorization(ActionType.ADD_TL_CODE,
                 vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
 
@@ -479,16 +440,19 @@ public class EditorResource {
 
             ConceptDTO conceptDTO = null;
 
-            if( codeSnippet.getActionType().equals( ActionType.CREATE_CODE)) {
+            if (codeSnippet.getActionType().equals(ActionType.CREATE_CODE)) {
                 conceptDTO = addNewConcept(versionDTO, codeSnippet);
-            } else if( codeSnippet.getActionType().equals( ActionType.ADD_TL_CODE)) {
+            } else if (codeSnippet.getActionType().equals(ActionType.ADD_TL_CODE)) {
                 conceptDTO = versionDTO.getConcepts().stream().filter(c -> c.getId().equals(codeSnippet.getConceptId())).findFirst().orElse(null);
-                if( conceptDTO != null ) {
-                    conceptDTO.setTitle( codeSnippet.getTitle() );
-                    conceptDTO.setDefinition( codeSnippet.getDefinition() );
+                if (conceptDTO != null) {
+                    conceptDTO.setTitle(codeSnippet.getTitle());
+                    conceptDTO.setDefinition(codeSnippet.getDefinition());
+                    
+                    //notify the auditing mechanism
+                    auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO, null, conceptDTO, null, codeSnippet, "ADD_TL_CODE");
                 }
             }
-            if( conceptDTO == null )
+            if (conceptDTO == null)
                 continue;
 
             versionDTO = versionService.save(versionDTO);
@@ -497,15 +461,15 @@ public class EditorResource {
             vocabularyService.storeChangeType(codeSnippet, versionDTO);
 
             // find the newly created code from version
-            ConceptDTO concept= versionDTO.findConceptByNotation(conceptDTO.getNotation());
-            storedCodes.add( concept );
+            ConceptDTO concept = versionDTO.findConceptByNotation(conceptDTO.getNotation());
+            storedCodes.add(concept);
         }
 
         // index editor
         vocabularyService.indexEditor(vocabularyDTO);
 
         String conceptsNotation = storedCodes.stream().map(ConceptDTO::getNotation).collect(Collectors.joining());
-        if( conceptsNotation.length() > 20) {
+        if (conceptsNotation.length() > 20) {
             conceptsNotation = conceptsNotation.substring(0, 20) + "...";
         }
         conceptsNotation += " (" + storedCodes.size() + " new codes added)";
@@ -518,14 +482,18 @@ public class EditorResource {
     private ConceptDTO addNewConcept(VersionDTO versionDTO, CodeSnippet codeSnippet) {
         // check if concept already exist for new concept
         if (versionDTO.getConcepts().stream()
-            .anyMatch(c -> c.getNotation().equals( codeSnippet.getNotation()))) {
+            .anyMatch(c -> c.getNotation().equals(codeSnippet.getNotation()))) {
             throw new CodeAlreadyExistException();
         }
         // set position if not available
-        if( codeSnippet.getPosition() == null )
+        if (codeSnippet.getPosition() == null)
             codeSnippet.setPosition( versionDTO.getConcepts().size() - 1 );
         // create concept by codeSnippet
         ConceptDTO newConceptDTO = new ConceptDTO(codeSnippet);
+
+        //notify the auditing mechanism
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO, null, newConceptDTO, null, codeSnippet, "CREATE_CODE");
+
         // add concept to version and save version to save new concept
         versionDTO.addConceptAt(newConceptDTO, newConceptDTO.getPosition());
         return newConceptDTO;
@@ -545,15 +513,21 @@ public class EditorResource {
     @PutMapping("/editors/codes")
     public ResponseEntity<ConceptDTO> updateCode(@Valid @RequestBody CodeSnippet codeSnippet) {
         log.debug("REST request to update Code/Concept : {}", codeSnippet);
-        if( !(codeSnippet.getActionType().equals( ActionType.EDIT_CODE ) ||
-            codeSnippet.getActionType().equals( ActionType.ADD_TL_CODE ) ||
-            codeSnippet.getActionType().equals( ActionType.EDIT_TL_CODE ) ||
-            codeSnippet.getActionType().equals( ActionType.DELETE_TL_CODE )))
-            throw new IllegalArgumentException( "Action type " + codeSnippet.getActionType() + "not supported" );
+        if (!(codeSnippet.getActionType().equals(ActionType.EDIT_CODE) ||
+            codeSnippet.getActionType().equals(ActionType.ADD_TL_CODE) ||
+            codeSnippet.getActionType().equals(ActionType.EDIT_TL_CODE) ||
+            codeSnippet.getActionType().equals(ActionType.DELETE_TL_CODE)))
+            throw new IllegalArgumentException("Action type " + codeSnippet.getActionType() + "not supported");
         if (codeSnippet.getConceptId() == null) {
             throw new BadRequestAlertException(INVALID_ID, ENTITY_CODE_NAME, ID_NULL);
         }
-        ConceptDTO result = vocabularyService.saveCode( codeSnippet );
+        ConceptDTO result = vocabularyService.saveCode(codeSnippet);
+
+        //notify the auditing mechanism
+        VersionDTO versionDTO = versionService.findOne(codeSnippet.getVersionId())
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + codeSnippet.getVersionId()));
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO, null, result, null, codeSnippet, codeSnippet.getActionType().name());
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_CODE_NAME, result.getNotation()))
             .body(result);
@@ -598,6 +572,9 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_CONCEPT + codeSnippet.getReplacedById() + AS_A_REPLACING_CONCEPT));
         }
 
+        //notify the auditing mechanism
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, conceptDTO, replacingConceptDTO, codeSnippet, codeSnippet.getActionType().name());
+
         for (ConceptDTO conceptNext : versionDTO.getConcepts()) {
             if (conceptNext.equals(conceptDTO)) {
                 conceptNext.setDeprecated(true);
@@ -617,7 +594,7 @@ public class EditorResource {
         versionService.save(versionDTO);
 
         // index editor after deprecation
-        vocabularyService.indexEditor( vocabularyDTO );
+        vocabularyService.indexEditor(vocabularyDTO);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "alert.code.deprecated", conceptDTO.getNotation())).build();
     }
 
@@ -643,25 +620,28 @@ public class EditorResource {
         ConceptDTO conceptDTO = conceptService.findOne(id)
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_CONCEPT + id + TO_BE_DELETED));
         VersionDTO versionDTO = versionService.findOne(conceptDTO.getVersionId())
-            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + conceptDTO.getVersionId() ));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + conceptDTO.getVersionId()));
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
-            .orElseThrow( () -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + versionDTO.getVocabularyId() ));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + versionDTO.getVocabularyId()));
 
         // check if user authorized to delete VocabularyResource
         SecurityUtils.checkResourceAuthorization(ActionType.DELETE_CODE,
             vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
 
+        //notify the auditing mechanism
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, conceptDTO, null, null, ActionType.DELETE_CODE.name());
+        
         // remove parent-child link and save, orphan concept will be automatically deleted
-        versionDTO.removeConcept( conceptDTO );
+        versionDTO.removeConcept(conceptDTO);
 
         // store changes if not initial version
         recordCodeDeleteAction(conceptDTO, versionDTO);
 
         // remove any child if exist
         Iterator<ConceptDTO> conceptIterator = versionDTO.getConcepts().iterator();
-        while ( conceptIterator.hasNext() ) {
+        while (conceptIterator.hasNext()) {
             ConceptDTO conceptNext = conceptIterator.next();
-            if( conceptNext.getParent() != null && conceptNext.getParent().startsWith( conceptDTO.getNotation()) ){
+            if (conceptNext.getParent() != null && conceptNext.getParent().startsWith( conceptDTO.getNotation())){
                 conceptIterator.remove();
 
                 // store changes if not initial version
@@ -694,7 +674,7 @@ public class EditorResource {
     public ResponseEntity<VersionDTO> reorderCode(@Valid @RequestBody CodeSnippet codeSnippet){
         log.debug("REST request to reorder codes : {}", codeSnippet);
 
-        if ( !codeSnippet.getActionType().equals( ActionType.REORDER_CODE) ) {
+        if ( !codeSnippet.getActionType().equals(ActionType.REORDER_CODE) ) {
             throw new IllegalArgumentException( "ActionType REORDER_CODE needed" );
         }
 
@@ -714,7 +694,7 @@ public class EditorResource {
 
             String newNotation = codeSnippet.getConceptStructures().get( finalI );
             int dotIndex = newNotation.lastIndexOf('.');
-            if ( dotIndex < 0 ) {
+            if (dotIndex < 0) {
                 concept.setParent( null );
             } else {
                 concept.setParent( newNotation.substring(0, dotIndex));
@@ -723,9 +703,9 @@ public class EditorResource {
             concept.setPosition(i);
         }
         // save
-        versionService.save( versionDTO );
+        versionService.save(versionDTO);
         // reindex
-        vocabularyService.indexEditor(vocabularyDTO );
+        vocabularyService.indexEditor(vocabularyDTO);
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_VERSION_NAME, versionDTO.getNotation()))
