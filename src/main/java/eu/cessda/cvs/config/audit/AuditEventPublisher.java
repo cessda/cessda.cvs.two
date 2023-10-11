@@ -2,7 +2,7 @@ package eu.cessda.cvs.config.audit;
 
 import eu.cessda.cvs.domain.CodeSnippet;
 import eu.cessda.cvs.domain.VocabularySnippet;
-import eu.cessda.cvs.security.SecurityUtils;
+import eu.cessda.cvs.service.dto.CommentDTO;
 import eu.cessda.cvs.service.dto.ConceptDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
@@ -30,7 +30,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             this.publisher.publishEvent(new AuditApplicationEvent(event));
     }
 
-    public void publish(String user, VocabularyDTO vocabulary, VersionDTO version, VocabularySnippet vocabularySnippet, ConceptDTO concept, ConceptDTO replacingConceptDTO, CodeSnippet codeSnippet, String action) {
+    public void publish(String user, VocabularyDTO vocabulary, VersionDTO version, VocabularySnippet vocabularySnippet, ConceptDTO concept, ConceptDTO replacingConceptDTO, CodeSnippet codeSnippet, CommentDTO commentDTO, String action) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         if (vocabulary != null) {
             map.put("cv_agency_name", vocabulary.getAgencyName());
@@ -141,7 +141,6 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                 map.put("cv_type", "SL & TL(s)");
                 break;
             case "DELETE_TL_VOCABULARY":
-                
                 map.put("cv_language", version.getLanguage());
                 map.put("cv_title", version.getTitle());
                 map.put("cv_version", version.getNumber());
@@ -155,6 +154,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                 map.put("cv_title", version.getTitle());
                 map.put("cv_language", version.getLanguage());
                 map.put("cv_type", version.getItemType());
+                map.put("cv_version", version.getNumberAsString());
                 if (codeSnippet.getChangeType() != null && codeSnippet.getChangeDesc() != null) {
                     map.put("code_change_type", codeSnippet.getChangeType());
                     map.put("code_change_description", codeSnippet.getChangeDesc());
@@ -171,12 +171,14 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                 map.put("cv_title", version.getTitle());
                 map.put("cv_language", version.getLanguage());
                 map.put("cv_type", version.getItemType());
+                map.put("cv_version", version.getNumberAsString());
                 map.put("code_title", concept.getTitle());
                 break;
             case "DEPRECATE_CODE":
                 map.put("cv_title", version.getTitle());
                 map.put("cv_language", version.getLanguage());
                 map.put("cv_type", version.getItemType());
+                map.put("cv_version", version.getNumberAsString());
                 map.put("code_title", concept.getTitle());
                 if (replacingConceptDTO != null) {
                     map.put("replaced_by_title", replacingConceptDTO.getTitle());
@@ -185,8 +187,16 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             case "REORDER_CODE":
                 map.put("cv_title", version.getTitle());
                 map.put("cv_language", version.getLanguage());
-                map.put("cv_type", version.getItemType());
-                //map.put("code_title", concept.getTitle());
+                map.put("cv_version", version.getNumberAsString());
+                map.put("code_title", concept.getTitle());
+                break;
+            case "ADD_COMMENT":
+            case "UPDATE_COMMENT":
+            case "DELETE_COMMENT":
+                map.put("cv_title", version.getTitle());
+                map.put("cv_language", version.getLanguage());
+                map.put("cv_version", version.getNumberAsString());
+                map.put("cv_comment", commentDTO.getContent());
                 break;
             default:    
         }

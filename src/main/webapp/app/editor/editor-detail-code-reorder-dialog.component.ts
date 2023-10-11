@@ -24,7 +24,7 @@ import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
 
 @Component({
-  templateUrl: './editor-detail-code-reorder-dialog.component.html'
+  templateUrl: './editor-detail-code-reorder-dialog.component.html',
 })
 export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy {
   isSaving: boolean;
@@ -43,7 +43,7 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
     protected editorService: EditorService,
     public activeModal: NgbActiveModal,
     private router: Router,
-    protected eventManager: JhiEventManager
+    protected eventManager: JhiEventManager,
   ) {
     this.isSaving = false;
   }
@@ -58,9 +58,10 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
     this.codeSnippet = {
       ...new CodeSnippet(),
       actionType: 'REORDER_CODE',
+      conceptId: this.conceptParam.id,
       versionId: this.versionParam.id,
       conceptStructures: this.conceptsToPlace!.map(c => c.notation!),
-      conceptStructureIds: this.conceptsToPlace!.map(c => c.id!)
+      conceptStructureIds: this.conceptsToPlace!.map(c => c.id!),
     };
     this.editorService.reorderCode(this.codeSnippet).subscribe(() => this.onSaveSuccess());
   }
@@ -81,7 +82,7 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
     // normalize selected code, so the first selected element is always a root code
     this.conceptsToMove = [
       clonedConcepts.filter(c => c.notation === this.conceptParam.notation)[0],
-      ...clonedConcepts.filter(c => c.parent && c.parent.startsWith(this.conceptParam.notation!))
+      ...clonedConcepts.filter(c => c.parent && c.parent.startsWith(this.conceptParam.notation!)),
     ];
     // normalize selected code/code block
     const baseParent = this.conceptsToMove[0].parent;

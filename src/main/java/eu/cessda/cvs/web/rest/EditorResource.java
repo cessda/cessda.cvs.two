@@ -161,7 +161,7 @@ public class EditorResource {
         VocabularyDTO result = vocabularyService.saveVocabulary( vocabularySnippet );
 
         //notify the auditing mechanism
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), result, null, vocabularySnippet, null, null, null, "CREATE_VOCABULARY");
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), result, null, vocabularySnippet, null, null, null, null, "CREATE_VOCABULARY");
 
         return ResponseEntity.created(new URI("/api/vocabularies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_VOCABULARY_NAME, result.getNotation()))
@@ -180,7 +180,7 @@ public class EditorResource {
         VersionDTO result = vocabularyService.createNewVersion(id);
         
         //notify the auditing mechanism
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, result, null, null, null, null, "CREATE_NEW_VOCABULARY_VERSION");
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, result, null, null, null, null, null, "CREATE_NEW_VOCABULARY_VERSION");
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_VERSION_NAME, result.getNotation()))
@@ -217,7 +217,7 @@ public class EditorResource {
         //notify the auditing mechanism
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(vocabularySnippet.getVocabularyId())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVersionId()));
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, null, vocabularySnippet, null, null, null, "UPDATE_VOCABULARY_" + vocabularySnippet.getActionType());
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, null, vocabularySnippet, null, null, null, null, "UPDATE_VOCABULARY_" + vocabularySnippet.getActionType());
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VOCABULARY_NAME, result.getNotation()))
@@ -242,7 +242,7 @@ public class EditorResource {
         //notify the auditing mechanism
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(vocabularySnippet.getVocabularyId())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVersionId()));
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, vocabularySnippet, null, null, null, vocabularySnippet.getActionType().name());
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, vocabularySnippet, null, null, null, null, vocabularySnippet.getActionType().name());
         
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VERSION_NAME, versionDTO.getNotation()))
@@ -299,14 +299,14 @@ public class EditorResource {
             if( versionDTO.isInitialVersion() ) {
                 // delete whole vocabulary
                 //notify the auditing mechanism
-                auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, null, null, null, "DELETE_WHOLE_VOCABULARY");
+                auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, null, null, null, null, "DELETE_WHOLE_VOCABULARY");
 
                 vocabularyService.delete(versionDTO.getVocabularyId());
             } else {
                 // delete version SL and related TLs
 
                 //notify the auditing mechanism
-                auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, null, null, null, "DELETE_VOCABULARY_SL_AND_RELATED_TL(S)_VERSION");
+                auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, null, null, null, null, "DELETE_VOCABULARY_SL_AND_RELATED_TL(S)_VERSION");
 
                 VersionDTO finalVersionDTO = versionDTO;
                 List<VersionDTO> versionDTOs = vocabularyDTO.getVersions().stream().filter(v -> v.getNumber().equalPatchVersionNumber(finalVersionDTO.getNumber())).collect(Collectors.toList());
@@ -356,7 +356,7 @@ public class EditorResource {
         }
 
         //notify the auditing mechanism
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, null, null, null, "DELETE_TL_VOCABULARY");
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, null, null, null, null, "DELETE_TL_VOCABULARY");
 
         vocabularyDTO.removeVersion( versionDTO );
         vocabularyDTO = vocabularyService.save(vocabularyDTO);
@@ -392,7 +392,7 @@ public class EditorResource {
         //notify the auditing mechanism
         VersionDTO versionDTO = versionService.findOne(codeSnippet.getVersionId())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + codeSnippet.getVersionId()));
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO, null, result, null, codeSnippet, "CREATE_CODE");
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO, null, result, null, codeSnippet, null, "CREATE_CODE");
 
         return ResponseEntity.created(new URI("/api/concepts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_CODE_NAME, result.getNotation()))
@@ -449,7 +449,7 @@ public class EditorResource {
                     conceptDTO.setDefinition(codeSnippet.getDefinition());
                     
                     //notify the auditing mechanism
-                    auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO, null, conceptDTO, null, codeSnippet, "ADD_TL_CODE");
+                    auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO, null, conceptDTO, null, codeSnippet, null, "ADD_TL_CODE");
                 }
             }
             if (conceptDTO == null)
@@ -492,7 +492,7 @@ public class EditorResource {
         ConceptDTO newConceptDTO = new ConceptDTO(codeSnippet);
 
         //notify the auditing mechanism
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO, null, newConceptDTO, null, codeSnippet, "CREATE_CODE");
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO, null, newConceptDTO, null, codeSnippet, null, "CREATE_CODE");
 
         // add concept to version and save version to save new concept
         versionDTO.addConceptAt(newConceptDTO, newConceptDTO.getPosition());
@@ -526,7 +526,7 @@ public class EditorResource {
         //notify the auditing mechanism
         VersionDTO versionDTO = versionService.findOne(codeSnippet.getVersionId())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + codeSnippet.getVersionId()));
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO, null, result, null, codeSnippet, codeSnippet.getActionType().name());
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO, null, result, null, codeSnippet, null, codeSnippet.getActionType().name());
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_CODE_NAME, result.getNotation()))
@@ -573,7 +573,7 @@ public class EditorResource {
         }
 
         //notify the auditing mechanism
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, conceptDTO, replacingConceptDTO, codeSnippet, codeSnippet.getActionType().name());
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, conceptDTO, replacingConceptDTO, codeSnippet, null, codeSnippet.getActionType().name());
 
         for (ConceptDTO conceptNext : versionDTO.getConcepts()) {
             if (conceptNext.equals(conceptDTO)) {
@@ -629,7 +629,7 @@ public class EditorResource {
             vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
 
         //notify the auditing mechanism
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, conceptDTO, null, null, ActionType.DELETE_CODE.name());
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, conceptDTO, null, null, null, ActionType.DELETE_CODE.name());
         
         // remove parent-child link and save, orphan concept will be automatically deleted
         versionDTO.removeConcept(conceptDTO);
@@ -683,10 +683,10 @@ public class EditorResource {
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
             .orElseThrow( () -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + versionDTO.getVocabularyId() ));
         
-            //notify the auditing mechanism
-        /*ConceptDTO conceptDTO = conceptService.findOne(codeSnippet.getConceptId())
-            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_CONCEPT + codeSnippet.getConceptId()));*/
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, null, null, codeSnippet, ActionType.REORDER_CODE.name());
+        //notify the auditing mechanism
+        ConceptDTO conceptDTO = conceptService.findOne(codeSnippet.getConceptId())
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_CONCEPT + codeSnippet.getConceptId()));
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), vocabularyDTO, versionDTO, null, conceptDTO, null, codeSnippet, null, ActionType.REORDER_CODE.name());
 
         // check if user authorized to reorder VocabularyResource
         SecurityUtils.checkResourceAuthorization(ActionType.REORDER_CODE,
@@ -741,16 +741,19 @@ public class EditorResource {
         @Valid CommentDTO finalCommentDTO = commentDTO;
         VersionDTO versionDTO = versionService.findOne(commentDTO.getVersionId())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + finalCommentDTO.getVersionId() ));
-        if( commentDTO.getUserId() == null )
+        if (commentDTO.getUserId() == null)
             commentDTO.setUserId( SecurityUtils.getCurrentUserId() );
         ZonedDateTime dateTime = ZonedDateTime.now();
-        commentDTO.setDateTime( dateTime );
-        versionDTO.addComment( commentDTO );
+        commentDTO.setDateTime(dateTime);
+        versionDTO.addComment(commentDTO);
+
+        //notify the auditing mechanism
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO, null, null, null, null, commentDTO, "ADD_COMMENT");
 
         versionDTO = versionService.save(versionDTO);
 
         CommentDTO newSavedComment = versionDTO.getComments().stream().filter(c -> c.getDateTime().equals(dateTime)).findFirst().orElse(null);
-        if( newSavedComment != null )
+        if (newSavedComment != null)
             commentDTO = newSavedComment;
 
         return ResponseEntity.created(new URI("/api/comment/" + commentDTO.getId()))
@@ -788,6 +791,9 @@ public class EditorResource {
         commentFromVersion.setContent( commentDTO.getContent());
         versionService.save(versionDTO );
 
+        //notify the auditing mechanism
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO, null, null, null, null, commentDTO, "UPDATE_COMMENT");
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_COMMENT_NAME, commentFromVersion.getId().toString()))
             .body(commentFromVersion);
@@ -809,6 +815,10 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + commentDTO.getId() ));
         commentDTO.setVersionId( null );
         versionDTO.removeComment(commentDTO);
+        
+        //notify the auditing mechanism
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO, null, null, null, null, commentDTO, "DELETE_COMMENT");
+        
         // automatically remove comment
         versionService.save(versionDTO);
 
