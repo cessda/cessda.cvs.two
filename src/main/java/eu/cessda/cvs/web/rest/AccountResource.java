@@ -35,14 +35,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import java.util.HashMap;
 import java.util.Optional;
 
 /**
@@ -155,11 +153,7 @@ public class AccountResource {
             userDTO.getLangKey(), userDTO.getImageUrl());
         
         //notify the auditing mechanism
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("name", userDTO.getFirstName() + " " + userDTO.getLastName());
-        map.put("email", userDTO.getEmail());
-        map.put("language", userDTO.getLangKey());
-        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "USER_SETTINGS_UPDATED", map));
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), userDTO, null, "USER_SETTINGS_UPDATED");
     }
 
     /**
@@ -174,9 +168,6 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         userService.changePassword(passwordChangeDto.getCurrentPassword(), passwordChangeDto.getNewPassword());
-
-        //notify the auditing mechanism
-        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "USER_PASSWORD_UPDATED", new HashMap<String, Object>()));
     }
 
     /**

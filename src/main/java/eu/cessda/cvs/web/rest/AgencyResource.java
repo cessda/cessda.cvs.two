@@ -95,19 +95,7 @@ public class AgencyResource {
         AgencyDTO result = agencyService.save(agencyDTO);
 
         //notify the auditing mechanism
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("name", agencyDTO.getName());
-        map.put("link", agencyDTO.getLink());
-        if (agencyDTO.getUri() != null && !agencyDTO.getUri().equalsIgnoreCase("")) {
-            map.put("uri", agencyDTO.getUri());
-        }
-        if (agencyDTO.getUriCode() != null && !agencyDTO.getUriCode().equalsIgnoreCase("")) {
-            map.put("uri_code", agencyDTO.getUriCode());
-        }
-        if (agencyDTO.getCanonicalUri() != null && !agencyDTO.getCanonicalUri().equalsIgnoreCase("")) {
-            map.put("cannonical_uri", agencyDTO.getCanonicalUri());
-        }
-        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "AGENCY_CREATED", map));
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), agencyDTO, "AGENCY_CREATED");
 
         return ResponseEntity.created(new URI("/api/agencies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -134,20 +122,7 @@ public class AgencyResource {
         AgencyDTO result = agencyService.save(agencyDTO);
 
         //notify the auditing mechanism
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("name", agencyDTO.getName());
-        map.put("link", agencyDTO.getLink());
-        //think about removing the uri, canonnical uri and uri code, probably we should audit it???
-        if (agencyDTO.getUri() != null && !agencyDTO.getUri().equalsIgnoreCase("")) {
-            map.put("uri", agencyDTO.getUri());
-        }
-        if (agencyDTO.getUriCode() != null && !agencyDTO.getUriCode().equalsIgnoreCase("")) {
-            map.put("uri_code", agencyDTO.getUriCode());
-        }
-        if (agencyDTO.getCanonicalUri() != null && !agencyDTO.getCanonicalUri().equalsIgnoreCase("")) {
-            map.put("cannonical_uri", agencyDTO.getCanonicalUri());
-        }
-        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "AGENCY_UPDATED", map));
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), agencyDTO, "AGENCY_UPDATED");
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, agencyDTO.getId().toString()))
@@ -192,9 +167,8 @@ public class AgencyResource {
         log.debug("REST request to delete Agency : {}", id);
         
         //notify the auditing mechanism
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("name", agencyService.findOne(id).get().getName());
-        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "AGENCY_DELETED", map));
+        AgencyDTO agencyDTO = agencyService.findOne(id).get();
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), agencyDTO, "AGENCY_DELETED");
 
         agencyService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();

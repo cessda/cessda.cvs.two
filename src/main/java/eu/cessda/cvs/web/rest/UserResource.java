@@ -138,23 +138,7 @@ public class UserResource {
             User newUser = userService.createUser(userDTO);
 
             //notify the auditing mechanism
-            HashMap<String, Object> map = new HashMap<String, Object>();
-            map.put("id", userDTO.getLogin());
-            map.put("name", userDTO.getFirstName() + " " + userDTO.getLastName());
-            map.put("email", userDTO.getEmail());
-            String authorities = "";
-            if (userDTO.getAuthorities() != null) {
-                for (String authority : userDTO.getAuthorities()) {
-                    if (authorities.length() != 0) {
-                        authorities = authorities + " | ";
-                    }
-                    authorities = authorities + authority;
-                }
-                if (!authorities.equalsIgnoreCase("")) {
-                    map.put("roles", authorities);
-                }
-            }
-            auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "USER_CREATED", map));
+            auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), userDTO, null, "USER_CREATED");
 
             mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
@@ -203,38 +187,7 @@ public class UserResource {
         Optional<UserDTO> updatedUser = userService.updateUser(userDTO);
 
         //notify the auditing mechanism
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("id", userDTO.getLogin());
-        map.put("name", userDTO.getFirstName() + " " + userDTO.getLastName());
-        map.put("email", userDTO.getEmail());
-        String agencies = "";
-        for (UserAgencyDTO agency : userDTO.getUserAgencies()) {
-            agencies = agencies + agency.getAgencyRole() + ", ";
-            agencies = agencies + agency.getLanguage() + ", ";
-            if (agency.getAgencyName() == null) {
-                agencies = agencies + agency.getAgencyName();
-            } else {
-                agencies = agencies + agency.getAgencyName();
-            }
-            agencies = agencies + " | ";
-        }
-        if (!agencies.equalsIgnoreCase("")) {
-            agencies = agencies.substring(0, agencies.length() - 3);
-            map.put("agency", agencies);
-        }
-        String authorities = "";
-        if (userDTO.getAuthorities() != null) {
-            for (String authority : userDTO.getAuthorities()) {
-                if (authorities.length() != 0) {
-                    authorities = authorities + " | ";
-                }
-                authorities = authorities + authority;
-            }
-            if (!authorities.equalsIgnoreCase("")) {
-                map.put("roles", authorities);
-            }
-        }
-        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "USER_UPDATED", map));
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), userDTO, null, "USER_UPDATED");
 
         return ResponseUtil.wrapOrNotFound(updatedUser,
             HeaderUtil.createAlert(applicationName, "userManagement.updated", userDTO.getLogin()));
@@ -294,12 +247,8 @@ public class UserResource {
         log.debug("REST request to delete User: {}", login);
 
         //notify the auditing mechanism
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        Optional<User> userDTO = userRepository.findOneByLogin(login.toLowerCase());
-        map.put("id", userDTO.get().getLogin());
-        map.put("name", userDTO.get().getFirstName() + " " + userDTO.get().getLastName());
-        map.put("email", userDTO.get().getEmail());
-        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "USER_DELETED", map));
+        User user = userRepository.findOneByLogin(login.toLowerCase()).get();
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, user, "USER_DELETED");
         
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "userManagement.deleted", login)).build();

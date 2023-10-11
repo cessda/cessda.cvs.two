@@ -1,9 +1,13 @@
 package eu.cessda.cvs.config.audit;
 
 import eu.cessda.cvs.domain.CodeSnippet;
+import eu.cessda.cvs.domain.User;
 import eu.cessda.cvs.domain.VocabularySnippet;
+import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.service.dto.CommentDTO;
 import eu.cessda.cvs.service.dto.ConceptDTO;
+import eu.cessda.cvs.service.dto.UserAgencyDTO;
+import eu.cessda.cvs.service.dto.UserDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 
@@ -30,7 +34,100 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             this.publisher.publishEvent(new AuditApplicationEvent(event));
     }
 
-    public void publish(String user, VocabularyDTO vocabulary, VersionDTO version, VocabularySnippet vocabularySnippet, ConceptDTO concept, ConceptDTO replacingConceptDTO, CodeSnippet codeSnippet, CommentDTO commentDTO, String action) {
+    /**
+     * Log AgencyResource
+     * @param user
+     * @param agency
+     * @param action
+     */
+    public void publish(String user, AgencyDTO agency, String action) {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("name", agency.getName());
+        map.put("link", agency.getLink());
+        if (agency.getUri() != null && !agency.getUri().equalsIgnoreCase("")) {
+            map.put("uri", agency.getUri());
+        }
+        if (agency.getUriCode() != null && !agency.getUriCode().equalsIgnoreCase("")) {
+            map.put("uri_code", agency.getUriCode());
+        }
+        if (agency.getCanonicalUri() != null && !agency.getCanonicalUri().equalsIgnoreCase("")) {
+            map.put("cannonical_uri", agency.getCanonicalUri());
+        }
+        publish(new AuditEvent(user, action, map));
+    }
+
+    /**
+     * Log AccountResource, UserResource
+     * @param user
+     * @param userDTO
+     * @param action
+     */
+    public void publish(String user, UserDTO userDTO, User user_, String action) {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        if (userDTO != null) {
+            map.put("id", userDTO.getLogin());
+            map.put("name", userDTO.getFirstName() + " " + userDTO.getLastName());
+            map.put("email", userDTO.getEmail());
+            map.put("language", userDTO.getLangKey());
+        }
+        switch (action) {
+            /*case "USER_SETTINGS_UPDATED":
+                break;*/
+            case "USER_CREATED":
+            case "USER_UPDATED":
+                if (userDTO.getUserAgencies() != null) {
+                    String agencies = "";
+                    for (UserAgencyDTO agency : userDTO.getUserAgencies()) {
+                        agencies = agencies + agency.getAgencyRole() + ", ";
+                        agencies = agencies + agency.getLanguage() + ", ";
+                        if (agency.getAgencyName() == null) {
+                            agencies = agencies + agency.getAgencyName();
+                        } else {
+                            agencies = agencies + agency.getAgencyName();
+                        }
+                        agencies = agencies + " | ";
+                    }
+                    if (!agencies.equalsIgnoreCase("")) {
+                        agencies = agencies.substring(0, agencies.length() - 3);
+                        map.put("agency", agencies);
+                    }
+                }
+                if (userDTO.getAuthorities() != null) {
+                    String authorities = "";
+                    for (String authority : userDTO.getAuthorities()) {
+                        if (authorities.length() != 0) {
+                            authorities = authorities + " | ";
+                        }
+                        authorities = authorities + authority;
+                    }
+                    if (!authorities.equalsIgnoreCase("")) {
+                        map.put("roles", authorities);
+                    }
+                }
+                break;
+            case "USER_DELETED":
+                map.put("id", user_.getLogin());
+                map.put("name", user_.getFirstName() + " " + user_.getLastName());
+                map.put("email", user_.getEmail());
+                break;
+            default:
+        }
+        publish(new AuditEvent(user, action, map));
+    }
+
+    /**
+     * Log EditorResource
+     * @param user
+     * @param vocabulary
+     * @param version
+     * @param vocabularySnippet
+     * @param concept
+     * @param replacingConceptDTO
+     * @param codeSnippet
+     * @param comment
+     * @param action
+     */
+    public void publish(String user, VocabularyDTO vocabulary, VersionDTO version, VocabularySnippet vocabularySnippet, ConceptDTO concept, ConceptDTO replacingConceptDTO, CodeSnippet codeSnippet, CommentDTO comment, String action) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         if (vocabulary != null) {
             map.put("cv_agency_name", vocabulary.getAgencyName());
@@ -196,7 +293,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                 map.put("cv_title", version.getTitle());
                 map.put("cv_language", version.getLanguage());
                 map.put("cv_version", version.getNumberAsString());
-                map.put("cv_comment", commentDTO.getContent());
+                map.put("cv_comment", comment.getContent());
                 break;
             default:    
         }
