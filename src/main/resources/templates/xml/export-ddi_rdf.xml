@@ -19,11 +19,11 @@
       <skos:historyNote th:if="${docVersionNotes != null and docVersionNotes != ''}" th:text="${docVersionNotes}"></skos:historyNote>
       <skos:changeNote th:if="${docVersionChanges != null and docVersionChanges != ''}" th:text="${docVersionChanges}"></skos:changeNote>
     <loop th:remove="tag" th:each="code, iterStat: ${codes}">
-      <skos:hasTopConcept th:if="${code.parent == null}" th:attr="'rdf:resource'=${docId + code.generateHash('md5', code.notation, 7)}"/>
+      <skos:hasTopConcept th:if="${code.parent == null}" th:attr="'rdf:resource'=${docId + code.callGenerateHash('md5', code.notation, 7)}"/>
     </loop>
    </rdf:Description>
  <loop th:remove="tag" th:each="code, iterStat: ${codes}">
-   <rdf:Description th:attr="'rdf:about'=${docId + code.generateHash('md5', code.notation, 7)}">
+   <rdf:Description th:attr="'rdf:about'=${docId + code.callGenerateHash('md5', code.notation, 7)}">
       <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
       <owl:deprecated th:if="${code.deprecated}" rdf:datatype="http://www.w3.org/2001/XMLSchema#boolean" th:text="${code.deprecated}"></owl:deprecated>
       <skos:inScheme th:attr="'rdf:resource'=${docId}"/>
@@ -33,12 +33,12 @@
       <skos:definition th:attr="'xml:lang'=${version.language}" th:text="${code.getDefinitionByLanguage(version.language)}"></skos:definition>
    	</loop>
    	<loop th:remove="tag" th:each="code2, iterStat: ${codes}">
-      <skos:narrower th:if="${ code2.parent == code.notation}" th:attr="'rdf:resource'=${docId + code.generateHash('md5', code2.notation, 7)}"/>
+      <skos:narrower th:if="${ code2.parent == code.notation}" th:attr="'rdf:resource'=${docId + code.callGenerateHash('md5', code2.notation, 7)}"/>
     </loop>
     <loop th:remove="tag" th:each="code3, iterStat: ${codes}">
-      <dcterms:replaces th:if="${code3.replacedByNotation != null && code3.replacedByNotation == code.notation}" th:attr="'rdf:resource'=${docId + code.generateHash('md5', code3.notation, 7)}"/>
+      <dcterms:replaces th:if="${code3.replacedByNotation != null && code3.replacedByNotation == code.notation}" th:attr="'rdf:resource'=${docId + code.callGenerateHash('md5', code3.notation, 7)}"/>
     </loop>
-      <dcterms:isReplacedBy th:if="${code.replacedById != null}" th:attr="'rdf:resource'=${docId + code.generateHash('md5', code.replacedByNotation, 7)}"/>
+      <dcterms:isReplacedBy th:if="${code.replacedById != null}" th:attr="'rdf:resource'=${docId + code.callGenerateHash('md5', code.replacedByNotation, 7)}"/>
    </rdf:Description>
   </loop>
 </rdf:RDF>
