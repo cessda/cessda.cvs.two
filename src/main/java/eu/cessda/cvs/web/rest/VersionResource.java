@@ -91,7 +91,7 @@ public class VersionResource {
         if (auditUser.isPresent()) {
             auditUserString = auditUser.get();
         }
-        auditPublisher.publish(auditUserString, null, result, null, null, null, null, null, "CREATE_NEW_VOCABULARY_VERSION");
+        auditPublisher.publish(auditUserString, null, result, null, "CREATE_NEW_VOCABULARY_VERSION");
 
         return ResponseEntity.created(new URI("/api/versions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -121,7 +121,7 @@ public class VersionResource {
         if (auditUser.isPresent()) {
             auditUserString = auditUser.get();
         }
-        auditPublisher.publish(auditUserString, null, result, null, null, null, null, null, "UPDATE_VERSION");
+        auditPublisher.publish(auditUserString, null, result, null, "UPDATE_VERSION");
         
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, versionDTO.getId().toString()))
@@ -177,7 +177,7 @@ public class VersionResource {
         if (versionDTO.isPresent()) {
             versionDTOTemp = versionDTO.get();
         }
-        auditPublisher.publish(auditUserString, null, versionDTOTemp, null, null, null, null, null, "DELETE_VERSION");
+        auditPublisher.publish(auditUserString, null, versionDTOTemp, null, "DELETE_VERSION");
 
         versionService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();

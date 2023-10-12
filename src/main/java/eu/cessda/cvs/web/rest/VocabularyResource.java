@@ -93,7 +93,7 @@ public class VocabularyResource {
         if (auditUser.isPresent()) {
             auditUserString = auditUser.get();
         }
-        auditPublisher.publish(auditUserString, result, null, null, null, null, null, null, "CREATE_VOCABULARY");
+        auditPublisher.publish(auditUserString, result, null, null, "CREATE_VOCABULARY");
 
         return ResponseEntity.created(new URI("/api/vocabularies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -122,7 +122,7 @@ public class VocabularyResource {
         if (auditUser.isPresent()) {
             auditUserString = auditUser.get();
         }
-        auditPublisher.publish(auditUserString, result, null, null, null, null, null, null, "UPDATE_VOCABULARY");
+        auditPublisher.publish(auditUserString, result, null, null, "UPDATE_VOCABULARY");
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, vocabularyDTO.getId().toString()))
@@ -193,7 +193,7 @@ public class VocabularyResource {
         if (auditUser.isPresent()) {
             auditUserString = auditUser.get();
         }
-        auditPublisher.publish(auditUserString, vocabulary, null, null, null, null, null, null, "DELETE_VOCABULARY");
+        auditPublisher.publish(auditUserString, vocabulary, null, null, "DELETE_VOCABULARY");
 
         vocabularyService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
