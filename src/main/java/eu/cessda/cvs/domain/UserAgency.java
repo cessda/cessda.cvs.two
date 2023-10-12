@@ -113,10 +113,6 @@ public class UserAgency implements Serializable {
         this.agency = agency;
     }
 
-    public void setAgencyName(String agencyName) {
-        this.agency.setName(agencyName);
-    }
-    
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
