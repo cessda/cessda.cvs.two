@@ -88,7 +88,12 @@ public class VocabularyResource {
         VocabularyDTO result = vocabularyService.save(vocabularyDTO);
 
         //notify the auditing mechanism
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), result, null, null, null, null, null, null, "CREATE_VOCABULARY");
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, result, null, null, null, null, null, null, "CREATE_VOCABULARY");
 
         return ResponseEntity.created(new URI("/api/vocabularies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -112,7 +117,12 @@ public class VocabularyResource {
         VocabularyDTO result = vocabularyService.save(vocabularyDTO);
 
         //notify the auditing mechanism
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), result, null, null, null, null, null, null, "UPDATE_VOCABULARY");
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, result, null, null, null, null, null, null, "UPDATE_VOCABULARY");
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, vocabularyDTO.getId().toString()))
@@ -174,7 +184,16 @@ public class VocabularyResource {
 
         //notify the auditing mechanism
         Optional<VocabularyDTO> result = vocabularyService.findOne(id);
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), result.get(), null, null, null, null, null, null, "DELETE_VOCABULARY");
+        VocabularyDTO vocabulary = new VocabularyDTO();
+        if (result.isPresent()) {
+            vocabulary = result.get();
+        }
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, vocabulary, null, null, null, null, null, null, "DELETE_VOCABULARY");
 
         vocabularyService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();

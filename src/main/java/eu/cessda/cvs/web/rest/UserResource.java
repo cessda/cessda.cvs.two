@@ -40,7 +40,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.audit.AuditEvent;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -138,7 +137,12 @@ public class UserResource {
             User newUser = userService.createUser(userDTO);
 
             //notify the auditing mechanism
-            auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), userDTO, null, "USER_CREATED");
+            String auditUserString = "";
+            Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+            if (auditUser.isPresent()) {
+                auditUserString = auditUser.get();
+            }
+            auditPublisher.publish(auditUserString, userDTO, null, "USER_CREATED");
 
             mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
@@ -187,7 +191,12 @@ public class UserResource {
         Optional<UserDTO> updatedUser = userService.updateUser(userDTO);
 
         //notify the auditing mechanism
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), userDTO, null, "USER_UPDATED");
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, userDTO, null, "USER_UPDATED");
 
         return ResponseUtil.wrapOrNotFound(updatedUser,
             HeaderUtil.createAlert(applicationName, "userManagement.updated", userDTO.getLogin()));
@@ -247,8 +256,17 @@ public class UserResource {
         log.debug("REST request to delete User: {}", login);
 
         //notify the auditing mechanism
-        User user = userRepository.findOneByLogin(login.toLowerCase()).get();
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, user, "USER_DELETED");
+        User userTemp = new User();
+        Optional<User> user = userRepository.findOneByLogin(login.toLowerCase());
+        if (user.isPresent()) {
+            userTemp = user.get();
+        }
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, null, userTemp, "USER_DELETED");
         
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "userManagement.deleted", login)).build();

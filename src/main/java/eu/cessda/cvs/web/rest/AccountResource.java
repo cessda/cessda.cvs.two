@@ -153,7 +153,12 @@ public class AccountResource {
             userDTO.getLangKey(), userDTO.getImageUrl());
         
         //notify the auditing mechanism
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), userDTO, null, "USER_SETTINGS_UPDATED");
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, userDTO, null, "USER_SETTINGS_UPDATED");
     }
 
     /**

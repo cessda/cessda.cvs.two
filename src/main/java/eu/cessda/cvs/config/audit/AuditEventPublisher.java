@@ -23,6 +23,17 @@ import java.util.HashMap;
 public class AuditEventPublisher implements ApplicationEventPublisherAware  {
     private ApplicationEventPublisher publisher;
 
+    public static final String CODE_TITLE = "code_title";
+    public static final String CV_TITLE = "cv_title";
+    public static final String CV_TITLE_SL = "cv_title_sl";
+    public static final String CV_TITLE_TL = "cv_title_tl";
+    public static final String CV_TYPE = "cv_type";
+    public static final String CV_VERSION = "cv_version";
+    public static final String CV_LANGUAGE = "cv_language";
+    public static final String CV_STATUS = "cv_status";
+    public static final String CV_NOTATION = "cv_notation";
+    public static final String CV_AGENCY_NAME = "cv_agency_name";
+
     @Override
     public void setApplicationEventPublisher(
             ApplicationEventPublisher publisher) {
@@ -41,7 +52,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
      * @param action
      */
     public void publish(String user, AgencyDTO agency, String action) {
-        HashMap<String, Object> map = new HashMap<String, Object>();
+        HashMap<String, Object> map = new HashMap<>();
         map.put("name", agency.getName());
         map.put("link", agency.getLink());
         if (agency.getUri() != null && !agency.getUri().equalsIgnoreCase("")) {
@@ -56,14 +67,56 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
         publish(new AuditEvent(user, action, map));
     }
 
+    //** */
+    public String getAgency(UserDTO userDTO) {
+        String agencies = "";
+        if (userDTO.getUserAgencies() != null) {
+            StringBuilder agenciesB = new StringBuilder();
+            for (UserAgencyDTO agency : userDTO.getUserAgencies()) {
+                if (agency.getAgencyName() != null) {
+                    agenciesB.append(agency.getAgencyName() + ", ");
+                }
+                if (agency.getLanguage() != null) {
+                    agenciesB.append(agency.getLanguage() + ", ");
+                }
+                if (agency.getAgencyRole() != null) {
+                    agenciesB.append(agency.getAgencyRole());
+                }
+                agenciesB.append(" | ");
+            }
+            agencies = agenciesB.toString();
+            if (!agencies.equalsIgnoreCase("")) {
+                agencies = agencies.substring(0, agencies.length() - 3);
+            }
+        }
+        return agencies;
+    }
+
+    //** */
+    public String getAuthority(UserDTO userDTO) {
+        String authorities = "";
+        if (userDTO.getAuthorities() != null) {
+            StringBuilder authoritiesB = new StringBuilder();
+            for (String authority : userDTO.getAuthorities()) {
+                authoritiesB.append(authority);
+                authoritiesB.append(" | ");
+            }
+            authorities = authoritiesB.toString();
+            if (!authorities.equalsIgnoreCase("")) {
+                authorities = authorities.substring(0, authorities.length() - 3);
+            }
+        }
+        return authorities;
+    }
+
     /**
      * Log AccountResource, UserResource
      * @param user
      * @param userDTO
      * @param action
      */
-    public void publish(String user, UserDTO userDTO, User user_, String action) {
-        HashMap<String, Object> map = new HashMap<String, Object>();
+    public void publish(String user, UserDTO userDTO, User userData, String action) {
+        HashMap<String, Object> map = new HashMap<>();
         if (userDTO != null) {
             map.put("id", userDTO.getLogin());
             map.put("name", userDTO.getFirstName() + " " + userDTO.getLastName());
@@ -71,48 +124,172 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             map.put("language", userDTO.getLangKey());
         }
         switch (action) {
-            /*case "USER_SETTINGS_UPDATED":
-                break;*/
             case "USER_CREATED":
             case "USER_UPDATED":
-                if (userDTO.getUserAgencies() != null) {
-                    String agencies = "";
-                    for (UserAgencyDTO agency : userDTO.getUserAgencies()) {
-                        agencies = agencies + agency.getAgencyRole() + ", ";
-                        agencies = agencies + agency.getLanguage() + ", ";
-                        if (agency.getAgencyName() == null) {
-                            agencies = agencies + agency.getAgencyName();
-                        } else {
-                            agencies = agencies + agency.getAgencyName();
-                        }
-                        agencies = agencies + " | ";
-                    }
-                    if (!agencies.equalsIgnoreCase("")) {
-                        agencies = agencies.substring(0, agencies.length() - 3);
-                        map.put("agency", agencies);
-                    }
+                String agencies = getAgency(userDTO);
+                if (!agencies.equals("")) {
+                    map.put("agency", agencies);
                 }
-                if (userDTO.getAuthorities() != null) {
-                    String authorities = "";
-                    for (String authority : userDTO.getAuthorities()) {
-                        if (authorities.length() != 0) {
-                            authorities = authorities + " | ";
-                        }
-                        authorities = authorities + authority;
-                    }
-                    if (!authorities.equalsIgnoreCase("")) {
-                        map.put("roles", authorities);
-                    }
+                String authorities = getAuthority(userDTO);
+                if (!agencies.equals("")) {
+                    map.put("roles", authorities);
                 }
                 break;
             case "USER_DELETED":
-                map.put("id", user_.getLogin());
-                map.put("name", user_.getFirstName() + " " + user_.getLastName());
-                map.put("email", user_.getEmail());
+                map.put("id", userData.getLogin());
+                map.put("name", userData.getFirstName() + " " + userData.getLastName());
+                map.put("email", userData.getEmail());
                 break;
             default:
         }
         publish(new AuditEvent(user, action, map));
+    }
+
+    /**
+     * 
+     * @param user
+     * @param vocabulary
+     * @param version
+     * @param concept
+     * @param replacingConceptDTO
+     * @param codeSnippet
+     * @param action
+     */
+    public void publish(String user, VocabularyDTO vocabulary, VersionDTO version, ConceptDTO concept, ConceptDTO replacingConceptDTO, CodeSnippet codeSnippet, String action) {
+        HashMap<String, Object> map = new HashMap<>();
+        if (vocabulary != null) {
+            map.put(CV_AGENCY_NAME, vocabulary.getAgencyName());
+            map.put(CV_TITLE_SL, vocabulary.getTitleAll());
+        }
+        switch (action) {
+            case "CREATE_CODE":
+            case "EDIT_CODE":
+            case "ADD_TL_CODE":
+            case "EDIT_TL_CODE":
+            case "DELETE_TL_CODE":
+                map.put(CV_TITLE, version.getTitle());
+                map.put(CV_LANGUAGE, version.getLanguage());
+                map.put(CV_TYPE, version.getItemType());
+                map.put(CV_VERSION, version.getNumberAsString());
+                if (codeSnippet.getChangeType() != null && codeSnippet.getChangeDesc() != null) {
+                    map.put("code_change_type", codeSnippet.getChangeType());
+                    map.put("code_change_description", codeSnippet.getChangeDesc());
+                }
+                if (codeSnippet.getNotation() != null && !codeSnippet.getNotation().equals("")) {
+                    map.put("code_notation", codeSnippet.getNotation());
+                }
+                if (codeSnippet.getDefinition() != null && !codeSnippet.getDefinition().equals("")) {
+                    map.put("code_definition", codeSnippet.getDefinition());
+                }
+                map.put(CODE_TITLE, codeSnippet.getTitle());
+                break;
+            case "DELETE_CODE":
+                map.put(CV_TITLE, version.getTitle());
+                map.put(CV_LANGUAGE, version.getLanguage());
+                map.put(CV_TYPE, version.getItemType());
+                map.put(CV_VERSION, version.getNumberAsString());
+                map.put(CODE_TITLE, concept.getTitle());
+                break;
+            case "DEPRECATE_CODE":
+                map.put(CV_TITLE, version.getTitle());
+                map.put(CV_LANGUAGE, version.getLanguage());
+                map.put(CV_TYPE, version.getItemType());
+                map.put(CV_VERSION, version.getNumberAsString());
+                map.put(CODE_TITLE, concept.getTitle());
+                if (replacingConceptDTO != null) {
+                    map.put("replaced_by_title", replacingConceptDTO.getTitle());
+                }
+                break;
+            case "REORDER_CODE":
+                map.put(CV_TITLE, version.getTitle());
+                map.put(CV_LANGUAGE, version.getLanguage());
+                map.put(CV_VERSION, version.getNumberAsString());
+                map.put(CODE_TITLE, concept.getTitle());
+                break;
+            default:
+        }
+        publish(new AuditEvent(user, action, map));
+    }
+
+    /**
+     * 
+     * @param user
+     * @param version
+     * @param comment
+     * @param action
+     */
+    public void publish(String user, VersionDTO version, CommentDTO comment, String action) {
+        HashMap<String, Object> map = new HashMap<>();
+        switch (action) {
+            case "ADD_COMMENT":
+            case "UPDATE_COMMENT":
+            case "DELETE_COMMENT":
+                map.put(CV_TITLE, version.getTitle());
+                map.put(CV_LANGUAGE, version.getLanguage());
+                map.put(CV_VERSION, version.getNumberAsString());
+                map.put("cv_comment", comment.getContent());
+                break;
+            default:
+        }
+        publish(new AuditEvent(user, action, map));
+    }
+
+    /**
+     * Log EditorResource
+     * @param user
+     * @param vocabulary
+     * @param version
+     * @param vocabularySnippet
+     * @param action
+     * @param forward
+     */
+    public void publish(String user, VocabularyDTO vocabulary, VersionDTO version, VocabularySnippet vocabularySnippet, String action, boolean forward) {
+        HashMap<String, Object> map = new HashMap<>();
+        if (vocabulary != null) {
+            map.put(CV_AGENCY_NAME, vocabulary.getAgencyName());
+            map.put(CV_TITLE_SL, vocabulary.getTitleAll());
+            if (vocabularySnippet != null) {
+                map.put(CV_TITLE, vocabulary.getTitleByLanguage(vocabularySnippet.getLanguage()));
+                map.put(CV_TITLE_TL, vocabulary.getTitleByLanguage(vocabularySnippet.getLanguage()));
+            } else {
+                map.put(CV_TITLE, vocabulary.getTitleAll());
+            }
+            if (map.get(CV_TITLE_SL) == map.get(CV_TITLE)) {
+                map.remove(CV_TITLE_SL);
+            } 
+            if (map.get(CV_TITLE_TL) == map.get(CV_TITLE)) {
+                map.remove(CV_TITLE_TL);
+            }
+        }
+        switch (action) {
+            case "FORWARD_CV_SL_STATUS_REVIEW":
+            case "FORWARD_CV_TL_STATUS_REVIEW":
+                map.put(CV_TYPE, version.getItemType());
+                map.put(CV_LANGUAGE, version.getLanguage());
+                map.put(CV_TITLE, version.getTitle());
+                map.put(CV_VERSION, version.getNumber());
+                map.put(CV_STATUS, version.getStatus());
+                break;
+            case "FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE":
+            case "FORWARD_CV_TL_STATUS_READY_TO_PUBLISH":
+            case "FORWARD_CV_SL_STATUS_PUBLISH":
+                map.put(CV_TYPE, version.getItemType());
+                map.put(CV_LANGUAGE, version.getLanguage());
+                map.put(CV_TITLE, version.getTitle());
+                map.put(CV_VERSION, version.getNumber());
+                map.put(CV_STATUS, version.getStatus());
+                if (vocabularySnippet!= null && vocabularySnippet.getVersionNotes() != null && !vocabularySnippet.getVersionNotes().equals("")) {
+                    map.put("CV_VERSION_notes", vocabularySnippet.getVersionNotes());
+                }
+                if (vocabularySnippet!= null && vocabularySnippet.getVersionChanges() != null && !vocabularySnippet.getVersionChanges().equals("")) {
+                    map.put("CV_VERSION_changes", vocabularySnippet.getVersionChanges());
+                }
+                break;
+            default:
+        }
+        if (forward) {
+            publish(new AuditEvent(user, action, map));
+        }
     }
 
     /**
@@ -127,22 +304,22 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
      * @param comment
      * @param action
      */
-    public void publish(String user, VocabularyDTO vocabulary, VersionDTO version, VocabularySnippet vocabularySnippet, ConceptDTO concept, ConceptDTO replacingConceptDTO, CodeSnippet codeSnippet, CommentDTO comment, String action) {
-        HashMap<String, Object> map = new HashMap<String, Object>();
+    public void publish(String user, VocabularyDTO vocabulary, VersionDTO version, VocabularySnippet vocabularySnippet, String action) {
+        HashMap<String, Object> map = new HashMap<>();
         if (vocabulary != null) {
-            map.put("cv_agency_name", vocabulary.getAgencyName());
-            map.put("cv_title_sl", vocabulary.getTitleAll());
+            map.put(CV_AGENCY_NAME, vocabulary.getAgencyName());
+            map.put(CV_TITLE_SL, vocabulary.getTitleAll());
             if (vocabularySnippet != null) {
-                map.put("cv_title", vocabulary.getTitleByLanguage(vocabularySnippet.getLanguage()));
-                map.put("cv_title_tl", vocabulary.getTitleByLanguage(vocabularySnippet.getLanguage()));
+                map.put(CV_TITLE, vocabulary.getTitleByLanguage(vocabularySnippet.getLanguage()));
+                map.put(CV_TITLE_TL, vocabulary.getTitleByLanguage(vocabularySnippet.getLanguage()));
             } else {
-                map.put("cv_title", vocabulary.getTitleAll());
+                map.put(CV_TITLE, vocabulary.getTitleAll());
             }
-            if (map.get("cv_title_sl") == map.get("cv_title")) {
-                map.remove("cv_title_sl");
+            if (map.get(CV_TITLE_SL) == map.get(CV_TITLE)) {
+                map.remove(CV_TITLE_SL);
             } 
-            if (map.get("cv_title_tl") == map.get("cv_title")) {
-                map.remove("cv_title_tl");
+            if (map.get(CV_TITLE_TL) == map.get(CV_TITLE)) {
+                map.remove(CV_TITLE_TL);
             }
         }
         switch (action) {
@@ -150,163 +327,96 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             case "UPDATE_VOCABULARY":
             case "DELETE_VOCABULARY":
                 if (vocabularySnippet != null) {
-                    map.put("cv_type", vocabularySnippet.getItemType());
-                    map.put("cv_version", vocabularySnippet.getVersionNumber());
-                    map.put("cv_language", vocabularySnippet.getLanguage());
-                    map.put("cv_status", vocabularySnippet.getStatus());
-                    map.put("cv_notation", vocabularySnippet.getNotation());
+                    map.put(CV_TYPE, vocabularySnippet.getItemType());
+                    map.put(CV_VERSION, vocabularySnippet.getVersionNumber());
+                    map.put(CV_LANGUAGE, vocabularySnippet.getLanguage());
+                    map.put(CV_STATUS, vocabularySnippet.getStatus());
+                    map.put(CV_NOTATION, vocabularySnippet.getNotation());
                     map.put("cv_definition", vocabularySnippet.getDefinition());
                     if (vocabularySnippet.getNotes() != null && !vocabularySnippet.getNotes().equalsIgnoreCase("")) {
                         map.put("cv_notes", vocabularySnippet.getNotes());
                     }
                 } else {
-                    map.put("cv_version", vocabulary.getVersionNumber());
-                    map.put("cv_status", vocabulary.getStatus());
-                    map.put("cv_notation", vocabulary.getNotation());
-                    if (vocabulary.getNotes() != null && !vocabulary.getNotes().equalsIgnoreCase("")) {
-                        map.put("cv_notes", vocabulary.getNotes());
+                    if (vocabulary != null) {
+                        map.put(CV_VERSION, vocabulary.getVersionNumber());
+                        map.put(CV_STATUS, vocabulary.getStatus());
+                        map.put(CV_NOTATION, vocabulary.getNotation());
+                        if (vocabulary.getNotes() != null && !vocabulary.getNotes().equalsIgnoreCase("")) {
+                            map.put("cv_notes", vocabulary.getNotes());
+                        }
                     }
                 }
                 break;
             case "CREATE_NEW_VOCABULARY_VERSION":
             case "UPDATE_VERSION":
             case "DELETE_VERSION":
-                map.put("cv_title", version.getTitle());
-                map.put("cv_type", version.getItemType());
-                map.put("cv_version", version.getNumberAsString());
-                map.put("cv_language", version.getLanguage());
-                map.put("cv_notation", version.getNotation());
+                map.put(CV_TITLE, version.getTitle());
+                map.put(CV_TYPE, version.getItemType());
+                map.put(CV_VERSION, version.getNumberAsString());
+                map.put(CV_LANGUAGE, version.getLanguage());
+                map.put(CV_NOTATION, version.getNotation());
                 break;
             case "UPDATE_VOCABULARY_EDIT_VERSION_INFO_CV":
-                map.put("cv_type", vocabularySnippet.getItemType());
-                map.put("cv_language", vocabularySnippet.getLanguage());
-                map.put("cv_version", vocabularySnippet.getVersionNumber());
-                if (vocabularySnippet.getVersionNotes() != null && !vocabularySnippet.getVersionNotes().equals("")) {
-                    map.put("cv_version_notes", vocabularySnippet.getVersionNotes());
-                }
-                if (vocabularySnippet.getVersionChanges() != null && !vocabularySnippet.getVersionChanges().equals("")) {
-                    map.put("cv_version_changes", vocabularySnippet.getVersionChanges());
+                if (vocabularySnippet != null) {
+                    map.put(CV_TYPE, vocabularySnippet.getItemType());
+                    map.put(CV_LANGUAGE, vocabularySnippet.getLanguage());
+                    map.put(CV_VERSION, vocabularySnippet.getVersionNumber());
+                    if (vocabularySnippet.getVersionNotes() != null && !vocabularySnippet.getVersionNotes().equals("")) {
+                        map.put("CV_VERSION_notes", vocabularySnippet.getVersionNotes());
+                    }
+                    if (vocabularySnippet.getVersionChanges() != null && !vocabularySnippet.getVersionChanges().equals("")) {
+                        map.put("CV_VERSION_changes", vocabularySnippet.getVersionChanges());
+                    }
                 }
                 break;
             case "UPDATE_VOCABULARY_EDIT_CV":
-                map.put("cv_type", vocabularySnippet.getItemType());
-                map.put("cv_language", vocabularySnippet.getLanguage());
-                map.put("cv_definition", vocabularySnippet.getDefinition());
-                if (vocabularySnippet.getChangeType() != null) {
-                    map.put("cv_change_type", vocabularySnippet.getChangeType());
-                }
-                if (vocabularySnippet.getChangeDesc() != null) {
-                    map.put("cv_change_description", vocabularySnippet.getChangeDesc());
+                if (vocabularySnippet != null) {
+                    map.put(CV_TYPE, vocabularySnippet.getItemType());
+                    map.put(CV_LANGUAGE, vocabularySnippet.getLanguage());
+                    map.put("cv_definition", vocabularySnippet.getDefinition());
+                    if (vocabularySnippet.getChangeType() != null) {
+                        map.put("cv_change_type", vocabularySnippet.getChangeType());
+                    }
+                    if (vocabularySnippet.getChangeDesc() != null) {
+                        map.put("cv_change_description", vocabularySnippet.getChangeDesc());
+                    }
                 }
                 break;
             case "UPDATE_VOCABULARY_EDIT_DDI_CV":
-                map.put("cv_type", vocabularySnippet.getItemType());
-                map.put("cv_language", vocabularySnippet.getLanguage());
-                map.put("cv_ddi_usage", vocabularySnippet.getDdiUsage());
+                if (vocabularySnippet != null) {
+                    map.put(CV_TYPE, vocabularySnippet.getItemType());
+                    map.put(CV_LANGUAGE, vocabularySnippet.getLanguage());
+                    map.put("cv_ddi_usage", vocabularySnippet.getDdiUsage());
+                }
                 break;
             case "UPDATE_VOCABULARY_EDIT_IDENTITY_CV":
-                map.put("cv_type", vocabularySnippet.getItemType());
-                map.put("cv_language", vocabularySnippet.getLanguage());
-                map.put("cv_translator_agency", vocabularySnippet.getTranslateAgency());
-                map.put("cv_translator_agency_link", vocabularySnippet.getTranslateAgencyLink());
+                if (vocabularySnippet != null) {
+                    map.put(CV_TYPE, vocabularySnippet.getItemType());
+                    map.put(CV_LANGUAGE, vocabularySnippet.getLanguage());
+                    map.put("cv_translator_agency", vocabularySnippet.getTranslateAgency());
+                    map.put("cv_translator_agency_link", vocabularySnippet.getTranslateAgencyLink());
+                }
                 break;
             case "UPDATE_VOCABULARY_EDIT_NOTE_CV":
-                map.put("cv_type", vocabularySnippet.getItemType());
-                map.put("cv_language", vocabularySnippet.getLanguage());
-                map.put("cv_note", vocabularySnippet.getNotes());
-                break;
-            case "FORWARD_CV_SL_STATUS_REVIEW":
-            case "FORWARD_CV_TL_STATUS_REVIEW":
-                map.put("type", version.getItemType());
-                map.put("cv_language", version.getLanguage());
-                map.put("cv_title", version.getTitle());
-                map.put("cv_version", version.getNumber());
-                map.put("cv_status", version.getStatus());
-                break;
-            case "FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE":
-            case "FORWARD_CV_TL_STATUS_READY_TO_PUBLISH":
-                map.put("cv_type", version.getItemType());
-                map.put("cv_language", version.getLanguage());
-                map.put("cv_title", version.getTitle());
-                map.put("cv_version", version.getNumber());
-                map.put("cv_status", version.getStatus());
-                if (vocabularySnippet.getVersionNotes() != null && !vocabularySnippet.getVersionNotes().equals("")) {
-                    map.put("cv_version_notes", vocabularySnippet.getVersionNotes());
+                if (vocabularySnippet != null) {
+                    map.put(CV_TYPE, vocabularySnippet.getItemType());
+                    map.put(CV_LANGUAGE, vocabularySnippet.getLanguage());
+                    map.put("cv_note", vocabularySnippet.getNotes());
                 }
-                if (vocabularySnippet.getVersionChanges() != null && !vocabularySnippet.getVersionChanges().equals("")) {
-                    map.put("cv_version_changes", vocabularySnippet.getVersionChanges());
-                }
-                break;
-            case "FORWARD_CV_SL_STATUS_PUBLISH":
-                map.put("cv_type", version.getItemType());
-                map.put("cv_language", version.getLanguage());
-                map.put("cv_title", version.getTitle());
-                map.put("cv_version", version.getNumber());
-                map.put("cv_status", version.getStatus());
                 break;
             case "DELETE_WHOLE_VOCABULARY":
                 break;
             case "DELETE_VOCABULARY_SL_AND_RELATED_TL(S)_VERSION":
-                map.put("cv_version", vocabulary.getVersionNumber());
-                map.put("cv_type", "SL & TL(s)");
+                if (vocabulary != null) {
+                    map.put(CV_VERSION, vocabulary.getVersionNumber());
+                    map.put(CV_TYPE, "SL & TL(s)");
+                }
                 break;
             case "DELETE_TL_VOCABULARY":
-                map.put("cv_language", version.getLanguage());
-                map.put("cv_title", version.getTitle());
-                map.put("cv_version", version.getNumber());
-                map.put("cv_type", version.getItemType());
-                break;
-            case "CREATE_CODE":
-            case "EDIT_CODE":
-            case "ADD_TL_CODE":
-            case "EDIT_TL_CODE":
-            case "DELETE_TL_CODE":
-                map.put("cv_title", version.getTitle());
-                map.put("cv_language", version.getLanguage());
-                map.put("cv_type", version.getItemType());
-                map.put("cv_version", version.getNumberAsString());
-                if (codeSnippet.getChangeType() != null && codeSnippet.getChangeDesc() != null) {
-                    map.put("code_change_type", codeSnippet.getChangeType());
-                    map.put("code_change_description", codeSnippet.getChangeDesc());
-                }
-                if (codeSnippet.getNotation() != null && !codeSnippet.getNotation().equals("")) {
-                    map.put("code_notation", codeSnippet.getNotation());
-                }
-                if (codeSnippet.getDefinition() != null && !codeSnippet.getDefinition().equals("")) {
-                    map.put("code_definition", codeSnippet.getDefinition());
-                }
-                map.put("code_title", codeSnippet.getTitle());
-                break;
-            case "DELETE_CODE":
-                map.put("cv_title", version.getTitle());
-                map.put("cv_language", version.getLanguage());
-                map.put("cv_type", version.getItemType());
-                map.put("cv_version", version.getNumberAsString());
-                map.put("code_title", concept.getTitle());
-                break;
-            case "DEPRECATE_CODE":
-                map.put("cv_title", version.getTitle());
-                map.put("cv_language", version.getLanguage());
-                map.put("cv_type", version.getItemType());
-                map.put("cv_version", version.getNumberAsString());
-                map.put("code_title", concept.getTitle());
-                if (replacingConceptDTO != null) {
-                    map.put("replaced_by_title", replacingConceptDTO.getTitle());
-                }
-                break;
-            case "REORDER_CODE":
-                map.put("cv_title", version.getTitle());
-                map.put("cv_language", version.getLanguage());
-                map.put("cv_version", version.getNumberAsString());
-                map.put("code_title", concept.getTitle());
-                break;
-            case "ADD_COMMENT":
-            case "UPDATE_COMMENT":
-            case "DELETE_COMMENT":
-                map.put("cv_title", version.getTitle());
-                map.put("cv_language", version.getLanguage());
-                map.put("cv_version", version.getNumberAsString());
-                map.put("cv_comment", comment.getContent());
+                map.put(CV_LANGUAGE, version.getLanguage());
+                map.put(CV_TITLE, version.getTitle());
+                map.put(CV_VERSION, version.getNumber());
+                map.put(CV_TYPE, version.getItemType());
                 break;
             default:    
         }

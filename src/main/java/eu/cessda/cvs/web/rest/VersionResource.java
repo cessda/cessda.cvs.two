@@ -86,7 +86,12 @@ public class VersionResource {
         VersionDTO result = versionService.save(versionDTO);
 
         //notify the auditing mechanism
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, result, null, null, null, null, null, "CREATE_NEW_VOCABULARY_VERSION");
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, null, result, null, null, null, null, null, "CREATE_NEW_VOCABULARY_VERSION");
 
         return ResponseEntity.created(new URI("/api/versions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -111,7 +116,12 @@ public class VersionResource {
         VersionDTO result = versionService.save(versionDTO);
 
         //notify the auditing mechanism
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, result, null, null, null, null, null, "UPDATE_VERSION");
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, null, result, null, null, null, null, null, "UPDATE_VERSION");
         
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, versionDTO.getId().toString()))
@@ -158,7 +168,16 @@ public class VersionResource {
         Optional<VersionDTO> versionDTO = versionService.findOne(id);
 
         //notify the auditing mechanism
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO.get(), null, null, null, null, null, "DELETE_VERSION");
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        VersionDTO versionDTOTemp = new VersionDTO();
+        if (versionDTO.isPresent()) {
+            versionDTOTemp = versionDTO.get();
+        }
+        auditPublisher.publish(auditUserString, null, versionDTOTemp, null, null, null, null, null, "DELETE_VERSION");
 
         versionService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();

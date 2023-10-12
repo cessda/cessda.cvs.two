@@ -33,7 +33,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -45,7 +44,6 @@ import javax.validation.Valid;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,7 +93,12 @@ public class AgencyResource {
         AgencyDTO result = agencyService.save(agencyDTO);
 
         //notify the auditing mechanism
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), agencyDTO, "AGENCY_CREATED");
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, agencyDTO, "AGENCY_CREATED");
 
         return ResponseEntity.created(new URI("/api/agencies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -122,7 +125,12 @@ public class AgencyResource {
         AgencyDTO result = agencyService.save(agencyDTO);
 
         //notify the auditing mechanism
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), agencyDTO, "AGENCY_UPDATED");
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, agencyDTO, "AGENCY_UPDATED");
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, agencyDTO.getId().toString()))
@@ -167,8 +175,18 @@ public class AgencyResource {
         log.debug("REST request to delete Agency : {}", id);
         
         //notify the auditing mechanism
-        AgencyDTO agencyDTO = agencyService.findOne(id).get();
-        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), agencyDTO, "AGENCY_DELETED");
+
+        Optional<AgencyDTO> agencyDTO = agencyService.findOne(id);
+        AgencyDTO agencyDTOTemp = null;
+        if (agencyDTO.isPresent()) {
+            agencyDTOTemp = agencyDTO.get();
+        }
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, agencyDTOTemp, "AGENCY_DELETED");
 
         agencyService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
