@@ -16,9 +16,9 @@
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.config.audit.AuditEventPublisher;
+import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.dto.VersionDTO;
-import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -45,7 +44,6 @@ import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,15 +86,7 @@ public class VersionResource {
         VersionDTO result = versionService.save(versionDTO);
 
         //notify the auditing mechanism
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("language", result.getLanguage());
-        map.put("definition", result.getDefinition());
-        map.put("notation", result.getNotation());
-        map.put("version", result.getNumberAsString());
-        map.put("title", result.getTitle());
-        map.put("publisher", result.getPublisher());
-        map.put("status", result.getStatus());
-        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "VERSION_CREATED", map));
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, result, null, null, null, null, null, "CREATE_NEW_VOCABULARY_VERSION");
 
         return ResponseEntity.created(new URI("/api/versions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -121,16 +111,8 @@ public class VersionResource {
         VersionDTO result = versionService.save(versionDTO);
 
         //notify the auditing mechanism
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("language", result.getLanguage());
-        map.put("definition", result.getDefinition());
-        map.put("notation", result.getNotation());
-        map.put("version", result.getNumberAsString());
-        map.put("title", result.getTitle());
-        map.put("publisher", result.getPublisher());
-        map.put("status", result.getStatus());
-        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "VERSION_UPDATED", map));
-
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, result, null, null, null, null, null, "UPDATE_VERSION");
+        
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, versionDTO.getId().toString()))
             .body(result);
@@ -176,15 +158,7 @@ public class VersionResource {
         Optional<VersionDTO> versionDTO = versionService.findOne(id);
 
         //notify the auditing mechanism
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("language", versionDTO.get().getLanguage());
-        map.put("definition", versionDTO.get().getDefinition());
-        map.put("notation", versionDTO.get().getNotation());
-        map.put("version", versionDTO.get().getNumberAsString());
-        map.put("title", versionDTO.get().getTitle());
-        map.put("publisher", versionDTO.get().getPublisher());
-        map.put("status", versionDTO.get().getStatus());
-        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "VERSION_DELETED", map));
+        auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), null, versionDTO.get(), null, null, null, null, null, "DELETE_VERSION");
 
         versionService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();

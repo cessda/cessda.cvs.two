@@ -42,7 +42,6 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -62,10 +61,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -145,20 +142,20 @@ public class EditorResource {
     public ResponseEntity<VocabularyDTO> createVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) throws URISyntaxException {
         log.debug("REST request to save Vocabulary : {}", vocabularySnippet);
         // check if user authorized to add VocabularyResource
-        if( vocabularySnippet.getActionType().equals( ActionType.CREATE_CV )) {
+        if (vocabularySnippet.getActionType().equals( ActionType.CREATE_CV)) {
             SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CV, vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
 
             if (vocabularySnippet.getVocabularyId() != null) {
                 throw new BadRequestAlertException("A new vocabulary cannot already have an ID", ENTITY_VOCABULARY_NAME, ID_EXIST);
             }
         }
-        else if( vocabularySnippet.getActionType().equals( ActionType.ADD_TL_CV )) {
+        else if (vocabularySnippet.getActionType().equals(ActionType.ADD_TL_CV)) {
             SecurityUtils.checkResourceAuthorization(ActionType.ADD_TL_CV, vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
         } else {
             throw new IllegalArgumentException( "Illegal action type for POST" + vocabularySnippet.getActionType() );
         }
 
-        VocabularyDTO result = vocabularyService.saveVocabulary( vocabularySnippet );
+        VocabularyDTO result = vocabularyService.saveVocabulary(vocabularySnippet);
 
         //notify the auditing mechanism
         auditPublisher.publish(SecurityUtils.getCurrentUserLogin().get(), result, null, vocabularySnippet, null, null, null, null, "CREATE_VOCABULARY");

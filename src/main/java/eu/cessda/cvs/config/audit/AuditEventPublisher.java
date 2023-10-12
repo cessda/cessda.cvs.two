@@ -147,17 +147,30 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
         }
         switch (action) {
             case "CREATE_VOCABULARY":
-                map.put("cv_type", vocabularySnippet.getItemType());
-                map.put("cv_version", vocabularySnippet.getVersionNumber());
-                map.put("cv_language", vocabularySnippet.getLanguage());
-                map.put("cv_status", vocabularySnippet.getStatus());
-                map.put("cv_notation", vocabularySnippet.getNotation());
-                map.put("cv_definition", vocabularySnippet.getDefinition());
-                if (vocabularySnippet.getNotes() != null && !vocabularySnippet.getNotes().equalsIgnoreCase("")) {
-                    map.put("cv_notes", vocabularySnippet.getNotes());
+            case "UPDATE_VOCABULARY":
+            case "DELETE_VOCABULARY":
+                if (vocabularySnippet != null) {
+                    map.put("cv_type", vocabularySnippet.getItemType());
+                    map.put("cv_version", vocabularySnippet.getVersionNumber());
+                    map.put("cv_language", vocabularySnippet.getLanguage());
+                    map.put("cv_status", vocabularySnippet.getStatus());
+                    map.put("cv_notation", vocabularySnippet.getNotation());
+                    map.put("cv_definition", vocabularySnippet.getDefinition());
+                    if (vocabularySnippet.getNotes() != null && !vocabularySnippet.getNotes().equalsIgnoreCase("")) {
+                        map.put("cv_notes", vocabularySnippet.getNotes());
+                    }
+                } else {
+                    map.put("cv_version", vocabulary.getVersionNumber());
+                    map.put("cv_status", vocabulary.getStatus());
+                    map.put("cv_notation", vocabulary.getNotation());
+                    if (vocabulary.getNotes() != null && !vocabulary.getNotes().equalsIgnoreCase("")) {
+                        map.put("cv_notes", vocabulary.getNotes());
+                    }
                 }
                 break;
             case "CREATE_NEW_VOCABULARY_VERSION":
+            case "UPDATE_VERSION":
+            case "DELETE_VERSION":
                 map.put("cv_title", version.getTitle());
                 map.put("cv_type", version.getItemType());
                 map.put("cv_version", version.getNumberAsString());
