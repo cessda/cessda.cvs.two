@@ -15,7 +15,10 @@
  */
 package eu.cessda.cvs.web.rest;
 
+import eu.cessda.cvs.config.audit.AuditEventPublisher;
+import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.LicenceService;
+import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.service.dto.LicenceDTO;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
@@ -23,6 +26,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +47,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class LicenceResource {
+
+    @Autowired
+    private AuditEventPublisher auditPublisher;
 
     private final Logger log = LoggerFactory.getLogger(LicenceResource.class);
 
@@ -71,6 +78,14 @@ public class LicenceResource {
             throw new BadRequestAlertException("A new licence cannot already have an ID", ENTITY_NAME, "idexists");
         }
         LicenceDTO result = licenceService.save(licenceDTO);
+        
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, result, licenceDTO, "CREATE_LICENCE");
         return ResponseEntity.created(new URI("/api/licences/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -92,6 +107,14 @@ public class LicenceResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         LicenceDTO result = licenceService.save(licenceDTO);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, result, licenceDTO, "UPDATE_LICENCE");
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, licenceDTO.getId().toString()))
             .body(result);
@@ -133,6 +156,20 @@ public class LicenceResource {
     @DeleteMapping("/licences/{id}")
     public ResponseEntity<Void> deleteLicence(@PathVariable Long id) {
         log.debug("REST request to delete Licence : {}", id);
+
+        //notify the auditing mechanism
+        Optional<LicenceDTO> licenceyDTO = licenceService.findOne(id);
+        LicenceDTO licenceDTOTemp = null;
+        if (licenceyDTO.isPresent()) {
+            licenceDTOTemp = licenceyDTO.get();
+        }
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, licenceDTOTemp, null, "DELETE_LICENCE");
+
         licenceService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }

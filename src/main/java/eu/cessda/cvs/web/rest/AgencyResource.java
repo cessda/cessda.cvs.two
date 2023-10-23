@@ -175,7 +175,6 @@ public class AgencyResource {
         log.debug("REST request to delete Agency : {}", id);
         
         //notify the auditing mechanism
-
         Optional<AgencyDTO> agencyDTO = agencyService.findOne(id);
         AgencyDTO agencyDTOTemp = null;
         if (agencyDTO.isPresent()) {

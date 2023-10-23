@@ -21,6 +21,7 @@ import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.service.dto.CommentDTO;
 import eu.cessda.cvs.service.dto.ConceptDTO;
+import eu.cessda.cvs.service.dto.LicenceDTO;
 import eu.cessda.cvs.service.dto.UserAgencyDTO;
 import eu.cessda.cvs.service.dto.UserDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
@@ -434,6 +435,41 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                 map.put(CV_TYPE, version.getItemType());
                 break;
             default:    
+        }
+        publish(new AuditEvent(user, action, map));
+    }
+
+    /**
+     * Log LicenseResource
+     * @param auditUserString
+     * @param licenceDTO
+     * @param licenceSnippet
+     * @param action
+     */
+    public void publish(String user, LicenceDTO licenceDTO, LicenceDTO licenceSnippet, String action) {
+        HashMap<String, Object> map = new HashMap<>();
+        if (licenceDTO.getLink() != null) {
+            map.put("licence_link", licenceDTO.getLink());
+        }
+        map.put("licence_name", licenceDTO.getName());
+        map.put("licence_abbreviation", licenceDTO.getAbbr());
+        switch (action) {
+            case "CREATE_LICENCE":
+            case "UPDATE_LICENCE":
+            case "DELETE_LICENCE":
+                if (licenceSnippet != null) {
+                    if (licenceSnippet.getLink() != null) {
+                        map.put("licence_link", licenceSnippet.getLink());
+                    }
+                    if (licenceSnippet.getName() != null) {
+                       map.put("licence_name", licenceSnippet.getName());
+                    }
+                    if (licenceSnippet.getAbbr() != null) {
+                      map.put("licence_abbreviation", licenceDTO.getAbbr());
+                    }
+                }
+                break;
+            default:
         }
         publish(new AuditEvent(user, action, map));
     }
