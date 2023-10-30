@@ -14,6 +14,14 @@ updates:
         update-types: ["version-update:semver-patch"]
       - dependency-name: "@angular*"
         update-types: ["version-update:semver-major"]
+    groups:
+      # Group Angular packages so they are updated together
+      angular:
+        patterns:
+        - "@angular*"
+        update-types:
+        - "minor"
+        - "patch"
   - package-ecosystem: "maven" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
