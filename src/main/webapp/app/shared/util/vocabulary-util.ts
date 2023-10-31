@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
 import { ICode } from 'app/shared/model/code.model';
 import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { Concept } from 'app/shared/model/concept.model';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
@@ -150,11 +150,11 @@ export default class VocabularyUtil {
   }
 
   static getStatus(vocab: IVocabulary): string {
-    return vocab.status!;
+    return vocab.status || '';
   }
 
-  static getSlVersionOfVocabulary(vocab: IVocabulary): IVersion {
-    return vocab.versions!.filter(v => v.itemType === 'SL')[0];
+  static getSlVersionOfVocabulary(vocab: IVocabulary): Version {
+    return (vocab.versions || []).filter(v => v.itemType === 'SL')[0];
   }
 
   static parseVersionNumber(vnumber: string): VersionNumber {
@@ -189,34 +189,40 @@ export default class VocabularyUtil {
 
   static getSlVersionNumberOfVocabulary(vocab: IVocabulary): string {
     const slVersion = this.getSlVersionOfVocabulary(vocab);
-    return this.getSlVersionNumber(slVersion.number!);
+    if (slVersion.number) {
+      return this.getSlVersionNumber(slVersion.number);
+    } else {
+      return '';
+    }
   }
 
-  static getSlMajorVersionNumberOfVersion(version: IVersion): number {
+  static getSlMajorVersionNumberOfVersion(version: Version): number {
     if (version.number) {
       return this.parseVersionNumber(version.number).major;
     }
     return -1;
   }
 
-  static getSlMinorVersionNumberOfVersion(version: IVersion): number {
+  static getSlMinorVersionNumberOfVersion(version: Version): number {
     if (version.number) {
       return this.parseVersionNumber(version.number).minor;
     }
     return -1;
   }
 
-  static getVersionByLang(vocab: IVocabulary): IVersion {
-    return vocab.versions!.filter(v => v.language === vocab.selectedLang)[0];
+  static getVersionByLang(vocab: IVocabulary): Version {
+    return (vocab.versions || []).filter(v => v.language === vocab.selectedLang)[0];
   }
 
-  static getVersionByLangAndNumber(vocab: IVocabulary, versionNumber?: string): IVersion {
+  static getVersionByLangAndNumber(vocab: IVocabulary, versionNumber?: string): Version {
     if (versionNumber) {
       versionNumber = this.threeDigitVersionNumber(versionNumber);
-      return vocab.versions!.filter(v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number!) === versionNumber)[0];
+      return (vocab.versions || []).filter(
+        v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number!) === versionNumber,
+      )[0];
     } else if (vocab.selectedVersion) {
       vocab.selectedVersion = this.threeDigitVersionNumber(vocab.selectedVersion);
-      return vocab.versions!.filter(
+      return (vocab.versions || []).filter(
         v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number!) === vocab.selectedVersion,
       )[0];
     }
@@ -243,7 +249,7 @@ export default class VocabularyUtil {
     }
   }
 
-  static compareArrays(a1: any, a2: any): number {
+  static compareArrays(a1: number[], a2: number[]): number {
     while (a1.length < a2.length) a1.push(0);
     while (a2.length < a1.length) a2.push(0);
     let cmpResult = 0;
@@ -273,9 +279,9 @@ export default class VocabularyUtil {
     return this.compareVersionNumbers(this.getSlVersionNumber(v1), this.getSlVersionNumber(v2));
   }
 
-  static getAvailableCvLanguage(versions: IVersion[] | undefined): string[] {
+  static getAvailableCvLanguage(versions: Version[]): string[] {
     const availableLanguages = [];
-    const takenLanguages = versions ? versions.map(v => v.language) : [];
+    const takenLanguages = versions.map(v => v.language);
     for (const langIso in LanguageIso) {
       if (parseInt(langIso, 10) >= 0) {
         if (!takenLanguages.includes(LanguageIso[langIso])) {
@@ -315,7 +321,7 @@ export default class VocabularyUtil {
     return sortedLang;
   }
 
-  static getUniqueVersionLangs(versions: IVersion[], appScope: AppScope): string[] {
+  static getUniqueVersionLangs(versions: Version[], appScope: AppScope): string[] {
     let uniqueLang: string[] = [];
     versions.forEach(v => {
       if (appScope === AppScope.EDITOR) {
@@ -384,7 +390,7 @@ export default class VocabularyUtil {
    * @param bundle
    * @returns
    */
-  static isAnyVersionInBundle(versions: IVersion[], bundle: string): boolean {
+  static isAnyVersionInBundle(versions: Version[], bundle: string): boolean {
     for (const version of versions) {
       if (version.number === bundle) {
         return true;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Moment } from 'moment';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { ICode } from 'app/shared/model/code.model';
 
 export interface IVocabulary {
@@ -123,7 +123,7 @@ export interface IVocabulary {
   versionSv?: string;
   titleSv?: string;
   definitionSv?: string;
-  versions?: IVersion[];
+  versions?: Version[];
   codes?: ICode[];
   languages?: string[];
   languagesPublished?: string[];
@@ -236,7 +236,7 @@ export class Vocabulary implements IVocabulary {
     public versionSv?: string,
     public titleSv?: string,
     public definitionSv?: string,
-    public versions: IVersion[] = [],
+    public versions: Version[] = [],
     public codes: ICode[] = [],
     public languages: string[] = [],
     public languagesPublished: string[] = [],

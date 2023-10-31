@@ -24,7 +24,7 @@ import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } 
 import { Concept } from 'app/shared/model/concept.model';
 import { ConceptService } from './concept.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { VersionService } from 'app/entities/version/version.service';
 
 @Component({
@@ -33,7 +33,7 @@ import { VersionService } from 'app/entities/version/version.service';
 })
 export class ConceptUpdateComponent implements OnInit {
   isSaving = false;
-  versions: IVersion[] = [];
+  versions: Version[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -61,7 +61,7 @@ export class ConceptUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ concept }) => {
       this.updateForm(concept);
 
-      this.versionService.query().subscribe((res: HttpResponse<IVersion[]>) => (this.versions = res.body || []));
+      this.versionService.query().subscribe((res: HttpResponse<Version[]>) => (this.versions = res.body || []));
     });
   }
 
@@ -132,7 +132,7 @@ export class ConceptUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: IVersion): number {
+  trackById(index: number, item: Version): number {
     return item.id || index;
   }
 }

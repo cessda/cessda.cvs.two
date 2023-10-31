@@ -27,7 +27,7 @@ import { IVocabulary } from 'app/shared/model/vocabulary.model';
 import { Account } from 'app/core/user/account.model';
 import { EditorService } from 'app/editor/editor.service';
 import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
-import { IVersion, Version } from 'app/shared/model/version.model';
+import { createNewVersion } from 'app/shared/model/version.model';
 import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from 'app/admin/licence/licence.service';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
@@ -44,19 +44,19 @@ import { ActionType } from 'app/shared/model/enumerations/action-type.model';
   templateUrl: './editor-detail-cv-forward-status-dialog.component.html',
 })
 export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
-  licences?: Licence[];
+  licences: Licence[] = [];
   isSaving: boolean;
   isVersionInvalid: boolean;
   account!: Account;
   languages: string[] = [];
   vocabularyParam: IVocabulary = {};
-  versionParam: IVersion = new Version();
+  versionParam = createNewVersion();
   isSlForm?: boolean;
   slVersionNumber!: string;
   proposedPatchNumber = 0;
   missingTranslations: string[] = [];
-  comments: IComment[] | undefined = [];
-  vocabularyChanges: VocabularyChange[] | null = [];
+  comments: IComment[] = [];
+  vocabularyChanges: VocabularyChange[] = [];
 
   public versionNotesEditor: Quill | undefined;
   public versionChangesEditor: Quill | undefined;
@@ -66,7 +66,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   isVocabularyChangeCollapse = true;
 
   compareNoOfDifference = 0;
-  comparePrevVersion = '';
+  comparePrevVersion: string | null = null;
 
   left = '';
   right = '';
@@ -107,7 +107,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.isSaving = false;
-    this.comments = this.versionParam.comments;
+    this.comments = this.versionParam.comments || [];
     this.accountService.identity().subscribe(account => {
       if (account) {
         this.account = account;
@@ -132,7 +132,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
               sort: ['id,asc'],
             })
             .subscribe((res: HttpResponse<Licence[]>) => {
-              this.licences = res.body!;
+              this.licences = res.body || [];
               this.fillForm();
             });
         }
@@ -142,15 +142,16 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
           this.cvForwardStatusForm.removeControl('versionChanges');
         } else {
           this.editorService.getVocabularyCompare(this.versionParam.id!).subscribe((res: HttpResponse<string[]>) => {
+            const body = res.body || ['', ''];
             const newContent: DiffContent = {
-              leftContent: res.body![0],
-              rightContent: res.body![1],
+              leftContent: body[0],
+              rightContent: body[1],
             };
             this.contentObservable.next(newContent);
-            this.comparePrevVersion = res.headers.get('X-Prev-Cv-Version')!;
+            this.comparePrevVersion = res.headers.get('X-Prev-Cv-Version');
           });
           this.vocabularyChangeService.getByVersionId(this.versionParam.id!).subscribe((res: HttpResponse<VocabularyChange[]>) => {
-            this.vocabularyChanges = res.body!;
+            this.vocabularyChanges = res.body || [];
             this.fillVersionNotes();
             this.fillVersionChanges();
           });
@@ -197,7 +198,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         });
       } else {
         this.cvForwardStatusForm.patchValue({
-          versionChanges: this.vocabularyChanges!.map(vc => vc.changeType + ': ' + vc.description).join('<br/>'),
+          versionChanges: this.vocabularyChanges.map(vc => vc.changeType + ': ' + vc.description).join('<br/>'),
         });
       }
       this.versionChangesEditor?.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionChanges'])!.value);
@@ -239,10 +240,10 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         this.missingTranslations = [];
         vocabularySnippet.versionNumber =
           VocabularyUtil.getSlMajorMinorVersionNumber(this.slVersionNumber) + '.' + this.proposedPatchNumber;
-        this.versionParam.concepts!.forEach(c => {
+        (this.versionParam.concepts || []).forEach(c => {
           if (!c.deprecated) {
             if (!c.title || c.title === null || c.title === '') {
-              this.missingTranslations.push(c.notation!);
+              this.missingTranslations.push(c.notation);
             }
           }
         });

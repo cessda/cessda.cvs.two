@@ -24,7 +24,7 @@ export class VersionNumber {
     this.patch = patch;
   }
 
-  toString() {
+  toString(): string {
     return `${this.major}.${this.minor}.${this.patch}`;
   }
 }

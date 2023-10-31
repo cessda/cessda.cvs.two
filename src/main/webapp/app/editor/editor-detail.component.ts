@@ -18,7 +18,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
 import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -63,11 +63,11 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   appScope: AppScope = AppScope.EDITOR;
   account!: Account;
 
-  eventSubscriber?: Subscription;
+  selectConceptSubscription?: Subscription;
   eventSubscriber2?: Subscription;
 
   vocabulary: IVocabulary | null = null;
-  version: IVersion | null = null;
+  version: Version | null = null;
   concept: Concept | null = null;
 
   isDetailCollapse = true;
@@ -145,10 +145,6 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     versionChanges: [],
   });
 
-  public versionNotesEditor: Quill | undefined;
-  public versionChangesEditor: Quill | undefined;
-  public ddiUsageEditor: Quill | undefined;
-
   constructor(
     private accountService: AccountService,
     protected dataUtils: JhiDataUtils,
@@ -189,7 +185,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  getSlVersion(): IVersion {
+  getSlVersion(): Version {
     return VocabularyUtil.getSlVersionOfVocabulary(this.vocabulary!);
   }
 
@@ -307,7 +303,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     return VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
   }
 
-  getVersionsByLanguage(lang?: string): IVersion[] {
+  getVersionsByLanguage(lang?: string): Version[] {
     if (!this.vocabulary?.versions) {
       return [];
     }
@@ -315,7 +311,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     return this.vocabulary.versions.filter(v => v.language === lang);
   }
 
-  getFormattedVersionTooltip(version: IVersion, sourceLang?: string): string {
+  getFormattedVersionTooltip(version: Version, sourceLang?: string): string {
     return (
       this.vocabLangPipeKey.transform(version.language!) +
       ' v.' +
@@ -497,7 +493,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   private subscribeSelectConceptEvent(): void {
-    this.eventSubscriber = this.eventManager.subscribe('selectConcept', (response: JhiEventWithContent<Concept>) => {
+    this.selectConceptSubscription = this.eventManager.subscribe('selectConcept', (response: JhiEventWithContent<Concept>) => {
       this.concept = response.content;
     });
     this.eventSubscriber2 = this.eventManager.subscribe('deselectConcept', () => {
@@ -560,8 +556,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.ngbModalRef = null;
-    if (this.eventSubscriber) {
-      this.eventSubscriber.unsubscribe();
+    if (this.selectConceptSubscription) {
+      this.selectConceptSubscription.unsubscribe();
     }
     if (this.eventSubscriber2) {
       this.eventSubscriber2.unsubscribe();
@@ -801,24 +797,21 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     return '';
   }
 
-  onVersionNotesEditorCreated(event: Quill): void {
-    this.versionNotesEditor = event;
+  onVersionNotesEditorCreated(quill: Quill): void {
     if (this.editorDetailForm.get(['versionNotes'])!.value) {
-      this.versionNotesEditor.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['versionNotes'])!.value);
+      quill.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['versionNotes'])!.value);
     }
   }
 
-  onVersionChangesEditorCreated(event: Quill): void {
-    this.versionChangesEditor = event;
+  onVersionChangesEditorCreated(quill: Quill): void {
     if (this.editorDetailForm.get(['versionChanges'])!.value) {
-      this.versionChangesEditor.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['versionChanges'])!.value);
+      quill.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['versionChanges'])!.value);
     }
   }
 
-  onDdiUsageEditorCreated(event: Quill): void {
-    this.ddiUsageEditor = event;
+  onDdiUsageEditorCreated(quill: Quill): void {
     if (this.editorDetailForm.get(['ddiUsage'])!.value) {
-      this.ddiUsageEditor.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['ddiUsage'])!.value);
+      quill.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['ddiUsage'])!.value);
     }
   }
 }

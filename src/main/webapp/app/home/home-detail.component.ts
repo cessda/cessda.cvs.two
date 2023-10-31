@@ -19,7 +19,7 @@ import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 
 import { Concept } from 'app/shared/model/concept.model';
 import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { FormBuilder } from '@angular/forms';
@@ -128,7 +128,7 @@ export class HomeDetailComponent implements OnInit {
     return String(VocabularyUtil.getVersionNumberByLangIso(this.vocabulary, lang));
   }
 
-  getSlVersion(): IVersion {
+  getSlVersion(): Version {
     return VocabularyUtil.getSlVersionOfVocabulary(this.vocabulary);
   }
 
@@ -140,7 +140,7 @@ export class HomeDetailComponent implements OnInit {
     }
   }
 
-  getVersionByLangNumber(versionNumber?: string): IVersion {
+  getVersionByLangNumber(versionNumber?: string): Version {
     return VocabularyUtil.getVersionByLangAndNumber(this.vocabulary, versionNumber);
   }
 
@@ -172,10 +172,10 @@ export class HomeDetailComponent implements OnInit {
     return uniqueLang;
   }
 
-  getVersionsByLanguage(lang?: string): IVersion[] {
+  getVersionsByLanguage(lang?: string): Version[] {
     return this.vocabulary.versions!.filter(v => v.language === lang);
   }
-  getFormattedVersionTooltip(version?: IVersion, sourceLang?: string): string {
+  getFormattedVersionTooltip(version?: Version, sourceLang?: string): string {
     return (
       this.vocabLangPipeKey.transform(version!.language!) + ' v.' + version!.number + (version!.language === sourceLang ? ' SOURCE' : '')
     );

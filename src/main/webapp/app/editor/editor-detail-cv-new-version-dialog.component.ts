@@ -13,30 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnInit} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {EditorService} from 'app/editor/editor.service';
-import {IVersion} from 'app/shared/model/version.model';
-import {Router} from '@angular/router';
-import {JhiEventManager} from 'ng-jhipster';
-import {FormBuilder, Validators} from '@angular/forms';
-import {VocabularyLanguageFromKeyPipe} from 'app/shared';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { EditorService } from 'app/editor/editor.service';
+import { Version } from 'app/shared/model/version.model';
+import { Router } from '@angular/router';
+import { JhiEventManager } from 'ng-jhipster';
+import { FormBuilder, Validators } from '@angular/forms';
+import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 
 @Component({
-  templateUrl: './editor-detail-cv-new-version-dialog.component.html'
+  templateUrl: './editor-detail-cv-new-version-dialog.component.html',
 })
 export class EditorDetailCvNewVersionDialogComponent implements OnInit {
   vocabularyParam!: IVocabulary;
-  versionParam!: IVersion;
+  versionParam!: Version;
   isSaving: boolean;
 
   unPublishedTls: string;
   allTls: string;
 
   newVersionForm = this.fb.group({
-    agreeNewVersion: ['', [Validators.required]]
+    agreeNewVersion: ['', [Validators.required]],
   });
 
   constructor(
@@ -45,7 +45,7 @@ export class EditorDetailCvNewVersionDialogComponent implements OnInit {
     private router: Router,
     protected eventManager: JhiEventManager,
     private fb: FormBuilder,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe
+    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
   ) {
     this.isSaving = false;
     this.unPublishedTls = '';

@@ -16,7 +16,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditorService } from 'app/editor/editor.service';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
 import { Concept } from 'app/shared/model/concept.model';
 import { Subscription } from 'rxjs';
@@ -28,7 +28,7 @@ import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
 })
 export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy {
   isSaving: boolean;
-  versionParam!: IVersion;
+  versionParam!: Version;
   conceptParam!: Concept;
   selectedConceptToPlace!: Concept;
   eventSubscriber?: Subscription;

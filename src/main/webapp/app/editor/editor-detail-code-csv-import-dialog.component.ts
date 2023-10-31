@@ -16,7 +16,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditorService } from 'app/editor/editor.service';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
 import { Concept } from 'app/shared/model/concept.model';
 import { Subscription } from 'rxjs';
@@ -33,7 +33,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
   isSaving: boolean;
 
   vocabularyParam!: IVocabulary;
-  versionParam!: IVersion;
+  versionParam!: Version;
   concepts: Concept[] = [];
   codeSnippets: ICodeSnippet[] = [];
   eventSubscriber?: Subscription;

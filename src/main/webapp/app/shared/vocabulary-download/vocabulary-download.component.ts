@@ -18,7 +18,7 @@ import { HomeService } from 'app/home/home.service';
 import { EditorService } from 'app/editor/editor.service';
 import { JhiEventManager } from 'ng-jhipster';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { FormGroup } from '@angular/forms';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Router } from '@angular/router';
@@ -29,7 +29,7 @@ import { Router } from '@angular/router';
 })
 export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
   @Input() appScope!: AppScope;
-  @Input() versions!: IVersion[];
+  @Input() versions!: Version[];
   @Input() slVersionNumber!: string;
   @Input() enableDocxExport!: boolean;
   @Input() downloadFormGroup!: FormGroup;
@@ -60,7 +60,7 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     // initialize download checkbox
     const languages: string[] = this.getUniqueVersionLangs();
     for (let i = 0; i < languages.length; i++) {
-      const versions: IVersion[] = this.getVersionsByLang(languages[i]);
+      const versions: Version[] = this.getVersionsByLang(languages[i]);
       if (!versions[0].number!.startsWith(this.getSlMajorMinorVersionNumber(this.slVersionNumber))) {
         continue;
       }
@@ -95,7 +95,7 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     return VocabularyUtil.getUniqueVersionLangs(this.versions, this.appScope);
   }
 
-  getVersionsByLang(lang?: string): IVersion[] {
+  getVersionsByLang(lang?: string): Version[] {
     return this.versions.filter(v => v.language === lang);
   }
 

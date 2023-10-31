@@ -15,10 +15,10 @@
  */
 import { Moment } from 'moment';
 import { Concept } from 'app/shared/model/concept.model';
-import { IVersionHistory } from 'app/shared/model/version-history';
+import { VersionHistory } from 'app/shared/model/version-history';
 import { IComment } from 'app/shared/model/comment.model';
 
-export interface IVersion {
+export interface Version {
   id?: number;
   status: string;
   itemType: string;
@@ -52,49 +52,17 @@ export interface IVersion {
   concepts?: Concept[];
   comments?: IComment[];
   vocabularyId?: number;
-  versionHistories?: IVersionHistory[];
+  versionHistories?: VersionHistory[];
   titleSl?: string;
   languageSl?: string;
   definitionSl?: string;
   notesSl?: string;
 }
 
-export class Version implements IVersion {
-  constructor(
-    public id?: number,
-    public status: string = 'DRAFT',
-    public itemType: string = 'SL',
-    public language?: string,
-    public publicationDate?: Moment,
-    public lastModified?: Moment,
-    public number?: string,
-    public uri?: string,
-    public canonicalUri?: string,
-    public uriSl?: string,
-    public notation?: string,
-    public title?: string,
-    public definition?: string,
-    public previousVersion?: number,
-    public initialVersion?: number,
-    public creator?: number,
-    public publisher?: number,
-    public notes?: string,
-    public versionNotes?: string,
-    public versionChanges?: string,
-    public discussionNotes?: string,
-    public license?: string,
-    public licenseId?: number,
-    public licenseName?: string,
-    public licenseLink?: string,
-    public licenseLogo?: string,
-    public citation?: string,
-    public ddiUsage?: string,
-    public translateAgency?: string,
-    public translateAgencyLink?: string,
-    public concepts: Concept[] = [],
-    public comments: IComment[] = [],
-    public vocabularyId?: number,
-    public versionHistories: IVersionHistory[] = [],
-    public languageSl?: string,
-  ) {}
+export function createNewVersion(id?: number): Version {
+  return {
+    id: id,
+    status: 'DRAFT',
+    itemType: 'TL',
+  };
 }

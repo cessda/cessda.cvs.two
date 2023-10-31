@@ -21,20 +21,20 @@ import { mergeMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IVersion, Version } from 'app/shared/model/version.model';
+import { createNewVersion, Version } from 'app/shared/model/version.model';
 import { VersionService } from './version.service';
 import { VersionComponent } from './version.component';
 import { VersionDetailComponent } from './version-detail.component';
 import { VersionUpdateComponent } from './version-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class VersionResolve implements Resolve<IVersion> {
+export class VersionResolve implements Resolve<Version> {
   constructor(
     private service: VersionService,
     private router: Router,
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IVersion> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Version> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
@@ -48,7 +48,7 @@ export class VersionResolve implements Resolve<IVersion> {
         }),
       );
     }
-    return of(new Version());
+    return of(createNewVersion());
   }
 }
 

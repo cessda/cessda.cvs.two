@@ -29,7 +29,7 @@ import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { VOCABULARY_ALREADY_EXIST_TYPE } from 'app/shared';
 import { EditorService } from 'app/editor/editor.service';
 import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
@@ -45,8 +45,8 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
   notation? = '';
   vocabularySnippet?: VocabularySnippet;
   vocabularyParam?: IVocabulary;
-  versionParam?: IVersion;
-  versionSlParam?: IVersion;
+  versionParam?: Version;
+  versionSlParam?: Version;
   isNew = false;
   isSlForm = false;
   selectedLanguage = '';
@@ -82,7 +82,8 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
 
   updateLanguageCheckbox(agencyId: number): void {
     // for Add new CV set taken language with []
-    const availableLanguages = VocabularyUtil.getAvailableCvLanguage(this.isNew && this.isSlForm ? [] : this.vocabularyParam!.versions);
+    const versions = this.isNew && this.isSlForm ? [] : this.vocabularyParam!.versions || [];
+    const availableLanguages = VocabularyUtil.getAvailableCvLanguage(versions);
     this.languages = [];
 
     if (this.isNew) {

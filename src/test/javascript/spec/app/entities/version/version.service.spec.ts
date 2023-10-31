@@ -18,15 +18,15 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import moment from 'moment';
 import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { VersionService } from 'app/entities/version/version.service';
-import { IVersion, Version } from 'app/shared/model/version.model';
+import { createNewVersion, Version } from 'app/shared/model/version.model';
 
 describe('Service Tests', () => {
   describe('Version Service', () => {
     let injector: TestBed;
     let service: VersionService;
     let httpMock: HttpTestingController;
-    let elemDefault: IVersion;
-    let expectedResult: IVersion | IVersion[] | boolean | null;
+    let elemDefault: Version;
+    let expectedResult: Version | Version[] | boolean | null;
     let currentDate: moment.Moment;
 
     beforeEach(() => {
@@ -39,35 +39,35 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new Version(
-        0,
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        currentDate,
-        currentDate,
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        0,
-        0,
-        0,
-        0,
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        0,
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-      );
+      elemDefault = {
+        id: 0,
+        status: 'AAAAAAA',
+        itemType: 'AAAAAAA',
+        language: 'AAAAAAA',
+        publicationDate: currentDate,
+        lastModified: currentDate,
+        number: 'AAAAAAA',
+        uri: 'AAAAAAA',
+        canonicalUri: 'AAAAAAA',
+        uriSl: 'AAAAAAA',
+        notation: 'AAAAAAA',
+        title: 'AAAAAAA',
+        definition: 'AAAAAAA',
+        previousVersion: 0,
+        initialVersion: 0,
+        creator: 0,
+        publisher: 0,
+        notes: 'AAAAAAA',
+        versionNotes: 'AAAAAAA',
+        versionChanges: 'AAAAAAA',
+        discussionNotes: 'AAAAAAA',
+        license: 'AAAAAAA',
+        licenseId: 0,
+        licenseName: 'AAAAAAA',
+        licenseLink: 'AAAAAAA',
+        licenseLogo: 'AAAAAAA',
+        citation: 'AAAAAAA',
+      };
     });
 
     describe('Service methods', () => {
@@ -105,7 +105,7 @@ describe('Service Tests', () => {
           returnedFromService,
         );
 
-        service.create(new Version()).subscribe(resp => (expectedResult = resp.body));
+        service.create(createNewVersion()).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);

@@ -26,7 +26,7 @@ import moment from 'moment';
 import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
 import { ICodeSnippet } from 'app/shared/model/code-snippet.model';
 import { Concept } from 'app/shared/model/concept.model';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { IComment } from 'app/shared/model/comment.model';
 import { MetadataValue } from 'app/shared/model/metadata-value.model';
 
@@ -48,8 +48,8 @@ export class EditorService {
       .pipe(map((res: HttpResponse<IVocabulary>) => this.convertVocabularyDateFromServer(res)));
   }
 
-  createNewVersion(id: number): Observable<HttpResponse<IVersion>> {
-    return this.http.post<IVersion>(this.resourceEditorVocabularyUrl + '/new-version/' + id, null, { observe: 'response' });
+  createNewVersion(id: number): Observable<HttpResponse<Version>> {
+    return this.http.post<Version>(this.resourceEditorVocabularyUrl + '/new-version/' + id, null, { observe: 'response' });
   }
 
   updateVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<IVocabulary>> {
@@ -58,8 +58,8 @@ export class EditorService {
       .pipe(map(res => this.convertVocabularyDateFromServer(res)));
   }
 
-  forwardStatusVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<IVersion>> {
-    return this.http.put<IVersion>(this.resourceEditorVocabularyUrl + '/forward-status', vocabularySnippet, { observe: 'response' });
+  forwardStatusVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<Version>> {
+    return this.http.put<Version>(this.resourceEditorVocabularyUrl + '/forward-status', vocabularySnippet, { observe: 'response' });
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -79,8 +79,8 @@ export class EditorService {
     return this.http.put<Concept>(this.resourceEditorCodeUrl, codeSnippet, { observe: 'response' });
   }
 
-  reorderCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<IVersion>> {
-    return this.http.post<IVersion>(this.resourceEditorCodeUrl + '/reorder', codeSnippet, { observe: 'response' });
+  reorderCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<Version>> {
+    return this.http.post<Version>(this.resourceEditorCodeUrl + '/reorder', codeSnippet, { observe: 'response' });
   }
 
   deprecateCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<Concept>> {

@@ -25,7 +25,7 @@ import { Observable } from 'rxjs';
 import { Account } from 'app/core/user/account.model';
 import { CODE_ALREADY_EXIST_TYPE } from 'app/shared';
 import { EditorService } from 'app/editor/editor.service';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { Concept } from 'app/shared/model/concept.model';
 import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
 import { EditorDetailCvAddEditConfirmModalComponent } from 'app/editor/editor-detail-code-add-edit-confirm.component';
@@ -41,7 +41,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   languages: string[] = [];
   errorCodeExists = false;
   codeSnippet?: ICodeSnippet;
-  versionParam!: IVersion;
+  versionParam!: Version;
   conceptParam?: Concept;
   codeInsertMode?: string;
   isNew?: boolean;

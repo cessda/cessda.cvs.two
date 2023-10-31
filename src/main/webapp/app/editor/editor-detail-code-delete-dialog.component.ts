@@ -16,7 +16,7 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditorService } from 'app/editor/editor.service';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
 import { Concept } from 'app/shared/model/concept.model';
 import { Observable, Subscription } from 'rxjs';
@@ -29,7 +29,7 @@ import { IVocabulary } from 'app/shared/model/vocabulary.model';
   templateUrl: './editor-detail-code-delete-dialog.component.html',
 })
 export class EditorDetailCodeDeleteDialogComponent {
-  versionParam!: IVersion;
+  versionParam!: Version;
   conceptParam!: Concept;
   eventSubscriber?: Subscription;
   isSlForm?: boolean;

@@ -16,7 +16,7 @@
 import { Component, Input } from '@angular/core';
 
 import { EditorService } from 'app/editor/editor.service';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { JhiEventManager } from 'ng-jhipster';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Account } from 'app/core/user/account.model';
@@ -33,7 +33,7 @@ import { HttpResponse } from '@angular/common/http';
 export class EditorDetailCvCommentItemComponent {
   @Input() account?: Account;
   @Input() comment!: IComment;
-  @Input() versionParam!: IVersion;
+  @Input() versionParam!: Version;
   isSaving: boolean;
   isWriteComment = false;
 
@@ -45,7 +45,11 @@ export class EditorDetailCvCommentItemComponent {
     content: ['', [Validators.required]],
   });
 
-  constructor(protected editorService: EditorService, protected eventManager: JhiEventManager, private fb: FormBuilder) {
+  constructor(
+    protected editorService: EditorService,
+    protected eventManager: JhiEventManager,
+    private fb: FormBuilder,
+  ) {
     this.isSaving = false;
   }
 
@@ -82,7 +86,7 @@ export class EditorDetailCvCommentItemComponent {
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IComment>>): void {
     result.subscribe(
       response => this.onSaveSuccess(response.body!),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 

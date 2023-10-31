@@ -17,7 +17,7 @@ import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { EditorService } from 'app/editor/editor.service';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -37,7 +37,7 @@ import { QuillModules } from 'ngx-quill';
 export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
   isSaving: boolean;
   account!: Account;
-  versionParam!: IVersion;
+  versionParam!: Version;
   comments: IComment[] | undefined = [];
   isWriteComment = false;
 

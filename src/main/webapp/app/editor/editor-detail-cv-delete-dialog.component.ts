@@ -18,23 +18,23 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { IVocabulary } from 'app/shared/model/vocabulary.model';
 import { EditorService } from 'app/editor/editor.service';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
 
 @Component({
-  templateUrl: './editor-detail-cv-delete-dialog.component.html'
+  templateUrl: './editor-detail-cv-delete-dialog.component.html',
 })
 export class EditorDetailCvDeleteDialogComponent implements OnInit {
   vocabularyParam!: IVocabulary;
-  versionParam!: IVersion;
+  versionParam!: Version;
   deleteType = 'versionTl';
 
   constructor(
     protected editorService: EditorService,
     public activeModal: NgbActiveModal,
     private router: Router,
-    protected eventManager: JhiEventManager
+    protected eventManager: JhiEventManager,
   ) {}
 
   clear(): void {
