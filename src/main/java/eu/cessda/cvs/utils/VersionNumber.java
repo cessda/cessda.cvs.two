@@ -59,7 +59,7 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Pattern parsePattern = Pattern.compile("^\\D*(\\d+)\\.(\\d+)(?:\\.(\\d+))?.*$");
+    private static final Pattern parsePattern = Pattern.compile("^\\D*+(\\d++)\\.(\\d++)(?:\\.(\\d++))?.*+$");
 
     public static VersionNumber fromString(String str) {
         if (str == null) {

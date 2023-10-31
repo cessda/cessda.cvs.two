@@ -1,0 +1,867 @@
+{
+  "activate": {
+    "title": "Активация",
+    "messages": {
+      "success": "<strong>Ваш аккаунт был активирован.</strong> Пожалуйста, ",
+      "error": "<strong>Ваш аккаунт не может быть активирован.</strong> Пожалуйста, воспользуйтесь формой регистрации."
+    }
+  },
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "Activity Logs",
+        "createLabel": "Создать новый Activity Log",
+        "createOrEditLabel": "Создать или отредактировать Activity Log",
+        "notFound": "No Activity Logs found"
+      },
+      "created": "Новый Activity Log создан с идентификатором {{ param }}",
+      "updated": "Activity Log обновлен с идентификатором {{ param }}",
+      "deleted": "Activity Log удален с идентификатором {{ param }}",
+      "delete": { "question": "Вы уверены что хотите удалить Activity Log {{ id }}?" },
+      "detail": { "title": "Activity Log" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    },
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Создать новый Agency",
+        "createOrEditLabel": "Создать или отредактировать Agency",
+        "notFound": "No Agencies found"
+      },
+      "created": "Новый Agency создан с идентификатором {{ param }}",
+      "updated": "Agency обновлен с идентификатором {{ param }}",
+      "deleted": "Agency удален с идентификатором {{ param }}",
+      "delete": { "question": "Вы уверены что хотите удалить Agency {{ id }}?" },
+      "detail": { "title": "Agency" },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    },
+    "AgencyRole": {
+      "null": "",
+      "ADMIN": "ADMIN",
+      "VIEW": "VIEW",
+      "ADMIN_SL": "ADMIN_SL",
+      "ADMIN_TL": "ADMIN_TL",
+      "ADMIN_CONTENT": "ADMIN_CONTENT"
+    },
+    "code": {
+      "home": {
+        "title": "Codes",
+        "createLabel": "Создать новый Code",
+        "createOrEditLabel": "Создать или отредактировать Code",
+        "notFound": "No Codes found"
+      },
+      "created": "Новый Code создан с идентификатором {{ param }}",
+      "updated": "Code обновлен с идентификатором {{ param }}",
+      "deleted": "Code удален с идентификатором {{ param }}",
+      "delete": { "question": "Вы уверены что хотите удалить Code {{ id }}?" },
+      "detail": { "title": "Code" },
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv"
+    },
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Создать новый Comment",
+        "createOrEditLabel": "Создать или отредактировать Comment",
+        "search": "Найти Comment",
+        "notFound": "No Comments found"
+      },
+      "created": "Новый Comment создан с идентификатором {{ param }}",
+      "updated": "Comment обновлен с идентификатором {{ param }}",
+      "deleted": "Comment удален с идентификатором {{ param }}",
+      "delete": { "question": "Вы уверены что хотите удалить Comment {{ id }}?" },
+      "detail": { "title": "Comment" },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    },
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Создать новый Concept",
+        "createOrEditLabel": "Создать или отредактировать Concept",
+        "notFound": "No Concepts found"
+      },
+      "created": "Новый Concept создан с идентификатором {{ param }}",
+      "updated": "Concept обновлен с идентификатором {{ param }}",
+      "deleted": "Concept удален с идентификатором {{ param }}",
+      "delete": { "question": "Вы уверены что хотите удалить Concept {{ id }}?" },
+      "detail": { "title": "Concept" },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    },
+    "conceptChange": {
+      "home": {
+        "title": "Concept Changes",
+        "createLabel": "Создать новый Concept Change",
+        "createOrEditLabel": "Создать или отредактировать Concept Change",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "Новый Concept Change создан с идентификатором {{ param }}",
+      "updated": "Concept Change обновлен с идентификатором {{ param }}",
+      "deleted": "Concept Change удален с идентификатором {{ param }}",
+      "delete": { "question": "Вы уверены что хотите удалить Concept Change {{ id }}?" },
+      "detail": { "title": "Concept Change" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    },
+    "Language": {
+      "null": "",
+      "ALBANIAN": "ALBANIAN",
+      "BOSNIAN": "BOSNIAN",
+      "BULGARIAN": "BULGARIAN",
+      "CROATIAN": "CROATIAN",
+      "CZECH": "CZECH",
+      "DANISH": "DANISH",
+      "DUTCH": "DUTCH",
+      "ENGLISH": "ENGLISH",
+      "ESTONIAN": "ESTONIAN",
+      "FINNISH": "FINNISH",
+      "FRENCH": "FRENCH",
+      "GERMAN": "GERMAN",
+      "GREEK": "GREEK",
+      "HUNGARIAN": "HUNGARIAN",
+      "ITALIAN": "ITALIAN",
+      "JAPANESE": "JAPANESE",
+      "LITHUANIAN": "LITHUANIAN",
+      "MACEDONIAN": "MACEDONIAN",
+      "NORWEGIAN": "NORWEGIAN",
+      "POLISH": "POLISH",
+      "PORTUGUESE": "PORTUGUESE",
+      "ROMANIAN": "ROMANIAN",
+      "RUSSIAN": "RUSSIAN",
+      "SERBIAN": "SERBIAN",
+      "SLOVAK": "SLOVAK",
+      "SLOVENIAN": "SLOVENIAN",
+      "SPANISH": "SPANISH",
+      "SWEDISH": "SWEDISH"
+    },
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Создать новый Licence",
+        "createOrEditLabel": "Создать или отредактировать Licence",
+        "notFound": "No Licences found"
+      },
+      "created": "Новый Licence создан с идентификатором {{ param }}",
+      "updated": "Licence обновлен с идентификатором {{ param }}",
+      "deleted": "Licence удален с идентификатором {{ param }}",
+      "delete": { "question": "Вы уверены что хотите удалить Licence {{ id }}?" },
+      "detail": { "title": "Licence" },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo"
+    },
+    "metadataField": {
+      "home": {
+        "title": "Metadata Fields",
+        "createLabel": "Создать новый Metadata Field",
+        "createOrEditLabel": "Создать или отредактировать Metadata Field",
+        "notFound": "No Metadata Fields found"
+      },
+      "created": "Новый Metadata Field создан с идентификатором {{ param }}",
+      "updated": "Metadata Field обновлен с идентификатором {{ param }}",
+      "deleted": "Metadata Field удален с идентификатором {{ param }}",
+      "delete": { "question": "Вы уверены что хотите удалить Metadata Field {{ id }}?" },
+      "detail": { "title": "Metadata Field" },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    },
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Создать новый Metadata Value",
+        "createOrEditLabel": "Создать или отредактировать Metadata Value",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "Новый Metadata Value создан с идентификатором {{ param }}",
+      "updated": "Metadata Value обновлен с идентификатором {{ param }}",
+      "deleted": "Metadata Value удален с идентификатором {{ param }}",
+      "delete": { "question": "Вы уверены что хотите удалить Metadata Value {{ id }}?" },
+      "detail": { "title": "Metadata Value" },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    },
+    "ObjectType": { "null": "", "AGENCY": "AGENCY", "GROUP": "GROUP", "SYSTEM": "SYSTEM" },
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Создать новый Resolver",
+        "createOrEditLabel": "Создать или отредактировать Resolver",
+        "notFound": "No Resolvers found"
+      },
+      "created": "Новый Resolver создан с идентификатором {{ param }}",
+      "updated": "Resolver обновлен с идентификатором {{ param }}",
+      "deleted": "Resolver удален с идентификатором {{ param }}",
+      "delete": { "question": "Вы уверены что хотите удалить Resolver {{ id }}?" },
+      "detail": { "title": "Resolver" },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    },
+    "ResolverType": { "null": "", "DOI": "DOI", "URN": "URN" },
+    "ResourceType": { "null": "", "VOCABULARY": "VOCABULARY" },
+    "userAgency": {
+      "home": {
+        "title": "User Agencies",
+        "createLabel": "Создать новый User Agency",
+        "createOrEditLabel": "Создать или отредактировать User Agency",
+        "notFound": "No User Agencies found"
+      },
+      "created": "Новый User Agency создан с идентификатором {{ param }}",
+      "updated": "User Agency обновлен с идентификатором {{ param }}",
+      "deleted": "User Agency удален с идентификатором {{ param }}",
+      "delete": { "question": "Вы уверены что хотите удалить User Agency {{ id }}?" },
+      "detail": { "title": "User Agency" },
+      "agencyRole": "Agency Role",
+      "language": "Language",
+      "agency": "Agency"
+    },
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Создать новый Version",
+        "createOrEditLabel": "Создать или отредактировать Version",
+        "notFound": "No Versions found"
+      },
+      "created": "Новый Version создан с идентификатором {{ param }}",
+      "updated": "Version обновлен с идентификатором {{ param }}",
+      "deleted": "Version удален с идентификатором {{ param }}",
+      "delete": { "question": "Вы уверены что хотите удалить Version {{ id }}?" },
+      "detail": { "title": "Version" },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    },
+    "vocabulary": {
+      "home": {
+        "title": "Vocabularies",
+        "createLabel": "Создать новый Vocabulary",
+        "createOrEditLabel": "Создать или отредактировать Vocabulary",
+        "notFound": "No Vocabularies found"
+      },
+      "created": "Новый Vocabulary создан с идентификатором {{ param }}",
+      "updated": "Vocabulary обновлен с идентификатором {{ param }}",
+      "deleted": "Vocabulary удален с идентификатором {{ param }}",
+      "delete": { "question": "Вы уверены что хотите удалить Vocabulary {{ id }}?" },
+      "detail": { "title": "Vocabulary" },
+      "status": "Status",
+      "uri": "Uri",
+      "notation": "Notation",
+      "versionNumber": "Version Number",
+      "initialPublication": "Initial Publication",
+      "previousPublication": "Previous Publication",
+      "archived": "Archived",
+      "withdrawn": "Withdrawn",
+      "discoverable": "Discoverable",
+      "sourceLanguage": "Source Language",
+      "agencyId": "Agency Id",
+      "agencyName": "Agency Name",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "notes": "Notes",
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "versionBs": "Version Bs",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "versionBg": "Version Bg",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "versionHr": "Version Hr",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "versionCs": "Version Cs",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "versionDa": "Version Da",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "versionNl": "Version Nl",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "versionEn": "Version En",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "versionEt": "Version Et",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "versionFi": "Version Fi",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "versionFr": "Version Fr",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "versionDe": "Version De",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "versionEl": "Version El",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "versionHu": "Version Hu",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "versionIt": "Version It",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "versionJa": "Version Ja",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "versionLt": "Version Lt",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "versionMk": "Version Mk",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "versionNo": "Version No",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "versionPl": "Version Pl",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "versionPt": "Version Pt",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "versionRo": "Version Ro",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "versionRu": "Version Ru",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "versionSr": "Version Sr",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "versionSk": "Version Sk",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "versionSl": "Version Sl",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "versionEs": "Version Es",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "versionSv": "Version Sv",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv",
+      "version": "Version"
+    },
+    "vocabularyChange": {
+      "home": {
+        "title": "Vocabulary Changes",
+        "createLabel": "Создать новый Vocabulary Change",
+        "createOrEditLabel": "Создать или отредактировать Vocabulary Change",
+        "notFound": "No Vocabulary Changes found"
+      },
+      "created": "Новый Vocabulary Change создан с идентификатором {{ param }}",
+      "updated": "Vocabulary Change обновлен с идентификатором {{ param }}",
+      "deleted": "Vocabulary Change удален с идентификатором {{ param }}",
+      "delete": { "question": "Вы уверены что хотите удалить Vocabulary Change {{ id }}?" },
+      "detail": { "title": "Vocabulary Change" },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  },
+  "audits": {
+    "title": "Аудит",
+    "filter": {
+      "title": "Фильтр по дате",
+      "from": "от",
+      "to": "до",
+      "button": { "weeks": "Недель", "today": "сегодня", "clear": "очистить", "close": "закрыть" }
+    },
+    "table": {
+      "header": { "principal": "Пользователь", "date": "Дата", "status": "Состояние", "data": "Доп. инф." },
+      "data": { "remoteAddress": "Удалённый адрес:" }
+    },
+    "notFound": "No audit found"
+  },
+  "configuration": { "title": "Настройки", "filter": "Фильтр (по префиксу)", "table": { "prefix": "Префикс", "properties": "Свойства" } },
+  "error": {
+    "title": "Ошибка!",
+    "http": {
+      "400": "Bad request.",
+      "403": "Вы не авторизованы для доступа к странице",
+      "404": "Страница не существует",
+      "405": "The HTTP verb you used is not supported for this URL.",
+      "500": "Internal server error."
+    },
+    "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
+    "validation": "Validation error on the server.",
+    "internalServerError": "Внутренняя ошибка сервера",
+    "server.not.reachable": "Сервер не доступен",
+    "url.not.found": "Не найдено",
+    "NotNull": "Поле {{fieldName}} не может быть пустым!",
+    "Size": "Поле {{fieldName}} не отвечает требованиям мин/макс.го размера!",
+    "userexists": "Имя пользователя уже используется!",
+    "emailexists": "Эл. почта уже используется!!",
+    "idexists": "Новый {{entityName}} не может иметь данный ID",
+    "idnull": "Неверный ID",
+    "file": {
+      "could.not.extract": "Could not extract file",
+      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+    }
+  },
+  "global": {
+    "title": "Cvs",
+    "browsehappy": "Ваш браузер <strong>устарел</strong>. Пожалуйста <a href=\"http://browsehappy.com/?locale=ru\">обновите ваш браузер</a>.",
+    "menu": {
+      "home": "Главная",
+      "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "entities": {
+        "main": "Сущности",
+        "vocabulary": "Vocabulary",
+        "code": "Code",
+        "version": "Version",
+        "concept": "Concept",
+        "conceptChange": "Concept Change",
+        "activityLog": "Activity Log",
+        "licence": "Licence",
+        "metadataField": "Metadata Field",
+        "metadataValue": "Metadata Value",
+        "resolver": "Resolver",
+        "vocabularyChange": "Vocabulary Change",
+        "agency": "Agency",
+        "userAgency": "User Agency",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+      },
+      "account": {
+        "main": "Профиль",
+        "settings": "Настройки",
+        "password": "Пароль",
+        "sessions": "Сессии",
+        "login": "Войти",
+        "logout": "Выйти",
+        "register": "Зарегистрироваться"
+      },
+      "admin": {
+        "main": "Администрирование",
+        "userManagement": "Управление пользователями",
+        "tracker": "Трекер польз.",
+        "metrics": "Метрики",
+        "health": "Состояние",
+        "configuration": "Настройки",
+        "logs": "Логи",
+        "audits": "Аудит",
+        "apidocs": "API",
+        "database": "База данных",
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "language": "Язык"
+    },
+    "form": {
+      "username.label": "Логин",
+      "username.placeholder": "Ваш логин",
+      "currentpassword.label": "Текущий пароль",
+      "currentpassword.placeholder": "Текущий пароль",
+      "newpassword.label": "Новый пароль",
+      "newpassword.placeholder": "Новый пароль",
+      "confirmpassword.label": "Подтверждение нового пароля",
+      "confirmpassword.placeholder": "Подтвердите новый пароль",
+      "email.label": "Email",
+      "email.placeholder": "Ваш email"
+    },
+    "messages": {
+      "info": {
+        "authenticated": {
+          "prefix": "Если вы хотите ",
+          "link": "авторизироваться",
+          "suffix": ", вы можете попробовать аккаунты по умолчанию:<br/>- Администратор (логин=\"admin\" и пароль=\"admin\") <br/>- Пользователь (логин=\"user\" и пароль=\"user\")."
+        },
+        "register": { "noaccount": "У вас нет аккаунта?", "link": "Создать новый аккаунт" }
+      },
+      "error": { "dontmatch": "Пароль и его подтверждение не совпадают!" },
+      "validate": {
+        "newpassword": {
+          "required": "Пароль должен быть указан.",
+          "minlength": "Длина пароля должна быть хотя-бы 4 символов",
+          "maxlength": "Пароль не может быть длиннее чем 50 символов",
+          "strength": "Сложность пароля:"
+        },
+        "confirmpassword": {
+          "required": "подтверждение пароля должно быть указано.",
+          "minlength": "Длина подтверждения пароля должна быть хотя-бы 4 символов",
+          "maxlength": "Подтверждение пароля не может быть больше чем 50 символов"
+        },
+        "email": {
+          "required": "Email должен быть указан.",
+          "invalid": "Email не верен.",
+          "minlength": "Длина email должна быть хотя-бы 5 символов",
+          "maxlength": "Email не может быть длиннее чем 50 символов"
+        }
+      }
+    },
+    "field": { "id": "ID" },
+    "ribbon": { "dev": "Разработка" },
+    "item-count": "{{first}} - {{second}} из {{total}}"
+  },
+  "entity": {
+    "action": {
+      "addblob": "Добавить двоичный объект",
+      "addimage": "Добавить изображение",
+      "back": "Назад",
+      "cancel": "Отмена",
+      "delete": "Удалить",
+      "edit": "Изменить",
+      "open": "Открыть",
+      "save": "Сохранить",
+      "view": "Просмотр"
+    },
+    "detail": { "field": "Поле", "value": "Значение" },
+    "delete": { "title": "Подтвердите операцию удаления" },
+    "validation": {
+      "required": "Это поле обязательно к заполнению.",
+      "minlength": "Это поле является обязательным, по крайней мере {{min}} символов.",
+      "maxlength": "Это поле не может быть длинее, чем {{max}} символов.",
+      "min": "Это поле должно быть больше, чем {{min}}.",
+      "max": "Это поле не может быть больше, чем {{max}}.",
+      "minbytes": "Это поле должно быть больше, чем {{min}} байтов.",
+      "maxbytes": "Это поле не может быть больше, чем {{max}} байтов.",
+      "pattern": "Это поле должно следовать модели {{pattern}}.",
+      "number": "Это поле должно быть число.",
+      "datetimelocal": "Это поле должно быть дата и время."
+    }
+  },
+  "footer": "Это ваш футтер",
+  "health": {
+    "title": "Состояние",
+    "refresh.button": "Обновить",
+    "stacktrace": "Трассировки стека",
+    "details": { "details": "Детали", "properties": "Параметры", "name": "Имя", "value": "Значение", "error": "Ошибка" },
+    "indicator": { "diskSpace": "Место на диске", "mail": "Email", "db": "База данных" },
+    "table": { "service": "Название сервиса", "status": "Статус" },
+    "status": { "UNKNOWN": "UNKNOWN", "UP": "UP", "DOWN": "DOWN" }
+  },
+  "home": {
+    "title": "Добро пожаловать, Java Hipster!",
+    "subtitle": "Это ваша домашняя страница",
+    "logged": { "message": "Вы вошли как пользователь \"{{username}}\"." },
+    "question": "Если у Вас возникли вопросы по JHipster:",
+    "link": {
+      "homepage": "JHipster домашняя страница",
+      "stackoverflow": "JHipster на Stack Overflow",
+      "bugtracker": "JHipster баг трекер",
+      "chat": "JHipster public chat room",
+      "follow": "пользователь @jhipster в Twitter"
+    },
+    "like": "Если вам нравится JHipster, не забудьте дать нам звёздочку на",
+    "github": "GitHub"
+  },
+  "login": {
+    "title": "Авторизация",
+    "form": { "password": "Пароль", "password.placeholder": "Ваш пароль", "rememberme": "Входить автоматически", "button": "Войти" },
+    "messages": {
+      "error": { "authentication": "<strong>Не удалось войти!</strong> Пожалуйста, проверьте ваши учетные данные и попробуйте еще раз." }
+    },
+    "password": { "forgot": "Вы забыли ваш пароль?" }
+  },
+  "logs": {
+    "title": "Логи",
+    "nbloggers": "Есть {{ total }} логгеров.",
+    "filter": "Фильтр",
+    "table": { "name": "Название", "level": "Уровень" }
+  },
+  "metrics": {
+    "title": "Метрики приложения",
+    "refresh.button": "Обновить",
+    "updating": "Обновление...",
+    "jvm": {
+      "title": "JVM Метрики",
+      "memory": { "title": "Память", "total": "Всего памяти", "heap": "Куча", "nonheap": "Не куча" },
+      "threads": {
+        "title": "Потоки",
+        "all": "Все",
+        "runnable": "Активные",
+        "timedwaiting": "Временное ожидание",
+        "waiting": "Ожидание",
+        "blocked": "Заблокированные",
+        "dump": {
+          "title": "Дамп потоков",
+          "id": "Id: ",
+          "blockedtime": "Заблокированные Время",
+          "blockedcount": "Заблокированные Количество",
+          "waitedtime": "Ожидающие Время",
+          "waitedcount": "Ожидающие Количество",
+          "lockname": "Название блокировки",
+          "stacktrace": "Stacktrace",
+          "show": "Показать",
+          "hide": "Скрыть"
+        }
+      },
+      "gc": {
+        "title": "Сборщики мусора",
+        "marksweepcount": "Mark Sweep количество",
+        "marksweeptime": "Mark Sweep время",
+        "scavengecount": "Сборка мусора количество",
+        "scavengetime": "Сборка мусора время"
+      },
+      "http": {
+        "title": "HTTP запросы (событий в секунду)",
+        "active": "Активные запросы:",
+        "total": "Всего запросов:",
+        "table": { "code": "Код", "count": "Количество", "mean": "Среднее", "average": "Среднее" },
+        "code": { "ok": "Ок", "notfound": "Не найдено", "servererror": "Ошибка сервера" }
+      }
+    },
+    "servicesstats": {
+      "title": "Статистика сервисов (время в милисекундах)",
+      "table": {
+        "name": "Название сервиса",
+        "count": "Количество",
+        "mean": "Среднее",
+        "min": "Мин",
+        "max": "Макс",
+        "p50": "p50",
+        "p75": "p75",
+        "p95": "p95",
+        "p99": "p99"
+      }
+    },
+    "cache": {
+      "title": "статистика",
+      "cachename": "Название кеша",
+      "hits": "Попаданий",
+      "misses": "Промахов",
+      "evictions": "Количество очисток"
+    },
+    "datasource": {
+      "usage": "Использование",
+      "title": "Статистика DataSource (время в миллисекундах)",
+      "name": "Pool usage",
+      "count": "Число",
+      "mean": "Среднее",
+      "min": "Минимум",
+      "max": "Максимум",
+      "p50": "p50",
+      "p75": "p75",
+      "p95": "p95",
+      "p99": "p99"
+    }
+  },
+  "password": {
+    "title": "Пароль для [<strong>{{username}}</strong>]",
+    "form": { "button": "Сохранить" },
+    "messages": { "error": "<strong>Произошла ошибка!</strong> Не удалось изменить пароль.", "success": "<strong>Пароль изменен!</strong>" }
+  },
+  "register": {
+    "title": "Регистрация",
+    "form": { "button": "Зарегистрироваться" },
+    "messages": {
+      "validate": {
+        "login": {
+          "required": "Необходимо ввести логин.",
+          "minlength": "Ваш логин должен содержать хотя бы 1 символ",
+          "maxlength": "Ваш логин не может быть длинее чем 50 символов",
+          "pattern": "Ваш логин должен содержать только буквы в нижнем регистре и цифры"
+        }
+      },
+      "success": "<strong>Регистрация успешна!</strong> Пожалуйста, проверьте ваш email для подтверждения.",
+      "error": {
+        "fail": "<strong>Ошибка при регистрации!</strong> Пожалуйста, попробуйте позже.",
+        "userexists": "<strong>Аккаунт с таким логином уже зарегистрирован!</strong> Пожалуйста, выберите другой логин.",
+        "emailexists": "<strong>Email уже занят!</strong> Пожалуйста, выберите другой."
+      }
+    }
+  },
+  "reset": {
+    "request": {
+      "title": "Сброс пароля",
+      "form": { "button": "Сбросить пароль" },
+      "messages": {
+        "info": "Введите email, указанный при регистрации",
+        "success": "Проверьте ваш email для подробной информации о том, как сбросить пароль.",
+        "notfound": "<strong>Email адрес не зарегистрирован!</strong> Пожалуйста проверьте и попробуйте снова"
+      }
+    },
+    "finish": {
+      "title": "Сброс пароля",
+      "form": { "button": "Подтвердить новый пароль" },
+      "messages": {
+        "info": "Выберите новый пароль",
+        "success": "<strong>Ваш пароль был сброшен.</strong> Пожалуйста ",
+        "keymissing": "Ключ сброса отсутствует.",
+        "error": "Ваш пароль не может быть сброшен. Запомнить, запрос пароля действителен только в течение 24 часов."
+      }
+    }
+  },
+  "sessions": {
+    "title": "Активные сессии для [<strong>{{username}}</strong>]",
+    "table": { "ipaddress": "IP адрес", "useragent": "User Agent", "date": "Дата", "button": "Завершить" },
+    "messages": {
+      "success": "<strong>Сессия истекла!</strong>",
+      "error": "<strong>Произошла ошибка!</strong> Сессия не может быть завершена."
+    }
+  },
+  "settings": {
+    "title": "Настройки пользователя для [<strong>{{username}}</strong>]",
+    "form": {
+      "firstname": "Имя",
+      "firstname.placeholder": "Ваше имя",
+      "lastname": "Фамилия",
+      "lastname.placeholder": "Ваша фамилия",
+      "language": "Язык",
+      "button": "Сохранить"
+    },
+    "messages": {
+      "error": {
+        "fail": "<strong>Произошла ошибка!</strong> Настройки не могут быть сохранены.",
+        "emailexists": "<strong>Email уже используется!</strong> Пожалуйста, попробуйте другой."
+      },
+      "success": "<strong>Настройки сохранены!</strong>",
+      "validate": {
+        "firstname": {
+          "required": "Имя должно быть указано.",
+          "minlength": "Длина имени должна быть хотя-бы 1 символ",
+          "maxlength": "Имя не может быть длиннее чем 50 символов"
+        },
+        "lastname": {
+          "required": "Фамилия должна быть указана.",
+          "minlength": "Длина фамилии должна быть хотя-бы 1 символ",
+          "maxlength": "Фамилия не может быть длиннее чем 50 символов"
+        }
+      }
+    }
+  },
+  "userManagement": {
+    "home": {
+      "title": "Пользователи",
+      "createLabel": "Создать нового пользователя",
+      "createOrEditLabel": "Создать или отредактировать пользователя"
+    },
+    "created": "Новый пользователь создан с идентификатором {{ param }}",
+    "updated": "Пользователь с идентификатором {{ param }} обновлен",
+    "deleted": "Пользователь с идентификатором {{ param }} удален",
+    "delete": { "question": "Вы уверены, что хотите удалить пользователя {{ login }}?" },
+    "detail": { "title": "Пользователь" },
+    "login": "Логин",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "email": "Email",
+    "activated": "Активен",
+    "deactivated": "Неактивен",
+    "profiles": "Профили",
+    "langKey": "Язык",
+    "createdBy": "Создал",
+    "createdDate": "Дата создания",
+    "lastModifiedBy": "Изменено",
+    "lastModifiedDate": "Дата изменения"
+  }
+}

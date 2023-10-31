@@ -19,7 +19,7 @@ import { HttpResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
 
 import { EMPTY, Observable, of } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import { EditorComponent } from './editor.component';
 import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
@@ -31,13 +31,16 @@ import { EditorCvAddPopupComponent } from 'app/editor/editor-cv-add-dialog.compo
 
 @Injectable({ providedIn: 'root' })
 export class VocabularyResolve implements Resolve<IVocabulary> {
-  constructor(private service: EditorService, private router: Router) {}
+  constructor(
+    private service: EditorService,
+    private router: Router,
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IVocabulary> | Observable<never> {
     const notation = route.params['notation'];
     if (notation) {
       return this.service.getVocabulary(notation).pipe(
-        flatMap((vocabulary: HttpResponse<Vocabulary>) => {
+        mergeMap((vocabulary: HttpResponse<Vocabulary>) => {
           if (vocabulary.body) {
             vocabulary.body.selectedLang = vocabulary.body.sourceLanguage;
             return of(vocabulary.body);
@@ -45,7 +48,7 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
             this.router.navigate(['404']);
             return EMPTY;
           }
-        })
+        }),
       );
     }
     return of(new Vocabulary());
@@ -84,20 +87,5 @@ export const EDITOR_ROUTE: Routes = [
       pageTitle: 'home.title',
     },
     runGuardsAndResolvers: 'always',
-    // children: [
-    //   {
-    //     path: 'detail-cv-add',
-    //     component: EditorDetailCvAddPopupComponent,
-    //     // resolve: {
-    //     //   vocabulary: VocabularyResolve
-    //     // },
-    //     data: {
-    //       authorities: ['ROLE_USER'],
-    //       pageTitle: 'global.title'
-    //     },
-    //     canActivate: [UserRouteAccessService],
-    //     outlet: 'popup'
-    //   }
-    // ]
   },
 ];

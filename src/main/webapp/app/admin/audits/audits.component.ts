@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnInit} from '@angular/core';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {DatePipe} from '@angular/common';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import {ITEMS_PER_PAGE} from 'app/shared/constants/pagination.constants';
-import {Audit} from './audit.model';
-import {AuditsService} from './audits.service';
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
+import { Audit } from './audit.model';
+import { AuditsService } from './audits.service';
 
 @Component({
   selector: 'jhi-audit',
-  templateUrl: './audits.component.html'
+  templateUrl: './audits.component.html',
 })
 export class AuditsComponent implements OnInit {
-  audits?: Audit[];
+  audits: Audit[] = [];
   fromDate = '';
   itemsPerPage = ITEMS_PER_PAGE;
   page!: number;
@@ -43,7 +43,7 @@ export class AuditsComponent implements OnInit {
     private auditsService: AuditsService,
     private activatedRoute: ActivatedRoute,
     private datePipe: DatePipe,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -74,8 +74,8 @@ export class AuditsComponent implements OnInit {
       this.router.navigate(['/admin/audits'], {
         queryParams: {
           page: this.page,
-          sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-        }
+          sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
+        },
       });
       this.loadData();
     }
@@ -105,7 +105,7 @@ export class AuditsComponent implements OnInit {
         size: this.itemsPerPage,
         sort: this.sort(),
         fromDate: this.fromDate,
-        toDate: this.toDate
+        toDate: this.toDate,
       })
       .subscribe((res: HttpResponse<Audit[]>) => this.onSuccess(res.body, res.headers));
   }

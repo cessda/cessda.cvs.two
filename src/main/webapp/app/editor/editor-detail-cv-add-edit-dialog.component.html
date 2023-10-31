@@ -35,7 +35,7 @@
                     <strong>Vocabulary already exist!</strong> Please use different CV Short Name.
                 </div>
             </div>
-            
+
             <div class="col-md-12 justify-content-center" *ngIf="isSubmitting">
                 <div class="alert alert-danger" *ngIf="cvAddEditForm.get('changeType')?.errors?.required">
                     <strong>You need to select 'Change type' before saving.</strong> Make only one change at a time.
@@ -58,7 +58,7 @@
                         <span ngbTooltip="required field" [ngClass]="{'label-required':isNew}">Language</span>
                     </div>
                     <div *ngIf="isNew" class="detail-column">
-                        <select class="form-control w-auto sk-select" id="language" name="language" formControlName="language" (change)="selectedLanguage = $event.target.value">
+                        <select class="form-control w-auto sk-select" id="language" name="language" formControlName="language" (change)="changeLanguage($event)">
                             <option *ngFor="let language of languages; let i = index" [value]="language">{{language | vocabularyLanguageFromKey}}</option>
                         </select>
                     </div>

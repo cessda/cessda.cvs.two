@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {IConcept} from 'app/shared/model/concept.model';
+import { IConcept } from 'app/shared/model/concept.model';
 
-import {ITEMS_PER_PAGE} from 'app/shared/constants/pagination.constants';
-import {ConceptService} from './concept.service';
-import {ConceptDeleteDialogComponent} from './concept-delete-dialog.component';
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
+import { ConceptService } from './concept.service';
+import { ConceptDeleteDialogComponent } from './concept-delete-dialog.component';
 
 @Component({
   selector: 'jhi-concept',
-  templateUrl: './concept.component.html'
+  templateUrl: './concept.component.html',
 })
 export class ConceptComponent implements OnInit, OnDestroy {
   concepts?: IConcept[];
@@ -47,7 +47,7 @@ export class ConceptComponent implements OnInit, OnDestroy {
     protected dataUtils: JhiDataUtils,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -64,11 +64,11 @@ export class ConceptComponent implements OnInit, OnDestroy {
           page: pageToLoad - 1,
           query: this.currentSearch,
           size: this.itemsPerPage,
-          sort: this.sort()
+          sort: this.sort(),
         })
         .subscribe(
           (res: HttpResponse<IConcept[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-          () => this.onError()
+          () => this.onError(),
         );
       return;
     }
@@ -77,11 +77,11 @@ export class ConceptComponent implements OnInit, OnDestroy {
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
-        sort: this.sort()
+        sort: this.sort(),
       })
       .subscribe(
         (res: HttpResponse<IConcept[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
+        () => this.onError(),
       );
   }
 
@@ -107,8 +107,7 @@ export class ConceptComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackId(index: number, item: IConcept): number {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+  trackId(_index: number, item: IConcept): number {
     return item.id!;
   }
 
@@ -138,8 +137,8 @@ export class ConceptComponent implements OnInit, OnDestroy {
         page: this.page,
         size: this.itemsPerPage,
         search: this.currentSearch,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
+        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
+      },
     });
     this.concepts = data || [];
   }

@@ -184,7 +184,7 @@ div.CodeList {
 			    </div>
 			    <hr />
 
-          <div>
+          <div th:if="${version.concepts.^[deprecated == true]}">
             <h2>Deprecated codes list</h2>
             <table aria-describedby="page-heading" style="max-width: 1024px">
               <tr>
@@ -209,8 +209,8 @@ div.CodeList {
                 </td>
               </tr>
             </table>
-            </div>
-			    <hr />
+            <hr />
+          </div>
 
 		    </div>
 
@@ -221,7 +221,7 @@ div.CodeList {
 		    </div>
 		    <hr />
             <div class="Usage page">
-                <h2>Copyright and license</h2>
+                <h2>License and citation</h2>
                 <p>Copyright © <a th:href="${agency.link}" th:text="${agency.name}"></a> <span th:text="${year}"></span>.</p>
                 <p th:if="${version.licenseName != null}">
                     <span>This work is licensed under a

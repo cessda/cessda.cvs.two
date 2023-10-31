@@ -224,6 +224,7 @@ class EditorResourceIT {
         vocabularySnippet.setTitle( INIT_TITLE_EN );
         vocabularySnippet.setDefinition( INIT_DEFINITION_EN );
         vocabularySnippet.setNotes( INIT_NOTES );
+        vocabularySnippet.setDdiUsage(EDIT_DDI_USAGE);
         return vocabularySnippet;
     }
 
@@ -902,6 +903,7 @@ class EditorResourceIT {
     private void reorderConceptsTest(Version slVersion, Concept slConceptRoot1, Concept slConceptRoot2,
                                      Concept slConcept2, Concept slConcept3) throws Exception {
         CodeSnippet codeSnippetCodeMove = new CodeSnippet();
+        codeSnippetCodeMove.setConceptId(slConceptRoot1.getId());
         codeSnippetCodeMove.setActionType( ActionType.REORDER_CODE);
         codeSnippetCodeMove.setVersionId( slVersion.getId() );
         codeSnippetCodeMove.setConceptStructureIds(new LinkedList<>(

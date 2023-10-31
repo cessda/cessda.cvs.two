@@ -13,6 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import 'zone.js/dist/zone';
+import 'zone.js';
 import '@angular/localize/init';
-require('../manifest.webapp');
+
+// Define window.process for conponents trying to use process.env
+(window as any).process = {
+  env: {},
+};

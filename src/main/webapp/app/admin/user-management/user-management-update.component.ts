@@ -56,7 +56,7 @@ export class UserManagementUpdateComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private agencyService: AgencyService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {
     this.selectedAgencyId = 1;
     this.selectedAgencyRole = 'ADMIN_TL';
@@ -73,7 +73,7 @@ export class UserManagementUpdateComponent implements OnInit {
             ? -1
             : this.userAgencyToCompare(ua1) > this.userAgencyToCompare(ua2)
             ? 1
-            : 0
+            : 0,
         );
 
         if (this.user.id === undefined) {
@@ -118,12 +118,12 @@ export class UserManagementUpdateComponent implements OnInit {
     if (this.user.id !== undefined) {
       this.userService.update(this.user).subscribe(
         () => this.onSaveSuccess(),
-        () => this.onSaveError()
+        () => this.onSaveError(),
       );
     } else {
       this.userService.create(this.user).subscribe(
         () => this.onSaveSuccess(),
-        () => this.onSaveError()
+        () => this.onSaveError(),
       );
     }
   }
@@ -168,7 +168,7 @@ export class UserManagementUpdateComponent implements OnInit {
           ': ' +
           ua.agencyRole +
           (ua.language ? '-' + ua.language : '') +
-          '? The agency-role deletion will only be completed after the form is saved.'
+          '? The agency-role deletion will only be completed after the form is saved.',
       )
     ) {
       const index = this.user.userAgencies!.indexOf(ua);
@@ -186,7 +186,7 @@ export class UserManagementUpdateComponent implements OnInit {
           ': ' +
           this.selectedAgencyRole +
           (this.selectedLanguage !== '' ? '-' + this.selectedLanguage! : '') +
-          '? The agency-role addition will only be completed after the form is saved.'
+          '? The agency-role addition will only be completed after the form is saved.',
       )
     ) {
       const userAgency = {
@@ -194,9 +194,14 @@ export class UserManagementUpdateComponent implements OnInit {
         userId: this.user.id,
         agencyRole: this.selectedAgencyRole,
         agencyId: this.selectedAgencyId,
+        agencyName: this.getAgencyName(this.selectedAgencyId!),
         language: this.selectedLanguage !== '' ? this.selectedLanguage : undefined,
       };
       this.user.userAgencies!.push(userAgency);
     }
+  }
+
+  getValue(event: Event) {
+    return (event.target as HTMLSelectElement).value;
   }
 }

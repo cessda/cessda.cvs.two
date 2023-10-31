@@ -59,7 +59,7 @@
         <maven.version>3.3.9</maven.version>
         <java.version>11</java.version>
         <node.version>v16.20.0</node.version>
-        <npm.version>8.19.4</npm.version>
+        <npm.version>6.14.18</npm.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
@@ -80,7 +80,7 @@
         <javassist.version>3.24.0-GA</javassist.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <jaxb-runtime.version>4.0.2</jaxb-runtime.version>
-        <archunit-junit5.version>1.0.1</archunit-junit5.version>
+        <archunit-junit5.version>1.1.0</archunit-junit5.version>
         <log4j2-mock.version>0.0.2</log4j2-mock.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <!-- Plugin versions -->
@@ -89,7 +89,7 @@
         <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
         <maven-enforcer-plugin.version>3.2.1</maven-enforcer-plugin.version>
-        <maven-failsafe-plugin.version>3.1.0</maven-failsafe-plugin.version>
+        <maven-failsafe-plugin.version>3.2.1</maven-failsafe-plugin.version>
         <maven-idea-plugin.version>2.2.1</maven-idea-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
@@ -97,13 +97,13 @@
         <maven-checkstyle.version>3.3.0</maven-checkstyle.version>
         <checkstyle.version>10.12.0</checkstyle.version>
         <spring-nohttp-checkstyle.version>0.0.11</spring-nohttp-checkstyle.version>
-        <frontend-maven-plugin.version>1.13.3</frontend-maven-plugin.version>
+        <frontend-maven-plugin.version>1.14.0</frontend-maven-plugin.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
-        <jib-maven-plugin.version>3.3.2</jib-maven-plugin.version>
+        <jib-maven-plugin.version>3.4.0</jib-maven-plugin.version>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
-        <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
+        <sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
         <jacoco.utReportFolder>${project.build.directory}/jacoco/test</jacoco.utReportFolder>
         <jacoco.utReportFile>${jacoco.utReportFolder}/test.exec</jacoco.utReportFile>
         <jacoco.itReportFolder>${project.build.directory}/jacoco/integrationTest</jacoco.itReportFolder>
@@ -115,11 +115,6 @@
         <!-- SonarQube Properties -->
         <sonar.sources>src/main/</sonar.sources>
         <sonar.tests>src/test/</sonar.tests>
-        <sonar.coverage.jacoco.xmlReportPaths>target/jacoco/test/jacoco.xml,target/jacoco/integrationTest/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
-        <sonar.java.codeCoveragePlugin>jacoco</sonar.java.codeCoveragePlugin>
-        <sonar.junit.reportPaths>target/test-results/test,target/test-results/integrationTest</sonar.junit.reportPaths>
-        <sonar.testExecutionReportPaths>target/test-results/jest/TESTS-results-sonar.xml</sonar.testExecutionReportPaths>
-        <sonar.javascript.lcov.reportPaths>target/test-results/lcov.info</sonar.javascript.lcov.reportPaths>
         <sonar.issue.ignore.multicriteria>S3437,S4502,S4684,BoldAndItalicTagsCheck,S2637</sonar.issue.ignore.multicriteria>
         <!-- Rule https://sonarcloud.io/coding_rules?open=squid%3AS3437&rule_key=squid%3AS3437 is ignored, as a JPA-managed field cannot be transient -->
         <sonar.issue.ignore.multicriteria.S3437.resourceKey>src/main/java/**/*</sonar.issue.ignore.multicriteria.S3437.resourceKey>
@@ -140,7 +135,7 @@
         <!-- Exclude Web app content, where static CVs in JSON files stored -->
         <sonar.exclusions>src/main/resources/**/*,src/main/webapp/content/**/*</sonar.exclusions>
         <springfox.version>2.9.2</springfox.version>
-        <jjwt.version>0.11.5</jjwt.version>
+        <jjwt.version>0.12.2</jjwt.version>
     </properties>
 
     <dependencyManagement>
@@ -213,7 +208,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.13.0</version>
+            <version>2.15.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -599,36 +594,18 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>${jib-maven-plugin.version}</version>
                 <configuration>
-                    <from>
-                        <image>adoptopenjdk:11-jre-hotspot</image>
-                    </from>
                     <to>
                         <image>cvs:latest</image>
                     </to>
                     <container>
-                        <entrypoint>
-                            <shell>bash</shell>
-                            <option>-c</option>
-                            <arg>/entrypoint.sh</arg>
-                        </entrypoint>
                         <ports>
                             <port>8080</port>
                         </ports>
                         <environment>
                             <SPRING_OUTPUT_ANSI_ENABLED>ALWAYS</SPRING_OUTPUT_ANSI_ENABLED>
-                            <JHIPSTER_SLEEP>0</JHIPSTER_SLEEP>
                         </environment>
                         <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                     </container>
-                    <extraDirectories>
-                        <paths>src/main/jib</paths>
-                        <permissions>
-                            <permission>
-                                <file>/entrypoint.sh</file>
-                                <mode>755</mode>
-                            </permission>
-                        </permissions>
-                    </extraDirectories>
                 </configuration>
             </plugin>
             <plugin>
@@ -800,7 +777,7 @@
             <plugin>
                 <groupId>com.github.alexcojocaru</groupId>
                 <artifactId>elasticsearch-maven-plugin</artifactId>
-                <version>6.26</version>
+                <version>6.27</version>
                 <configuration>
                     <!-- THE ELASTICSEARCH VERSION; REPLACE WITH THE VERSION YOU NEED -->
                     <version>6.8.23</version>
@@ -835,7 +812,7 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>4.2</version>
+                <version>4.3</version>
                 <configuration>
                     <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
                     <properties>
@@ -859,6 +836,8 @@
                         <exclude>**/?/**</exclude>
                         <exclude>cvs.jh</exclude>
                         <exclude>src/main/webapp/manifest.webapp</exclude>
+                        <exclude>.config/**</exclude>
+                        <exclude>.angular/cache</exclude>
                     </excludes>
                     <mapping>
                         <cff>SCRIPT_STYLE</cff>
@@ -928,13 +907,13 @@
                                 </goals>
                             </execution>
                             <execution>
-                                <id>webpack build dev</id>
+                                <id>angular build dev</id>
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
                                 <phase>generate-resources</phase>
                                 <configuration>
-                                    <arguments>run webpack:build</arguments>
+                                    <arguments>run build-dev</arguments>
                                     <environmentVariables>
                                         <APP_VERSION>${project.version}</APP_VERSION>
                                     </environmentVariables>
@@ -1034,7 +1013,7 @@
                                 </goals>
                                 <phase>test</phase>
                                 <configuration>
-                                    <arguments>run webpack:test</arguments>
+                                    <arguments>test</arguments>
                                     <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
                                 </configuration>
                             </execution>
@@ -1045,12 +1024,44 @@
                                 </goals>
                                 <phase>generate-resources</phase>
                                 <configuration>
-                                    <arguments>run webpack:prod</arguments>
+                                    <arguments>run build-prod</arguments>
                                     <environmentVariables>
                                         <APP_VERSION>${project.version}</APP_VERSION>
                                     </environmentVariables>
                                     <npmInheritsProxyConfigFromMaven>false</npmInheritsProxyConfigFromMaven>
                                 </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>pl.project13.maven</groupId>
+                        <artifactId>git-commit-id-plugin</artifactId>
+                    </plugin>
+                </plugins>
+            </build>
+            <properties>
+                <!-- default Spring profiles -->
+                <spring.profiles.active>prod${profile.swagger}</spring.profiles.active>
+            </properties>
+        </profile>
+        <profile>
+            <id>ci</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-undertow</artifactId>
+                </dependency>
+            </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>build-info</goal>
+                                </goals>
                             </execution>
                         </executions>
                     </plugin>

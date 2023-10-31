@@ -15,6 +15,7 @@
  */
 package eu.cessda.cvs.web.rest;
 
+import eu.cessda.cvs.config.audit.AuditEventPublisher;
 import eu.cessda.cvs.domain.User;
 import eu.cessda.cvs.repository.UserRepository;
 import eu.cessda.cvs.security.SecurityUtils;
@@ -27,15 +28,20 @@ import eu.cessda.cvs.web.rest.errors.InvalidPasswordException;
 import eu.cessda.cvs.web.rest.errors.LoginAlreadyUsedException;
 import eu.cessda.cvs.web.rest.vm.KeyAndPasswordVM;
 import eu.cessda.cvs.web.rest.vm.ManagedUserVM;
+
 import org.apache.commons.lang3.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 import java.util.Optional;
 
 /**
@@ -44,6 +50,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class AccountResource {
+
+    @Autowired
+    private AuditEventPublisher auditPublisher;
 
     private static class AccountResourceException extends RuntimeException {
         private static final long serialVersionUID = -6612174679532316605L;
@@ -147,6 +156,14 @@ public class AccountResource {
         }
         userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
             userDTO.getLangKey(), userDTO.getImageUrl());
+        
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, userDTO, null, "USER_SETTINGS_UPDATED");
     }
 
     /**

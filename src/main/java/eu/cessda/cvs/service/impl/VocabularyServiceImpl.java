@@ -1983,7 +1983,8 @@ public class VocabularyServiceImpl implements VocabularyService
                 map.put( "docId", uriSl );
                 map.put( "docVersionOf", vocabularyDTO.getUri() );
                 map.put( "docNotation", vocabularyDTO.getNotation() );
-                map.put( "docVersion", versionIncluded.getNumber().toString() );
+                map.put( "docSourceLanguage", vocabularyDTO.getSourceLanguage() );
+            map.put( "docVersion", versionIncluded.getNumber().toString() );
                 map.put( "docLicense", versionIncluded.getLicenseName() );
                 map.put( "docLicenseUrl", versionIncluded.getLicenseLink() );
                 map.put( "docRight", versionIncluded.getLicenseName() );
@@ -2012,7 +2013,7 @@ public class VocabularyServiceImpl implements VocabularyService
             map.put( "baseUrl", requestURL );
 
             String suffix = "";
-            if (agencyDTO.getName().equals("DDI Alliance")) {
+            if (agencyDTO.getName().equals("DDI Alliance") && downloadType.equals(ExportService.DownloadType.SKOS)) {
                 suffix = "-ddi";
             }
 

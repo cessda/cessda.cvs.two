@@ -158,6 +158,12 @@ public class UserService {
         return true;
     }
 
+    /**
+     * Create user, and return the modified user.
+     *
+     * @param userDTO user to update.
+     * @return created user.
+     */
     public User createUser(UserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin().toLowerCase());
@@ -272,6 +278,11 @@ public class UserService {
             .map(UserDTO::new);
     }
 
+    /**
+     * Delete user by login
+     * 
+     * @param login user to delete
+     */
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
             userRepository.delete(user);
@@ -345,7 +356,11 @@ public class UserService {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
     }
 
-
+     /**
+     * Clear the user cache
+     * 
+     * @param user to clear the cache
+     */
     private void clearUserCaches(User user) {
         var userByLoginCache = cacheManager.getCache(Constants.USERS_BY_LOGIN_CACHE);
         if (userByLoginCache != null) {

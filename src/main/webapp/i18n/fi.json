@@ -1,0 +1,867 @@
+{
+  "activate": {
+    "title": "Aktivoi",
+    "messages": {
+      "success": "<strong>Käyttäjätilisi on aktivoitu.</strong> Ole hyvä ",
+      "error": "<strong>Käyttäjätilisi ei voitu aktivoida.</strong> Ole hyvä ja rekisteröidy sovellukseen."
+    }
+  },
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "Activity Logs",
+        "createLabel": "Luo Activity Log",
+        "createOrEditLabel": "Luo tai muokkaa Activity Log",
+        "notFound": "Activity Log ei löytynyt"
+      },
+      "created": "Uusi Activity Log on luotu, id: {{ param }}",
+      "updated": "Activity Log on päivitetty, id: {{ param }}",
+      "deleted": "Activity Log on päivitetty, id: {{ param }}",
+      "delete": { "question": "Haluatko varmasti poistaa Activity Log {{ id }}?" },
+      "detail": { "title": "Activity Log" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    },
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Luo Agency",
+        "createOrEditLabel": "Luo tai muokkaa Agency",
+        "notFound": "Agency ei löytynyt"
+      },
+      "created": "Uusi Agency on luotu, id: {{ param }}",
+      "updated": "Agency on päivitetty, id: {{ param }}",
+      "deleted": "Agency on päivitetty, id: {{ param }}",
+      "delete": { "question": "Haluatko varmasti poistaa Agency {{ id }}?" },
+      "detail": { "title": "Agency" },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    },
+    "AgencyRole": {
+      "null": "",
+      "ADMIN": "ADMIN",
+      "VIEW": "VIEW",
+      "ADMIN_SL": "ADMIN_SL",
+      "ADMIN_TL": "ADMIN_TL",
+      "ADMIN_CONTENT": "ADMIN_CONTENT"
+    },
+    "code": {
+      "home": { "title": "Codes", "createLabel": "Luo Code", "createOrEditLabel": "Luo tai muokkaa Code", "notFound": "Code ei löytynyt" },
+      "created": "Uusi Code on luotu, id: {{ param }}",
+      "updated": "Code on päivitetty, id: {{ param }}",
+      "deleted": "Code on päivitetty, id: {{ param }}",
+      "delete": { "question": "Haluatko varmasti poistaa Code {{ id }}?" },
+      "detail": { "title": "Code" },
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv"
+    },
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Luo Comment",
+        "createOrEditLabel": "Luo tai muokkaa Comment",
+        "search": "Etsi Comment",
+        "notFound": "Comment ei löytynyt"
+      },
+      "created": "Uusi Comment on luotu, id: {{ param }}",
+      "updated": "Comment on päivitetty, id: {{ param }}",
+      "deleted": "Comment on päivitetty, id: {{ param }}",
+      "delete": { "question": "Haluatko varmasti poistaa Comment {{ id }}?" },
+      "detail": { "title": "Comment" },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    },
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Luo Concept",
+        "createOrEditLabel": "Luo tai muokkaa Concept",
+        "notFound": "Concept ei löytynyt"
+      },
+      "created": "Uusi Concept on luotu, id: {{ param }}",
+      "updated": "Concept on päivitetty, id: {{ param }}",
+      "deleted": "Concept on päivitetty, id: {{ param }}",
+      "delete": { "question": "Haluatko varmasti poistaa Concept {{ id }}?" },
+      "detail": { "title": "Concept" },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    },
+    "conceptChange": {
+      "home": {
+        "title": "Concept Changes",
+        "createLabel": "Luo Concept Change",
+        "createOrEditLabel": "Luo tai muokkaa Concept Change",
+        "notFound": "Concept Change ei löytynyt"
+      },
+      "created": "Uusi Concept Change on luotu, id: {{ param }}",
+      "updated": "Concept Change on päivitetty, id: {{ param }}",
+      "deleted": "Concept Change on päivitetty, id: {{ param }}",
+      "delete": { "question": "Haluatko varmasti poistaa Concept Change {{ id }}?" },
+      "detail": { "title": "Concept Change" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    },
+    "Language": {
+      "null": "",
+      "ALBANIAN": "ALBANIAN",
+      "BOSNIAN": "BOSNIAN",
+      "BULGARIAN": "BULGARIAN",
+      "CROATIAN": "CROATIAN",
+      "CZECH": "CZECH",
+      "DANISH": "DANISH",
+      "DUTCH": "DUTCH",
+      "ENGLISH": "ENGLISH",
+      "ESTONIAN": "ESTONIAN",
+      "FINNISH": "FINNISH",
+      "FRENCH": "FRENCH",
+      "GERMAN": "GERMAN",
+      "GREEK": "GREEK",
+      "HUNGARIAN": "HUNGARIAN",
+      "ITALIAN": "ITALIAN",
+      "JAPANESE": "JAPANESE",
+      "LITHUANIAN": "LITHUANIAN",
+      "MACEDONIAN": "MACEDONIAN",
+      "NORWEGIAN": "NORWEGIAN",
+      "POLISH": "POLISH",
+      "PORTUGUESE": "PORTUGUESE",
+      "ROMANIAN": "ROMANIAN",
+      "RUSSIAN": "RUSSIAN",
+      "SERBIAN": "SERBIAN",
+      "SLOVAK": "SLOVAK",
+      "SLOVENIAN": "SLOVENIAN",
+      "SPANISH": "SPANISH",
+      "SWEDISH": "SWEDISH"
+    },
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Luo Licence",
+        "createOrEditLabel": "Luo tai muokkaa Licence",
+        "notFound": "Licence ei löytynyt"
+      },
+      "created": "Uusi Licence on luotu, id: {{ param }}",
+      "updated": "Licence on päivitetty, id: {{ param }}",
+      "deleted": "Licence on päivitetty, id: {{ param }}",
+      "delete": { "question": "Haluatko varmasti poistaa Licence {{ id }}?" },
+      "detail": { "title": "Licence" },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo"
+    },
+    "metadataField": {
+      "home": {
+        "title": "Metadata Fields",
+        "createLabel": "Luo Metadata Field",
+        "createOrEditLabel": "Luo tai muokkaa Metadata Field",
+        "notFound": "Metadata Field ei löytynyt"
+      },
+      "created": "Uusi Metadata Field on luotu, id: {{ param }}",
+      "updated": "Metadata Field on päivitetty, id: {{ param }}",
+      "deleted": "Metadata Field on päivitetty, id: {{ param }}",
+      "delete": { "question": "Haluatko varmasti poistaa Metadata Field {{ id }}?" },
+      "detail": { "title": "Metadata Field" },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    },
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Luo Metadata Value",
+        "createOrEditLabel": "Luo tai muokkaa Metadata Value",
+        "notFound": "Metadata Value ei löytynyt"
+      },
+      "created": "Uusi Metadata Value on luotu, id: {{ param }}",
+      "updated": "Metadata Value on päivitetty, id: {{ param }}",
+      "deleted": "Metadata Value on päivitetty, id: {{ param }}",
+      "delete": { "question": "Haluatko varmasti poistaa Metadata Value {{ id }}?" },
+      "detail": { "title": "Metadata Value" },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    },
+    "ObjectType": { "null": "", "AGENCY": "AGENCY", "GROUP": "GROUP", "SYSTEM": "SYSTEM" },
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Luo Resolver",
+        "createOrEditLabel": "Luo tai muokkaa Resolver",
+        "notFound": "Resolver ei löytynyt"
+      },
+      "created": "Uusi Resolver on luotu, id: {{ param }}",
+      "updated": "Resolver on päivitetty, id: {{ param }}",
+      "deleted": "Resolver on päivitetty, id: {{ param }}",
+      "delete": { "question": "Haluatko varmasti poistaa Resolver {{ id }}?" },
+      "detail": { "title": "Resolver" },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    },
+    "ResolverType": { "null": "", "DOI": "DOI", "URN": "URN" },
+    "ResourceType": { "null": "", "VOCABULARY": "VOCABULARY" },
+    "userAgency": {
+      "home": {
+        "title": "User Agencies",
+        "createLabel": "Luo User Agency",
+        "createOrEditLabel": "Luo tai muokkaa User Agency",
+        "notFound": "User Agency ei löytynyt"
+      },
+      "created": "Uusi User Agency on luotu, id: {{ param }}",
+      "updated": "User Agency on päivitetty, id: {{ param }}",
+      "deleted": "User Agency on päivitetty, id: {{ param }}",
+      "delete": { "question": "Haluatko varmasti poistaa User Agency {{ id }}?" },
+      "detail": { "title": "User Agency" },
+      "agencyRole": "Agency Role",
+      "language": "Language",
+      "agency": "Agency"
+    },
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Luo Version",
+        "createOrEditLabel": "Luo tai muokkaa Version",
+        "notFound": "Version ei löytynyt"
+      },
+      "created": "Uusi Version on luotu, id: {{ param }}",
+      "updated": "Version on päivitetty, id: {{ param }}",
+      "deleted": "Version on päivitetty, id: {{ param }}",
+      "delete": { "question": "Haluatko varmasti poistaa Version {{ id }}?" },
+      "detail": { "title": "Version" },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    },
+    "vocabulary": {
+      "home": {
+        "title": "Vocabularies",
+        "createLabel": "Luo Vocabulary",
+        "createOrEditLabel": "Luo tai muokkaa Vocabulary",
+        "notFound": "Vocabulary ei löytynyt"
+      },
+      "created": "Uusi Vocabulary on luotu, id: {{ param }}",
+      "updated": "Vocabulary on päivitetty, id: {{ param }}",
+      "deleted": "Vocabulary on päivitetty, id: {{ param }}",
+      "delete": { "question": "Haluatko varmasti poistaa Vocabulary {{ id }}?" },
+      "detail": { "title": "Vocabulary" },
+      "status": "Status",
+      "uri": "Uri",
+      "notation": "Notation",
+      "versionNumber": "Version Number",
+      "initialPublication": "Initial Publication",
+      "previousPublication": "Previous Publication",
+      "archived": "Archived",
+      "withdrawn": "Withdrawn",
+      "discoverable": "Discoverable",
+      "sourceLanguage": "Source Language",
+      "agencyId": "Agency Id",
+      "agencyName": "Agency Name",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "notes": "Notes",
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "versionBs": "Version Bs",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "versionBg": "Version Bg",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "versionHr": "Version Hr",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "versionCs": "Version Cs",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "versionDa": "Version Da",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "versionNl": "Version Nl",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "versionEn": "Version En",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "versionEt": "Version Et",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "versionFi": "Version Fi",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "versionFr": "Version Fr",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "versionDe": "Version De",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "versionEl": "Version El",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "versionHu": "Version Hu",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "versionIt": "Version It",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "versionJa": "Version Ja",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "versionLt": "Version Lt",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "versionMk": "Version Mk",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "versionNo": "Version No",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "versionPl": "Version Pl",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "versionPt": "Version Pt",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "versionRo": "Version Ro",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "versionRu": "Version Ru",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "versionSr": "Version Sr",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "versionSk": "Version Sk",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "versionSl": "Version Sl",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "versionEs": "Version Es",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "versionSv": "Version Sv",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv",
+      "version": "Version"
+    },
+    "vocabularyChange": {
+      "home": {
+        "title": "Vocabulary Changes",
+        "createLabel": "Luo Vocabulary Change",
+        "createOrEditLabel": "Luo tai muokkaa Vocabulary Change",
+        "notFound": "Vocabulary Change ei löytynyt"
+      },
+      "created": "Uusi Vocabulary Change on luotu, id: {{ param }}",
+      "updated": "Vocabulary Change on päivitetty, id: {{ param }}",
+      "deleted": "Vocabulary Change on päivitetty, id: {{ param }}",
+      "delete": { "question": "Haluatko varmasti poistaa Vocabulary Change {{ id }}?" },
+      "detail": { "title": "Vocabulary Change" },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  },
+  "audits": {
+    "title": "Audit loki",
+    "filter": {
+      "title": "Suodata pvm mukaan",
+      "from": "alkaen",
+      "to": "päättyen",
+      "button": { "weeks": "viikkoja", "today": "tänään", "clear": "putsaa", "close": "sulje" }
+    },
+    "table": {
+      "header": { "principal": "Käyttäjä", "date": "Pvm", "status": "Tila", "data": "Lisätiedot" },
+      "data": { "remoteAddress": "Kutsujan osoite:" }
+    }
+  },
+  "configuration": { "title": "Asetukset", "filter": "Suodatus (by prefix)", "table": { "prefix": "Prefix", "properties": "Asetukset" } },
+  "error": {
+    "title": "Virhe!",
+    "http": {
+      "400": "Virheellinen pyyntö.",
+      "403": "Sinulla ei ole oikeuksia tähän sivuun.",
+      "404": "Pyytämääsi sivua ei ole.",
+      "405": "Käyttämäsi toiminto ei sovellu pyytämääsi URL-osoitteeseen.",
+      "500": "Palvelimella tapahtui virhe."
+    },
+    "concurrencyFailure": "Toinen käyttäjä muokkasi samaa sivua samaan aikaan. Tekemäsi muutokset hylättiin.",
+    "validation": "Palvelimella tapahtui tarkistusvirhe.",
+    "internalServerError": "Palvelinvirhe",
+    "server.not.reachable": "Palvelinta ei voida tavoittaa",
+    "url.not.found": "Ei löytynyt",
+    "NotNull": "Kenttä {{ fieldName }} ei voi olla tyhjä!",
+    "Size": "Kenttä {{ fieldName }} ei täytä minimi ja maksimi kokorajoituksia!",
+    "userexists": "Käyttäjänimi on jo käytössä!",
+    "emailexists": "Sähköposti on jo käytössä!",
+    "idexists": "Uusi {{ entityName }} ei voi sisältää ID:tä",
+    "idnull": "ID virheellinen",
+    "file": {
+      "could.not.extract": "Could not extract file",
+      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+    }
+  },
+  "global": {
+    "title": "Cvs",
+    "browsehappy": "Käytät <strong>vanhentunutta</strong> selainta. Ole hyvä ja <a href=\"http://browsehappy.com/?locale=en\">päivitä selaimesi</a> parempaa käyttökokemusta varten.",
+    "menu": {
+      "home": "Etusivu",
+      "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "entities": {
+        "main": "Entiteetit",
+        "vocabulary": "Vocabulary",
+        "code": "Code",
+        "version": "Version",
+        "concept": "Concept",
+        "conceptChange": "Concept Change",
+        "activityLog": "Activity Log",
+        "licence": "Licence",
+        "metadataField": "Metadata Field",
+        "metadataValue": "Metadata Value",
+        "resolver": "Resolver",
+        "vocabularyChange": "Vocabulary Change",
+        "agency": "Agency",
+        "userAgency": "User Agency",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+      },
+      "account": {
+        "main": "Tili",
+        "settings": "Asetukset",
+        "password": "Salasanat",
+        "sessions": "Sessiot",
+        "login": "Kirjaudu sisään",
+        "logout": "Kirjaudu ulos",
+        "register": "Rekisteröidy"
+      },
+      "admin": {
+        "main": "Hallinto",
+        "userManagement": "Käyttäjähallinta",
+        "tracker": "User tracker",
+        "metrics": "Metriikat",
+        "health": "Terveys",
+        "configuration": "Konfiguraatio",
+        "logs": "Logit",
+        "audits": "Audit logit",
+        "apidocs": "API",
+        "database": "Tietokanta",
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "language": "Kieli"
+    },
+    "form": {
+      "username.label": "Käyttäjänimi",
+      "username.placeholder": "Käyttäjänimesi",
+      "currentpassword.label": "Nykyinen salasana",
+      "currentpassword.placeholder": "Nykyinen salasana",
+      "newpassword.label": "Uusi salasana",
+      "newpassword.placeholder": "Uusi salasana",
+      "confirmpassword.label": "Uuden salasanan vahvistus",
+      "confirmpassword.placeholder": "Vahvista uusi salasana",
+      "email.label": "Sähköposti",
+      "email.placeholder": "Sähköpostisi"
+    },
+    "messages": {
+      "info": {
+        "authenticated": {
+          "prefix": "Jos haluat ",
+          "link": "kirjaudu sisään",
+          "suffix": ", voit koittaa käyttää oletustilejä:<br/>- Administrator (login=\"admin\" ja salasana=\"admin\") <br/>- User (login=\"user\" ja salasana=\"user\")."
+        },
+        "register": { "noaccount": "Eikö sinulla ole vielä tiliä?", "link": "Rekisteröi uusi tili" }
+      },
+      "error": { "dontmatch": "Salasana ja sen vahvistus eivät ole samoja!" },
+      "validate": {
+        "newpassword": {
+          "required": "Salasana on pakollinen.",
+          "minlength": "Salasanan tulee olla vähintään 4 merkin pituinen.",
+          "maxlength": "Salasana ei voi olla pitempi kuin 50 merkkiä.",
+          "strength": "Salasanan vahvuus:"
+        },
+        "confirmpassword": {
+          "required": "Salasana on pakollinen.",
+          "minlength": "Salasanan tulee olla vähintään 4 merkin pituinen.",
+          "maxlength": "Salasana ei voi olla pitempi kuin 50 merkkiä."
+        },
+        "email": {
+          "required": "Sähköposti on pakollinen.",
+          "invalid": "Sähköpostisi ei ole validi.",
+          "minlength": "Sähköpostisi tulee olla vähintään 5 merkin pituinen.",
+          "maxlength": "Sähköpostisi ei voi olla pitempi kuin 50 merkkiä."
+        }
+      }
+    },
+    "field": { "id": "ID" },
+    "ribbon": { "dev": "Kehitys" },
+    "item-count": "Näytetään {{first}} - {{second}} yhteensä {{total}}."
+  },
+  "entity": {
+    "action": {
+      "addblob": "Lisää blob",
+      "addimage": "Lisää kuva",
+      "back": "Takaisin",
+      "cancel": "Peruuta",
+      "delete": "Poista",
+      "edit": "Muokkaa",
+      "open": "Avaa",
+      "save": "Tallenna",
+      "view": "Lue"
+    },
+    "detail": { "field": "Kenttä", "value": "Arvo" },
+    "delete": { "title": "Vahvista poistaminen" },
+    "validation": {
+      "required": "Tämä kenttä on pakollinen.",
+      "minlength": "Tämän kentän tulee olla vähintään {{ min }} merkin pituinen.",
+      "maxlength": "Tämä kenttä voi olla enintään {{ max }} merkkiä.",
+      "min": "Tämän kentän tulee olla vähintään {{ min }}.",
+      "max": "Tämä kenttä voi olla enintään {{ max }}.",
+      "minbytes": "Tämän kentän tulee olla vähintään {{ min }} tavua.",
+      "maxbytes": "Tämä kenttä voi olla enintään {{ max }} tavua.",
+      "pattern": "Tämän kentän tulee olla muotoa {{ pattern }}.",
+      "number": "Tämän kentän tulee olla numero.",
+      "datetimelocal": "Tämän kentän tulee olla pvm ja aika.",
+      "patternLogin": "Tämä kenttä voi sisältää kirjaimia, numeroita ja sähköpostiosoitteita."
+    }
+  },
+  "footer": "Tämä on footer teksti",
+  "health": {
+    "title": "Health Checks",
+    "refresh.button": "Päivitä",
+    "stacktrace": "Stacktrace",
+    "details": { "details": "Tiedot", "properties": "Properties", "name": "Nimi", "value": "Arvo", "error": "Virhe" },
+    "indicator": { "diskSpace": "Levytila", "mail": "Sähköposti", "db": "Database" },
+    "table": { "service": "Palvelun nimi", "status": "Tila" },
+    "status": { "UNKNOWN": "Tuntematon", "UP": "Käynnissä", "DOWN": "sammunut" }
+  },
+  "home": {
+    "title": "Tervetuloa, Java Hipsteri!",
+    "subtitle": "Tämä on kotisivusi",
+    "logged": { "message": "Olet kirjautnut käyttäjänä \"{{username}}\"." },
+    "question": "Jos sinulla on kysymyksiä JHipsteristä:",
+    "link": {
+      "homepage": "JHipster kotisivu",
+      "stackoverflow": "JHipster Stack Overflow",
+      "bugtracker": "JHipster bug trakkeri",
+      "chat": "JHipster julkinen chat room",
+      "follow": "seuraa @jhipster Twitterissä"
+    },
+    "like": "Jos pidät JHipsteristä, anna meille tähti ",
+    "github": "GitHubissa"
+  },
+  "login": {
+    "title": "Kirjaudu sisään",
+    "form": { "password": "Salasana", "password.placeholder": "Salasanasi", "rememberme": "Muista minut", "button": "Kirjaudu sisään" },
+    "messages": { "error": { "authentication": "<strong>Kirjautuminen epäonnistui!</strong> Tarkista tunnuksesi ja yritä uudelleen." } },
+    "password": { "forgot": "Unohditko salasanasi?" }
+  },
+  "logs": {
+    "title": "Logit",
+    "nbloggers": "Yhteensä {{ total }} logittajaa.",
+    "filter": "Suodatin",
+    "table": { "name": "Nimi", "level": "Taso" }
+  },
+  "metrics": {
+    "title": "Sovellusmetriikka",
+    "refresh.button": "Päivitä",
+    "updating": "Päivitetään...",
+    "jvm": {
+      "title": "JVM metriikka",
+      "memory": { "title": "Muisti", "total": "Total Memory", "heap": "Heap Memory", "nonheap": "Non-Heap Memory" },
+      "threads": {
+        "title": "Säikeet",
+        "all": "Kaikki",
+        "runnable": "Runnable",
+        "timedwaiting": "Timed waiting",
+        "waiting": "Waiting",
+        "blocked": "Blocked",
+        "dump": {
+          "title": "Threads dump",
+          "id": "Id: ",
+          "blockedtime": "Blocked Time",
+          "blockedcount": "Blocked Count",
+          "waitedtime": "Waited Time",
+          "waitedcount": "Waited Count",
+          "lockname": "Lock name",
+          "stacktrace": "Stacktrace",
+          "show": "Show Stacktrace",
+          "hide": "Hide Stacktrace"
+        }
+      },
+      "gc": {
+        "title": "Garbage collections",
+        "marksweepcount": "Mark Sweep count",
+        "marksweeptime": "Mark Sweep time",
+        "scavengecount": "Scavenge count",
+        "scavengetime": "Scavenge time"
+      },
+      "http": {
+        "title": "HTTP pyynnöt (ajat millisekunteina)",
+        "active": "Aktiiviset pyynnöt:",
+        "total": "Kaikki pyynnöt:",
+        "table": { "code": "Koodi", "count": "Kpl", "mean": "Mediaani", "average": "Keskiarvo", "max": "Suurin" },
+        "code": { "ok": "Ok", "notfound": "Not found", "servererror": "Server Error" }
+      }
+    },
+    "servicesstats": {
+      "title": "Palvelut statistiikka (ajat millisekunteina)",
+      "table": {
+        "name": "Palvelun nimi",
+        "count": "Kpl",
+        "mean": "Mediaani",
+        "min": "Pienin",
+        "max": "Suurin",
+        "p50": "p50",
+        "p75": "p75",
+        "p95": "p95",
+        "p99": "p99"
+      }
+    },
+    "cache": {
+      "title": "Cache tilasto",
+      "cachename": "Cache nimi",
+      "hits": "Cache osumat",
+      "misses": "Cache hutit",
+      "gets": "Cache luvut",
+      "puts": "Cache kirjoitukset",
+      "removals": "Cache poistot",
+      "evictions": "Cache häädöt",
+      "hitPercent": "Cache Osuma %",
+      "missPercent": "Cache Huti %",
+      "averageGetTime": "Keskimääräinen lukuaika (µs)",
+      "averagePutTime": "Keskimääräinen kirjoitusaika (µs)",
+      "averageRemoveTime": "Keskimääräinen poistoaika (µs)"
+    },
+    "datasource": {
+      "usage": "Yhteys Pool Käyttö",
+      "title": "Tietokantayhteyden statistiikka (ajat millisekunteina)",
+      "name": "Poolin käyttö",
+      "count": "Kpl",
+      "mean": "Mediaani",
+      "min": "Pienin",
+      "max": "Suurin",
+      "p50": "p50",
+      "p75": "p75",
+      "p95": "p95",
+      "p99": "p99"
+    }
+  },
+  "password": {
+    "title": "Salasana tunnukselle [<strong>{{username}}</strong>]",
+    "form": { "button": "Tallenna" },
+    "messages": {
+      "error": "<strong>Tapahtui virhe!</strong> Salasanaa ei voitu muuttaa.",
+      "success": "<strong>Salasana on vaihdettu!</strong>"
+    }
+  },
+  "register": {
+    "title": "Rekisteröityminen",
+    "form": { "button": "Rekisteröidy" },
+    "messages": {
+      "validate": {
+        "login": {
+          "required": "Käyttäjänimi on pakollinen.",
+          "minlength": "Käyttäjänimesi tulee olla vähintään yhden merkin pituinen.",
+          "maxlength": "Käyttäjänimesi ei voi olla pitempi kuin 50 merkkiä.",
+          "pattern": "Käyttäjänimessäsi voi olla ainoastaan kirjaimia ja numeroita."
+        }
+      },
+      "success": "<strong>Rekisteröityminen tallennettu!</strong> Tarkista sähköpostistasi vahvistus.",
+      "error": {
+        "fail": "<strong>Rekisteröityminen epäonnistui!</strong> Ole hyvä ja yritä uudelleen.",
+        "userexists": "<strong>Käyttäjänimi on jo käytössä!</strong> Ole hyvä ja valitse toinen.",
+        "emailexists": "<strong>Sähköpostiosoite on jo käytössä!</strong> Ole hyvä ja valitse toinen."
+      }
+    }
+  },
+  "reset": {
+    "request": {
+      "title": "Resetoi salasanasi",
+      "form": { "button": "Resetoi salasana" },
+      "messages": {
+        "info": "Syötä rekisteröinnissä käyttämäsi sähköpostiosoite",
+        "success": "Tarkista sähköpostistasi ohjeet salasanasi resetoimiseen.",
+        "notfound": "<strong>Sähköpostiosoitetta ei ole rekisteröity!</strong> Tarkista ja yritä uudelleen."
+      }
+    },
+    "finish": {
+      "title": "Resetoi salasanasi",
+      "form": { "button": "Validoi uusi salasana" },
+      "messages": {
+        "info": "Valitse uusi salasana",
+        "success": "<strong>Salasanasi on resetoitu.</strong> Ole hyvä ",
+        "keymissing": "Resetointi avain puuttuu.",
+        "error": "Salasanaa ei voitu resetoida. Salasanan resetointipyyntö on voimassa vain 24 tuntia."
+      }
+    }
+  },
+  "sessions": {
+    "title": "Aktiiviset istunnot käyttäjälle [<strong>{{username}}</strong>]",
+    "table": { "ipaddress": "IP osoite", "useragent": "Agentti", "date": "Pvm", "button": "Invalidoi" },
+    "messages": {
+      "success": "<strong>Sessio invalidoitu!</strong>",
+      "error": "<strong>Tapahtui virhe!</strong> Sessiota ei voitu invalidoida."
+    }
+  },
+  "settings": {
+    "title": "Käyttäjäasetukset [<strong>{{username}}</strong>]",
+    "form": {
+      "firstname": "Etunimi",
+      "firstname.placeholder": "Etunimesi",
+      "lastname": "Sukunimi",
+      "lastname.placeholder": "Sukunimesi",
+      "language": "Kieli",
+      "button": "Tallenna"
+    },
+    "messages": {
+      "error": {
+        "fail": "<strong>Tapahtui virhe!</strong> Asetukset eivät välttämättä tallentuneet.",
+        "emailexists": "<strong>Sähköpostiosoite on jo käytössä!</strong> Valitse toinen."
+      },
+      "success": "<strong>Asetukset tallennettu!</strong>",
+      "validate": {
+        "firstname": {
+          "required": "Etunimi on pakollinen.",
+          "minlength": "Etunimen tulee olla vähintään yhden merkin pituinen",
+          "maxlength": "Etunimi ei voi olla pitempi kuin 50 merkin pituinen"
+        },
+        "lastname": {
+          "required": "Sukunimi on pakollinen.",
+          "minlength": "Your lasttulee olla vähintään yhden merkin pituinen",
+          "maxlength": "Sukunimi ei voi olla pitempi kuin 50 merkin pituinen"
+        }
+      }
+    }
+  },
+  "userManagement": {
+    "home": { "title": "Käyttäjät", "createLabel": "Luo uusi käyttäjä", "createOrEditLabel": "Luo tai muokkaa käyttäjää" },
+    "created": "Uusi käyttäjä on luotu tunnuksella {{ param }}",
+    "updated": "Käyttäjä on päivitetty. Tunnus {{ param }}",
+    "deleted": "Käyttäjä on poistettu. Tunnus {{ param }}",
+    "delete": { "question": "Oletko varma, että haluat poistaa käyttäjän {{ login }}?" },
+    "detail": { "title": "Käyttäjä" },
+    "login": "Kirjaudu",
+    "firstName": "Etunimi",
+    "lastName": "Sukunimi",
+    "email": "Sähköposti",
+    "activated": "Aktivoitu",
+    "deactivated": "Deaktivoitu",
+    "profiles": "Profiilit",
+    "langKey": "Kieli",
+    "createdBy": "Luoja",
+    "createdDate": "Luotu pvm",
+    "lastModifiedBy": "Muokkaaja",
+    "lastModifiedDate": "Muokkaus pvm"
+  }
+}

@@ -26,11 +26,92 @@
         }
       },
       "prefix": "jhi",
-      "architect": {}
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "allowedCommonJsDependencies": ["quill-better-table", "quill-blot-formatter"],
+            "outputPath": "target/classes/static",
+            "index": "src/main/webapp/index.html",
+            "main": "src/main/webapp/app/app.main.ts",
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*.{js,css,html,png}",
+                "ignore": ["**/index.html"],
+                "input": "node_modules/swagger-ui-dist/",
+                "output": "swagger-ui"
+              },
+              {
+                "glob": "axios.min.js",
+                "input": "node_modules/axios/dist/",
+                "output": "swagger-ui"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/main/webapp/swagger-ui/",
+                "output": "swagger-ui"
+              },
+              {
+                "glob": "**/*",
+                "ignore": ["scss/**/*"],
+                "input": "src/main/webapp/content/",
+                "output": "content"
+              },
+              {
+                "glob": "*",
+                "input": "src/main/webapp/i18n/",
+                "output": "i18n"
+              },
+              "src/main/webapp/favicon.ico",
+              "src/main/webapp/manifest.webapp",
+              "src/main/webapp/robots.txt"
+            ],
+            "styles": ["src/main/webapp/content/scss/global.scss"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.js"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "cvs:build:production"
+            },
+            "development": {
+              "browserTarget": "cvs:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/main/webapp/**/*.ts", "src/main/webapp/**/*.html"]
+          }
+        }
+      }
     }
   },
   "defaultProject": "cvs",
   "cli": {
-    "packageManager": "npm"
+    "packageManager": "npm",
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }

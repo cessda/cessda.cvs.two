@@ -21,8 +21,8 @@ import eu.cessda.cvs.service.dto.UserDTO;
 import io.github.jhipster.config.JHipsterProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
@@ -36,8 +36,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -50,8 +50,6 @@ public class TokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
 
-    private Key key;
-
     private long tokenValidityInMilliseconds;
 
     private long tokenValidityInMillisecondsForRememberMe;
@@ -59,6 +57,10 @@ public class TokenProvider {
     private final JHipsterProperties jHipsterProperties;
 
     private final UserRepository userRepository;
+
+    private SecretKey key;
+
+    private JwtParser jwtParser;
 
     public TokenProvider(JHipsterProperties jHipsterProperties, UserRepository userRepository) {
         this.jHipsterProperties = jHipsterProperties;
@@ -78,6 +80,7 @@ public class TokenProvider {
             keyBytes = Decoders.BASE64.decode(jHipsterProperties.getSecurity().getAuthentication().getJwt().getBase64Secret());
         }
         this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.jwtParser = Jwts.parser().verifyWith( key ).build();
         this.tokenValidityInMilliseconds =
             1000 * jHipsterProperties.getSecurity().getAuthentication().getJwt().getTokenValidityInSeconds();
         this.tokenValidityInMillisecondsForRememberMe =
@@ -99,20 +102,16 @@ public class TokenProvider {
         }
 
         return Jwts.builder()
-            .setSubject(authentication.getName())
+            .subject(authentication.getName())
             .claim(AUTHORITIES_KEY, authorities)
-            .signWith(key, SignatureAlgorithm.HS512)
-            .setExpiration(validity)
+            .signWith(key, Jwts.SIG.HS512)
+            .expiration(validity)
             .compact();
     }
 
     @Transactional(readOnly = true)
     public Authentication getAuthentication(String token) {
-        Claims claims = Jwts.parserBuilder()
-            .setSigningKey(key)
-            .build()
-            .parseClaimsJws(token)
-            .getBody();
+        Claims claims = jwtParser.parseSignedClaims(token).getPayload();
 
         Collection<? extends GrantedAuthority> authorities =
             Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
@@ -128,7 +127,7 @@ public class TokenProvider {
 
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(authToken);
+            jwtParser.parseSignedClaims(authToken);
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             log.info("Invalid JWT token.");

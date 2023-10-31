@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnInit} from '@angular/core';
-import {HttpEventType, HttpResponse} from '@angular/common/http';
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 
-import {ILicence, Licence} from 'app/shared/model/licence.model';
-import {LicenceService} from './licence.service';
-import {FileUploadService} from 'app/shared/upload/file-upload.service';
+import { ILicence, Licence } from 'app/shared/model/licence.model';
+import { LicenceService } from './licence.service';
+import { FileUploadService } from 'app/shared/upload/file-upload.service';
 
 @Component({
   selector: 'jhi-licence-update',
-  templateUrl: './licence-update.component.html'
+  templateUrl: './licence-update.component.html',
 })
 export class LicenceUpdateComponent implements OnInit {
   isSaving = false;
@@ -34,7 +34,7 @@ export class LicenceUpdateComponent implements OnInit {
   currentFileUpload?: File | null;
   currentImage?: string;
   progress: { percentage: number } = {
-    percentage: 0
+    percentage: 0,
   };
 
   editForm = this.fb.group({
@@ -44,18 +44,18 @@ export class LicenceUpdateComponent implements OnInit {
       null,
       [
         Validators.pattern(
-          '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})'
-        )
-      ]
+          '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
+        ),
+      ],
     ],
-    abbr: [null, [Validators.required, Validators.maxLength(100)]]
+    abbr: [null, [Validators.required, Validators.maxLength(100)]],
   });
 
   constructor(
     protected licenceService: LicenceService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
-    protected fileUploadService: FileUploadService
+    protected fileUploadService: FileUploadService,
   ) {}
 
   ngOnInit(): void {
@@ -69,7 +69,7 @@ export class LicenceUpdateComponent implements OnInit {
       id: licence.id,
       name: licence.name,
       link: licence.link,
-      abbr: licence.abbr
+      abbr: licence.abbr,
     });
     this.currentImage = licence.logoLink;
   }
@@ -95,14 +95,14 @@ export class LicenceUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
       link: this.editForm.get(['link'])!.value,
-      abbr: this.editForm.get(['abbr'])!.value
+      abbr: this.editForm.get(['abbr'])!.value,
     };
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<ILicence>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 
@@ -115,8 +115,8 @@ export class LicenceUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  selectFile(selectFileEvent: { target: { files: FileList | undefined } }): void {
-    this.selectedFiles = selectFileEvent.target.files;
+  selectFile(selectFileEvent: Event): void {
+    this.selectedFiles = (selectFileEvent.target as HTMLInputElement).files || undefined;
     this.progress.percentage = 0;
     this.currentFileUpload = this.selectedFiles!.item(0);
     this.fileUploadService.uploadLicenseImage(this.currentFileUpload!).subscribe(event => {

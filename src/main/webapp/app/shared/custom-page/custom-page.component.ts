@@ -57,7 +57,7 @@ export class CustomPageComponent implements OnInit, OnDestroy {
     private metadataFieldService: MetadataFieldService,
     protected eventManager: JhiEventManager,
     protected activatedRoute: ActivatedRoute,
-    protected fileUploadService: FileUploadService
+    protected fileUploadService: FileUploadService,
   ) {
     this.activatedRoute.queryParams.subscribe(params => {
       if (params['docx-export'] && params['docx-export'] === 'true') {
@@ -74,10 +74,10 @@ export class CustomPageComponent implements OnInit, OnDestroy {
     this.eventSubscriber = this.eventManager.subscribe('metadataListModification', () => this.refreshContent());
   }
 
-  selectFile(selectFileEvent: { target: { files: FileList | undefined } }): void {
+  selectFile(selectFileEvent: Event): void {
+    this.selectedFiles = (selectFileEvent.target as HTMLInputElement).files || undefined;
     this.inDocxProgress = true;
     this.uploadFileStatus = 'uploading DOCX file...';
-    this.selectedFiles = selectFileEvent.target.files;
     this.progress.percentage = 0;
     this.currentFileUpload = this.selectedFiles!.item(0);
     this.fileUploadService.uploadFile(this.currentFileUpload!).subscribe(event => {
@@ -93,7 +93,7 @@ export class CustomPageComponent implements OnInit, OnDestroy {
           },
           error => {
             this.uploadFileStatus = 'There is a problem!. Please try again later';
-          }
+          },
         );
       }
     });
@@ -133,7 +133,7 @@ export class CustomPageComponent implements OnInit, OnDestroy {
       },
       error => {
         this.uploadFileStatus = 'There is a problem!. Please try again later';
-      }
+      },
     );
   }
 
@@ -146,7 +146,7 @@ export class CustomPageComponent implements OnInit, OnDestroy {
       this.generateDownloadFile(
         res,
         format === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        format === 'pdf' ? 'pdf' : 'docx'
+        format === 'pdf' ? 'pdf' : 'docx',
       );
     });
   }

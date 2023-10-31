@@ -33,7 +33,7 @@
         <span jhiTranslate="cvsApp.agency.home.notFound">No agencies found</span>
     </div>
 
-    <div class="card-columns" *ngIf="agencies?.length > 0">
+    <div class="card-columns" *ngIf="agencies.length > 0">
         <div class="card" *ngFor="let agency of agencies ;trackBy: trackId">
             <div class="card-header">
                 <div class="row">
@@ -42,7 +42,7 @@
                     </div>
                     <div class="col-8" class="card-title">
                         <h4>{{ agency.name }}</h4>
-                        <a href="{{ agency.link }}" target="_blank">
+                        <a *ngIf="agency.link" href="{{ agency.link }}" target="_blank">
                             <span class="font-italic font-weight-bold">{{urlCleaner(agency.link)}} </span>
                             <fa-icon icon="external-link-alt"></fa-icon>
                         </a>

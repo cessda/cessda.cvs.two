@@ -33,6 +33,7 @@ import { ICvResult } from 'app/shared/model/cv-result.model';
 import { IAggr } from 'app/shared/model/aggr';
 import { HomeService } from 'app/home/home.service';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
+import { TagModel } from 'ngx-chips/core/accessor';
 
 @Component({
   selector: 'jhi-vocabulary-search-result',
@@ -57,8 +58,8 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
-  aggAgencyBucket?: IBucket[];
-  aggStatusBucket?: IBucket[];
+  aggAgencyBucket: IBucket[] = [];
+  aggStatusBucket: IBucket[] = [];
   activeAggAgency?: string[];
   activeAggLanguage?: string[];
   activeAggStatus?: string[];
@@ -89,7 +90,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     protected router: Router,
     protected eventManager: JhiEventManager,
     private fb: FormBuilder,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe
+    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
   ) {
     this.currentSearch = '';
     this.activeAggAgency = [];
@@ -195,12 +196,12 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     if (this.appScope === AppScope.EDITOR) {
       this.editorService.search(this.getSearchRequest(page ? page : this.page)).subscribe(
         (res: HttpResponse<ICvResult>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
+        () => this.onError(),
       );
     } else {
       this.homeService.search(this.getSearchRequest(page ? page : this.page)).subscribe(
         (res: HttpResponse<ICvResult>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
+        () => this.onError(),
       );
     }
   }
@@ -289,7 +290,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     this.buildFilterAndRefreshSearch();
   }
 
-  trackNotation(notation: string, item: IVocabulary): string {
+  trackNotation(_index: number, item: IVocabulary): string {
     return item.notation!;
   }
 
@@ -413,7 +414,8 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     this.loadPage();
   }
 
-  refreshSearchBySize(s: string): void {
+  refreshSearchBySize(event: Event): void {
+    const s = (event.target as HTMLSelectElement).value;
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: { size: s },
@@ -423,7 +425,8 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     this.loadPage();
   }
 
-  refreshSearchBySort(s: string): void {
+  refreshSearchBySort(event: Event): void {
+    const s = (event.target as HTMLSelectElement).value;
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: { sort: s },
@@ -440,26 +443,28 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     this.loadPage();
   }
 
-  onAddAgency(addedItem?: IBucket): void {
-    this.activeAggAgency!.push(addedItem!.k!);
+  onAddAgency(addedItem: TagModel): void {
+    this.activeAggAgency!.push(addedItem['k']);
     this.buildFilterAndRefreshSearch();
   }
 
-  onRemoveAgency(removedItem?: IBucket): void {
+  onRemoveAgency(removedItem: TagModel): void {
     this.activeAggAgency!.forEach((item, index) => {
-      if (item === removedItem!.k!) this.activeAggAgency!.splice(index, 1);
+      if (item === removedItem['k']) this.activeAggAgency!.splice(index, 1);
     });
     this.buildFilterAndRefreshSearch();
   }
 
-  onAddStatus(addedItem?: IBucket): void {
-    this.activeAggStatus!.push(addedItem!.k!);
+  onAddStatus(addedItem: TagModel): void {
+    this.activeAggStatus!.push(addedItem['k']);
     this.buildFilterAndRefreshSearch();
   }
 
-  onRemoveStatus(removedItem?: IBucket): void {
+  onRemoveStatus(removedItem: TagModel): void {
     this.activeAggStatus!.forEach((item, index) => {
-      if (item === removedItem!.k!) this.activeAggStatus!.splice(index, 1);
+      if (item === removedItem['k']) {
+        this.activeAggStatus!.splice(index, 1);
+      }
     });
     this.buildFilterAndRefreshSearch();
   }

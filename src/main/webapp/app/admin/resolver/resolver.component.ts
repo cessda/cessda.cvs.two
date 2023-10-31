@@ -28,10 +28,10 @@ import { ResolverDeleteDialogComponent } from './resolver-delete-dialog.componen
 
 @Component({
   selector: 'jhi-resolver',
-  templateUrl: './resolver.component.html'
+  templateUrl: './resolver.component.html',
 })
 export class ResolverComponent implements OnInit, OnDestroy {
-  resolvers?: IResolver[];
+  resolvers: IResolver[] = [];
   eventSubscriber?: Subscription;
   currentSearch: string;
   totalItems = 0;
@@ -46,7 +46,7 @@ export class ResolverComponent implements OnInit, OnDestroy {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -63,11 +63,11 @@ export class ResolverComponent implements OnInit, OnDestroy {
           page: pageToLoad - 1,
           query: this.currentSearch,
           size: this.itemsPerPage,
-          sort: this.sort()
+          sort: this.sort(),
         })
         .subscribe(
           (res: HttpResponse<IResolver[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-          () => this.onError()
+          () => this.onError(),
         );
       return;
     }
@@ -76,11 +76,11 @@ export class ResolverComponent implements OnInit, OnDestroy {
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
-        sort: this.sort()
+        sort: this.sort(),
       })
       .subscribe(
         (res: HttpResponse<IResolver[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
+        () => this.onError(),
       );
   }
 
@@ -132,14 +132,6 @@ export class ResolverComponent implements OnInit, OnDestroy {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
-    // this.router.navigate(['/resolver'], {
-    //   queryParams: {
-    //     page: this.page,
-    //     size: this.itemsPerPage,
-    //     search: this.currentSearch,
-    //     sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-    //   }
-    // });
     this.resolvers = data || [];
   }
 

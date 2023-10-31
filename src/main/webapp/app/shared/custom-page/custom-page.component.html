@@ -70,7 +70,7 @@
                         </a>
                     </div>
                     <div *ngIf="metadataValueMenu" class="w-100 acc-body">
-                        <jhi-metadata-item [metadataField]="metadataField" [metadataValue]="metadataValueMenu"
+                        <jhi-metadata-item [metadataField]="metadataField!" [metadataValue]="metadataValueMenu"
                          [isWriting]="metadataValueMenu.id === undefined" [position]="0" [newTabLink]="false"></jhi-metadata-item>
                     </div>
                 </div>
@@ -90,7 +90,7 @@
                     <fa-icon *ngIf="generatingFile"[icon]="'circle-notch'" [spin]="true"></fa-icon>
                 </button>
                 <div *ngFor="let metadataValue of metadataValues; let i = index" class="row-detail form-group">
-                    <jhi-metadata-item *ngIf="metadataValue.identifier !== 'overview'" [metadataField]="metadataField" [metadataValue]="metadataValue"
+                    <jhi-metadata-item *ngIf="metadataValue.identifier !== 'overview'" [metadataField]="metadataField!" [metadataValue]="metadataValue"
                      [isWriting]="metadataValue.id === undefined" [position]="(i + 1)" [newTabLink]="true" class="w-100"></jhi-metadata-item>
                 </div>
 

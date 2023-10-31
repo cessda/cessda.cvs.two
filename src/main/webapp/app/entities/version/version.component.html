@@ -49,11 +49,12 @@
         </div>
     </div>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="versions?.length === 0">
+    <div class="alert alert-warning" id="no-result" *ngIf="versions?.length === 0; else elseBlock">
         <span jhiTranslate="cvsApp.version.home.notFound">No versions found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="versions?.length > 0">
+    <ng-template #elseBlock>
+    <div class="table-responsive" id="entities">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
@@ -94,8 +95,8 @@
                     <td>{{ version.status }}</td>
                     <td>{{ version.itemType }}</td>
                     <td>{{ version.language }}</td>
-                    <td>{{ version.publicationDate | date:'mediumDate' }}</td>
-                    <td>{{ version.lastModified | date:'medium' }}</td>
+                    <td>{{ version.publicationDate?.toDate() | date:'mediumDate' }}</td>
+                    <td>{{ version.lastModified?.toDate() | date:'medium' }}</td>
                     <td>{{ version.number }}</td>
                     <td>{{ version.uri }}</td>
                     <td>{{ version.canonicalUri }}</td>
@@ -150,7 +151,7 @@
         </table>
     </div>
 
-    <div *ngIf="versions?.length > 0">
+    <div>
         <div class="row justify-content-center">
             <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
@@ -159,4 +160,5 @@
             <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
+    </ng-template>
 </div>

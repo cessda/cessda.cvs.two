@@ -32,15 +32,19 @@ import { AccountService } from 'app/core/auth/account.service';
  *     - any is equal with
  */
 @Directive({
-  selector: '[jhiHasAnyAgencyAuthority]'
+  selector: '[jhiHasAnyAgencyAuthority]',
 })
 export class HasAnyAgencyAuthorityDirective implements OnDestroy {
   private agencyAuthority: any;
   private authenticationSubscription?: Subscription;
 
-  constructor(private accountService: AccountService, private templateRef: TemplateRef<any>, private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    private accountService: AccountService,
+    private templateRef: TemplateRef<any>,
+    private viewContainerRef: ViewContainerRef,
+  ) {}
 
-  @Input('jhiHasAnyAgencyAuthority')
+  @Input()
   set jhiHasAnyAgencyAuthority(value: any) {
     this.agencyAuthority = value;
     this.updateView();
@@ -59,7 +63,7 @@ export class HasAnyAgencyAuthorityDirective implements OnDestroy {
       this.agencyAuthority.actionType,
       this.agencyAuthority.agencyId,
       this.agencyAuthority.agencyRoles,
-      this.agencyAuthority.language
+      this.agencyAuthority.language,
     );
     this.viewContainerRef.clear();
     if (hasAnyAuthority) {

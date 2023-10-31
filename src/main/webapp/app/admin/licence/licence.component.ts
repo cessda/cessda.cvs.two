@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {JhiEventManager} from 'ng-jhipster';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { JhiEventManager } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {ILicence} from 'app/shared/model/licence.model';
+import { ILicence } from 'app/shared/model/licence.model';
 
-import {ITEMS_PER_PAGE} from 'app/shared/constants/pagination.constants';
-import {LicenceService} from './licence.service';
-import {LicenceDeleteDialogComponent} from './licence-delete-dialog.component';
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
+import { LicenceService } from './licence.service';
+import { LicenceDeleteDialogComponent } from './licence-delete-dialog.component';
 
 @Component({
   selector: 'jhi-licence',
-  templateUrl: './licence.component.html'
+  templateUrl: './licence.component.html',
 })
 export class LicenceComponent implements OnInit, OnDestroy {
-  licences?: ILicence[];
+  licences: ILicence[] = [];
   eventSubscriber?: Subscription;
   currentSearch: string;
   totalItems = 0;
@@ -46,7 +46,7 @@ export class LicenceComponent implements OnInit, OnDestroy {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -63,11 +63,11 @@ export class LicenceComponent implements OnInit, OnDestroy {
           page: pageToLoad - 1,
           query: this.currentSearch,
           size: this.itemsPerPage,
-          sort: this.sort()
+          sort: this.sort(),
         })
         .subscribe(
           (res: HttpResponse<ILicence[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-          () => this.onError()
+          () => this.onError(),
         );
       return;
     }
@@ -76,11 +76,11 @@ export class LicenceComponent implements OnInit, OnDestroy {
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
-        sort: this.sort()
+        sort: this.sort(),
       })
       .subscribe(
         (res: HttpResponse<ILicence[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
+        () => this.onError(),
       );
   }
 
@@ -132,14 +132,6 @@ export class LicenceComponent implements OnInit, OnDestroy {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
-    // this.router.navigate(['/licence'], {
-    //   queryParams: {
-    //     page: this.page,
-    //     size: this.itemsPerPage,
-    //     search: this.currentSearch,
-    //     sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-    //   }
-    // });
     this.licences = data || [];
   }
 

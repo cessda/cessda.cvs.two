@@ -36,8 +36,6 @@ module.exports = {
         'default',
         [ 'jest-junit', { outputDirectory: './target/test-results/', outputName: 'TESTS-results-jest.xml' } ]
     ],
-    testResultsProcessor: 'jest-sonar-reporter',
-    transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
     testMatch: ['<rootDir>/src/test/javascript/spec/**/@(*.)@(spec.ts)'],
     testRunner: 'jasmine2',
     rootDir: '../../../',
