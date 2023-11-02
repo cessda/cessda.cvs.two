@@ -517,7 +517,7 @@ public class VocabularyServiceImpl implements VocabularyService
     private Vocabulary createNewVocabulary( VocabularyDTO vocabularyDTO ) {
         // check if Vocabulary already exist for new vocabulary
         if ( vocabularyRepository.existsByNotation( vocabularyDTO.getNotation() ) ) {
-            throw new VocabularyAlreadyExistException();
+            throw new VocabularyAlreadyExistException(vocabularyDTO.getNotation());
         }
 
         // query agency
@@ -591,7 +591,7 @@ public class VocabularyServiceImpl implements VocabularyService
         if ( codeSnippet.getActionType().equals( ActionType.EDIT_CODE ) && !conceptDTO.getNotation().equals( codeSnippet.getNotation() ) ) {
             if ( versionDTO.getConcepts().stream()
                 .anyMatch( c -> c.getNotation().equals( codeSnippet.getNotation() ) ) ) {
-                throw new CodeAlreadyExistException();
+                throw new CodeAlreadyExistException( codeSnippet.getNotation() );
             }
 
             // check if this concept influence parent and child concepts
@@ -679,9 +679,8 @@ public class VocabularyServiceImpl implements VocabularyService
             vocabularyDTO.getAgencyId(), versionDTO.getLanguage() );
 
         // check if concept already exist for new concept
-        if ( versionDTO.getConcepts().stream()
-            .anyMatch( c -> c.getNotation().equals( codeSnippet.getNotation() ) ) ) {
-            throw new CodeAlreadyExistException();
+        if ( versionDTO.getConcepts().stream().anyMatch( c -> c.getNotation().equals( codeSnippet.getNotation() ) ) ) {
+            throw new CodeAlreadyExistException( codeSnippet.getNotation() );
         }
         // ==> #349: calculate code position at the server side instead of the client side
         Integer refConceptPos = getConceptPositionById( codeSnippet.getInsertionRefConceptId(), versionDTO.getConcepts() );

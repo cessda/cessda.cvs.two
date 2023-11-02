@@ -26,6 +26,9 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {})
 public interface CodeMapper extends EntityMapper<CodeDTO, Code> {
 
+    @Mapping( target = "replacedByUri", ignore = true )
+    @Mapping( target = "replacedByNotation", ignore = true )
+    @Mapping( target = "replacedById", ignore = true )
     @Mapping(source = "languages", target = "languages")
     @Mapping(source = "deprecated", target = "deprecated")
     CodeDTO toDto(Code code);

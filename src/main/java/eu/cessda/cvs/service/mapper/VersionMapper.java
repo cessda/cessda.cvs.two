@@ -26,9 +26,11 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {VocabularyMapper.class, ConceptMapper.class, CommentMapper.class})
 public interface VersionMapper extends EntityMapper<VersionDTO, Version> {
 
+    // TODO: evaluate these mappings
     @Mapping(source = "vocabulary.id", target = "vocabularyId")
     VersionDTO toDto(Version version);
 
+    @Mapping(target = "removeComment", ignore = true)
     @Mapping(target = "removeConcept", ignore = true)
     @Mapping(source = "vocabularyId", target = "vocabulary")
     Version toEntity(VersionDTO versionDTO);

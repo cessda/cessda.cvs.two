@@ -20,6 +20,7 @@ import org.hibernate.type.descriptor.java.AbstractTypeDescriptor;
 import org.hibernate.type.descriptor.java.ImmutableMutabilityPlan;
 
 public class VersionNumberJavaDescriptor extends AbstractTypeDescriptor<VersionNumber> {
+    private static final long serialVersionUID = 3118219910023942818L;
 
     public static final VersionNumberJavaDescriptor INSTANCE = new VersionNumberJavaDescriptor();
 

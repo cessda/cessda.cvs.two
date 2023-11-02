@@ -16,6 +16,7 @@
 package eu.cessda.cvs.service;
 
 public class InsufficientVocabularyAuthorityException extends RuntimeException {
+    private static final long serialVersionUID = 5885509671807321027L;
 
     public InsufficientVocabularyAuthorityException() {
         super("Authority to access/edit Vocabulary insufficient!");

@@ -19,10 +19,10 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
-
 import eu.cessda.cvs.domain.Code;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.utils.VersionNumber;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Lob;
@@ -33,13 +33,12 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 /**
  * A DTO for the {@link Code} entity.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CodeDTO implements Serializable {
+    private static final long serialVersionUID = -5916802523668287620L;
 
     private Long id;
 
@@ -1055,7 +1054,7 @@ public class CodeDTO implements Serializable {
     }
 
     public enum HashFunction {
-        
+
         MD2("md2", DigestUtils::md2Hex),
         MD5("md5", DigestUtils::md5Hex),
         SHA1("sha1", DigestUtils::sha1Hex),
@@ -1092,14 +1091,14 @@ public class CodeDTO implements Serializable {
     }
 
     public static String generateHash(HashFunction hf, String str, Integer len) {
-        
+
         // default hash
         String hash = '#' + str;
 
         if (hf != null) {
             hash = hf.getFn().exec(str);
         }
-        
+
         // truncate
         if (len != null && len > 0) {
             hash = hash.substring(0, len);
@@ -1122,7 +1121,7 @@ public class CodeDTO implements Serializable {
         }
 
         Matcher m = patternHashCodeUriPlaceholder.matcher(uri);
-        
+
         while (m.find()) {
             HashFunction hf = HashFunction.fromString(m.group(1));
             Integer len = Integer.parseInt(m.group(2));
