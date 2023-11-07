@@ -16,6 +16,8 @@ _For each release, use the following sub-sections:_
 
 ## [3.3.0] - 2023-11-07
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10009383.svg)](https://doi.org/10.5281/zenodo.10009383)
+
 ### Dependency updates
 
 - [PR-601](https://github.com/cessda/cessda.cvs.two/pull/601) Update Node.JS to 16.20.0
@@ -36,6 +38,8 @@ _For each release, use the following sub-sections:_
 - [PR-757](https://github.com/cessda/cessda.cvs.two/pull/757) Build the Angular application using the Angular CLI
 - [PR-769](https://github.com/cessda/cessda.cvs.two/pull/769) Enabled the `strictTemplates` Angular compiler option
 - [PR-772](https://github.com/cessda/cessda.cvs.two/pull/772) Build the Angular component in a Node.js Docker container
+- [PR-806](https://github.com/cessda/cessda.cvs.two/pull/806) Explicitly load fonts into the PDF font provider
+- [PR-807](https://github.com/cessda/cessda.cvs.two/pull/807) Use the V8 coverage provider to gather code coverage metrics in Jest tests
 
 ### Fixed
 
@@ -47,12 +51,15 @@ _For each release, use the following sub-sections:_
 - [#701](https://github.com/cessda/cessda.cvs.two/issues/701) Fixed exporting the licence name rather than the licence URL in the RDF export
 - [#702](https://github.com/cessda/cessda.cvs.two/issues/702) Fixed the presence of NUL characters/empty bytes in various export types (SKOS, PDF, HTML)
 - [#703](https://github.com/cessda/cessda.cvs.two/issues/703) Fixed returning SKOS RDF with the content type set to `application/json` rather than the correct content type `application/rdf+xml`
+- [#797](https://github.com/cessda/cessda.cvs.two/issues/797) Fixed invalid Swagger definitions caused by not having the licence name set
 
 ### Security
 
 - [#283](https://github.com/cessda/cessda.cvs.two/issues/283) Fixed security hotspots identified by SonarQube
 
 ## [3.2.0] - 2023-05-09
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10009345.svg)](https://doi.org/10.5281/zenodo.10009345)
 
 ## Changes
 
