@@ -67,6 +67,9 @@ describe('Service Tests', () => {
         licenseLink: 'AAAAAAA',
         licenseLogo: 'AAAAAAA',
         citation: 'AAAAAAA',
+        concepts: [],
+        comments: [],
+        versionHistories: [],
       };
     });
 

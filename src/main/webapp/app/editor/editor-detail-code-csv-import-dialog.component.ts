@@ -96,9 +96,9 @@ export class EditorDetailCodeCsvImportDialogComponent {
   }
 
   private resetConceptsAndCodeSnippets(): void {
-    if (this.versionParam.concepts!.length > 0) {
+    if (this.versionParam.concepts.length > 0) {
       // deep copy so the changes will not influence the original concepts
-      this.concepts = this.versionParam.concepts!.map(x => Object.assign({ ...x }));
+      this.concepts = this.versionParam.concepts.map(x => Object.assign({ ...x }));
     } else {
       this.concepts = [];
     }
@@ -181,8 +181,8 @@ export class EditorDetailCodeCsvImportDialogComponent {
     this.ignoredRows = 0;
     if (!this.isSlForm) {
       const slVersion = this.vocabularyParam.versions!.filter(v => v.itemType === 'SL')[0];
-      slVersion.concepts!.forEach(c => {
-        existingCode.push(c.notation!);
+      slVersion.concepts.forEach(c => {
+        existingCode.push(c.notation);
       });
     }
 

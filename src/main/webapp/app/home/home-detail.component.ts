@@ -196,7 +196,7 @@ export class HomeDetailComponent implements OnInit {
     return VocabularyUtil.isAnyVersionInBundle(versions, bundle);
   }
 
-  hasDeprecatedConcepts(concepts: Concept[] | undefined): boolean {
+  hasDeprecatedConcepts(concepts: Concept[]): boolean {
     return VocabularyUtil.hasDeprecatedConcepts(concepts);
   }
 
@@ -292,7 +292,7 @@ export class HomeDetailComponent implements OnInit {
 
       if (this.currentSelectedCode !== '') {
         this.isShowingDeprecatedCodes = this.getVersionsByLanguage(this.vocabulary.selectedLang).some(version => {
-          return version.concepts?.some(concept => {
+          return version.concepts.some(concept => {
             return concept.deprecated;
           });
         });

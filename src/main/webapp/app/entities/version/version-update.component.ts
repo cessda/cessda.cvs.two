@@ -177,6 +177,9 @@ export class VersionUpdateComponent implements OnInit {
       translateAgency: this.editForm.get(['translateAgency'])!.value,
       translateAgencyLink: this.editForm.get(['translateAgencyLink'])!.value,
       vocabularyId: this.editForm.get(['vocabularyId'])!.value,
+      concepts: [],
+      comments: [],
+      versionHistories: [],
     };
   }
 

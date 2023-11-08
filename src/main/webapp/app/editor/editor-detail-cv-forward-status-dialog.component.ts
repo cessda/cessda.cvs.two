@@ -240,7 +240,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         this.missingTranslations = [];
         vocabularySnippet.versionNumber =
           VocabularyUtil.getSlMajorMinorVersionNumber(this.slVersionNumber) + '.' + this.proposedPatchNumber;
-        (this.versionParam.concepts || []).forEach(c => {
+        this.versionParam.concepts.forEach(c => {
           if (!c.deprecated) {
             if (!c.title || c.title === null || c.title === '') {
               this.missingTranslations.push(c.notation);

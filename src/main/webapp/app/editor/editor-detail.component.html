@@ -140,7 +140,7 @@
                         </div>
 
                         <div *ngIf="!(concept !== null && concept.deprecated)">
-                            <a *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_TRANSLATE') || (version!.status === 'PUBLISHED' && version!.concepts && version!.concepts!.length > 0) " class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isCodeActionCollapse = !isCodeActionCollapse"
+                            <a *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_TRANSLATE') || (version!.status === 'PUBLISHED' && version!.concepts.length > 0) " class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isCodeActionCollapse = !isCodeActionCollapse"
                             [attr.aria-expanded]="isCodeActionCollapse" aria-controls="action-code-panel">
                                 &nbsp;
                                 <fa-icon *ngIf="!isCodeActionCollapse" icon="caret-down"></fa-icon>
@@ -163,14 +163,14 @@
                                         </button>
 
                                         <div *ngIf="concept">
-                                            <div *ngIf="version!.concepts!.length > 0">
+                                            <div *ngIf="version!.concepts.length > 0">
                                                 <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CODE', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
                                                         class="btn sk-select-min sk-input-f mtop10" (click)="openEditCodePopup()">
                                                     <fa-icon [icon]="'edit'"></fa-icon>
                                                     <span>Edit code</span>
                                                 </button>
                                             </div>
-                                            <div *ngIf="version!.concepts!.length > 1">
+                                            <div *ngIf="version!.concepts.length > 1">
                                                 <button *jhiHasAnyAgencyAuthority="{actionType:'REORDER_CODE', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
                                                         class="btn sk-select-min sk-input-f mtop10" (click)="openReorderCode()">
                                                     <fa-icon [icon]="'stream'"></fa-icon>
@@ -193,7 +193,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button *ngIf="version!.concepts && version!.concepts!.length > 0"
+                                    <button *ngIf="version!.concepts.length > 0"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="exportAsCsv()">
                                         <fa-icon [icon]="'download'"></fa-icon>
                                         <span>Export to CSV</span>
@@ -230,7 +230,7 @@
                                             <span>Import from CSV</span>
                                         </button>
                                     </div>
-                                    <button *ngIf="version!.concepts && version!.concepts!.length > 0"
+                                    <button *ngIf="version!.concepts.length > 0"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="exportAsCsv()">
                                         <fa-icon [icon]="'download'"></fa-icon>
                                         <span>Export to CSV</span>

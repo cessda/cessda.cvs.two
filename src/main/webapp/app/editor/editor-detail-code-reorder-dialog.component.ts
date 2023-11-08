@@ -35,9 +35,9 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
   codeSnippet?: ICodeSnippet;
   insertMode = 'after';
 
-  conceptsToMove?: Concept[] = [];
-  conceptsToPlace?: Concept[] = [];
-  conceptsToPlaceTemp?: Concept[] = [];
+  conceptsToMove: Concept[] = [];
+  conceptsToPlace: Concept[] = [];
+  conceptsToPlaceTemp: Concept[] = [];
 
   constructor(
     protected editorService: EditorService,
@@ -59,10 +59,12 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
       ...new CodeSnippet(),
       actionType: 'REORDER_CODE',
       versionId: this.versionParam.id,
-      conceptStructures: this.conceptsToPlace!.map(c => c.notation!),
-      conceptStructureIds: this.conceptsToPlace!.map(c => c.id!),
+      conceptStructures: this.conceptsToPlace.map(c => c.notation),
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      conceptStructureIds: this.conceptsToPlace.map(c => c.id!),
     };
-    this.editorService.reorderCode(this.codeSnippet).subscribe(() => this.onSaveSuccess());
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.editorService.reorderCode(this.codeSnippet!).subscribe(() => this.onSaveSuccess());
   }
 
   protected onSaveSuccess(): void {
@@ -76,18 +78,18 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
   ngOnInit(): void {
     this.isSaving = false;
     // deep copy so that original concepts not affected
-    const clonedConcepts = this.versionParam.concepts!.map(x => Object.assign({ ...x }));
+    const clonedConcepts = this.versionParam.concepts.map(x => Object.assign({ ...x }));
 
     // normalize selected code, so the first selected element is always a root code
     this.conceptsToMove = [
       clonedConcepts.filter(c => c.notation === this.conceptParam.notation)[0],
-      ...clonedConcepts.filter(c => c.parent && c.parent.startsWith(this.conceptParam.notation!)),
+      ...clonedConcepts.filter(c => c.parent && c.parent.startsWith(this.conceptParam.notation)),
     ];
     // normalize selected code/code block
     const baseParent = this.conceptsToMove[0].parent;
     this.conceptsToMove.forEach(c => {
       if (baseParent !== undefined) {
-        if (c.parent === this.conceptsToMove![0].parent) {
+        if (c.parent === this.conceptsToMove[0].parent) {
           c.parent = undefined;
         } else {
           c.parent = c.parent!.substring(baseParent.length + 1, c.parent!.length);
@@ -98,7 +100,7 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
     });
 
     // initial value for preview, remove selected concepts from concept preview
-    this.conceptsToPlaceTemp = clonedConcepts.filter(c => !this.conceptsToMove!.includes(c));
+    this.conceptsToPlaceTemp = clonedConcepts.filter(c => !this.conceptsToMove.includes(c));
     this.conceptsToPlace = [...this.conceptsToPlaceTemp];
 
     this.eventSubscriber = this.eventManager.subscribe('selectReorderConcept', (response: JhiEventWithContent<Concept>) => {
@@ -108,10 +110,10 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
   }
 
   private updatePreview(): void {
-    let index = this.conceptsToPlaceTemp!.indexOf(this.selectedConceptToPlace);
-    this.conceptsToPlace = [...this.conceptsToPlaceTemp!];
+    let index = this.conceptsToPlaceTemp.indexOf(this.selectedConceptToPlace);
+    this.conceptsToPlace = [...this.conceptsToPlaceTemp];
     // deep copy objects array
-    const conceptsToMoveCloned = this.conceptsToMove!.map(x => Object.assign({ ...x }));
+    const conceptsToMoveCloned = this.conceptsToMove.map(x => Object.assign({ ...x }));
     if (this.insertMode !== 'before') {
       index++;
     }

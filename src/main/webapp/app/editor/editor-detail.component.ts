@@ -235,16 +235,12 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     if (this.version.itemType === 'TL') {
       this.enableAddTl = false;
       this.enablePublishTl = false;
+
       // find SL version
       const slVersion = this.getSlVersion();
       this.version.languageSl = slVersion.language;
 
-      // Initialise concept versions if undefined
-      if (!this.version.concepts) {
-        this.version.concepts = [];
-      }
-
-      const slConcepts = slVersion.concepts || [];
+      const slConcepts = slVersion.concepts;
 
       for (let i = 0; i < slConcepts.length; i++) {
         const tlCodes = this.version.concepts.filter(c => c.notation === slConcepts[i].notation);
@@ -469,7 +465,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.subscribeSelectConceptEvent();
 
     if (this.currentSelectedCode !== '') {
-      this.isShowingDeprecatedCodes = this.version!.concepts!.some(concept => {
+      this.isShowingDeprecatedCodes = this.version!.concepts.some(concept => {
         return concept.deprecated;
       });
       this._ngZone.runOutsideAngular(() => {
@@ -736,7 +732,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   exportAsCsv(): void {
     // specify how you want to handle null values here
     const header = ['Code value', 'Code term', 'Code definition'];
-    const csv = this.version!.concepts!.map(concept =>
+    const csv = this.version!.concepts.map(concept =>
       [this.escapeCsvContent(concept.notation), this.escapeCsvContent(concept.title), this.escapeCsvContent(concept.definition)].join(','),
     );
     csv.unshift(header.join(','));

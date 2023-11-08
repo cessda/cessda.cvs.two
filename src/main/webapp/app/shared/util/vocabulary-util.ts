@@ -233,8 +233,8 @@ export default class VocabularyUtil {
     return concepts.filter(c => c.parent === notation).length > 0;
   }
 
-  static hasDeprecatedConcepts(concepts: Concept[] | undefined): boolean {
-    return concepts !== undefined ? concepts.filter(c => c.deprecated === true).length > 0 : false;
+  static hasDeprecatedConcepts(concepts: Concept[]): boolean {
+    return concepts.filter(c => c.deprecated === true).length > 0;
   }
 
   static compareNumbers(n1: number, n2: number): number {

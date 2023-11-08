@@ -49,10 +49,10 @@ export interface Version {
   ddiUsage?: string;
   translateAgency?: string;
   translateAgencyLink?: string;
-  concepts?: Concept[];
-  comments?: IComment[];
+  concepts: Concept[];
+  comments: IComment[];
   vocabularyId?: number;
-  versionHistories?: VersionHistory[];
+  versionHistories: VersionHistory[];
   titleSl?: string;
   languageSl?: string;
   definitionSl?: string;
@@ -64,5 +64,8 @@ export function createNewVersion(id?: number): Version {
     id: id,
     status: 'DRAFT',
     itemType: 'TL',
+    concepts: [],
+    comments: [],
+    versionHistories: [],
   };
 }
