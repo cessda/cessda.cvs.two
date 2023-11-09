@@ -28,7 +28,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ICode } from 'app/shared/model/code.model';
-import { HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ICvResult } from 'app/shared/model/cv-result.model';
 import { IAggr } from 'app/shared/model/aggr';
 import { HomeService } from 'app/home/home.service';
@@ -191,28 +191,28 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
 
   loadPage(page: number): void {
     this.eventManager.broadcast({ name: 'onSearching', content: true });
-    const searchRequest = this.getSearchRequest(page);
-    if (this.appScope === AppScope.EDITOR) {
-      this.editorService.search(searchRequest).subscribe(
-        (res: HttpResponse<ICvResult>) => this.onSuccess(res.body!, page),
-        () => this.onError(),
-      );
-    } else {
-      this.homeService.search(searchRequest).subscribe(
-        (res: HttpResponse<ICvResult>) => this.onSuccess(res.body!, page),
-        () => this.onError(),
-      );
-    }
-  }
 
-  private getSearchRequest(pageToLoad: number): any {
-    return {
+    // Create the search request
+    const searchRequest = {
       q: this.currentSearch,
       f: this.activeAgg,
-      page: pageToLoad - 1,
+      page: page - 1,
       size: this.itemsPerPage,
       sort: this.sort(),
     };
+
+    let searchObservable: Observable<HttpResponse<ICvResult>>;
+    if (this.appScope === AppScope.EDITOR) {
+      searchObservable = this.editorService.search(searchRequest);
+    } else {
+      searchObservable = this.homeService.search(searchRequest);
+    }
+
+    // Subscribe to the result of the search request
+    searchObservable.subscribe(
+      (res: HttpResponse<ICvResult>) => this.onSuccess(res.body!, page),
+      e => this.onError(e),
+    );
   }
 
   protected onSuccess(data: ICvResult, page: number): void {
@@ -229,7 +229,8 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     this.eventManager.broadcast({ name: 'onSearching', content: false });
   }
 
-  protected onError(): void {
+  protected onError(e: HttpErrorResponse): void {
+    console.error(e);
     this.ngbPaginationPage = this.page;
   }
 
