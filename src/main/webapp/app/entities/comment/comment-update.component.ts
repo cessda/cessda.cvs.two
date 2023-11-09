@@ -23,7 +23,7 @@ import moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import { Comment, IComment } from 'app/shared/model/comment.model';
+import { Comment } from 'app/shared/model/comment.model';
 import { CommentService } from './comment.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { Version } from 'app/shared/model/version.model';
@@ -68,7 +68,7 @@ export class CommentUpdateComponent implements OnInit {
     });
   }
 
-  updateForm(comment: IComment): void {
+  updateForm(comment: Comment): void {
     this.editForm.patchValue({
       id: comment.id,
       info: comment.info,
@@ -103,17 +103,17 @@ export class CommentUpdateComponent implements OnInit {
     // Extract dateTime to its own variable so that it can be truthy-tested
     const dateTime = this.editForm.get(['dateTime'])?.value;
 
-    return new Comment(
-      this.editForm.get(['id'])?.value,
-      this.editForm.get(['info'])?.value,
-      this.editForm.get(['content'])?.value,
-      this.editForm.get(['userId'])?.value,
-      dateTime ? moment(dateTime, DATE_TIME_FORMAT) : undefined,
-      this.editForm.get(['versionId'])?.value,
-    );
+    return {
+      id: this.editForm.get(['id'])?.value,
+      info: this.editForm.get(['info'])?.value,
+      content: this.editForm.get(['content'])?.value,
+      userId: this.editForm.get(['userId'])?.value,
+      dateTime: dateTime ? moment(dateTime, DATE_TIME_FORMAT) : undefined,
+      versionId: this.editForm.get(['versionId'])?.value,
+    };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IComment>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Comment>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
       () => this.onSaveError(),
@@ -129,7 +129,8 @@ export class CommentUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: Version): any {
-    return item.id;
+  trackById(_index: number, item: Version): number {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return item.id!;
   }
 }

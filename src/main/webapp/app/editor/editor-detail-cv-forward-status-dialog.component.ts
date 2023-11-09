@@ -32,7 +32,7 @@ import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from 'app/admin/licence/licence.service';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { DiffContent, DiffResults } from 'ngx-text-diff/lib/ngx-text-diff.model';
-import { IComment } from 'app/shared/model/comment.model';
+import { Comment } from 'app/shared/model/comment.model';
 import { VocabularyChangeService } from 'app/entities/vocabulary-change/vocabulary-change.service';
 import { VocabularyChange } from 'app/shared/model/vocabulary-change.model';
 import { QuillModule } from 'ngx-quill';
@@ -55,7 +55,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   slVersionNumber!: string;
   proposedPatchNumber = 0;
   missingTranslations: string[] = [];
-  comments: IComment[] = [];
+  comments: Comment[] = [];
   vocabularyChanges: VocabularyChange[] = [];
 
   public versionNotesEditor: Quill | undefined;

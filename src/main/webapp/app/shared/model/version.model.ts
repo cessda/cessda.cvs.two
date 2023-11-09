@@ -16,7 +16,7 @@
 import { Moment } from 'moment';
 import { Concept } from 'app/shared/model/concept.model';
 import { VersionHistory } from 'app/shared/model/version-history';
-import { IComment } from 'app/shared/model/comment.model';
+import { Comment } from 'app/shared/model/comment.model';
 
 export interface Version {
   id?: number;
@@ -50,7 +50,7 @@ export interface Version {
   translateAgency?: string;
   translateAgencyLink?: string;
   concepts: Concept[];
-  comments: IComment[];
+  comments: Comment[];
   vocabularyId?: number;
   versionHistories: VersionHistory[];
   titleSl?: string;

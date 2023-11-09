@@ -46,7 +46,14 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', fakeAsync(() => {
         // GIVEN
-        const entity = new Comment(123, undefined, undefined, undefined, undefined, undefined);
+        const entity: Comment = {
+          id: 123,
+          info: undefined,
+          content: undefined,
+          userId: undefined,
+          dateTime: undefined,
+          versionId: undefined,
+        };
         spyOn(service, 'update').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN
@@ -60,7 +67,14 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', fakeAsync(() => {
         // GIVEN
-        const entity = new Comment(undefined, undefined, undefined, undefined, undefined, undefined);
+        const entity: Comment = {
+          id: undefined,
+          info: undefined,
+          content: undefined,
+          userId: undefined,
+          dateTime: undefined,
+          versionId: undefined,
+        };
         spyOn(service, 'create').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN

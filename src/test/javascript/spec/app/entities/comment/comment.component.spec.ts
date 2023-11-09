@@ -64,8 +64,17 @@ describe('Component Tests', () => {
       const headers = new HttpHeaders().append('link', 'link;link');
       spyOn(service, 'query').and.returnValue(
         of(
-          new HttpResponse({
-            body: [new Comment(123, undefined, undefined, undefined, undefined, undefined)],
+          new HttpResponse<Comment[]>({
+            body: [
+              {
+                id: 123,
+                info: undefined,
+                content: undefined,
+                userId: undefined,
+                dateTime: undefined,
+                versionId: undefined,
+              },
+            ],
             headers,
           }),
         ),
@@ -84,8 +93,17 @@ describe('Component Tests', () => {
       const headers = new HttpHeaders().append('link', 'link;link');
       spyOn(service, 'query').and.returnValue(
         of(
-          new HttpResponse({
-            body: [new Comment(123, undefined, undefined, undefined, undefined, undefined)],
+          new HttpResponse<Comment[]>({
+            body: [
+              {
+                id: 123,
+                info: undefined,
+                content: undefined,
+                userId: undefined,
+                dateTime: undefined,
+                versionId: undefined,
+              },
+            ],
             headers,
           }),
         ),

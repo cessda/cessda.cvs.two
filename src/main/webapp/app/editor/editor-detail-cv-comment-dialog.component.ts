@@ -23,7 +23,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
-import { IComment } from 'app/shared/model/comment.model';
+import { Comment } from 'app/shared/model/comment.model';
 import { CommentService } from 'app/entities/comment/comment.service';
 import { Observable, Subscription } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
@@ -38,7 +38,7 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
   isSaving: boolean;
   account!: Account;
   versionParam!: Version;
-  comments: IComment[] | undefined = [];
+  comments: Comment[] | undefined = [];
   isWriteComment = false;
 
   eventSubscriber?: Subscription;
@@ -92,7 +92,7 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
   }
 
   loadComment(): void {
-    this.commentService.findAllByVersion(this.versionParam.id!).subscribe((res: HttpResponse<IComment[]>) => (this.comments = res.body!));
+    this.commentService.findAllByVersion(this.versionParam.id!).subscribe((res: HttpResponse<Comment[]>) => (this.comments = res.body!));
   }
 
   saveComment(): void {
@@ -106,14 +106,14 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
     this.subscribeToSaveResponse(this.editorService.createComment(newComment));
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IComment>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Comment>>): void {
     result.subscribe(
       response => this.onSaveSuccess(response.body!),
       () => this.onSaveError(),
     );
   }
 
-  protected onSaveSuccess(newComment: IComment): void {
+  protected onSaveSuccess(newComment: Comment): void {
     this.isSaving = false;
     this.versionParam.comments!.push(newComment);
     this.commentForm.patchValue({ content: '' });

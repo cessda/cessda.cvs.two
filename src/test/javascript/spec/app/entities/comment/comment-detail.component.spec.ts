@@ -28,8 +28,17 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<CommentDetailComponent>;
     let dataUtils: JhiDataUtils;
     const route = {
-      data: of({ comment: new Comment(123, undefined, undefined, undefined, undefined, undefined) }),
-    } as any as ActivatedRoute;
+      data: of({
+        comment: {
+          id: 123,
+          info: undefined,
+          content: undefined,
+          userId: undefined,
+          dateTime: undefined,
+          versionId: undefined,
+        } as Comment,
+      }),
+    } as unknown as ActivatedRoute;
 
     beforeEach(() => {
       TestBed.configureTestingModule({

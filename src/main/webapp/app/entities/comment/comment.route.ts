@@ -22,24 +22,24 @@ import { mergeMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IComment, Comment } from 'app/shared/model/comment.model';
+import { Comment } from 'app/shared/model/comment.model';
 import { CommentService } from './comment.service';
 import { CommentComponent } from './comment.component';
 import { CommentDetailComponent } from './comment-detail.component';
 import { CommentUpdateComponent } from './comment-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class CommentResolve implements Resolve<IComment> {
+export class CommentResolve implements Resolve<Comment> {
   constructor(
     private service: CommentService,
     private router: Router,
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IComment> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Comment> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        mergeMap((comment: HttpResponse<IComment>) => {
+        mergeMap((comment: HttpResponse<Comment>) => {
           if (comment.body) {
             return of(comment.body);
           } else {

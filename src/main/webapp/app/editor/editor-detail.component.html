@@ -455,7 +455,7 @@
 
 
                             <br>
-                            <div *ngIf="hasDeprecatedConcepts(version!.concepts!)">
+                            <div *ngIf="hasDeprecatedConcepts(version!.concepts)">
                                 <span class="cmt-scn" *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT','ROLE_USER']">
                                     <a type="button" class="btn btn-primary btn-sm" ngbTooltip="See deprecated codes" (click)="toggleDeprecatedCodesDisplay()">
                                         <fa-icon *ngIf="!isShowingDeprecatedCodes" icon="eye"></fa-icon>

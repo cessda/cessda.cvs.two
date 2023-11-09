@@ -27,7 +27,7 @@ import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
 import { ICodeSnippet } from 'app/shared/model/code-snippet.model';
 import { Concept } from 'app/shared/model/concept.model';
 import { Version } from 'app/shared/model/version.model';
-import { IComment } from 'app/shared/model/comment.model';
+import { Comment } from 'app/shared/model/comment.model';
 import { MetadataValue } from 'app/shared/model/metadata-value.model';
 
 @Injectable({ providedIn: 'root' })
@@ -122,14 +122,14 @@ export class EditorService {
     });
   }
 
-  createComment(comment: IComment): Observable<HttpResponse<IComment>> {
+  createComment(comment: Comment): Observable<HttpResponse<Comment>> {
     return this.http
-      .post<IComment>(this.resourceEditorCommentUrl, comment, { observe: 'response' })
-      .pipe(map((res: HttpResponse<IComment>) => this.convertCommentDateFromServer(res)));
+      .post<Comment>(this.resourceEditorCommentUrl, comment, { observe: 'response' })
+      .pipe(map((res: HttpResponse<Comment>) => this.convertCommentDateFromServer(res)));
   }
 
-  updateComment(comment: IComment): Observable<HttpResponse<IComment>> {
-    return this.http.put<IComment>(this.resourceEditorCommentUrl, comment, { observe: 'response' });
+  updateComment(comment: Comment): Observable<HttpResponse<Comment>> {
+    return this.http.put<Comment>(this.resourceEditorCommentUrl, comment, { observe: 'response' });
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -145,7 +145,7 @@ export class EditorService {
     return res;
   }
 
-  protected convertCommentDateFromServer(res: HttpResponse<IComment>): HttpResponse<IComment> {
+  protected convertCommentDateFromServer(res: HttpResponse<Comment>): HttpResponse<Comment> {
     if (res.body) {
       res.body.dateTime = res.body.dateTime ? moment(res.body.dateTime) : undefined;
     }

@@ -20,7 +20,6 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { zip } from 'rxjs';
-import { map, merge, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'jhi-main',
