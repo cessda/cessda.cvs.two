@@ -26,7 +26,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Account } from 'app/core/user/account.model';
 import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
 import { VOCABULARY_ALREADY_EXIST_TYPE } from 'app/shared';
@@ -156,7 +156,7 @@ export class EditorCvAddDialogComponent implements OnInit {
     this.subscribeToSaveResponse(this.editorService.createVocabulary(vocabularySnippet), vocabularySnippet.notation!);
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>, notation: string): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Vocabulary>>, notation: string): void {
     result.subscribe(
       () => this.onSaveSuccess(notation),
       response => this.processError(response),

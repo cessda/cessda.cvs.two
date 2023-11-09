@@ -18,7 +18,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 
 import { Concept } from 'app/shared/model/concept.model';
-import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary, createNewVocabulary } from 'app/shared/model/vocabulary.model';
 import { Version } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
@@ -43,7 +43,7 @@ export class HomeDetailComponent implements OnInit {
 
   appScope: AppScope = AppScope.PUBLICATION;
 
-  vocabulary: IVocabulary = new Vocabulary();
+  vocabulary: Vocabulary = createNewVocabulary();
 
   isDetailCollapse = true;
   isVersionCollapse = true;
@@ -173,18 +173,16 @@ export class HomeDetailComponent implements OnInit {
   }
 
   getVersionsByLanguage(lang?: string): Version[] {
-    return this.vocabulary.versions!.filter(v => v.language === lang);
+    return this.vocabulary.versions.filter(v => v.language === lang);
   }
-  getFormattedVersionTooltip(version?: Version, sourceLang?: string): string {
-    return (
-      this.vocabLangPipeKey.transform(version!.language!) + ' v.' + version!.number + (version!.language === sourceLang ? ' SOURCE' : '')
-    );
+  getFormattedVersionTooltip(version: Version, sourceLang?: string): string {
+    return this.vocabLangPipeKey.transform(version.language!) + ' v.' + version.number + (version.language === sourceLang ? ' SOURCE' : '');
   }
   getServerUrl(): string {
     return window.location.origin;
   }
 
-  isAnyLangVersionInBundle(vocab: IVocabulary, lang: string, bundle?: string): boolean {
+  isAnyLangVersionInBundle(vocab: Vocabulary, lang: string, bundle?: string): boolean {
     if (!bundle) {
       if (vocab.versionNumber) {
         bundle = vocab.versionNumber;
@@ -278,7 +276,7 @@ export class HomeDetailComponent implements OnInit {
         this.currentSelectedCode = this.vocabulary.selectedCode;
       }
       if (this.initialLangSelect) {
-        if (this.vocabulary.sourceLanguage && !(this.vocabulary.versions || []).some(v => v.language === this.initialLangSelect)) {
+        if (this.vocabulary.sourceLanguage && !this.vocabulary.versions.some(v => v.language === this.initialLangSelect)) {
           this.vocabulary.selectedLang = this.vocabulary.sourceLanguage;
         } else {
           this.vocabulary.selectedLang = this.initialLangSelect;
@@ -352,7 +350,7 @@ export class HomeDetailComponent implements OnInit {
 
   getMissingTlVersion(version: string): string {
     if (VocabularyUtil.compareVersionNumbers(version, this.getSlVersion().number!) === 0) {
-      return VocabularyUtil.getSlMajorMinorVersionNumber(this.getSlVersion().versionHistories![0].version!) + '.x';
+      return VocabularyUtil.getSlMajorMinorVersionNumber(this.getSlVersion().versionHistories[0].version!) + '.x';
     }
     let i = 0;
     this.getSlVersion().versionHistories?.forEach(function (vhSl, index): void {
@@ -361,7 +359,7 @@ export class HomeDetailComponent implements OnInit {
       }
     });
     if (i > 0) {
-      return VocabularyUtil.getSlMajorMinorVersionNumber(this.getSlVersion().versionHistories![i].version!) + '.x';
+      return VocabularyUtil.getSlMajorMinorVersionNumber(this.getSlVersion().versionHistories[i].version!) + '.x';
     }
     return '';
   }

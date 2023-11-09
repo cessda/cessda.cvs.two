@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Code } from 'app/shared/model/code.model';
 import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
 import { Version } from 'app/shared/model/version.model';
@@ -23,7 +23,7 @@ import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 import { VersionNumber } from 'app/shared/model/version-number.model';
 
 export default class VocabularyUtil {
-  static getTitleDefByLangIso(item: IVocabulary | Code, langIso: string): (string | undefined)[] {
+  static getTitleDefByLangIso(item: Vocabulary | Code, langIso: string): (string | undefined)[] {
     switch (langIso) {
       case 'sq':
         return [item.titleSq, item.definitionSq, item.versionSq];
@@ -86,7 +86,7 @@ export default class VocabularyUtil {
     }
   }
 
-  static getVersionNumberByLangIso(item: IVocabulary | Code, langIso: string): string | undefined {
+  static getVersionNumberByLangIso(item: Vocabulary | Code, langIso: string): string | undefined {
     switch (langIso) {
       case 'sq':
         return item.versionSq;
@@ -149,12 +149,12 @@ export default class VocabularyUtil {
     }
   }
 
-  static getStatus(vocab: IVocabulary): string {
-    return vocab.status || '';
+  static getStatus(vocab: Vocabulary): string {
+    return vocab.status;
   }
 
-  static getSlVersionOfVocabulary(vocab: IVocabulary): Version {
-    return (vocab.versions || []).filter(v => v.itemType === 'SL')[0];
+  static getSlVersionOfVocabulary(vocab: Vocabulary): Version {
+    return vocab.versions.filter(v => v.itemType === 'SL')[0];
   }
 
   static parseVersionNumber(vnumber: string): VersionNumber {
@@ -187,7 +187,7 @@ export default class VocabularyUtil {
     return this.parseVersionNumber(vnumber).patch;
   }
 
-  static getSlVersionNumberOfVocabulary(vocab: IVocabulary): string {
+  static getSlVersionNumberOfVocabulary(vocab: Vocabulary): string {
     const slVersion = this.getSlVersionOfVocabulary(vocab);
     if (slVersion.number) {
       return this.getSlVersionNumber(slVersion.number);
@@ -210,19 +210,17 @@ export default class VocabularyUtil {
     return -1;
   }
 
-  static getVersionByLang(vocab: IVocabulary): Version {
-    return (vocab.versions || []).filter(v => v.language === vocab.selectedLang)[0];
+  static getVersionByLang(vocab: Vocabulary): Version {
+    return vocab.versions.filter(v => v.language === vocab.selectedLang)[0];
   }
 
-  static getVersionByLangAndNumber(vocab: IVocabulary, versionNumber?: string): Version {
+  static getVersionByLangAndNumber(vocab: Vocabulary, versionNumber?: string): Version {
     if (versionNumber) {
       versionNumber = this.threeDigitVersionNumber(versionNumber);
-      return (vocab.versions || []).filter(
-        v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number!) === versionNumber,
-      )[0];
+      return vocab.versions.filter(v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number!) === versionNumber)[0];
     } else if (vocab.selectedVersion) {
       vocab.selectedVersion = this.threeDigitVersionNumber(vocab.selectedVersion);
-      return (vocab.versions || []).filter(
+      return vocab.versions.filter(
         v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number!) === vocab.selectedVersion,
       )[0];
     }
@@ -368,7 +366,7 @@ export default class VocabularyUtil {
     }
   }
 
-  static convertVocabularyToThreeDigitVersionNumer(vocabulary: IVocabulary): void {
+  static convertVocabularyToThreeDigitVersionNumer(vocabulary: Vocabulary): void {
     if (vocabulary.versionNumber) {
       vocabulary.versionNumber = this.threeDigitVersionNumber(vocabulary.versionNumber);
       if (vocabulary.versions) {

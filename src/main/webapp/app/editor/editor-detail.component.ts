@@ -17,7 +17,7 @@ import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@an
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Version } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
@@ -66,7 +66,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   selectConceptSubscription?: Subscription;
   eventSubscriber2?: Subscription;
 
-  vocabulary: IVocabulary | null = null;
+  vocabulary: Vocabulary = createNewVocabulary();
   version: Version | null = null;
   concept: Concept | null = null;
 
@@ -83,7 +83,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   enablePublishTl = false;
 
   initialTabSelected?: string;
-  initialLangSelect = null;
+  initialLangSelect: string | null = null;
 
   availableLanguages: string[] = [];
   availableTlLanguages: string[] = [];
@@ -326,9 +326,9 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     return version.status === versionType;
   }
 
-  isAnyLangVersionInBundle(vocab: IVocabulary, lang: string, bundle?: string): boolean {
+  isAnyLangVersionInBundle(vocab: Vocabulary, lang: string, bundle?: string): boolean {
     if (bundle === undefined) {
-      bundle = vocab.versionNumber!;
+      bundle = vocab.versionNumber;
     }
     const versions = this.getVersionsByLanguage(lang);
     return VocabularyUtil.isAnyVersionInBundle(versions, bundle);
@@ -411,7 +411,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     });
     this.activatedRoute.data.subscribe(({ vocabulary }) => {
       VocabularyUtil.convertVocabularyToThreeDigitVersionNumer(vocabulary);
-      this.vocabulary = vocabulary as IVocabulary;
+      this.vocabulary = vocabulary as Vocabulary;
       this.availableLanguages = VocabularyUtil.getAvailableCvLanguage(vocabulary.versions);
       this.accountService.identity().subscribe(account => {
         if (account) {
@@ -419,7 +419,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
           this.account.userAgencies.forEach(ua => {
             if (
               ua.agencyRole === 'ADMIN_TL' &&
-              ua.agencyId === this.vocabulary!.agencyId &&
+              ua.agencyId === this.vocabulary.agencyId &&
               ua.language &&
               this.availableLanguages.includes(ua.language)
             ) {
@@ -430,13 +430,13 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
         }
       });
       if (this.initialLangSelect !== null) {
-        if (!this.vocabulary.versions!.some(v => v.language === this.initialLangSelect)) {
-          this.setActiveVersion(this.vocabulary.sourceLanguage!);
+        if (!this.vocabulary.versions.some(v => v.language === this.initialLangSelect)) {
+          this.setActiveVersion(this.vocabulary.sourceLanguage);
         } else {
-          this.setActiveVersion(this.initialLangSelect!);
+          this.setActiveVersion(this.initialLangSelect);
         }
       } else {
-        this.setActiveVersion(this.vocabulary.selectedLang!);
+        this.setActiveVersion(this.vocabulary.selectedLang);
       }
       if (this.vocabulary.selectedVersion) {
         if (!this.vocabulary.selectedLang) {
@@ -688,7 +688,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
   }
 
-  subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>, vocabSnippet: VocabularySnippet): void {
+  subscribeToSaveResponse(result: Observable<HttpResponse<Vocabulary>>, vocabSnippet: VocabularySnippet): void {
     result.subscribe(() => {
       if (vocabSnippet.actionType === ActionType.EDIT_DDI_CV) {
         this.isDdiUsageEdit = !this.isDdiUsageEdit;
@@ -775,23 +775,23 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     if (!this.version || !this.version.language) {
       return;
     }
-    this.vocabulary!.selectedLang = this.version.language;
-    this.vocabulary!.selectedVersion = this.version.number;
+    this.vocabulary.selectedLang = this.version.language;
+    this.vocabulary.selectedVersion = this.version.number;
     this.eventManager.broadcast({ name: 'closeComparison', content: true });
   }
 
   getMissingTlVersion(version: string): string {
     if (version.startsWith(this.getSlVersion().number!)) {
-      return this.getSlVersion().versionHistories![0].version + '.x';
+      return this.getSlVersion().versionHistories[0].version + '.x';
     }
     let i = 0;
-    this.getSlVersion().versionHistories!.forEach(function (vhSl, index): void {
-      if (version.startsWith(vhSl.version!)) {
+    this.getSlVersion().versionHistories.forEach(function (vhSl, index): void {
+      if (version.startsWith(vhSl.version)) {
         i = index + 1;
       }
     });
     if (i > 0) {
-      return this.getSlVersion().versionHistories![i].version + '.x';
+      return this.getSlVersion().versionHistories[i].version + '.x';
     }
     return '';
   }

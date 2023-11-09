@@ -19,20 +19,20 @@ import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router
 
 import { EMPTY, Observable, of } from 'rxjs';
 import { HomeComponent } from './home.component';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { JhiResolvePagingParams } from 'ng-jhipster';
 import { HomeService } from 'app/home/home.service';
 import { HomeDetailComponent } from 'app/home/home-detail.component';
 import { mergeMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class VocabularyResolve implements Resolve<IVocabulary> {
+export class VocabularyResolve implements Resolve<Vocabulary> {
   constructor(
     private service: HomeService,
     private router: Router,
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IVocabulary> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Vocabulary> {
     let notation = route.params['notation'];
 
     if (typeof notation !== 'string') {
@@ -58,7 +58,7 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
       queryString.v = version;
     }
     return this.service.getVocabulary(notation, queryString).pipe(
-      mergeMap((vocabulary: HttpResponse<IVocabulary>) => {
+      mergeMap((vocabulary: HttpResponse<Vocabulary>) => {
         if (vocabulary.body) {
           vocabulary.body.selectedLang = lang !== '' ? lang : vocabulary.body.sourceLanguage;
           if (code !== '') {

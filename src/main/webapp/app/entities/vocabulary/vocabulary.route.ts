@@ -21,20 +21,20 @@ import { mergeMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
+import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import { VocabularyService } from './vocabulary.service';
 import { VocabularyComponent } from './vocabulary.component';
 import { VocabularyDetailComponent } from './vocabulary-detail.component';
 import { VocabularyUpdateComponent } from './vocabulary-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class VocabularyResolve implements Resolve<IVocabulary> {
+export class VocabularyResolve implements Resolve<Vocabulary> {
   constructor(
     private service: VocabularyService,
     private router: Router,
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IVocabulary> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Vocabulary> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
@@ -48,7 +48,7 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
         }),
       );
     }
-    return of(new Vocabulary());
+    return of(createNewVocabulary());
   }
 }
 

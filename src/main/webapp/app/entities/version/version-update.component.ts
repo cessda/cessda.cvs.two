@@ -26,7 +26,7 @@ import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } 
 import { Version } from 'app/shared/model/version.model';
 import { VersionService } from './version.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
 import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 
@@ -36,7 +36,7 @@ import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 })
 export class VersionUpdateComponent implements OnInit {
   isSaving = false;
-  vocabularies: IVocabulary[] = [];
+  vocabularies: Vocabulary[] = [];
   publicationDateDp: NgbInputDatepicker | undefined;
 
   editForm = this.fb.group({
@@ -88,7 +88,7 @@ export class VersionUpdateComponent implements OnInit {
 
       this.updateForm(version);
 
-      this.vocabularyService.query().subscribe((res: HttpResponse<IVocabulary[]>) => (this.vocabularies = res.body || []));
+      this.vocabularyService.query().subscribe((res: HttpResponse<Vocabulary[]>) => (this.vocabularies = res.body || []));
     });
   }
 
@@ -199,7 +199,7 @@ export class VersionUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(_index: number, item: IVocabulary): number {
+  trackById(_index: number, item: Vocabulary): number {
     return item.id || 0;
   }
 }

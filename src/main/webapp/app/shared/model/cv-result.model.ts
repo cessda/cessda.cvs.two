@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Aggr } from 'app/shared/model/aggr';
 
 export interface CvResult {
-  vocabularies: IVocabulary[];
+  vocabularies: Vocabulary[];
   totalElements: number;
   totalPage: number;
   numberOfElements: number;

@@ -19,10 +19,10 @@ import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { CvResult } from 'app/shared/model/cv-result.model';
 
-type EntityResponseType = HttpResponse<IVocabulary>;
+type EntityResponseType = HttpResponse<Vocabulary>;
 
 @Injectable({ providedIn: 'root' })
 export class HomeService {
@@ -35,7 +35,7 @@ export class HomeService {
   constructor(protected http: HttpClient) {}
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IVocabulary>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http.get<Vocabulary>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   search(req?: Record<string, string>): Observable<HttpResponse<CvResult>> {
@@ -43,32 +43,32 @@ export class HomeService {
     return this.http.get<CvResult>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }
 
-  getVocabularyFile(notation: string, req?: Record<string, string>): Observable<HttpResponse<IVocabulary>> {
+  getVocabularyFile(notation: string, req?: Record<string, string>): Observable<HttpResponse<Vocabulary>> {
     const options = createRequestOption(req);
     if (req?.v) {
       if (req.v.match(/\./g)?.length === 2) {
         req.v = req.v.substring(0, req.v.lastIndexOf('.'));
       }
-      return this.http.get<IVocabulary>(`${this.vocabularyStaticUrl}/${notation}/${req.v}/${notation}_${req.v}.json`, {
+      return this.http.get<Vocabulary>(`${this.vocabularyStaticUrl}/${notation}/${req.v}/${notation}_${req.v}.json`, {
         params: options,
         observe: 'response',
       });
     }
-    return this.http.get<IVocabulary>(`${this.vocabularyStaticUrl}/${notation}/${notation}.json`, { params: options, observe: 'response' });
+    return this.http.get<Vocabulary>(`${this.vocabularyStaticUrl}/${notation}/${notation}.json`, { params: options, observe: 'response' });
   }
 
-  getVocabulary(notation: string, req?: Record<string, string>): Observable<HttpResponse<IVocabulary>> {
+  getVocabulary(notation: string, req?: Record<string, string>): Observable<HttpResponse<Vocabulary>> {
     const options = createRequestOption(req);
     if (req?.v) {
       if (req.v.match(/\./g)?.length === 2) {
         req.v = req.v.substring(0, req.v.lastIndexOf('.'));
       }
-      return this.http.get<IVocabulary>(`${this.resourceDownloadUrl}/${notation}/${req.v}`, {
+      return this.http.get<Vocabulary>(`${this.resourceDownloadUrl}/${notation}/${req.v}`, {
         params: options,
         observe: 'response',
       });
     }
-    return this.http.get<IVocabulary>(`${this.resourceDownloadUrl}/${notation}/latest`, { params: options, observe: 'response' });
+    return this.http.get<Vocabulary>(`${this.resourceDownloadUrl}/${notation}/latest`, { params: options, observe: 'response' });
   }
 
   downloadVocabularyFile(notation: string, slNumber: string, downloadType: string, req?: Record<string, string>): Observable<Blob> {

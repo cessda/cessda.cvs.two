@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
@@ -28,7 +28,7 @@ import { VocabularyLanguageFromKeyPipe } from 'app/shared';
   templateUrl: './editor-detail-cv-new-version-dialog.component.html',
 })
 export class EditorDetailCvNewVersionDialogComponent implements OnInit {
-  vocabularyParam!: IVocabulary;
+  vocabularyParam!: Vocabulary;
   versionParam!: Version;
   isSaving: boolean;
 
@@ -54,12 +54,12 @@ export class EditorDetailCvNewVersionDialogComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.versionParam.itemType === 'SL') {
-      this.allTls = this.vocabularyParam
-        .versions!.filter(v => v.itemType === 'TL')
+      this.allTls = this.vocabularyParam.versions
+        .filter(v => v.itemType === 'TL')
         .map(v => '- ' + this.vocabLangPipeKey.transform(v.language!) + ' ' + v.number + '-' + v.status)
         .join('<br/>');
-      this.unPublishedTls = this.vocabularyParam
-        .versions!.filter(v => v.itemType === 'TL' && v.status !== 'PUBLISHED')
+      this.unPublishedTls = this.vocabularyParam.versions
+        .filter(v => v.itemType === 'TL' && v.status !== 'PUBLISHED')
         .map(v => '- ' + this.vocabLangPipeKey.transform(v.language!) + ' ' + v.number + '-' + v.status)
         .join('<br/>');
       if (this.unPublishedTls === '') {

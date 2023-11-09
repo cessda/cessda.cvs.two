@@ -19,7 +19,7 @@ import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption, DATE_FORMAT } from 'app/shared';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { CvResult } from 'app/shared/model/cv-result.model';
 import { map } from 'rxjs/operators';
 import moment from 'moment';
@@ -42,24 +42,24 @@ export class EditorService {
 
   constructor(protected http: HttpClient) {}
 
-  createVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<IVocabulary>> {
+  createVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<Vocabulary>> {
     return this.http
-      .post<IVocabulary>(this.resourceEditorVocabularyUrl, vocabularySnippet, { observe: 'response' })
-      .pipe(map((res: HttpResponse<IVocabulary>) => this.convertVocabularyDateFromServer(res)));
+      .post<Vocabulary>(this.resourceEditorVocabularyUrl, vocabularySnippet, { observe: 'response' })
+      .pipe(map((res: HttpResponse<Vocabulary>) => this.convertVocabularyDateFromServer(res)));
   }
 
   createNewVersion(id: number): Observable<HttpResponse<Version>> {
     return this.http.post<Version>(this.resourceEditorVocabularyUrl + '/new-version/' + id, null, { observe: 'response' });
   }
 
-  updateVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<IVocabulary>> {
+  updateVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<Vocabulary>> {
     return this.http
-      .put<IVocabulary>(this.resourceEditorVocabularyUrl, vocabularySnippet, { observe: 'response' })
+      .put<Vocabulary>(this.resourceEditorVocabularyUrl, vocabularySnippet, { observe: 'response' })
       .pipe(map(res => this.convertVocabularyDateFromServer(res)));
   }
 
-  forwardStatusVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<IVocabulary>> {
-    return this.http.put<IVocabulary>(this.resourceEditorVocabularyUrl + '/forward-status', vocabularySnippet, { observe: 'response' });
+  forwardStatusVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<Vocabulary>> {
+    return this.http.put<Vocabulary>(this.resourceEditorVocabularyUrl + '/forward-status', vocabularySnippet, { observe: 'response' });
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -92,8 +92,8 @@ export class EditorService {
     return this.http.delete(`${this.resourceEditorCodeUrl}/${conceptId}`, { observe: 'response' });
   }
 
-  protected convertDateFromClient(vocabulary: IVocabulary): IVocabulary {
-    const copy: IVocabulary = Object.assign({}, vocabulary, {
+  protected convertDateFromClient(vocabulary: Vocabulary): Vocabulary {
+    const copy: Vocabulary = Object.assign({}, vocabulary, {
       publicationDate:
         vocabulary.publicationDate && vocabulary.publicationDate.isValid() ? vocabulary.publicationDate.format(DATE_FORMAT) : undefined,
       lastModified: vocabulary.lastModified && vocabulary.lastModified.isValid() ? vocabulary.lastModified.toJSON() : undefined,
@@ -106,8 +106,8 @@ export class EditorService {
     return this.http.get<CvResult>(this.resourceEditorSearchUrl, { params: options, observe: 'response' });
   }
 
-  getVocabulary(notation: string): Observable<HttpResponse<IVocabulary>> {
-    return this.http.get<IVocabulary>(`${this.resourceVocabularyUrl}/${notation}/latest`, { observe: 'response' });
+  getVocabulary(notation: string): Observable<HttpResponse<Vocabulary>> {
+    return this.http.get<Vocabulary>(`${this.resourceVocabularyUrl}/${notation}/latest`, { observe: 'response' });
   }
 
   getVocabularyCompare(id: number): Observable<HttpResponse<string[]>> {
@@ -137,7 +137,7 @@ export class EditorService {
     return this.http.delete(`${this.resourceEditorCommentUrl}/${commentId}`, { observe: 'response' });
   }
 
-  protected convertVocabularyDateFromServer(res: HttpResponse<IVocabulary>): HttpResponse<IVocabulary> {
+  protected convertVocabularyDateFromServer(res: HttpResponse<Vocabulary>): HttpResponse<Vocabulary> {
     if (res.body) {
       res.body.publicationDate = res.body.publicationDate ? moment(res.body.publicationDate) : undefined;
       res.body.lastModified = res.body.lastModified ? moment(res.body.lastModified) : undefined;

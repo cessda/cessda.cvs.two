@@ -23,7 +23,7 @@ import moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
+import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import { VocabularyService } from './vocabulary.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 
@@ -158,7 +158,7 @@ export class VocabularyUpdateComponent implements OnInit {
     });
   }
 
-  updateForm(vocabulary: IVocabulary): void {
+  updateForm(vocabulary: Vocabulary): void {
     this.editForm.patchValue({
       id: vocabulary.id,
       status: vocabulary.status,
@@ -284,9 +284,9 @@ export class VocabularyUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IVocabulary {
+  private createFromForm(): Vocabulary {
     return {
-      ...new Vocabulary(),
+      ...createNewVocabulary(),
       id: this.editForm.get(['id'])!.value,
       status: this.editForm.get(['status'])!.value,
       uri: this.editForm.get(['uri'])!.value,
@@ -393,7 +393,7 @@ export class VocabularyUpdateComponent implements OnInit {
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Vocabulary>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
       () => this.onSaveError(),

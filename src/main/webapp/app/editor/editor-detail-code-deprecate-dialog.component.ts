@@ -24,7 +24,7 @@ import { Observable, Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
 import { HttpResponse } from '@angular/common/http';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 
 @Component({
   selector: 'jhi-editor-detail-code-deprecate-dialog',
@@ -114,7 +114,7 @@ export class EditorDetailCodeDeprecateDialogComponent {
     }
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Vocabulary>>): void {
     result.subscribe(() => {
       this.router.navigate(['/editor/vocabulary/' + this.versionParam.notation], { queryParams: { lang: this.versionParam.language } });
       this.activeModal.dismiss(true);

@@ -23,7 +23,7 @@ import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 
 @Component({
   templateUrl: './editor-detail-code-csv-import-dialog.component.html',
@@ -32,7 +32,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
   @ViewChild('csvInput', { static: true }) csvInput!: ElementRef;
   isSaving: boolean;
 
-  vocabularyParam!: IVocabulary;
+  vocabularyParam!: Vocabulary;
   versionParam!: Version;
   concepts: Concept[] = [];
   codeSnippets: ICodeSnippet[] = [];
