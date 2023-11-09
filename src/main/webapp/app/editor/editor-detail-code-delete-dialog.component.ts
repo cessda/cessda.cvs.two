@@ -23,7 +23,6 @@ import { Observable, Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { CodeSnippet } from 'app/shared/model/code-snippet.model';
 import { HttpResponse } from '@angular/common/http';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
 
 @Component({
   templateUrl: './editor-detail-code-delete-dialog.component.html',
@@ -66,7 +65,7 @@ export class EditorDetailCodeDeleteDialogComponent {
     }
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<unknown>>): void {
     result.subscribe(() => {
       this.router.navigate(['/editor/vocabulary/' + this.versionParam.notation], { queryParams: { lang: this.versionParam.language } });
       this.activeModal.dismiss(true);

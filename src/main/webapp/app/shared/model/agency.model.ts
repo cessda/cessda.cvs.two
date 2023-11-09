@@ -26,7 +26,7 @@ export interface IAgency {
   uri?: string;
   uriCode?: string;
   canonicalUri?: string;
-  userAgencies?: UserAgency[];
+  userAgencies: UserAgency[];
   deletable?: boolean;
 }
 

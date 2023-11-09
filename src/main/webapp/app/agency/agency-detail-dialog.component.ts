@@ -17,7 +17,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JhiDataUtils } from 'ng-jhipster';
 
-import { IAgency } from 'app/shared/model/agency.model';
+import { Agency, IAgency } from 'app/shared/model/agency.model';
 import { AgencyService } from 'app/agency/agency.service';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import moment from 'moment';
@@ -30,7 +30,7 @@ import { VocabStat } from 'app/shared/model/vocab-stat.model';
   templateUrl: './agency-detail-dialog.component.html',
 })
 export class AgencyDetailDialogComponent implements OnInit {
-  agency: IAgency = {};
+  agency: IAgency = new Agency();
   vocabStats: VocabStat[] = [];
   unpublishedVersions: any[] = [];
   languageComposition: any[] = [];

@@ -15,7 +15,7 @@
  */
 import { Moment } from 'moment';
 import { Version } from 'app/shared/model/version.model';
-import { ICode } from 'app/shared/model/code.model';
+import { Code } from 'app/shared/model/code.model';
 
 export interface IVocabulary {
   id?: number;
@@ -25,13 +25,13 @@ export interface IVocabulary {
   versionNumber?: string;
   initialPublication?: number;
   previousPublication?: number;
-  archived?: boolean;
-  withdrawn?: boolean;
-  discoverable?: boolean;
-  selectedLang?: string;
+  archived: boolean;
+  withdrawn: boolean;
+  discoverable: boolean;
+  selectedLang: string;
   selectedCode?: string;
   selectedVersion?: string;
-  sourceLanguage?: string;
+  sourceLanguage: string;
   agencyId?: number;
   agencyName?: string;
   agencyLogo?: string;
@@ -123,10 +123,10 @@ export interface IVocabulary {
   versionSv?: string;
   titleSv?: string;
   definitionSv?: string;
-  versions?: Version[];
-  codes?: ICode[];
-  languages?: string[];
-  languagesPublished?: string[];
+  versions: Version[];
+  codes: Code[];
+  languages: string[];
+  languagesPublished: string[];
 }
 
 export class Vocabulary implements IVocabulary {
@@ -141,7 +141,7 @@ export class Vocabulary implements IVocabulary {
     public archived: boolean = false,
     public withdrawn: boolean = false,
     public discoverable: boolean = false,
-    public sourceLanguage?: string,
+    public sourceLanguage: string = 'en',
     public selectedLang: string = 'en',
     public selectedCode?: string,
     public selectedVersion?: string,
@@ -237,7 +237,7 @@ export class Vocabulary implements IVocabulary {
     public titleSv?: string,
     public definitionSv?: string,
     public versions: Version[] = [],
-    public codes: ICode[] = [],
+    public codes: Code[] = [],
     public languages: string[] = [],
     public languagesPublished: string[] = [],
   ) {}

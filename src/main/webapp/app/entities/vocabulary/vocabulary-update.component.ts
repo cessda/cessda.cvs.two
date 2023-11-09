@@ -286,6 +286,7 @@ export class VocabularyUpdateComponent implements OnInit {
 
   private createFromForm(): IVocabulary {
     return {
+      ...new Vocabulary(),
       id: this.editForm.get(['id'])!.value,
       status: this.editForm.get(['status'])!.value,
       uri: this.editForm.get(['uri'])!.value,

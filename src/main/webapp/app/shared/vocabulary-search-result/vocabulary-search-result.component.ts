@@ -27,7 +27,7 @@ import { Bucket } from 'app/shared/model/bucket';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { ICode } from 'app/shared/model/code.model';
+import { Code } from 'app/shared/model/code.model';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { CvResult } from 'app/shared/model/cv-result.model';
 import { Aggr } from 'app/shared/model/aggr';
@@ -155,7 +155,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   }
 
   isVersionContains(vocab: IVocabulary, lang: string, versionType: string): boolean {
-    return VocabularyUtil.getTitleDefByLangIso(vocab, lang)[2].includes(versionType);
+    return (VocabularyUtil.getTitleDefByLangIso(vocab, lang)[2] || '').includes(versionType);
   }
 
   isLangVersionInBundle(vocab: IVocabulary, lang: string, bundle?: string): boolean {
@@ -166,23 +166,23 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   }
 
   getTitleByLang(vocab: IVocabulary): string {
-    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang!)[0];
+    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[0]!;
   }
 
   getDefinitionByLang(vocab: IVocabulary): string {
-    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang!)[1];
+    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[1]!;
   }
 
-  getCodeTitleByLang(code: ICode, selectedLang: string): string {
+  getCodeTitleByLang(code: Code, selectedLang: string): string {
     return VocabularyUtil.getTitleDefByLangIso(code, selectedLang)[0] + (code.deprecated ? ' (DEPRECATED TERM)' : '');
   }
 
-  getCodeDefinitionByLang(code: ICode, selectedLang: string): string {
+  getCodeDefinitionByLang(code: Code, selectedLang: string): string | undefined {
     return VocabularyUtil.getTitleDefByLangIso(code, selectedLang)[1];
   }
 
   getVersionByLang(vocab: IVocabulary): string {
-    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang!)[2];
+    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[2]!;
   }
 
   loadPage(page?: number): void {
@@ -288,7 +288,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     this.buildFilterAndRefreshSearch();
   }
 
-  trackNotation(_index: number, item: IVocabulary): string {
+  trackNotation(_index: number, item: IVocabulary | Code): string {
     return item.notation!;
   }
 
@@ -381,6 +381,9 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
 
   getFormattedLangIso(vocab: IVocabulary, lang: string, sourceLang: string): string {
     const statusInfo = VocabularyUtil.getTitleDefByLangIso(vocab, lang)[2];
+    if (!statusInfo) {
+      throw new TypeError(`Vocabulary ${vocab.notation} has no title for language ${lang}`);
+    }
     const indexOf = statusInfo.indexOf('_');
     const langVersion = VocabularyUtil.getVersionNumberByLangIso(vocab, lang);
     return (

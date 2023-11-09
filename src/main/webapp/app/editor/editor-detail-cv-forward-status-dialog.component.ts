@@ -23,7 +23,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Account } from 'app/core/user/account.model';
 import { EditorService } from 'app/editor/editor.service';
 import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
@@ -49,7 +49,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   isVersionInvalid: boolean;
   account!: Account;
   languages: string[] = [];
-  vocabularyParam: IVocabulary = {};
+  vocabularyParam: IVocabulary = new Vocabulary();
   versionParam = createNewVersion();
   isSlForm?: boolean;
   slVersionNumber!: string;

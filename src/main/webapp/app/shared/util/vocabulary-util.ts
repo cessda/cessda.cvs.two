@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { ICode } from 'app/shared/model/code.model';
+import { Code } from 'app/shared/model/code.model';
 import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
 import { Version } from 'app/shared/model/version.model';
 import { Concept } from 'app/shared/model/concept.model';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
-import { VersionNumber } from '../model/version-number.model';
+import { VersionNumber } from 'app/shared/model/version-number.model';
 
 export default class VocabularyUtil {
-  static getTitleDefByLangIso(item: IVocabulary | ICode, langIso: string): string[] {
+  static getTitleDefByLangIso(item: IVocabulary | Code, langIso: string): (string | undefined)[] {
     switch (langIso) {
       case 'sq':
         return [item.titleSq, item.definitionSq, item.versionSq];
@@ -86,7 +86,7 @@ export default class VocabularyUtil {
     }
   }
 
-  static getVersionNumberByLangIso(item: IVocabulary | ICode, langIso: string): string {
+  static getVersionNumberByLangIso(item: IVocabulary | Code, langIso: string): string | undefined {
     switch (langIso) {
       case 'sq':
         return item.versionSq;

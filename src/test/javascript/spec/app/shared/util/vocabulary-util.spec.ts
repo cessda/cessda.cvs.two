@@ -17,11 +17,11 @@ import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
 import moment from 'moment';
 import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { Code } from 'app/shared/model/code.model';
+import { Code, createNewCode } from 'app/shared/model/code.model';
 
 describe('Vocabulary Util Tests', () => {
   let vocab: IVocabulary;
-  let code: any;
+  let code: Code;
   beforeEach(() => {
     vocab = new Vocabulary(
       0,
@@ -128,9 +128,9 @@ describe('Vocabulary Util Tests', () => {
       'AAA',
       'AAA',
       'AAA',
-      'AAA'
+      'AAA',
     );
-    code = { ...new Code(), ...vocab };
+    code = { ...createNewCode(), ...vocab };
   });
   describe('Vocabulary Util methods', () => {
     it('should get the item title and definition by selected lang', () => {

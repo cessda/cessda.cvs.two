@@ -58,8 +58,8 @@ export class EditorService {
       .pipe(map(res => this.convertVocabularyDateFromServer(res)));
   }
 
-  forwardStatusVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<Version>> {
-    return this.http.put<Version>(this.resourceEditorVocabularyUrl + '/forward-status', vocabularySnippet, { observe: 'response' });
+  forwardStatusVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<IVocabulary>> {
+    return this.http.put<IVocabulary>(this.resourceEditorVocabularyUrl + '/forward-status', vocabularySnippet, { observe: 'response' });
   }
 
   // eslint-disable-next-line @typescript-eslint/ban-types

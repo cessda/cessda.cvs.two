@@ -18,7 +18,7 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 
 import { Concept } from 'app/shared/model/concept.model';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Version } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
@@ -43,7 +43,7 @@ export class HomeDetailComponent implements OnInit {
 
   appScope: AppScope = AppScope.PUBLICATION;
 
-  vocabulary: IVocabulary = {};
+  vocabulary: IVocabulary = new Vocabulary();
 
   isDetailCollapse = true;
   isVersionCollapse = true;

@@ -772,8 +772,11 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   switchLang(): void {
-    this.vocabulary!.selectedLang = this.version!.language;
-    this.vocabulary!.selectedVersion = this.version!.number;
+    if (!this.version || !this.version.language) {
+      return;
+    }
+    this.vocabulary!.selectedLang = this.version.language;
+    this.vocabulary!.selectedVersion = this.version.number;
     this.eventManager.broadcast({ name: 'closeComparison', content: true });
   }
 
