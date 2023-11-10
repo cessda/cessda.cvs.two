@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-export class Audit {
-  constructor(
-    public data: Record<string, unknown>,
-    public principal: string,
-    public timestamp: string,
-    public type: string,
-  ) {}
+import { AuditData } from './audit-data.model';
+
+export interface Audit {
+  data: AuditData;
+  principal: string;
+  timestamp: string;
+  type: string;
 }
