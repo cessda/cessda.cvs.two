@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { VersionNumber } from './version-number.model';
-
 export interface VersionStatusStat {
   language: string;
   type: string;
-  versionNumber: VersionNumber;
+  versionNumber: string;
   status: string;
   creationDate: string;
   date: string;

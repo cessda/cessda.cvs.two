@@ -16,26 +16,37 @@
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AgencyService } from 'app/agency/agency.service';
-import { Agency, IAgency } from 'app/shared/model/agency.model';
+import { Agency, createNewAgency } from 'app/shared/model/agency.model';
 
 describe('Service Tests', () => {
   describe('Agency Service', () => {
     let injector: TestBed;
     let service: AgencyService;
     let httpMock: HttpTestingController;
-    let elemDefault: IAgency;
-    let expectedResult: IAgency | IAgency[] | boolean | null;
+    let elemDefault: Agency;
+    let expectedResult: Agency | Agency[] | boolean | null;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
       service = injector.get(AgencyService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Agency(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
+      elemDefault = createNewAgency({
+        id: 0,
+        name: 'AAAAAAA',
+        link: 'AAAAAAA',
+        description: 'AAAAAAA',
+        logopath: 'AAAAAAA',
+        license: 'AAAAAAA',
+        licenseId: 0,
+        uri: 'AAAAAAA',
+        uriCode: 'AAAAAAA',
+        canonicalUri: 'AAAAAAA',
+      });
     });
 
     describe('Service methods', () => {
@@ -52,14 +63,14 @@ describe('Service Tests', () => {
       it('should create a Agency', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
 
-        service.create(new Agency()).subscribe(resp => (expectedResult = resp.body));
+        service.create(createNewAgency()).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
@@ -77,9 +88,9 @@ describe('Service Tests', () => {
             licenseId: 1,
             uri: 'BBBBBB',
             uriCode: 'BBBBBB',
-            canonicalUri: 'BBBBBB'
+            canonicalUri: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
@@ -102,9 +113,9 @@ describe('Service Tests', () => {
             licenseId: 1,
             uri: 'BBBBBB',
             uriCode: 'BBBBBB',
-            canonicalUri: 'BBBBBB'
+            canonicalUri: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);

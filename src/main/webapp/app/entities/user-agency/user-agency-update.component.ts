@@ -22,7 +22,7 @@ import { Observable } from 'rxjs';
 
 import { UserAgency } from 'app/shared/model/user-agency.model';
 import { UserAgencyService } from './user-agency.service';
-import { IAgency } from 'app/shared/model/agency.model';
+import { Agency } from 'app/shared/model/agency.model';
 import { AgencyService } from 'app/agency/agency.service';
 
 @Component({
@@ -31,7 +31,7 @@ import { AgencyService } from 'app/agency/agency.service';
 })
 export class UserAgencyUpdateComponent implements OnInit {
   isSaving = false;
-  agencies: IAgency[] = [];
+  agencies: Agency[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -51,7 +51,7 @@ export class UserAgencyUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ userAgency }) => {
       this.updateForm(userAgency);
 
-      this.agencyService.query().subscribe((res: HttpResponse<IAgency[]>) => (this.agencies = res.body || []));
+      this.agencyService.query().subscribe((res: HttpResponse<Agency[]>) => (this.agencies = res.body || []));
     });
   }
 
@@ -103,7 +103,7 @@ export class UserAgencyUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: IAgency): number {
+  trackById(index: number, item: Agency): number {
     return item.id || index;
   }
 }

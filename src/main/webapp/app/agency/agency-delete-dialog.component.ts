@@ -17,16 +17,20 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { IAgency } from 'app/shared/model/agency.model';
+import { Agency } from 'app/shared/model/agency.model';
 import { AgencyService } from './agency.service';
 
 @Component({
-  templateUrl: './agency-delete-dialog.component.html'
+  templateUrl: './agency-delete-dialog.component.html',
 })
 export class AgencyDeleteDialogComponent {
-  agency?: IAgency;
+  agency?: Agency;
 
-  constructor(protected agencyService: AgencyService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
+  constructor(
+    protected agencyService: AgencyService,
+    public activeModal: NgbActiveModal,
+    protected eventManager: JhiEventManager,
+  ) {}
 
   cancel(): void {
     this.activeModal.dismiss();

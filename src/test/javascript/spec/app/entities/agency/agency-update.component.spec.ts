@@ -21,7 +21,7 @@ import { of } from 'rxjs';
 import { CvsTestModule } from '../../../test.module';
 import { AgencyUpdateComponent } from 'app/agency/agency-update.component';
 import { AgencyService } from 'app/agency/agency.service';
-import { Agency } from 'app/shared/model/agency.model';
+import { createNewAgency } from 'app/shared/model/agency.model';
 
 describe('Component Tests', () => {
   describe('Agency Management Update Component', () => {
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [AgencyUpdateComponent],
-        providers: [FormBuilder]
+        providers: [FormBuilder],
       })
         .overrideTemplate(AgencyUpdateComponent, '')
         .compileComponents();
@@ -46,7 +46,7 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', fakeAsync(() => {
         // GIVEN
-        const entity = new Agency(123);
+        const entity = createNewAgency({ id: 123 });
         spyOn(service, 'update').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN
@@ -60,7 +60,7 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', fakeAsync(() => {
         // GIVEN
-        const entity = new Agency();
+        const entity = createNewAgency();
         spyOn(service, 'create').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN

@@ -22,7 +22,7 @@ import { User } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
 import { UserAgency } from 'app/shared/model/user-agency.model';
 import { HttpResponse } from '@angular/common/http';
-import { IAgency } from 'app/shared/model/agency.model';
+import { Agency } from 'app/shared/model/agency.model';
 import { AgencyService } from 'app/agency/agency.service';
 
 @Component({
@@ -35,7 +35,7 @@ export class UserManagementUpdateComponent implements OnInit {
   authorities: string[] = [];
   isSaving = false;
 
-  agencies: IAgency[] = [];
+  agencies: Agency[] = [];
 
   selectedAgencyId: number;
   selectedAgencyRole: string;
@@ -91,7 +91,7 @@ export class UserManagementUpdateComponent implements OnInit {
         size: 1000,
         sort: ['name,asc'],
       })
-      .subscribe((res: HttpResponse<IAgency[]>) => {
+      .subscribe((res: HttpResponse<Agency[]>) => {
         this.agencies = res.body || [];
         this.selectedAgencyId = this.agencies[0].id || 1;
       });

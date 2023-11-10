@@ -27,7 +27,7 @@ import { Account } from 'app/core/user/account.model';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.model';
 import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
-import { IAgency } from 'app/shared/model/agency.model';
+import { Agency } from 'app/shared/model/agency.model';
 import { AgencyService } from 'app/agency/agency.service';
 import { UserAgency } from 'app/shared/model/user-agency.model';
 
@@ -46,7 +46,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   previousPage!: number;
   ascending!: boolean;
 
-  agencies: IAgency[] = [];
+  agencies: Agency[] = [];
 
   constructor(
     private userService: UserService,
@@ -82,7 +82,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
         size: 1000,
         sort: ['name,asc'],
       })
-      .subscribe((res: HttpResponse<IAgency[]>) => {
+      .subscribe((res: HttpResponse<Agency[]>) => {
         this.agencies = res.body!;
       });
   }

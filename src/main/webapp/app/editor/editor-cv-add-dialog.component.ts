@@ -21,7 +21,7 @@ import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { JhiEventManager } from 'ng-jhipster';
 import { AgencyService } from 'app/agency/agency.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { IAgency } from 'app/shared/model/agency.model';
+import { Agency } from 'app/shared/model/agency.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -41,7 +41,7 @@ import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 export class EditorCvAddDialogComponent implements OnInit {
   isSaving: boolean;
   account!: Account;
-  agencies: IAgency[] = [];
+  agencies: Agency[] = [];
   languages: string[] = [];
   errorNotationExists = false;
 
@@ -74,7 +74,7 @@ export class EditorCvAddDialogComponent implements OnInit {
         size: 1000,
         sort: ['name,asc'],
       })
-      .subscribe((res: HttpResponse<IAgency[]>) => {
+      .subscribe((res: HttpResponse<Agency[]>) => {
         this.agencies = res.body ? this.filterAgencies(res.body) : [];
         // select first agency
         this.cvAddForm.patchValue({ agency: this.agencies[0].id });
@@ -82,11 +82,11 @@ export class EditorCvAddDialogComponent implements OnInit {
       });
   }
 
-  filterAgencies(agcs: IAgency[]): IAgency[] {
+  filterAgencies(agcs: Agency[]): Agency[] {
     if (this.accountService.isAdmin()) {
       return agcs;
     }
-    const ags: IAgency[] = [];
+    const ags: Agency[] = [];
     this.account.userAgencies.forEach(ua => {
       if (ua.agencyRole === 'ADMIN_SL') {
         const ag = agcs.filter(agc => agc.id === ua.agencyId)[0];

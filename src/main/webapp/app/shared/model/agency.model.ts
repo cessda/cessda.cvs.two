@@ -15,10 +15,10 @@
  */
 import { UserAgency } from 'app/shared/model/user-agency.model';
 
-export interface IAgency {
+export interface Agency {
   id?: number;
-  name?: string;
-  link?: string;
+  name: string;
+  link: string;
   description?: string;
   logopath?: string;
   license?: string;
@@ -30,19 +30,11 @@ export interface IAgency {
   deletable?: boolean;
 }
 
-export class Agency implements IAgency {
-  constructor(
-    public id?: number,
-    public name?: string,
-    public link?: string,
-    public description?: string,
-    public logopath?: string,
-    public license?: string,
-    public licenseId?: number,
-    public uri?: string,
-    public uriCode?: string,
-    public canonicalUri?: string,
-    public userAgencies: UserAgency[] = [],
-    public deletable?: boolean,
-  ) {}
+export function createNewAgency(agency?: Partial<Agency>): Agency {
+  return {
+    name: '',
+    link: '',
+    userAgencies: [],
+    ...agency,
+  };
 }

@@ -17,23 +17,32 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JhiDataUtils } from 'ng-jhipster';
 
-import { Agency, IAgency } from 'app/shared/model/agency.model';
+import { Agency, createNewAgency } from 'app/shared/model/agency.model';
 import { AgencyService } from 'app/agency/agency.service';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import moment from 'moment';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 import { VocabStat } from 'app/shared/model/vocab-stat.model';
+import { VersionStatusStat } from 'app/shared/model/version-status-stat.model';
+
+interface UnpublishedVersions {
+  cv: string;
+  type: string;
+  language: string;
+  versionNumber: string;
+  status: string;
+  date: Moment;
+}
 
 @Component({
   selector: 'jhi-agency-detail-dialog',
   templateUrl: './agency-detail-dialog.component.html',
 })
 export class AgencyDetailDialogComponent implements OnInit {
-  agency: IAgency = new Agency();
+  agency: Agency = createNewAgency();
   vocabStats: VocabStat[] = [];
-  unpublishedVersions: any[] = [];
-  languageComposition: any[] = [];
+  unpublishedVersions: UnpublishedVersions[] = [];
+  languageComposition: Record<string, number> = {};
   numberCvPublished: number;
   numberCvVersionSlPublished: number;
   numberCvVersionTlPublished: number;
@@ -86,7 +95,7 @@ export class AgencyDetailDialogComponent implements OnInit {
               language: versionStatusStat.language,
               versionNumber: versionStatusStat.versionNumber,
               status: versionStatusStat.status,
-              date: versionStatusStat.date,
+              date: moment(versionStatusStat.date),
             });
           }
         }
@@ -101,7 +110,7 @@ export class AgencyDetailDialogComponent implements OnInit {
         }
 
         Object.keys(langComposition).forEach(key => {
-          this.languageComposition.push({ name: this.vocabLangPipeKey.transform(key), value: langComposition[key] });
+          this.languageComposition[this.vocabLangPipeKey.transform(key)] = langComposition[key];
         });
       }
     });
@@ -122,13 +131,11 @@ export class AgencyDetailDialogComponent implements OnInit {
     return moment(dateTime).fromNow();
   }
 
-  getVersionStatus(vocab: any, versionNumber: any): any {
-    return vocab.versionStatusStats.filter(
-      (vss: { versionNumber: string; status: string }) => vss.versionNumber.startsWith(versionNumber) && vss.status === 'PUBLISHED',
-    );
+  getVersionStatus(vocab: VocabStat, versionNumber: string): VersionStatusStat[] {
+    return vocab.versionStatusStats.filter(vss => (vss.versionNumber as string).startsWith(versionNumber) && vss.status === 'PUBLISHED');
   }
 
-  sortVocabStat(vocabStats: any[]): any[] {
+  sortVocabStat(vocabStats: VocabStat[]): VocabStat[] {
     return vocabStats.sort((a, b) => (a.notation < b.notation ? -1 : a.notation > b.notation ? 1 : 0));
   }
 }
@@ -150,7 +157,7 @@ export class AgencyDetailPopupComponent implements OnInit, OnDestroy {
     this.ngbModalRef = this.modalService.open(AgencyDetailDialogComponent as Component, { size: 'xl', backdrop: 'static' });
     this.activatedRoute.data.subscribe(({ agency }) => (this.ngbModalRef!.componentInstance.agency = agency));
     this.ngbModalRef.result.then(
-      result => {
+      () => {
         this.router.navigate(['/agency', { outlets: { popup: null } }]);
         this.ngbModalRef = null;
       },
