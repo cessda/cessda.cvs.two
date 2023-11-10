@@ -15,17 +15,23 @@
  */
 package eu.cessda.cvs.web.rest;
 
+import eu.cessda.cvs.config.audit.AuditEventPublisher;
 import eu.cessda.cvs.domain.search.AgencyStat;
 import eu.cessda.cvs.repository.search.AgencyStatSearchRepository;
 import eu.cessda.cvs.service.AgencyService;
 import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
+import eu.cessda.cvs.security.SecurityUtils;
+
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +41,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -46,6 +53,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class AgencyResource {
+
+    @Autowired
+    private AuditEventPublisher auditPublisher;
 
     private final Logger log = LoggerFactory.getLogger(AgencyResource.class);
 
@@ -81,6 +91,15 @@ public class AgencyResource {
             throw new BadRequestAlertException("A new agency cannot already have an ID", ENTITY_NAME, "idexists");
         }
         AgencyDTO result = agencyService.save(agencyDTO);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, agencyDTO, "AGENCY_CREATED");
+
         return ResponseEntity.created(new URI("/api/agencies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -104,6 +123,15 @@ public class AgencyResource {
         vocabularyService.updateVocabularyLogo(agencyDTO.getId(), agencyDTO.getLogopath());
 
         AgencyDTO result = agencyService.save(agencyDTO);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, agencyDTO, "AGENCY_UPDATED");
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, agencyDTO.getId().toString()))
             .body(result);
@@ -145,6 +173,20 @@ public class AgencyResource {
     @DeleteMapping("/agencies/{id}")
     public ResponseEntity<Void> deleteAgency(@PathVariable Long id) {
         log.debug("REST request to delete Agency : {}", id);
+        
+        //notify the auditing mechanism
+        Optional<AgencyDTO> agencyDTO = agencyService.findOne(id);
+        AgencyDTO agencyDTOTemp = null;
+        if (agencyDTO.isPresent()) {
+            agencyDTOTemp = agencyDTO.get();
+        }
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, agencyDTOTemp, "AGENCY_DELETED");
+
         agencyService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }

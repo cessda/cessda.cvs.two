@@ -1,6 +1,6 @@
 {
   "name": "cvs",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "private": true,
   "license": "Apache-2.0",
   "cacheDirectories": [
@@ -73,6 +73,7 @@
     "jest-date-mock": "1.0.8",
     "jest-junit": "16.0.0",
     "jest-preset-angular": "11.1.2",
+    "jest-sonar-reporter": "2.0.0",
     "lint-staged": "14.0.1",
     "mocha": "10.2.0",
     "prettier": "3.0.0",
@@ -111,5 +112,9 @@
       "rxjs": "^6.3.3",
       "tslib": ">=1.10.0"
     }
+  },
+  "jestSonar": {
+    "reportPath": "target/test-results/jest",
+    "reportFile": "TESTS-results-sonar.xml"
   }
 }

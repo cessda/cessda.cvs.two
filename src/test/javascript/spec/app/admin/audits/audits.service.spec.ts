@@ -20,6 +20,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { AuditsService, AuditsQuery } from 'app/admin/audits/audits.service';
 import { Audit } from 'app/admin/audits/audit.model';
 import { SERVER_API_URL } from 'app/app.constants';
+import { AuditData } from 'app/admin/audits/audit-data.model';
 
 describe('Service Tests', () => {
   describe('Audits Service', () => {
@@ -29,7 +30,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
 
       service = TestBed.get(AuditsService);
@@ -51,7 +52,8 @@ describe('Service Tests', () => {
 
       it('should return Audits', () => {
         let expectedResult: HttpResponse<Audit[]> = new HttpResponse({ body: [] });
-        const audit = new Audit({ remoteAddress: '127.0.0.1', sessionId: '123' }, 'user', '20140101', 'AUTHENTICATION_SUCCESS');
+        const auditData = new AuditData('remoteAddress', '127.0.0.1');
+        const audit = new Audit(auditData, 'user', '20140101', 'AUTHENTICATION_SUCCESS');
 
         service.query(fakeRequest).subscribe(received => {
           expectedResult = received;
@@ -76,7 +78,7 @@ describe('Service Tests', () => {
         const req = httpMock.expectOne({ method: 'GET' });
         req.flush('Invalid request parameters', {
           status: 404,
-          statusText: 'Bad Request'
+          statusText: 'Bad Request',
         });
         expect(expectedResult).toEqual(404);
       });

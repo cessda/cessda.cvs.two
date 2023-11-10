@@ -21,6 +21,7 @@ module.exports = {
     setupFilesAfterEnv: ['<rootDir>/src/test/javascript/jest.ts'],
     cacheDirectory: '<rootDir>/target/jest-cache',
     coverageDirectory: '<rootDir>/target/test-results/',
+    coverageProvider: 'v8',
     globals: {
         'ts-jest': {
             stringifyContentPathRegex: '\\.html$',
@@ -36,6 +37,7 @@ module.exports = {
         'default',
         [ 'jest-junit', { outputDirectory: './target/test-results/', outputName: 'TESTS-results-jest.xml' } ]
     ],
+    testResultsProcessor: 'jest-sonar-reporter',
     testMatch: ['<rootDir>/src/test/javascript/spec/**/@(*.)@(spec.ts)'],
     testRunner: 'jasmine2',
     rootDir: '../../../',
@@ -48,7 +50,7 @@ function mapTypescriptAliasToJestAlias(alias = {}) {
         return jestAliases;
     }
     Object.entries(tsconfig.compilerOptions.paths)
-        .filter(([key, value]) => {
+        .filter(([_key, value]) => {
             // use Typescript alias in Jest only if this has value
             if (value.length) {
                 return true;

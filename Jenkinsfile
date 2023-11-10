@@ -42,7 +42,7 @@ pipeline {
                 }
                 stage('Run Jest tests') {
                     steps {
-                        sh 'npm test'
+                        sh 'npm test -- --coverage'
                     }
                     post {
                         always {

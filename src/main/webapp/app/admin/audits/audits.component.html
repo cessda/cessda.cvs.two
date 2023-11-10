@@ -61,11 +61,14 @@
             <tbody>
                 <tr *ngFor="let audit of audits">
                     <td><span>{{ audit.timestamp | date:'medium' }}</span></td>
-                    <td><small>{{ audit.principal }}</small></td>
+                    <td><span>{{ audit.principal }}</span></td>
                     <td>{{ audit.type }}</td>
                     <td>
-                        <span *ngIf="audit.data" ng-show="audit.data.message">{{ audit.data.message }}</span>
-                        <span *ngIf="audit.data" ng-show="audit.data.remoteAddress"><span jhiTranslate="audits.table.data.remoteAddress">Remote Address</span> {{ audit.data.remoteAddress }}</span>
+                        <span *ngIf="audit.data" ng-show="audit.data.extra">
+                            <p *ngFor="let item of audit.data | keyvalue">
+                                {{ item.key }}: {{ item.value }}
+                            </p>
+                        </span>
                     </td>
                 </tr>
             </tbody>

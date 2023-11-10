@@ -194,9 +194,9 @@ export class UserManagementUpdateComponent implements OnInit {
       const userAgency: UserAgency = {
         userId: this.user.id,
         agencyRole: this.selectedAgencyRole as UserAgency['agencyRole'],
-        // Filter out ''
-        language: this.selectedLanguage || undefined,
         agencyId: this.selectedAgencyId,
+        agencyName: this.getAgencyName(this.selectedAgencyId),
+        language: this.selectedLanguage !== '' ? this.selectedLanguage : undefined,
       };
       if (!this.user.userAgencies) {
         this.user.userAgencies = [];

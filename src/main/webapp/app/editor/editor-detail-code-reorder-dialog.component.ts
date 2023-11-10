@@ -58,6 +58,7 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
     this.codeSnippet = {
       ...new CodeSnippet(),
       actionType: 'REORDER_CODE',
+      conceptId: this.conceptParam.id,
       versionId: this.versionParam.id,
       conceptStructures: this.conceptsToPlace.map(c => c.notation),
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -78,7 +79,7 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
   ngOnInit(): void {
     this.isSaving = false;
     // deep copy so that original concepts not affected
-    const clonedConcepts = this.versionParam.concepts.map(x => Object.assign({ ...x }));
+    const clonedConcepts = this.versionParam.concepts.map(x => Object.assign({}, x));
 
     // normalize selected code, so the first selected element is always a root code
     this.conceptsToMove = [
