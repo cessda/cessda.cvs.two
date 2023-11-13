@@ -28,7 +28,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { ICode } from 'app/shared/model/code.model';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { ICvResult } from 'app/shared/model/cv-result.model';
 import { IAggr } from 'app/shared/model/aggr';
 import { HomeService } from 'app/home/home.service';
@@ -53,7 +53,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
   pagingSize = PAGING_SIZE;
-  page!: number;
+  page = 1;
   predicate = 'code';
   ascending!: boolean;
   ngbPaginationPage = 1;
@@ -189,48 +189,48 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang!)[2];
   }
 
-  loadPage(page?: number): void {
+  loadPage(page: number): void {
     this.eventManager.broadcast({ name: 'onSearching', content: true });
 
-    const pageToLoad: number = page ? page : this.page;
-    if (this.appScope === AppScope.EDITOR) {
-      this.editorService.search(this.getSearchRequest(page ? page : this.page)).subscribe(
-        (res: HttpResponse<ICvResult>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError(),
-      );
-    } else {
-      this.homeService.search(this.getSearchRequest(page ? page : this.page)).subscribe(
-        (res: HttpResponse<ICvResult>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError(),
-      );
-    }
-  }
-
-  private getSearchRequest(pageToLoad: number): any {
-    return {
+    // Create the search request
+    const searchRequest = {
       q: this.currentSearch,
       f: this.activeAgg,
-      page: pageToLoad - 1,
+      page: page - 1,
       size: this.itemsPerPage,
       sort: this.sort(),
     };
+
+    let searchObservable: Observable<HttpResponse<ICvResult>>;
+    if (this.appScope === AppScope.EDITOR) {
+      searchObservable = this.editorService.search(searchRequest);
+    } else {
+      searchObservable = this.homeService.search(searchRequest);
+    }
+
+    // Subscribe to the result of the search request
+    searchObservable.subscribe(
+      (res: HttpResponse<ICvResult>) => this.onSuccess(res.body!, page),
+      e => this.onError(e),
+    );
   }
 
-  protected onSuccess(data: ICvResult | null, headers: HttpHeaders, page: number): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
+  protected onSuccess(data: ICvResult, page: number): void {
+    this.totalItems = data.totalElements!;
     this.page = page;
-    this.vocabularies = data!.vocabularies;
+    this.vocabularies = data.vocabularies!;
     // assign selectedLang if still null
-    this.vocabularies!.forEach(v => {
-      if (v.selectedLang === null) {
+    this.vocabularies.forEach(v => {
+      if (!v.selectedLang) {
         v.selectedLang = v.sourceLanguage;
       }
     });
-    this.updateForm(data!.aggrs!);
+    this.updateForm(data.aggrs!);
     this.eventManager.broadcast({ name: 'onSearching', content: false });
   }
 
-  protected onError(): void {
+  protected onError(e: HttpErrorResponse): void {
+    console.error(e);
     this.ngbPaginationPage = this.page;
   }
 
@@ -315,7 +315,8 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
         this.filterAdminAgencies();
       }
 
-      this.loadPage();
+      // Load the first page
+      this.loadPage(1);
     });
     this.registerCvSearchEvent();
   }
@@ -411,7 +412,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
       queryParamsHandling: 'merge',
     });
     this.page = pageNo;
-    this.loadPage();
+    this.loadPage(pageNo);
   }
 
   refreshSearchBySize(event: Event): void {
@@ -421,8 +422,10 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
       queryParams: { size: s },
       queryParamsHandling: 'merge',
     });
-    this.itemsPerPage = +s; // convert string to number
-    this.loadPage();
+    this.itemsPerPage = Number(s); // convert string to number
+
+    // Reload the current page
+    this.loadPage(this.page);
   }
 
   refreshSearchBySort(event: Event): void {
@@ -440,7 +443,9 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
       this.predicate = 'code';
       this.ascending = false;
     }
-    this.loadPage();
+
+    // Reload the current page
+    this.loadPage(this.page);
   }
 
   onAddAgency(addedItem: TagModel): void {
