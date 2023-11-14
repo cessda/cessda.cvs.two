@@ -149,7 +149,7 @@
                 </ng-container>
             </div>
             <div class="result-column">
-                <div class="alert alert-warning" *ngIf="vocabularies?.length === 0; else elseBlock;">
+                <div class="alert alert-warning" *ngIf="vocabularies.length === 0; else elseBlock;">
                     <span jhiTranslate="cvsApp.vocabulary.home.notFound">No vocabularies found</span>
                 </div>
                 <ng-template #elseBlock>
@@ -203,7 +203,7 @@
                     </div>
                     <div>
                         <div class="row justify-content-center">
-                            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="3" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPageClicked($event)"></ngb-pagination>
+                            <ngb-pagination *ngIf="totalItems" [collectionSize]="totalItems" [page]="page" [pageSize]="itemsPerPage" [maxSize]="3" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPageClicked($event)"></ngb-pagination>
                         </div>
                     </div>
                 </ng-template>
