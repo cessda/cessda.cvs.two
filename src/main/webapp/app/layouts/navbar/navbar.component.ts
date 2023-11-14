@@ -184,7 +184,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.router.navigate([''], { queryParams: { f: 'language:' + this.currentLang, sort: 'code,asc' } });
       }
     }
-    this.eventManager.broadcast({ name: 'doCvPublicationSearch', content: { term: query, lang: this.currentLang } });
   }
 
   clear(): void {

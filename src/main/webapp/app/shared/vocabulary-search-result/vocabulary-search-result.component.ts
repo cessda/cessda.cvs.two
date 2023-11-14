@@ -85,12 +85,16 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
   ) {
     this.activatedRoute.queryParamMap.subscribe(params => {
+      const searchRequest: Record<string, string | string[] | number> = {};
+
       const query = params.get('q');
       if (query) {
         this.currentSearch = query;
       } else {
         this.currentSearch = '';
       }
+
+      searchRequest['q'] = this.currentSearch;
 
       const size = params.get('size');
       if (size) {
@@ -99,12 +103,17 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
         this.itemsPerPage = ITEMS_PER_PAGE;
       }
 
+      searchRequest['size'] = this.itemsPerPage;
+
       const page = params.get('page');
       if (page) {
         this.page = Number.parseInt(page);
       } else {
         this.page = INITIAL_PAGE;
       }
+
+      // Pages requested from the server are zero-indexed
+      searchRequest['page'] = this.page - 1;
 
       const sort = params.get('sort');
       if (sort) {
@@ -121,6 +130,8 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
         this.ascending = true;
       }
 
+      searchRequest['sort'] = VocabularySearchResultComponent.sort(this.predicate, this.ascending);
+
       const filters = params.get('f');
       if (filters) {
         const activeFilters = filters.split(';', 2);
@@ -136,6 +147,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
             }
           }
         });
+        searchRequest['f'] = filters;
       } else {
         this.activeAggAgency = [];
         this.activeAggLanguage = [];
@@ -144,15 +156,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
 
       this.eventManager.broadcast({ name: 'onSearching', content: true });
 
-      // Create the search request
-      const searchRequest = {
-        q: this.currentSearch,
-        f: filters,
-        page: this.page - 1,
-        size: this.itemsPerPage,
-        sort: VocabularySearchResultComponent.sort(this.predicate, this.ascending),
-      };
-
+      // Send the search request to the server
       let searchObservable: Observable<HttpResponse<ICvResult>>;
       if (this.appScope === AppScope.EDITOR) {
         searchObservable = this.editorService.search(searchRequest);
