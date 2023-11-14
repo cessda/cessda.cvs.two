@@ -32,11 +32,6 @@ import { HttpResponse } from '@angular/common/http';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 
-export interface PublicationSearchType {
-  term: string;
-  lang: string | undefined;
-}
-
 @Component({
   selector: 'jhi-navbar',
   templateUrl: './navbar.component.html',
@@ -157,7 +152,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.isSearching = true;
-        this.search(this.currentSearch ? this.currentSearch : '');
+        this.search(this.currentSearch);
       });
 
     this.registerCvOnSearchEvent();
@@ -175,8 +170,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  search(query: string): void {
-    if (query !== null && query !== '') {
+  search(query: string | undefined): void {
+    if (query) {
       if (this.isEditorSearch) {
         this.router.navigate(['/editor'], { queryParams: { q: query, f: 'language:' + this.currentLang, sort: 'relevance' } });
       } else {
@@ -189,13 +184,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.router.navigate([''], { queryParams: { f: 'language:' + this.currentLang, sort: 'code,asc' } });
       }
     }
-    const searchQuery: PublicationSearchType = { term: query, lang: this.currentLang };
-    this.eventManager.broadcast({ name: 'doCvPublicationSearch', content: searchQuery });
   }
 
   clear(): void {
-    this.currentSearch = '';
-    this.search('');
+    this.currentSearch = undefined;
+    this.search(undefined);
   }
 
   changeLanguage(languageKey: string): void {

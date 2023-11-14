@@ -38,7 +38,7 @@ export class HomeService {
     return this.http.get<Vocabulary>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  search(req?: Record<string, string>): Observable<HttpResponse<CvResult>> {
+  search(req?: any): Observable<HttpResponse<CvResult>> {
     const options = createRequestOption(req);
     return this.http.get<CvResult>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }

@@ -203,7 +203,7 @@
                     </div>
                     <div>
                         <div class="row justify-content-center">
-                            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="3" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPageClicked($event)"></ngb-pagination>
+                            <ngb-pagination *ngIf="totalItems" [collectionSize]="totalItems" [page]="page" [pageSize]="itemsPerPage" [maxSize]="3" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPageClicked($event)"></ngb-pagination>
                         </div>
                     </div>
                 </ng-template>
