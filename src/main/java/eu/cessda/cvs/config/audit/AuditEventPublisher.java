@@ -22,6 +22,8 @@ import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.service.dto.CommentDTO;
 import eu.cessda.cvs.service.dto.ConceptDTO;
 import eu.cessda.cvs.service.dto.LicenceDTO;
+import eu.cessda.cvs.service.dto.MetadataFieldDTO;
+import eu.cessda.cvs.service.dto.MetadataValueDTO;
 import eu.cessda.cvs.service.dto.UserAgencyDTO;
 import eu.cessda.cvs.service.dto.UserDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
@@ -468,6 +470,25 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                       map.put("licence_abbreviation", licenceDTO.getAbbr());
                     }
                 }
+                break;
+            default:
+        }
+        publish(new AuditEvent(user, action, map));
+    }
+
+    public void publish(String user, MetadataValueDTO metadataValueDTO, MetadataFieldDTO metadataFieldDTO, String action) {
+        HashMap<String, Object> map = new HashMap<>();
+        switch (action) {
+            case "CREATE_METADATA":
+            case "UPDATE_METADATA":
+                map.put("metadata_key", metadataValueDTO.getMetadataKey());
+                map.put("metadata_position", metadataValueDTO.getPosition());
+                map.put("metadata_identifier", metadataValueDTO.getIdentifier());
+                break;
+            case "DELETE_METADATA":
+                map.put("metadata_key", metadataValueDTO.getMetadataKey());
+                map.put("metadata_position", metadataValueDTO.getPosition());
+                map.put("metadata_identifier", metadataValueDTO.getIdentifier());
                 break;
             default:
         }
