@@ -481,10 +481,6 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
         switch (action) {
             case "CREATE_METADATA":
             case "UPDATE_METADATA":
-                map.put("metadata_key", metadataValueDTO.getMetadataKey());
-                map.put("metadata_position", metadataValueDTO.getPosition());
-                map.put("metadata_identifier", metadataValueDTO.getIdentifier());
-                break;
             case "DELETE_METADATA":
                 map.put("metadata_key", metadataValueDTO.getMetadataKey());
                 map.put("metadata_position", metadataValueDTO.getPosition());
