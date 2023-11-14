@@ -14,6 +14,17 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
+## [3.3.1] - 2023-11-15
+
+### Fixed
+
+- [#669](https://github.com/cessda/cessda.cvs.two/issues/669) Fixed not being able to access the second search page when navigating back to the search page
+- [#786](https://github.com/cessda/cessda.cvs.two/issues/786) Fixed the search language filter having no effect if applied after navigating back to the search page
+- [#809](https://github.com/cessda/cessda.cvs.two/issues/809) Fixed the agency filter having no effect if applied after navigating back to the search page
+- [#814](https://github.com/cessda/cessda.cvs.two/issues/814) Fixed Quill editing fields being blank
+- [PR-816](https://github.com/cessda/cessda.cvs.two/pull/816) Fixed possible infinite recursion on the search page where the search would continuously re-request the same query
+- [PR-816](https://github.com/cessda/cessda.cvs.two/pull/816) Fixed searches not starting from page 1, resulting in search results being inaccessible
+
 ## [3.3.0] - 2023-11-07
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10009383.svg)](https://doi.org/10.5281/zenodo.10009383)
@@ -336,6 +347,8 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Swagger UI for the APIs.
 - New set of /v2 REST APIs for searching and exporting CVs to several formats (PDF, HTML, DOCX)
 
+[3.3.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.3.1
+[3.3.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.3.0
 [3.2.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.2.0
 [3.1.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.1.0
 [3.0.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.0.1

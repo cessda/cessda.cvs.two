@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { EditorService } from 'app/editor/editor.service';
-import { JhiAlertService, JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiLanguageService, JhiParseLinks } from 'ng-jhipster';
+import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Account } from 'app/core/user/account.model';
 import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AGGR_AGENCY, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
 import { IBucket } from 'app/shared/model/bucket';
 import { AccountService } from 'app/core/auth/account.service';
@@ -42,14 +42,13 @@ const DEFAULT_PREDICATE = 'code';
   selector: 'jhi-vocabulary-search-result',
   templateUrl: './vocabulary-search-result.component.html',
 })
-export class VocabularySearchResultComponent implements OnInit, OnDestroy {
+export class VocabularySearchResultComponent implements OnInit {
   @Input() appScope!: AppScope;
   @ViewChild('filterPanels', { static: true }) filterPanels!: ElementRef;
 
   account: Account | null = null;
 
   vocabularies: IVocabulary[] = [];
-  eventSubscriber?: Subscription;
   currentSearch: string = '';
 
   totalItems = 0;
@@ -334,23 +333,10 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
       }
       window.scrollTo(0, 0);
     });
-    this.registerCvSearchEvent();
   }
 
   login(): void {
     this.loginModalService.open();
-  }
-
-  ngOnDestroy(): void {
-    if (this.eventSubscriber) {
-      this.eventSubscriber.unsubscribe();
-    }
-  }
-
-  private registerCvSearchEvent(): void {
-    this.eventSubscriber = this.eventManager.subscribe('doCvPublicationSearch', (response: JhiEventWithContent<any>) => {
-      this.search(response.content.term, response.content.lang);
-    });
   }
 
   private updateForm(aggrs: IAggr[]): void {
