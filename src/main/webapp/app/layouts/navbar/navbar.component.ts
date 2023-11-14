@@ -32,7 +32,6 @@ import { HttpResponse } from '@angular/common/http';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 
-
 @Component({
   selector: 'jhi-navbar',
   templateUrl: './navbar.component.html',
@@ -66,7 +65,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private router: Router,
     private location: Location,
     private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
-    private homeService: HomeService
+    private homeService: HomeService,
   ) {
     this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
     this.isSearching = false;
@@ -105,11 +104,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   loadLanguages(): void {
     this.homeService
-      .getAvailableLanguagesIsos(this.isEditorSearch ? {'s':'DRAFT;REVIEW;READY_TO_TRANSLATE;READY_TO_PUBLISH;PUBLISHED;'} : {'s':'PUBLISHED'})
+      .getAvailableLanguagesIsos(
+        this.isEditorSearch ? { s: 'DRAFT;REVIEW;READY_TO_TRANSLATE;READY_TO_PUBLISH;PUBLISHED;' } : { s: 'PUBLISHED' },
+      )
       .subscribe((res: HttpResponse<string[]>) => {
-          this.searchLangs = res.body!;
-          this.searchLangs = VocabularyUtil.sortLangByName(this.searchLangs, 'en');
-          this.searchLangs.push('_all');
+        this.searchLangs = res.body!;
+        this.searchLangs = VocabularyUtil.sortLangByName(this.searchLangs, 'en');
+        this.searchLangs.push('_all');
       });
   }
 
@@ -124,7 +125,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         map((event: any) => {
           return event.target.value;
         }),
-        debounceTime(500)
+        debounceTime(500),
         // distinctUntilChanged()
       )
       .subscribe((text: string) => {
@@ -136,7 +137,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .pipe(
         map((event: any) => {
           return event.target.value;
-        })
+        }),
       )
       .subscribe((text: string) => {
         this.isSearching = true;
@@ -147,11 +148,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .pipe(
         map((event: any) => {
           return event.target.value;
-        })
+        }),
       )
       .subscribe((text: string) => {
         this.isSearching = true;
-        this.search(this.currentSearch ? this.currentSearch : '');
+        this.search(this.currentSearch);
       });
 
     this.registerCvOnSearchEvent();
@@ -169,8 +170,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  search(query: string): void {
-    if (query !== null && query !== '') {
+  search(query: string | undefined): void {
+    if (query) {
       if (this.isEditorSearch) {
         this.router.navigate(['/editor'], { queryParams: { q: query, f: 'language:' + this.currentLang, sort: 'relevance' } });
       } else {
@@ -183,12 +184,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.router.navigate([''], { queryParams: { f: 'language:' + this.currentLang, sort: 'code,asc' } });
       }
     }
-    this.eventManager.broadcast({ name: 'doCvPublicationSearch', content: { term: query, lang: this.currentLang } });
   }
 
   clear(): void {
-    this.currentSearch = '';
-    this.search('');
+    this.currentSearch = undefined;
+    this.search(undefined);
   }
 
   changeLanguage(languageKey: string): void {

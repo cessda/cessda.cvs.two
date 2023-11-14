@@ -27,7 +27,7 @@ export interface Search {
 
 export interface SearchWithPagination extends Search, Pagination {}
 
-export const createRequestOption = (req?: any): HttpParams => {
+export function createRequestOption(req?: any): HttpParams {
   let options: HttpParams = new HttpParams();
   if (req) {
     Object.keys(req).forEach(key => {
@@ -42,4 +42,4 @@ export const createRequestOption = (req?: any): HttpParams => {
     }
   }
   return options;
-};
+}
