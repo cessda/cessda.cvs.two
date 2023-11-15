@@ -926,30 +926,38 @@ public class EditorResource {
             throw new IllegalArgumentException( "MetadataValue need to be linked to metadataKey. metadataKey is null" );
         }
 
-        MetadataFieldDTO metadataFieldDTO = metadataFieldService.findByMetadataKey( metadataValueDTO.getMetadataKey() )
+        MetadataFieldDTO metadataFieldDTO = metadataFieldService.findByMetadataKey(metadataValueDTO.getMetadataKey())
             .orElse(null);
-        if( metadataFieldDTO == null ) {
+        if (metadataFieldDTO == null) {
             metadataFieldDTO = new MetadataFieldDTO();
-            metadataFieldDTO.setMetadataKey( metadataValueDTO.getMetadataKey() );
-            metadataFieldDTO.setObjectType( metadataValueDTO.getObjectType() );
-            metadataFieldDTO = metadataFieldService.save( metadataFieldDTO);
+            metadataFieldDTO.setMetadataKey(metadataValueDTO.getMetadataKey());
+            metadataFieldDTO.setObjectType(metadataValueDTO.getObjectType());
+            metadataFieldDTO = metadataFieldService.save(metadataFieldDTO);
         }
 
-        metadataValueDTO.setMetadataFieldId( metadataFieldDTO.getId());
+        metadataValueDTO.setMetadataFieldId(metadataFieldDTO.getId());
         metadataFieldDTO.addMetadataValue(metadataValueDTO);
 
         metadataFieldDTO = metadataFieldService.save( metadataFieldDTO);
 
-        if( metadataFieldDTO.getMetadataValues().isEmpty()) {
+        if (metadataFieldDTO.getMetadataValues().isEmpty()) {
             throw new EntityNotFoundException( "Unable to get any MetadataValues from metadataFieldDTO "+ metadataFieldDTO.getId() );
         }
 
         MetadataValueDTO result = metadataFieldDTO.getMetadataValues().iterator().next();
 
-        if( metadataFieldDTO.getMetadataValues().size() > 1) {
-            result = metadataFieldDTO.getMetadataValues().stream().filter(v -> v.getValue().equals(metadataValueDTO.getValue() ))
+        if (metadataFieldDTO.getMetadataValues().size() > 1) {
+            result = metadataFieldDTO.getMetadataValues().stream().filter(v -> v.getValue().equals(metadataValueDTO.getValue()))
                 .findFirst().orElse(result);
         }
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, metadataValueDTO, metadataFieldDTO, "CREATE_METADATA");
 
         return ResponseEntity.created(new URI("/api/metadata-values/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_METADATAVALUE_NAME, result.getId().toString()))
@@ -984,10 +992,18 @@ public class EditorResource {
         MetadataValueDTO result  = metadataFieldDTO.getMetadataValues().stream().filter(v -> v.getId().equals(metadataValueDTO.getId())).findFirst()
             .orElseThrow(() -> new EntityNotFoundException("Unable to find metadataValue with Id " + metadataValueDTO.getId() ));
 
-        result.setIdentifier( metadataValueDTO.getIdentifier());
-        result.setPosition( metadataValueDTO.getPosition());
-        result.setValue( metadataValueDTO.getValue() );
-        metadataFieldService.save( metadataFieldDTO );
+        result.setIdentifier(metadataValueDTO.getIdentifier());
+        result.setPosition(metadataValueDTO.getPosition());
+        result.setValue(metadataValueDTO.getValue());
+        metadataFieldService.save(metadataFieldDTO);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, metadataValueDTO, metadataFieldDTO, "UPDATE_METADATA");
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_METADATAVALUE_NAME, metadataValueDTO.getId().toString()))
@@ -1012,7 +1028,15 @@ public class EditorResource {
         // automatically remove metadataValue
         metadataValueDTO.setMetadataFieldId( null );
         metadataFieldDTO.removeMetadataValue(metadataValueDTO);
-        metadataFieldService.save( metadataFieldDTO );
+        metadataFieldService.save(metadataFieldDTO);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, metadataValueDTO, metadataFieldDTO, "DELETE_METADATA");
 
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true,
             ENTITY_METADATAVALUE_NAME, id.toString())).build();

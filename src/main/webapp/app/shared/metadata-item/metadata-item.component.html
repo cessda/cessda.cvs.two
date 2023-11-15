@@ -75,15 +75,6 @@
                 </div>
                 <div>
                     <quill-editor class="large-quill" (onEditorCreated)="editorCreated($event)" formControlName="content" [placeholder]="''"></quill-editor>
-                    <button *ngIf="!isTableInsertOptVisible" (click)="showInsertTable()" class="btn btn-sm btn-outline-secondary"
-                            ngbTooltip="Make sure that pointer is already in the right position in the text-area.">Insert Table</button>
-                    <span *ngIf="isTableInsertOptVisible">
-                        <span>Table with </span>
-                        <input style="width:40px" type="number" min="1" max="20" step="1" id="field_tableRow" name="tableRow" formControlName="tableRow"/> <span> rows</span>
-                        <input style="width:40px" type="number" min="1" max="10" step="1" id="field_tableColumn" name="tableColumn" formControlName="tableColumn"/> <span> column</span>
-                        <button ngbTooltip="Make sure that pointer is already in the right position in the text-area."
-                                 (click)="insertTable()" class="btn btn-sm btn-outline-secondary">Insert</button>
-                    </span>
                     <div *ngIf="metadataForm.get('content')!.invalid && (metadataForm.get('content')!.dirty || metadataForm.get('content')!.touched)">
                         <small class="form-text text-danger"
                                *ngIf="metadataForm.get('content')?.errors?.minlength">
