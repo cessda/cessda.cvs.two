@@ -25,10 +25,6 @@ import { EditorService } from 'app/editor/editor.service';
 import { MetadataField } from 'app/shared/model/metadata-field.model';
 import Quill from 'quill';
 
-interface BetterTableModule {
-  insertTable(rows: number, columns: number): void;
-}
-
 @Component({
   selector: 'jhi-metadata-item',
   templateUrl: './metadata-item.component.html',
@@ -44,7 +40,6 @@ export class MetadataItemComponent implements OnInit {
   public quill: Quill | undefined;
 
   isSaving = false;
-  isTableInsertOptVisible = false;
 
   metadataForm = this.fb.group({
     identifier: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(40), Validators.pattern('^[a-z0-9-]*$')]],
@@ -60,25 +55,9 @@ export class MetadataItemComponent implements OnInit {
     private fb: FormBuilder,
   ) {}
 
-  private getTableModule(): BetterTableModule {
-    if (!this.quill) {
-      throw new TypeError('quill is undefined - possibly not initialised');
-    }
-    return this.quill.getModule('better-table');
-  }
-
   public editorCreated(event: Quill): void {
     this.quill = event;
     this.quill.clipboard.dangerouslyPasteHTML(this.metadataForm.get(['content'])!.value);
-  }
-
-  insertTable(): void {
-    this.getTableModule().insertTable(this.metadataForm.get(['tableRow'])!.value, this.metadataForm.get(['tableColumn'])!.value);
-    this.isTableInsertOptVisible = false;
-  }
-
-  showInsertTable(): void {
-    this.isTableInsertOptVisible = true;
   }
 
   ngOnInit(): void {

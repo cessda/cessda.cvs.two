@@ -1299,20 +1299,6 @@ button.invisible-button:focus {
       overflow: visible;
       font-size: 0.7em;
     }
-    table.quill-better-table {
-      font-size: 10pt;
-      td {
-        border: none;
-        border-bottom: 1px solid #efefef;
-        > p {
-          span,
-          strong,
-          em {
-            background-color: transparent !important;
-          }
-        }
-      }
-    }
     .ql-code-block-container {
       white-space: pre-wrap;
       font-size: 10px;
