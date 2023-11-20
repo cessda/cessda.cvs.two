@@ -15,13 +15,13 @@
  */
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { EditorService } from 'app/editor/editor.service';
-import { JhiAlertService, JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiLanguageService, JhiParseLinks } from 'ng-jhipster';
+import { JhiEventManager, JhiEventWithContent, JhiLanguageService } from 'ng-jhipster';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Account } from 'app/core/user/account.model';
 import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { Observable, of, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AGGR_AGENCY, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
 import { IBucket } from 'app/shared/model/bucket';
 import { AccountService } from 'app/core/auth/account.service';
