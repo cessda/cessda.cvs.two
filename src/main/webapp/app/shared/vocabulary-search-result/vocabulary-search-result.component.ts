@@ -84,93 +84,6 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
   ) {
-    this.activatedRoute.queryParamMap.subscribe(params => {
-      const searchRequest: Record<string, string | string[] | number> = {};
-
-      const query = params.get('q');
-      if (query) {
-        this.currentSearch = query;
-      } else {
-        this.currentSearch = '';
-      }
-
-      searchRequest['q'] = this.currentSearch;
-
-      const size = params.get('size');
-      if (size) {
-        this.itemsPerPage = Number.parseInt(size);
-      } else {
-        this.itemsPerPage = ITEMS_PER_PAGE;
-      }
-
-      searchRequest['size'] = this.itemsPerPage;
-
-      const page = params.get('page');
-      if (page) {
-        this.page = Number.parseInt(page);
-      } else {
-        this.page = INITIAL_PAGE;
-      }
-
-      // Pages requested from the server are zero-indexed
-      searchRequest['page'] = this.page - 1;
-
-      const sort = params.get('sort');
-      if (sort) {
-        const sortProp = sort.split(',');
-        this.predicate = sortProp[0];
-        if (sortProp.length === 2) {
-          this.ascending = sortProp[1] === 'asc';
-        } else if (this.predicate === 'relevance') {
-          // Relevance search defaults to descending order
-          this.ascending = false;
-        }
-      } else {
-        this.predicate = DEFAULT_PREDICATE;
-        this.ascending = true;
-      }
-
-      searchRequest['sort'] = VocabularySearchResultComponent.sort(this.predicate, this.ascending);
-
-      const filters = params.get('f');
-      if (filters) {
-        const activeFilters = filters.split(';', 2);
-        activeFilters.forEach(af => {
-          const activeFilter = af.split(':', 2);
-          if (activeFilter.length === 2) {
-            if (activeFilter[0] === 'agency') {
-              this.activeAggAgency = activeFilter[1].split(',');
-            } else if (activeFilter[0] === 'language') {
-              this.activeAggLanguage = activeFilter[1].split(',');
-            } else if (activeFilter[0] === 'status') {
-              this.activeAggStatus = activeFilter[1].split(',');
-            }
-          }
-        });
-        searchRequest['f'] = filters;
-      } else {
-        this.activeAggAgency = [];
-        this.activeAggLanguage = [];
-        this.activeAggStatus = [];
-      }
-
-      this.eventManager.broadcast({ name: 'onSearching', content: true });
-
-      // Send the search request to the server
-      let searchObservable: Observable<HttpResponse<ICvResult>>;
-      if (this.appScope === AppScope.EDITOR) {
-        searchObservable = this.editorService.search(searchRequest);
-      } else {
-        searchObservable = this.homeService.search(searchRequest);
-      }
-
-      // Subscribe to the result of the search request
-      searchObservable.subscribe(
-        (res: HttpResponse<ICvResult>) => this.onSuccess(res.body!),
-        (e: HttpErrorResponse) => this.onError(e),
-      );
-    });
-
     this.searchForm = this.fb.group({
       aggAgency: [],
       aggStatus: [],
@@ -328,12 +241,100 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.activatedRoute.queryParamMap.subscribe(params => {
+      const searchRequest: Record<string, string | string[] | number> = {};
+
+      const query = params.get('q');
+      if (query) {
+        this.currentSearch = query;
+      } else {
+        this.currentSearch = '';
+      }
+
+      searchRequest['q'] = this.currentSearch;
+
+      const size = params.get('size');
+      if (size) {
+        this.itemsPerPage = Number.parseInt(size);
+      } else {
+        this.itemsPerPage = ITEMS_PER_PAGE;
+      }
+
+      searchRequest['size'] = this.itemsPerPage;
+
+      const page = params.get('page');
+      if (page) {
+        this.page = Number.parseInt(page);
+      } else {
+        this.page = INITIAL_PAGE;
+      }
+
+      // Pages requested from the server are zero-indexed
+      searchRequest['page'] = this.page - 1;
+
+      const sort = params.get('sort');
+      if (sort) {
+        const sortProp = sort.split(',');
+        this.predicate = sortProp[0];
+        if (sortProp.length === 2) {
+          this.ascending = sortProp[1] === 'asc';
+        } else if (this.predicate === 'relevance') {
+          // Relevance search defaults to descending order
+          this.ascending = false;
+        }
+      } else {
+        this.predicate = DEFAULT_PREDICATE;
+        this.ascending = true;
+      }
+
+      searchRequest['sort'] = VocabularySearchResultComponent.sort(this.predicate, this.ascending);
+
+      const filters = params.get('f');
+      if (filters) {
+        const activeFilters = filters.split(';', 2);
+        activeFilters.forEach(af => {
+          const activeFilter = af.split(':', 2);
+          if (activeFilter.length === 2) {
+            if (activeFilter[0] === 'agency') {
+              this.activeAggAgency = activeFilter[1].split(',');
+            } else if (activeFilter[0] === 'language') {
+              this.activeAggLanguage = activeFilter[1].split(',');
+            } else if (activeFilter[0] === 'status') {
+              this.activeAggStatus = activeFilter[1].split(',');
+            }
+          }
+        });
+        searchRequest['f'] = filters;
+      } else {
+        this.activeAggAgency = [];
+        this.activeAggLanguage = [];
+        this.activeAggStatus = [];
+      }
+
+      this.eventManager.broadcast({ name: 'onSearching', content: true });
+
+      // Send the search request to the server
+      let searchObservable: Observable<HttpResponse<ICvResult>>;
+      if (this.appScope === AppScope.EDITOR) {
+        searchObservable = this.editorService.search(searchRequest);
+      } else {
+        searchObservable = this.homeService.search(searchRequest);
+      }
+
+      // Subscribe to the result of the search request
+      searchObservable.subscribe(
+        (res: HttpResponse<ICvResult>) => this.onSuccess(res.body!),
+        (e: HttpErrorResponse) => this.onError(e),
+      );
+    });
+
     this.router.events.subscribe(evt => {
       if (!(evt instanceof NavigationEnd)) {
         return;
       }
       window.scrollTo(0, 0);
     });
+
     this.registerCvSearchEvent();
   }
 
