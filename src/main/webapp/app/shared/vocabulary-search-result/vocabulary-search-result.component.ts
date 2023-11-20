@@ -390,8 +390,8 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     return buckets;
   }
 
-  sortLangByEnum(languages: string[], sourceLang: string): string[] {
-    return VocabularyUtil.sortLangByEnum(languages, sourceLang);
+  sortLangByEnum(languages: string[] | undefined, sourceLang: string | undefined): string[] {
+    return VocabularyUtil.sortLangByEnum(languages || [], sourceLang || '');
   }
 
   getFormattedLangIso(vocab: IVocabulary, lang: string, sourceLang: string): string {

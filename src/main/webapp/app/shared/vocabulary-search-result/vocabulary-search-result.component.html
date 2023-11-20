@@ -184,7 +184,7 @@
                                     </div>
                                 </div>
                                 <div class="vocab-lang">
-                                    <button *ngFor="let lang of sortLangByEnum(isEditorScope() ? vocabulary.languages! : vocabulary.languagesPublished!, vocabulary.sourceLanguage!)"
+                                    <button *ngFor="let lang of sortLangByEnum(isEditorScope() ? vocabulary.languages : vocabulary.languagesPublished, vocabulary.sourceLanguage)"
                                             (click)="vocabulary.selectedLang = lang" class="vocab-lang-button"
                                             [ngClass]="{
                                             'active': lang === vocabulary.selectedLang,
