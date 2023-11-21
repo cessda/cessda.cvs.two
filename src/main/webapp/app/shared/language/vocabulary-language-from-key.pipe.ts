@@ -49,6 +49,11 @@ export class VocabularyLanguageFromKeyPipe implements PipeTransform {
   };
 
   transform(lang: string): string {
-    return this.vocabLanguages[lang].name;
+    const language = this.vocabLanguages[lang];
+    if (language) {
+      return language.name;
+    } else {
+      return `Unknown (${lang})`;
+    }
   }
 }

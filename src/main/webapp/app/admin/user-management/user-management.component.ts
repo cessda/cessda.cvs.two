@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager, JhiPaginationUtil } from 'ng-jhipster';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { AccountService } from 'app/core/auth/account.service';
@@ -38,13 +36,12 @@ import { UserAgency } from 'app/shared/model/user-agency.model';
 export class UserManagementComponent implements OnInit, OnDestroy {
   currentAccount: Account | null = null;
   users: User[] = [];
-  userListSubscription?: Subscription;
+  userListSubscription: Subscription | undefined;
   totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
-  page!: number;
-  predicate!: string;
-  previousPage!: number;
-  ascending!: boolean;
+  readonly itemsPerPage = ITEMS_PER_PAGE;
+  page = 1;
+  predicate: string = 'id';
+  ascending: boolean = true;
 
   agencies: Agency[] = [];
 
@@ -56,35 +53,40 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     private eventManager: JhiEventManager,
     private modalService: NgbModal,
     private agencyService: AgencyService,
+    private paginationUtil: JhiPaginationUtil,
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data
-      .pipe(
-        mergeMap(
-          () => this.accountService.identity(),
-          (data, account) => {
-            this.page = data.pagingParams.page;
-            this.previousPage = data.pagingParams.page;
-            this.ascending = data.pagingParams.ascending;
-            this.predicate = data.pagingParams.predicate;
-            this.currentAccount = account;
-            this.loadAll();
-            this.userListSubscription = this.eventManager.subscribe('userListModification', () => this.loadAll());
-          },
-        ),
-      )
-      .subscribe();
+    this.accountService.identity().subscribe(account => (this.currentAccount = account));
+
+    this.activatedRoute.queryParamMap.subscribe(query => {
+      const page = query.get('page');
+      if (page) {
+        this.page = Number.parseInt(page);
+      } else {
+        this.page = 1;
+      }
+
+      const sort = query.get('sort');
+      if (sort) {
+        this.predicate = this.paginationUtil.parsePredicate(sort);
+        this.ascending = this.paginationUtil.parseAscending(sort);
+      } else {
+        this.predicate = 'id';
+        this.ascending = true;
+      }
+
+      this.loadUsers();
+    });
 
     this.agencyService
       .query({
         page: 0,
         size: 1000,
-        sort: ['name,asc'],
       })
-      .subscribe((res: HttpResponse<Agency[]>) => {
-        this.agencies = res.body!;
-      });
+      .subscribe(res => (this.agencies = res.body || []));
+
+    this.userListSubscription = this.eventManager.subscribe('userListModification', () => this.loadUsers());
   }
 
   ngOnDestroy(): void {
@@ -93,34 +95,43 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     }
   }
 
-  getAgencyName(agencyId: number | undefined): string {
-    return this.agencies.filter(a => a.id === agencyId)[0].name!;
+  getAgencyName(agencyId: number): string {
+    for (let i = 0; i < this.agencies.length; i++) {
+      const agency = this.agencies[i];
+      if (agency.id === agencyId) {
+        return agency.name!;
+      }
+    }
+    return `Unknown agency (${agencyId})`;
   }
 
   setActive(user: User, isActivated: boolean): void {
-    this.userService.update({ ...user, activated: isActivated }).subscribe(() => this.loadAll());
+    this.userService.update({ ...user, activated: isActivated }).subscribe(() => this.loadUsers());
   }
 
-  trackIdentity(index: number, item: User): any {
+  trackIdentity(_index: number, item: User): any {
     return item.id;
   }
 
   loadPage(page: number): void {
-    if (page !== this.previousPage) {
-      this.previousPage = page;
-      this.transition();
-    }
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: {
+        page: page,
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 
-  transition(): void {
-    this.router.navigate(['./'], {
-      relativeTo: this.activatedRoute.parent,
+  updateSort(): void {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
       queryParams: {
-        page: this.page,
         sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
       },
+      queryParamsHandling: 'merge',
     });
-    this.loadAll();
+    this.loadUsers();
   }
 
   deleteUser(user: User): void {
@@ -128,14 +139,37 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.user = user;
   }
 
-  private loadAll(): void {
-    this.userService
-      .query({
-        page: this.page - 1,
-        size: this.itemsPerPage,
-        sort: this.sort(),
-      })
-      .subscribe((res: HttpResponse<User[]>) => this.onSuccess(res.body, res.headers));
+  private loadUsers(): void {
+    const userObservable = this.userService.query({
+      page: this.page - 1,
+      size: this.itemsPerPage,
+      sort: this.sort(),
+    });
+
+    userObservable.subscribe(res => {
+      const users = res.body || [];
+
+      // Sort user agencies
+      users.forEach(u => {
+        if (u.userAgencies && u.userAgencies.length > 0) {
+          u.userAgencies.sort((ua1, ua2) =>
+            this.userAgencyToCompare(ua1) < this.userAgencyToCompare(ua2)
+              ? -1
+              : this.userAgencyToCompare(ua1) > this.userAgencyToCompare(ua2)
+                ? 1
+                : 0,
+          );
+        }
+      });
+
+      const totalCount = res.headers.get('X-Total-Count');
+      if (totalCount) {
+        this.totalItems = Number.parseInt(totalCount);
+      } else {
+        this.totalItems = users.length;
+      }
+      this.users = users;
+    });
   }
 
   private sort(): string[] {
@@ -144,22 +178,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
       result.push('id');
     }
     return result;
-  }
-
-  private onSuccess(users: User[] | null, headers: HttpHeaders): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.users = users || [];
-    this.users.forEach(u => {
-      if (u.userAgencies && u.userAgencies.length > 0) {
-        u.userAgencies.sort((ua1, ua2) =>
-          this.userAgencyToCompare(ua1) < this.userAgencyToCompare(ua2)
-            ? -1
-            : this.userAgencyToCompare(ua1) > this.userAgencyToCompare(ua2)
-            ? 1
-            : 0,
-        );
-      }
-    });
   }
 
   userAgencyToCompare(ua: UserAgency): string {
