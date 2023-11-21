@@ -14,7 +14,7 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
-## [3.3.1] - 2023-11-15
+## [3.3.1] - 2023-11-21
 
 ### Fixed
 
@@ -22,6 +22,7 @@ _For each release, use the following sub-sections:_
 - [#786](https://github.com/cessda/cessda.cvs.two/issues/786) Fixed the search language filter having no effect if applied after navigating back to the search page
 - [#809](https://github.com/cessda/cessda.cvs.two/issues/809) Fixed the agency filter having no effect if applied after navigating back to the search page
 - [#814](https://github.com/cessda/cessda.cvs.two/issues/814) Fixed Quill editing fields being blank
+- [#819](https://github.com/cessda/cessda.cvs.two/issues/819) Fixed pagination issues in the user management component
 - [PR-816](https://github.com/cessda/cessda.cvs.two/pull/816) Fixed possible infinite recursion on the search page where the search would continuously re-request the same query
 - [PR-816](https://github.com/cessda/cessda.cvs.two/pull/816) Fixed searches not starting from page 1, resulting in search results being inaccessible
 
