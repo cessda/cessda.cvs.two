@@ -28,6 +28,7 @@ import java.util.Objects;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AgencyDTO implements Serializable {
+    private static final long serialVersionUID = -1795172177534506127L;
 
     private Long id;
 

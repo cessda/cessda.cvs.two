@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CodeSnippet implements Serializable {
+    private static final long serialVersionUID = 2912851169400383645L;
+
     @NotNull
     private ActionType actionType;
     @NotNull

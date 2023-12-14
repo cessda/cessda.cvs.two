@@ -29,6 +29,7 @@ import java.util.Objects;
  * A DTO for the {@link eu.cessda.cvs.domain.VocabularyChange} entity.
  */
 public class VocabularyChangeDTO implements Serializable {
+    private static final long serialVersionUID = 3945898883897497903L;
 
     private Long id;
 

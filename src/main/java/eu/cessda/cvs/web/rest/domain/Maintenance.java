@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 
 public class Maintenance implements Serializable {
     private static final long serialVersionUID = 1L;
+
     private String output;
     private LocalDateTime timestamp;
     private String type;

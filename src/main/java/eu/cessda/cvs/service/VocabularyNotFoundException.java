@@ -16,10 +16,7 @@
 package eu.cessda.cvs.service;
 
 public class VocabularyNotFoundException extends RuntimeException {
-
-    public VocabularyNotFoundException() {
-        super("Vocabulary not found!");
-    }
+    private static final long serialVersionUID = -399156303999555524L;
 
     public VocabularyNotFoundException(String message) {
         super(message);

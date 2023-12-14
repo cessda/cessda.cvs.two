@@ -26,6 +26,7 @@ import java.util.Objects;
  * A DTO for the {@link eu.cessda.cvs.domain.Resolver} entity.
  */
 public class ResolverDTO implements Serializable {
+    private static final long serialVersionUID = 2981181894274242634L;
 
     private Long id;
 
