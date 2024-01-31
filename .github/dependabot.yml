@@ -14,6 +14,8 @@ updates:
         update-types: ["version-update:semver-patch"]
       - dependency-name: "@angular*"
         update-types: ["version-update:semver-major"]
+      - dependency-name: "husky"
+        versions: ">=9.0.0"
     groups:
       # Group Angular packages so they are updated together
       angular:
