@@ -13,29 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
-import {JhiEventManager} from 'ng-jhipster';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {HttpResponse} from '@angular/common/http';
-import {IMetadataValue} from 'app/shared/model/metadata-value.model';
-import {ObjectType} from 'app/shared/model/enumerations/object-type.model';
-import {EditorService} from 'app/editor/editor.service';
-import {IMetadataField} from 'app/shared/model/metadata-field.model';
+import { JhiEventManager } from 'ng-jhipster';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
+import { IMetadataValue } from 'app/shared/model/metadata-value.model';
+import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
+import { EditorService } from 'app/editor/editor.service';
+import { IMetadataField } from 'app/shared/model/metadata-field.model';
 
-interface Quill {
-  getModule(moduleName: string): BetterTableModule;
-}
-
-interface BetterTableModule {
-  insertTable(rows: number, columns: number): void;
-}
+interface Quill {}
 
 @Component({
   selector: 'jhi-metadata-item',
   templateUrl: './metadata-item.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MetadataItemComponent implements OnInit {
   @Input() metadataField?: IMetadataField;
@@ -48,35 +42,29 @@ export class MetadataItemComponent implements OnInit {
   public quill: Quill;
 
   isSaving = false;
-  isTableInsertOptVisible = false;
 
   metadataForm = this.fb.group({
     identifier: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(40), Validators.pattern('^[a-z0-9-]*$')]],
     position: ['', [Validators.required]],
     content: ['', [Validators.minLength(30)]],
-    tableRow: [],
-    tableColumn: []
   });
 
-  constructor(protected editorService: EditorService, protected eventManager: JhiEventManager, private fb: FormBuilder) {}
-
-  private get tableModule(): BetterTableModule {
-    return this.quill.getModule("better-table");
-  }
+  constructor(
+    protected editorService: EditorService,
+    protected eventManager: JhiEventManager,
+    private fb: FormBuilder,
+  ) {}
 
   public editorCreated(event: Quill): void {
     this.quill = event;
-    // @ts-ignore
-    this.quill.clipboard.dangerouslyPasteHTML(this.metadataForm.get(['content'])!.value);
-  }
-
-  insertTable(): void {
-    this.tableModule.insertTable(this.metadataForm.get(['tableRow'])!.value, this.metadataForm.get(['tableColumn'])!.value);
-    this.isTableInsertOptVisible = false;
-  }
-
-  showInsertTable(): void {
-    this.isTableInsertOptVisible = true;
+    const value = this.metadataForm.get(['content'])!.value;
+    if (value) {
+      // @ts-ignore
+      this.quill.clipboard.dangerouslyPasteHTML(value);
+    } else {
+      // @ts-ignore
+      this.quill.clipboard.dangerouslyPasteHTML('');
+    }
   }
 
   ngOnInit(): void {
@@ -85,14 +73,14 @@ export class MetadataItemComponent implements OnInit {
       position: this.metadataValue.position ? this.metadataValue.position : this.position,
       content: this.metadataValue.value,
       tableRow: 3,
-      tableColumn: 3
+      tableColumn: 3,
     });
   }
 
   cancel(): void {
     this.isWriting = false;
     this.metadataForm.patchValue({
-      content: this.metadataValue.value
+      content: this.metadataValue.value,
     });
   }
 
@@ -113,7 +101,7 @@ export class MetadataItemComponent implements OnInit {
       position: this.metadataForm.get(['position'])!.value ? this.metadataForm.get(['position'])!.value : this.position,
       value: this.metadataForm.get(['content'])!.value,
       objectType: ObjectType.SYSTEM,
-      metadataKey: this.metadataField!.metadataKey
+      metadataKey: this.metadataField!.metadataKey,
     };
   }
 
@@ -124,7 +112,7 @@ export class MetadataItemComponent implements OnInit {
       // remove any target="_blank"
       metadataValue.value = (metadataValue.value as string).split(' rel="noopener noreferrer" target="_blank"').join('');
       this.metadataForm.patchValue({
-        content: metadataValue.value
+        content: metadataValue.value,
       });
     }
     if (this.metadataValue.id !== undefined) {
@@ -137,7 +125,7 @@ export class MetadataItemComponent implements OnInit {
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IMetadataValue>>): void {
     result.subscribe(
       response => this.onSaveSuccess(response.body!),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 

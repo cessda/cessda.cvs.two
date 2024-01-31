@@ -37,7 +37,10 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.xml.bind.JAXBException;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -81,6 +84,7 @@ public class ExportService
 		}
     }
 
+    private final ObjectFactory factory = new ObjectFactory();
 	private final SpringTemplateEngine templateEngine;
 
 	public ExportService(SpringTemplateEngine templateEngine )
@@ -88,12 +92,7 @@ public class ExportService
 		this.templateEngine = templateEngine;
 	}
 
-	public File exportQuestion()
-	{
-		return null;
-	}
-
-	public void generateFileByThymeleafTemplate(
+    public void generateFileByThymeleafTemplate(
 			String templateName,
 			Map<String, Object> map,
 			DownloadType type,
@@ -142,19 +141,25 @@ public class ExportService
         bw.flush();
 	}
 
-	public void createPdfFile( String contents, OutputStream outputStream )
+	@SuppressWarnings( "DataFlowIssue" )
+    public void createPdfFile( String contents, OutputStream outputStream )
     {
-        ConverterProperties properties = new ConverterProperties();
         FontProvider fontProvider = new DefaultFontProvider(false, false, false);
-        var fontsResource = this.getClass().getResource("/fonts");
-        assert fontsResource != null;
-        fontProvider.addDirectory(fontsResource.getPath());
-        properties.setFontProvider(fontProvider);
-        HtmlConverter.convertToPdf(contents, outputStream, properties);
+
+        // Add all fonts
+        fontProvider.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Black.otf").toString() );
+        fontProvider.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Bold.otf" ).toString() );
+        fontProvider.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-DemiLight.otf" ).toString() );
+        fontProvider.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Light.otf" ).toString() );
+        fontProvider.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Medium.otf" ).toString() );
+        fontProvider.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Regular.otf" ).toString() );
+        fontProvider.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Thin.otf" ).toString() );
+
+        // Generate the PDF
+        HtmlConverter.convertToPdf(contents, outputStream, new ConverterProperties().setFontProvider(fontProvider));
 	}
 
-    public void createWordFile(  String contents, OutputStream outputStream ) throws Docx4JException, JAXBException {
-        ObjectFactory factory = new ObjectFactory();
+    public void createWordFile( String contents, OutputStream outputStream ) throws Docx4JException, JAXBException {
         // Setup font mapping
         RFonts rfonts = Context.getWmlObjectFactory().createRFonts();
         rfonts.setAscii( "Century Gothic" );
@@ -184,7 +189,7 @@ public class ExportService
         body.setSectPr(sectPr);
 
         Relationship relationship = createFooterPart( wordMLPackage, factory );
-        createFooterReference(wordMLPackage, relationship, factory);
+        createFooterReference(wordMLPackage, relationship );
 
         NumberingDefinitionsPart ndp = new NumberingDefinitionsPart();
         wordMLPackage.getMainDocumentPart().addTargetPart( ndp );
@@ -252,7 +257,7 @@ public class ExportService
 
     }
 
-    public static void createFooterReference(WordprocessingMLPackage wordMLPackage, Relationship relationship, ObjectFactory factory){
+    public void createFooterReference(WordprocessingMLPackage wordMLPackage, Relationship relationship){
 
         List<SectionWrapper> sections =
             wordMLPackage.getDocumentModel().getSections();

@@ -6,7 +6,7 @@ pipeline {
     environment {
         productName = "cvs"
         componentName = "frontend"
-        image_tag = "${docker_repo}/${productName}-${componentName}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+        image_tag = "${DOCKER_ARTIFACT_REGISTRY}/${productName}-${componentName}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
 
         // Fixes NPM trying to use / as the home directory
         HOME = '.'
@@ -42,7 +42,7 @@ pipeline {
                 }
                 stage('Run Jest tests') {
                     steps {
-                        sh 'npm test'
+                        sh 'npm test -- --coverage'
                     }
                     post {
                         always {
@@ -96,7 +96,7 @@ pipeline {
                 withMaven {
                     sh "./mvnw jib:build -Pci -Djib.to.image=${IMAGE_TAG}"
                 }
-                sh "gcloud container images add-tag ${IMAGE_TAG} ${docker_repo}/${productName}-${componentName}:${env.BRANCH_NAME}-latest"
+                sh "gcloud container images add-tag ${IMAGE_TAG} ${DOCKER_ARTIFACT_REGISTRY}/${productName}-${componentName}:${env.BRANCH_NAME}-latest"
             }
             when { branch 'main' }
         }

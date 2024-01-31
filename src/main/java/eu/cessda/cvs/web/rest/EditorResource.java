@@ -33,13 +33,10 @@ import eu.cessda.cvs.web.rest.domain.CvResult;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import eu.cessda.cvs.web.rest.utils.AccessibleByteArrayOutputStream;
 import eu.cessda.cvs.web.rest.utils.ResourceUtils;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
@@ -55,16 +52,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -178,7 +170,7 @@ public class EditorResource {
     public ResponseEntity<VersionDTO> createNewVocabularyVersion(@PathVariable Long id) {
         log.debug("REST request to create new Vocabulary with version ID: {}", id);
         VersionDTO result = vocabularyService.createNewVersion(id);
-        
+
         //notify the auditing mechanism
         String auditUserString = "";
         Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
@@ -258,7 +250,7 @@ public class EditorResource {
             auditUserString = auditUser.get();
         }
         auditPublisher.publish(auditUserString, vocabularyDTO, versionDTO, vocabularySnippet, vocabularySnippet.getActionType().name(), true);
-        
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VERSION_NAME, versionDTO.getNotation()))
             .body(versionDTO);
@@ -418,7 +410,7 @@ public class EditorResource {
         }
 
         ConceptDTO result = vocabularyService.saveCode(codeSnippet);
-        
+
         //notify the auditing mechanism
         VersionDTO versionDTO = versionService.findOne(codeSnippet.getVersionId())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + codeSnippet.getVersionId()));
@@ -482,7 +474,7 @@ public class EditorResource {
                 if (conceptDTO != null) {
                     conceptDTO.setTitle(codeSnippet.getTitle());
                     conceptDTO.setDefinition(codeSnippet.getDefinition());
-                    
+
                     //notify the auditing mechanism
                     String auditUserString = "";
                     Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
@@ -523,7 +515,7 @@ public class EditorResource {
         // check if concept already exist for new concept
         if (versionDTO.getConcepts().stream()
             .anyMatch(c -> c.getNotation().equals(codeSnippet.getNotation()))) {
-            throw new CodeAlreadyExistException();
+            throw new CodeAlreadyExistException(codeSnippet.getNotation());
         }
         // set position if not available
         if (codeSnippet.getPosition() == null)
@@ -532,11 +524,7 @@ public class EditorResource {
         ConceptDTO newConceptDTO = new ConceptDTO(codeSnippet);
 
         //notify the auditing mechanism
-        String auditUserString = "";
-        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
-        if (auditUser.isPresent()) {
-            auditUserString = auditUser.get();
-        }
+        String auditUserString = SecurityUtils.getCurrentUserLogin().orElse( "" );
         auditPublisher.publish(auditUserString, null, versionDTO, newConceptDTO, null, codeSnippet, "CREATE_CODE");
 
         // add concept to version and save version to save new concept
@@ -690,7 +678,7 @@ public class EditorResource {
             auditUserString = auditUser.get();
         }
         auditPublisher.publish(auditUserString, vocabularyDTO, versionDTO, conceptDTO, null, null, ActionType.DELETE_CODE.name());
-        
+
         // remove parent-child link and save, orphan concept will be automatically deleted
         versionDTO.removeConcept(conceptDTO);
 
@@ -742,7 +730,7 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + codeSnippet.getVersionId() ));
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
             .orElseThrow( () -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + versionDTO.getVocabularyId() ));
-        
+
         //notify the auditing mechanism
         ConceptDTO conceptDTO = conceptService.findOne(codeSnippet.getConceptId())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_CONCEPT + codeSnippet.getConceptId()));
@@ -890,7 +878,7 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + commentDTO.getId() ));
         commentDTO.setVersionId( null );
         versionDTO.removeComment(commentDTO);
-        
+
         //notify the auditing mechanism
         String auditUserString = "";
         Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
@@ -898,7 +886,7 @@ public class EditorResource {
             auditUserString = auditUser.get();
         }
         auditPublisher.publish(auditUserString, versionDTO, commentDTO, "DELETE_COMMENT");
-        
+
         // automatically remove comment
         versionService.save(versionDTO);
 
@@ -926,30 +914,38 @@ public class EditorResource {
             throw new IllegalArgumentException( "MetadataValue need to be linked to metadataKey. metadataKey is null" );
         }
 
-        MetadataFieldDTO metadataFieldDTO = metadataFieldService.findByMetadataKey( metadataValueDTO.getMetadataKey() )
+        MetadataFieldDTO metadataFieldDTO = metadataFieldService.findByMetadataKey(metadataValueDTO.getMetadataKey())
             .orElse(null);
-        if( metadataFieldDTO == null ) {
+        if (metadataFieldDTO == null) {
             metadataFieldDTO = new MetadataFieldDTO();
-            metadataFieldDTO.setMetadataKey( metadataValueDTO.getMetadataKey() );
-            metadataFieldDTO.setObjectType( metadataValueDTO.getObjectType() );
-            metadataFieldDTO = metadataFieldService.save( metadataFieldDTO);
+            metadataFieldDTO.setMetadataKey(metadataValueDTO.getMetadataKey());
+            metadataFieldDTO.setObjectType(metadataValueDTO.getObjectType());
+            metadataFieldDTO = metadataFieldService.save(metadataFieldDTO);
         }
 
-        metadataValueDTO.setMetadataFieldId( metadataFieldDTO.getId());
+        metadataValueDTO.setMetadataFieldId(metadataFieldDTO.getId());
         metadataFieldDTO.addMetadataValue(metadataValueDTO);
 
         metadataFieldDTO = metadataFieldService.save( metadataFieldDTO);
 
-        if( metadataFieldDTO.getMetadataValues().isEmpty()) {
+        if (metadataFieldDTO.getMetadataValues().isEmpty()) {
             throw new EntityNotFoundException( "Unable to get any MetadataValues from metadataFieldDTO "+ metadataFieldDTO.getId() );
         }
 
         MetadataValueDTO result = metadataFieldDTO.getMetadataValues().iterator().next();
 
-        if( metadataFieldDTO.getMetadataValues().size() > 1) {
-            result = metadataFieldDTO.getMetadataValues().stream().filter(v -> v.getValue().equals(metadataValueDTO.getValue() ))
+        if (metadataFieldDTO.getMetadataValues().size() > 1) {
+            result = metadataFieldDTO.getMetadataValues().stream().filter(v -> v.getValue().equals(metadataValueDTO.getValue()))
                 .findFirst().orElse(result);
         }
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, metadataValueDTO, metadataFieldDTO, "CREATE_METADATA");
 
         return ResponseEntity.created(new URI("/api/metadata-values/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_METADATAVALUE_NAME, result.getId().toString()))
@@ -984,10 +980,18 @@ public class EditorResource {
         MetadataValueDTO result  = metadataFieldDTO.getMetadataValues().stream().filter(v -> v.getId().equals(metadataValueDTO.getId())).findFirst()
             .orElseThrow(() -> new EntityNotFoundException("Unable to find metadataValue with Id " + metadataValueDTO.getId() ));
 
-        result.setIdentifier( metadataValueDTO.getIdentifier());
-        result.setPosition( metadataValueDTO.getPosition());
-        result.setValue( metadataValueDTO.getValue() );
-        metadataFieldService.save( metadataFieldDTO );
+        result.setIdentifier(metadataValueDTO.getIdentifier());
+        result.setPosition(metadataValueDTO.getPosition());
+        result.setValue(metadataValueDTO.getValue());
+        metadataFieldService.save(metadataFieldDTO);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, metadataValueDTO, metadataFieldDTO, "UPDATE_METADATA");
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_METADATAVALUE_NAME, metadataValueDTO.getId().toString()))
@@ -1012,7 +1016,15 @@ public class EditorResource {
         // automatically remove metadataValue
         metadataValueDTO.setMetadataFieldId( null );
         metadataFieldDTO.removeMetadataValue(metadataValueDTO);
-        metadataFieldService.save( metadataFieldDTO );
+        metadataFieldService.save(metadataFieldDTO);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, metadataValueDTO, metadataFieldDTO, "DELETE_METADATA");
 
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true,
             ENTITY_METADATAVALUE_NAME, id.toString())).build();

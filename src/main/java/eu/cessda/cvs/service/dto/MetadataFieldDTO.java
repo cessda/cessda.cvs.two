@@ -29,6 +29,7 @@ import java.util.Set;
  * A DTO for the {@link eu.cessda.cvs.domain.MetadataField} entity.
  */
 public class MetadataFieldDTO implements Serializable {
+    private static final long serialVersionUID = -8913519673208047626L;
 
     private Long id;
 

@@ -16,9 +16,10 @@
 package eu.cessda.cvs.service;
 
 public class VocabularyAlreadyExistException extends RuntimeException {
+    private static final long serialVersionUID = -5193171904443590121L;
 
-    public VocabularyAlreadyExistException() {
-        super("Vocabulary already exist!");
+    public VocabularyAlreadyExistException(String notation) {
+        super("Vocabulary " + notation + " already exists");
     }
 
 }

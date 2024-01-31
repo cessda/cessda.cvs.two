@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VocabularyDTO implements Serializable {
+    private static final long serialVersionUID = -8464813042927663693L;
 
     private Long id;
 

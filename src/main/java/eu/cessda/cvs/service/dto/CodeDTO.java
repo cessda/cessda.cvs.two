@@ -23,6 +23,7 @@ import eu.cessda.cvs.domain.Code;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.utils.HashFunction;
 import eu.cessda.cvs.utils.VersionNumber;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Lob;
@@ -38,6 +39,7 @@ import java.util.regex.Pattern;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CodeDTO implements Serializable {
+    private static final long serialVersionUID = -5916802523668287620L;
 
     private Long id;
 

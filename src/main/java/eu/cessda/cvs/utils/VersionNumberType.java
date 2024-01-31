@@ -15,13 +15,13 @@
  */
 package eu.cessda.cvs.utils;
 
-import org.hibernate.HibernateException;
 import org.hibernate.dialect.Dialect;
 import org.hibernate.type.AbstractSingleColumnStandardBasicType;
 import org.hibernate.type.LiteralType;
 import org.hibernate.type.descriptor.sql.VarcharTypeDescriptor;
 
 public class VersionNumberType extends AbstractSingleColumnStandardBasicType<VersionNumber> implements LiteralType<VersionNumber> {
+    private static final long serialVersionUID = 948974996070167502L;
 
     public static final VersionNumberType INSTANCE = new VersionNumberType();
 
@@ -30,7 +30,7 @@ public class VersionNumberType extends AbstractSingleColumnStandardBasicType<Ver
     }
 
     @Override
-    public String toString(VersionNumber value) throws HibernateException {
+    public String toString(VersionNumber value) {
         return value.toString();
     }
 
@@ -45,7 +45,7 @@ public class VersionNumberType extends AbstractSingleColumnStandardBasicType<Ver
     }
 
     @Override
-	public String objectToSQLString(VersionNumber value, Dialect dialect) throws Exception {
+	public String objectToSQLString(VersionNumber value, Dialect dialect) {
 		return "{d '" + value.toString() + "'}";
 	}
 }

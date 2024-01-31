@@ -25,6 +25,7 @@ import eu.cessda.cvs.utils.VersionNumber;
 import java.io.Serializable;
 
 public class VocabularySnippet implements Serializable {
+    private static final long serialVersionUID = -2321795469828997616L;
 
     private ActionType actionType;
     private Long agencyId;

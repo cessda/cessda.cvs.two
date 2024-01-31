@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Aggr implements Serializable {
+    private static final long serialVersionUID = -7907701690323224787L;
+
     private String type;
     private String field;
     private List<String> values = new ArrayList<>();

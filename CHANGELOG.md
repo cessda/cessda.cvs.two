@@ -14,7 +14,64 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
+## [3.3.1] - 2023-11-21
+
+### Fixed
+
+- [#669](https://github.com/cessda/cessda.cvs.two/issues/669) Fixed not being able to access the second search page when navigating back to the search page
+- [#786](https://github.com/cessda/cessda.cvs.two/issues/786) Fixed the search language filter having no effect if applied after navigating back to the search page
+- [#809](https://github.com/cessda/cessda.cvs.two/issues/809) Fixed the agency filter having no effect if applied after navigating back to the search page
+- [#814](https://github.com/cessda/cessda.cvs.two/issues/814) Fixed Quill editing fields being blank
+- [#819](https://github.com/cessda/cessda.cvs.two/issues/819) Fixed pagination issues in the user management component
+- [PR-816](https://github.com/cessda/cessda.cvs.two/pull/816) Fixed possible infinite recursion on the search page where the search would continuously re-request the same query
+- [PR-816](https://github.com/cessda/cessda.cvs.two/pull/816) Fixed searches not starting from page 1, resulting in search results being inaccessible
+
+## [3.3.0] - 2023-11-07
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10009383.svg)](https://doi.org/10.5281/zenodo.10009383)
+
+### Dependency updates
+
+- [PR-601](https://github.com/cessda/cessda.cvs.two/pull/601) Update Node.JS to 16.20.0
+- [PR-641](https://github.com/cessda/cessda.cvs.two/pull/641) Update Java to version 11
+- [PR-731](https://github.com/cessda/cessda.cvs.two/pull/731) and [PR-738](https://github.com/cessda/cessda.cvs.two/pull/738) Update Angular from version 10 to version 12
+
+### Added
+
+- [#219](https://github.com/cessda/cessda.cvs.two/issues/219) Added the UTF-8 BOM to the CSV export
+- [#378](https://github.com/cessda/cessda.cvs.two/issues/378) Implemented System Audit for Registered Users´ Events
+- [#455](https://github.com/cessda/cessda.cvs.two/issues/455) Implemented Concept-level URIs
+- [#490](https://github.com/cessda/cessda.cvs.two/issues/490) Added tests to check that Vocabulary exports are non-null
+- [#726](https://github.com/cessda/cessda.cvs.two/issues/726) Updated SQAaaS badge after the latest assessment
+
+### Changed
+
+- [PR-661](https://github.com/cessda/cessda.cvs.two/pull/661) Implement code fixes recommended by static analysis tools such as SonarQube
+- [PR-757](https://github.com/cessda/cessda.cvs.two/pull/757) Build the Angular application using the Angular CLI
+- [PR-769](https://github.com/cessda/cessda.cvs.two/pull/769) Enabled the `strictTemplates` Angular compiler option
+- [PR-772](https://github.com/cessda/cessda.cvs.two/pull/772) Build the Angular component in a Node.js Docker container
+- [PR-806](https://github.com/cessda/cessda.cvs.two/pull/806) Explicitly load fonts into the PDF font provider
+- [PR-807](https://github.com/cessda/cessda.cvs.two/pull/807) Use the V8 coverage provider to gather code coverage metrics in Jest tests
+
+### Fixed
+
+- [PR-663](https://github.com/cessda/cessda.cvs.two/pull/663) Corrected the delete bundle CV functionality
+- [PR-780](https://github.com/cessda/cessda.cvs.two/pull/780) Fixed various code smells detected by SonarQube
+- [#438](https://github.com/cessda/cessda.cvs.two/issues/438) Fixed PDF and HTML exports in general
+- [#667](https://github.com/cessda/cessda.cvs.two/issues/667) Fixed version number in SKOS export
+- [#669](https://github.com/cessda/cessda.cvs.two/issues/669) Fixed not being able to access subsequent pages after the first page
+- [#701](https://github.com/cessda/cessda.cvs.two/issues/701) Fixed exporting the licence name rather than the licence URL in the RDF export
+- [#702](https://github.com/cessda/cessda.cvs.two/issues/702) Fixed the presence of NUL characters/empty bytes in various export types (SKOS, PDF, HTML)
+- [#703](https://github.com/cessda/cessda.cvs.two/issues/703) Fixed returning SKOS RDF with the content type set to `application/json` rather than the correct content type `application/rdf+xml`
+- [#797](https://github.com/cessda/cessda.cvs.two/issues/797) Fixed invalid Swagger definitions caused by not having the licence name set
+
+### Security
+
+- [#283](https://github.com/cessda/cessda.cvs.two/issues/283) Fixed security hotspots identified by SonarQube
+
 ## [3.2.0] - 2023-05-09
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10009345.svg)](https://doi.org/10.5281/zenodo.10009345)
 
 ## Changes
 
@@ -291,6 +348,8 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Swagger UI for the APIs.
 - New set of /v2 REST APIs for searching and exporting CVs to several formats (PDF, HTML, DOCX)
 
+[3.3.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.3.1
+[3.3.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.3.0
 [3.2.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.2.0
 [3.1.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.1.0
 [3.0.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.0.1

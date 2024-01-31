@@ -48,8 +48,9 @@ import java.util.stream.Collectors;
 @JsonInclude( JsonInclude.Include.NON_NULL )
 public class VersionDTO implements Serializable
 {
+    private static final long serialVersionUID = 6451702494637350395L;
 
-	private Long id;
+    private Long id;
 
 	@NotNull
 	@Size( max = 20 )

@@ -31,7 +31,7 @@
     <div class="table-responsive" *ngIf="users">
         <table class="table table-striped" aria-describedby="user-management-page-heading">
             <thead>
-                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="transition.bind(this)">
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="updateSort.bind(this)">
                     <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="login"><span jhiTranslate="userManagement.login">Login</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="email"><span jhiTranslate="userManagement.email">Email</span> <fa-icon icon="sort"></fa-icon></th>
@@ -61,7 +61,7 @@
                     </td>
                     <td>
                         <div *ngFor="let userAgency of user.userAgencies">
-                            <span class="badge badge-info">{{ getAgencyName(userAgency.agencyId)  + ': ' + userAgency.agencyRole + '-' + (userAgency.language! | vocabularyLanguageFromKey) }}</span>
+                            <span class="badge badge-info">{{ getAgencyName(userAgency.agencyId || 0)  + ': ' + userAgency.agencyRole + '-' + (userAgency.language! | vocabularyLanguageFromKey) }}</span>
                         </div>
                     </td>
                     <td>{{ user.createdDate | date:'dd/MM/yy HH:mm' }}</td>
@@ -103,7 +103,7 @@
         </div>
 
         <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+            <ngb-pagination *ngIf="itemsPerPage" [collectionSize]="totalItems" [page]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
 </div>

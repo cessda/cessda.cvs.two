@@ -16,9 +16,9 @@
 package eu.cessda.cvs.service;
 
 public class CodeAlreadyExistException extends RuntimeException {
+    private static final long serialVersionUID = 3165391114846396394L;
 
-    public CodeAlreadyExistException() {
-        super("Notation already exist!");
+    public CodeAlreadyExistException(String code) {
+        super("Notation " + code + " already exists!");
     }
-
 }

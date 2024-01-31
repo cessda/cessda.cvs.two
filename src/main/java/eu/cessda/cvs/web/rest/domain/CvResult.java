@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CvResult implements Serializable {
+    private static final long serialVersionUID = 1607897901898491262L;
+
     private List<VocabularyDTO> vocabularies;
     private long totalElements;
     private int totalPage;

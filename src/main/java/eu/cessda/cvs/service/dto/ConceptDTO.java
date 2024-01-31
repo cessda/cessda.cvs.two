@@ -30,7 +30,7 @@ import java.util.Objects;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ConceptDTO implements Serializable {
-
+    private static final long serialVersionUID = 6393391537097907915L;
 
     private Long id;
 

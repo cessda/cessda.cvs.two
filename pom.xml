@@ -21,7 +21,7 @@
 
     <groupId>eu.cessda.cvs</groupId>
     <artifactId>cvs</artifactId>
-    <version>3.2.1-SNAPSHOT</version>
+    <version>3.4.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>CESSDA Vocabulary Service</name>
     <inceptionYear>2017</inceptionYear>
@@ -80,7 +80,7 @@
         <javassist.version>3.24.0-GA</javassist.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <jaxb-runtime.version>4.0.2</jaxb-runtime.version>
-        <archunit-junit5.version>1.1.0</archunit-junit5.version>
+        <archunit-junit5.version>1.2.0</archunit-junit5.version>
         <log4j2-mock.version>0.0.2</log4j2-mock.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
         <!-- Plugin versions -->
@@ -95,26 +95,22 @@
         <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
         <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
         <maven-checkstyle.version>3.3.0</maven-checkstyle.version>
-        <checkstyle.version>10.12.0</checkstyle.version>
+        <checkstyle.version>10.13.0</checkstyle.version>
         <spring-nohttp-checkstyle.version>0.0.11</spring-nohttp-checkstyle.version>
-        <frontend-maven-plugin.version>1.14.0</frontend-maven-plugin.version>
+        <frontend-maven-plugin.version>1.15.0</frontend-maven-plugin.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
         <jacoco-maven-plugin.version>0.8.10</jacoco-maven-plugin.version>
         <jib-maven-plugin.version>3.4.0</jib-maven-plugin.version>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
         <sonar-maven-plugin.version>3.10.0.2594</sonar-maven-plugin.version>
-        <jacoco.utReportFolder>${project.build.directory}/jacoco/test</jacoco.utReportFolder>
-        <jacoco.utReportFile>${jacoco.utReportFolder}/test.exec</jacoco.utReportFile>
-        <jacoco.itReportFolder>${project.build.directory}/jacoco/integrationTest</jacoco.itReportFolder>
-        <jacoco.itReportFile>${jacoco.itReportFolder}/integrationTest.exec</jacoco.itReportFile>
-        <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
-        <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
         <!-- jhipster-needle-maven-property -->
 
         <!-- SonarQube Properties -->
         <sonar.sources>src/main/</sonar.sources>
         <sonar.tests>src/test/</sonar.tests>
+        <sonar.testExecutionReportPaths>target/test-results/jest/TESTS-results-sonar.xml</sonar.testExecutionReportPaths>
+        <sonar.javascript.lcov.reportPaths>target/test-results/lcov.info</sonar.javascript.lcov.reportPaths>
         <sonar.issue.ignore.multicriteria>S3437,S4502,S4684,BoldAndItalicTagsCheck,S2637</sonar.issue.ignore.multicriteria>
         <!-- Rule https://sonarcloud.io/coding_rules?open=squid%3AS3437&rule_key=squid%3AS3437 is ignored, as a JPA-managed field cannot be transient -->
         <sonar.issue.ignore.multicriteria.S3437.resourceKey>src/main/java/**/*</sonar.issue.ignore.multicriteria.S3437.resourceKey>
@@ -410,7 +406,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.16.1</version>
+            <version>1.17.1</version>
         </dependency>
         <!-- XNIO API for Undertow -->
         <dependency>
@@ -544,48 +540,15 @@
                 <version>${jacoco-maven-plugin.version}</version>
                 <executions>
                     <execution>
-                        <id>pre-unit-tests</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
-                        <configuration>
-                            <!-- Sets the path to the file which contains the execution data. -->
-                            <destFile>${jacoco.utReportFile}</destFile>
-                        </configuration>
                     </execution>
-                    <!-- Ensures that the code coverage report for unit tests is created after unit tests have been run -->
                     <execution>
-                        <id>post-unit-test</id>
-                        <phase>test</phase>
+                        <id>report</id>
                         <goals>
                             <goal>report</goal>
                         </goals>
-                        <configuration>
-                            <dataFile>${jacoco.utReportFile}</dataFile>
-                            <outputDirectory>${jacoco.utReportFolder}</outputDirectory>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>pre-integration-tests</id>
-                        <goals>
-                            <goal>prepare-agent-integration</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Sets the path to the file which contains the execution data. -->
-                            <destFile>${jacoco.itReportFile}</destFile>
-                        </configuration>
-                    </execution>
-                    <!-- Ensures that the code coverage report for integration tests is created after integration tests have been run -->
-                    <execution>
-                        <id>post-integration-tests</id>
-                        <phase>post-integration-test</phase>
-                        <goals>
-                            <goal>report-integration</goal>
-                        </goals>
-                        <configuration>
-                            <dataFile>${jacoco.itReportFile}</dataFile>
-                            <outputDirectory>${jacoco.itReportFolder}</outputDirectory>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -703,7 +666,6 @@
                 <configuration>
                     <!-- Force alphabetical order to have a reproducible build -->
                     <runOrder>alphabetical</runOrder>
-                    <reportsDirectory>${junit.utReportFolder}</reportsDirectory>
                     <excludes>
                         <exclude>**/*IT*</exclude>
                         <exclude>**/*IntTest*</exclude>
@@ -720,26 +682,11 @@
                     <classesDirectory>${project.build.outputDirectory}</classesDirectory>
                     <!-- Force alphabetical order to have a reproducible build -->
                     <runOrder>alphabetical</runOrder>
-                    <reportsDirectory>${junit.itReportFolder}</reportsDirectory>
                     <includes>
                         <include>**/*IT*</include>
                         <include>**/*IntTest*</include>
                     </includes>
                 </configuration>
-                <executions>
-                    <execution>
-                        <id>integration-test</id>
-                        <goals>
-                            <goal>integration-test</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>verify</id>
-                        <goals>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
@@ -777,7 +724,7 @@
             <plugin>
                 <groupId>com.github.alexcojocaru</groupId>
                 <artifactId>elasticsearch-maven-plugin</artifactId>
-                <version>6.27</version>
+                <version>6.28</version>
                 <configuration>
                     <!-- THE ELASTICSEARCH VERSION; REPLACE WITH THE VERSION YOU NEED -->
                     <version>6.8.23</version>
@@ -860,6 +807,7 @@
                 <version>3.0.0</version>
                 <configuration>
                     <tagNameFormat>@{project.version}</tagNameFormat>
+                    <pushChanges>false</pushChanges>
                 </configuration>
             </plugin>
         </plugins>
