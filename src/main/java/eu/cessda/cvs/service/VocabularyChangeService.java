@@ -19,8 +19,8 @@ import eu.cessda.cvs.service.dto.VocabularyChangeDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 /**
  * Service Interface for managing {@link eu.cessda.cvs.domain.VocabularyChange}.
@@ -75,5 +75,5 @@ public interface VocabularyChangeService {
      *
      * @return the list of entities.
      */
-    Stream<VocabularyChangeDTO> findByVersionId(Long versionId);
+    List<VocabularyChangeDTO> findByVersionId(Long versionId);
 }

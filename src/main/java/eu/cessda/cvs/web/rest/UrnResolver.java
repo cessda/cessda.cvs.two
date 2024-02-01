@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * REST controller for resolving URN
@@ -70,7 +69,7 @@ public class UrnResolver {
     }
 
     private Optional<ResponseEntity<String>> getVersionByUrnStartWith(String baseUrl, String urn) {
-        return versionService.findByUrnStartingWith(urn)
+        return versionService.findByUrnStartingWith(urn).stream()
             .filter(v -> v.getStatus().equals(Status.PUBLISHED.toString())).findFirst()
             .map(versionDTO -> {
                 HttpHeaders headers = new HttpHeaders();
@@ -80,7 +79,7 @@ public class UrnResolver {
     }
 
     private Optional<ResponseEntity<String>> getVersionByUrn(String baseUrl, String urn, String lang) {
-        final List<VersionDTO> versions = versionService.findByUrn(urn).collect(Collectors.toList());
+        final List<VersionDTO> versions = versionService.findByUrn(urn);
         Optional<VersionDTO> versionDTOOptional = Optional.empty();
         if( lang != null ) {
             versionDTOOptional = versions.stream().filter(v -> v.getLanguage().equals(lang)).findFirst();

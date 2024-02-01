@@ -21,7 +21,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 
 /**
@@ -32,10 +32,9 @@ import java.util.stream.Stream;
 public interface VocabularyChangeRepository extends JpaRepository<VocabularyChange, Long> {
 
     @Query( "select v from VocabularyChange v where v.vocabularyId = :vocabularyId and v.versionId = :versionId" )
-    Stream<VocabularyChange> findAllByVocabularyVersionId(
+    List<VocabularyChange> findAllByVocabularyVersionId(
         @Param( "vocabularyId" ) Long vocabularyId,
-        @Param( "versionId" ) Long versionId
-    );
+        @Param( "versionId" ) Long versionId );
 
-    Stream<VocabularyChange> findByVersionId(Long versionId);
+    List<VocabularyChange> findByVersionId(Long versionId);
 }

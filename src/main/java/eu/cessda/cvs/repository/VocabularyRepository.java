@@ -23,7 +23,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.stream.Stream;
+import java.util.List;
 
 
 /**
@@ -32,16 +32,16 @@ import java.util.stream.Stream;
 @Repository
 public interface VocabularyRepository extends JpaRepository<Vocabulary, Long>
 {
-    Stream<Vocabulary> findByAgencyId(Long agencyId );
+    List<Vocabulary> findByAgencyId( Long agencyId );
 
-    Stream<Vocabulary> findByNotation(String notation );
+    List<Vocabulary> findByNotation( String notation );
 
     boolean existsByNotation( String notation );
 
     boolean existsByAgencyId( Long agencyId );
 
     @Query( "select DISTINCT v from Vocabulary v where v.withdrawn IS true" )
-    Page<Vocabulary> findAllWithdrawn( Pageable pageable );
+    Page<Vocabulary> findAllWithdrawn(Pageable pageable );
 
     @Query( "select DISTINCT v from Vocabulary v where v.agencyId = :agencyId AND v.withdrawn IS true" )
     Page<Vocabulary> findAllWithdrawn(@Param( "agencyId" ) Long agencyId, Pageable pageable );

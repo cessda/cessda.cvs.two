@@ -20,14 +20,11 @@ import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -38,7 +35,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
@@ -46,7 +42,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * REST controller for managing {@link eu.cessda.cvs.domain.Version}.
@@ -123,7 +118,7 @@ public class VersionResource {
             auditUserString = auditUser.get();
         }
         auditPublisher.publish(auditUserString, null, result, null, "UPDATE_VERSION");
-        
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, versionDTO.getId().toString()))
             .body(result);
@@ -218,7 +213,7 @@ public class VersionResource {
                 status.add( split.trim() );
             }
         }
-        List<String> languagesIsos = versionService.findAllLanguagesByStatus(status).collect(Collectors.toList());
+        List<String> languagesIsos = versionService.findAllLanguagesByStatus(status);
 
         return ResponseEntity.ok().body( languagesIsos );
     }

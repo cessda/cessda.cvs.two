@@ -36,8 +36,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * REST controller for managing {@link eu.cessda.cvs.domain.VocabularyChange}.
@@ -164,8 +162,7 @@ public class VocabularyChangeResource {
     @GetMapping("/vocabulary-changes/version-id/{versionId}")
     public ResponseEntity<List<VocabularyChangeDTO>> getAllVocabularyChanges(@PathVariable Long versionId) {
         log.debug("REST request to get list of VocabularyChanges by versionId {}", versionId);
-        try (Stream<VocabularyChangeDTO> vocabularyChangeDTOS = vocabularyChangeService.findByVersionId(versionId)) {
-            return ResponseEntity.ok().body(vocabularyChangeDTOS.collect(Collectors.toList()));
-        }
+        var vocabularyChangeDTOS = vocabularyChangeService.findByVersionId(versionId);
+        return ResponseEntity.ok(vocabularyChangeDTOS);
     }
 }
