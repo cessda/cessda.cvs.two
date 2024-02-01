@@ -23,7 +23,6 @@ import eu.cessda.cvs.service.FileUploadType;
 import eu.cessda.cvs.service.MetadataFieldService;
 import eu.cessda.cvs.service.dto.MetadataValueDTO;
 import eu.cessda.cvs.web.rest.domain.SimpleResponse;
-import eu.cessda.cvs.web.rest.utils.AccessibleByteArrayOutputStream;
 import org.docx4j.Docx4J;
 import org.docx4j.Docx4jProperties;
 import org.docx4j.convert.out.HTMLSettings;
@@ -37,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -81,7 +81,7 @@ public class FileUploadResource
      * @return the UUID of uploaded file name
      */
     @PostMapping( "/agency-image" )
-    public ResponseEntity<String> uploadAgencyImage( @RequestParam( "file" ) MultipartFile file ) throws IOException, URISyntaxException
+    public ResponseEntity<Void> uploadAgencyImage( @RequestParam( "file" ) MultipartFile file ) throws IOException, URISyntaxException
     {
         log.info( "Uploading agency-image file {}", file.getName() );
         FileUploadHelper fileUploadHelper = new FileUploadHelper();
@@ -93,7 +93,7 @@ public class FileUploadResource
 
         return ResponseEntity.status( HttpStatus.CREATED )
             .location( new URI( UPLOADED_IMAGES_URI + "agency/" + fileUploadHelper.getUploadedFile().getFileName() ) )
-            .body( fileUploadHelper.getUploadedFile().getFileName().toString() );
+            .build();
     }
 
     /**
@@ -103,7 +103,7 @@ public class FileUploadResource
      * @return the UUID of uploaded file name
      */
     @PostMapping( "/license-image" )
-    public ResponseEntity<String> uploadLicenseImage( @RequestParam( "file" ) MultipartFile file ) throws URISyntaxException, IOException
+    public ResponseEntity<Void> uploadLicenseImage( @RequestParam( "file" ) MultipartFile file ) throws URISyntaxException, IOException
     {
         log.info( "Uploading license-image file {}", file.getName() );
         FileUploadHelper fileUploadHelper = new FileUploadHelper();
@@ -115,7 +115,7 @@ public class FileUploadResource
 
         return ResponseEntity.status( HttpStatus.CREATED )
             .location( new URI( UPLOADED_IMAGES_URI + "license/" + fileUploadHelper.getUploadedFile().getFileName() ) )
-            .body( fileUploadHelper.getUploadedFile().getFileName().toString() );
+            .build();
     }
 
     /**
@@ -125,7 +125,7 @@ public class FileUploadResource
      * @return the UUID of uploaded file name
      */
     @PostMapping( "/file" )
-    public ResponseEntity<String> uploadFile( @RequestParam( "file" ) MultipartFile file ) throws URISyntaxException, IOException
+    public ResponseEntity<Void> uploadFile( @RequestParam( "file" ) MultipartFile file ) throws URISyntaxException, IOException
     {
         log.info( "Uploading file {}", file.getName() );
         FileUploadHelper fileUploadHelper = new FileUploadHelper();
@@ -137,7 +137,7 @@ public class FileUploadResource
 
         return ResponseEntity.status( HttpStatus.CREATED )
             .location( new URI( UPLOADED_FILE_URI + fileUploadHelper.getUploadedFile().getFileName() ) )
-            .body( fileUploadHelper.getUploadedFile().getFileName().toString() );
+            .build();
     }
 
     @PostMapping( "/docx2html/{fileName}" )
@@ -165,7 +165,7 @@ public class FileUploadResource
         htmlSettings.setOpcPackage( wordMLPackage );
 
         // Store the HTML in this buffer
-        var outputBuffer = new AccessibleByteArrayOutputStream();
+        var outputBuffer = new FastByteArrayOutputStream();
 
         // Export to HTML, then parse with Jsoup
         Docx4J.toHTML( htmlSettings, outputBuffer, Docx4J.FLAG_EXPORT_PREFER_XSL );

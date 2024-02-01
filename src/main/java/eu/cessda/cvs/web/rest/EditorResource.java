@@ -31,7 +31,6 @@ import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import eu.cessda.cvs.web.rest.domain.CvResult;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
-import eu.cessda.cvs.web.rest.utils.AccessibleByteArrayOutputStream;
 import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -46,6 +45,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -1044,7 +1044,7 @@ public class EditorResource {
     ) {
         log.debug("Editor REST request to get a SKOS-RDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
 
-        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        var outputStream = new FastByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.SKOS, ResourceUtils.getURLWithContextPath(request), outputStream );
 
         InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
@@ -1070,7 +1070,7 @@ public class EditorResource {
     ) {
         log.debug("Editor REST request to get a PDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
 
-        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        var outputStream = new FastByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.PDF, ResourceUtils.getURLWithContextPath(request), outputStream );
 
         InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
@@ -1096,10 +1096,11 @@ public class EditorResource {
     ) {
         log.debug("Editor REST request to get a HTML file of vocabulary {} with version {} with included versions {}", cv, v, lv);
 
-        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        var outputStream = new FastByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.HTML, ResourceUtils.getURLWithContextPath(request), outputStream );
 
         InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
+
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
         return ResponseEntity.ok()
