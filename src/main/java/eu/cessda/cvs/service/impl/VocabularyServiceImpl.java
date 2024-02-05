@@ -812,7 +812,7 @@ public class VocabularyServiceImpl implements VocabularyService
             throw new IllegalArgumentException( "Error notation could not be empty or null" );
         }
         log.debug( "Request to get Vocabulary by notation: {}", notation );
-        final List<Vocabulary> vocabularies = vocabularyRepository.findByNotation( notation );
+        final List<Vocabulary> vocabularies = vocabularyRepository.findAllByNotation( notation );
         if ( vocabularies.isEmpty() ) {
             log.error( "Error vocabulary with notation {} does not exist", notation );
             throw new ResourceNotFoundException( UNABLE_FIND_VOCABULARY + "or notation " + notation,  notation, "404" );
@@ -1665,7 +1665,7 @@ public class VocabularyServiceImpl implements VocabularyService
     @Override
     @Transactional
     public void updateVocabularyUri( Long agencyId, String agencyUri, String agencyUriCode ) {
-        vocabularyRepository.findByAgencyId( agencyId ).forEach(vocabulary -> {
+        vocabularyRepository.findAllByAgencyId( agencyId ).forEach( vocabulary -> {
             vocabulary.setUri(VocabularyUtils.generateUri(agencyUri, vocabulary));
             final List<Version> versions = vocabulary.getVersions().stream()
                 .sorted(VocabularyUtils.VERSION_COMPARATOR)
@@ -1684,7 +1684,7 @@ public class VocabularyServiceImpl implements VocabularyService
     @Transactional
     public void updateVocabularyLogo( Long agencyId, String agencyLogoPath ) {
         final List<Long> changedVocabularies = new ArrayList<>();
-        vocabularyRepository.findByAgencyId(agencyId).forEach(vocabulary -> {
+        vocabularyRepository.findAllByAgencyId(agencyId).forEach( vocabulary -> {
             // exit if no logo update
             if ((vocabulary.getAgencyLogo() != null) && (vocabulary.getAgencyLogo().equals(agencyLogoPath))) {
                 return;

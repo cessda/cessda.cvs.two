@@ -32,9 +32,9 @@ import java.util.List;
 @Repository
 public interface VocabularyRepository extends JpaRepository<Vocabulary, Long>
 {
-    List<Vocabulary> findByAgencyId( Long agencyId );
+    List<Vocabulary> findAllByAgencyId( Long agencyId );
 
-    List<Vocabulary> findByNotation( String notation );
+    List<Vocabulary> findAllByNotation( String notation );
 
     boolean existsByNotation( String notation );
 

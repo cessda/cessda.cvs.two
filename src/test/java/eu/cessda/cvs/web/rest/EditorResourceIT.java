@@ -552,7 +552,7 @@ class EditorResourceIT {
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
             .andExpect(status().isOk());
-        Vocabulary testVocabulary = vocabularyRepository.findByNotation( version.getNotation() ).stream().findFirst().orElse(null);
+        Vocabulary testVocabulary = vocabularyRepository.findAllByNotation( version.getNotation() ).stream().findFirst().orElse(null);
         assertThat(testVocabulary).isNotNull();
         return getLatestVersionByNotationAndLang(vocabularyRepository.findAll(), version.getNotation(), version.getLanguage());
     }
@@ -614,7 +614,7 @@ class EditorResourceIT {
         restMockMvc.perform(post("/api/editors/vocabularies/new-version/" + version.getId())
             .header("Authorization", jwt))
             .andExpect(status().isOk());
-        final Vocabulary vocabulary = vocabularyRepository.findByNotation(version.getNotation()).stream().findAny().orElseThrow();
+        final Vocabulary vocabulary = vocabularyRepository.findAllByNotation(version.getNotation()).stream().findAny().orElseThrow();
         assertThat(vocabulary).isNotNull();
         // sort to make sure that the order is correct from latest to oldest
         final List<Version> versions = vocabulary.getVersions().stream().sorted(VocabularyUtils.VERSION_COMPARATOR).collect(Collectors.toList());

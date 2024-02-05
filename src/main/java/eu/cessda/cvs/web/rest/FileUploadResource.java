@@ -23,6 +23,7 @@ import eu.cessda.cvs.service.FileUploadType;
 import eu.cessda.cvs.service.MetadataFieldService;
 import eu.cessda.cvs.service.dto.MetadataValueDTO;
 import eu.cessda.cvs.web.rest.domain.SimpleResponse;
+import org.apache.commons.io.FilenameUtils;
 import org.docx4j.Docx4J;
 import org.docx4j.Docx4jProperties;
 import org.docx4j.convert.out.HTMLSettings;
@@ -143,11 +144,15 @@ public class FileUploadResource
     @PostMapping( "/docx2html/{fileName}" )
     public ResponseEntity<SimpleResponse> docx2html( @PathVariable String fileName ) throws IOException, Docx4JException, URISyntaxException
     {
+        // Strip out potential path parameters
+        fileName = FilenameUtils.getName( fileName );
+
         log.info( "Converting DOCX to HTML {}", fileName );
 
         Docx4jProperties.getProperties().setProperty( "docx4j.Log4j.Configurator.disabled", "true" );
 
         WordprocessingMLPackage wordMLPackage;
+
         try ( var inputStream = new FileInputStream( new File( applicationProperties.getUploadFilePath(), fileName ) ) )
         {
             wordMLPackage = Docx4J.load( inputStream );
@@ -206,6 +211,9 @@ public class FileUploadResource
     @PostMapping( "/html2section/{fileName}/{metadataKey}" )
     public ResponseEntity<SimpleResponse> html2section( @PathVariable String fileName, @PathVariable String metadataKey ) throws IOException
     {
+        // Strip out potential path parameters
+        fileName =  FilenameUtils.getName( fileName );
+
         log.info( "Uploading file {}", fileName );
 
         File initialFile = new File( applicationProperties.getUploadFilePath() + fileName + HTML );
