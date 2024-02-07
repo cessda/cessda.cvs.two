@@ -111,7 +111,7 @@ public interface VocabularyService {
      * Delete the entire CV publish JSON directory given path
      * @param path of the JSON CV published files
      */
-    void deleteCvJsonDirectoryAndContent(String path);
+    void deleteCvJsonDirectoryAndContent(Path path);
 
     /**
      * get Vocabulary by notation

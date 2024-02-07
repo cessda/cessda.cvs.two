@@ -55,6 +55,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -343,7 +344,7 @@ public class EditorResource {
 
                 if( versionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
                     // remove published JSON file, re-create the JSON file and re-index for published vocabulary
-                    vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
+                    vocabularyService.deleteCvJsonDirectoryAndContent( Path.of( applicationProperties.getVocabJsonPath(), vocabularyDTO.getNotation() ));
                     vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
                     vocabularyService.indexPublished(vocabularyDTO);
                 }
@@ -385,7 +386,7 @@ public class EditorResource {
         vocabularyService.indexEditor( vocabularyDTO );
         if( isTlPublished ) {
             // remove published JSON file, re-create the JSON file and re-index for published vocabulary
-            vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
+            vocabularyService.deleteCvJsonDirectoryAndContent( Path.of( applicationProperties.getVocabJsonPath(), vocabularyDTO.getNotation() ) );
             vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
             vocabularyService.indexPublished(vocabularyDTO );
         }
