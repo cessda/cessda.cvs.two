@@ -162,7 +162,7 @@ public class VocabularyChangeResource {
     @GetMapping("/vocabulary-changes/version-id/{versionId}")
     public ResponseEntity<List<VocabularyChangeDTO>> getAllVocabularyChanges(@PathVariable Long versionId) {
         log.debug("REST request to get list of VocabularyChanges by versionId {}", versionId);
-        List<VocabularyChangeDTO> vocabularyChangeDTOS = vocabularyChangeService.findByVersionId(versionId);
-        return ResponseEntity.ok().body(vocabularyChangeDTOS);
+        var vocabularyChangeDTOS = vocabularyChangeService.findByVersionId(versionId);
+        return ResponseEntity.ok(vocabularyChangeDTOS);
     }
 }

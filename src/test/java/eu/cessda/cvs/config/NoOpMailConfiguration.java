@@ -19,6 +19,8 @@ import eu.cessda.cvs.service.MailService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.mail.MessagingException;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
@@ -27,7 +29,8 @@ import static org.mockito.Mockito.mock;
 public class NoOpMailConfiguration {
     private final MailService mockMailService;
 
-    public NoOpMailConfiguration() {
+    public NoOpMailConfiguration() throws MessagingException
+    {
         mockMailService = mock(MailService.class);
         doNothing().when(mockMailService).sendActivationEmail(any());
     }

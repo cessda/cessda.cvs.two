@@ -24,6 +24,7 @@ import java.util.Objects;
  * A DTO for the {@link eu.cessda.cvs.domain.Licence} entity.
  */
 public class LicenceDTO implements Serializable {
+    private static final long serialVersionUID = -6758468839650832552L;
 
     private Long id;
 

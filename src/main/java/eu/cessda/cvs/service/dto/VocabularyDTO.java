@@ -42,6 +42,7 @@ import java.util.stream.Collectors;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VocabularyDTO implements Serializable {
+    private static final long serialVersionUID = -8464813042927663693L;
 
     private Long id;
 
@@ -1408,7 +1409,7 @@ public class VocabularyDTO implements Serializable {
         List<VersionDTO> versionGroups = new ArrayList<>();
         List<VersionDTO> vGroups = this.versions.stream()
             .filter(v -> v.getNumber().equals(versionNumber))
-            .sorted(VocabularyUtils.versionDtoComparator())
+            .sorted(VocabularyUtils.VERSION_DTO_COMPARATOR)
             .collect(Collectors.toList());
 
         if( noSameLanguage ) {
@@ -1430,7 +1431,7 @@ public class VocabularyDTO implements Serializable {
         List<VersionDTO> versionGroups = new ArrayList<>();
         List<VersionDTO> vGroups = this.versions.stream()
             .filter(v -> v.getNumber().equalMinorVersionNumber(minorVersionNumber))
-            .sorted(VocabularyUtils.versionDtoComparator())
+            .sorted(VocabularyUtils.VERSION_DTO_COMPARATOR)
             .collect(Collectors.toList());
 
         if( noSameLanguage ) {

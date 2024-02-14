@@ -28,9 +28,12 @@ public interface UserAgencyMapper extends EntityMapper<UserAgencyDTO, UserAgency
 
     @Mapping(source = "agency.id", target = "agencyId")
     @Mapping(source = "agency.name", target = "agencyName")
+    @Mapping(source = "user.id", target = "userId")
     UserAgencyDTO toDto(UserAgency userAgency);
 
     @Mapping(source = "agencyId", target = "agency")
+    // @Mapping(source = "userId", target = "user") - TODO: should this be mapped?
+    @Mapping(target = "user", ignore = true)
     UserAgency toEntity(UserAgencyDTO userAgencyDTO);
 
     default UserAgency fromId(Long id) {

@@ -127,12 +127,6 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleVocabularyNotFoundException(eu.cessda.cvs.service.VocabularyNotFoundException ex, NativeWebRequest request) {
-        VocabularyNotFoundException problem = new VocabularyNotFoundException();
-        return create(problem, request, HeaderUtil.createFailureAlert(applicationName,  true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
-    }
-
-    @ExceptionHandler
     public ResponseEntity<Problem> handleCodeAlreadyExistException(eu.cessda.cvs.service.CodeAlreadyExistException ex, NativeWebRequest request) {
         CodeAlreadyExistException problem = new CodeAlreadyExistException();
         return create(problem, request, HeaderUtil.createFailureAlert(applicationName,  true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));

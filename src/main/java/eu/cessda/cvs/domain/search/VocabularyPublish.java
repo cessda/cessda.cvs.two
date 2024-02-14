@@ -27,6 +27,7 @@ import java.util.Set;
 
 @Document(indexName = "vocabularypublish")
 public class VocabularyPublish extends VocabularyBase {
+    private static final long serialVersionUID = 1315418060181340404L;
 
     @Field( type = FieldType.Nested, store = true )
     private Set<Code> codes = new HashSet<>();

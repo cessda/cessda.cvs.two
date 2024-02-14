@@ -32,7 +32,6 @@ public class PasswordChangeDTO {
     }
 
     public String getCurrentPassword() {
-
         return currentPassword;
     }
 

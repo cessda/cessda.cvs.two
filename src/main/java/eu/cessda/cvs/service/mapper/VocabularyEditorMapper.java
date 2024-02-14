@@ -26,6 +26,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {CodeMapper.class})
 public interface VocabularyEditorMapper extends EntityMapper<VocabularyDTO, VocabularyEditor> {
 
+    // TODO: evaluate these mappings
     @Mapping(source = "codes", target = "codes")
     @Mapping(source = "languages", target = "languages")
     @Mapping(source = "statuses", target = "statuses")

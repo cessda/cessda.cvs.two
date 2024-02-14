@@ -117,25 +117,22 @@ class FileUploadResourceTestIT
         String fileName = FilenameUtils.getName( result.getResponse().getHeader( "location" ) );
         assertThat(fileName).isNotNull();
         fileUploadResourceMockMvc.perform( post( "/api/upload/docx2html/{fileName}", fileName ) )
-            .andExpect( status().isOk() )
-            .andExpect( jsonPath( "$.status" ).value( "OK" ) )
-            .andExpect( jsonPath( "$.message" ).value( fileName ) );
+            .andExpect( status().isCreated())
+            .andExpect( header().string("location", containsString(fileName + ".html"))  );
 
         // Verify that the HTML has been generated
-        File htmlFile = new File( "target/classes/static/content/file/" + fileName + "_2.html" );
+        File htmlFile = new File( "target/classes/static/content/file/", fileName + ".html" );
         assertThat( FileUtils.readFileToString( htmlFile, StandardCharsets.UTF_8) ).contains( "Test document" );
     }
 
     @Test
-    void shouldReturn503IfDocumentWasNotFound() throws Exception
+    void shouldReturn404IfDocumentWasNotFound() throws Exception
     {
         // Attempt to load a document that doesn't exist
         String fileName = FilenameUtils.getName( UUID.randomUUID() + ".docx" );
 
-        // Verify that an internal server error is returned
+        // Verify that a not found response is returned
         fileUploadResourceMockMvc.perform( post( "/api/upload/docx2html/{fileName}", fileName ) )
-            .andExpect( status().isInternalServerError() )
-            .andExpect( jsonPath( "$.status" ).value( "Not OK" ) )
-            .andExpect( jsonPath( "$.message" ).value( fileName ) );
+            .andExpect( status().isNotFound() );
     }
 }

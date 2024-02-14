@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class Aggr implements Serializable {
-    private static final long serialVersionUID = 657951233189888810L;
+    private static final long serialVersionUID = -7907701690323224787L;
 
     private final String type;
     private final String field;

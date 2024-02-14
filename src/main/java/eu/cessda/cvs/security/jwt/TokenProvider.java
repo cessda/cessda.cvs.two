@@ -132,7 +132,7 @@ public class TokenProvider {
         } catch (JwtException | IllegalArgumentException e) {
             log.info("Invalid JWT token.");
             log.trace("Invalid JWT token trace.", e);
+            return false;
         }
-        return false;
     }
 }

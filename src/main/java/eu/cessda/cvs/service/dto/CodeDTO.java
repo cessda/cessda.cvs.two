@@ -19,10 +19,11 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
-
 import eu.cessda.cvs.domain.Code;
 import eu.cessda.cvs.domain.enumeration.Language;
+import eu.cessda.cvs.utils.HashFunction;
 import eu.cessda.cvs.utils.VersionNumber;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Lob;
@@ -33,13 +34,12 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.codec.digest.DigestUtils;
-
 /**
  * A DTO for the {@link Code} entity.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CodeDTO implements Serializable {
+    private static final long serialVersionUID = -5916802523668287620L;
 
     private Long id;
 
@@ -275,15 +275,18 @@ public class CodeDTO implements Serializable {
 
     public CodeDTO addLanguage(String language) {
         if(languages == null)
+        {
             languages = new HashSet<>();
+        }
         this.languages.add(language);
         return this;
     }
 
     public void removeLanguage(String language) {
-        if(languages == null)
-            return;
-        this.languages.remove(language);
+        if ( languages != null )
+        {
+            this.languages.remove( language );
+        }
     }
 
     public String getParent() {
@@ -1054,52 +1057,14 @@ public class CodeDTO implements Serializable {
         return codes.stream().filter( voc -> voc.getId() == docId).findFirst();
     }
 
-    public enum HashFunction {
-        
-        MD2("md2", DigestUtils::md2Hex),
-        MD5("md5", DigestUtils::md5Hex),
-        SHA1("sha1", DigestUtils::sha1Hex),
-        SHA256("sha256", DigestUtils::sha256Hex);
-
-        interface Function {
-            String exec(String str);
-        }
-
-        private String name;
-        private Function fn;
-
-        HashFunction(String name, Function fn) {
-            this.name = name;
-            this.fn = fn;
-        }
-
-        public String getName() {
-            return this.name;
-        }
-
-        public Function getFn() {
-            return this.fn;
-        }
-
-        public static HashFunction fromString(String str) {
-            for (HashFunction hf : HashFunction.values()) {
-                if (hf.name.equalsIgnoreCase(str)) {
-                    return hf;
-                }
-            }
-            return null;
-        }
-    }
-
-    public static String generateHash(HashFunction hf, String str, Integer len) {
-        
+    public static String generateHash( HashFunction hf, String str, Integer len) {
         // default hash
         String hash = '#' + str;
 
         if (hf != null) {
-            hash = hf.getFn().exec(str);
+            hash = hf.hash(str);
         }
-        
+
         // truncate
         if (len != null && len > 0) {
             hash = hash.substring(0, len);
@@ -1122,7 +1087,7 @@ public class CodeDTO implements Serializable {
         }
 
         Matcher m = patternHashCodeUriPlaceholder.matcher(uri);
-        
+
         while (m.find()) {
             HashFunction hf = HashFunction.fromString(m.group(1));
             Integer len = Integer.parseInt(m.group(2));
@@ -1135,7 +1100,7 @@ public class CodeDTO implements Serializable {
 
     public static Set<CodeDTO> generateCodesFromVersion(Set<VersionDTO> versions, boolean isForEditor){
         Map<String, CodeDTO> codeDTOsMap = new LinkedHashMap<>();
-        // use to ignore version with same lang, eg. FRv2.0.2 and FRv2.0.1 only FRv.2.0.2 will be chosen
+        // use to ignore version with same lang, e.g. FRv2.0.2 and FRv2.0.1 only FRv.2.0.2 will be chosen
         Set<String> versionLangs = new HashSet<>();
         long codeIndex = 0L;
         // code ID for editor will always on even number, the publication code will be on odd number
@@ -1178,9 +1143,7 @@ public class CodeDTO implements Serializable {
     }
 
     /**
-     * Get title from specific language. Used for Thymeleaf. Do not remove
-     * @param language
-     * @return
+     * Get title from specific language. Used by Thymeleaf. Do not remove
      */
     public String getTitleByLanguage( String language ) {
         return getTitleByLanguage( Language.getByIso(language.toLowerCase()) );
@@ -1221,9 +1184,7 @@ public class CodeDTO implements Serializable {
     }
 
     /**
-     * Get definition from specific language. Used for Thymeleaf. Do not remove
-     * @param language
-     * @return
+     * Get definition from specific language. Used by Thymeleaf. Do not remove.
      */
     public String getDefinitionByLanguage( String language ) {
         return getDefinitionByLanguage( Language.getByIso(language.toLowerCase()));
