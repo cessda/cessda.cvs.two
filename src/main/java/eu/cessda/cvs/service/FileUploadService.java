@@ -21,11 +21,9 @@ import org.imgscalr.Scalr;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 public class FileUploadService {
@@ -49,21 +47,21 @@ public class FileUploadService {
     private static void uploadSpecificFile( FileUploadHelper fileUploadHelper ) throws IOException
     {
         // Create destination directory if it does not exist.
-        createUploadDirectory( Paths.get( fileUploadHelper.getUploadBaseDirectory() ) );
+        createUploadDirectory( fileUploadHelper.getUploadBaseDirectory() );
 
         // Generate destination file name and try to retrieve the file extension from the upload
-        String destinationFileName = fileUploadHelper.getUploadBaseDirectory() + File.separator + UUID.randomUUID();
+        Path destinationFileName = fileUploadHelper.getUploadBaseDirectory().resolve(UUID.randomUUID().toString());
         String fileExtension = FilenameUtils.getExtension( fileUploadHelper.getSourceFile().getOriginalFilename() );
 
-        final File uploadedFile;
+        final Path uploadedFile;
         if (fileExtension != null && !fileExtension.isEmpty()) {
-            uploadedFile = new File( destinationFileName + "." + fileExtension );
+            uploadedFile = Path.of( destinationFileName + "." + fileExtension );
         } else {
-            uploadedFile = new File( destinationFileName );
+            uploadedFile = destinationFileName;
         }
 
         // Transfer the file to the destination. To work around an MVC bug, uploadedFile is converted to an absolute location.
-        fileUploadHelper.getSourceFile().transferTo( uploadedFile.getAbsoluteFile() );
+        fileUploadHelper.getSourceFile().transferTo( uploadedFile.toAbsolutePath() );
         fileUploadHelper.setUploadedFile( uploadedFile );
     }
 
@@ -90,23 +88,23 @@ public class FileUploadService {
         String fileName = UUID.randomUUID() + ".jpg";
 
 
-        File destFile = new File( fileUploadHelper.getUploadBaseDirectory() + File.separator + fileName );
-        File pathFileThumb = new File( fileUploadHelper.getUploadBaseDirectory() + File.separator + "thumbs" );
-        File destFileThumb = new File( pathFileThumb + File.separator + fileName );
+        Path destFile = fileUploadHelper.getUploadBaseDirectory().resolve(fileName);
+        Path pathFileThumb = fileUploadHelper.getUploadBaseDirectory().resolve("thumbs");
+        Path destFileThumb = pathFileThumb.resolve( fileName );
 
         // Create destination directories if it does not exist.
-        createUploadDirectory( destFile.toPath().getParent() );
-        createUploadDirectory( pathFileThumb.toPath() );
+        createUploadDirectory( fileUploadHelper.getUploadBaseDirectory() );
+        createUploadDirectory( pathFileThumb );
 
         BufferedImage img = ImageIO.read( fileUploadHelper.getSourceFile().getInputStream() );
 
         // Scale image to an appropriate size
         BufferedImage scaledImg = Scalr.resize(img, Scalr.Mode.AUTOMATIC, 300, 300);
-        ImageIO.write(fillTransparentPixels( scaledImg ), "jpg", destFile);
+        ImageIO.write(fillTransparentPixels( scaledImg ), "jpg", destFile.toFile());
 
         // Create thumbnail variant of the image
         BufferedImage scaledImgThumb = Scalr.resize(img, Scalr.Mode.AUTOMATIC, 180, 180);
-        ImageIO.write(fillTransparentPixels( scaledImgThumb ), "jpg", destFileThumb);
+        ImageIO.write(fillTransparentPixels( scaledImgThumb ), "jpg", destFileThumb.toFile());
 
         // Set destination files on successful writes
         fileUploadHelper.setUploadedFile( destFile );

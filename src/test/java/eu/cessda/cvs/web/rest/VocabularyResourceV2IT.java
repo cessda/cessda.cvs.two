@@ -35,6 +35,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -222,50 +224,32 @@ class VocabularyResourceV2IT {
 
     @Test
     @Transactional
-    void getVocabulariesTest() throws Exception {
+    void getVocabulariesRedirectTest() throws Exception
+    {
         restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
-            "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
-            EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(MediaType.TEXT_HTML_VALUE))
-            .andExpect(status().isTemporaryRedirect());
+                "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
+                EditorResourceIT.INIT_VERSION_NUMBER_SL)
+                .accept(MediaType.TEXT_HTML_VALUE))
+                .andExpect(status().isTemporaryRedirect());
+    }
 
+    @ParameterizedTest
+    @Transactional
+    @ValueSource( strings = {
+        MediaType.APPLICATION_JSON_VALUE,
+        MediaType.APPLICATION_PDF_VALUE,
+        MediaType.APPLICATION_XHTML_XML_VALUE,
+        VocabularyResourceV2.DOCX_TYPE,
+        VocabularyResourceV2.JSONLD_TYPE,
+        ResourceUtils.MEDIATYPE_RDF_VALUE,
+    } )
+    void getVocabulariesTest(String mediaType) throws Exception {
         restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
             "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
             EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(MediaType.APPLICATION_XHTML_XML_VALUE))
-            .andExpect(status().isOk());
-
-        restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
-            "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
-            EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(MediaType.APPLICATION_JSON_VALUE))
+            .accept(mediaType))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
-
-        restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
-            "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
-            EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(VocabularyResourceV2.JSONLD_TYPE))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(VocabularyResourceV2.JSONLD_TYPE));
-
-        restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
-            "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
-            EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(MediaType.APPLICATION_PDF_VALUE))
-            .andExpect(status().isOk());
-
-        restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
-            "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
-            EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(VocabularyResourceV2.DOCX_TYPE))
-            .andExpect(status().isOk());
-
-        restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
-            "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
-            EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(MediaType.APPLICATION_XML_VALUE))
-            .andExpect(status().isOk());
+            .andExpect( content().contentTypeCompatibleWith( mediaType ) );
     }
 
     @Test
@@ -318,31 +302,31 @@ class VocabularyResourceV2IT {
             .accept(ResourceUtils.MEDIATYPE_RDF_VALUE))
             .andExpect(status().isOk())
             .andExpect(content().contentType(ResourceUtils.MEDIATYPE_RDF_VALUE));
-        
+
         // Retireve the HTML output
         restMockMvc.perform(get("/v2/vocabularies/html/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
             .accept(MediaType.TEXT_HTML_VALUE))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.TEXT_HTML_VALUE));
-        
+
         // Retireve the JSON output
         restMockMvc.perform(get("/v2/vocabularies/json/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
             .accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
-        
+
         // Retireve the JSONDL output
         restMockMvc.perform(get("/v2/vocabularies/jsonld/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
             .accept(VocabularyResourceV2.JSONLD_TYPE))
             .andExpect(status().isOk())
             .andExpect(content().contentType(VocabularyResourceV2.JSONLD_TYPE));
-        
+
         // Retireve the PDF output
         restMockMvc.perform(get("/v2/vocabularies/pdf/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
             .accept(MediaType.APPLICATION_PDF_VALUE))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_PDF_VALUE));
-        
+
         // Retireve the DOCX output
         restMockMvc.perform(get("/v2/vocabularies/docx/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
             .accept(ExportService.DownloadType.WORD.getMediaType()))
@@ -360,7 +344,7 @@ class VocabularyResourceV2IT {
             .accept(ResourceUtils.MEDIATYPE_RDF_VALUE))
             .andExpect(status().isOk())
             .andExpect(content().contentType(ResourceUtils.MEDIATYPE_RDF_VALUE));
-        
+
         result = restMockMvc.perform(get("/v2/vocabularies/rdf/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)).andReturn();
         String content = result.getResponse().getContentAsString();
         assertThat(content).doesNotContain(charSequence);

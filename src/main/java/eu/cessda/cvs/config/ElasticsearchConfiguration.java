@@ -19,6 +19,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.type.MapType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.elasticsearch.client.Client;
 import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -28,7 +30,6 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.EntityMapper;
-import org.springframework.data.mapping.MappingException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,6 +56,8 @@ public class ElasticsearchConfiguration {
     }
 
     public static class CustomEntityMapper implements EntityMapper {
+        private static final MapType MAP_STRING_OBJECT_TYPE = TypeFactory.defaultInstance()
+            .constructMapType( HashMap.class, String.class, Object.class );
 
         private final ObjectMapper objectMapper;
 
@@ -78,22 +81,13 @@ public class ElasticsearchConfiguration {
         }
 
         @Override
-        @SuppressWarnings("unchecked")
         public Map<String, Object> mapObject(Object source) {
-            try {
-                return objectMapper.readValue(mapToString(source), HashMap.class);
-            } catch (JsonProcessingException e) {
-                throw new MappingException(e.getMessage(), e);
-            }
+            return objectMapper.convertValue(source , MAP_STRING_OBJECT_TYPE);
         }
 
         @Override
         public <T> T readObject (Map<String, Object> source, Class<T> targetType) {
-            try {
-                return mapToObject(mapToString(source), targetType);
-            } catch (JsonProcessingException e) {
-                throw new MappingException(e.getMessage(), e);
-            }
+            return objectMapper.convertValue(source, targetType);
         }
 
     }

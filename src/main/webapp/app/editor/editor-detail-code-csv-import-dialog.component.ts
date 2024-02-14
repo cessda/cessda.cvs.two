@@ -131,7 +131,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
     delimiter = delimiter || ','; // user-supplied delimiter or default comma
 
     const pattern = new RegExp( // regular expression to parse the CSV values.
-    // Delimiters:
+      // Delimiters:
       '(\\' +
         delimiter +
         '|\\r?\\n|\\r|^)' +

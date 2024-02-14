@@ -110,9 +110,8 @@ public class VocabularyChangeServiceImpl implements VocabularyChangeService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<VocabularyChangeDTO> findByVersionId(Long versionId) {
+    public List<VocabularyChangeDTO> findByVersionId( Long versionId ) {
         log.debug("Request to get all VocabularyChanges by versionId {}", versionId);
-        return vocabularyChangeRepository.findByVersionId(versionId).stream()
-            .map(vocabularyChangeMapper::toDto).collect(Collectors.toList());
+        return vocabularyChangeRepository.findByVersionId(versionId).stream().map(vocabularyChangeMapper::toDto).collect(Collectors.toList());
     }
 }

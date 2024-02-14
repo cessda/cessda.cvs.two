@@ -180,7 +180,7 @@
 
 		<div class="page">
 			<div style="width: 100%;">
-				<div style="width:130px;float:left;padding-right:15px">
+				<div style="width:130px;float:left;padding-right:15px" th:if="${agency.logo != null}">
 					<img alt="agency-logo" class="logo" th:src="@{${agency.logo}}"/>
 				</div>
 				<div>
@@ -287,8 +287,8 @@
         <h2>License and citation</h2>
         <p>Copyright © <a th:href="${agency.link}" th:text="${agency.name}"></a> <span th:text="${year}"></span>.</p>
         <p th:if="${version.licenseName != null}">
-            <a rel="license" th:href="${version.licenseLink}">
-                <img style="border-width:0;width:140px" alt="licanse-logo" th:attr="src=${version.licenseLogo},title=${version.licenseName},alt=${version.licenseName}" />
+            <a rel="license" th:if="${version.licenseLogo != null}" th:href="${version.licenseLink}">
+                <img style="border-width:0;width:140px" alt="license-logo" th:attr="src=${version.licenseLogo},title=${version.licenseName},alt=${version.licenseName}" />
             </a>
             <span>This work is licensed under a
 						<a rel="license" th:href="${version.licenseLink}" th:text="${version.licenseName}"></a>.
