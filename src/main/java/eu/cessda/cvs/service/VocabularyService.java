@@ -278,5 +278,5 @@ public interface VocabularyService {
      * @param vocabularySnippet
      * @return
      */
-    VersionDTO forwardStatus(VocabularySnippet vocabularySnippet);
+    VersionDTO forwardStatus(VocabularySnippet vocabularySnippet) throws IllegalActionTypeException;
 }

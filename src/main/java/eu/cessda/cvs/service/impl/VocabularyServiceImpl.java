@@ -1734,12 +1734,13 @@ public class VocabularyServiceImpl implements VocabularyService
 
     @Override
     @Transactional
-    public VersionDTO forwardStatus( VocabularySnippet vocabularySnippet ) {
+    public VersionDTO forwardStatus( VocabularySnippet vocabularySnippet ) throws IllegalActionTypeException
+    {
         if ( vocabularySnippet.getVersionId() == null ) {
-            throw new IllegalArgumentException( "Missing version id" );
+            throw new MissingIdentifierException( "Missing version id" );
         }
         if ( vocabularySnippet.getActionType() == null ) {
-            throw new IllegalArgumentException( "Missing action type" );
+            throw new IllegalActionTypeException();
         }
         VocabularyDTO vocabularyDTO = findOne( vocabularySnippet.getVocabularyId() )
             .orElseThrow( () -> new EntityNotFoundException( UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVocabularyId() ) );
@@ -1879,7 +1880,7 @@ public class VocabularyServiceImpl implements VocabularyService
                 vocabularyDTO.setTitleDefinition(versionDTO.getTitle(), versionDTO.getDefinition(), versionDTO.getLanguage(), false);
                 break;
             default:
-                throw new IllegalArgumentException( "Action type not supported" + vocabularySnippet.getActionType() );
+                throw new IllegalActionTypeException( vocabularySnippet.getActionType() );
         }
         // check if SL published and not initial version, is there any TL needs to be cloned as
         // DRAFT?

@@ -25,12 +25,12 @@ import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.security.AuthoritiesConstants;
 import eu.cessda.cvs.security.jwt.TokenProvider;
 import eu.cessda.cvs.service.ExportService;
+import eu.cessda.cvs.service.IllegalActionTypeException;
 import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 import eu.cessda.cvs.web.rest.utils.ResourceUtils;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,11 +51,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.HashSet;
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -105,7 +104,8 @@ class VocabularyResourceV2IT {
     private VocabularyDTO vocabularyDTO;
 
     @BeforeEach
-    public void initTest() {
+    public void initTest() throws IllegalActionTypeException
+    {
         if( agency == null ) {
             agency = EditorResourceIT.createAgencyEntity();
             agency = agencyRepository.saveAndFlush(agency);
