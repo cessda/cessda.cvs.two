@@ -19,9 +19,9 @@
     <div class="modal-header">
         <div class="modal-title" style="display: flex;">
             <span *ngIf="isNew">Add code for {{versionParam.notation}}</span>
-            <span *ngIf="!isNew && isSlForm">Edit {{versionParam.language! | vocabularyLanguageFromKey}} code from <strong>{{conceptParam!.notation}}</strong></span>
-            <span *ngIf="!isNew && !isSlForm && !conceptParam!.title">Add {{versionParam.language! | vocabularyLanguageFromKey}} code translation for <strong>{{conceptParam!.notation}}</strong></span>
-            <span *ngIf="!isNew && !isSlForm && conceptParam!.title">Edit {{versionParam.language! | vocabularyLanguageFromKey}} code translation for <strong>{{conceptParam!.notation}}</strong></span>
+            <span *ngIf="!isNew && isSlForm">Edit {{versionParam.language! | vocabularyLanguageFromKey}} code from <strong>{{conceptParam.notation}}</strong></span>
+            <span *ngIf="!isNew && !isSlForm && !conceptParam.title">Add {{versionParam.language! | vocabularyLanguageFromKey}} code translation for <strong>{{conceptParam.notation}}</strong></span>
+            <span *ngIf="!isNew && !isSlForm && conceptParam.title">Edit {{versionParam.language! | vocabularyLanguageFromKey}} code translation for <strong>{{conceptParam.notation}}</strong></span>
         </div>
 
         <button aria-label="Close" class="close" data-dismiss="modal" type="button" (click)="clear()">
@@ -47,11 +47,11 @@
                     </div>
                     <div *ngIf="isSlForm" class="detail-column">
                         <div *ngIf="isNew && isEnablePreview">
-                            <span *ngIf="codeAddEditForm.get('codeInsertMode')!.value === 'INSERT_AS_CHILD'">{{conceptParam!.notation}}.</span>
-                            <span *ngIf="conceptParam !== null && conceptParam!.parent  && (codeAddEditForm.get('codeInsertMode')!.value === 'INSERT_AFTER' ||
-                                codeAddEditForm.get('codeInsertMode')!.value === 'INSERT_BEFORE')">{{conceptParam!.parent}}.</span>
+                            <span *ngIf="codeAddEditForm.get('codeInsertMode')!.value === 'INSERT_AS_CHILD'">{{conceptParam.notation}}.</span>
+                            <span *ngIf="conceptParam && conceptParam.parent  && (codeAddEditForm.get('codeInsertMode')!.value === 'INSERT_AFTER' ||
+                                codeAddEditForm.get('codeInsertMode')!.value === 'INSERT_BEFORE')">{{conceptParam.parent}}.</span>
                         </div>
-                        <span *ngIf="!isNew && conceptParam!.parent">{{conceptParam!.parent}}.</span>
+                        <span *ngIf="!isNew && conceptParam.parent">{{conceptParam.parent}}.</span>
                         <input type="text" class="form-control" id="field_notation" name="notation" formControlName="notation" (input)="updateTreePreview()"/>
                         <div *ngIf="codeAddEditForm.get('notation')!.invalid && (codeAddEditForm.get('notation')!.dirty || codeAddEditForm.get('notation')!.touched) || isSubmitting">
                             <small class="form-text text-danger"
@@ -83,7 +83,7 @@
                         <span>Code ({{versionParam.languageSl}})</span>
                     </div>
                     <div class="detail-column label-column-value">
-                        <span>{{conceptParam!.notation}}</span>
+                        <span>{{conceptParam.notation}}</span>
                     </div>
                 </div>
                 <div class="row-detail form-group">
@@ -101,7 +101,7 @@
                     <span>Descriptive term ({{versionParam.languageSl}})</span>
                 </div>
                 <div class="detail-column  label-column-value">
-                    <span>{{conceptParam!.titleSl}}</span>
+                    <span>{{conceptParam.titleSl}}</span>
                 </div>
             </div>
 
@@ -125,7 +125,7 @@
                     <span>Definition ({{versionParam.languageSl}})</span>
                 </div>
                 <div class="detail-column  label-column-value">
-                    <span>{{conceptParam!.definitionSl}}</span>
+                    <span>{{conceptParam.definitionSl}}</span>
                 </div>
             </div>
 
@@ -139,7 +139,7 @@
             </div>
         </div>
 
-        <div *ngIf="isEnablePreview && conceptParam !== null" class="row-content">
+        <div *ngIf="isEnablePreview && conceptParam" class="row-content">
             <div class="row-details">
                 <div class="row-detail form-group">
                     <div class="btn-group btn-group-toggle" ngbRadioGroup name="insert-choice" formControlName="codeInsertMode" (ngModelChange)="updateTreePreview()">

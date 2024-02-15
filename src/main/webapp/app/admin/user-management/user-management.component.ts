@@ -40,8 +40,8 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   totalItems = 0;
   readonly itemsPerPage = ITEMS_PER_PAGE;
   page = 1;
-  predicate: string = 'id';
-  ascending: boolean = true;
+  predicate = 'id';
+  ascending = true;
 
   agencies: Agency[] = [];
 

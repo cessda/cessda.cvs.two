@@ -25,6 +25,7 @@ import moment from 'moment';
 import { Moment } from 'moment';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
+import { QuillModules } from 'ngx-quill';
 
 @Component({
   selector: 'jhi-comment-item',
@@ -37,7 +38,7 @@ export class EditorDetailCvCommentItemComponent {
   isSaving: boolean;
   isWriteComment = false;
 
-  quillModules: any = {
+  quillModules: QuillModules = {
     toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']],
   };
 
@@ -68,9 +69,9 @@ export class EditorDetailCvCommentItemComponent {
 
   doDeleteComment(): void {
     this.editorService.deleteComment(this.comment.id!).subscribe(() => {
-      const index = this.versionParam.comments!.indexOf(this.comment, 0);
+      const index = this.versionParam.comments.indexOf(this.comment, 0);
       if (index > -1) {
-        this.versionParam.comments!.splice(index, 1);
+        this.versionParam.comments.splice(index, 1);
       }
       this.eventManager.broadcast('commentListModification');
     });

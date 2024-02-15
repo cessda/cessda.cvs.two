@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
@@ -27,8 +28,9 @@ import { CODE_ALREADY_EXIST_TYPE } from 'app/shared';
 import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
 import { Concept } from 'app/shared/model/concept.model';
-import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
+import { CodeSnippet } from 'app/shared/model/code-snippet.model';
 import { EditorDetailCvAddEditConfirmModalComponent } from 'app/editor/editor-detail-code-add-edit-confirm.component';
+import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
   selector: 'jhi-editor-detail-code-add-edit-dialog',
@@ -40,16 +42,16 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   account!: Account;
   languages: string[] = [];
   errorCodeExists = false;
-  codeSnippet?: ICodeSnippet;
+  codeSnippet?: CodeSnippet;
   versionParam!: Version;
-  conceptParam?: Concept;
+  conceptParam!: Concept;
   codeInsertMode?: string;
-  isNew?: boolean;
-  isSlForm?: boolean;
+  isNew!: boolean;
+  isSlForm!: boolean;
   isEnablePreview: boolean;
 
-  conceptsToPlace?: Concept[] = [];
-  conceptsToPlaceTemp?: Concept[] = [];
+  conceptsToPlace: Concept[] = [];
+  conceptsToPlaceTemp: Concept[] = [];
 
   codeAddEditForm = this.fb.group({
     notation: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(240), Validators.pattern('^[_+A-Za-z0-9-]*$')]],
@@ -80,19 +82,19 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     if (!this.isSlForm) {
       this.codeAddEditForm.removeControl('notation');
       this.codeAddEditForm.patchValue({
-        title: this.conceptParam!.title,
-        definition: this.conceptParam!.definition,
+        title: this.conceptParam.title,
+        definition: this.conceptParam.definition,
       });
     }
     if (!this.isNew && this.isSlForm) {
       this.codeAddEditForm.patchValue({
-        notation: this.conceptParam!.notation,
-        title: this.conceptParam!.title,
-        definition: this.conceptParam!.definition,
+        notation: this.conceptParam.notation,
+        title: this.conceptParam.title,
+        definition: this.conceptParam.definition,
       });
-      if (this.conceptParam!.parent) {
+      if (this.conceptParam.parent) {
         this.codeAddEditForm.patchValue({
-          notation: this.conceptParam!.notation!.substring(this.conceptParam!.parent.length + 1),
+          notation: this.conceptParam.notation.substring(this.conceptParam.parent.length + 1),
         });
       }
     }
@@ -104,7 +106,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
       this.codeAddEditForm.removeControl('changeType');
       this.codeAddEditForm.removeControl('changeDesc');
     } else {
-      this.codeAddEditForm.patchValue({ changeDesc: this.conceptParam!.notation });
+      this.codeAddEditForm.patchValue({ changeDesc: this.conceptParam.notation });
     }
   }
 
@@ -122,10 +124,10 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
       }
     });
 
-    this.isEnablePreview = (this.isNew && this.versionParam.concepts!.length > 0)!;
+    this.isEnablePreview = this.isNew && this.versionParam.concepts.length > 0;
     if (this.isEnablePreview) {
       // deep copy so the changes will not influence the original concepts
-      this.conceptsToPlaceTemp = this.versionParam.concepts!.map(x => Object.assign({ ...x }));
+      this.conceptsToPlaceTemp = this.versionParam.concepts.map(x => Object.assign({ ...x }));
       this.conceptsToPlaceTemp.forEach(c => {
         if (this.conceptParam && c.notation === this.conceptParam.notation) {
           c.status = 'PIVOT';
@@ -133,7 +135,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
           c.status = 'UNSELECTABLE';
         }
       });
-      if (this.conceptParam! !== null) {
+      if (this.conceptParam) {
         this.codeAddEditForm.patchValue({ codeInsertMode: 'INSERT_AFTER' });
       } else {
         this.codeAddEditForm.patchValue({ codeInsertMode: 'INSERT_AS_ROOT' });
@@ -146,18 +148,17 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     }
   }
 
-  private createFromForm(): ICodeSnippet {
+  private createFromForm(): CodeSnippet {
     if (this.isNew) {
-      if (this.conceptParam != null) {
+      if (this.conceptParam) {
         this.codeInsertMode = this.codeAddEditForm.get('codeInsertMode')!.value;
       }
 
       const pos = this.calculatePosition();
       const [insertionRefConceptId, relPosToRefConcept] = this.getConceptInsertionAddress();
 
-      const codeSnippet = {
-        ...new CodeSnippet(),
-        actionType: 'CREATE_CODE',
+      const codeSnippet: CodeSnippet = {
+        actionType: ActionType.CREATE_CODE,
         versionId: this.versionParam.id,
         introducedInVersionId: this.versionParam.id,
         title: this.codeAddEditForm.get(['title'])!.value,
@@ -169,10 +170,10 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
       if (this.codeInsertMode === 'INSERT_AS_ROOT') {
         codeSnippet.notation = this.codeAddEditForm.get(['notation'])!.value;
       } else if (this.codeInsertMode === 'INSERT_AS_CHILD') {
-        codeSnippet.parent = this.conceptParam!.notation;
+        codeSnippet.parent = this.conceptParam.notation;
         codeSnippet.notation = codeSnippet.parent + '.' + this.codeAddEditForm.get(['notation'])!.value;
       } else {
-        codeSnippet.parent = this.conceptParam!.parent;
+        codeSnippet.parent = this.conceptParam.parent;
         codeSnippet.notation =
           (codeSnippet.parent !== undefined ? codeSnippet.parent + '.' : '') + this.codeAddEditForm.get(['notation'])!.value;
       }
@@ -181,10 +182,10 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
       return codeSnippet;
     } else {
       if (this.isSlForm) {
-        const cdSnippet = {
+        const cdSnippet: CodeSnippet = {
           ...this.codeSnippet,
-          actionType: 'EDIT_CODE',
-          conceptId: this.conceptParam!.id,
+          actionType: ActionType.EDIT_CODE,
+          conceptId: this.conceptParam.id,
           versionId: this.versionParam.id,
           notation: this.codeAddEditForm.get(['notation'])!.value,
           title: this.codeAddEditForm.get(['title'])!.value,
@@ -192,23 +193,23 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
           changeType: this.codeAddEditForm.get('changeType') ? this.codeAddEditForm.get('changeType')!.value : undefined,
           changeDesc: this.codeAddEditForm.get('changeDesc') ? this.codeAddEditForm.get('changeDesc')!.value : undefined,
         };
-        if (this.conceptParam!.parent) {
-          cdSnippet.notation = this.conceptParam!.parent + '.' + this.codeAddEditForm.get(['notation'])!.value;
+        if (this.conceptParam.parent) {
+          cdSnippet.notation = this.conceptParam.parent + '.' + this.codeAddEditForm.get(['notation'])!.value;
         }
         return cdSnippet;
       } else {
-        const cdSnippet = {
+        const cdSnippet: CodeSnippet = {
           ...this.codeSnippet,
-          actionType: 'ADD_TL_CODE',
-          conceptId: this.conceptParam!.id,
+          actionType: ActionType.ADD_TL_CODE,
+          conceptId: this.conceptParam.id,
           versionId: this.versionParam.id,
           title: this.codeAddEditForm.get(['title'])!.value,
           definition: this.codeAddEditForm.get(['definition'])!.value,
           changeType: this.codeAddEditForm.get('changeType') ? this.codeAddEditForm.get('changeType')!.value : 'Code translation added',
-          changeDesc: this.codeAddEditForm.get('changeDesc') ? this.codeAddEditForm.get('changeDesc')!.value : this.conceptParam!.notation,
+          changeDesc: this.codeAddEditForm.get('changeDesc') ? this.codeAddEditForm.get('changeDesc')!.value : this.conceptParam.notation,
         };
-        if (this.conceptParam!.title) {
-          cdSnippet.actionType = 'EDIT_TL_CODE';
+        if (this.conceptParam.title) {
+          cdSnippet.actionType = ActionType.EDIT_TL_CODE;
         }
         return cdSnippet;
       }
@@ -216,9 +217,9 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   }
 
   private calculatePosition(): number {
-    let index = this.versionParam.concepts!.length;
-    if (this.conceptParam !== null) {
-      index = this.conceptParam!.position! + 1;
+    let index = this.versionParam.concepts.length;
+    if (this.conceptParam) {
+      index = (this.conceptParam.position || 0) + 1;
     }
 
     if (this.codeInsertMode === 'INSERT_BEFORE') {
@@ -325,11 +326,11 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
       notation = notationFormValue;
     } else if (this.codeInsertMode === 'INSERT_AS_CHILD') {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      parent = this.conceptParam!.notation;
+      parent = this.conceptParam.notation;
       notation = parent + '.' + notationFormValue;
     } else {
       // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      parent = this.conceptParam!.parent;
+      parent = this.conceptParam.parent;
       notation = (parent !== undefined ? parent + '.' : '') + notationFormValue;
     }
 

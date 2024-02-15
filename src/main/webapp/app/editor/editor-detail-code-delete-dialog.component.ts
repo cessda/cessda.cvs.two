@@ -23,6 +23,7 @@ import { Observable, Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { CodeSnippet } from 'app/shared/model/code-snippet.model';
 import { HttpResponse } from '@angular/common/http';
+import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
   templateUrl: './editor-detail-code-delete-dialog.component.html',
@@ -53,13 +54,10 @@ export class EditorDetailCodeDeleteDialogComponent {
         this.activeModal.dismiss();
       });
     } else {
-      const cdSnippet = {
-        ...new CodeSnippet(),
-        actionType: 'DELETE_TL_CODE',
+      const cdSnippet: CodeSnippet = {
+        actionType: ActionType.DELETE_TL_CODE,
         conceptId: this.conceptParam.id,
         versionId: this.versionParam.id,
-        title: null,
-        definition: null,
       };
       this.subscribeToSaveResponse(this.editorService.updateCode(cdSnippet));
     }

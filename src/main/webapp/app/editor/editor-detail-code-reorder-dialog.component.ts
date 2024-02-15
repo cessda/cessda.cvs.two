@@ -21,7 +21,8 @@ import { Router } from '@angular/router';
 import { Concept } from 'app/shared/model/concept.model';
 import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
-import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
+import { CodeSnippet } from 'app/shared/model/code-snippet.model';
+import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
   templateUrl: './editor-detail-code-reorder-dialog.component.html',
@@ -32,7 +33,7 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
   conceptParam!: Concept;
   selectedConceptToPlace!: Concept;
   eventSubscriber?: Subscription;
-  codeSnippet?: ICodeSnippet;
+  codeSnippet?: CodeSnippet;
   insertMode = 'after';
 
   conceptsToMove: Concept[] = [];
@@ -50,14 +51,13 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
 
   clear(): void {
     this.activeModal.dismiss();
-    this.conceptsToMove!.forEach(c => (c.status = undefined));
+    this.conceptsToMove.forEach(c => (c.status = undefined));
   }
 
   confirmReorder(): void {
     this.isSaving = true;
     this.codeSnippet = {
-      ...new CodeSnippet(),
-      actionType: 'REORDER_CODE',
+      actionType: ActionType.REORDER_CODE,
       conceptId: this.conceptParam.id,
       versionId: this.versionParam.id,
       conceptStructures: this.conceptsToPlace.map(c => c.notation),
@@ -92,10 +92,10 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
       if (baseParent !== undefined) {
         if (c.parent === this.conceptsToMove[0].parent) {
           c.parent = undefined;
-        } else {
-          c.parent = c.parent!.substring(baseParent.length + 1, c.parent!.length);
+        } else if (c.parent) {
+          c.parent = c.parent.substring(baseParent.length + 1, c.parent.length);
         }
-        c.notation = c.notation!.substring(baseParent.length + 1, c.notation!.length);
+        c.notation = c.notation.substring(baseParent.length + 1, c.notation.length);
       }
       c.status = 'REORDER';
     });

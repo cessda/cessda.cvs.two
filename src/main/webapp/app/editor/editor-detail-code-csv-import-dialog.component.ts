@@ -21,9 +21,10 @@ import { Router } from '@angular/router';
 import { Concept } from 'app/shared/model/concept.model';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
-import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
+import { CodeSnippet } from 'app/shared/model/code-snippet.model';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
+import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
   templateUrl: './editor-detail-code-csv-import-dialog.component.html',
@@ -35,7 +36,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
   vocabularyParam!: Vocabulary;
   versionParam!: Version;
   concepts: Concept[] = [];
-  codeSnippets: ICodeSnippet[] = [];
+  codeSnippets: CodeSnippet[] = [];
   eventSubscriber?: Subscription;
   isSlForm?: boolean;
   csvHeaders: string[] = [];
@@ -180,7 +181,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
     const existingCode: string[] = [];
     this.ignoredRows = 0;
     if (!this.isSlForm) {
-      const slVersion = this.vocabularyParam.versions!.filter(v => v.itemType === 'SL')[0];
+      const slVersion = this.vocabularyParam.versions.filter(v => v.itemType === 'SL')[0];
       slVersion.concepts.forEach(c => {
         existingCode.push(c.notation);
       });
@@ -224,30 +225,32 @@ export class EditorDetailCodeCsvImportDialogComponent {
         this.codeSnippets.push(this.editCodeFromConcept(concept));
       } else {
         let conceptPosition = this.concepts.length;
-        let parentConcept: Concept | undefined;
+        let parentConceptOpt: Concept | undefined;
         const parentIndex = this.csvContents[i][0].lastIndexOf('.');
         if (parentIndex > 1) {
           // parent need at least 2 character
           const parent = this.csvContents[i][0].substring(0, parentIndex);
-          // there is no parent on the
-          if (!this.concepts.some(c => c.notation === parent)) {
+          // find parent
+          const parentConcept = this.concepts.find(c => c.notation === parent);
+          if (!parentConcept) {
             continue;
           }
-          // find parent
-          parentConcept = this.concepts.filter(c => c.notation === parent)[0];
+
+          parentConceptOpt = parentConcept;
+
           // calculate conceptPosition as last child of parent
-          const conceptChildren = this.concepts.filter(c => c.parent === parentConcept!.notation);
+          const conceptChildren = this.concepts.filter(c => c.parent === parentConcept.notation);
           if (conceptChildren.length === 0) {
-            conceptPosition = parentConcept.position! + 1;
+            conceptPosition = parentConcept.position || 0 + 1;
           } else {
-            conceptPosition = this.findLastChildForPosition(parentConcept).position! + 1;
+            conceptPosition = this.findLastChildForPosition(parentConcept).position || 0 + 1;
             // check for equal or larger position if exist and increment to normalize
-            this.concepts.filter(c => c.position! >= conceptPosition).forEach(c => (c.position = c.position! + 1));
+            this.concepts.filter(c => c.position || 0 >= conceptPosition).forEach(c => (c.position = c.position || 0 + 1));
           }
         }
         const newConcept: Concept = {
           notation: this.csvContents[i][0],
-          parent: parentConcept !== undefined ? parentConcept.notation : undefined,
+          parent: parentConceptOpt ? parentConceptOpt.notation : undefined,
           position: conceptPosition,
           title: this.csvContents[i][1],
           definition: this.csvContents[i][2],
@@ -264,7 +267,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
   findLastChildForPosition(parentConcept: Concept): Concept {
     const lastChild = this.concepts
       .filter(c => c.parent === parentConcept.notation)
-      .reduce((prevConcept, nextConcept) => (prevConcept.position! > nextConcept.position! ? prevConcept : nextConcept));
+      .reduce((prevConcept, nextConcept) => ((prevConcept.position || 0) > (nextConcept.position || 0) ? prevConcept : nextConcept));
     if (this.concepts.filter(c => c.parent === lastChild.notation).length > 0) {
       return this.findLastChildForPosition(lastChild);
     }
@@ -274,14 +277,14 @@ export class EditorDetailCodeCsvImportDialogComponent {
   doCsvImport(): void {
     this.isSaving = true;
     this.editorService.createBatchCode(this.codeSnippets).subscribe(
-      (res: HttpResponse<Concept[]>) => this.onSaveSuccess(res.headers, res.body),
+      (res: HttpResponse<Concept[]>) => this.onSaveSuccess(res.headers, res.body || []),
       () => this.onSaveError(),
     );
   }
 
-  protected onSaveSuccess(headers: HttpHeaders, body: Concept[] | null): void {
+  protected onSaveSuccess(headers: HttpHeaders, body: Concept[]): void {
     this.resultInfo = headers.get('import-status') || '';
-    this.resultBody = body === null ? [] : body;
+    this.resultBody = body;
     this.isSaving = false;
     this.csvImportWorkflow = 'RESULT';
   }
@@ -300,10 +303,9 @@ export class EditorDetailCodeCsvImportDialogComponent {
     this.isSaving = false;
   }
 
-  private editCodeFromConcept(concept: Concept): ICodeSnippet {
+  private editCodeFromConcept(concept: Concept): CodeSnippet {
     return {
-      ...new CodeSnippet(),
-      actionType: 'ADD_TL_CODE',
+      actionType: ActionType.ADD_TL_CODE,
       conceptId: concept.id,
       notation: concept.notation,
       versionId: concept.versionId,
@@ -312,10 +314,9 @@ export class EditorDetailCodeCsvImportDialogComponent {
     };
   }
 
-  private createCodeFromConcept(concept: Concept): ICodeSnippet {
+  private createCodeFromConcept(concept: Concept): CodeSnippet {
     return {
-      ...new CodeSnippet(),
-      actionType: 'CREATE_CODE',
+      actionType: ActionType.CREATE_CODE,
       versionId: this.versionParam.id,
       notation: concept.notation,
       parent: concept.parent,

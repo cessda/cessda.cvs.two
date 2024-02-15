@@ -561,12 +561,20 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   openAddEditCodePopup(isNew: boolean, codeInsertMode?: string): void {
+    if (!this.concept) {
+      throw new TypeError('concept was null');
+    }
+
+    if (!this.version) {
+      throw new TypeError('version was null');
+    }
+
     this.ngbModalRef = this.modalService.open(EditorDetailCodeAddEditDialogComponent, { size: 'xl', backdrop: 'static' });
-    this.ngbModalRef.componentInstance.versionParam = this.version;
     this.ngbModalRef.componentInstance.conceptParam = this.concept;
+    this.ngbModalRef.componentInstance.versionParam = this.version;
     this.ngbModalRef.componentInstance.isNew = isNew;
     this.ngbModalRef.componentInstance.codeInsertMode = codeInsertMode;
-    this.ngbModalRef.componentInstance.isSlForm = this.version!.itemType === 'SL';
+    this.ngbModalRef.componentInstance.isSlForm = this.version.itemType === 'SL';
   }
 
   openAddCodePopup(): void {

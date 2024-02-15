@@ -24,7 +24,7 @@ import { CvResult } from 'app/shared/model/cv-result.model';
 import { map } from 'rxjs/operators';
 import moment from 'moment';
 import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
-import { ICodeSnippet } from 'app/shared/model/code-snippet.model';
+import { CodeSnippet } from 'app/shared/model/code-snippet.model';
 import { Concept } from 'app/shared/model/concept.model';
 import { Version } from 'app/shared/model/version.model';
 import { Comment } from 'app/shared/model/comment.model';
@@ -67,23 +67,23 @@ export class EditorService {
     return this.http.delete(`${this.resourceEditorVocabularyUrl}/${versionId}`, { observe: 'response' });
   }
 
-  createCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<Concept>> {
+  createCode(codeSnippet: CodeSnippet): Observable<HttpResponse<Concept>> {
     return this.http.post<Concept>(this.resourceEditorCodeUrl, codeSnippet, { observe: 'response' });
   }
 
-  createBatchCode(codeSnippets: ICodeSnippet[]): Observable<HttpResponse<Concept[]>> {
+  createBatchCode(codeSnippets: CodeSnippet[]): Observable<HttpResponse<Concept[]>> {
     return this.http.post<Concept[]>(`${this.resourceEditorCodeUrl}/batch`, codeSnippets, { observe: 'response' });
   }
 
-  updateCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<Concept>> {
+  updateCode(codeSnippet: CodeSnippet): Observable<HttpResponse<Concept>> {
     return this.http.put<Concept>(this.resourceEditorCodeUrl, codeSnippet, { observe: 'response' });
   }
 
-  reorderCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<Version>> {
+  reorderCode(codeSnippet: CodeSnippet): Observable<HttpResponse<Version>> {
     return this.http.post<Version>(this.resourceEditorCodeUrl + '/reorder', codeSnippet, { observe: 'response' });
   }
 
-  deprecateCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<Concept>> {
+  deprecateCode(codeSnippet: CodeSnippet): Observable<HttpResponse<Concept>> {
     return this.http.post<Concept>(this.resourceEditorCodeUrl + '/deprecate', codeSnippet, { observe: 'response' });
   }
 
@@ -132,9 +132,8 @@ export class EditorService {
     return this.http.put<Comment>(this.resourceEditorCommentUrl, comment, { observe: 'response' });
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  deleteComment(commentId: number): Observable<HttpResponse<Object>> {
-    return this.http.delete(`${this.resourceEditorCommentUrl}/${commentId}`, { observe: 'response' });
+  deleteComment(commentId: number): Observable<HttpResponse<void>> {
+    return this.http.delete<void>(`${this.resourceEditorCommentUrl}/${commentId}`, { observe: 'response' });
   }
 
   protected convertVocabularyDateFromServer(res: HttpResponse<Vocabulary>): HttpResponse<Vocabulary> {
