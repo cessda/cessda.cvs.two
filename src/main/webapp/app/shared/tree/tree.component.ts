@@ -24,14 +24,14 @@ import VocabularyUtil from 'app/shared/util/vocabulary-util';
 })
 export class TreeComponent {
   @Input() parentNotation?: string;
-  @Input() conceptList?: Concept[];
-  @Input() level?: number;
+  @Input() conceptList!: Concept[];
+  @Input() level!: number;
 
-  removeCurrentLevelItems: any = (conceptList?: Concept[], parentNotation?: string, level?: number) => {
-    return conceptList!.filter(c => c.parent !== parentNotation);
-  };
+  removeCurrentLevelItems(): Concept[] {
+    return this.conceptList.filter(c => c.parent !== this.parentNotation);
+  }
 
-  isConceptHasChildren(notation?: string, conceptList?: Concept[]): boolean {
-    return VocabularyUtil.isConceptHasChildren(notation!, conceptList!);
+  isConceptHasChildren(notation: string): boolean {
+    return VocabularyUtil.isConceptHasChildren(notation, this.conceptList);
   }
 }

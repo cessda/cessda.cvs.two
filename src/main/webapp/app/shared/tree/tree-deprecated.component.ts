@@ -13,25 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, Input } from '@angular/core';
-import { Concept } from 'app/shared/model/concept.model';
-import VocabularyUtil from 'app/shared/util/vocabulary-util';
+import { Component } from '@angular/core';
+import { TreeComponent } from './tree.component';
 
 @Component({
   selector: 'jhi-tree-deprecated',
   templateUrl: './tree-deprecated.component.html',
   styleUrls: ['./tree.component.scss'],
 })
-export class TreeDeprecatedComponent {
-  @Input() parentNotation?: string;
-  @Input() conceptList?: Concept[];
-  @Input() level?: number;
-
-  removeCurrentLevelItems: any = (conceptList?: Concept[], parentNotation?: string, level?: number) => {
-    return conceptList!.filter(c => c.parent !== parentNotation);
-  };
-
-  isConceptHasChildren(notation?: string, conceptList?: Concept[]): boolean {
-    return VocabularyUtil.isConceptHasChildren(notation!, conceptList!);
-  }
-}
+export class TreeDeprecatedComponent extends TreeComponent {}

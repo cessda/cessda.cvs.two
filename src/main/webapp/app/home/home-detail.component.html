@@ -229,7 +229,7 @@
                             Code definition({{vocabulary.selectedLang}})
                         </span>
                     </div>
-                    <jhi-tree [parentNotation]="" [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree>
+                    <jhi-tree [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree>
 
                     <br>
                     <div *ngIf="hasDeprecatedConcepts(getVersionByLangNumber().concepts)">
@@ -256,7 +256,7 @@
                                 <span class="column2">Valid from</span>
                                 <span class="column2">Valid to</span>
                             </div>
-                            <jhi-tree-deprecated [parentNotation]="" [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree-deprecated>
+                            <jhi-tree-deprecated [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree-deprecated>
                         </div>
                     </div>
                 </div>
