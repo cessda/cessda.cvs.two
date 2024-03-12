@@ -18,6 +18,7 @@ package eu.cessda.cvs.config;
 import ch.qos.logback.classic.LoggerContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.openhtmltopdf.slf4j.Slf4jLogger;
 import io.github.jhipster.config.JHipsterProperties;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,5 +62,8 @@ public class LoggingConfiguration {
         if (jHipsterProperties.getMetrics().getLogs().isEnabled()) {
             setMetricsMarkerLogbackFilter(context, loggingProperties.isUseJsonFormat());
         }
+
+        // Configure openhtmltopdf logging
+        com.openhtmltopdf.util.XRLog.setLoggerImpl( new Slf4jLogger() );
     }
 }
