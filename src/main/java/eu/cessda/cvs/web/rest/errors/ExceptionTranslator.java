@@ -65,13 +65,6 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     @Override
     public void log( Throwable throwable, Problem problem, NativeWebRequest request, HttpStatus status )
     {
-        if ( throwable instanceof ClientAbortException )
-        {
-            // Ignore exceptions caused by clients cancelling requests
-            log.trace(status.getReasonPhrase(), throwable);
-            return;
-        }
-
         switch ( status.series() ) {
             case SERVER_ERROR:
                 log.error(status.getReasonPhrase(), throwable);
@@ -190,5 +183,15 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     @ExceptionHandler
     public ResponseEntity<Problem> handleResourceNotFound( ResourceNotFoundException ex, NativeWebRequest request) {
         return create(ex, request, HeaderUtil.createFailureAlert(applicationName, true, ex.getEntityName(), ex.getErrorKey(), ex.getMessage()));
+    }
+
+    @ExceptionHandler
+    public String handleClientAbort( ClientAbortException ex ) throws ClientAbortException
+    {
+        // log at debug level
+        log.debug( ex.getMessage(), ex );
+
+        // continue default handling by rethrowing the exception, which will result in it being ignored
+        throw ex;
     }
 }
