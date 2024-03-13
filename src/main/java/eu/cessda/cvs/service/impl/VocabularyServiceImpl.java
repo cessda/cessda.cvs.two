@@ -553,7 +553,7 @@ public class VocabularyServiceImpl implements VocabularyService
      */
     @Override
     public ConceptDTO saveCode( CodeSnippet codeSnippet ) {
-        // if we add code we need to ensure that it will be clonned to every TL probably as the workflow had been changed!!!
+        // if we add code we need to ensure that it will be cloned to every TL probably as the workflow had been changed!!!
         log.debug( "Request to save Concept and Version from CodeSnippet : {}", codeSnippet.getConceptId() );
         ConceptDTO conceptDTO = null;
         // get version
@@ -568,21 +568,28 @@ public class VocabularyServiceImpl implements VocabularyService
         VocabularyDTO vocabularyDTO = findOne( versionDTO.getVocabularyId() )
             .orElseThrow( () -> new EntityNotFoundException( UNABLE_FIND_VOCABULARY + versionDTO.getVocabularyId() ) );
 
-        if ( codeSnippet.getActionType().equals( ActionType.CREATE_CODE ) ) {
-            conceptDTO = createCode( codeSnippet, versionDTO, vocabularyDTO );
-        } else if ( codeSnippet.getActionType().equals( ActionType.EDIT_CODE ) ||
-            codeSnippet.getActionType().equals( ActionType.ADD_TL_CODE ) ||
-            codeSnippet.getActionType().equals( ActionType.EDIT_TL_CODE ) ||
-            codeSnippet.getActionType().equals( ActionType.DELETE_TL_CODE ) ) {
-            conceptDTO = editCode( codeSnippet, versionDTO, vocabularyDTO );
+        switch ( codeSnippet.getActionType() )
+        {
+            case CREATE_CODE:
+                conceptDTO = createCode( codeSnippet, versionDTO, vocabularyDTO );
+                break;
+            case EDIT_CODE:
+            case ADD_TL_CODE:
+            case EDIT_TL_CODE:
+            case DELETE_TL_CODE:
+                conceptDTO = editCode( codeSnippet, versionDTO, vocabularyDTO );
+                break;
+            default:
+                break;
         }
+
         return conceptDTO;
     }
 
     private ConceptDTO editCode( CodeSnippet codeSnippet, VersionDTO versionDTO, VocabularyDTO vocabularyDTO ) {
         ConceptDTO conceptDTO;
         // check for authorization
-        checkEditCodeAuthorization( codeSnippet, versionDTO, vocabularyDTO );
+        SecurityUtils.checkResourceAuthorization( codeSnippet.getActionType(), vocabularyDTO.getAgencyId(), versionDTO.getLanguage() );
         // get concept from versionDTO
         conceptDTO = versionDTO.getConcepts().stream().filter( c -> c.getId().equals( codeSnippet.getConceptId() ) ).findFirst()
             .orElseThrow( () -> new EntityNotFoundException( "Unable to find concept with Id " + codeSnippet.getConceptId() ) );
@@ -606,14 +613,20 @@ public class VocabularyServiceImpl implements VocabularyService
             conceptDTO.setNotation( codeSnippet.getNotation() );
         }
 
-        if ( codeSnippet.getActionType().equals( ActionType.EDIT_CODE ) ||
-            codeSnippet.getActionType().equals( ActionType.ADD_TL_CODE ) ||
-            codeSnippet.getActionType().equals( ActionType.EDIT_TL_CODE ) ) {
-            conceptDTO.setTitle( codeSnippet.getTitle() );
-            conceptDTO.setDefinition( codeSnippet.getDefinition() );
-        } else if ( codeSnippet.getActionType().equals( ActionType.DELETE_TL_CODE ) ) {
-            conceptDTO.setTitle( null );
-            conceptDTO.setDefinition( null );
+        switch ( codeSnippet.getActionType() )
+        {
+            case EDIT_CODE:
+            case ADD_TL_CODE:
+            case EDIT_TL_CODE:
+                conceptDTO.setTitle( codeSnippet.getTitle() );
+                conceptDTO.setDefinition( codeSnippet.getDefinition() );
+                break;
+            case DELETE_TL_CODE:
+                conceptDTO.setTitle( null );
+                conceptDTO.setDefinition( null );
+                break;
+            default:
+                break;
         }
 
         // save versionDTO together with concepts
@@ -646,21 +659,6 @@ public class VocabularyServiceImpl implements VocabularyService
                 versionDTO.getVocabularyId() );
             vocabularyChangeService.save( vocabularyChangeDTO );
         }
-    }
-
-    private void checkEditCodeAuthorization( CodeSnippet codeSnippet, VersionDTO versionDTO, VocabularyDTO vocabularyDTO ) {
-        if ( codeSnippet.getActionType().equals( ActionType.EDIT_CODE ) )
-            SecurityUtils.checkResourceAuthorization( ActionType.EDIT_CODE,
-                vocabularyDTO.getAgencyId(), versionDTO.getLanguage() );
-        else if ( codeSnippet.getActionType().equals( ActionType.ADD_TL_CODE ) )
-            SecurityUtils.checkResourceAuthorization( ActionType.ADD_TL_CODE,
-                vocabularyDTO.getAgencyId(), versionDTO.getLanguage() );
-        else if ( codeSnippet.getActionType().equals( ActionType.EDIT_TL_CODE ) )
-            SecurityUtils.checkResourceAuthorization( ActionType.EDIT_TL_CODE,
-                vocabularyDTO.getAgencyId(), versionDTO.getLanguage() );
-        else if ( codeSnippet.getActionType().equals( ActionType.DELETE_TL_CODE ) )
-            SecurityUtils.checkResourceAuthorization( ActionType.DELETE_TL_CODE,
-                vocabularyDTO.getAgencyId(), versionDTO.getLanguage() );
     }
 
     private Integer getConceptPositionById( Long conceptId, Set<ConceptDTO> concepts ) {
@@ -1734,12 +1732,13 @@ public class VocabularyServiceImpl implements VocabularyService
 
     @Override
     @Transactional
-    public VersionDTO forwardStatus( VocabularySnippet vocabularySnippet ) {
+    public VersionDTO forwardStatus( VocabularySnippet vocabularySnippet ) throws IllegalActionTypeException
+    {
         if ( vocabularySnippet.getVersionId() == null ) {
-            throw new IllegalArgumentException( "Missing version id" );
+            throw new MissingIdentifierException( "Missing version id" );
         }
         if ( vocabularySnippet.getActionType() == null ) {
-            throw new IllegalArgumentException( "Missing action type" );
+            throw new IllegalActionTypeException();
         }
         VocabularyDTO vocabularyDTO = findOne( vocabularySnippet.getVocabularyId() )
             .orElseThrow( () -> new EntityNotFoundException( UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVocabularyId() ) );
@@ -1879,7 +1878,7 @@ public class VocabularyServiceImpl implements VocabularyService
                 vocabularyDTO.setTitleDefinition(versionDTO.getTitle(), versionDTO.getDefinition(), versionDTO.getLanguage(), false);
                 break;
             default:
-                throw new IllegalArgumentException( "Action type not supported" + vocabularySnippet.getActionType() );
+                throw new IllegalActionTypeException( vocabularySnippet.getActionType() );
         }
         // check if SL published and not initial version, is there any TL needs to be cloned as
         // DRAFT?

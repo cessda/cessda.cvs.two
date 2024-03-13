@@ -62,7 +62,7 @@ public class ExceptionTranslatorTestController {
 
     @GetMapping("/internal-server-error")
     public void internalServerError() {
-        throw new RuntimeException();
+        throw new RuntimeException("internal server error");
     }
 
     public static class TestDTO {

@@ -385,18 +385,11 @@
             <groupId>org.docx4j</groupId>
             <artifactId>docx4j-ImportXHTML</artifactId>
             <version>8.3.8</version>
-            <exclusions>
-                <!-- Exclude import of DOCX4J -->
-                <exclusion>
-                    <groupId>org.docx4j</groupId>
-                    <artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.docx4j</groupId>
-            <artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
-            <version>8.3.9</version>
+            <groupId>com.openhtmltopdf</groupId>
+            <artifactId>openhtmltopdf-slf4j</artifactId>
+            <version>1.0.10</version>
         </dependency>
         <dependency>
             <groupId>org.imgscalr</groupId>

@@ -17,8 +17,11 @@ package eu.cessda.cvs.web.rest.errors;
 
 import eu.cessda.cvs.service.ResourceNotFoundException;
 import io.github.jhipster.web.util.HeaderUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.ConcurrencyFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -35,6 +38,7 @@ import org.zalando.problem.violations.ConstraintViolationProblem;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +49,9 @@ import java.util.stream.Collectors;
  * The error response follows <a href="https://tools.ietf.org/html/rfc7807">RFC7807 - Problem Details for HTTP APIs</a>.
  */
 @ControllerAdvice
+@ParametersAreNonnullByDefault
 public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
+    private static final Logger log = LoggerFactory.getLogger( ExceptionTranslator.class );
 
     private static final String FIELD_ERRORS_KEY = "fieldErrors";
     private static final String MESSAGE_KEY = "message";
@@ -54,6 +60,22 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
+
+    @Override
+    public void log( Throwable throwable, Problem problem, NativeWebRequest request, HttpStatus status )
+    {
+        switch ( status.series() ) {
+            case SERVER_ERROR:
+                log.error(status.getReasonPhrase(), throwable);
+                break;
+            case CLIENT_ERROR:
+                log.info(status.getReasonPhrase(), throwable);
+                break;
+            default:
+                log.trace(status.getReasonPhrase(), throwable);
+                break;
+        }
+    }
 
     /**
      * Post-process the Problem payload to add the message key for the front-end if needed.
@@ -158,7 +180,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleReseourceNotFound(ResourceNotFoundException ex, NativeWebRequest request) {
+    public ResponseEntity<Problem> handleResourceNotFound( ResourceNotFoundException ex, NativeWebRequest request) {
         return create(ex, request, HeaderUtil.createFailureAlert(applicationName, true, ex.getEntityName(), ex.getErrorKey(), ex.getMessage()));
     }
 }

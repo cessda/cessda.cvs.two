@@ -43,6 +43,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FastByteArrayOutputStream;
@@ -130,20 +131,26 @@ public class EditorResource {
      * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
      */
     @PostMapping("/editors/vocabularies")
-    public ResponseEntity<VocabularyDTO> createVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) throws URISyntaxException {
+    public ResponseEntity<VocabularyDTO> createVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) throws URISyntaxException, IllegalActionTypeException
+    {
         log.debug("REST request to save Vocabulary : {}", vocabularySnippet);
         // check if user authorized to add VocabularyResource
-        if (vocabularySnippet.getActionType().equals( ActionType.CREATE_CV)) {
-            SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CV, vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
+        if ( ActionType.CREATE_CV.equals( vocabularySnippet.getActionType() ) )
+        {
+            SecurityUtils.checkResourceAuthorization( ActionType.CREATE_CV, vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
 
-            if (vocabularySnippet.getVocabularyId() != null) {
-                throw new BadRequestAlertException("A new vocabulary cannot already have an ID", ENTITY_VOCABULARY_NAME, ID_EXIST);
+            if ( vocabularySnippet.getVocabularyId() != null )
+            {
+                throw new BadRequestAlertException( "A new vocabulary cannot already have an ID", ENTITY_VOCABULARY_NAME, ID_EXIST );
             }
         }
-        else if (vocabularySnippet.getActionType().equals(ActionType.ADD_TL_CV)) {
-            SecurityUtils.checkResourceAuthorization(ActionType.ADD_TL_CV, vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
-        } else {
-            throw new IllegalArgumentException( "Illegal action type for POST" + vocabularySnippet.getActionType() );
+        else if ( ActionType.ADD_TL_CV.equals( vocabularySnippet.getActionType() ) )
+        {
+            SecurityUtils.checkResourceAuthorization( ActionType.ADD_TL_CV, vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
+        }
+        else
+        {
+            throw new IllegalActionTypeException( vocabularySnippet.getActionType(), HttpMethod.POST );
         }
 
         VocabularyDTO result = vocabularyService.saveVocabulary(vocabularySnippet);
@@ -238,7 +245,8 @@ public class EditorResource {
      * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
      */
     @PutMapping("/editors/vocabularies/forward-status")
-    public ResponseEntity<VersionDTO> forwardStatusVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) {
+    public ResponseEntity<VersionDTO> forwardStatusVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) throws IllegalActionTypeException
+    {
         log.debug("REST request to update forward status Vocabulary : {}", vocabularySnippet);
         VersionDTO versionDTO = vocabularyService.forwardStatus(vocabularySnippet);
 
@@ -455,12 +463,9 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException("Unable to add Vocabulary " + vocabularyId));
 
         // check for authorization
-        if (codeSnippets[0].getActionType().equals( ActionType.CREATE_CODE))
-            SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CODE,
-                vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
-        else if (codeSnippets[0].getActionType().equals( ActionType.ADD_TL_CODE))
-            SecurityUtils.checkResourceAuthorization(ActionType.ADD_TL_CODE,
-                vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
+        for ( var snippet : codeSnippets ) {
+            SecurityUtils.checkResourceAuthorization( snippet.getActionType(), vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
+        }
 
         List<ConceptDTO> storedCodes = new ArrayList<>();
         for (CodeSnippet codeSnippet : codeSnippets) {
@@ -468,34 +473,38 @@ public class EditorResource {
 
             ConceptDTO conceptDTO = null;
 
-            if (codeSnippet.getActionType().equals(ActionType.CREATE_CODE)) {
-                conceptDTO = addNewConcept(versionDTO, codeSnippet);
-            } else if (codeSnippet.getActionType().equals(ActionType.ADD_TL_CODE)) {
-                conceptDTO = versionDTO.getConcepts().stream().filter(c -> c.getId().equals(codeSnippet.getConceptId())).findFirst().orElse(null);
-                if (conceptDTO != null) {
-                    conceptDTO.setTitle(codeSnippet.getTitle());
-                    conceptDTO.setDefinition(codeSnippet.getDefinition());
+            switch ( codeSnippet.getActionType() )
+            {
+                case CREATE_CODE:
+                    conceptDTO = addNewConcept( versionDTO, codeSnippet );
+                    break;
+                case ADD_TL_CODE:
+                    conceptDTO = versionDTO.getConcepts().stream().filter( c -> c.getId().equals( codeSnippet.getConceptId() ) ).findFirst().orElse( null );
+                    if ( conceptDTO != null )
+                    {
+                        conceptDTO.setTitle( codeSnippet.getTitle() );
+                        conceptDTO.setDefinition( codeSnippet.getDefinition() );
 
-                    //notify the auditing mechanism
-                    String auditUserString = "";
-                    Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
-                    if (auditUser.isPresent()) {
-                        auditUserString = auditUser.get();
+                        //notify the auditing mechanism
+                        String auditUserString = SecurityUtils.getCurrentUserLogin().orElse( "" );
+                        auditPublisher.publish( auditUserString, vocabularyDTO, versionDTO, conceptDTO, null, codeSnippet, codeSnippet.getActionType().toString() );
                     }
-                    auditPublisher.publish(auditUserString, vocabularyDTO, versionDTO, conceptDTO, null, codeSnippet, "ADD_TL_CODE");
-                }
+                    break;
+                default:
+                    break;
             }
-            if (conceptDTO == null)
-                continue;
 
-            versionDTO = versionService.save(versionDTO);
+            if ( conceptDTO != null )
+            {
+                versionDTO = versionService.save( versionDTO );
 
-            // check if codeSnippet contains changeType, store if exist
-            vocabularyService.storeChangeType(codeSnippet, versionDTO);
+                // check if codeSnippet contains changeType, store if exist
+                vocabularyService.storeChangeType( codeSnippet, versionDTO );
 
-            // find the newly created code from version
-            ConceptDTO concept = versionDTO.findConceptByNotation(conceptDTO.getNotation());
-            storedCodes.add(concept);
+                // find the newly created code from version
+                ConceptDTO concept = versionDTO.findConceptByNotation( conceptDTO.getNotation() );
+                storedCodes.add( concept );
+            }
         }
 
         // index editor
@@ -503,7 +512,7 @@ public class EditorResource {
 
         String conceptsNotation = storedCodes.stream().map(ConceptDTO::getNotation).collect(Collectors.joining());
         if (conceptsNotation.length() > 20) {
-            conceptsNotation = conceptsNotation.substring(0, 20) + "...";
+            conceptsNotation = conceptsNotation.substring(0, 20).trim() + "...";
         }
         conceptsNotation += " (" + storedCodes.size() + " new codes added)";
 
@@ -514,8 +523,7 @@ public class EditorResource {
 
     private ConceptDTO addNewConcept(VersionDTO versionDTO, CodeSnippet codeSnippet) {
         // check if concept already exist for new concept
-        if (versionDTO.getConcepts().stream()
-            .anyMatch(c -> c.getNotation().equals(codeSnippet.getNotation()))) {
+        if (versionDTO.getConcepts().stream().anyMatch(c -> c.getNotation().equals(codeSnippet.getNotation()))) {
             throw new CodeAlreadyExistException(codeSnippet.getNotation());
         }
         // set position if not available
@@ -526,7 +534,7 @@ public class EditorResource {
 
         //notify the auditing mechanism
         String auditUserString = SecurityUtils.getCurrentUserLogin().orElse( "" );
-        auditPublisher.publish(auditUserString, null, versionDTO, newConceptDTO, null, codeSnippet, "CREATE_CODE");
+        auditPublisher.publish(auditUserString, null, versionDTO, newConceptDTO, null, codeSnippet, codeSnippet.getActionType().toString());
 
         // add concept to version and save version to save new concept
         versionDTO.addConceptAt(newConceptDTO, newConceptDTO.getPosition());
@@ -547,11 +555,18 @@ public class EditorResource {
     @PutMapping("/editors/codes")
     public ResponseEntity<ConceptDTO> updateCode(@Valid @RequestBody CodeSnippet codeSnippet) {
         log.debug("REST request to update Code/Concept : {}", codeSnippet);
-        if (!(codeSnippet.getActionType().equals(ActionType.EDIT_CODE) ||
-            codeSnippet.getActionType().equals(ActionType.ADD_TL_CODE) ||
-            codeSnippet.getActionType().equals(ActionType.EDIT_TL_CODE) ||
-            codeSnippet.getActionType().equals(ActionType.DELETE_TL_CODE)))
-            throw new IllegalArgumentException("Action type " + codeSnippet.getActionType() + "not supported");
+
+        switch ( codeSnippet.getActionType() )
+        {
+            case EDIT_CODE:
+            case ADD_TL_CODE:
+            case EDIT_TL_CODE:
+            case DELETE_TL_CODE:
+                break;
+            default:
+                throw new IllegalArgumentException( "Action type " + codeSnippet.getActionType() + "not supported" );
+        }
+
         if (codeSnippet.getConceptId() == null) {
             throw new BadRequestAlertException(INVALID_ID, ENTITY_CODE_NAME, ID_NULL);
         }

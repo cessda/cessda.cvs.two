@@ -50,10 +50,22 @@ public class AccountResource {
     @Autowired
     private AuditEventPublisher auditPublisher;
 
-    public static class AccountResourceException extends RuntimeException {
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public static class AccountResourceException extends Exception {
         private static final long serialVersionUID = -6612174679532316605L;
         public AccountResourceException( String message ) {
             super(message);
+        }
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public static class AccountNotFoundException extends Exception
+    {
+        private static final long serialVersionUID = -6612174679532316605L;
+
+        public AccountNotFoundException( String message )
+        {
+            super( message );
         }
     }
 
@@ -95,13 +107,14 @@ public class AccountResource {
      * {@code GET  /activate} : activate the registered user.
      *
      * @param key the activation key.
-     * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be activated.
+     * @throws RuntimeException {@code 404 (Not Found)} if the user couldn't be activated.
      */
     @GetMapping("/activate")
-    public void activateAccount(@RequestParam(value = "key") String key) {
+    public void activateAccount(@RequestParam(value = "key") String key) throws AccountNotFoundException
+    {
         Optional<User> user = userService.activateRegistration(key);
         if (user.isEmpty()) {
-            throw new AccountResourceException("No user was found for this activation key");
+            throw new AccountNotFoundException("No user was found for this activation key");
         }
     }
 
@@ -124,10 +137,11 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user couldn't be returned.
      */
     @GetMapping("/account")
-    public UserDTO getAccount() {
+    public UserDTO getAccount() throws AccountNotFoundException
+    {
         return userService.getUserWithAuthorities()
             .map(UserDTO::new)
-            .orElseThrow(() -> new AccountResourceException("User could not be found"));
+            .orElseThrow(() -> new AccountNotFoundException("User could not be found"));
     }
 
     /**
@@ -138,7 +152,8 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user login wasn't found.
      */
     @PostMapping("/account")
-    public void saveAccount(@Valid @RequestBody UserDTO userDTO) {
+    public void saveAccount(@Valid @RequestBody UserDTO userDTO) throws AccountNotFoundException, AccountResourceException
+    {
         String userLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new AccountResourceException("Current user login not found"));
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userLogin))) {
@@ -146,7 +161,7 @@ public class AccountResource {
         }
         Optional<User> user = userRepository.findOneByLogin(userLogin);
         if (user.isEmpty()) {
-            throw new AccountResourceException("User could not be found");
+            throw new AccountNotFoundException("User could not be found");
         }
         userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
             userDTO.getLangKey(), userDTO.getImageUrl());
@@ -198,10 +213,10 @@ public class AccountResource {
      *
      * @param keyAndPassword the generated key and the new password.
      * @throws InvalidPasswordException {@code 400 (Bad Request)} if the password is incorrect.
-     * @throws RuntimeException {@code 500 (Internal Server Error)} if the password could not be reset.
      */
     @PostMapping(path = "/account/reset-password/finish")
-    public void finishPasswordReset(@RequestBody KeyAndPasswordVM keyAndPassword) {
+    public void finishPasswordReset(@RequestBody KeyAndPasswordVM keyAndPassword) throws AccountResourceException
+    {
         if (!checkPasswordLength(keyAndPassword.getNewPassword())) {
             throw new InvalidPasswordException();
         }
