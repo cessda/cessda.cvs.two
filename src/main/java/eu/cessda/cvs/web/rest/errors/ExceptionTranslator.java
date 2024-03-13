@@ -69,7 +69,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
                 log.error(status.getReasonPhrase(), throwable);
                 break;
             case CLIENT_ERROR:
-                log.debug(status.getReasonPhrase(), throwable);
+                log.info(status.getReasonPhrase(), throwable);
                 break;
             default:
                 log.trace(status.getReasonPhrase(), throwable);
