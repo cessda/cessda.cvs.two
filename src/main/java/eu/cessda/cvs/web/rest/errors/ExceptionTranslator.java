@@ -17,6 +17,7 @@ package eu.cessda.cvs.web.rest.errors;
 
 import eu.cessda.cvs.service.ResourceNotFoundException;
 import io.github.jhipster.web.util.HeaderUtil;
+import org.apache.catalina.connector.ClientAbortException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -64,6 +65,13 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     @Override
     public void log( Throwable throwable, Problem problem, NativeWebRequest request, HttpStatus status )
     {
+        if ( throwable instanceof ClientAbortException )
+        {
+            // Ignore exceptions caused by clients cancelling requests
+            log.trace(status.getReasonPhrase(), throwable);
+            return;
+        }
+
         switch ( status.series() ) {
             case SERVER_ERROR:
                 log.error(status.getReasonPhrase(), throwable);
