@@ -16,28 +16,33 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ResolverService } from 'app/admin/resolver/resolver.service';
-import { IResolver, Resolver } from 'app/shared/model/resolver.model';
-import { ResourceType } from 'app/shared/model/enumerations/resource-type.model';
-import { ResolverType } from 'app/shared/model/enumerations/resolver-type.model';
+import { Resolver } from 'app/shared/model/resolver.model';
 
 describe('Service Tests', () => {
   describe('Resolver Service', () => {
     let injector: TestBed;
     let service: ResolverService;
     let httpMock: HttpTestingController;
-    let elemDefault: IResolver;
-    let expectedResult: IResolver | IResolver[] | boolean | null;
+    let elemDefault: Resolver;
+    let expectedResult: Resolver | Resolver[] | boolean | null;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
       service = injector.get(ResolverService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Resolver(0, 'AAAAAAA', ResourceType.VOCABULARY, 'AAAAAAA', ResolverType.DOI, 'AAAAAAA');
+      elemDefault = {
+        id: 0,
+        resourceId: 'AAAAAAA',
+        resourceType: 'VOCABULARY',
+        resourceUrl: 'AAAAAAA',
+        resolverType: 'DOI',
+        resolverURI: 'AAAAAAA',
+      };
     });
 
     describe('Service methods', () => {
@@ -54,14 +59,14 @@ describe('Service Tests', () => {
       it('should create a Resolver', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
 
-        service.create(new Resolver()).subscribe(resp => (expectedResult = resp.body));
+        service.create({ resolverURI: '', resourceUrl: '' }).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
@@ -75,9 +80,9 @@ describe('Service Tests', () => {
             resourceType: 'BBBBBB',
             resourceUrl: 'BBBBBB',
             resolverType: 'BBBBBB',
-            resolverURI: 'BBBBBB'
+            resolverURI: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
@@ -96,9 +101,9 @@ describe('Service Tests', () => {
             resourceType: 'BBBBBB',
             resourceUrl: 'BBBBBB',
             resolverType: 'BBBBBB',
-            resolverURI: 'BBBBBB'
+            resolverURI: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);

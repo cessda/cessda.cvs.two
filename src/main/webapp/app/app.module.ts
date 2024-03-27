@@ -37,7 +37,7 @@ import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // ngx-quill rich text
-import { QuillConfig, QuillModule } from 'ngx-quill';
+import { QuillModule } from 'ngx-quill';
 import Quill from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
 // ngx-text-diff

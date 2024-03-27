@@ -21,7 +21,7 @@ import { ActivatedRoute, Data } from '@angular/router';
 import { CvsTestModule } from '../../../test.module';
 import { VersionComponent } from 'app/entities/version/version.component';
 import { VersionService } from 'app/entities/version/version.service';
-import { Version } from 'app/shared/model/version.model';
+import { createNewVersion } from 'app/shared/model/version.model';
 
 describe('Component Tests', () => {
   describe('Version Management Component', () => {
@@ -43,13 +43,13 @@ describe('Component Tests', () => {
                     pagingParams: {
                       predicate: 'id',
                       reverse: false,
-                      page: 0
-                    }
-                  })
-              }
-            }
-          }
-        ]
+                      page: 0,
+                    },
+                  }),
+              },
+            },
+          },
+        ],
       })
         .overrideTemplate(VersionComponent, '')
         .compileComponents();
@@ -65,10 +65,10 @@ describe('Component Tests', () => {
       spyOn(service, 'query').and.returnValue(
         of(
           new HttpResponse({
-            body: [new Version(123)],
-            headers
-          })
-        )
+            body: [createNewVersion(123)],
+            headers,
+          }),
+        ),
       );
 
       // WHEN
@@ -85,10 +85,10 @@ describe('Component Tests', () => {
       spyOn(service, 'query').and.returnValue(
         of(
           new HttpResponse({
-            body: [new Version(123)],
-            headers
-          })
-        )
+            body: [createNewVersion(123)],
+            headers,
+          }),
+        ),
       );
 
       // WHEN

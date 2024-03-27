@@ -20,10 +20,6 @@ import { CvsAppModule } from './app.module';
 
 ProdConfig();
 
-if (module['hot']) {
-  module['hot'].accept();
-}
-
 platformBrowserDynamic()
   .bootstrapModule(CvsAppModule, { preserveWhitespaces: true })
   // eslint-disable-next-line no-console

@@ -17,6 +17,14 @@ import { Directive, Input, OnDestroy, TemplateRef, ViewContainerRef } from '@ang
 import { Subscription } from 'rxjs';
 
 import { AccountService } from 'app/core/auth/account.service';
+import { AgencyRole } from '../model/enumerations/agency-role.model';
+
+export interface AgencyAuthority {
+  actionType: string;
+  agencyId: number;
+  agencyRoles: AgencyRole[];
+  language?: string;
+}
 
 /**
  * @whatItDoes Conditionally includes an HTML element if current user has any
@@ -35,17 +43,17 @@ import { AccountService } from 'app/core/auth/account.service';
   selector: '[jhiHasAnyAgencyAuthority]',
 })
 export class HasAnyAgencyAuthorityDirective implements OnDestroy {
-  private agencyAuthority: any;
+  private agencyAuthority: AgencyAuthority | undefined = undefined;
   private authenticationSubscription?: Subscription;
 
   constructor(
     private accountService: AccountService,
-    private templateRef: TemplateRef<any>,
+    private templateRef: TemplateRef<unknown>,
     private viewContainerRef: ViewContainerRef,
   ) {}
 
   @Input()
-  set jhiHasAnyAgencyAuthority(value: any) {
+  set jhiHasAnyAgencyAuthority(value: AgencyAuthority) {
     this.agencyAuthority = value;
     this.updateView();
     // Get notified each time authentication state changes.
@@ -59,6 +67,10 @@ export class HasAnyAgencyAuthorityDirective implements OnDestroy {
   }
 
   private updateView(): void {
+    if (!this.agencyAuthority) {
+      throw new TypeError('agencyAuthority is undefined');
+    }
+
     const hasAnyAuthority = this.accountService.hasAnyAgencyAuthority(
       this.agencyAuthority.actionType,
       this.agencyAuthority.agencyId,

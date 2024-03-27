@@ -17,16 +17,19 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { JhiDataUtils } from 'ng-jhipster';
 
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 
 @Component({
   selector: 'jhi-vocabulary-detail',
-  templateUrl: './vocabulary-detail.component.html'
+  templateUrl: './vocabulary-detail.component.html',
 })
 export class VocabularyDetailComponent implements OnInit {
-  vocabulary: IVocabulary | null = null;
+  vocabulary: Vocabulary | null = null;
 
-  constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
+  constructor(
+    protected dataUtils: JhiDataUtils,
+    protected activatedRoute: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ vocabulary }) => (this.vocabulary = vocabulary));

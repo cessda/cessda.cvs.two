@@ -13,23 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { IMetadataValue } from 'app/shared/model/metadata-value.model';
+import { MetadataValue } from 'app/shared/model/metadata-value.model';
 import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
 
-export interface IMetadataField {
+export interface MetadataField {
   id?: number;
-  metadataKey?: string;
-  description?: any;
+  metadataKey: string;
+  description?: string;
   objectType?: ObjectType;
-  metadataValues?: IMetadataValue[];
-}
-
-export class MetadataField implements IMetadataField {
-  constructor(
-    public id?: number,
-    public metadataKey?: string,
-    public description?: any,
-    public objectType?: ObjectType,
-    public metadataValues?: IMetadataValue[]
-  ) {}
+  metadataValues: MetadataValue[];
 }

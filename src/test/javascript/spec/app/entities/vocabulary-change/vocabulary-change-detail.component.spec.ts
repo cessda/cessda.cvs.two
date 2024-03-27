@@ -20,20 +20,19 @@ import { JhiDataUtils } from 'ng-jhipster';
 
 import { CvsTestModule } from '../../../test.module';
 import { VocabularyChangeDetailComponent } from 'app/entities/vocabulary-change/vocabulary-change-detail.component';
-import { VocabularyChange } from 'app/shared/model/vocabulary-change.model';
 
 describe('Component Tests', () => {
   describe('VocabularyChange Management Detail Component', () => {
     let comp: VocabularyChangeDetailComponent;
     let fixture: ComponentFixture<VocabularyChangeDetailComponent>;
     let dataUtils: JhiDataUtils;
-    const route = ({ data: of({ vocabularyChange: new VocabularyChange(123) }) } as any) as ActivatedRoute;
+    const route = { data: of({ vocabularyChange: { id: 123 } }) } as unknown as ActivatedRoute;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [VocabularyChangeDetailComponent],
-        providers: [{ provide: ActivatedRoute, useValue: route }]
+        providers: [{ provide: ActivatedRoute, useValue: route }],
       })
         .overrideTemplate(VocabularyChangeDetailComponent, '')
         .compileComponents();

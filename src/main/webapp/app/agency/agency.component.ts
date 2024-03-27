@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IAgency } from 'app/shared/model/agency.model';
+import { Agency } from 'app/shared/model/agency.model';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { AgencyService } from './agency.service';
@@ -31,7 +31,7 @@ import { AgencyDeleteDialogComponent } from './agency-delete-dialog.component';
   templateUrl: './agency.component.html',
 })
 export class AgencyComponent implements OnInit, OnDestroy {
-  agencies: IAgency[] = [];
+  agencies: Agency[] = [];
   eventSubscriber?: Subscription;
   currentSearch: string;
   totalItems = 0;
@@ -67,7 +67,7 @@ export class AgencyComponent implements OnInit, OnDestroy {
           sort: this.sort(),
         })
         .subscribe(
-          (res: HttpResponse<IAgency[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+          (res: HttpResponse<Agency[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
           () => this.onError(),
         );
       return;
@@ -80,7 +80,7 @@ export class AgencyComponent implements OnInit, OnDestroy {
         sort: ['name,asc'],
       })
       .subscribe(
-        (res: HttpResponse<IAgency[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        (res: HttpResponse<Agency[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
         () => this.onError(),
       );
   }
@@ -111,7 +111,7 @@ export class AgencyComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackId(_index: number, item: IAgency): number {
+  trackId(_index: number, item: Agency): number {
     return item.id || -1;
   }
 
@@ -119,7 +119,7 @@ export class AgencyComponent implements OnInit, OnDestroy {
     this.eventSubscriber = this.eventManager.subscribe('agencyListModification', () => this.loadPage());
   }
 
-  delete(agency: IAgency): void {
+  delete(agency: Agency): void {
     const modalRef = this.modalService.open(AgencyDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.agency = agency;
   }
@@ -132,7 +132,7 @@ export class AgencyComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  protected onSuccess(data: IAgency[] | null, headers: HttpHeaders, page: number): void {
+  protected onSuccess(data: Agency[] | null, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;

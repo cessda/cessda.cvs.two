@@ -16,26 +16,32 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LicenceService } from 'app/admin/licence/licence.service';
-import { ILicence, Licence } from 'app/shared/model/licence.model';
+import { Licence } from 'app/shared/model/licence.model';
 
 describe('Service Tests', () => {
   describe('Licence Service', () => {
     let injector: TestBed;
     let service: LicenceService;
     let httpMock: HttpTestingController;
-    let elemDefault: ILicence;
-    let expectedResult: ILicence | ILicence[] | boolean | null;
+    let elemDefault: Licence;
+    let expectedResult: Licence | Licence[] | boolean | null;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
-      service = injector.get(LicenceService);
-      httpMock = injector.get(HttpTestingController);
+      service = injector.inject(LicenceService);
+      httpMock = injector.inject(HttpTestingController);
 
-      elemDefault = new Licence(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
+      elemDefault = {
+        id: 0,
+        name: 'AAAAAAA',
+        link: 'AAAAAAA',
+        logoLink: 'AAAAAAA',
+        abbr: 'AAAAAAA',
+      };
     });
 
     describe('Service methods', () => {
@@ -52,14 +58,14 @@ describe('Service Tests', () => {
       it('should create a Licence', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
 
-        service.create(new Licence()).subscribe(resp => (expectedResult = resp.body));
+        service.create({ name: '' }).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
@@ -72,9 +78,9 @@ describe('Service Tests', () => {
             name: 'BBBBBB',
             link: 'BBBBBB',
             logoLink: 'BBBBBB',
-            abbr: 'BBBBBB'
+            abbr: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
@@ -92,9 +98,9 @@ describe('Service Tests', () => {
             name: 'BBBBBB',
             link: 'BBBBBB',
             logoLink: 'BBBBBB',
-            abbr: 'BBBBBB'
+            abbr: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);

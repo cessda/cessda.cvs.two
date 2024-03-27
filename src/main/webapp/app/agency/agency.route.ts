@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
 import { JhiResolvePagingParams } from 'ng-jhipster';
 import { EMPTY, Observable, of } from 'rxjs';
@@ -22,34 +21,34 @@ import { mergeMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { Agency, IAgency } from 'app/shared/model/agency.model';
+import { Agency, createNewAgency } from 'app/shared/model/agency.model';
 import { AgencyService } from './agency.service';
 import { AgencyComponent } from './agency.component';
 import { AgencyDetailPopupComponent } from './agency-detail-dialog.component';
 import { AgencyUpdateComponent } from './agency-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class AgencyResolve implements Resolve<IAgency> {
+export class AgencyResolve implements Resolve<Agency> {
   constructor(
     private service: AgencyService,
     private router: Router,
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IAgency> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Agency> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        mergeMap((agency: HttpResponse<Agency>) => {
+        mergeMap(agency => {
           if (agency.body) {
             return of(agency.body);
           } else {
-            this.router.navigate(['404']);
+            this.router.navigate(['404'], { skipLocationChange: true });
             return EMPTY;
           }
         }),
       );
     }
-    return of(new Agency());
+    return of(createNewAgency());
   }
 }
 

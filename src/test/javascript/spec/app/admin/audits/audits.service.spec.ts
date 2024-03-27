@@ -52,8 +52,8 @@ describe('Service Tests', () => {
 
       it('should return Audits', () => {
         let expectedResult: HttpResponse<Audit[]> = new HttpResponse({ body: [] });
-        const auditData = new AuditData('remoteAddress', '127.0.0.1');
-        const audit = new Audit(auditData, 'user', '20140101', 'AUTHENTICATION_SUCCESS');
+        const auditData: AuditData = { key: 'remoteAddress', value: '127.0.0.1' };
+        const audit: Audit = { data: auditData, principal: 'user', timestamp: '20140101', type: 'AUTHENTICATION_SUCCESS' };
 
         service.query(fakeRequest).subscribe(received => {
           expectedResult = received;

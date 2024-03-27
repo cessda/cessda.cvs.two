@@ -16,14 +16,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { IResolver } from 'app/shared/model/resolver.model';
+import { Resolver } from 'app/shared/model/resolver.model';
 
 @Component({
   selector: 'jhi-resolver-detail',
-  templateUrl: './resolver-detail.component.html'
+  templateUrl: './resolver-detail.component.html',
 })
 export class ResolverDetailComponent implements OnInit {
-  resolver: IResolver | null = null;
+  resolver: Resolver | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 

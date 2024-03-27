@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
@@ -15,7 +16,6 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -23,11 +23,12 @@ import moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import { IVersion, Version } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { VersionService } from './version.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
+import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'jhi-version-update',
@@ -35,8 +36,8 @@ import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
 })
 export class VersionUpdateComponent implements OnInit {
   isSaving = false;
-  vocabularies: IVocabulary[] = [];
-  publicationDateDp: any;
+  vocabularies: Vocabulary[] = [];
+  publicationDateDp: NgbInputDatepicker | undefined;
 
   editForm = this.fb.group({
     id: [],
@@ -75,7 +76,7 @@ export class VersionUpdateComponent implements OnInit {
     protected versionService: VersionService,
     protected vocabularyService: VocabularyService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -87,11 +88,11 @@ export class VersionUpdateComponent implements OnInit {
 
       this.updateForm(version);
 
-      this.vocabularyService.query().subscribe((res: HttpResponse<IVocabulary[]>) => (this.vocabularies = res.body || []));
+      this.vocabularyService.query().subscribe((res: HttpResponse<Vocabulary[]>) => (this.vocabularies = res.body || []));
     });
   }
 
-  updateForm(version: IVersion): void {
+  updateForm(version: Version): void {
     this.editForm.patchValue({
       id: version.id,
       status: version.status,
@@ -144,9 +145,8 @@ export class VersionUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IVersion {
+  private createFromForm(): Version {
     return {
-      ...new Version(),
       id: this.editForm.get(['id'])!.value,
       status: this.editForm.get(['status'])!.value,
       itemType: this.editForm.get(['itemType'])!.value,
@@ -177,13 +177,16 @@ export class VersionUpdateComponent implements OnInit {
       translateAgency: this.editForm.get(['translateAgency'])!.value,
       translateAgencyLink: this.editForm.get(['translateAgencyLink'])!.value,
       vocabularyId: this.editForm.get(['vocabularyId'])!.value,
+      concepts: [],
+      comments: [],
+      versionHistories: [],
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IVersion>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Version>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 
@@ -196,7 +199,7 @@ export class VersionUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: IVocabulary): any {
-    return item.id;
+  trackById(_index: number, item: Vocabulary): number {
+    return item.id || 0;
   }
 }

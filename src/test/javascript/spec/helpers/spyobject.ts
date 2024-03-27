@@ -16,15 +16,16 @@
 export interface GuinessCompatibleSpy extends jasmine.Spy {
   /** By chaining the spy with and.returnValue, all calls to the function will return a specific
    * value. */
-  andReturn(val: any): GuinessCompatibleSpy;
+  andReturn(val: any): jasmine.Spy;
   /** By chaining the spy with and.callFake, all calls to the spy will delegate to the supplied
    * function. */
-  andCallFake(fn: Function): GuinessCompatibleSpy;
+  andCallFake(fn: (...args: any[]) => any): jasmine.Spy;
   /** removes all recorded calls */
   reset(): void;
 }
 
 export class SpyObject {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
   constructor(type?: any) {
     if (type) {
       Object.keys(type.prototype).forEach(prop => {
@@ -45,17 +46,20 @@ export class SpyObject {
   }
 
   spy(name: string): GuinessCompatibleSpy {
+    //@ts-expect-error - not expressible in TypeScript
     if (!this[name]) {
+      //@ts-expect-error - not expressible in TypeScript
       this[name] = this.createGuinnessCompatibleSpy(name);
     }
+    //@ts-expect-error - not expressible in TypeScript
     return this[name];
   }
 
   private createGuinnessCompatibleSpy(name: string): GuinessCompatibleSpy {
-    const newSpy: GuinessCompatibleSpy = jasmine.createSpy(name) as any;
-    newSpy.andCallFake = newSpy.and.callFake as any;
-    newSpy.andReturn = newSpy.and.returnValue as any;
-    newSpy.reset = newSpy.calls.reset as any;
+    const newSpy: GuinessCompatibleSpy = jasmine.createSpy(name) as GuinessCompatibleSpy;
+    newSpy.andCallFake = newSpy.and.callFake;
+    newSpy.andReturn = newSpy.and.returnValue;
+    newSpy.reset = newSpy.calls.reset;
     // revisit return null here (previously needed for rtts_assert).
     newSpy.and.returnValue(null);
     return newSpy;

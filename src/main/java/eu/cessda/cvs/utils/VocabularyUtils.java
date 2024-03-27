@@ -25,6 +25,7 @@ import eu.cessda.cvs.service.search.EsFilter;
 import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.web.rest.domain.Aggr;
+import eu.cessda.cvs.web.rest.domain.Bucket;
 import eu.cessda.cvs.web.rest.domain.CvResult;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -204,16 +205,6 @@ public final class VocabularyUtils
 
 	public static CvResult mapResultToCvResult( EsQueryResultDetail esq, Page<VocabularyDTO> vocabulariesPage )
 	{
-		CvResult cvResult = new CvResult();
-		cvResult.setVocabularies( vocabulariesPage.getContent() );
-		cvResult.setFirst( vocabulariesPage.isFirst() );
-		cvResult.setLast( vocabulariesPage.isLast() );
-		cvResult.setNumber( vocabulariesPage.getNumber() );
-		cvResult.setNumberOfElements( vocabulariesPage.getNumberOfElements() );
-		cvResult.setSize( vocabulariesPage.getSize() );
-		cvResult.setTotalElements( vocabulariesPage.getTotalElements() );
-		cvResult.setTotalPage( vocabulariesPage.getTotalPages() );
-
 		// bucketFilter
 		Map<String, List<EsFilter>> filterMap = new LinkedHashMap<>();
 		for ( EsFilter esFilter : esq.getEsFilters() )
@@ -221,21 +212,46 @@ public final class VocabularyUtils
 			List<EsFilter> esFilters = filterMap.computeIfAbsent( esFilter.getField(), k -> new ArrayList<>() );
 			esFilters.add( esFilter );
 		}
+
+        var aggrs = new ArrayList<Aggr>();
+
 		// map contains either 1 or 2
 		filterMap.forEach( ( k, v ) ->
 		{
-			Aggr agg = new Aggr();
-			agg.setType( v.get( 0 ).getFilterType().toString().toLowerCase() );
-			agg.setField( v.get( 0 ).getField() );
-			agg.setValues( v.get( 0 ).getValues() );
-			agg.setBucketFromMap( v.get( 0 ).getBucket() );
-			agg.setFilteredBucketFromMap( v.get( 0 ).getFilteredBucket() );
-			cvResult.addAggr( agg );
+            var buckets = transformToBuckets( v.get( 0 ).getBucket() );
+            var filteredBuckets = transformToBuckets( v.get( 0 ).getFilteredBucket() );
+
+            Aggr agg = new Aggr(
+                v.get( 0 ).getFilterType().toString().toLowerCase(),
+                v.get( 0 ).getField(),
+                v.get( 0 ).getValues(),
+                buckets,
+                filteredBuckets
+            );
+			aggrs.add( agg );
 		} );
-		return cvResult;
+
+        return new CvResult(
+            vocabulariesPage.getContent(),
+            vocabulariesPage.getTotalElements(),
+            vocabulariesPage.getTotalPages(),
+            vocabulariesPage.getNumberOfElements(),
+            vocabulariesPage.getNumber(),
+            vocabulariesPage.getSize(),
+            vocabulariesPage.isFirst(),
+            vocabulariesPage.isLast(),
+            aggrs
+        );
 	}
 
-	public static String generateUri(String uri, Vocabulary vocabulary )
+    private static List<Bucket> transformToBuckets( Map<String, Long> bucket )
+    {
+        List<Bucket> buckets = new ArrayList<>( bucket.size() );
+        bucket.forEach( ( k, v ) -> buckets.add( new Bucket( k, v ) ) );
+        return buckets;
+    }
+
+    public static String generateUri(String uri, Vocabulary vocabulary )
 	{
 		return generateUri( uri, null, vocabulary.getNotation(), null, vocabulary.getSourceLanguage(), null, null );
 	}

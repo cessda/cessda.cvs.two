@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IVocabularyChange } from 'app/shared/model/vocabulary-change.model';
+import { VocabularyChange } from 'app/shared/model/vocabulary-change.model';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { VocabularyChangeService } from './vocabulary-change.service';
@@ -31,7 +31,7 @@ import { VocabularyChangeDeleteDialogComponent } from './vocabulary-change-delet
   templateUrl: './vocabulary-change.component.html',
 })
 export class VocabularyChangeComponent implements OnInit, OnDestroy {
-  vocabularyChanges?: IVocabularyChange[];
+  vocabularyChanges?: VocabularyChange[];
   eventSubscriber?: Subscription;
   currentSearch: string;
   totalItems = 0;
@@ -67,7 +67,7 @@ export class VocabularyChangeComponent implements OnInit, OnDestroy {
           sort: this.sort(),
         })
         .subscribe(
-          (res: HttpResponse<IVocabularyChange[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+          (res: HttpResponse<VocabularyChange[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
           () => this.onError(),
         );
       return;
@@ -80,7 +80,7 @@ export class VocabularyChangeComponent implements OnInit, OnDestroy {
         sort: this.sort(),
       })
       .subscribe(
-        (res: HttpResponse<IVocabularyChange[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        (res: HttpResponse<VocabularyChange[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
         () => this.onError(),
       );
   }
@@ -107,7 +107,7 @@ export class VocabularyChangeComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackId(_index: number, item: IVocabularyChange): number {
+  trackId(_index: number, item: VocabularyChange): number {
     return item.id!;
   }
 
@@ -115,7 +115,7 @@ export class VocabularyChangeComponent implements OnInit, OnDestroy {
     this.eventSubscriber = this.eventManager.subscribe('vocabularyChangeListModification', () => this.loadPage());
   }
 
-  delete(vocabularyChange: IVocabularyChange): void {
+  delete(vocabularyChange: VocabularyChange): void {
     const modalRef = this.modalService.open(VocabularyChangeDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.vocabularyChange = vocabularyChange;
   }
@@ -128,7 +128,7 @@ export class VocabularyChangeComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  protected onSuccess(data: IVocabularyChange[] | null, headers: HttpHeaders, page: number): void {
+  protected onSuccess(data: VocabularyChange[] | null, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;

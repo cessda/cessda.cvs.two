@@ -17,19 +17,19 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { IMetadataField } from 'app/shared/model/metadata-field.model';
+import { MetadataField } from 'app/shared/model/metadata-field.model';
 import { MetadataFieldService } from './metadata-field.service';
 
 @Component({
-  templateUrl: './metadata-field-delete-dialog.component.html'
+  templateUrl: './metadata-field-delete-dialog.component.html',
 })
 export class MetadataFieldDeleteDialogComponent {
-  metadataField?: IMetadataField;
+  metadataField?: MetadataField;
 
   constructor(
     protected metadataFieldService: MetadataFieldService,
     public activeModal: NgbActiveModal,
-    protected eventManager: JhiEventManager
+    protected eventManager: JhiEventManager,
   ) {}
 
   cancel(): void {

@@ -15,14 +15,13 @@
  */
 
 import { Injectable } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
 
 import { EMPTY, Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
 import { EditorComponent } from './editor.component';
-import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
+import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import { JhiResolvePagingParams } from 'ng-jhipster';
 import { EditorService } from 'app/editor/editor.service';
 import { EditorDetailComponent } from 'app/editor/editor-detail.component';
@@ -30,28 +29,28 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access-service'
 import { EditorCvAddPopupComponent } from 'app/editor/editor-cv-add-dialog.component';
 
 @Injectable({ providedIn: 'root' })
-export class VocabularyResolve implements Resolve<IVocabulary> {
+export class VocabularyResolve implements Resolve<Vocabulary> {
   constructor(
     private service: EditorService,
     private router: Router,
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IVocabulary> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Vocabulary> | Observable<never> {
     const notation = route.params['notation'];
     if (notation) {
       return this.service.getVocabulary(notation).pipe(
-        mergeMap((vocabulary: HttpResponse<Vocabulary>) => {
+        mergeMap(vocabulary => {
           if (vocabulary.body) {
             vocabulary.body.selectedLang = vocabulary.body.sourceLanguage;
             return of(vocabulary.body);
           } else {
-            this.router.navigate(['404']);
+            this.router.navigate(['404'], { skipLocationChange: true });
             return EMPTY;
           }
         }),
       );
     }
-    return of(new Vocabulary());
+    return of(createNewVocabulary());
   }
 }
 

@@ -21,7 +21,7 @@ import { of } from 'rxjs';
 import { CvsTestModule } from '../../../test.module';
 import { VocabularyUpdateComponent } from 'app/entities/vocabulary/vocabulary-update.component';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
-import { Vocabulary } from 'app/shared/model/vocabulary.model';
+import { createNewVocabulary } from 'app/shared/model/vocabulary.model';
 
 describe('Component Tests', () => {
   describe('Vocabulary Management Update Component', () => {
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [VocabularyUpdateComponent],
-        providers: [FormBuilder]
+        providers: [FormBuilder],
       })
         .overrideTemplate(VocabularyUpdateComponent, '')
         .compileComponents();
@@ -46,7 +46,7 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', fakeAsync(() => {
         // GIVEN
-        const entity = new Vocabulary(123);
+        const entity = createNewVocabulary({ id: 123 });
         spyOn(service, 'update').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN
@@ -60,7 +60,7 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', fakeAsync(() => {
         // GIVEN
-        const entity = new Vocabulary();
+        const entity = createNewVocabulary();
         spyOn(service, 'create').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN

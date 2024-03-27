@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {DomSanitizer} from '@angular/platform-browser'
-import {Pipe, PipeTransform} from "@angular/core";
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Pipe, PipeTransform } from '@angular/core';
 
 /**
  * See https://stackoverflow.com/questions/39628007/angular2-innerhtml-binding-remove-style-attribute
  */
-@Pipe({ name: 'safeHtml', pure: true})
-export class SafeHtmlPipe implements PipeTransform  {
+@Pipe({ name: 'safeHtml', pure: true })
+export class SafeHtmlPipe implements PipeTransform {
   constructor(private sanitized: DomSanitizer) {}
-  transform(value: any): any {
+  transform(value: string): SafeHtml {
     return this.sanitized.bypassSecurityTrustHtml(value);
   }
 }

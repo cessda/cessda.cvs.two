@@ -43,13 +43,13 @@ describe('Component Tests', () => {
                     pagingParams: {
                       predicate: 'id',
                       reverse: false,
-                      page: 0
-                    }
-                  })
-              }
-            }
-          }
-        ]
+                      page: 0,
+                    },
+                  }),
+              },
+            },
+          },
+        ],
       })
         .overrideTemplate(CommentComponent, '')
         .compileComponents();
@@ -64,11 +64,20 @@ describe('Component Tests', () => {
       const headers = new HttpHeaders().append('link', 'link;link');
       spyOn(service, 'query').and.returnValue(
         of(
-          new HttpResponse({
-            body: [new Comment(123)],
-            headers
-          })
-        )
+          new HttpResponse<Comment[]>({
+            body: [
+              {
+                id: 123,
+                info: undefined,
+                content: undefined,
+                userId: undefined,
+                dateTime: undefined,
+                versionId: undefined,
+              },
+            ],
+            headers,
+          }),
+        ),
       );
 
       // WHEN
@@ -84,11 +93,20 @@ describe('Component Tests', () => {
       const headers = new HttpHeaders().append('link', 'link;link');
       spyOn(service, 'query').and.returnValue(
         of(
-          new HttpResponse({
-            body: [new Comment(123)],
-            headers
-          })
-        )
+          new HttpResponse<Comment[]>({
+            body: [
+              {
+                id: 123,
+                info: undefined,
+                content: undefined,
+                userId: undefined,
+                dateTime: undefined,
+                versionId: undefined,
+              },
+            ],
+            headers,
+          }),
+        ),
       );
 
       // WHEN

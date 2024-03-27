@@ -150,7 +150,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
           return event.target.value;
         }),
       )
-      .subscribe((text: string) => {
+      .subscribe(() => {
         this.isSearching = true;
         this.search(this.currentSearch);
       });

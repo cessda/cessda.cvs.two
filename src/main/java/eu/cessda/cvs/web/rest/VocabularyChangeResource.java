@@ -83,10 +83,10 @@ public class VocabularyChangeResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated vocabularyChangeDTO,
      * or with status {@code 400 (Bad Request)} if the vocabularyChangeDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the vocabularyChangeDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/vocabulary-changes")
-    public ResponseEntity<VocabularyChangeDTO> updateVocabularyChange(@Valid @RequestBody VocabularyChangeDTO vocabularyChangeDTO) throws URISyntaxException {
+    public ResponseEntity<VocabularyChangeDTO> updateVocabularyChange(@Valid @RequestBody VocabularyChangeDTO vocabularyChangeDTO)
+    {
         log.debug("REST request to update VocabularyChange : {}", vocabularyChangeDTO);
         if (vocabularyChangeDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

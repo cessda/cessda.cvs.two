@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IUserAgency } from 'app/shared/model/user-agency.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { UserAgencyService } from './user-agency.service';
@@ -28,10 +28,10 @@ import { UserAgencyDeleteDialogComponent } from './user-agency-delete-dialog.com
 
 @Component({
   selector: 'jhi-user-agency',
-  templateUrl: './user-agency.component.html'
+  templateUrl: './user-agency.component.html',
 })
 export class UserAgencyComponent implements OnInit, OnDestroy {
-  userAgencies?: IUserAgency[];
+  userAgencies?: UserAgency[];
   eventSubscriber?: Subscription;
   currentSearch: string;
   totalItems = 0;
@@ -46,7 +46,7 @@ export class UserAgencyComponent implements OnInit, OnDestroy {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -63,11 +63,11 @@ export class UserAgencyComponent implements OnInit, OnDestroy {
           page: pageToLoad - 1,
           query: this.currentSearch,
           size: this.itemsPerPage,
-          sort: this.sort()
+          sort: this.sort(),
         })
         .subscribe(
-          (res: HttpResponse<IUserAgency[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-          () => this.onError()
+          (res: HttpResponse<UserAgency[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+          () => this.onError(),
         );
       return;
     }
@@ -76,11 +76,11 @@ export class UserAgencyComponent implements OnInit, OnDestroy {
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
-        sort: this.sort()
+        sort: this.sort(),
       })
       .subscribe(
-        (res: HttpResponse<IUserAgency[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
+        (res: HttpResponse<UserAgency[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        () => this.onError(),
       );
   }
 
@@ -106,7 +106,7 @@ export class UserAgencyComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackId(index: number, item: IUserAgency): number {
+  trackId(index: number, item: UserAgency): number {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     return item.id!;
   }
@@ -115,7 +115,7 @@ export class UserAgencyComponent implements OnInit, OnDestroy {
     this.eventSubscriber = this.eventManager.subscribe('userAgencyListModification', () => this.loadPage());
   }
 
-  delete(userAgency: IUserAgency): void {
+  delete(userAgency: UserAgency): void {
     const modalRef = this.modalService.open(UserAgencyDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.userAgency = userAgency;
   }
@@ -128,7 +128,7 @@ export class UserAgencyComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  protected onSuccess(data: IUserAgency[] | null, headers: HttpHeaders, page: number): void {
+  protected onSuccess(data: UserAgency[] | null, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
@@ -137,8 +137,8 @@ export class UserAgencyComponent implements OnInit, OnDestroy {
         page: this.page,
         size: this.itemsPerPage,
         search: this.currentSearch,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
+        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
+      },
     });
     this.userAgencies = data || [];
   }

@@ -21,10 +21,10 @@ import moment from 'moment';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption, SearchWithPagination } from 'app/shared/util/request-util';
-import { IComment } from 'app/shared/model/comment.model';
+import { Comment } from 'app/shared/model/comment.model';
 
-type EntityResponseType = HttpResponse<IComment>;
-type EntityArrayResponseType = HttpResponse<IComment[]>;
+type EntityResponseType = HttpResponse<Comment>;
+type EntityArrayResponseType = HttpResponse<Comment[]>;
 
 @Injectable({ providedIn: 'root' })
 export class CommentService {
@@ -33,30 +33,30 @@ export class CommentService {
 
   constructor(protected http: HttpClient) {}
 
-  create(comment: IComment): Observable<EntityResponseType> {
+  create(comment: Comment): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(comment);
     return this.http
-      .post<IComment>(this.resourceUrl, copy, { observe: 'response' })
+      .post<Comment>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
-  update(comment: IComment): Observable<EntityResponseType> {
+  update(comment: Comment): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(comment);
     return this.http
-      .put<IComment>(this.resourceUrl, copy, { observe: 'response' })
+      .put<Comment>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
     return this.http
-      .get<IComment>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .get<Comment>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
-      .get<IComment[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .get<Comment[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
@@ -66,19 +66,19 @@ export class CommentService {
 
   findAllByVersion(versionId: number): Observable<EntityArrayResponseType> {
     return this.http
-      .get<IComment[]>(`${this.resourceUrl}/version/${versionId}`, { observe: 'response' })
+      .get<Comment[]>(`${this.resourceUrl}/version/${versionId}`, { observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
   search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
-      .get<IComment[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
+      .get<Comment[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
-  protected convertDateFromClient(comment: IComment): IComment {
-    const copy: IComment = Object.assign({}, comment, {
+  protected convertDateFromClient(comment: Comment): Comment {
+    const copy: Comment = Object.assign({}, comment, {
       dateTime: comment.dateTime && comment.dateTime.isValid() ? comment.dateTime.toJSON() : undefined,
     });
     return copy;
@@ -93,7 +93,7 @@ export class CommentService {
 
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
-      res.body.forEach((comment: IComment) => {
+      res.body.forEach((comment: Comment) => {
         comment.dateTime = comment.dateTime ? moment(comment.dateTime) : undefined;
       });
     }

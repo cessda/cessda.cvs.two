@@ -16,7 +16,7 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field.service';
-import { IMetadataField, MetadataField } from 'app/shared/model/metadata-field.model';
+import { MetadataField } from 'app/shared/model/metadata-field.model';
 import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
 
 describe('Service Tests', () => {
@@ -24,19 +24,25 @@ describe('Service Tests', () => {
     let injector: TestBed;
     let service: MetadataFieldService;
     let httpMock: HttpTestingController;
-    let elemDefault: IMetadataField;
-    let expectedResult: IMetadataField | IMetadataField[] | boolean | null;
+    let elemDefault: MetadataField;
+    let expectedResult: MetadataField | MetadataField[] | boolean | null;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
       service = injector.get(MetadataFieldService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new MetadataField(0, 'AAAAAAA', 'AAAAAAA', ObjectType.AGENCY);
+      elemDefault = {
+        id: 0,
+        metadataKey: 'AAAAAAA',
+        description: 'AAAAAAA',
+        objectType: ObjectType.AGENCY,
+        metadataValues: [],
+      };
     });
 
     describe('Service methods', () => {
@@ -53,14 +59,14 @@ describe('Service Tests', () => {
       it('should create a MetadataField', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
 
-        service.create(new MetadataField()).subscribe(resp => (expectedResult = resp.body));
+        service.create({ metadataKey: '', metadataValues: [] }).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
@@ -72,9 +78,9 @@ describe('Service Tests', () => {
           {
             metadataKey: 'BBBBBB',
             description: 'BBBBBB',
-            objectType: 'BBBBBB'
+            objectType: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
@@ -91,9 +97,9 @@ describe('Service Tests', () => {
           {
             metadataKey: 'BBBBBB',
             description: 'BBBBBB',
-            objectType: 'BBBBBB'
+            objectType: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);

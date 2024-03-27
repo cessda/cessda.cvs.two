@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export class AuditData {
-  constructor(
-    public key: string,
-    public value: string,
-  ) {}
+export interface AuditData {
+  key: string;
+  value: string;
 }

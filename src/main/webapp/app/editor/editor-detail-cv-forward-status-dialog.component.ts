@@ -23,50 +23,50 @@ import { AccountService } from 'app/core/auth/account.service';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Account } from 'app/core/user/account.model';
 import { EditorService } from 'app/editor/editor.service';
-import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
-import { IVersion } from 'app/shared/model/version.model';
-import { ILicence } from 'app/shared/model/licence.model';
+import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { createNewVersion } from 'app/shared/model/version.model';
+import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from 'app/admin/licence/licence.service';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { DiffContent, DiffResults } from 'ngx-text-diff/lib/ngx-text-diff.model';
-import { IComment } from 'app/shared/model/comment.model';
+import { Comment } from 'app/shared/model/comment.model';
 import { VocabularyChangeService } from 'app/entities/vocabulary-change/vocabulary-change.service';
-import { IVocabularyChange } from 'app/shared/model/vocabulary-change.model';
+import { VocabularyChange } from 'app/shared/model/vocabulary-change.model';
 import { QuillModule } from 'ngx-quill';
+import { Quill } from 'quill';
+import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
   selector: 'jhi-editor-detail-cv-forward-status-dialog',
   templateUrl: './editor-detail-cv-forward-status-dialog.component.html',
 })
 export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
-  licences?: ILicence[];
+  licences: Licence[] = [];
   isSaving: boolean;
   isVersionInvalid: boolean;
   account!: Account;
   languages: string[] = [];
-  vocabularyParam: IVocabulary = {};
-  versionParam: IVersion = {};
+  vocabularyParam: Vocabulary = createNewVocabulary();
+  versionParam = createNewVersion();
   isSlForm?: boolean;
   slVersionNumber!: string;
   proposedPatchNumber = 0;
   missingTranslations: string[] = [];
-  comments: IComment[] | undefined = [];
-  vocabularyChanges: IVocabularyChange[] | null = [];
+  comments: Comment[] = [];
+  vocabularyChanges: VocabularyChange[] = [];
 
-  // @ts-ignore
-  public versionNotesEditor: Quill;
-  // @ts-ignore
-  public versionChangesEditor: Quill;
+  public versionNotesEditor: Quill | undefined;
+  public versionChangesEditor: Quill | undefined;
 
   isCommentCollapse = true;
   isTextDiffCollapse = true;
   isVocabularyChangeCollapse = true;
 
   compareNoOfDifference = 0;
-  comparePrevVersion = '';
+  comparePrevVersion: string | null = null;
 
   left = '';
   right = '';
@@ -107,7 +107,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.isSaving = false;
-    this.comments = this.versionParam.comments;
+    this.comments = this.versionParam.comments || [];
     this.accountService.identity().subscribe(account => {
       if (account) {
         this.account = account;
@@ -131,8 +131,8 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
               size: 50,
               sort: ['id,asc'],
             })
-            .subscribe((res: HttpResponse<ILicence[]>) => {
-              this.licences = res.body!;
+            .subscribe((res: HttpResponse<Licence[]>) => {
+              this.licences = res.body || [];
               this.fillForm();
             });
         }
@@ -142,15 +142,16 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
           this.cvForwardStatusForm.removeControl('versionChanges');
         } else {
           this.editorService.getVocabularyCompare(this.versionParam.id!).subscribe((res: HttpResponse<string[]>) => {
+            const body = res.body || ['', ''];
             const newContent: DiffContent = {
-              leftContent: res.body![0],
-              rightContent: res.body![1],
+              leftContent: body[0],
+              rightContent: body[1],
             };
             this.contentObservable.next(newContent);
-            this.comparePrevVersion = res.headers.get('X-Prev-Cv-Version')!;
+            this.comparePrevVersion = res.headers.get('X-Prev-Cv-Version');
           });
-          this.vocabularyChangeService.getByVersionId(this.versionParam.id!).subscribe((res: HttpResponse<IVocabularyChange[]>) => {
-            this.vocabularyChanges = res.body!;
+          this.vocabularyChangeService.getByVersionId(this.versionParam.id!).subscribe((res: HttpResponse<VocabularyChange[]>) => {
+            this.vocabularyChanges = res.body || [];
             this.fillVersionNotes();
             this.fillVersionChanges();
           });
@@ -181,7 +182,6 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       this.cvForwardStatusForm.patchValue({
         versionNotes: this.versionParam.versionNotes,
       });
-      // @ts-ignore
       this.versionNotesEditor?.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionNotes'])!.value);
     }
   }
@@ -198,17 +198,16 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         });
       } else {
         this.cvForwardStatusForm.patchValue({
-          versionChanges: this.vocabularyChanges!.map(vc => vc.changeType + ': ' + vc.description).join('<br/>'),
+          versionChanges: this.vocabularyChanges.map(vc => vc.changeType + ': ' + vc.description).join('<br/>'),
         });
       }
-      // @ts-ignore
       this.versionChangesEditor?.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionChanges'])!.value);
     }
   }
 
-  private createFromForm(): IVocabularySnippet {
-    const vocabularySnippet = {
-      ...new VocabularySnippet(),
+  private createFromForm(): VocabularySnippet {
+    const vocabularySnippet: VocabularySnippet = {
+      actionType: this.isSlForm ? ActionType.FORWARD_CV_SL_STATUS_REVIEW : ActionType.FORWARD_CV_TL_STATUS_REVIEW,
       versionId: this.versionParam.id,
       vocabularyId: this.vocabularyParam.id,
       agencyId: this.vocabularyParam.agencyId,
@@ -217,13 +216,12 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       status: this.versionParam.status,
     };
 
-    if (this.versionParam.status === 'DRAFT') {
-      // there will be no TLs publish anymore, they will be published together with SL
-      vocabularySnippet.actionType = this.isSlForm ? 'FORWARD_CV_SL_STATUS_REVIEW' : 'FORWARD_CV_TL_STATUS_REVIEW';
-    } else if (this.versionParam.status === 'REVIEW') {
+    if (this.versionParam.status === 'REVIEW') {
       // recode it, probably we need to add it to the last status!!!
       // or maybe not as we need to specify version right here, because the target languages need some numbers!!!
-      vocabularySnippet.actionType = this.isSlForm ? 'FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE' : 'FORWARD_CV_TL_STATUS_READY_TO_PUBLISH';
+      vocabularySnippet.actionType = this.isSlForm
+        ? ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE
+        : ActionType.FORWARD_CV_TL_STATUS_READY_TO_PUBLISH;
       vocabularySnippet.licenseId = this.cvForwardStatusForm.get(['licenseId'])!.value;
 
       if (this.versionParam.previousVersion !== undefined && this.versionParam.previousVersion !== null) {
@@ -242,16 +240,16 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         this.missingTranslations = [];
         vocabularySnippet.versionNumber =
           VocabularyUtil.getSlMajorMinorVersionNumber(this.slVersionNumber) + '.' + this.proposedPatchNumber;
-        this.versionParam.concepts!.forEach(c => {
+        this.versionParam.concepts.forEach(c => {
           if (!c.deprecated) {
             if (!c.title || c.title === null || c.title === '') {
-              this.missingTranslations.push(c.notation!);
+              this.missingTranslations.push(c.notation);
             }
           }
         });
       }
     } else if (this.versionParam.status === 'READY_TO_TRANSLATE' || this.versionParam.status === 'PUBLISHED') {
-      vocabularySnippet.actionType = 'FORWARD_CV_SL_STATUS_PUBLISH';
+      vocabularySnippet.actionType = ActionType.FORWARD_CV_SL_STATUS_PUBLISH;
     }
 
     return vocabularySnippet;
@@ -259,19 +257,20 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
 
   saveVersionInfo(): void {
     this.isSaving = true;
-    const vocabularySnippet = {
-      ...new VocabularySnippet(),
-      actionType: 'EDIT_VERSION_INFO_CV',
+
+    const versionNotes = this.cvForwardStatusForm.get(['versionNotes']);
+    const versionChanges = this.cvForwardStatusForm.get(['versionChanges']);
+
+    const vocabularySnippet: VocabularySnippet = {
+      actionType: ActionType.EDIT_VERSION_INFO_CV,
       versionId: this.versionParam.id,
       vocabularyId: this.vocabularyParam.id,
       agencyId: this.vocabularyParam.agencyId,
       language: this.versionParam.language,
       itemType: this.versionParam.itemType,
       status: this.versionParam.status,
-      versionNotes: this.cvForwardStatusForm.get(['versionNotes']) ? this.cvForwardStatusForm.get(['versionNotes'])!.value : undefined,
-      versionChanges: this.cvForwardStatusForm.get(['versionChanges'])
-        ? this.cvForwardStatusForm.get(['versionChanges'])!.value
-        : undefined,
+      versionNotes: versionNotes ? versionNotes.value : undefined,
+      versionChanges: versionChanges ? versionChanges.value : undefined,
       licenseId: this.cvForwardStatusForm.get(['licenseId'])!.value,
     };
     if (this.isSlForm) {
@@ -292,7 +291,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     }
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Vocabulary>>): void {
     result.subscribe(() => this.onSaveSuccess());
   }
 
@@ -311,13 +310,11 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     this.compareNoOfDifference = diffResults.diffsCount;
   }
 
-  // @ts-ignore
   onVersionNotesEditorCreated(event: Quill): void {
     this.versionNotesEditor = event;
     this.fillVersionNotes();
   }
 
-  // @ts-ignore
   onVersionChangesEditorCreated(event: Quill): void {
     this.versionChangesEditor = event;
     this.fillVersionChanges();

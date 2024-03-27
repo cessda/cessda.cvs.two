@@ -19,12 +19,11 @@ import { JhiEventManager } from 'ng-jhipster';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
-import { IMetadataValue } from 'app/shared/model/metadata-value.model';
+import { MetadataValue } from 'app/shared/model/metadata-value.model';
 import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
 import { EditorService } from 'app/editor/editor.service';
-import { IMetadataField } from 'app/shared/model/metadata-field.model';
-
-interface Quill {}
+import { MetadataField } from 'app/shared/model/metadata-field.model';
+import Quill from 'quill';
 
 @Component({
   selector: 'jhi-metadata-item',
@@ -32,14 +31,13 @@ interface Quill {}
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MetadataItemComponent implements OnInit {
-  @Input() metadataField?: IMetadataField;
-  @Input() metadataValue!: IMetadataValue;
+  @Input() metadataField?: MetadataField;
+  @Input() metadataValue!: MetadataValue;
   @Input() isWriting!: boolean;
   @Input() position!: number;
   @Input() newTabLink!: boolean;
 
-  // @ts-ignore
-  public quill: Quill;
+  public quill: Quill | undefined;
 
   isSaving = false;
 
@@ -47,6 +45,8 @@ export class MetadataItemComponent implements OnInit {
     identifier: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(40), Validators.pattern('^[a-z0-9-]*$')]],
     position: ['', [Validators.required]],
     content: ['', [Validators.minLength(30)]],
+    tableRow: [],
+    tableColumn: [],
   });
 
   constructor(
@@ -57,14 +57,7 @@ export class MetadataItemComponent implements OnInit {
 
   public editorCreated(event: Quill): void {
     this.quill = event;
-    const value = this.metadataForm.get(['content'])!.value;
-    if (value) {
-      // @ts-ignore
-      this.quill.clipboard.dangerouslyPasteHTML(value);
-    } else {
-      // @ts-ignore
-      this.quill.clipboard.dangerouslyPasteHTML('');
-    }
+    this.quill.clipboard.dangerouslyPasteHTML(this.metadataForm.get(['content'])!.value);
   }
 
   ngOnInit(): void {
@@ -94,12 +87,12 @@ export class MetadataItemComponent implements OnInit {
     });
   }
 
-  private createFromForm(): IMetadataValue {
+  private createFromForm() {
     return {
       ...this.metadataValue,
-      identifier: this.metadataForm.get(['identifier'])!.value,
-      position: this.metadataForm.get(['position'])!.value ? this.metadataForm.get(['position'])!.value : this.position,
-      value: this.metadataForm.get(['content'])!.value,
+      identifier: this.metadataForm.get(['identifier'])!.value as string,
+      position: (this.metadataForm.get(['position'])!.value ? this.metadataForm.get(['position'])!.value : this.position) as number,
+      value: this.metadataForm.get(['content'])!.value as string,
       objectType: ObjectType.SYSTEM,
       metadataKey: this.metadataField!.metadataKey,
     };
@@ -110,7 +103,7 @@ export class MetadataItemComponent implements OnInit {
     const metadataValue = this.createFromForm();
     if (!this.newTabLink) {
       // remove any target="_blank"
-      metadataValue.value = (metadataValue.value as string).split(' rel="noopener noreferrer" target="_blank"').join('');
+      metadataValue.value = metadataValue.value.split(' rel="noopener noreferrer" target="_blank"').join('');
       this.metadataForm.patchValue({
         content: metadataValue.value,
       });
@@ -122,14 +115,14 @@ export class MetadataItemComponent implements OnInit {
     }
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IMetadataValue>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<unknown>>): void {
     result.subscribe(
-      response => this.onSaveSuccess(response.body!),
+      () => this.onSaveSuccess(),
       () => this.onSaveError(),
     );
   }
 
-  protected onSaveSuccess(newComment: IMetadataValue): void {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.isWriting = false;
     this.eventManager.broadcast('metadataListModification');

@@ -122,7 +122,7 @@
                         </div>
                     </div>
 
-                    <div *ngIf="activeAggAgency!.length !== 0 || activeAggStatus!.length !== 0" class="filter-panel acc-header">
+                    <div *ngIf="activeAggAgency.length !== 0 || activeAggStatus.length !== 0" class="filter-panel acc-header">
                         <button (click)="clearFilterAndReload()" class="btn sk-select-min sk-input-f">
                             <span class="option-label">Clear filter </span>
                         </button>
@@ -193,7 +193,7 @@
                                             'status-review': isVersionContains( vocabulary, lang, 'REVIEW'),
                                             'status-ready': isVersionContains( vocabulary, lang, 'READY_TO_TRANSLATE') || isVersionContains( vocabulary, lang, 'READY_TO_PUBLISH'),
                                             'de-emphasize': !isLangVersionInBundle( vocabulary, lang ) }"
-                                            ngbTooltip="{{getFormattedLangIso(vocabulary, lang, vocabulary.sourceLanguage!)}}">
+                                            ngbTooltip="{{getFormattedLangIso(vocabulary, lang, vocabulary.sourceLanguage)}}">
                                         {{lang}}
                                     </button>
                                 </div>

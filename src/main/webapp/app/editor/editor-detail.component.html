@@ -26,7 +26,7 @@
                     ›
                 </span>
                 <span class="">
-                    {{vocabulary!.notation}} v.{{vocabulary!.selectedVersion!}}
+                    {{vocabulary!.notation}} v.{{vocabulary!.selectedVersion}}
                 </span>
 
                 <span class="cmt-scn">
@@ -57,21 +57,21 @@
                         <div id="action-panel" class="acc-body" [ngbCollapse]="isCvActionCollapse">
                             <!--Not needed anymore as we are not creating the CV here only adding new SL, TL versions
                                 div *ngIf="!(version!.status === 'READY_TO_TRANSLATE' || version!.status === 'READY_TO_PUBLISH')">
-                                <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT']}"
+                                <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT']}"
                                         class="btn sk-select-min sk-input-f mtop10" (click)="openAddEditCvPopup( true , true)">
                                     <fa-icon [icon]="'plus'"></fa-icon>
                                     <span>Add Cv</span>
                                 </button>
                             </div-->
                             <div *ngIf="(enableAddTl && !(version!.status === 'READY_TO_PUBLISH' || version!.status === 'PUBLISHED'))">
-                                <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL','ADMIN_CONTENT'], language:tlLanguageStatus}"
+                                <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CV', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_TL','ADMIN_CONTENT'], language:tlLanguageStatus}"
                                         class="btn sk-select-min sk-input-f mtop10" (click)="openAddEditCvPopup( true, false )">
                                     <fa-icon style="font-size:110%" [icon]="'language'"></fa-icon>
                                     <span>Add translation</span>
                                 </button>
                             </div>
                             <div *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_TRANSLATE' || version!.status === 'READY_TO_PUBLISH')">
-                                <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}"
+                                <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CV', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}"
                                         class="btn sk-select-min sk-input-f mtop10" (click)="openAddEditCvPopup( false, version!.itemType === 'SL' )">
                                     <fa-icon [icon]="'edit'"></fa-icon>
                                     <span>Edit {{version!.itemType}} {{version!.language}}</span>
@@ -79,28 +79,28 @@
                             </div>
                             <div *ngIf="version!.itemType === 'SL'">
                                 <div *ngIf="version!.status === 'DRAFT'">
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS_REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
+                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS_REVIEW', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
                                         <fa-icon [icon]="'level-up-alt'"></fa-icon>
                                         <span>Review {{version!.itemType}} {{version!.language}}</span>
                                     </button>
                                 </div>
                                 <div *ngIf="version!.status === 'REVIEW'">
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
+                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
                                         <fa-icon [icon]="'archive'"></fa-icon>
                                         <span>Ready to Translate {{version!.itemType}} {{version!.language}}</span>
                                     </button>
                                 </div>
                                 <div *ngIf="(version!.status === 'READY_TO_TRANSLATE' || enablePublishTl) && !(version!.status === 'DRAFT' || version!.status === 'REVIEW')">
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS_PUBLISH', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
+                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS_PUBLISH', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
                                         <fa-icon [icon]="'archive'"></fa-icon>
                                         <span>Publish CV</span>
                                     </button>
                                 </div>
                                 <div *ngIf="version!.status === 'PUBLISHED'">
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_NEW_CV_SL_VERSION', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
+                                    <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_NEW_CV_SL_VERSION', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openCreateNewCvVersionPopup()">
                                         <fa-icon [icon]="'folder-plus'"></fa-icon>
                                         <span>Create new version {{version!.itemType}} {{version!.language}}</span>
@@ -109,21 +109,21 @@
                             </div>
                             <div *ngIf="version!.itemType === 'TL'">
                                 <div *ngIf="version!.status === 'DRAFT'">
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_TL_STATUS_REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}"
+                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_TL_STATUS_REVIEW', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
                                         <fa-icon [icon]="'level-up-alt'"></fa-icon>
                                         <span>Review {{version!.itemType}} {{version!.language}}</span>
                                     </button>
                                 </div>
                                 <div *ngIf="version!.status === 'REVIEW'">
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_TL_STATUS_READY_TO_PUBLISH', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}"
+                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_TL_STATUS_READY_TO_PUBLISH', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
                                         <fa-icon [icon]="'archive'"></fa-icon>
                                         <span>Ready to Publish {{version!.itemType}} {{version!.language}}</span>
                                     </button>
                                 </div>
                                 <div *ngIf="version!.status === 'PUBLISHED'">
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_NEW_CV_TL_VERSION', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}"
+                                    <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_NEW_CV_TL_VERSION', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openCreateNewCvVersionPopup()">
                                         <fa-icon [icon]="'folder-plus'"></fa-icon>
                                         <span>Create new version {{version!.itemType}} {{version!.language}}</span>
@@ -131,7 +131,7 @@
                                 </div>
                             </div>
                             <div *ngIf="version!.status === 'DRAFT' || version!.status === 'REVIEW' || version!.status === 'PUBLISHED'">
-                                <button *jhiHasAnyAgencyAuthority="{actionType:'DELETE_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL','ADMIN_CONTENT'], language:vocabulary!.selectedLang}"
+                                <button *jhiHasAnyAgencyAuthority="{actionType:'DELETE_CV', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL','ADMIN_CONTENT'], language:vocabulary!.selectedLang}"
                                         class="btn sk-select-min sk-input-f btn-danger mtop20" (click)="openDeleteCvPopup()">
                                     <fa-icon [icon]="'trash'"></fa-icon>
                                     <span>Delete {{version!.itemType}} {{version!.language}}</span>
@@ -140,7 +140,7 @@
                         </div>
 
                         <div *ngIf="!(concept !== null && concept.deprecated)">
-                            <a *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_TRANSLATE') || (version!.status === 'PUBLISHED' && version!.concepts && version!.concepts!.length > 0) " class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isCodeActionCollapse = !isCodeActionCollapse"
+                            <a *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_TRANSLATE') || (version!.status === 'PUBLISHED' && version!.concepts.length > 0) " class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isCodeActionCollapse = !isCodeActionCollapse"
                             [attr.aria-expanded]="isCodeActionCollapse" aria-controls="action-code-panel">
                                 &nbsp;
                                 <fa-icon *ngIf="!isCodeActionCollapse" icon="caret-down"></fa-icon>
@@ -150,42 +150,42 @@
                             <div id="action-code-panel" class="acc-body" [ngbCollapse]="isCodeActionCollapse">
                                 <div *ngIf="version!.itemType === 'SL'">
                                     <div *ngIf="!(version!.status === 'READY_TO_PUBLISH' || version!.status === 'READY_TO_TRANSLATE' || version!.status === 'PUBLISHED')">
-                                        <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
+                                        <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CODE', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
                                                 class="btn sk-select-min sk-input-f mtop10" (click)="openAddCodePopup()">
                                             <fa-icon [icon]="'plus'"></fa-icon>
                                             <span>Add code</span>
                                         </button>
 
-                                        <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
+                                        <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CODE', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
                                                 class="btn sk-select-min sk-input-f mtop10" (click)="openCsvImportCodeWindow()">
                                             <fa-icon [icon]="'upload'"></fa-icon>
                                             <span>Import from CSV</span>
                                         </button>
 
                                         <div *ngIf="concept">
-                                            <div *ngIf="version!.concepts!.length > 0">
-                                                <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
+                                            <div *ngIf="version!.concepts.length > 0">
+                                                <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CODE', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
                                                         class="btn sk-select-min sk-input-f mtop10" (click)="openEditCodePopup()">
                                                     <fa-icon [icon]="'edit'"></fa-icon>
                                                     <span>Edit code</span>
                                                 </button>
                                             </div>
-                                            <div *ngIf="version!.concepts!.length > 1">
-                                                <button *jhiHasAnyAgencyAuthority="{actionType:'REORDER_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
+                                            <div *ngIf="version!.concepts.length > 1">
+                                                <button *jhiHasAnyAgencyAuthority="{actionType:'REORDER_CODE', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
                                                         class="btn sk-select-min sk-input-f mtop10" (click)="openReorderCode()">
                                                     <fa-icon [icon]="'stream'"></fa-icon>
                                                     <span>Move code</span>
                                                 </button>
                                             </div>
                                             <div *ngIf="(getSlMajorVersionNumber() === 1 && getSlMinorVersionNumber() > 0) || getSlMajorVersionNumber() > 1">
-                                                <button *jhiHasAnyAgencyAuthority="{actionType:'DEPRECATE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
+                                                <button *jhiHasAnyAgencyAuthority="{actionType:'DEPRECATE_CODE', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
                                                         class="btn sk-select-min-btn btn-warning sk-input-f mtop20" (click)="openDeprecateCodePopup()">
                                                     <fa-icon [icon]="'wind'"></fa-icon>
                                                     <span>Deprecate code</span>
                                                 </button>
                                             </div>
                                             <div *ngIf="concept!.introducedInVersionId !== null && concept!.introducedInVersionId === version!.id && version!.status !== 'PUBLISHED'">
-                                                <button *jhiHasAnyAgencyAuthority="{actionType:'DELETE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
+                                                <button *jhiHasAnyAgencyAuthority="{actionType:'DELETE_CODE', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
                                                         class="btn sk-select-min sk-input-f btn-danger mtop20" (click)="openDeleteCodePopup()">
                                                     <fa-icon [icon]="'trash'"></fa-icon>
                                                     <span>Delete code</span>
@@ -193,7 +193,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button *ngIf="version!.concepts && version!.concepts!.length > 0"
+                                    <button *ngIf="version!.concepts.length > 0"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="exportAsCsv()">
                                         <fa-icon [icon]="'download'"></fa-icon>
                                         <span>Export to CSV</span>
@@ -204,33 +204,33 @@
                                     <div *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_PUBLISH')">
                                         <div *ngIf="concept">
                                             <div *ngIf="!concept.title || concept.title === ''">
-                                                <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CODE', agencyId:vocabulary!.agencyId, agencyRoles:codeTlActionRoles, language:version!.language}"
+                                                <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CODE', agencyId:vocabulary!.agencyId!, agencyRoles:codeTlActionRoles, language:version!.language}"
                                                         class="btn sk-select-min sk-input-f mtop10" (click)="openAddTlCode()">
                                                     <fa-icon [icon]="'plus'"></fa-icon>
                                                     <span>Add code translation</span>
                                                 </button>
                                             </div>
                                             <div *ngIf="concept.title">
-                                                <button *jhiHasAnyAgencyAuthority="{actionType:'REORDER_CODE', agencyId:vocabulary!.agencyId, agencyRoles:codeTlActionRoles, language:version!.language}"
+                                                <button *jhiHasAnyAgencyAuthority="{actionType:'REORDER_CODE', agencyId:vocabulary!.agencyId!, agencyRoles:codeTlActionRoles, language:version!.language}"
                                                         class="btn sk-select-min sk-input-f mtop10" (click)="openEditTlCode()">
                                                     <fa-icon [icon]="'edit'"></fa-icon>
                                                     <span>Edit code translation</span>
                                                 </button>
 
-                                                <button *jhiHasAnyAgencyAuthority="{actionType:'DELETE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:codeTlActionRoles, language:version!.language}"
+                                                <button *jhiHasAnyAgencyAuthority="{actionType:'DELETE_CODE', agencyId:vocabulary!.agencyId!, agencyRoles:codeTlActionRoles, language:version!.language}"
                                                         class="btn sk-select-min sk-input-f btn-danger mtop20" (click)="openRemoveTlCode()">
                                                     <fa-icon [icon]="'trash'"></fa-icon>
                                                     <span>Remove code translation</span>
                                                 </button>
                                             </div>
                                         </div>
-                                        <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CODE', agencyId:vocabulary!.agencyId, agencyRoles:codeTlActionRoles, language:version!.language}"
+                                        <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CODE', agencyId:vocabulary!.agencyId!, agencyRoles:codeTlActionRoles, language:version!.language}"
                                                 class="btn sk-select-min sk-input-f mtop10" (click)="openCsvImportCodeWindow()">
                                             <fa-icon [icon]="'upload'"></fa-icon>
                                             <span>Import from CSV</span>
                                         </button>
                                     </div>
-                                    <button *ngIf="version!.concepts && version!.concepts!.length > 0"
+                                    <button *ngIf="version!.concepts.length > 0"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="exportAsCsv()">
                                         <fa-icon [icon]="'download'"></fa-icon>
                                         <span>Export to CSV</span>
@@ -316,7 +316,7 @@
                         <div class="detail-column">
                             <div *ngIf="!isNotesEdit" [innerHTML]="editorDetailForm.get(['notes'])!.value ? editorDetailForm.get(['notes'])!.value: ''"></div>
 
-                            <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_NOTE_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}">
+                            <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_NOTE_CV', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}">
                                 <a *ngIf="!isNotesEdit" class="btn btn-sm btn-primary" ngbTooltip="edit notes" href="javascript:void(0);" (click)="isNotesEdit = !isNotesEdit">
                                     <fa-icon icon="edit"></fa-icon> <span> Edit</span>
                                 </a>
@@ -455,7 +455,7 @@
 
 
                             <br>
-                            <div *ngIf="hasDeprecatedConcepts(version!.concepts!)">
+                            <div *ngIf="hasDeprecatedConcepts(version!.concepts)">
                                 <span class="cmt-scn" *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT','ROLE_USER']">
                                     <a type="button" class="btn btn-primary btn-sm" ngbTooltip="See deprecated codes" (click)="toggleDeprecatedCodesDisplay()">
                                         <fa-icon *ngIf="!isShowingDeprecatedCodes" icon="eye"></fa-icon>
@@ -504,7 +504,7 @@
                                         <span *ngIf="version!.status !== 'PUBLISHED'">&nbsp;&nbsp;&nbsp; {{version!.status}}</span>
                                 </a>
                                 <span *ngIf="isCurrentVersionHistoryOpen && (version!.status === 'READY_TO_TRANSLATE' || version!.status === 'READY_TO_PUBLISH' || version!.status === 'PUBLISHED')">
-                                    &nbsp;<span *jhiHasAnyAgencyAuthority="{actionType:'EDIT_VERSION_INFO_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}">
+                                    &nbsp;<span *jhiHasAnyAgencyAuthority="{actionType:'EDIT_VERSION_INFO_CV', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}">
                                         <a *ngIf="!isCurrentVersionInfoEdit" class="btn btn-primary btn-sm" ngbTooltip="edit current version info" href="javascript:void(0);" (click)="isCurrentVersionInfoEdit = !isCurrentVersionInfoEdit">
                                             <fa-icon icon="edit"></fa-icon> <span> Edit</span>
                                         </a>
@@ -663,7 +663,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_IDENTITY_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN_TL','ADMIN_CONTENT'], language:version!.language}">
+                            <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_IDENTITY_CV', agencyId:vocabulary!.agencyId!!, agencyRoles:['ADMIN_TL','ADMIN_CONTENT'], language:version!.language}">
                                 <a *ngIf="!isIdentityEdit && version!.itemType === 'TL'" class="btn btn-primary btn-sm" ngbTooltip="edit translation-agency" href="javascript:void(0);" (click)="isIdentityEdit = !isIdentityEdit">
                                     <fa-icon icon="edit"></fa-icon> <span> Edit</span>
                                 </a>
@@ -707,7 +707,7 @@
                         <div class="detail-panel" [ngClass]="{'select-by-tab': editorDetailForm.get('tabSelected')!.value === 'usage', 'not-select-by-tab': editorDetailForm.get('tabSelected')!.value !== 'usage'}" #usageEPanel id="usageEPanel">
                             <div *ngIf="!isDdiUsageEdit" class="small-block-n" [innerHTML]="version!.ddiUsage ? version!.ddiUsage: 'no information'"></div>
 
-                            <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_DDI_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN_SL','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}">
+                            <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_DDI_CV', agencyId:vocabulary!.agencyId!!, agencyRoles:['ADMIN_SL','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}">
                                 <a *ngIf="!isDdiUsageEdit" class="btn btn-primary btn-sm" ngbTooltip="edit ddi-usage" href="javascript:void(0);" (click)="isDdiUsageEdit = !isDdiUsageEdit">
                                     <fa-icon icon="edit"></fa-icon> <span> Edit</span>
                                 </a>
@@ -781,7 +781,7 @@
                             <jhi-vocabulary-download
                                 [appScope]="appScope"
                                 [enableDocxExport]="enableDocxExport"
-                                [versions]="vocabulary?.versions || []"
+                                [versions]="vocabulary.versions"
                                 [slVersionNumber]="getSlVersionNumber()"
                                 [downloadFormGroup]="downloadFormGroup"
                                 [notation]="vocabulary!.notation!"

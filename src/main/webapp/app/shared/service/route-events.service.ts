@@ -24,7 +24,10 @@ export class RouteEventsService {
   // save the previous route
   public previousRoutePath = new BehaviorSubject<string>('');
 
-  constructor(private router: Router, private location: Location) {
+  constructor(
+    private router: Router,
+    private location: Location,
+  ) {
     // ..initial prvious route will be the current path for now
     this.previousRoutePath.next(this.location.path());
 
@@ -35,10 +38,10 @@ export class RouteEventsService {
     this.router.events
       .pipe(
         filter(e => e instanceof RoutesRecognized),
-        pairwise()
+        pairwise(),
       )
-      .subscribe((event: any[]) => {
-        this.previousRoutePath.next(event[0].urlAfterRedirects);
+      .subscribe(event => {
+        this.previousRoutePath.next((event[0] as RoutesRecognized).urlAfterRedirects);
       });
   }
 }

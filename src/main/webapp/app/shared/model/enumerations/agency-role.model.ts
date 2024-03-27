@@ -13,10 +13,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export const enum AgencyRole {
-  ADMIN = 'ADMIN',
-  ADMIN_SL = 'ADMIN_SL',
-  ADMIN_TL = 'ADMIN_TL',
-  ADMIN_CONTENT = 'ADMIN_CONTENT',
-  VIEW = 'VIEW',
-}
+export type AgencyRole = 'ADMIN' | 'ADMIN_SL' | 'ADMIN_TL' | 'ADMIN_CONTENT' | 'VIEW';

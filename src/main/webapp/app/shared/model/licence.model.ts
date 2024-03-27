@@ -13,14 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export interface ILicence {
+export interface Licence {
   id?: number;
-  name?: string;
+  name: string;
   link?: string;
   logoLink?: string;
   abbr?: string;
-}
-
-export class Licence implements ILicence {
-  constructor(public id?: number, public name?: string, public link?: string, public logoLink?: string, public abbr?: string) {}
 }

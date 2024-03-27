@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IResolver } from 'app/shared/model/resolver.model';
+import { Resolver } from 'app/shared/model/resolver.model';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { ResolverService } from './resolver.service';
@@ -31,7 +31,7 @@ import { ResolverDeleteDialogComponent } from './resolver-delete-dialog.componen
   templateUrl: './resolver.component.html',
 })
 export class ResolverComponent implements OnInit, OnDestroy {
-  resolvers: IResolver[] = [];
+  resolvers: Resolver[] = [];
   eventSubscriber?: Subscription;
   currentSearch: string;
   totalItems = 0;
@@ -66,7 +66,7 @@ export class ResolverComponent implements OnInit, OnDestroy {
           sort: this.sort(),
         })
         .subscribe(
-          (res: HttpResponse<IResolver[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+          (res: HttpResponse<Resolver[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
           () => this.onError(),
         );
       return;
@@ -79,7 +79,7 @@ export class ResolverComponent implements OnInit, OnDestroy {
         sort: this.sort(),
       })
       .subscribe(
-        (res: HttpResponse<IResolver[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        (res: HttpResponse<Resolver[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
         () => this.onError(),
       );
   }
@@ -106,7 +106,7 @@ export class ResolverComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackId(index: number, item: IResolver): number {
+  trackId(index: number, item: Resolver): number {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     return item.id!;
   }
@@ -115,7 +115,7 @@ export class ResolverComponent implements OnInit, OnDestroy {
     this.eventSubscriber = this.eventManager.subscribe('resolverListModification', () => this.loadPage());
   }
 
-  delete(resolver: IResolver): void {
+  delete(resolver: Resolver): void {
     const modalRef = this.modalService.open(ResolverDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.resolver = resolver;
   }
@@ -128,7 +128,7 @@ export class ResolverComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  protected onSuccess(data: IResolver[] | null, headers: HttpHeaders, page: number): void {
+  protected onSuccess(data: Resolver[] | null, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;

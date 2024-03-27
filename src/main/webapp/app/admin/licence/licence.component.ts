@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { ILicence } from 'app/shared/model/licence.model';
+import { Licence } from 'app/shared/model/licence.model';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { LicenceService } from './licence.service';
@@ -31,7 +31,7 @@ import { LicenceDeleteDialogComponent } from './licence-delete-dialog.component'
   templateUrl: './licence.component.html',
 })
 export class LicenceComponent implements OnInit, OnDestroy {
-  licences: ILicence[] = [];
+  licences: Licence[] = [];
   eventSubscriber?: Subscription;
   currentSearch: string;
   totalItems = 0;
@@ -66,7 +66,7 @@ export class LicenceComponent implements OnInit, OnDestroy {
           sort: this.sort(),
         })
         .subscribe(
-          (res: HttpResponse<ILicence[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+          (res: HttpResponse<Licence[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
           () => this.onError(),
         );
       return;
@@ -79,7 +79,7 @@ export class LicenceComponent implements OnInit, OnDestroy {
         sort: this.sort(),
       })
       .subscribe(
-        (res: HttpResponse<ILicence[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        (res: HttpResponse<Licence[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
         () => this.onError(),
       );
   }
@@ -106,7 +106,7 @@ export class LicenceComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackId(index: number, item: ILicence): number {
+  trackId(index: number, item: Licence): number {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     return item.id!;
   }
@@ -115,7 +115,7 @@ export class LicenceComponent implements OnInit, OnDestroy {
     this.eventSubscriber = this.eventManager.subscribe('licenceListModification', () => this.loadPage());
   }
 
-  delete(licence: ILicence): void {
+  delete(licence: Licence): void {
     const modalRef = this.modalService.open(LicenceDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.licence = licence;
   }
@@ -128,7 +128,7 @@ export class LicenceComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  protected onSuccess(data: ILicence[] | null, headers: HttpHeaders, page: number): void {
+  protected onSuccess(data: Licence[] | null, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;

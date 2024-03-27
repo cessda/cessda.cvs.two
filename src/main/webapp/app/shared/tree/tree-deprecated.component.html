@@ -22,7 +22,7 @@
                 <!-- Column 1 -->
                 <span class="column1"><a href="{{concept.uri}}" target="_blank" rel="noopener noreferrer">{{concept.uri}}</a></span>
                 <!-- Column 2 -->
-                <span class="column1 coll-mar-{{level!}}"><button *ngIf="isConceptHasChildren(concept.notation,conceptList)" (click)="concept.visible = !concept.visible" class="invisible-button"><fa-icon *ngIf="!concept.visible" icon="caret-down"></fa-icon><fa-icon *ngIf="concept.visible" icon="caret-right"></fa-icon></button><span class="e-note">{{concept.position}}</span> {{concept.notation}}</span>
+                <span class="column1 coll-mar-{{level!}}"><button *ngIf="isConceptHasChildren(concept.notation)" (click)="concept.visible = !concept.visible" class="invisible-button"><fa-icon *ngIf="!concept.visible" icon="caret-down"></fa-icon><fa-icon *ngIf="concept.visible" icon="caret-right"></fa-icon></button><span class="e-note">{{concept.position}}</span> {{concept.notation}}</span>
                 <!-- Column 3 -->
                 <span class="column2">{{concept.title ? concept.title : ''}}</span>
                 <!-- Column 4 -->
@@ -30,9 +30,9 @@
                 <!-- Column 5 -->
                 <span class="column2">{{concept.validUntil}}</span>
             </div>
-            <jhi-tree-deprecated *ngIf="isConceptHasChildren(concept.notation,conceptList)"
+            <jhi-tree-deprecated *ngIf="isConceptHasChildren(concept.notation)"
                       [ngClass]="{'display-none': concept.visible}"
-                      [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems(conceptList , parentNotation)" [level]="level! + 1"></jhi-tree-deprecated>
+                      [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems()" [level]="level + 1"></jhi-tree-deprecated>
         </li>
     </ul>
 </div>

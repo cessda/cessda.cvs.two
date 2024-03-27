@@ -15,17 +15,16 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import { Agency, IAgency } from 'app/shared/model/agency.model';
+import { Agency, createNewAgency } from 'app/shared/model/agency.model';
 import { AgencyService } from './agency.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { FileUploadService } from 'app/shared/upload/file-upload.service';
-import { ILicence } from 'app/shared/model/licence.model';
+import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from 'app/admin/licence/licence.service';
 
 @Component({
@@ -34,10 +33,9 @@ import { LicenceService } from 'app/admin/licence/licence.service';
 })
 export class AgencyUpdateComponent implements OnInit {
   isSaving = false;
-  selectedFiles?: FileList;
-  currentFileUpload?: File | null;
+  currentFileUpload: File | null = null;
   currentImage?: string;
-  licences?: ILicence[];
+  licences: Licence[] = [];
   progress: {
     percentage: number;
   } = {
@@ -81,14 +79,14 @@ export class AgencyUpdateComponent implements OnInit {
           size: 50,
           sort: ['id,asc'],
         })
-        .subscribe((res: HttpResponse<ILicence[]>) => {
+        .subscribe((res: HttpResponse<Licence[]>) => {
           this.licences = res.body!;
           this.updateForm(agency);
         });
     });
   }
 
-  updateForm(agency: IAgency): void {
+  updateForm(agency: Agency): void {
     this.editForm.patchValue({
       id: agency.id,
       name: agency.name,
@@ -123,9 +121,8 @@ export class AgencyUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IAgency {
-    const agency = {
-      ...new Agency(),
+  private createFromForm(): Agency {
+    const agency = createNewAgency({
       id: this.editForm.get(['id'])!.value,
       name: this.editForm.get(['name'])!.value,
       link: this.editForm.get(['link'])!.value,
@@ -134,14 +131,14 @@ export class AgencyUpdateComponent implements OnInit {
       uri: this.editForm.get(['uri'])!.value,
       uriCode: this.editForm.get(['uriCode'])!.value,
       canonicalUri: this.editForm.get(['canonicalUri'])!.value,
-    };
+    });
     if (agency.licenseId) {
-      agency.license = this.licences!.filter(l => l.id === agency.licenseId)[0].name;
+      agency.license = this.licences.filter(l => l.id === agency.licenseId)[0].name;
     }
     return agency;
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IAgency>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Agency>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
       () => this.onSaveError(),
@@ -158,18 +155,20 @@ export class AgencyUpdateComponent implements OnInit {
   }
 
   selectFile(selectFileEvent: Event): void {
-    this.selectedFiles = (selectFileEvent.target as HTMLInputElement).files || undefined;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const selectedFiles = (selectFileEvent.target as HTMLInputElement).files!;
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.currentFileUpload = selectedFiles[0]!;
+
     this.progress.percentage = 0;
-    this.currentFileUpload = this.selectedFiles!.item(0);
-    this.fileUploadService.uploadAgencyImage(this.currentFileUpload!).subscribe(event => {
-      if (event.type === HttpEventType.UploadProgress) {
-        this.progress.percentage = Math.round((100 * event.loaded) / event.total!);
-      } else if (event instanceof HttpResponse) {
-        this.currentImage = event.body!.toString();
+    this.fileUploadService.uploadAgencyImage(this.currentFileUpload).subscribe(event => {
+      if (event.type === HttpEventType.UploadProgress && event.total) {
+        this.progress.percentage = Math.round((event.loaded / event.total) * 100);
+      } else if (event.type === HttpEventType.Response && event.body) {
+        this.currentImage = event.body.toString();
       }
     });
-
-    this.selectedFiles = undefined;
   }
 
   removePicture(): void {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { IConcept } from 'app/shared/model/concept.model';
+import { Concept } from 'app/shared/model/concept.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 import { Subscription } from 'rxjs';
@@ -22,11 +22,11 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'jhi-tree-editor-deprecated',
   templateUrl: './tree-editor-deprecated.component.html',
-  styleUrls: ['./tree-editor.component.scss']
+  styleUrls: ['./tree-editor.component.scss'],
 })
 export class TreeEditorDeprecatedComponent implements OnInit, OnDestroy {
   @Input() parentNotation?: string;
-  @Input() conceptList?: IConcept[];
+  @Input() conceptList?: Concept[];
   @Input() level?: number;
 
   eventSubscriber?: Subscription;
@@ -35,20 +35,20 @@ export class TreeEditorDeprecatedComponent implements OnInit, OnDestroy {
 
   constructor(protected eventManager: JhiEventManager) {}
 
-  removeCurrentLevelItems: any = (conceptList?: IConcept[], parentNotation?: string, level?: number) => {
+  removeCurrentLevelItems: any = (conceptList?: Concept[], parentNotation?: string, level?: number) => {
     return conceptList!.filter(c => c.parent !== parentNotation);
   };
 
-  isConceptHasChildren(notation?: string, conceptList?: IConcept[]): boolean {
+  isConceptHasChildren(notation?: string, conceptList?: Concept[]): boolean {
     return VocabularyUtil.isConceptHasChildren(notation!, conceptList!);
   }
 
-  selectConcept(concept: IConcept): void {
+  selectConcept(concept: Concept): void {
     this.eventManager.broadcast({ name: 'selectConcept', content: concept });
   }
 
   ngOnInit(): void {
-    this.eventSubscriber = this.eventManager.subscribe('selectConcept', (response: JhiEventWithContent<IConcept>) => {
+    this.eventSubscriber = this.eventManager.subscribe('selectConcept', (response: JhiEventWithContent<Concept>) => {
       this.activeConceptNotation = response.content.notation;
     });
     this.eventSubscriber2 = this.eventManager.subscribe('deselectConcept', () => {

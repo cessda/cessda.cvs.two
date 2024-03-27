@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { IConcept } from 'app/shared/model/concept.model';
+import { Concept } from 'app/shared/model/concept.model';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { ConceptService } from './concept.service';
@@ -31,7 +31,7 @@ import { ConceptDeleteDialogComponent } from './concept-delete-dialog.component'
   templateUrl: './concept.component.html',
 })
 export class ConceptComponent implements OnInit, OnDestroy {
-  concepts?: IConcept[];
+  concepts?: Concept[];
   eventSubscriber?: Subscription;
   currentSearch: string;
   totalItems = 0;
@@ -67,7 +67,7 @@ export class ConceptComponent implements OnInit, OnDestroy {
           sort: this.sort(),
         })
         .subscribe(
-          (res: HttpResponse<IConcept[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+          (res: HttpResponse<Concept[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
           () => this.onError(),
         );
       return;
@@ -80,7 +80,7 @@ export class ConceptComponent implements OnInit, OnDestroy {
         sort: this.sort(),
       })
       .subscribe(
-        (res: HttpResponse<IConcept[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        (res: HttpResponse<Concept[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
         () => this.onError(),
       );
   }
@@ -107,7 +107,7 @@ export class ConceptComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackId(_index: number, item: IConcept): number {
+  trackId(_index: number, item: Concept): number {
     return item.id!;
   }
 
@@ -115,7 +115,7 @@ export class ConceptComponent implements OnInit, OnDestroy {
     this.eventSubscriber = this.eventManager.subscribe('conceptListModification', () => this.loadPage());
   }
 
-  delete(concept: IConcept): void {
+  delete(concept: Concept): void {
     const modalRef = this.modalService.open(ConceptDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.concept = concept;
   }
@@ -128,7 +128,7 @@ export class ConceptComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  protected onSuccess(data: IConcept[] | null, headers: HttpHeaders, page: number): void {
+  protected onSuccess(data: Concept[] | null, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;

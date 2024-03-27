@@ -16,14 +16,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-import { IUserAgency } from 'app/shared/model/user-agency.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 
 @Component({
   selector: 'jhi-user-agency-detail',
-  templateUrl: './user-agency-detail.component.html'
+  templateUrl: './user-agency-detail.component.html',
 })
 export class UserAgencyDetailComponent implements OnInit {
-  userAgency: IUserAgency | null = null;
+  userAgency: UserAgency | null = null;
 
   constructor(protected activatedRoute: ActivatedRoute) {}
 

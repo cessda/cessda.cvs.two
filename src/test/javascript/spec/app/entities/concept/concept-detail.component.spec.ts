@@ -20,20 +20,28 @@ import { JhiDataUtils } from 'ng-jhipster';
 
 import { CvsTestModule } from '../../../test.module';
 import { ConceptDetailComponent } from 'app/entities/concept/concept-detail.component';
-import { Concept } from 'app/shared/model/concept.model';
 
 describe('Component Tests', () => {
   describe('Concept Management Detail Component', () => {
     let comp: ConceptDetailComponent;
     let fixture: ComponentFixture<ConceptDetailComponent>;
     let dataUtils: JhiDataUtils;
-    const route = ({ data: of({ concept: new Concept(123) }) } as any) as ActivatedRoute;
+    const route = {
+      data: of({
+        concept: {
+          id: 123,
+          notation: '',
+          parent: '',
+          visible: true,
+        },
+      }),
+    } as unknown as ActivatedRoute;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [ConceptDetailComponent],
-        providers: [{ provide: ActivatedRoute, useValue: route }]
+        providers: [{ provide: ActivatedRoute, useValue: route }],
       })
         .overrideTemplate(ConceptDetailComponent, '')
         .compileComponents();

@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JhiEventManager, JhiPaginationUtil } from 'ng-jhipster';
 
@@ -27,9 +25,9 @@ import { Account } from 'app/core/user/account.model';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.model';
 import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
-import { IAgency } from 'app/shared/model/agency.model';
+import { Agency } from 'app/shared/model/agency.model';
 import { AgencyService } from 'app/agency/agency.service';
-import { IUserAgency } from 'app/shared/model/user-agency.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -42,10 +40,10 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   totalItems = 0;
   readonly itemsPerPage = ITEMS_PER_PAGE;
   page = 1;
-  predicate: string = 'id';
-  ascending: boolean = true;
+  predicate = 'id';
+  ascending = true;
 
-  agencies: IAgency[] = [];
+  agencies: Agency[] = [];
 
   constructor(
     private userService: UserService,
@@ -182,7 +180,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  userAgencyToCompare(ua: IUserAgency): string {
+  userAgencyToCompare(ua: UserAgency): string {
     return ua.agencyId! + ua.agencyRole! + (ua.language ? ua.language : '');
   }
 }

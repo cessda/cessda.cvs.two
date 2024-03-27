@@ -229,7 +229,7 @@
                             Code definition({{vocabulary.selectedLang}})
                         </span>
                     </div>
-                    <jhi-tree [parentNotation]="" [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree>
+                    <jhi-tree [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree>
 
                     <br>
                     <div *ngIf="hasDeprecatedConcepts(getVersionByLangNumber().concepts)">
@@ -256,7 +256,7 @@
                                 <span class="column2">Valid from</span>
                                 <span class="column2">Valid to</span>
                             </div>
-                            <jhi-tree-deprecated [parentNotation]="" [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree-deprecated>
+                            <jhi-tree-deprecated [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree-deprecated>
                         </div>
                     </div>
                 </div>
@@ -312,14 +312,14 @@
 
                     </div>
                     <!-- other older versions -->
-                    <div class="item-panel" *ngFor="let vh of getVersionByLangNumber().versionHistories; let i = index">
+                    <div class="item-panel" *ngFor="let vh of getVersionByLangNumber().versionHistories; index as i;">
                         <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="vh.visible = !vh.visible"
                            [attr.aria-expanded]="vh.visible" [attr.aria-controls]="'history_' + vh.version">&nbsp;
                             <fa-icon *ngIf="vh.visible" icon="caret-down"></fa-icon>
                             <fa-icon *ngIf="!vh.visible" icon="caret-right"></fa-icon>
                             <span>{{getVersionByLangNumber().language}}: {{vh.version}} </span>
                             <span>&nbsp;&nbsp;&nbsp; Published: {{vh.date}}</span>
-                            <a *ngIf="!vh.version?.startsWith(getSlVersionNumber())" [routerLink]="['/vocabulary', vocabulary.notation ]" [queryParams]="{v:getSlVersionNumber(vh.version), lang:vocabulary.selectedLang}">
+                            <a *ngIf="!vh.version.startsWith(getSlVersionNumber())" [routerLink]="['/vocabulary', vocabulary.notation ]" [queryParams]="{v:getSlVersionNumber(vh.version), lang:vocabulary.selectedLang}">
                                 <fa-icon icon="external-link-alt"></fa-icon>
                             </a>
                         </a>

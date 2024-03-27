@@ -18,15 +18,15 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { CommentService } from 'app/entities/comment/comment.service';
-import { IComment, Comment } from 'app/shared/model/comment.model';
+import { Comment } from 'app/shared/model/comment.model';
 
 describe('Service Tests', () => {
   describe('Comment Service', () => {
     let injector: TestBed;
     let service: CommentService;
     let httpMock: HttpTestingController;
-    let elemDefault: IComment;
-    let expectedResult: IComment | IComment[] | boolean | null;
+    let elemDefault: Comment;
+    let expectedResult: Comment | Comment[] | boolean | null;
     let currentDate: moment.Moment;
 
     beforeEach(() => {
@@ -39,7 +39,14 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new Comment(0, 'AAAAAAA', 'AAAAAAA', 0, currentDate);
+      elemDefault = {
+        id: 0,
+        info: 'AAAAAAA',
+        content: 'AAAAAAA',
+        userId: 0,
+        dateTime: currentDate,
+        versionId: 0,
+      };
     });
 
     describe('Service methods', () => {
@@ -48,7 +55,7 @@ describe('Service Tests', () => {
           {
             dateTime: currentDate.format(DATE_TIME_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         service.find(123).subscribe(resp => (expectedResult = resp.body));
@@ -64,17 +71,17 @@ describe('Service Tests', () => {
             id: 0,
             dateTime: currentDate.format(DATE_TIME_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign(
           {
             dateTime: currentDate,
           },
-          returnedFromService
+          returnedFromService,
         );
 
-        service.create(new Comment()).subscribe(resp => (expectedResult = resp.body));
+        service.create({}).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
@@ -89,14 +96,14 @@ describe('Service Tests', () => {
             userId: 1,
             dateTime: currentDate.format(DATE_TIME_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign(
           {
             dateTime: currentDate,
           },
-          returnedFromService
+          returnedFromService,
         );
 
         service.update(expected).subscribe(resp => (expectedResult = resp.body));
@@ -114,14 +121,14 @@ describe('Service Tests', () => {
             userId: 1,
             dateTime: currentDate.format(DATE_TIME_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign(
           {
             dateTime: currentDate,
           },
-          returnedFromService
+          returnedFromService,
         );
 
         service.query().subscribe(resp => (expectedResult = resp.body));

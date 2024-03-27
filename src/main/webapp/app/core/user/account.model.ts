@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {IUserAgency} from 'app/shared/model/user-agency.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 
 export class Account {
   constructor(
@@ -26,6 +26,6 @@ export class Account {
     public lastName: string,
     public login: string,
     public imageUrl: string,
-    public userAgencies: IUserAgency[]
+    public userAgencies: UserAgency[],
   ) {}
 }

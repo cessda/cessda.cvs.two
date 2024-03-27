@@ -23,10 +23,10 @@ import moment from 'moment';
 import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import { Comment, IComment } from 'app/shared/model/comment.model';
+import { Comment } from 'app/shared/model/comment.model';
 import { CommentService } from './comment.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { VersionService } from 'app/entities/version/version.service';
 
 @Component({
@@ -35,7 +35,7 @@ import { VersionService } from 'app/entities/version/version.service';
 })
 export class CommentUpdateComponent implements OnInit {
   isSaving = false;
-  versions: IVersion[] = [];
+  versions: Version[] = [];
 
   editForm = this.fb.group({
     id: [],
@@ -52,7 +52,7 @@ export class CommentUpdateComponent implements OnInit {
     protected commentService: CommentService,
     protected versionService: VersionService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -64,11 +64,11 @@ export class CommentUpdateComponent implements OnInit {
 
       this.updateForm(comment);
 
-      this.versionService.query().subscribe((res: HttpResponse<IVersion[]>) => (this.versions = res.body || []));
+      this.versionService.query().subscribe((res: HttpResponse<Version[]>) => (this.versions = res.body || []));
     });
   }
 
-  updateForm(comment: IComment): void {
+  updateForm(comment: Comment): void {
     this.editForm.patchValue({
       id: comment.id,
       info: comment.info,
@@ -99,22 +99,24 @@ export class CommentUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IComment {
+  private createFromForm(): Comment {
+    // Extract dateTime to its own variable so that it can be truthy-tested
+    const dateTime = this.editForm.get(['dateTime'])?.value;
+
     return {
-      ...new Comment(),
-      id: this.editForm.get(['id'])!.value,
-      info: this.editForm.get(['info'])!.value,
-      content: this.editForm.get(['content'])!.value,
-      userId: this.editForm.get(['userId'])!.value,
-      dateTime: this.editForm.get(['dateTime'])!.value ? moment(this.editForm.get(['dateTime'])!.value, DATE_TIME_FORMAT) : undefined,
-      versionId: this.editForm.get(['versionId'])!.value,
+      id: this.editForm.get(['id'])?.value,
+      info: this.editForm.get(['info'])?.value,
+      content: this.editForm.get(['content'])?.value,
+      userId: this.editForm.get(['userId'])?.value,
+      dateTime: dateTime ? moment(dateTime, DATE_TIME_FORMAT) : undefined,
+      versionId: this.editForm.get(['versionId'])?.value,
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IComment>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Comment>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 
@@ -127,7 +129,8 @@ export class CommentUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: IVersion): any {
-    return item.id;
+  trackById(_index: number, item: Version): number {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return item.id!;
   }
 }

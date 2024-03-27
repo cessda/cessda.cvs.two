@@ -13,22 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { IBucket } from 'app/shared/model/bucket';
+import { Bucket } from 'app/shared/model/bucket';
 
-export interface IAggr {
-  type?: string;
-  field?: string;
-  values?: string[];
-  buckets?: IBucket[];
-  filteredBuckets?: IBucket[];
-}
-
-export class Aggr implements IAggr {
-  constructor(
-    public type?: string,
-    public field?: string,
-    public values?: string[],
-    public buckets?: IBucket[],
-    public filteredBuckets?: IBucket[]
-  ) {}
+export interface Aggr {
+  type: string;
+  field: string;
+  values: string[];
+  buckets: Bucket[];
+  filteredBuckets: Bucket[];
 }

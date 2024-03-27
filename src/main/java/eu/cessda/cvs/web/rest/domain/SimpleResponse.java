@@ -19,12 +19,9 @@ import java.io.Serializable;
 
 public class SimpleResponse implements Serializable {
     private static final long serialVersionUID = 1L;
-    
-    private String status;
-    private String message;
 
-    public SimpleResponse() {
-    }
+    private final String status;
+    private final String message;
 
     public SimpleResponse(String status, String message) {
         this.status = status;
@@ -35,15 +32,7 @@ public class SimpleResponse implements Serializable {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getMessage() {
         return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 }
