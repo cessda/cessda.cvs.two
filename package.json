@@ -27,7 +27,7 @@
     "bootstrap": "4.6.1",
     "jquery": "3.7.1",
     "moment": "2.30.1",
-    "ng-jhipster": "0.16.0",
+    "ng-jhipster": "file:vendor/ng-jhipster-0.16.0.tgz",
     "ngx-chips": "2.2.0",
     "ngx-cookie-service": "12.0.0",
     "ngx-infinite-scroll": "10.0.1",
