@@ -121,7 +121,6 @@
       }
     }
   },
-  "defaultProject": "cvs",
   "cli": {
     "packageManager": "npm",
     "schematicCollections": [
