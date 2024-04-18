@@ -19,6 +19,7 @@ module.exports = {
     preset: 'jest-preset-angular',
     setupFiles: ['jest-date-mock'],
     setupFilesAfterEnv: ['<rootDir>/src/test/javascript/jest.ts'],
+    globalSetup: 'jest-preset-angular/global-setup',
     cacheDirectory: '<rootDir>/target/jest-cache',
     coverageDirectory: '<rootDir>/target/test-results/',
     coverageProvider: 'v8',
