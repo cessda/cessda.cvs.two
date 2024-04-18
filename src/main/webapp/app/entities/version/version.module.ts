@@ -24,8 +24,7 @@ import { VersionDeleteDialogComponent } from './version-delete-dialog.component'
 import { versionRoute } from './version.route';
 
 @NgModule({
-  imports: [CvsSharedModule, RouterModule.forChild(versionRoute)],
-  declarations: [VersionComponent, VersionDetailComponent, VersionUpdateComponent, VersionDeleteDialogComponent],
-  entryComponents: [VersionDeleteDialogComponent]
+    imports: [CvsSharedModule, RouterModule.forChild(versionRoute)],
+    declarations: [VersionComponent, VersionDetailComponent, VersionUpdateComponent, VersionDeleteDialogComponent]
 })
 export class CvsVersionModule {}

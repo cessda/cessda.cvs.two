@@ -24,8 +24,7 @@ import { ConceptDeleteDialogComponent } from './concept-delete-dialog.component'
 import { conceptRoute } from './concept.route';
 
 @NgModule({
-  imports: [CvsSharedModule, RouterModule.forChild(conceptRoute)],
-  declarations: [ConceptComponent, ConceptDetailComponent, ConceptUpdateComponent, ConceptDeleteDialogComponent],
-  entryComponents: [ConceptDeleteDialogComponent]
+    imports: [CvsSharedModule, RouterModule.forChild(conceptRoute)],
+    declarations: [ConceptComponent, ConceptDetailComponent, ConceptUpdateComponent, ConceptDeleteDialogComponent]
 })
 export class CvsConceptModule {}

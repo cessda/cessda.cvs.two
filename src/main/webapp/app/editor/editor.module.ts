@@ -41,40 +41,25 @@ import { QuillModule } from 'ngx-quill';
 import { NgxTextDiffModule } from 'ngx-text-diff';
 
 @NgModule({
-  imports: [CvsSharedModule, RouterModule.forChild(EDITOR_ROUTE), TagInputModule, QuillModule, NgxTextDiffModule],
-  declarations: [
-    EditorComponent,
-    EditorDetailComponent,
-    EditorCvAddDialogComponent,
-    EditorCvAddPopupComponent,
-    EditorDetailCvAddEditDialogComponent,
-    EditorDetailCvDeleteDialogComponent,
-    EditorDetailCvForwardStatusDialogComponent,
-    EditorDetailCvNewVersionDialogComponent,
-    EditorDetailCvCommentDialogComponent,
-    EditorDetailCvCommentItemComponent,
-    EditorDetailCodeAddEditDialogComponent,
-    EditorDetailCodeCsvImportDialogComponent,
-    EditorDetailCodeReorderDialogComponent,
-    EditorDetailCodeDeprecateDialogComponent,
-    EditorDetailCodeDeleteDialogComponent,
-    EditorDetailCvAddEditConfirmModalComponent
-  ],
-  entryComponents: [
-    EditorCvAddDialogComponent,
-    EditorCvAddPopupComponent,
-    EditorDetailCvAddEditDialogComponent,
-    EditorDetailCvDeleteDialogComponent,
-    EditorDetailCvForwardStatusDialogComponent,
-    EditorDetailCvNewVersionDialogComponent,
-    EditorDetailCvCommentDialogComponent,
-    EditorDetailCodeAddEditDialogComponent,
-    EditorDetailCodeCsvImportDialogComponent,
-    EditorDetailCodeReorderDialogComponent,
-    EditorDetailCodeDeprecateDialogComponent,
-    EditorDetailCodeDeleteDialogComponent,
-    EditorDetailCvAddEditConfirmModalComponent
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    imports: [CvsSharedModule, RouterModule.forChild(EDITOR_ROUTE), TagInputModule, QuillModule, NgxTextDiffModule],
+    declarations: [
+        EditorComponent,
+        EditorDetailComponent,
+        EditorCvAddDialogComponent,
+        EditorCvAddPopupComponent,
+        EditorDetailCvAddEditDialogComponent,
+        EditorDetailCvDeleteDialogComponent,
+        EditorDetailCvForwardStatusDialogComponent,
+        EditorDetailCvNewVersionDialogComponent,
+        EditorDetailCvCommentDialogComponent,
+        EditorDetailCvCommentItemComponent,
+        EditorDetailCodeAddEditDialogComponent,
+        EditorDetailCodeCsvImportDialogComponent,
+        EditorDetailCodeReorderDialogComponent,
+        EditorDetailCodeDeprecateDialogComponent,
+        EditorDetailCodeDeleteDialogComponent,
+        EditorDetailCvAddEditConfirmModalComponent
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CvsEditorModule {}
