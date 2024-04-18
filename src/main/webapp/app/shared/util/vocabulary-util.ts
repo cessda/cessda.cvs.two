@@ -19,7 +19,7 @@ import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
 import { Version } from 'app/shared/model/version.model';
 import { Concept } from 'app/shared/model/concept.model';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
-import { VocabularyLanguageFromKeyPipe } from 'app/shared';
+import { VocabularyLanguageFromKeyPipe } from '../language/vocabulary-language-from-key.pipe';
 import { VersionNumber } from 'app/shared/model/version-number.model';
 
 export default class VocabularyUtil {

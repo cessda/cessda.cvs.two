@@ -18,7 +18,8 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
-import { createRequestOption, DATE_FORMAT } from 'app/shared';
+import { createRequestOption } from 'app/shared/util/request-util';
+import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { CvResult } from 'app/shared/model/cv-result.model';
 import { map } from 'rxjs/operators';

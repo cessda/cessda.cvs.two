@@ -17,49 +17,46 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { CvsSharedModule } from 'app/shared';
-import {
-  EDITOR_ROUTE,
-  EditorComponent,
-  EditorCvAddDialogComponent,
-  EditorCvAddPopupComponent,
-  EditorDetailCodeAddEditDialogComponent,
-  EditorDetailCodeCsvImportDialogComponent,
-  EditorDetailCodeDeprecateDialogComponent,
-  EditorDetailCodeDeleteDialogComponent,
-  EditorDetailCodeReorderDialogComponent,
-  EditorDetailComponent,
-  EditorDetailCvAddEditDialogComponent,
-  EditorDetailCvCommentDialogComponent,
-  EditorDetailCvCommentItemComponent,
-  EditorDetailCvDeleteDialogComponent,
-  EditorDetailCvForwardStatusDialogComponent,
-  EditorDetailCvAddEditConfirmModalComponent,
-  EditorDetailCvNewVersionDialogComponent,
-} from './';
+import { EditorCvAddDialogComponent, EditorCvAddPopupComponent } from './editor-cv-add-dialog.component';
+import { EditorDetailCvAddEditConfirmModalComponent } from './editor-detail-code-add-edit-confirm.component';
+import { EditorDetailCodeAddEditDialogComponent } from './editor-detail-code-add-edit-dialog.component';
+import { EditorDetailCodeCsvImportDialogComponent } from './editor-detail-code-csv-import-dialog.component';
+import { EditorDetailCodeDeleteDialogComponent } from './editor-detail-code-delete-dialog.component';
+import { EditorDetailCodeDeprecateDialogComponent } from './editor-detail-code-deprecate-dialog.component';
+import { EditorDetailCodeReorderDialogComponent } from './editor-detail-code-reorder-dialog.component';
+import { EditorDetailCvAddEditDialogComponent } from './editor-detail-cv-add-edit-dialog.component';
+import { EditorDetailCvCommentDialogComponent } from './editor-detail-cv-comment-dialog.component';
+import { EditorDetailCvCommentItemComponent } from './editor-detail-cv-comment-item.component';
+import { EditorDetailCvDeleteDialogComponent } from './editor-detail-cv-delete-dialog.component';
+import { EditorDetailCvForwardStatusDialogComponent } from './editor-detail-cv-forward-status-dialog.component';
+import { EditorDetailCvNewVersionDialogComponent } from './editor-detail-cv-new-version-dialog.component';
+import { EditorDetailComponent } from './editor-detail.component';
+import { EditorComponent } from './editor.component';
+import { EDITOR_ROUTE } from './editor.route';
 import { TagInputModule } from 'ngx-chips';
 import { QuillModule } from 'ngx-quill';
 import { NgxTextDiffModule } from 'ngx-text-diff';
 
 @NgModule({
-    imports: [CvsSharedModule, RouterModule.forChild(EDITOR_ROUTE), TagInputModule, QuillModule, NgxTextDiffModule],
-    declarations: [
-        EditorComponent,
-        EditorDetailComponent,
-        EditorCvAddDialogComponent,
-        EditorCvAddPopupComponent,
-        EditorDetailCvAddEditDialogComponent,
-        EditorDetailCvDeleteDialogComponent,
-        EditorDetailCvForwardStatusDialogComponent,
-        EditorDetailCvNewVersionDialogComponent,
-        EditorDetailCvCommentDialogComponent,
-        EditorDetailCvCommentItemComponent,
-        EditorDetailCodeAddEditDialogComponent,
-        EditorDetailCodeCsvImportDialogComponent,
-        EditorDetailCodeReorderDialogComponent,
-        EditorDetailCodeDeprecateDialogComponent,
-        EditorDetailCodeDeleteDialogComponent,
-        EditorDetailCvAddEditConfirmModalComponent
-    ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  imports: [CvsSharedModule, RouterModule.forChild(EDITOR_ROUTE), TagInputModule, QuillModule, NgxTextDiffModule],
+  declarations: [
+    EditorComponent,
+    EditorDetailComponent,
+    EditorCvAddDialogComponent,
+    EditorCvAddPopupComponent,
+    EditorDetailCvAddEditDialogComponent,
+    EditorDetailCvDeleteDialogComponent,
+    EditorDetailCvForwardStatusDialogComponent,
+    EditorDetailCvNewVersionDialogComponent,
+    EditorDetailCvCommentDialogComponent,
+    EditorDetailCvCommentItemComponent,
+    EditorDetailCodeAddEditDialogComponent,
+    EditorDetailCodeCsvImportDialogComponent,
+    EditorDetailCodeReorderDialogComponent,
+    EditorDetailCodeDeprecateDialogComponent,
+    EditorDetailCodeDeleteDialogComponent,
+    EditorDetailCvAddEditConfirmModalComponent,
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CvsEditorModule {}
