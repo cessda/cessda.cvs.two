@@ -157,10 +157,6 @@ export class CustomPageComponent implements OnInit, OnDestroy {
 
   private generateDownloadFile(res: Blob, mimeType: string, fileFormat: string): void {
     const newBlob = new Blob([res], { type: mimeType });
-    if (window.navigator && (window.navigator.msSaveOrOpenBlob as typeof window.navigator.msSaveOrOpenBlob | undefined)) {
-      window.navigator.msSaveOrOpenBlob(newBlob);
-      return;
-    }
     const data = window.URL.createObjectURL(newBlob);
     const link = document.createElement('a');
     link.href = data;

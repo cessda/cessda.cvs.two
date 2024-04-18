@@ -24,8 +24,7 @@ import { CommentDeleteDialogComponent } from './comment-delete-dialog.component'
 import { commentRoute } from './comment.route';
 
 @NgModule({
-  imports: [CvsSharedModule, RouterModule.forChild(commentRoute)],
-  declarations: [CommentComponent, CommentDetailComponent, CommentUpdateComponent, CommentDeleteDialogComponent],
-  entryComponents: [CommentDeleteDialogComponent]
+    imports: [CvsSharedModule, RouterModule.forChild(commentRoute)],
+    declarations: [CommentComponent, CommentDetailComponent, CommentUpdateComponent, CommentDeleteDialogComponent]
 })
 export class CvsCommentModule {}

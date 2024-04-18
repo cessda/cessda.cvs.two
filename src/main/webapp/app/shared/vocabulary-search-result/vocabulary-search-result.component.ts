@@ -22,7 +22,8 @@ import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Account } from 'app/core/user/account.model';
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Observable } from 'rxjs';
-import { AGGR_AGENCY, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
+import { AGGR_AGENCY, AGGR_STATUS } from 'app/shared/constants/aggregration.constants';
+import { ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared/constants/pagination.constants';
 import { Bucket } from 'app/shared/model/bucket';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginModalService } from 'app/core/login/login-modal.service';
@@ -32,7 +33,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { CvResult } from 'app/shared/model/cv-result.model';
 import { Aggr } from 'app/shared/model/aggr';
 import { HomeService } from 'app/home/home.service';
-import { VocabularyLanguageFromKeyPipe } from 'app/shared';
+import { VocabularyLanguageFromKeyPipe } from '../language/vocabulary-language-from-key.pipe';
 import { TagModel, TagModelClass } from 'ngx-chips/core/accessor';
 
 const INITIAL_PAGE = 1;
