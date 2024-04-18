@@ -1,3 +1,5 @@
+import { AgencyRole } from './enumerations/agency-role.model';
+
 /*
  * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
@@ -13,14 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export interface IUserAgency {
+export interface UserAgency {
   id?: number;
   userId?: number;
-  agencyRole?: string;
+  agencyName?: string;
+  agencyRole?: AgencyRole;
   language?: string;
   agencyId?: number;
-}
-
-export class UserAgency implements IUserAgency {
-  constructor(public id?: number, public userId?: number, public agencyRole?: string, public language?: string, public agencyId?: number) {}
 }

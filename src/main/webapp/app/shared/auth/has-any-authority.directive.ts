@@ -30,13 +30,17 @@ import { AccountService } from 'app/core/auth/account.service';
  * ```
  */
 @Directive({
-  selector: '[jhiHasAnyAuthority]'
+  selector: '[jhiHasAnyAuthority]',
 })
 export class HasAnyAuthorityDirective implements OnDestroy {
   private authorities: string[] = [];
-  private authenticationSubscription?: Subscription;
+  private authenticationSubscription: Subscription | undefined;
 
-  constructor(private accountService: AccountService, private templateRef: TemplateRef<any>, private viewContainerRef: ViewContainerRef) {}
+  constructor(
+    private accountService: AccountService,
+    private templateRef: TemplateRef<unknown>,
+    private viewContainerRef: ViewContainerRef,
+  ) {}
 
   @Input()
   set jhiHasAnyAuthority(value: string | string[]) {

@@ -18,35 +18,38 @@ import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
 import { JhiResolvePagingParams } from 'ng-jhipster';
 import { Observable, of, EMPTY } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IComment, Comment } from 'app/shared/model/comment.model';
+import { Comment } from 'app/shared/model/comment.model';
 import { CommentService } from './comment.service';
 import { CommentComponent } from './comment.component';
 import { CommentDetailComponent } from './comment-detail.component';
 import { CommentUpdateComponent } from './comment-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class CommentResolve implements Resolve<IComment> {
-  constructor(private service: CommentService, private router: Router) {}
+export class CommentResolve implements Resolve<Comment> {
+  constructor(
+    private service: CommentService,
+    private router: Router,
+  ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IComment> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Comment> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        flatMap((comment: HttpResponse<Comment>) => {
+        mergeMap((comment: HttpResponse<Comment>) => {
           if (comment.body) {
             return of(comment.body);
           } else {
-            this.router.navigate(['404']);
+            this.router.navigate(['404'], { skipLocationChange: true });
             return EMPTY;
           }
-        })
+        }),
       );
     }
-    return of(new Comment());
+    return of({});
   }
 }
 
@@ -55,49 +58,49 @@ export const commentRoute: Routes = [
     path: '',
     component: CommentComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams
+      pagingParams: JhiResolvePagingParams,
     },
     data: {
       authorities: [Authority.USER],
       defaultSort: 'id,asc',
-      pageTitle: 'cvsApp.comment.home.title'
+      pageTitle: 'cvsApp.comment.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: CommentDetailComponent,
     resolve: {
-      comment: CommentResolve
+      comment: CommentResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.comment.home.title'
+      pageTitle: 'cvsApp.comment.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: CommentUpdateComponent,
     resolve: {
-      comment: CommentResolve
+      comment: CommentResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.comment.home.title'
+      pageTitle: 'cvsApp.comment.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: CommentUpdateComponent,
     resolve: {
-      comment: CommentResolve
+      comment: CommentResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.comment.home.title'
+      pageTitle: 'cvsApp.comment.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

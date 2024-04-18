@@ -19,10 +19,10 @@ import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption, SearchWithPagination } from 'app/shared/util/request-util';
-import { IUserAgency } from 'app/shared/model/user-agency.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 
-type EntityResponseType = HttpResponse<IUserAgency>;
-type EntityArrayResponseType = HttpResponse<IUserAgency[]>;
+type EntityResponseType = HttpResponse<UserAgency>;
+type EntityArrayResponseType = HttpResponse<UserAgency[]>;
 
 @Injectable({ providedIn: 'root' })
 export class UserAgencyService {
@@ -31,21 +31,21 @@ export class UserAgencyService {
 
   constructor(protected http: HttpClient) {}
 
-  create(userAgency: IUserAgency): Observable<EntityResponseType> {
-    return this.http.post<IUserAgency>(this.resourceUrl, userAgency, { observe: 'response' });
+  create(userAgency: UserAgency): Observable<EntityResponseType> {
+    return this.http.post<UserAgency>(this.resourceUrl, userAgency, { observe: 'response' });
   }
 
-  update(userAgency: IUserAgency): Observable<EntityResponseType> {
-    return this.http.put<IUserAgency>(this.resourceUrl, userAgency, { observe: 'response' });
+  update(userAgency: UserAgency): Observable<EntityResponseType> {
+    return this.http.put<UserAgency>(this.resourceUrl, userAgency, { observe: 'response' });
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IUserAgency>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http.get<UserAgency>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IUserAgency[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http.get<UserAgency[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<{}>> {
@@ -54,6 +54,6 @@ export class UserAgencyService {
 
   search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IUserAgency[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
+    return this.http.get<UserAgency[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }
 }

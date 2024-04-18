@@ -18,15 +18,15 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import moment from 'moment';
 import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { VocabularyChangeService } from 'app/entities/vocabulary-change/vocabulary-change.service';
-import { IVocabularyChange, VocabularyChange } from 'app/shared/model/vocabulary-change.model';
+import { VocabularyChange } from 'app/shared/model/vocabulary-change.model';
 
 describe('Service Tests', () => {
   describe('VocabularyChange Service', () => {
     let injector: TestBed;
     let service: VocabularyChangeService;
     let httpMock: HttpTestingController;
-    let elemDefault: IVocabularyChange;
-    let expectedResult: IVocabularyChange | IVocabularyChange[] | boolean | null;
+    let elemDefault: VocabularyChange;
+    let expectedResult: VocabularyChange | VocabularyChange[] | boolean | null;
     let currentDate: moment.Moment;
 
     beforeEach(() => {
@@ -39,7 +39,16 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new VocabularyChange(0, 0, 0, 'AAAAAAA', 'AAAAAAA', 0, 'AAAAAAA', currentDate);
+      elemDefault = {
+        id: 0,
+        vocabularyId: 0,
+        versionId: 0,
+        changeType: 'AAAAAAA',
+        description: 'AAAAAAA',
+        userId: 0,
+        userName: 'AAAAAAA',
+        date: currentDate,
+      };
     });
 
     describe('Service methods', () => {
@@ -48,7 +57,7 @@ describe('Service Tests', () => {
           {
             date: currentDate.format(DATE_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         service.find(123).subscribe(resp => (expectedResult = resp.body));
@@ -64,17 +73,17 @@ describe('Service Tests', () => {
             id: 0,
             date: currentDate.format(DATE_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign(
           {
             date: currentDate,
           },
-          returnedFromService
+          returnedFromService,
         );
 
-        service.create(new VocabularyChange()).subscribe(resp => (expectedResult = resp.body));
+        service.create({ changeType: '' }).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
@@ -92,14 +101,14 @@ describe('Service Tests', () => {
             userName: 'BBBBBB',
             date: currentDate.format(DATE_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign(
           {
             date: currentDate,
           },
-          returnedFromService
+          returnedFromService,
         );
 
         service.update(expected).subscribe(resp => (expectedResult = resp.body));
@@ -120,14 +129,14 @@ describe('Service Tests', () => {
             userName: 'BBBBBB',
             date: currentDate.format(DATE_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign(
           {
             date: currentDate,
           },
-          returnedFromService
+          returnedFromService,
         );
 
         service.query().subscribe(resp => (expectedResult = resp.body));

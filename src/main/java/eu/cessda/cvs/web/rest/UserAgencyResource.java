@@ -82,10 +82,9 @@ public class UserAgencyResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated userAgencyDTO,
      * or with status {@code 400 (Bad Request)} if the userAgencyDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the userAgencyDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/user-agencies")
-    public ResponseEntity<UserAgencyDTO> updateUserAgency(@RequestBody UserAgencyDTO userAgencyDTO) throws URISyntaxException {
+    public ResponseEntity<UserAgencyDTO> updateUserAgency(@RequestBody UserAgencyDTO userAgencyDTO) {
         log.debug("REST request to update UserAgency : {}", userAgencyDTO);
         if (userAgencyDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

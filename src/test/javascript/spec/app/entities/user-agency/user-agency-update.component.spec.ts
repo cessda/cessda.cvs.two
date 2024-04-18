@@ -33,7 +33,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [UserAgencyUpdateComponent],
-        providers: [FormBuilder]
+        providers: [FormBuilder],
       })
         .overrideTemplate(UserAgencyUpdateComponent, '')
         .compileComponents();
@@ -46,7 +46,7 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', fakeAsync(() => {
         // GIVEN
-        const entity = new UserAgency(123);
+        const entity: UserAgency = { id: 123 };
         spyOn(service, 'update').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN
@@ -60,7 +60,7 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', fakeAsync(() => {
         // GIVEN
-        const entity = new UserAgency();
+        const entity: UserAgency = {};
         spyOn(service, 'create').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN

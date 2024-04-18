@@ -20,20 +20,20 @@ import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Account } from 'app/core/user/account.model';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Observable } from 'rxjs';
 import { AGGR_AGENCY, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
-import { IBucket } from 'app/shared/model/bucket';
+import { Bucket } from 'app/shared/model/bucket';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { ICode } from 'app/shared/model/code.model';
+import { Code } from 'app/shared/model/code.model';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { ICvResult } from 'app/shared/model/cv-result.model';
-import { IAggr } from 'app/shared/model/aggr';
+import { CvResult } from 'app/shared/model/cv-result.model';
+import { Aggr } from 'app/shared/model/aggr';
 import { HomeService } from 'app/home/home.service';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
-import { TagModel } from 'ngx-chips/core/accessor';
+import { TagModel, TagModelClass } from 'ngx-chips/core/accessor';
 
 const INITIAL_PAGE = 1;
 const DEFAULT_PREDICATE = 'code';
@@ -48,8 +48,8 @@ export class VocabularySearchResultComponent implements OnInit {
 
   account: Account | null = null;
 
-  vocabularies: IVocabulary[] = [];
-  currentSearch: string = '';
+  vocabularies: Vocabulary[] = [];
+  currentSearch = '';
 
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -58,11 +58,12 @@ export class VocabularySearchResultComponent implements OnInit {
   predicate = DEFAULT_PREDICATE;
   ascending = true;
 
-  aggAgencyBucket: IBucket[] = [];
-  aggStatusBucket: IBucket[] = [];
+  aggAgencyBucket: Bucket[] = [];
+  aggStatusBucket: Bucket[] = [];
   activeAggAgency: string[] = [];
   activeAggLanguage: string[] = [];
   activeAggStatus: string[] = [];
+  activeAgg = '';
 
   isAggAgencyCollapsed = false;
   isAggStatusCollapsed = false;
@@ -117,47 +118,47 @@ export class VocabularySearchResultComponent implements OnInit {
     return this.languageService.currentLang;
   }
 
-  isVersionContains(vocab: IVocabulary, lang: string, versionType: string): boolean {
-    return VocabularyUtil.getTitleDefByLangIso(vocab, lang)[2].includes(versionType);
+  isVersionContains(vocab: Vocabulary, lang: string, versionType: string): boolean {
+    return (VocabularyUtil.getTitleDefByLangIso(vocab, lang)[2] || '').includes(versionType);
   }
 
-  isLangVersionInBundle(vocab: IVocabulary, lang: string, bundle?: string): boolean {
+  isLangVersionInBundle(vocab: Vocabulary, lang: string, bundle?: string): boolean {
     if (bundle === undefined) {
       bundle = vocab.versionNumber;
     }
     return bundle === VocabularyUtil.getVersionNumberByLangIso(vocab, lang);
   }
 
-  getTitleByLang(vocab: IVocabulary): string {
-    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang!)[0];
+  getTitleByLang(vocab: Vocabulary): string {
+    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[0]!;
   }
 
-  getDefinitionByLang(vocab: IVocabulary): string {
-    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang!)[1];
+  getDefinitionByLang(vocab: Vocabulary): string {
+    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[1]!;
   }
 
-  getCodeTitleByLang(code: ICode, selectedLang: string): string {
+  getCodeTitleByLang(code: Code, selectedLang: string): string {
     return VocabularyUtil.getTitleDefByLangIso(code, selectedLang)[0] + (code.deprecated ? ' (DEPRECATED TERM)' : '');
   }
 
-  getCodeDefinitionByLang(code: ICode, selectedLang: string): string {
+  getCodeDefinitionByLang(code: Code, selectedLang: string): string | undefined {
     return VocabularyUtil.getTitleDefByLangIso(code, selectedLang)[1];
   }
 
-  getVersionByLang(vocab: IVocabulary): string {
-    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang!)[2];
+  getVersionByLang(vocab: Vocabulary): string {
+    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[2]!;
   }
 
-  private onSuccess(data: ICvResult): void {
-    this.totalItems = data.totalElements!;
-    this.vocabularies = data.vocabularies!;
+  private onSuccess(data: CvResult): void {
+    this.totalItems = data.totalElements;
+    this.vocabularies = data.vocabularies;
     // assign selectedLang if still null
     this.vocabularies.forEach(v => {
       if (!v.selectedLang) {
         v.selectedLang = v.sourceLanguage;
       }
     });
-    this.updateForm(data.aggrs!);
+    this.updateForm(data.aggrs);
     this.eventManager.broadcast({ name: 'onSearching', content: false });
   }
 
@@ -227,7 +228,7 @@ export class VocabularySearchResultComponent implements OnInit {
     this.buildFilterAndRefreshSearch();
   }
 
-  trackNotation(_index: number, item: IVocabulary): string {
+  trackNotation(_index: number, item: Vocabulary | Code): string {
     return item.notation!;
   }
 
@@ -313,7 +314,7 @@ export class VocabularySearchResultComponent implements OnInit {
       this.eventManager.broadcast({ name: 'onSearching', content: true });
 
       // Send the search request to the server
-      let searchObservable: Observable<HttpResponse<ICvResult>>;
+      let searchObservable: Observable<HttpResponse<CvResult>>;
       if (this.appScope === AppScope.EDITOR) {
         searchObservable = this.editorService.search(searchRequest);
       } else {
@@ -322,7 +323,7 @@ export class VocabularySearchResultComponent implements OnInit {
 
       // Subscribe to the result of the search request
       searchObservable.subscribe(
-        (res: HttpResponse<ICvResult>) => this.onSuccess(res.body!),
+        (res: HttpResponse<CvResult>) => this.onSuccess(res.body!),
         (e: HttpErrorResponse) => this.onError(e),
       );
     });
@@ -339,7 +340,7 @@ export class VocabularySearchResultComponent implements OnInit {
     this.loginModalService.open();
   }
 
-  private updateForm(aggrs: IAggr[]): void {
+  private updateForm(aggrs: Aggr[]): void {
     // patch value for sort and size
     this.searchForm.patchValue({
       size: this.itemsPerPage,
@@ -349,30 +350,28 @@ export class VocabularySearchResultComponent implements OnInit {
     aggrs.forEach(aggr => {
       if (aggr.field === AGGR_AGENCY) {
         // format bucket and add as autocomplete and patch form value
-        this.aggAgencyBucket = this.formatBuckets(aggr.buckets!.concat(aggr.filteredBuckets!));
+        this.aggAgencyBucket = this.formatBuckets(aggr.buckets.concat(aggr.filteredBuckets));
         this.searchForm.patchValue({ aggAgency: this.prepareActiveBuckets(this.aggAgencyBucket, aggr) });
       } else if (aggr.field === AGGR_STATUS) {
-        this.aggStatusBucket = this.formatBuckets(aggr.buckets!.concat(aggr.filteredBuckets!));
+        this.aggStatusBucket = this.formatBuckets(aggr.buckets.concat(aggr.filteredBuckets));
         this.searchForm.patchValue({ aggStatus: this.prepareActiveBuckets(this.aggStatusBucket, aggr) });
       }
     });
   }
 
-  private prepareActiveBuckets(buckets: IBucket[], aggr: IAggr): IBucket[] {
-    const activeBucket: IBucket[] = [];
-    aggr.values!.forEach(activeVal => {
+  private prepareActiveBuckets(buckets: Bucket[], aggr: Aggr): Bucket[] {
+    const activeBucket: Bucket[] = [];
+    aggr.values.forEach(activeVal => {
       activeBucket.push(buckets.find(b => b.k === activeVal)!);
     });
     return activeBucket;
   }
 
-  private formatBuckets(buckets: IBucket[]): IBucket[] {
-    if (buckets !== undefined && buckets.length > 0) {
-      buckets.forEach(bucket => {
-        bucket.value = bucket.k;
-        bucket.display = bucket.k + ' (' + bucket.v + ')';
-      });
-    }
+  private formatBuckets(buckets: Bucket[]): Bucket[] {
+    buckets.forEach(bucket => {
+      bucket.value = bucket.k;
+      bucket.display = bucket.k + ' (' + bucket.v + ')';
+    });
     return buckets;
   }
 
@@ -380,8 +379,11 @@ export class VocabularySearchResultComponent implements OnInit {
     return VocabularyUtil.sortLangByEnum(languages || [], sourceLang || '');
   }
 
-  getFormattedLangIso(vocab: IVocabulary, lang: string, sourceLang: string): string {
+  getFormattedLangIso(vocab: Vocabulary, lang: string, sourceLang: string): string {
     const statusInfo = VocabularyUtil.getTitleDefByLangIso(vocab, lang)[2];
+    if (!statusInfo) {
+      throw new TypeError(`Vocabulary ${vocab.notation} has no title for language ${lang}`);
+    }
     const indexOf = statusInfo.indexOf('_');
     const langVersion = VocabularyUtil.getVersionNumberByLangIso(vocab, lang);
     return (
@@ -420,26 +422,28 @@ export class VocabularySearchResultComponent implements OnInit {
   }
 
   onAddAgency(addedItem: TagModel): void {
-    this.activeAggAgency!.push(addedItem['k']);
+    this.activeAggAgency.push((addedItem as TagModelClass)['k']);
     this.buildFilterAndRefreshSearch();
   }
 
   onRemoveAgency(removedItem: TagModel): void {
     this.activeAggAgency.forEach((item, index) => {
-      if (item === removedItem['k']) this.activeAggAgency.splice(index, 1);
+      if (item === (removedItem as TagModelClass)['k']) {
+        this.activeAggAgency.splice(index, 1);
+      }
     });
     this.buildFilterAndRefreshSearch();
   }
 
   onAddStatus(addedItem: TagModel): void {
-    this.activeAggStatus.push(addedItem['k']);
+    this.activeAggStatus.push((addedItem as TagModelClass)['k']);
     this.buildFilterAndRefreshSearch();
   }
 
   onRemoveStatus(removedItem: TagModel): void {
     this.activeAggStatus.forEach((item, index) => {
-      if (item === removedItem['k']) {
-        this.activeAggStatus!.splice(index, 1);
+      if (item === (removedItem as TagModelClass)['k']) {
+        this.activeAggStatus.splice(index, 1);
       }
     });
     this.buildFilterAndRefreshSearch();
@@ -460,8 +464,8 @@ export class VocabularySearchResultComponent implements OnInit {
       }
       activeAgg += 'language:' + this.activeAggLanguage.join(',');
     }
-    if (this.activeAggStatus!.length > 0) {
-      if ((this.activeAggAgency!.length > 0 && !this.isLanguageAdmin()) || this.activeAggLanguage!.length > 0) {
+    if (this.activeAggStatus.length > 0) {
+      if ((this.activeAggAgency.length > 0 && !this.isLanguageAdmin()) || this.activeAggLanguage.length > 0) {
         activeAgg += ';';
       }
       activeAgg += 'status:' + this.activeAggStatus.join(',');

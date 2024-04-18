@@ -33,7 +33,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [ResolverUpdateComponent],
-        providers: [FormBuilder]
+        providers: [FormBuilder],
       })
         .overrideTemplate(ResolverUpdateComponent, '')
         .compileComponents();
@@ -46,7 +46,7 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', fakeAsync(() => {
         // GIVEN
-        const entity = new Resolver(123);
+        const entity: Resolver = { id: 123, resolverURI: '', resourceUrl: '' };
         spyOn(service, 'update').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN
@@ -60,7 +60,7 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', fakeAsync(() => {
         // GIVEN
-        const entity = new Resolver();
+        const entity: Resolver = { resolverURI: '', resourceUrl: '' };
         spyOn(service, 'create').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN

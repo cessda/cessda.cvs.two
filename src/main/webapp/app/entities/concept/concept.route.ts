@@ -22,20 +22,20 @@ import { mergeMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IConcept, Concept } from 'app/shared/model/concept.model';
+import { Concept } from 'app/shared/model/concept.model';
 import { ConceptService } from './concept.service';
 import { ConceptComponent } from './concept.component';
 import { ConceptDetailComponent } from './concept-detail.component';
 import { ConceptUpdateComponent } from './concept-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class ConceptResolve implements Resolve<IConcept> {
+export class ConceptResolve implements Resolve<Concept> {
   constructor(
     private service: ConceptService,
     private router: Router,
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IConcept> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Concept> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
@@ -43,13 +43,17 @@ export class ConceptResolve implements Resolve<IConcept> {
           if (concept.body) {
             return of(concept.body);
           } else {
-            this.router.navigate(['404']);
+            this.router.navigate(['404'], { skipLocationChange: true });
             return EMPTY;
           }
         }),
       );
     }
-    return of(new Concept());
+    return of({
+      notation: '',
+      parent: '',
+      visible: true,
+    });
   }
 }
 

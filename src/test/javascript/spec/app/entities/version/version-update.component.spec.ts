@@ -21,7 +21,7 @@ import { of } from 'rxjs';
 import { CvsTestModule } from '../../../test.module';
 import { VersionUpdateComponent } from 'app/entities/version/version-update.component';
 import { VersionService } from 'app/entities/version/version.service';
-import { Version } from 'app/shared/model/version.model';
+import { createNewVersion } from 'app/shared/model/version.model';
 
 describe('Component Tests', () => {
   describe('Version Management Update Component', () => {
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [VersionUpdateComponent],
-        providers: [FormBuilder]
+        providers: [FormBuilder],
       })
         .overrideTemplate(VersionUpdateComponent, '')
         .compileComponents();
@@ -46,7 +46,7 @@ describe('Component Tests', () => {
     describe('save', () => {
       it('Should call update service on save for existing entity', fakeAsync(() => {
         // GIVEN
-        const entity = new Version(123);
+        const entity = createNewVersion(123);
         spyOn(service, 'update').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN
@@ -60,7 +60,7 @@ describe('Component Tests', () => {
 
       it('Should call create service on save for new entity', fakeAsync(() => {
         // GIVEN
-        const entity = new Version();
+        const entity = createNewVersion();
         spyOn(service, 'create').and.returnValue(of(new HttpResponse({ body: entity })));
         comp.updateForm(entity);
         // WHEN

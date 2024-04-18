@@ -22,7 +22,7 @@ import { LoginService } from 'app/core/login/login.service';
 
 @Component({
   selector: 'jhi-login-modal',
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
 })
 export class LoginModalComponent implements AfterViewInit {
   @ViewChild('username', { static: false })
@@ -33,22 +33,29 @@ export class LoginModalComponent implements AfterViewInit {
   loginForm = this.fb.group({
     username: [''],
     password: [''],
-    rememberMe: [false]
+    rememberMe: [false],
   });
 
-  constructor(private loginService: LoginService, private router: Router, public activeModal: NgbActiveModal, private fb: FormBuilder) {}
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    public activeModal: NgbActiveModal,
+    private fb: FormBuilder,
+  ) {}
 
   ngAfterViewInit(): void {
-    if (this.username) {
-      setTimeout(() => this.username!.nativeElement.focus(), 0);
-    }
+    setTimeout(() => {
+      if (this.username) {
+        this.username.nativeElement.focus();
+      }
+    }, 0);
   }
 
   cancel(): void {
     this.authenticationError = false;
     this.loginForm.patchValue({
       username: '',
-      password: ''
+      password: '',
     });
     this.activeModal.dismiss('cancel');
   }
@@ -58,7 +65,7 @@ export class LoginModalComponent implements AfterViewInit {
       .login({
         username: this.loginForm.get('username')!.value,
         password: this.loginForm.get('password')!.value,
-        rememberMe: this.loginForm.get('rememberMe')!.value
+        rememberMe: this.loginForm.get('rememberMe')!.value,
       })
       .subscribe(
         () => {
@@ -72,7 +79,7 @@ export class LoginModalComponent implements AfterViewInit {
             this.router.navigate(['']);
           }
         },
-        () => (this.authenticationError = true)
+        () => (this.authenticationError = true),
       );
   }
 

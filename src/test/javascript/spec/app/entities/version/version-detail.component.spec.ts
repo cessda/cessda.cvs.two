@@ -20,20 +20,20 @@ import { JhiDataUtils } from 'ng-jhipster';
 
 import { CvsTestModule } from '../../../test.module';
 import { VersionDetailComponent } from 'app/entities/version/version-detail.component';
-import { Version } from 'app/shared/model/version.model';
+import { createNewVersion } from 'app/shared/model/version.model';
 
 describe('Component Tests', () => {
   describe('Version Management Detail Component', () => {
     let comp: VersionDetailComponent;
     let fixture: ComponentFixture<VersionDetailComponent>;
     let dataUtils: JhiDataUtils;
-    const route = ({ data: of({ version: new Version(123) }) } as any) as ActivatedRoute;
+    const route = { data: of({ version: createNewVersion(123) }) } as unknown as ActivatedRoute;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [VersionDetailComponent],
-        providers: [{ provide: ActivatedRoute, useValue: route }]
+        providers: [{ provide: ActivatedRoute, useValue: route }],
       })
         .overrideTemplate(VersionDetailComponent, '')
         .compileComponents();

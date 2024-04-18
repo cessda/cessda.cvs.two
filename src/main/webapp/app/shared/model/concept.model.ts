@@ -15,12 +15,12 @@
  */
 import { Moment } from 'moment';
 
-export interface IConcept {
+export interface Concept {
   id?: number;
   uri?: string;
-  notation?: string;
-  title?: any;
-  definition?: any;
+  notation: string;
+  title?: string;
+  definition?: string;
   previousConcept?: number;
   slConcept?: number;
   parent?: string;
@@ -32,39 +32,9 @@ export interface IConcept {
   versionId?: number;
   introducedInVersionId?: number;
   visible?: boolean;
-  titleSl?: any;
-  definitionSl?: any;
-  status?: string,
-  validFrom?: Moment | null,
-  validUntil?: Moment | null;
-}
-
-export class Concept implements IConcept {
-  constructor(
-    public id?: number,
-    public uri?: string,
-    public notation?: string,
-    public title?: any,
-    public definition?: any,
-    public previousConcept?: number,
-    public slConcept?: number,
-    public parent?: string,
-    public position?: number,
-    public deprecated?: boolean,
-    public replacedById?: number,
-    public replacedByUri?: string,
-    public replacedByNotation?: string,
-    public versionId?: number,
-    public introducedInVersionId?: number,
-    public visible?: boolean,
-    public titleSl?: any,
-    public definitionSl?: any,
-    public status?: string,
-    public validFrom?: Moment | null,
-    public validUntil?: Moment | null
-  ) {
-    this.parent = '';
-    // used as flag for tree open collapse
-    this.visible = true;
-  }
+  titleSl?: string;
+  definitionSl?: string;
+  status?: string;
+  validFrom?: Moment;
+  validUntil?: Moment;
 }

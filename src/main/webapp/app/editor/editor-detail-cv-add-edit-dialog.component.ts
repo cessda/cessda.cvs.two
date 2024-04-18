@@ -23,31 +23,32 @@ import { AccountService } from 'app/core/auth/account.service';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Account } from 'app/core/user/account.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { VOCABULARY_ALREADY_EXIST_TYPE } from 'app/shared';
 import { EditorService } from 'app/editor/editor.service';
-import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
-import { IVersion } from 'app/shared/model/version.model';
+import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { Version } from 'app/shared/model/version.model';
+import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
   selector: 'jhi-editor-detail-cv-add-edit-dialog',
   templateUrl: './editor-detail-cv-add-edit-dialog.component.html',
 })
 export class EditorDetailCvAddEditDialogComponent implements OnInit {
-  isSaving: boolean;
-  isSubmitting: boolean;
+  isSaving = false;
+  isSubmitting = false;
   account!: Account;
   languages: string[] = [];
   errorNotationExists = false;
   notation? = '';
-  vocabularySnippet?: IVocabularySnippet;
-  vocabularyParam?: IVocabulary;
-  versionParam?: IVersion;
-  versionSlParam?: IVersion;
-  isNew?: boolean;
-  isSlForm?: boolean;
+  vocabularySnippet!: VocabularySnippet;
+  vocabularyParam!: Vocabulary;
+  versionParam!: Version;
+  versionSlParam!: Version;
+  isNew = false;
+  isSlForm = false;
   selectedLanguage = '';
 
   cvAddEditForm = this.fb.group({
@@ -77,14 +78,12 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     protected eventManager: JhiEventManager,
     private fb: FormBuilder,
     private router: Router,
-  ) {
-    this.isSaving = false;
-    this.isSubmitting = false;
-  }
+  ) {}
 
   updateLanguageCheckbox(agencyId: number): void {
     // for Add new CV set taken language with []
-    const availableLanguages = VocabularyUtil.getAvailableCvLanguage(this.isNew && this.isSlForm ? [] : this.vocabularyParam!.versions);
+    const versions = this.isNew && this.isSlForm ? [] : this.vocabularyParam.versions;
+    const availableLanguages = VocabularyUtil.getAvailableCvLanguage(versions);
     this.languages = [];
 
     if (this.isNew) {
@@ -120,7 +119,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
   }
 
   private fillForm(): void {
-    this.selectedLanguage = this.selectLanguage(this.languages, this.vocabularyParam!.sourceLanguage!);
+    this.selectedLanguage = this.selectLanguage(this.languages, this.vocabularyParam.sourceLanguage);
     if (this.isSlForm) {
       this.cvAddEditForm.removeControl('translateAgency');
       this.cvAddEditForm.removeControl('translateAgencyLink');
@@ -132,28 +131,28 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
       this.cvAddEditForm.removeControl('changeType');
       this.cvAddEditForm.removeControl('changeDesc');
     } else {
-      this.vocabularyParam!.selectedLang = this.vocabularyParam!.sourceLanguage;
+      this.vocabularyParam.selectedLang = this.vocabularyParam.sourceLanguage;
       this.cvAddEditForm.removeControl('language');
       this.cvAddEditForm.removeControl('notation');
       this.cvAddEditForm.patchValue({
-        title: this.versionParam!.title,
-        definition: this.versionParam!.definition,
-        notes: this.versionParam!.notes,
+        title: this.versionParam.title,
+        definition: this.versionParam.definition,
+        notes: this.versionParam.notes,
       });
       if (!this.isSlForm) {
         this.cvAddEditForm.patchValue({
-          translateAgency: this.versionParam!.translateAgency,
-          translateAgencyLink: this.versionParam!.translateAgencyLink,
+          translateAgency: this.versionParam.translateAgency,
+          translateAgencyLink: this.versionParam.translateAgencyLink,
         });
       }
       if (
-        !this.versionParam!.initialVersion ||
-        (this.versionParam!.initialVersion && this.versionParam!.initialVersion === this.versionParam!.id)
+        !this.versionParam.initialVersion ||
+        (this.versionParam.initialVersion && this.versionParam.initialVersion === this.versionParam.id)
       ) {
         this.cvAddEditForm.removeControl('changeType');
         this.cvAddEditForm.removeControl('changeDesc');
       } else {
-        this.cvAddEditForm.patchValue({ changeDesc: this.versionParam!.notation });
+        this.cvAddEditForm.patchValue({ changeDesc: this.versionParam.notation });
       }
     }
   }
@@ -168,18 +167,17 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     this.accountService.identity().subscribe(account => {
       if (account) {
         this.account = account;
-        this.updateLanguageCheckbox(this.vocabularyParam!.agencyId!);
+        this.updateLanguageCheckbox(this.vocabularyParam.agencyId);
       }
     });
   }
 
-  private createFromForm(): IVocabularySnippet {
+  private createFromForm(): VocabularySnippet {
     if (this.isNew) {
       if (this.isSlForm) {
         return {
-          ...new VocabularySnippet(),
-          actionType: 'CREATE_CV',
-          agencyId: this.vocabularyParam!.agencyId,
+          actionType: ActionType.CREATE_CV,
+          agencyId: this.vocabularyParam.agencyId,
           language: this.cvAddEditForm.get(['language'])!.value,
           itemType: 'SL',
           notation: this.cvAddEditForm.get(['notation'])!.value,
@@ -191,16 +189,15 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
         };
       } else {
         return {
-          ...new VocabularySnippet(),
-          actionType: 'ADD_TL_CV',
-          agencyId: this.vocabularyParam!.agencyId,
+          actionType: ActionType.ADD_TL_CV,
+          agencyId: this.vocabularyParam.agencyId,
           language: this.cvAddEditForm.get(['language'])!.value,
           itemType: 'TL',
-          notation: this.vocabularyParam!.notation,
-          versionNumber: this.versionSlParam!.number!,
+          notation: this.vocabularyParam.notation,
+          versionNumber: this.versionSlParam.number,
           status: 'DRAFT',
-          vocabularyId: this.vocabularyParam!.id,
-          versionSlId: this.versionSlParam!.id,
+          vocabularyId: this.vocabularyParam.id,
+          versionSlId: this.versionSlParam.id,
           title: this.cvAddEditForm.get(['title'])!.value,
           definition: this.cvAddEditForm.get(['definition'])!.value,
           notes: this.cvAddEditForm.get(['notes'])!.value,
@@ -211,12 +208,12 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     } else {
       return {
         ...this.vocabularySnippet,
-        actionType: 'EDIT_CV',
-        vocabularyId: this.vocabularyParam!.id,
-        versionId: this.versionParam!.id,
-        language: this.versionParam!.language,
-        itemType: this.versionParam!.itemType,
-        notation: this.versionParam!.notation,
+        actionType: ActionType.EDIT_CV,
+        vocabularyId: this.vocabularyParam.id,
+        versionId: this.versionParam.id,
+        language: this.versionParam.language,
+        itemType: this.versionParam.itemType,
+        notation: this.versionParam.notation,
         notes: this.cvAddEditForm.get(['notes'])!.value,
         title: this.cvAddEditForm.get(['title'])!.value,
         definition: this.cvAddEditForm.get(['definition'])!.value,
@@ -243,7 +240,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     }
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Vocabulary>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
       response => this.processError(response),
@@ -258,7 +255,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
       // unable to complete refresh
       // this.router.navigate(['/editor/vocabulary/' + this.notation], { queryParams: { lang: this.vocabularySnippet!.language } });
       // changed to below, in order to complete refresh
-      window.location.href = '/editor/vocabulary/' + this.notation + '?lang=' + this.vocabularySnippet!.language;
+      window.location.href = '/editor/vocabulary/' + this.notation + '?lang=' + this.vocabularySnippet.language;
     }
     this.activeModal.dismiss(true);
     this.eventManager.broadcast('deselectConcept');
@@ -271,7 +268,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     }
   }
 
-  changeLanguage(event: Event) {
+  changeLanguage(event: Event): void {
     this.selectedLanguage = (event.target as HTMLSelectElement).value;
   }
 }

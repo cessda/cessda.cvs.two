@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'jhi-about',
-  template: '<jhi-custom-page [pageType]="\'about\'"></jhi-custom-page>'
+  template: '<jhi-custom-page [pageType]="\'about\'"></jhi-custom-page>',
 })
 export class AboutComponent {
   constructor() {}
