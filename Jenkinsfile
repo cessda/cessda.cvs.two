@@ -23,7 +23,7 @@ pipeline {
         stage('Node.JS') {
             agent {
                 docker {
-                    image 'node:14'
+                    image 'node:16'
                     reuseNode true
                 }
             }
