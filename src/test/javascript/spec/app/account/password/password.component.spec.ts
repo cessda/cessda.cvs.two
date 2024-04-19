@@ -15,7 +15,7 @@
  */
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
@@ -32,7 +32,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [PasswordComponent],
-        providers: [FormBuilder]
+        providers: [UntypedFormBuilder],
       })
         .overrideTemplate(PasswordComponent, '')
         .compileComponents();
@@ -48,7 +48,7 @@ describe('Component Tests', () => {
       // GIVEN
       comp.passwordForm.patchValue({
         newPassword: 'password1',
-        confirmPassword: 'password2'
+        confirmPassword: 'password2',
       });
       // WHEN
       comp.changePassword();
@@ -62,7 +62,7 @@ describe('Component Tests', () => {
       // GIVEN
       const passwordValues = {
         currentPassword: 'oldPassword',
-        newPassword: 'myPassword'
+        newPassword: 'myPassword',
       };
 
       spyOn(service, 'save').and.returnValue(of(new HttpResponse({ body: true })));
@@ -70,7 +70,7 @@ describe('Component Tests', () => {
       comp.passwordForm.patchValue({
         currentPassword: passwordValues.currentPassword,
         newPassword: passwordValues.newPassword,
-        confirmPassword: passwordValues.newPassword
+        confirmPassword: passwordValues.newPassword,
       });
 
       // WHEN
@@ -85,7 +85,7 @@ describe('Component Tests', () => {
       spyOn(service, 'save').and.returnValue(of(new HttpResponse({ body: true })));
       comp.passwordForm.patchValue({
         newPassword: 'myPassword',
-        confirmPassword: 'myPassword'
+        confirmPassword: 'myPassword',
       });
 
       // WHEN
@@ -102,7 +102,7 @@ describe('Component Tests', () => {
       spyOn(service, 'save').and.returnValue(throwError('ERROR'));
       comp.passwordForm.patchValue({
         newPassword: 'myPassword',
-        confirmPassword: 'myPassword'
+        confirmPassword: 'myPassword',
       });
 
       // WHEN

@@ -23,12 +23,6 @@ module.exports = {
     cacheDirectory: '<rootDir>/target/jest-cache',
     coverageDirectory: '<rootDir>/target/test-results/',
     coverageProvider: 'v8',
-    globals: {
-        'ts-jest': {
-            stringifyContentPathRegex: '\\.html$',
-            tsconfig: '<rootDir>/tsconfig.json'
-        }
-    },
     coveragePathIgnorePatterns: [
         '/node_modules/',
         '<rootDir>/src/test/javascript'
@@ -42,7 +36,9 @@ module.exports = {
     testMatch: ['<rootDir>/src/test/javascript/spec/**/@(*.)@(spec.ts)'],
     testRunner: 'jasmine2',
     rootDir: '../../../',
-    testURL: 'http://localhost/'
+    testEnvironmentOptions: {
+      url: 'http://localhost/'
+    }
 };
 
 function mapTypescriptAliasToJestAlias(alias = {}) {
