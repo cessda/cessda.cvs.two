@@ -30,7 +30,7 @@
     "ng-jhipster": "file:vendor/ng-jhipster-0.16.0.tgz",
     "ngx-chips": "2.2.2",
     "ngx-cookie-service": "^13.0.0",
-    "ngx-infinite-scroll": "10.0.1",
+    "ngx-infinite-scroll": "13.0.2",
     "ngx-quill": "15.0.0",
     "ngx-text-diff": "file:vendor/ngx-text-diff-0.6.0.tgz",
     "ngx-webstorage": "^9.0.0",
