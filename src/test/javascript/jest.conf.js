@@ -42,7 +42,7 @@ module.exports = {
     testMatch: ['<rootDir>/src/test/javascript/spec/**/@(*.)@(spec.ts)'],
     testRunner: 'jasmine2',
     rootDir: '../../../',
-    testURL: 'http://localhost/'
+    testEnvironmentOptions: { url: 'http://localhost/' }
 };
 
 function mapTypescriptAliasToJestAlias(alias = {}) {
