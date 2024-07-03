@@ -25,6 +25,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -44,16 +45,21 @@ public final class SecurityUtils {
      */
     public static Optional<String> getCurrentUserLogin() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        return Optional.ofNullable(securityContext.getAuthentication())
-            .map(authentication -> {
-                if (authentication.getPrincipal() instanceof UserDetails) {
-                    UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
+        return Optional.ofNullable( securityContext.getAuthentication() )
+            .map( Authentication::getPrincipal )
+            .map( principal ->
+            {
+                if ( principal instanceof UserDetails )
+                {
+                    UserDetails springSecurityUser = (UserDetails) principal;
                     return springSecurityUser.getUsername();
-                } else if (authentication.getPrincipal() instanceof String) {
-                    return (String) authentication.getPrincipal();
+                }
+                else if ( principal instanceof String )
+                {
+                    return (String) principal;
                 }
                 return null;
-            });
+            } );
     }
 
     /**
@@ -64,8 +70,9 @@ public final class SecurityUtils {
     public static Optional<String> getCurrentUserJWT() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         return Optional.ofNullable(securityContext.getAuthentication())
-            .filter(authentication -> authentication.getCredentials() instanceof String)
-            .map(authentication -> (String) authentication.getCredentials());
+            .map( Authentication::getCredentials )
+            .filter( String.class::isInstance )
+            .map( String.class::cast );
     }
 
     /**
@@ -98,19 +105,16 @@ public final class SecurityUtils {
             .map(GrantedAuthority::getAuthority);
     }
 
-    public static Optional<eu.cessda.cvs.security.UserDetails> getCurrectUserDetails(){
-        return Optional.ofNullable( SecurityContextHolder.getContext().getAuthentication())
-            .map(authentication -> {
-                if (authentication.getPrincipal() instanceof eu.cessda.cvs.security.UserDetails) {
-                    return (eu.cessda.cvs.security.UserDetails) authentication.getPrincipal();
-                }
-                return null;
-            });
+    public static Optional<eu.cessda.cvs.security.UserDetails> getCurrentUserDetails(){
+        return Optional.ofNullable( SecurityContextHolder.getContext().getAuthentication() )
+            .map( Authentication::getPrincipal )
+            .filter( eu.cessda.cvs.security.UserDetails.class::isInstance )
+            .map( eu.cessda.cvs.security.UserDetails.class::cast );
     }
 
     public static UserDTO getCurrentUser(){
-        Optional<eu.cessda.cvs.security.UserDetails> currectUserDetailsOpt = getCurrectUserDetails();
-        return currectUserDetailsOpt.map(eu.cessda.cvs.security.UserDetails::getUser).orElse(null);
+        Optional<eu.cessda.cvs.security.UserDetails> currentUserDetailsOpt = getCurrentUserDetails();
+        return currentUserDetailsOpt.map(eu.cessda.cvs.security.UserDetails::getUser).orElse(null);
     }
 
     public static Long getCurrentUserId(){
@@ -124,16 +128,19 @@ public final class SecurityUtils {
     }
 
     public static boolean hasAnyAgencyAuthority(ActionType actionType, Long agencyId, String language) {
-        UserDTO currentUser = getCurrentUser();
-        if (currentUser == null)
-            return false;
+        Objects.requireNonNull(actionType, "actionType is null");
 
-        if (actionType == null) {
-            throw new IllegalArgumentException("");
+        UserDTO currentUser = getCurrentUser();
+
+        if (currentUser == null)
+        {
+            return false;
         }
 
         if (isAdminContent())
+        {
             return true;
+        }
 
         // check based on UserAgencyRole
         return hasAgencyRole(currentUser.getUserAgencies(), agencyId, actionType.getAgencyRoles(), language);
@@ -145,27 +152,29 @@ public final class SecurityUtils {
         }
     }
 
-    public static boolean hasAgencyRole(Long agencyId, Set<AgencyRole> agencyRoles, String language) {
-        getCurrectUserDetails().ifPresent(
-            userDetails -> hasAgencyRole(userDetails.getUser().getUserAgencies(), agencyId, agencyRoles, language)
-        );
-        return false;
-    }
-
-    public static boolean hasAgencyRole(Set<UserAgencyDTO> userAgencies, Long agencyId, Set<AgencyRole> agencyRoles, String language){
-        if ( agencyId == null ) { // only check for agencyRoles
-            for (AgencyRole agencyRole : agencyRoles) {
-                if( userAgencies.stream().anyMatch(ua -> ua.getAgencyRole().equals(agencyRole))){
+    public static boolean hasAgencyRole( Set<UserAgencyDTO> userAgencies, Long agencyId, Set<AgencyRole> agencyRoles, String language )
+    {
+        for ( UserAgencyDTO userAgency : userAgencies )
+        {
+            if ( agencyId == null )
+            {
+                // only check for agencyRoles
+                if ( agencyRoles.contains( userAgency.getAgencyRole() ) )
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if ( agencyId.equals( userAgency.getAgencyId() )
+                    && language.equals( userAgency.getLanguage() )
+                    && agencyRoles.contains( userAgency.getAgencyRole() ) )
+                {
                     return true;
                 }
             }
         }
-        for (UserAgencyDTO userAgency : userAgencies) {
-            if (userAgency.getAgencyId().equals(agencyId) && agencyRoles.contains(userAgency.getAgencyRole()) &&
-                (userAgency.getLanguage().equals(language))) {
-                return true;
-            }
-        }
+
         return false;
     }
 }
