@@ -20,6 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import eu.cessda.cvs.utils.VersionNumber;
 import org.hibernate.annotations.Type;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
@@ -42,10 +43,10 @@ public class VersionStatusStat implements Serializable {
     @Field( type = FieldType.Keyword, store = true  )
     private String status;
 
-    @Field( type = FieldType.Date, store = true  )
+    @Field( type = FieldType.Date, format = DateFormat.date, store = true  )
     private LocalDate creationDate;
 
-    @Field( type = FieldType.Date, store = true  )
+    @Field( type = FieldType.Date, format = DateFormat.date, store = true  )
     private LocalDate date;
 
     public VersionStatusStat(){}

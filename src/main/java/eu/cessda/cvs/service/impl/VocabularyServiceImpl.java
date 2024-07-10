@@ -48,25 +48,23 @@ import org.apache.commons.io.file.PathUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.*;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.filter.Filters;
 import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
-import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHitSupport;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
-import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -135,7 +133,7 @@ public class VocabularyServiceImpl implements VocabularyService
 
     private final VocabularyPublishSearchRepository vocabularyPublishSearchRepository;
 
-    private final ElasticsearchTemplate elasticsearchTemplate;
+    private final ElasticsearchOperations elasticsearchOperations;
 
     private final ApplicationProperties applicationProperties;
 
@@ -148,7 +146,7 @@ public class VocabularyServiceImpl implements VocabularyService
                                   VocabularyMapper vocabularyMapper, VocabularyEditorMapper vocabularyEditorMapper,
                                   VocabularyPublishMapper vocabularyPublishMapper, VocabularyEditorSearchRepository vocabularyEditorSearchRepository,
                                   VocabularyPublishSearchRepository vocabularyPublishSearchRepository,
-                                  ElasticsearchTemplate elasticsearchTemplate, ApplicationProperties applicationProperties,
+                                  ElasticsearchOperations elasticsearchOperations, ApplicationProperties applicationProperties,
                                   AgencyStatSearchRepository agencyStatSearchRepository ) {
         this.agencyRepository = agencyRepository;
         this.conceptService = conceptService;
@@ -162,7 +160,7 @@ public class VocabularyServiceImpl implements VocabularyService
         this.vocabularyPublishMapper = vocabularyPublishMapper;
         this.vocabularyEditorSearchRepository = vocabularyEditorSearchRepository;
         this.vocabularyPublishSearchRepository = vocabularyPublishSearchRepository;
-        this.elasticsearchTemplate = elasticsearchTemplate;
+        this.elasticsearchOperations = elasticsearchOperations;
         this.applicationProperties = applicationProperties;
         this.agencyStatSearchRepository = agencyStatSearchRepository;
     }
@@ -719,7 +717,7 @@ public class VocabularyServiceImpl implements VocabularyService
         log.debug( "Request to get all Vocabularies" );
         List<VocabularyDTO> vocabulariesDTO = vocabularyRepository.findAll().stream()
             .map( vocabularyMapper::toDto )
-            .collect( Collectors.toCollection( LinkedList::new ) );
+            .collect( Collectors.toList() );
 
         sortVocabularyVersions( vocabulariesDTO );
         return vocabulariesDTO;
@@ -727,7 +725,8 @@ public class VocabularyServiceImpl implements VocabularyService
 
     private void sortVocabularyVersions( List<VocabularyDTO> vocabulariesDTO ) {
         for ( VocabularyDTO vocabularyDTO : vocabulariesDTO ) {
-            LinkedHashSet<VersionDTO> sortedVersion = vocabularyDTO.getVersions().stream().sorted( VocabularyUtils.VERSION_DTO_COMPARATOR )
+            LinkedHashSet<VersionDTO> sortedVersion = vocabularyDTO.getVersions().stream()
+                .sorted( VocabularyUtils.VERSION_DTO_COMPARATOR )
                 .collect( Collectors.toCollection( LinkedHashSet::new ) );
             vocabularyDTO.setVersions( sortedVersion );
         }
@@ -1167,23 +1166,18 @@ public class VocabularyServiceImpl implements VocabularyService
     public EsQueryResultDetail search( EsQueryResultDetail esQueryResultDetail ) {
         // get user keyword
         String searchTerm = esQueryResultDetail.getSearchTerm();
-        String indiceType = VOCABULARYPUBLISH;
 
         // determine which language fields include into query
-        if ( esQueryResultDetail.getSearchScope().equals( SearchScope.EDITORSEARCH ) ) {
-            indiceType = "vocabularyeditor";
-        }
-        // search on all fields
         List<String> languageFields = new ArrayList<>();
         if ( !esQueryResultDetail.isSearchAllLanguages() ) {
             languageFields.add( StringUtils.capitalize( esQueryResultDetail.getSortLanguage() ) );
         } else {
+            // search on all fields
             languageFields.addAll( Language.getCapitalizedIsos() );
         }
 
         // build query builder
         NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
-            .withIndices( indiceType ).withTypes( indiceType )
             .withSearchType( SearchType.DEFAULT )
             .withQuery( generateMainAndNestedQuery( searchTerm, languageFields, esQueryResultDetail.getCodeSize() ) )
             .withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters() ) )
@@ -1195,24 +1189,38 @@ public class VocabularyServiceImpl implements VocabularyService
             searchQueryBuilder.withHighlightFields( generateHighlightBuilderMain( languageFields ) );
 
         // add aggregation
-        setUpAggregrations( searchQueryBuilder, esQueryResultDetail );
+        setUpAggregations( searchQueryBuilder, esQueryResultDetail );
 
         // at the end build search query
-        SearchQuery searchQuery = searchQueryBuilder.build();
+        NativeSearchQuery searchQuery = searchQueryBuilder.build();
 
         // put the vocabulary results
-        Page<VocabularyDTO> vocabularyPage;
         if ( esQueryResultDetail.getSearchScope().equals( SearchScope.EDITORSEARCH ) )
-            vocabularyPage = elasticsearchTemplate.queryForPage( searchQuery, VocabularyEditor.class ).map( vocabularyEditorMapper::toDto );
+        {
+            var indexCoordinates = IndexCoordinates.of( "vocabularyeditor" );
+            var searchResponse = elasticsearchOperations.search( searchQuery, VocabularyEditor.class, indexCoordinates );
+            extracted( esQueryResultDetail, searchResponse, vocabularyEditorMapper::toDto, isSearchWithKeyword );
+        }
         else
-            vocabularyPage = elasticsearchTemplate.queryForPage( searchQuery, VocabularyPublish.class )
-                .map( vocabularyPublishMapper::toDto );
+        {
+            var indexCoordinates = IndexCoordinates.of( VOCABULARYPUBLISH );
+            var searchResponse = elasticsearchOperations.search( searchQuery, VocabularyPublish.class, indexCoordinates );
+            extracted( esQueryResultDetail, searchResponse, vocabularyPublishMapper::toDto , isSearchWithKeyword );
+        }
 
+        return esQueryResultDetail;
+    }
+
+    private <T> void extracted( EsQueryResultDetail esQueryResultDetail, org.springframework.data.elasticsearch.core.SearchHits<T> searchResponse, Function<T, VocabularyDTO> vocabularyDTOMapper, boolean isSearchWithKeyword )
+    {
         // get search response for aggregation, hits, inner hits and highlighter
-        SearchResponse searchResponse = elasticsearchTemplate.query( searchQuery, response -> response );
 
         // assign aggregation to esQueryResultDetail
         generateAggregationFilter( esQueryResultDetail, searchResponse );
+
+        Page<VocabularyDTO> vocabularyPage = SearchHitSupport.searchPageFor( searchResponse, null )
+            .map( org.springframework.data.elasticsearch.core.SearchHit::getContent )
+            .map( vocabularyDTOMapper );
 
         // update vocabulary based on highlight and inner hit
         if ( isSearchWithKeyword )
@@ -1226,16 +1234,14 @@ public class VocabularyServiceImpl implements VocabularyService
 
         // set selected language in case language filter is selected with specific language
         String fieldType;
-        if (esQueryResultDetail.getSearchScope().equals(SearchScope.EDITORSEARCH)) {
+        if ( esQueryResultDetail.getSearchScope().equals(SearchScope.EDITORSEARCH)) {
             fieldType = EsFilter.LANGS_AGG;
         } else {
             fieldType = EsFilter.LANGS_PUB_AGG;
         }
-        setVocabularySelectedLanguage(esQueryResultDetail, vocabularyPage.getContent(), fieldType);
+        setVocabularySelectedLanguage( esQueryResultDetail, vocabularyPage.getContent(), fieldType);
 
         esQueryResultDetail.setVocabularies( vocabularyPage );
-
-        return esQueryResultDetail;
     }
 
     @Override
@@ -1262,55 +1268,51 @@ public class VocabularyServiceImpl implements VocabularyService
 
         // build query builder
         NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
-            .withIndices( VOCABULARYPUBLISH ).withTypes( VOCABULARYPUBLISH )
             .withSearchType( SearchType.DEFAULT )
             .withQuery( nestedQueryBuilder )
             .withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters() ) )
             .withPageable( esQueryResultDetail.getPage() );
 
         // add aggregations
-        setUpAggregrations( searchQueryBuilder, esQueryResultDetail );
+        setUpAggregations( searchQueryBuilder, esQueryResultDetail );
 
         // at the end build search query
-        SearchQuery searchQuery = searchQueryBuilder.build();
+        NativeSearchQuery searchQuery = searchQueryBuilder.build();
 
-        Page<VocabularyDTO> vocabularyPage = elasticsearchTemplate.queryForPage( searchQuery, VocabularyPublish.class )
+        IndexCoordinates indexCoordinates = IndexCoordinates.of( VOCABULARYPUBLISH );
+        org.springframework.data.elasticsearch.core.SearchHits<VocabularyPublish> searchHits = elasticsearchOperations.search( searchQuery, VocabularyPublish.class, indexCoordinates );
+        Page<VocabularyDTO> vocabularyPage = SearchHitSupport.searchPageFor( searchHits, null )
+            .map( org.springframework.data.elasticsearch.core.SearchHit::getContent )
             .map( vocabularyPublishMapper::toDto );
-        SearchResponse searchResponse = elasticsearchTemplate.query( searchQuery, response -> response );
 
-        for ( SearchHit hit : searchResponse.getHits() ) {
-            Optional<VocabularyDTO> vocabOpt = VocabularyDTO.findByIdFromList( vocabularyPage.getContent(), hit.getId() );
-            if ( vocabOpt.isPresent() ) {
-                VocabularyDTO cvHit = vocabOpt.get();
-
-                if ( hit.getInnerHits() == null )
-                    continue;
-
-                applyCodeHighlighter( hit, cvHit, esQueryResultDetail.isWithHighlight() );
-            }
-        }
-
-        generateAggregationFilter( esQueryResultDetail, searchResponse );
+        generateAggregationFilter( esQueryResultDetail, searchHits );
         esQueryResultDetail.setVocabularies( vocabularyPage );
         return esQueryResultDetail;
     }
 
-    private void generateAggregationFilter( EsQueryResultDetail esQueryResultDetail, SearchResponse searchResponse ) {
+    private void generateAggregationFilter( EsQueryResultDetail esQueryResultDetail, org.springframework.data.elasticsearch.core.SearchHits<?> searchResponse ) {
         // generate aggregation filter
         for ( String field : esQueryResultDetail.getAggFields() ) {
             if ( !esQueryResultDetail.isAnyFilterActive() ) {
-                buildNonFilteredAggregration( esQueryResultDetail, searchResponse, field );
+                buildNonFilteredAggregation( esQueryResultDetail, searchResponse, field );
             } else {
                 buildFilteredAggregation( esQueryResultDetail, searchResponse, field );
             }
         }
     }
 
-    private void buildNonFilteredAggregration( EsQueryResultDetail esQueryResultDetail, SearchResponse searchResponse, String field ) {
-        Terms aggregation = searchResponse.getAggregations().get( field + COUNT );
-
-        if ( aggregation == null )
+    private void buildNonFilteredAggregation( EsQueryResultDetail esQueryResultDetail, org.springframework.data.elasticsearch.core.SearchHits<?> searchResponse, String field ) {
+        Aggregations aggregations = searchResponse.getAggregations();
+        if ( aggregations == null )
+        {
             return;
+        }
+
+        Terms aggregation = aggregations.get( field + COUNT );
+        if ( aggregation == null)
+        {
+            return;
+        }
 
         esQueryResultDetail.getEsFilterByField( field ).ifPresent( esFilter ->
         {
@@ -1320,10 +1322,18 @@ public class VocabularyServiceImpl implements VocabularyService
         } );
     }
 
-    private void buildFilteredAggregation( EsQueryResultDetail esQueryResultDetail, SearchResponse searchResponse, String field ) {
-        Filters aggFilters = searchResponse.getAggregations().get( "aggregration_filter" );
-        if ( aggFilters == null )
+    private void buildFilteredAggregation( EsQueryResultDetail esQueryResultDetail, org.springframework.data.elasticsearch.core.SearchHits<?> searchResponse, String field ) {
+        Aggregations aggregations = searchResponse.getAggregations();
+        if (aggregations == null)
+        {
             return;
+        }
+
+        Filters aggFilters = aggregations.get( "aggregration_filter" );
+        if ( aggFilters == null )
+        {
+            return;
+        }
 
         esQueryResultDetail.getEsFilterByField( field ).ifPresent( esFilter ->
         {
@@ -1358,30 +1368,21 @@ public class VocabularyServiceImpl implements VocabularyService
         }
     }
 
-    private void applySearchHitAndHighlight( Page<VocabularyDTO> vocabularyPage, SearchResponse searchResponse ) {
-        for ( SearchHit hit : searchResponse.getHits() ) {
-            VocabularyDTO.findByIdFromList( vocabularyPage.getContent(), hit.getId() ).ifPresent( cvHit -> {
-
-                if ( hit.getHighlightFields() != null )
-                {
-                    applyVocabularyHighlighter( hit, cvHit );
-                }
-
-                if ( hit.getInnerHits() != null )
-                {
-                    applyCodeHighlighter( hit, cvHit, true );
-                }
-            });
+    private void applySearchHitAndHighlight( Page<VocabularyDTO> vocabularyPage, org.springframework.data.elasticsearch.core.SearchHits<?> searchResponse ) {
+        for ( org.springframework.data.elasticsearch.core.SearchHit<?> hit : searchResponse.getSearchHits()) {
+            VocabularyDTO.findByIdFromList( vocabularyPage.getContent(), hit.getId() ).ifPresent( cvHit ->
+                applyVocabularyHighlighter( hit, cvHit )
+            );
         }
     }
 
-    private void applyVocabularyHighlighter( SearchHit hit, VocabularyDTO cvHit ) {
-        for ( Map.Entry<String, HighlightField> entry : hit.getHighlightFields().entrySet() ) {
+    private void applyVocabularyHighlighter( org.springframework.data.elasticsearch.core.SearchHit<?> hit, VocabularyDTO cvHit ) {
+        for ( Map.Entry<String, List<String>> entry : hit.getHighlightFields().entrySet() ) {
             String fieldName = entry.getKey();
-            HighlightField highlighField = entry.getValue();
+            List<String> highlightField = entry.getValue();
             StringBuilder highLightText = new StringBuilder();
-            for ( Text text : highlighField.getFragments() ) {
-                highLightText.append( text.string() ).append( " " );
+            for ( String text : highlightField ) {
+                highLightText.append( text ).append( " " );
             }
 
             if ( fieldName.contains( TITLE ) )
@@ -1391,60 +1392,7 @@ public class VocabularyServiceImpl implements VocabularyService
         }
     }
 
-    private void applyCodeHighlighter( SearchHit hit, VocabularyDTO cvHit, boolean withHighlight ) {
-        Set<CodeDTO> newCodes = new LinkedHashSet<>();
-
-        for ( Map.Entry<String, SearchHits> innerHitEntry : hit.getInnerHits().entrySet() ) {
-            for ( SearchHit innerHit : innerHitEntry.getValue() ) {
-                highlightEachCode( cvHit, newCodes, innerHit, withHighlight );
-            }
-        }
-
-        cvHit.setCodes( newCodes );
-    }
-
-    private void highlightEachCode( VocabularyDTO cvHit, Set<CodeDTO> newCodes, SearchHit innerHit, boolean withHighlight ) {
-        Optional<CodeDTO> codeOpt = CodeDTO.findByIdFromList( cvHit.getCodes(), (int) innerHit.getSourceAsMap().get( "id" ) );
-        if ( codeOpt.isPresent() ) {
-            CodeDTO codeHit = codeOpt.get();
-            if ( withHighlight )
-                applyHighlightCode( cvHit, innerHit, codeHit );
-            newCodes.add( codeHit );
-        }
-    }
-
-    private void applyHighlightCode( VocabularyDTO cvHit, SearchHit innerHit, CodeDTO codeHit ) {
-        for ( Map.Entry<String, HighlightField> entry : innerHit.getHighlightFields().entrySet() ) {
-            String fieldName = entry.getKey();
-            HighlightField highlighField = entry.getValue();
-            StringBuilder highLightText = new StringBuilder();
-            for ( Text text : highlighField.getFragments() ) {
-                if ( !fieldName.contains( TITLE ) && !text.string().endsWith( "." ) ) {
-                    highLightText.append( text.string() ).append( " ... " );
-                } else
-                    highLightText.append( text.string() );
-            }
-            if ( fieldName.contains( TITLE ) )
-                codeHit.setTitleDefinition( highLightText.toString(), null, fieldName.substring( (CODE_PATH + "." + TITLE).length() ),
-                    true );
-            if ( fieldName.contains( DEFINITION ) )
-                codeHit.setTitleDefinition( null, highLightText.toString(), fieldName.substring( (CODE_PATH + "." + DEFINITION).length() ),
-                    true );
-            setSelectedLanguageByHighlight( cvHit, fieldName );
-        }
-    }
-
-    // set selected language based on highlight
-    private void setSelectedLanguageByHighlight( VocabularyDTO cvHit, String highlightField ) {
-        // only set selected language once
-        if ( cvHit.getSelectedLang() == null ) {
-            // get last language information from the field and get the Language enum
-            String langIso = highlightField.substring( highlightField.length() - 2 );
-            cvHit.setSelectedLang( langIso.toLowerCase() );
-        }
-    }
-
-    private void setUpAggregrations( NativeSearchQueryBuilder searchQueryBuilder, EsQueryResultDetail esQueryResultDetail ) {
+    private void setUpAggregations( NativeSearchQueryBuilder searchQueryBuilder, EsQueryResultDetail esQueryResultDetail ) {
         if ( !esQueryResultDetail.isAnyFilterActive() ) {
             for ( String aggField : esQueryResultDetail.getAggFields() )
                 searchQueryBuilder.addAggregation(
