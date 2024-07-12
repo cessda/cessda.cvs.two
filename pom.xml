@@ -720,7 +720,8 @@
                 <configuration>
                     <!-- THE ELASTICSEARCH VERSION; REPLACE WITH THE VERSION YOU NEED -->
                     <version>7.6.2</version>
-                    <clusterName>docker-cluster</clusterName>
+                    <httpPort>9225</httpPort>
+                    <transportPort>9350</transportPort>
                     <autoCreateIndex>false</autoCreateIndex>
                     <keepExistingData>false</keepExistingData>
                     <plugins>
