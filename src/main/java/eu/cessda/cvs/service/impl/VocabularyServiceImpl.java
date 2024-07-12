@@ -838,56 +838,53 @@ public class VocabularyServiceImpl implements VocabularyService
         }
         newTlVersion = versionService.save( newTlVersion );
 
-        VersionDTO finalNewTlVersion = newTlVersion;
         for ( ConceptDTO conceptSlDTO : currentVersionSl.getConcepts() ) {
-            ConceptDTO newConceptTl = new ConceptDTO( conceptSlDTO );
-            newConceptTl.setVersionId( finalNewTlVersion.getId() );
-
-            if ( conceptSlDTO.getPreviousConcept() != null ) {
-                // try to find concept title, definition from previous concept
-                // first, try to find the previous concept. in this case the TL prev concept will be found
-                // if there is no change in the notation between prev and current SL concept
-                ConceptDTO prevConceptTl = null;
-                for ( ConceptDTO conceptDTO : prevVersionTl.getConcepts() ) {
-                    if ( conceptDTO.getNotation().equals( conceptSlDTO.getNotation() ) ) {
-                        prevConceptTl = conceptDTO;
-                        break;
-                    }
-                }
-
-                // if not found, try to find old notation from the previous SL concept
-                if ( prevConceptTl == null ) {
-                    prevConceptTl = getPrevTlConceptByPrevSlNotation( prevVersionSl, prevVersionTl, conceptSlDTO );
-                }
-
-                // assign title and definition if previous TL concept found
-                if ( prevConceptTl != null ) {
-                    newConceptTl.setTitle( prevConceptTl.getTitle() );
-                    newConceptTl.setDefinition( prevConceptTl.getDefinition() );
-                    newConceptTl.setPreviousConcept( prevConceptTl.getId() );
-
-                    // if previous TL version is not published yet, assign concept as initial concept
-                    if ( !prevVersionTl.getStatus().equals( Status.PUBLISHED.toString() ) ) {
-                        newConceptTl.setPreviousConcept( null );
-                    } else {
-                        newConceptTl.setPreviousConcept( prevConceptTl.getId() );
-                    }
-                }
-            }
-
-            finalNewTlVersion.addConcept( newConceptTl );
+            var newConceptTl = cloneTLConcept( prevVersionSl, prevVersionTl, conceptSlDTO, newTlVersion.getId() );
+            newTlVersion.addConcept( newConceptTl );
         }
 
         // #423 -->
         List<VocabularyChangeDTO> currentChangeLog = vocabularyChangeService.findByVersionId(currentVersionSl.getId());
-        currentChangeLog.forEach(change -> {
-            change.setVersionId(finalNewTlVersion.getId());
-            vocabularyChangeService.save(change);
-        });
-        finalNewTlVersion.setVersionChanges(currentVersionSl.getVersionChanges());
+        for ( VocabularyChangeDTO change : currentChangeLog )
+        {
+            change.setVersionId( newTlVersion.getId() );
+            vocabularyChangeService.save( change );
+        }
+        newTlVersion.setVersionChanges(currentVersionSl.getVersionChanges());
         // <-- #423
 
         return newTlVersion;
+    }
+
+    private ConceptDTO cloneTLConcept( VersionDTO prevVersionSl, VersionDTO prevVersionTl, ConceptDTO conceptSlDTO, Long versionID )
+    {
+        ConceptDTO newConceptTl = new ConceptDTO( conceptSlDTO );
+        newConceptTl.setVersionId( versionID );
+
+        if ( conceptSlDTO.getPreviousConcept() != null ) {
+            // try to find concept title, definition from previous concept
+            // first, try to find the previous concept. in this case the TL prev concept will be found
+            // if there is no change in the notation between prev and current SL concept
+            ConceptDTO prevConceptTl = prevVersionTl.getConcepts().stream()
+                .filter( conceptDTO -> conceptDTO.getNotation().equals( conceptSlDTO.getNotation() ) ).findFirst()
+                // if not found, try to find old notation from the previous SL concept
+                .orElseGet( () -> getPrevTlConceptByPrevSlNotation( prevVersionSl, prevVersionTl, conceptSlDTO ) );
+
+            // assign title and definition if previous TL concept found
+            if ( prevConceptTl != null ) {
+                newConceptTl.setTitle( prevConceptTl.getTitle() );
+                newConceptTl.setDefinition( prevConceptTl.getDefinition() );
+                newConceptTl.setPreviousConcept( prevConceptTl.getId() );
+
+                // if previous TL version is not published yet, assign concept as initial concept
+                if ( !prevVersionTl.getStatus().equals( Status.PUBLISHED.toString() ) ) {
+                    newConceptTl.setPreviousConcept( null );
+                } else {
+                    newConceptTl.setPreviousConcept( prevConceptTl.getId() );
+                }
+            }
+        }
+        return newConceptTl;
     }
 
     private ConceptDTO getPrevTlConceptByPrevSlNotation( VersionDTO prevVersionSl, VersionDTO prevVersionTl, ConceptDTO conceptSlDTO )
@@ -1199,19 +1196,19 @@ public class VocabularyServiceImpl implements VocabularyService
         {
             var indexCoordinates = IndexCoordinates.of( "vocabularyeditor" );
             var searchResponse = elasticsearchOperations.search( searchQuery, VocabularyEditor.class, indexCoordinates );
-            extracted( esQueryResultDetail, searchResponse, vocabularyEditorMapper::toDto, isSearchWithKeyword );
+            processSearchResults( esQueryResultDetail, searchResponse, vocabularyEditorMapper::toDto, isSearchWithKeyword );
         }
         else
         {
             var indexCoordinates = IndexCoordinates.of( VOCABULARYPUBLISH );
             var searchResponse = elasticsearchOperations.search( searchQuery, VocabularyPublish.class, indexCoordinates );
-            extracted( esQueryResultDetail, searchResponse, vocabularyPublishMapper::toDto , isSearchWithKeyword );
+            processSearchResults( esQueryResultDetail, searchResponse, vocabularyPublishMapper::toDto , isSearchWithKeyword );
         }
 
         return esQueryResultDetail;
     }
 
-    private <T> void extracted( EsQueryResultDetail esQueryResultDetail, org.springframework.data.elasticsearch.core.SearchHits<T> searchResponse, Function<T, VocabularyDTO> vocabularyDTOMapper, boolean isSearchWithKeyword )
+    private <T> void processSearchResults( EsQueryResultDetail esQueryResultDetail, org.springframework.data.elasticsearch.core.SearchHits<T> searchResponse, Function<T, VocabularyDTO> vocabularyDTOMapper, boolean isSearchWithKeyword )
     {
         // get search response for aggregation, hits, inner hits and highlighter
 
