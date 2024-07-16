@@ -61,7 +61,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHitSupport;
+import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -168,77 +170,81 @@ public class VocabularyServiceImpl implements VocabularyService
     public static QueryBuilder generateMainAndNestedQuery( String term, List<String> languageFields, int innerHitSize ) {
         if (term != null && term.length() > 1) {
             return QueryBuilders.boolQuery().should( generateMainQuery( term, languageFields ) )
+                // Append nested query
                 .should( generateNestedQuery( term, languageFields, innerHitSize ) );
         } else
             return QueryBuilders.matchAllQuery();
     }
 
     public static QueryBuilder generateMainQuery( String term, List<String> languageFields ) {
-        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-        if ( languageFields.size() == 1 ) {
-            boolQuery
+        QueryBuilder query;
+        if ( languageFields.size() == 1 )
+        {
+            query = QueryBuilders.boolQuery()
                 .should( QueryBuilders.matchQuery( TITLE + languageFields.get( 0 ), term ).fuzziness( 0.7 ).boost( 10.0f ) )
                 .should( QueryBuilders.matchQuery( DEFINITION + languageFields.get( 0 ), term ).fuzziness( 0.7 ).boost( 4.0f ) )
                 .should( QueryBuilders.wildcardQuery( NOTATION, term.toLowerCase().replace( " ", "" ) + "*" ).boost( 2.0f ) );
-        } else {
-            List<String> fields = new ArrayList<>();
+        }
+        else
+        {
+            List<String> fields = new ArrayList<>( ( languageFields.size() * 2 ) + 1 );
             fields.add( NOTATION );
             for ( String langIso : languageFields ) {
                 fields.add( TITLE + langIso );
                 fields.add( DEFINITION + langIso );
             }
-            boolQuery.should( QueryBuilders.multiMatchQuery( term, fields.toArray( new String[0] ) ) );
+           query = QueryBuilders.multiMatchQuery( term, fields.toArray( String[]::new ) );
         }
-        return boolQuery;
+        return query;
     }
 
-    public static QueryBuilder generateNestedQuery( String term, List<String> languageFields, int innerHitSize ) {
+    public static NestedQueryBuilder generateNestedQuery( String term, List<String> languageFields, int innerHitSize ) {
         // query for all languages
-        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+        QueryBuilder query;
 
-        if ( languageFields.size() == 1 ) {
-            boolQuery
+        if ( languageFields.size() == 1 )
+        {
+            query = QueryBuilders.boolQuery()
                 .should( QueryBuilders.matchQuery( CODE_PATH + "." + TITLE + languageFields.get( 0 ), term ).fuzziness( 0.7 )
                     .boost( 3.0f ) )
                 .should( QueryBuilders.matchQuery( CODE_PATH + "." + DEFINITION + languageFields.get( 0 ), term ).fuzziness( 0.7 )
                     .boost( 2.0f ) )
                 .should( QueryBuilders.wildcardQuery( CODE_PATH + "." + NOTATION, term.toLowerCase().replace( " ", "" ) + "*" )
                     .boost( 1.0f ) );
-        } else {
-            List<String> fields = new ArrayList<>();
+        }
+        else
+        {
+            List<String> fields = new ArrayList<>(( languageFields.size() * 2 ) + 1 );
             fields.add( CODE_PATH + "." + NOTATION );
             for ( String langIso : languageFields ) {
                 fields.add( CODE_PATH + "." + TITLE + langIso );
                 fields.add( CODE_PATH + "." + DEFINITION + langIso );
             }
-            boolQuery.should( QueryBuilders.multiMatchQuery( term, fields.toArray( new String[0] ) ) );
+            query = QueryBuilders.multiMatchQuery( term, fields.toArray( String[]::new ) );
         }
 
+        InnerHitBuilder innerHitBuilder = new InnerHitBuilder( CODE_PATH ).setSize( innerHitSize );
         if ( term.length() > 2 )
-            return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.Total )
-                .innerHit( new InnerHitBuilder( CODE_PATH )
-                    .setSize( innerHitSize )
-                    .setHighlightBuilder( nestedHighlightBuilder( languageFields ) ) );
-        return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.Total )
-            .innerHit( new InnerHitBuilder( CODE_PATH ).setSize( innerHitSize ) );
-    }
-
-    public static HighlightBuilder.Field[] generateHighlightBuilderMain( List<String> languageFields ) {
-        List<HighlightBuilder.Field> fields = new ArrayList<>();
-        // all language fields
-        for ( String langIso : languageFields ) {
-            fields.add( new HighlightBuilder.Field( TITLE + langIso ).preTags( HIGHLIGHT_START ).postTags( HIGHLIGHT_END ) );
-            fields.add( new HighlightBuilder.Field( DEFINITION + langIso ).preTags( HIGHLIGHT_START ).postTags( HIGHLIGHT_END ) );
+        {
+            // Configure inner hit highlighters
+            var nestedHighlightBuilder = generateHighlightBuilder(
+                List.of( CODE_PATH + "." + TITLE, CODE_PATH + "." + DEFINITION ),
+                languageFields
+            );
+            innerHitBuilder.setHighlightBuilder( nestedHighlightBuilder );
         }
-        return fields.toArray( new HighlightBuilder.Field[0] );
+        return QueryBuilders.nestedQuery( CODE_PATH, query, ScoreMode.Total ).innerHit( innerHitBuilder );
     }
 
-    private static HighlightBuilder nestedHighlightBuilder( List<String> languageFields ) {
+    private static HighlightBuilder generateHighlightBuilder( List<String> highlightFields, List<String> languageFields )
+    {
         HighlightBuilder highlightBuilder = new HighlightBuilder();
-        // all language fields
-        for ( String langIso : languageFields ) {
-            highlightBuilder.field( CODE_PATH + "." + TITLE + langIso ).preTags( HIGHLIGHT_START ).postTags( HIGHLIGHT_END );
-            highlightBuilder.field( CODE_PATH + "." + DEFINITION + langIso ).preTags( HIGHLIGHT_START ).postTags( HIGHLIGHT_END );
+        for ( String field : highlightFields )
+        {
+            for ( String langIso : languageFields )
+            {
+                highlightBuilder.field( field + langIso ).preTags( HIGHLIGHT_START ).postTags( HIGHLIGHT_END );
+            }
         }
         return highlightBuilder;
     }
@@ -1183,7 +1189,10 @@ public class VocabularyServiceImpl implements VocabularyService
         // add highlighter after 2nd character typed
         boolean isSearchWithKeyword = searchTerm != null && searchTerm.length() > 2;
         if ( isSearchWithKeyword )
-            searchQueryBuilder.withHighlightFields( generateHighlightBuilderMain( languageFields ) );
+        {
+            var highlightBuilder = generateHighlightBuilder( List.of( TITLE, DEFINITION ), languageFields );
+            searchQueryBuilder.withHighlightBuilder( highlightBuilder );
+        }
 
         // add aggregation
         setUpAggregations( searchQueryBuilder, esQueryResultDetail );
@@ -1216,13 +1225,16 @@ public class VocabularyServiceImpl implements VocabularyService
         generateAggregationFilter( esQueryResultDetail, searchResponse );
 
         Page<VocabularyDTO> vocabularyPage = SearchHitSupport.searchPageFor( searchResponse, null )
-            .map( org.springframework.data.elasticsearch.core.SearchHit::getContent )
+            .map( SearchHit::getContent )
             .map( vocabularyDTOMapper );
 
         // update vocabulary based on highlight and inner hit
         if ( isSearchWithKeyword )
+        {
             applySearchHitAndHighlight( vocabularyPage, searchResponse );
-        else {
+        }
+        else
+        {
             // remove unnecessary nested code entities
             for ( VocabularyDTO vocab : vocabularyPage.getContent() ) {
                 vocab.setCodes( Collections.emptySet() );
@@ -1279,7 +1291,7 @@ public class VocabularyServiceImpl implements VocabularyService
         IndexCoordinates indexCoordinates = IndexCoordinates.of( VOCABULARYPUBLISH );
         org.springframework.data.elasticsearch.core.SearchHits<VocabularyPublish> searchHits = elasticsearchOperations.search( searchQuery, VocabularyPublish.class, indexCoordinates );
         Page<VocabularyDTO> vocabularyPage = SearchHitSupport.searchPageFor( searchHits, null )
-            .map( org.springframework.data.elasticsearch.core.SearchHit::getContent )
+            .map( SearchHit::getContent )
             .map( vocabularyPublishMapper::toDto );
 
         generateAggregationFilter( esQueryResultDetail, searchHits );
@@ -1365,11 +1377,20 @@ public class VocabularyServiceImpl implements VocabularyService
         }
     }
 
-    private void applySearchHitAndHighlight( Page<VocabularyDTO> vocabularyPage, org.springframework.data.elasticsearch.core.SearchHits<?> searchResponse ) {
-        for ( org.springframework.data.elasticsearch.core.SearchHit<?> hit : searchResponse.getSearchHits()) {
-            VocabularyDTO.findByIdFromList( vocabularyPage.getContent(), hit.getId() ).ifPresent( cvHit ->
-                applyVocabularyHighlighter( hit, cvHit )
-            );
+    private void applySearchHitAndHighlight( Page<VocabularyDTO> vocabularyPage, SearchHits<?> searchResponse ) {
+        for ( SearchHit<?> hit : searchResponse ) {
+            VocabularyDTO.findByIdFromList( vocabularyPage.getContent(), hit.getId() ).ifPresent( cvHit -> {
+
+                if ( !hit.getHighlightFields().isEmpty() )
+                {
+                    applyVocabularyHighlighter( hit, cvHit );
+                }
+
+//                if ( hit.getInnerHits() != null )
+//                {
+//                    applyCodeHighlighter( hit, cvHit, true );
+//                }
+            });
         }
     }
 
@@ -1389,18 +1410,78 @@ public class VocabularyServiceImpl implements VocabularyService
         }
     }
 
+//    private void applyCodeHighlighter( SearchHit hit, VocabularyDTO cvHit, boolean withHighlight ) {
+//        Set<CodeDTO> newCodes = new LinkedHashSet<>();
+//
+//        for ( Map.Entry<String, SearchHits> innerHitEntry : hit.getInnerHits().entrySet() ) {
+//            for ( SearchHit innerHit : innerHitEntry.getValue() ) {
+//                highlightEachCode( cvHit, newCodes, innerHit, withHighlight );
+//            }
+//        }
+//
+//        cvHit.setCodes( newCodes );
+//    }
+
+    private void highlightEachCode( VocabularyDTO cvHit, Set<CodeDTO> newCodes, SearchHit<CodeDTO> innerHit, boolean withHighlight ) {
+        Optional<CodeDTO> codeOpt = CodeDTO.findByIdFromList( cvHit.getCodes(), innerHit.getContent().getId().intValue() );
+        if ( codeOpt.isPresent() )
+        {
+            CodeDTO codeHit = codeOpt.get();
+            if ( withHighlight )
+            {
+                applyHighlightCode( cvHit, innerHit, codeHit );
+            }
+            newCodes.add( codeHit );
+        }
+    }
+
+    private void applyHighlightCode( VocabularyDTO cvHit, SearchHit<?> innerHit, CodeDTO codeHit ) {
+        for ( Map.Entry<String, List<String>> entry : innerHit.getHighlightFields().entrySet() ) {
+            String fieldName = entry.getKey();
+            List<String> highlighField = entry.getValue();
+            StringBuilder highLightText = new StringBuilder();
+            for ( String text : highlighField ) {
+                if ( !fieldName.contains( TITLE ) && !text.endsWith( "." ) ) {
+                    highLightText.append( text ).append( " ... " );
+                } else
+                    highLightText.append( text );
+            }
+            if ( fieldName.contains( TITLE ) )
+                codeHit.setTitleDefinition( highLightText.toString(), null, fieldName.substring( (CODE_PATH + "." + TITLE).length() ),
+                    true );
+            if ( fieldName.contains( DEFINITION ) )
+                codeHit.setTitleDefinition( null, highLightText.toString(), fieldName.substring( (CODE_PATH + "." + DEFINITION).length() ),
+                    true );
+            setSelectedLanguageByHighlight( cvHit, fieldName );
+        }
+    }
+
+    // set selected language based on highlight
+    private void setSelectedLanguageByHighlight( VocabularyDTO cvHit, String highlightField ) {
+        // only set selected language once
+        if ( cvHit.getSelectedLang() == null ) {
+            // get last language information from the field and get the Language enum
+            String langIso = highlightField.substring( highlightField.length() - 2 );
+            cvHit.setSelectedLang( langIso.toLowerCase() );
+        }
+    }
+
     private void setUpAggregations( NativeSearchQueryBuilder searchQueryBuilder, EsQueryResultDetail esQueryResultDetail ) {
         if ( !esQueryResultDetail.isAnyFilterActive() ) {
             for ( String aggField : esQueryResultDetail.getAggFields() )
+            {
                 searchQueryBuilder.addAggregation(
                     AggregationBuilders.terms( aggField + COUNT ).field( aggField ).size( SIZE_OF_ITEMS_ON_AGGREGATION ) );
+            }
         } else {
             FiltersAggregationBuilder filtersAggregation = AggregationBuilders.filters( "aggregration_filter",
                 generateFilterQuery( esQueryResultDetail.getEsFilters() ) );
 
             for ( String aggField : esQueryResultDetail.getAggFields() )
+            {
                 filtersAggregation.subAggregation(
                     AggregationBuilders.terms( aggField + COUNT ).field( aggField ).size( SIZE_OF_ITEMS_ON_AGGREGATION ) );
+            }
 
             searchQueryBuilder.addAggregation( filtersAggregation );
         }
