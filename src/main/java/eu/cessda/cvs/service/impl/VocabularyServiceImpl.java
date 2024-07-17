@@ -1224,7 +1224,7 @@ public class VocabularyServiceImpl implements VocabularyService
         // assign aggregation to esQueryResultDetail
         generateAggregationFilter( esQueryResultDetail, searchResponse );
 
-        Page<VocabularyDTO> vocabularyPage = SearchHitSupport.searchPageFor( searchResponse, null )
+        Page<VocabularyDTO> vocabularyPage = SearchHitSupport.searchPageFor( searchResponse, esQueryResultDetail.getPage() )
             .map( SearchHit::getContent )
             .map( vocabularyDTOMapper );
 
@@ -1260,14 +1260,14 @@ public class VocabularyServiceImpl implements VocabularyService
         String language = StringUtils.capitalize( esQueryResultDetail.getSortLanguage() );
 
         // nested query for codes
-        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+        BoolQueryBuilder boolQuery;
 
         if ( term.contains( "*" ) ) {
-            boolQuery
+            boolQuery = QueryBuilders.boolQuery()
                 .should( QueryBuilders.wildcardQuery( CODE_PATH + "." + NOTATION, term.toLowerCase().replace( " ", "" ) )
                     .boost( 2.0f ) );
         } else {
-            boolQuery
+            boolQuery = QueryBuilders.boolQuery()
                 .should( QueryBuilders.matchQuery( CODE_PATH + "." + TITLE + language, term ).fuzziness( 0.7 ).boost( 1.0f ) )
                 .should( QueryBuilders.wildcardQuery( CODE_PATH + "." + NOTATION, term.toLowerCase().replace( " ", "" ) + "*" )
                     .boost( 2.0f ) );
@@ -1289,8 +1289,8 @@ public class VocabularyServiceImpl implements VocabularyService
         NativeSearchQuery searchQuery = searchQueryBuilder.build();
 
         IndexCoordinates indexCoordinates = IndexCoordinates.of( VOCABULARYPUBLISH );
-        org.springframework.data.elasticsearch.core.SearchHits<VocabularyPublish> searchHits = elasticsearchOperations.search( searchQuery, VocabularyPublish.class, indexCoordinates );
-        Page<VocabularyDTO> vocabularyPage = SearchHitSupport.searchPageFor( searchHits, null )
+        SearchHits<VocabularyPublish> searchHits = elasticsearchOperations.search( searchQuery, VocabularyPublish.class, indexCoordinates );
+        Page<VocabularyDTO> vocabularyPage = SearchHitSupport.searchPageFor( searchHits, esQueryResultDetail.getPage() )
             .map( SearchHit::getContent )
             .map( vocabularyPublishMapper::toDto );
 
@@ -1299,7 +1299,7 @@ public class VocabularyServiceImpl implements VocabularyService
         return esQueryResultDetail;
     }
 
-    private void generateAggregationFilter( EsQueryResultDetail esQueryResultDetail, org.springframework.data.elasticsearch.core.SearchHits<?> searchResponse ) {
+    private void generateAggregationFilter( EsQueryResultDetail esQueryResultDetail, SearchHits<?> searchResponse ) {
         // generate aggregation filter
         for ( String field : esQueryResultDetail.getAggFields() ) {
             if ( !esQueryResultDetail.isAnyFilterActive() ) {
@@ -1310,7 +1310,7 @@ public class VocabularyServiceImpl implements VocabularyService
         }
     }
 
-    private void buildNonFilteredAggregation( EsQueryResultDetail esQueryResultDetail, org.springframework.data.elasticsearch.core.SearchHits<?> searchResponse, String field ) {
+    private void buildNonFilteredAggregation( EsQueryResultDetail esQueryResultDetail, SearchHits<?> searchResponse, String field ) {
         Aggregations aggregations = searchResponse.getAggregations();
         if ( aggregations == null )
         {
@@ -1331,7 +1331,7 @@ public class VocabularyServiceImpl implements VocabularyService
         } );
     }
 
-    private void buildFilteredAggregation( EsQueryResultDetail esQueryResultDetail, org.springframework.data.elasticsearch.core.SearchHits<?> searchResponse, String field ) {
+    private void buildFilteredAggregation( EsQueryResultDetail esQueryResultDetail, SearchHits<?> searchResponse, String field ) {
         Aggregations aggregations = searchResponse.getAggregations();
         if (aggregations == null)
         {

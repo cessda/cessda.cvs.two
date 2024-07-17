@@ -719,11 +719,14 @@
                 <version>6.28</version>
                 <configuration>
                     <!-- THE ELASTICSEARCH VERSION; REPLACE WITH THE VERSION YOU NEED -->
-                    <version>7.6.2</version>
+                    <version>${elasticsearch.version}</version>
                     <httpPort>9225</httpPort>
                     <transportPort>9350</transportPort>
                     <autoCreateIndex>false</autoCreateIndex>
                     <keepExistingData>false</keepExistingData>
+                    <environmentVariables>
+                        <ES_JAVA_OPTS>-Djava.security.manager=allow -Xms4g -Xmx4g</ES_JAVA_OPTS>
+                    </environmentVariables>
                     <plugins>
                         <plugin>
                             <uri>analysis-icu</uri>
