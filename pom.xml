@@ -50,7 +50,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.12.RELEASE</version>
+        <version>2.4.13</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
 
@@ -724,9 +724,6 @@
                     <transportPort>9350</transportPort>
                     <autoCreateIndex>false</autoCreateIndex>
                     <keepExistingData>false</keepExistingData>
-                    <environmentVariables>
-                        <ES_JAVA_OPTS>-Djava.security.manager=allow -Xms4g -Xmx4g</ES_JAVA_OPTS>
-                    </environmentVariables>
                     <plugins>
                         <plugin>
                             <uri>analysis-icu</uri>

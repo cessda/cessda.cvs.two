@@ -168,12 +168,16 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     public static QueryBuilder generateMainAndNestedQuery( String term, List<String> languageFields, int innerHitSize ) {
-        if (term != null && term.length() > 1) {
+        if (term != null && term.length() > 1)
+        {
             return QueryBuilders.boolQuery().should( generateMainQuery( term, languageFields ) )
                 // Append nested query
                 .should( generateNestedQuery( term, languageFields, innerHitSize ) );
-        } else
+        }
+        else
+        {
             return QueryBuilders.matchAllQuery();
+        }
     }
 
     public static QueryBuilder generateMainQuery( String term, List<String> languageFields ) {
@@ -189,7 +193,8 @@ public class VocabularyServiceImpl implements VocabularyService
         {
             List<String> fields = new ArrayList<>( ( languageFields.size() * 2 ) + 1 );
             fields.add( NOTATION );
-            for ( String langIso : languageFields ) {
+            for ( String langIso : languageFields )
+            {
                 fields.add( TITLE + langIso );
                 fields.add( DEFINITION + langIso );
             }
@@ -1294,6 +1299,20 @@ public class VocabularyServiceImpl implements VocabularyService
             .map( SearchHit::getContent )
             .map( vocabularyPublishMapper::toDto );
 
+        for ( SearchHit<VocabularyPublish> hit : searchHits ) {
+            Optional<VocabularyDTO> vocabOpt = VocabularyDTO.findByIdFromList( vocabularyPage.getContent(), hit.getId() );
+            if ( vocabOpt.isPresent() ) {
+                VocabularyDTO cvHit = vocabOpt.get();
+
+                if ( hit.getInnerHits().isEmpty() )
+                {
+                    continue;
+                }
+
+                applyCodeHighlighter( hit, cvHit, esQueryResultDetail.isWithHighlight() );
+            }
+        }
+
         generateAggregationFilter( esQueryResultDetail, searchHits );
         esQueryResultDetail.setVocabularies( vocabularyPage );
         return esQueryResultDetail;
@@ -1386,10 +1405,10 @@ public class VocabularyServiceImpl implements VocabularyService
                     applyVocabularyHighlighter( hit, cvHit );
                 }
 
-//                if ( hit.getInnerHits() != null )
-//                {
-//                    applyCodeHighlighter( hit, cvHit, true );
-//                }
+                if ( !hit.getInnerHits().isEmpty() )
+                {
+                    applyCodeHighlighter( hit, cvHit, true );
+                }
             });
         }
     }
@@ -1410,20 +1429,20 @@ public class VocabularyServiceImpl implements VocabularyService
         }
     }
 
-//    private void applyCodeHighlighter( SearchHit hit, VocabularyDTO cvHit, boolean withHighlight ) {
-//        Set<CodeDTO> newCodes = new LinkedHashSet<>();
-//
-//        for ( Map.Entry<String, SearchHits> innerHitEntry : hit.getInnerHits().entrySet() ) {
-//            for ( SearchHit innerHit : innerHitEntry.getValue() ) {
-//                highlightEachCode( cvHit, newCodes, innerHit, withHighlight );
-//            }
-//        }
-//
-//        cvHit.setCodes( newCodes );
-//    }
+    private void applyCodeHighlighter( SearchHit<?> hit, VocabularyDTO cvHit, boolean withHighlight ) {
+        Set<CodeDTO> newCodes = new LinkedHashSet<>();
 
-    private void highlightEachCode( VocabularyDTO cvHit, Set<CodeDTO> newCodes, SearchHit<CodeDTO> innerHit, boolean withHighlight ) {
-        Optional<CodeDTO> codeOpt = CodeDTO.findByIdFromList( cvHit.getCodes(), innerHit.getContent().getId().intValue() );
+        for ( Map.Entry<String, SearchHits<?>> innerHitEntry : hit.getInnerHits().entrySet() ) {
+            for ( SearchHit<?> innerHit : innerHitEntry.getValue() ) {
+                highlightEachCode( cvHit, newCodes, innerHit, withHighlight );
+            }
+        }
+
+        cvHit.setCodes( newCodes );
+    }
+
+    private void highlightEachCode( VocabularyDTO cvHit, Set<CodeDTO> newCodes, SearchHit<?> innerHit, boolean withHighlight ) {
+        Optional<CodeDTO> codeOpt = CodeDTO.findByIdFromList( cvHit.getCodes(), ((Code) innerHit.getContent()).getId().intValue() );
         if ( codeOpt.isPresent() )
         {
             CodeDTO codeHit = codeOpt.get();
