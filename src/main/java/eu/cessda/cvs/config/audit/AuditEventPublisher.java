@@ -18,17 +18,8 @@ package eu.cessda.cvs.config.audit;
 import eu.cessda.cvs.domain.CodeSnippet;
 import eu.cessda.cvs.domain.User;
 import eu.cessda.cvs.domain.VocabularySnippet;
-import eu.cessda.cvs.service.dto.AgencyDTO;
-import eu.cessda.cvs.service.dto.CommentDTO;
-import eu.cessda.cvs.service.dto.ConceptDTO;
-import eu.cessda.cvs.service.dto.LicenceDTO;
-import eu.cessda.cvs.service.dto.MetadataFieldDTO;
-import eu.cessda.cvs.service.dto.MetadataValueDTO;
-import eu.cessda.cvs.service.dto.UserAgencyDTO;
-import eu.cessda.cvs.service.dto.UserDTO;
-import eu.cessda.cvs.service.dto.VersionDTO;
-import eu.cessda.cvs.service.dto.VocabularyDTO;
-
+import eu.cessda.cvs.service.dto.*;
+import eu.cessda.cvs.utils.VersionNumber;
 import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.boot.actuate.audit.listener.AuditApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
@@ -164,7 +155,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
     }
 
     /**
-     * 
+     *
      * @param user
      * @param vocabulary
      * @param version
@@ -188,7 +179,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                 map.put(CV_TITLE, version.getTitle());
                 map.put(CV_LANGUAGE, version.getLanguage());
                 map.put(CV_TYPE, version.getItemType());
-                map.put(CV_VERSION, version.getNumberAsString());
+                map.put(CV_VERSION, VersionNumber.toString(version.getNumber()));
                 if (codeSnippet.getChangeType() != null && codeSnippet.getChangeDesc() != null) {
                     map.put("code_change_type", codeSnippet.getChangeType());
                     map.put("code_change_description", codeSnippet.getChangeDesc());
@@ -205,14 +196,14 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                 map.put(CV_TITLE, version.getTitle());
                 map.put(CV_LANGUAGE, version.getLanguage());
                 map.put(CV_TYPE, version.getItemType());
-                map.put(CV_VERSION, version.getNumberAsString());
+                map.put(CV_VERSION, VersionNumber.toString(version.getNumber()));
                 map.put(CODE_TITLE, concept.getTitle());
                 break;
             case "DEPRECATE_CODE":
                 map.put(CV_TITLE, version.getTitle());
                 map.put(CV_LANGUAGE, version.getLanguage());
                 map.put(CV_TYPE, version.getItemType());
-                map.put(CV_VERSION, version.getNumberAsString());
+                map.put(CV_VERSION, VersionNumber.toString(version.getNumber()));
                 map.put(CODE_TITLE, concept.getTitle());
                 if (replacingConceptDTO != null) {
                     map.put("replaced_by_title", replacingConceptDTO.getTitle());
@@ -221,7 +212,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             case "REORDER_CODE":
                 map.put(CV_TITLE, version.getTitle());
                 map.put(CV_LANGUAGE, version.getLanguage());
-                map.put(CV_VERSION, version.getNumberAsString());
+                map.put(CV_VERSION, VersionNumber.toString(version.getNumber()));
                 map.put(CODE_TITLE, concept.getTitle());
                 break;
             default:
@@ -230,7 +221,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
     }
 
     /**
-     * 
+     *
      * @param user
      * @param version
      * @param comment
@@ -244,7 +235,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             case "DELETE_COMMENT":
                 map.put(CV_TITLE, version.getTitle());
                 map.put(CV_LANGUAGE, version.getLanguage());
-                map.put(CV_VERSION, version.getNumberAsString());
+                map.put(CV_VERSION, VersionNumber.toString(version.getNumber()));
                 map.put("cv_comment", comment.getContent());
                 break;
             default:
@@ -274,7 +265,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             }
             if (map.get(CV_TITLE_SL) == map.get(CV_TITLE)) {
                 map.remove(CV_TITLE_SL);
-            } 
+            }
             if (map.get(CV_TITLE_TL) == map.get(CV_TITLE)) {
                 map.remove(CV_TITLE_TL);
             }
@@ -285,7 +276,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                 map.put(CV_TYPE, version.getItemType());
                 map.put(CV_LANGUAGE, version.getLanguage());
                 map.put(CV_TITLE, version.getTitle());
-                map.put(CV_VERSION, version.getNumber());
+                map.put(CV_VERSION, VersionNumber.toString(version.getNumber()));
                 map.put(CV_STATUS, version.getStatus());
                 break;
             case "FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE":
@@ -294,12 +285,12 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                 map.put(CV_TYPE, version.getItemType());
                 map.put(CV_LANGUAGE, version.getLanguage());
                 map.put(CV_TITLE, version.getTitle());
-                map.put(CV_VERSION, version.getNumber());
+                map.put(CV_VERSION, VersionNumber.toString(version.getNumber()));
                 map.put(CV_STATUS, version.getStatus());
-                if (vocabularySnippet!= null && vocabularySnippet.getVersionNotes() != null && !vocabularySnippet.getVersionNotes().equals("")) {
+                if (vocabularySnippet!= null && vocabularySnippet.getVersionNotes() != null && !vocabularySnippet.getVersionNotes().isEmpty() ) {
                     map.put("CV_VERSION_notes", vocabularySnippet.getVersionNotes());
                 }
-                if (vocabularySnippet!= null && vocabularySnippet.getVersionChanges() != null && !vocabularySnippet.getVersionChanges().equals("")) {
+                if (vocabularySnippet!= null && vocabularySnippet.getVersionChanges() != null && !vocabularySnippet.getVersionChanges().isEmpty() ) {
                     map.put("CV_VERSION_changes", vocabularySnippet.getVersionChanges());
                 }
                 break;
@@ -335,7 +326,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             }
             if (map.get(CV_TITLE_SL) == map.get(CV_TITLE)) {
                 map.remove(CV_TITLE_SL);
-            } 
+            }
             if (map.get(CV_TITLE_TL) == map.get(CV_TITLE)) {
                 map.remove(CV_TITLE_TL);
             }
@@ -370,7 +361,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             case "DELETE_VERSION":
                 map.put(CV_TITLE, version.getTitle());
                 map.put(CV_TYPE, version.getItemType());
-                map.put(CV_VERSION, version.getNumberAsString());
+                map.put(CV_VERSION, VersionNumber.toString(version.getNumber()));
                 map.put(CV_LANGUAGE, version.getLanguage());
                 map.put(CV_NOTATION, version.getNotation());
                 break;
@@ -379,10 +370,10 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                     map.put(CV_TYPE, vocabularySnippet.getItemType());
                     map.put(CV_LANGUAGE, vocabularySnippet.getLanguage());
                     map.put(CV_VERSION, vocabularySnippet.getVersionNumber());
-                    if (vocabularySnippet.getVersionNotes() != null && !vocabularySnippet.getVersionNotes().equals("")) {
+                    if (vocabularySnippet.getVersionNotes() != null && !vocabularySnippet.getVersionNotes().isEmpty() ) {
                         map.put("CV_VERSION_notes", vocabularySnippet.getVersionNotes());
                     }
-                    if (vocabularySnippet.getVersionChanges() != null && !vocabularySnippet.getVersionChanges().equals("")) {
+                    if (vocabularySnippet.getVersionChanges() != null && !vocabularySnippet.getVersionChanges().isEmpty() ) {
                         map.put("CV_VERSION_changes", vocabularySnippet.getVersionChanges());
                     }
                 }
@@ -433,10 +424,10 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             case "DELETE_TL_VOCABULARY":
                 map.put(CV_LANGUAGE, version.getLanguage());
                 map.put(CV_TITLE, version.getTitle());
-                map.put(CV_VERSION, version.getNumber());
+                map.put(CV_VERSION, VersionNumber.toString(version.getNumber()));
                 map.put(CV_TYPE, version.getItemType());
                 break;
-            default:    
+            default:
         }
         publish(new AuditEvent(user, action, map));
     }
