@@ -33,7 +33,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -2115,8 +2114,15 @@ public class VocabularyDTO implements Serializable {
         {
             return Optional.empty();
         }
-        var vocabMap = vocabs.stream().collect( Collectors.toMap( VocabularyDTO::getId, Function.identity() ) );
-        return Optional.ofNullable( vocabMap.get( Long.parseLong( docId ) ) );
+        var longDocId = Long.parseLong( docId ) ;
+        for ( VocabularyDTO vocab : vocabs )
+        {
+            if (vocab.getId() != null && vocab.getId() == longDocId )
+            {
+                return Optional.of( vocab );
+            }
+        }
+        return Optional.empty();
     }
 
     public static void fillVocabularyByVersions( VocabularyDTO vocab, Set<VersionDTO> versions ) {
