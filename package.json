@@ -97,17 +97,10 @@
   },
   "overrides": {
     "ng-jhipster": {
-      "@angular/common": ">=10.0.0",
-      "@angular/core": ">=10.0.0",
-      "@angular/forms": ">=10.0.0",
-      "@angular/router": ">=10.0.0",
       "@fortawesome/angular-fontawesome": ">=0.6.1",
       "@ng-bootstrap/ng-bootstrap": ">=6.1.0"
     },
     "ngx-text-diff": {
-      "@angular/core": ">=6.0.0",
-      "@angular/forms": ">=6.0.0",
-      "@angular/cdk": ">=6.0.0",
       "rxjs": "^6.3.3",
       "tslib": ">=1.10.0"
     }
