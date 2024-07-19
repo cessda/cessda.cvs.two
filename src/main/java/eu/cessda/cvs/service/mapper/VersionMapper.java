@@ -26,8 +26,16 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {VocabularyMapper.class, ConceptMapper.class, CommentMapper.class})
 public interface VersionMapper extends EntityMapper<VersionDTO, Version> {
 
-    // TODO: evaluate these mappings
     @Mapping(source = "vocabulary.id", target = "vocabularyId")
+    @Mapping(target = "removeComment", ignore = true)
+    @Mapping(target = "removeConcept", ignore = true)
+    @Mapping(target = "contentByVocabularySnippet", ignore = true)
+    @Mapping(target = "copyright", ignore = true)
+    @Mapping(target = "deprecatedConceptsValidUntilVersionId", ignore = true)
+    @Mapping(target = "licenseLink", ignore = true)
+    @Mapping(target = "licenseLogo", ignore = true)
+    @Mapping(target = "licenseName", ignore = true)
+    @Mapping(target = "versionHistories", ignore = true)
     VersionDTO toDto(Version version);
 
     @Mapping(target = "removeComment", ignore = true)

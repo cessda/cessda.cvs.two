@@ -89,13 +89,13 @@
         <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
         <maven-enforcer-plugin.version>3.2.1</maven-enforcer-plugin.version>
-        <maven-failsafe-plugin.version>3.2.1</maven-failsafe-plugin.version>
+        <maven-failsafe-plugin.version>3.3.0</maven-failsafe-plugin.version>
         <maven-idea-plugin.version>2.2.1</maven-idea-plugin.version>
         <maven-resources-plugin.version>3.3.1</maven-resources-plugin.version>
         <maven-surefire-plugin.version>3.0.0</maven-surefire-plugin.version>
         <maven-war-plugin.version>3.3.2</maven-war-plugin.version>
-        <maven-checkstyle.version>3.3.0</maven-checkstyle.version>
-        <checkstyle.version>10.15.0</checkstyle.version>
+        <maven-checkstyle.version>3.4.0</maven-checkstyle.version>
+        <checkstyle.version>10.17.0</checkstyle.version>
         <spring-nohttp-checkstyle.version>0.0.11</spring-nohttp-checkstyle.version>
         <frontend-maven-plugin.version>1.15.0</frontend-maven-plugin.version>
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
@@ -103,7 +103,7 @@
         <jib-maven-plugin.version>3.4.0</jib-maven-plugin.version>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
-        <sonar-maven-plugin.version>3.11.0.3922</sonar-maven-plugin.version>
+        <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
         <!-- jhipster-needle-maven-property -->
 
         <!-- SonarQube Properties -->
@@ -399,7 +399,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.17.1</version>
+            <version>1.18.1</version>
         </dependency>
         <!-- XNIO API for Undertow -->
         <dependency>
@@ -756,7 +756,7 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>4.3</version>
+                <version>4.5</version>
                 <configuration>
                     <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
                     <properties>
@@ -801,7 +801,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.0</version>
                 <configuration>
                     <tagNameFormat>@{project.version}</tagNameFormat>
                     <pushChanges>false</pushChanges>

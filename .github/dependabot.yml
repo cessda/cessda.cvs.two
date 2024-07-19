@@ -24,6 +24,10 @@ updates:
         update-types:
         - "minor"
         - "patch"
+      # Group @typescript-eslint dependencies together
+      typescript-eslint:
+        patterns:
+        - "@typescript-eslint/*"
   - package-ecosystem: "maven" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
