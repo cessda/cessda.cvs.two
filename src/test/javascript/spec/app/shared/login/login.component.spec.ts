@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -38,12 +38,12 @@ describe('Component Tests', () => {
         imports: [CvsTestModule],
         declarations: [LoginModalComponent],
         providers: [
-          FormBuilder,
+          UntypedFormBuilder,
           {
             provide: LoginService,
-            useClass: MockLoginService
-          }
-        ]
+            useClass: MockLoginService,
+          },
+        ],
       })
         .overrideTemplate(LoginModalComponent, '')
         .compileComponents();
@@ -64,13 +64,13 @@ describe('Component Tests', () => {
         const credentials = {
           username: 'admin',
           password: 'admin',
-          rememberMe: true
+          rememberMe: true,
         };
 
         comp.loginForm.patchValue({
           username: 'admin',
           password: 'admin',
-          rememberMe: true
+          rememberMe: true,
         });
         mockLoginService.setResponse({});
         mockRouter.url = '/admin/metrics';
@@ -83,20 +83,20 @@ describe('Component Tests', () => {
         expect(comp.authenticationError).toEqual(false);
         expect(mockActiveModal.closeSpy).toHaveBeenCalled();
         expect(mockLoginService.loginSpy).toHaveBeenCalledWith(credentials);
-      })
+      }),
     ));
 
     it('should empty the credentials upon cancel', () => {
       // GIVEN
       comp.loginForm.patchValue({
         username: 'admin',
-        password: 'admin'
+        password: 'admin',
       });
 
       const expected = {
         username: '',
         password: '',
-        rememberMe: false
+        rememberMe: false,
       };
 
       // WHEN

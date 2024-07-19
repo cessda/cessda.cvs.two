@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, async, inject, tick, fakeAsync } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 import { JhiLanguageService } from 'ng-jhipster';
 
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [RegisterComponent],
-        providers: [FormBuilder]
+        providers: [UntypedFormBuilder],
       })
         .overrideTemplate(RegisterComponent, '')
         .compileComponents();
@@ -47,7 +47,7 @@ describe('Component Tests', () => {
     it('should ensure the two passwords entered match', () => {
       comp.registerForm.patchValue({
         password: 'password',
-        confirmPassword: 'non-matching'
+        confirmPassword: 'non-matching',
       });
 
       comp.register();
@@ -61,7 +61,7 @@ describe('Component Tests', () => {
         spyOn(service, 'save').and.returnValue(of({}));
         comp.registerForm.patchValue({
           password: 'password',
-          confirmPassword: 'password'
+          confirmPassword: 'password',
         });
 
         comp.register();
@@ -71,14 +71,14 @@ describe('Component Tests', () => {
           email: '',
           password: 'password',
           login: '',
-          langKey: 'en'
+          langKey: 'en',
         });
         expect(comp.success).toBe(true);
         expect(mockTranslate.getCurrentLanguageSpy).toHaveBeenCalled();
         expect(comp.errorUserExists).toBe(false);
         expect(comp.errorEmailExists).toBe(false);
         expect(comp.error).toBe(false);
-      })
+      }),
     ));
 
     it('should notify of user existence upon 400/login already in use', inject(
@@ -87,12 +87,12 @@ describe('Component Tests', () => {
         spyOn(service, 'save').and.returnValue(
           throwError({
             status: 400,
-            error: { type: LOGIN_ALREADY_USED_TYPE }
-          })
+            error: { type: LOGIN_ALREADY_USED_TYPE },
+          }),
         );
         comp.registerForm.patchValue({
           password: 'password',
-          confirmPassword: 'password'
+          confirmPassword: 'password',
         });
 
         comp.register();
@@ -101,7 +101,7 @@ describe('Component Tests', () => {
         expect(comp.errorUserExists).toBe(true);
         expect(comp.errorEmailExists).toBe(false);
         expect(comp.error).toBe(false);
-      })
+      }),
     ));
 
     it('should notify of email existence upon 400/email address already in use', inject(
@@ -110,12 +110,12 @@ describe('Component Tests', () => {
         spyOn(service, 'save').and.returnValue(
           throwError({
             status: 400,
-            error: { type: EMAIL_ALREADY_USED_TYPE }
-          })
+            error: { type: EMAIL_ALREADY_USED_TYPE },
+          }),
         );
         comp.registerForm.patchValue({
           password: 'password',
-          confirmPassword: 'password'
+          confirmPassword: 'password',
         });
 
         comp.register();
@@ -124,7 +124,7 @@ describe('Component Tests', () => {
         expect(comp.errorEmailExists).toBe(true);
         expect(comp.errorUserExists).toBe(false);
         expect(comp.error).toBe(false);
-      })
+      }),
     ));
 
     it('should notify of generic error', inject(
@@ -132,12 +132,12 @@ describe('Component Tests', () => {
       fakeAsync((service: RegisterService) => {
         spyOn(service, 'save').and.returnValue(
           throwError({
-            status: 503
-          })
+            status: 503,
+          }),
         );
         comp.registerForm.patchValue({
           password: 'password',
-          confirmPassword: 'password'
+          confirmPassword: 'password',
         });
 
         comp.register();
@@ -146,7 +146,7 @@ describe('Component Tests', () => {
         expect(comp.errorUserExists).toBe(false);
         expect(comp.errorEmailExists).toBe(false);
         expect(comp.error).toBe(true);
-      })
+      }),
     ));
   });
 });

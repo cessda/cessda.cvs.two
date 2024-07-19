@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { LANGUAGES } from 'app/core/language/language.constants';
@@ -56,7 +56,7 @@ export class UserManagementUpdateComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private agencyService: AgencyService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
   ) {
     this.selectedAgencyId = 1;
     this.selectedAgencyRole = 'ADMIN_TL';

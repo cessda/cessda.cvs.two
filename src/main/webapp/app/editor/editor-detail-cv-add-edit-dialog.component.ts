@@ -21,7 +21,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AccountService } from 'app/core/auth/account.service';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Account } from 'app/core/user/account.model';
@@ -76,7 +76,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     protected editorService: EditorService,
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private router: Router,
   ) {}
 

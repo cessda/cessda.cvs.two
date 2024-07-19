@@ -21,7 +21,7 @@ import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { JhiEventManager } from 'ng-jhipster';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AccountService } from 'app/core/auth/account.service';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Account } from 'app/core/user/account.model';
 import { CODE_ALREADY_EXIST_TYPE } from 'app/shared';
@@ -67,7 +67,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     protected editorService: EditorService,
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private router: Router,
     private modalService: NgbModal,
     private _ngZone: NgZone,

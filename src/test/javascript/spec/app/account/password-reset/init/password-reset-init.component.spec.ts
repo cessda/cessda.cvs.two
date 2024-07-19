@@ -15,7 +15,7 @@
  */
 import { ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 
 import { CvsTestModule } from '../../../../test.module';
@@ -31,7 +31,7 @@ describe('Component Tests', () => {
       fixture = TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [PasswordResetInitComponent],
-        providers: [FormBuilder]
+        providers: [UntypedFormBuilder],
       })
         .overrideTemplate(PasswordResetInitComponent, '')
         .createComponent(PasswordResetInitComponent);
@@ -40,7 +40,7 @@ describe('Component Tests', () => {
 
     it('sets focus after the view has been initialized', () => {
       const node = {
-        focus(): void {}
+        focus(): void {},
       };
       comp.email = new ElementRef(node);
       spyOn(node, 'focus');
@@ -53,7 +53,7 @@ describe('Component Tests', () => {
     it('notifies of success upon successful requestReset', inject([PasswordResetInitService], (service: PasswordResetInitService) => {
       spyOn(service, 'save').and.returnValue(of({}));
       comp.resetRequestForm.patchValue({
-        email: 'user@domain.com'
+        email: 'user@domain.com',
       });
 
       comp.requestReset();
@@ -66,11 +66,11 @@ describe('Component Tests', () => {
       spyOn(service, 'save').and.returnValue(
         throwError({
           status: 503,
-          data: 'something else'
-        })
+          data: 'something else',
+        }),
       );
       comp.resetRequestForm.patchValue({
-        email: 'user@domain.com'
+        email: 'user@domain.com',
       });
       comp.requestReset();
 

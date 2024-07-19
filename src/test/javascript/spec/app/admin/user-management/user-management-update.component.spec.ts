@@ -15,7 +15,7 @@
  */
 import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
@@ -30,21 +30,21 @@ describe('Component Tests', () => {
     let comp: UserManagementUpdateComponent;
     let fixture: ComponentFixture<UserManagementUpdateComponent>;
     let service: UserService;
-    const route: ActivatedRoute = ({
-      data: of({ user: new User(1, 'user', 'first', 'last', 'first@last.com', true, 'en', [Authority.USER], 'admin') })
-    } as any) as ActivatedRoute;
+    const route: ActivatedRoute = {
+      data: of({ user: new User(1, 'user', 'first', 'last', 'first@last.com', true, 'en', [Authority.USER], 'admin') }),
+    } as any as ActivatedRoute;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [UserManagementUpdateComponent],
         providers: [
-          FormBuilder,
+          UntypedFormBuilder,
           {
             provide: ActivatedRoute,
-            useValue: route
-          }
-        ]
+            useValue: route,
+          },
+        ],
       })
         .overrideTemplate(UserManagementUpdateComponent, '')
         .compileComponents();
@@ -114,7 +114,7 @@ describe('Component Tests', () => {
           // THEN
           expect(service.create).toHaveBeenCalledWith(entity);
           expect(comp.isSaving).toEqual(false);
-        })
+        }),
       ));
     });
   });

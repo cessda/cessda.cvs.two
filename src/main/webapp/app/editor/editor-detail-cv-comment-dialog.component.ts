@@ -20,7 +20,7 @@ import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { Comment } from 'app/shared/model/comment.model';
@@ -58,7 +58,7 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
     public activeModal: NgbActiveModal,
     private router: Router,
     protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private _ngZone: NgZone,
   ) {
     this.isSaving = false;

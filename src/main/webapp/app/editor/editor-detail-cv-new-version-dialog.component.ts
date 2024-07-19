@@ -21,7 +21,7 @@ import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 
 @Component({
@@ -44,7 +44,7 @@ export class EditorDetailCvNewVersionDialogComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private router: Router,
     protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
   ) {
     this.isSaving = false;

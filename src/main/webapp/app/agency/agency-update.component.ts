@@ -15,7 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
@@ -68,7 +68,7 @@ export class AgencyUpdateComponent implements OnInit {
     protected agencyService: AgencyService,
     protected activatedRoute: ActivatedRoute,
     protected fileUploadService: FileUploadService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
   ) {}
 
   ngOnInit(): void {

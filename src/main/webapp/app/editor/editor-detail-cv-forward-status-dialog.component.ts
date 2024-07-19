@@ -21,7 +21,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { HttpResponse } from '@angular/common/http';
 import { AccountService } from 'app/core/auth/account.service';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Account } from 'app/core/user/account.model';
@@ -94,7 +94,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     protected editorService: EditorService,
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private router: Router,
   ) {
     this.isSaving = false;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { throwError, of } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
@@ -38,14 +38,14 @@ describe('Component Tests', () => {
       login: 'john',
       authorities: [],
       imageUrl: '',
-      userAgencies: []
+      userAgencies: [],
     };
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [SettingsComponent],
-        providers: [FormBuilder]
+        providers: [UntypedFormBuilder],
       })
         .overrideTemplate(SettingsComponent, '')
         .compileComponents();
@@ -65,7 +65,7 @@ describe('Component Tests', () => {
         firstName: 'John',
         lastName: 'Doe',
         email: 'john.doe@mail.com',
-        langKey: 'en'
+        langKey: 'en',
       };
 
       // WHEN

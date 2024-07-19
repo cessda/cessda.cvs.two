@@ -19,7 +19,7 @@ import { EditorService } from 'app/editor/editor.service';
 import { JhiEventManager } from 'ng-jhipster';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { Version } from 'app/shared/model/version.model';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Router } from '@angular/router';
 
@@ -32,7 +32,7 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
   @Input() versions!: Version[];
   @Input() slVersionNumber!: string;
   @Input() enableDocxExport!: boolean;
-  @Input() downloadFormGroup!: FormGroup;
+  @Input() downloadFormGroup!: UntypedFormGroup;
   @Input() notation!: string;
 
   downloadCheckboxes: string[];

@@ -15,7 +15,7 @@
  */
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
-import {FormBuilder, Validators} from '@angular/forms';
+import {UntypedFormBuilder, Validators} from '@angular/forms';
 import {JhiLanguageService} from 'ng-jhipster';
 
 import {EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE} from 'app/shared/constants/error.constants';
@@ -47,7 +47,7 @@ export class RegisterComponent implements AfterViewInit {
     private languageService: JhiLanguageService,
     private loginModalService: LoginModalService,
     private registerService: RegisterService,
-    private fb: FormBuilder
+    private fb: UntypedFormBuilder
   ) {}
 
   ngAfterViewInit(): void {

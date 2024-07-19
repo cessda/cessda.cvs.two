@@ -21,7 +21,7 @@ import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.mod
 import { Version } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { EditorService } from 'app/editor/editor.service';
 import { RouteEventsService } from 'app/shared';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -152,7 +152,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected editorService: EditorService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private routeEventsService: RouteEventsService,
     private _ngZone: NgZone,
     protected modalService: NgbModal,
