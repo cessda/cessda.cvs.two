@@ -61,11 +61,15 @@ public class UrnResolver {
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 
         if( Character.isDigit( urn.charAt( urn.length() - 1) ))
+        {
             headers = getVersionByUrn(baseUrl, urn, lang);
+        }
         else
+        {
             headers = getVersionByUrnStartWith(baseUrl, urn);
-        if (headers.isPresent()) return headers.get();
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body( "URN: " + urn + " is not found" );
+        }
+
+        return headers.orElseGet( () -> ResponseEntity.notFound().build() );
     }
 
     private Optional<ResponseEntity<String>> getVersionByUrnStartWith(String baseUrl, String urn) {
