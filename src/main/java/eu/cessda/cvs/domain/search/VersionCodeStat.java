@@ -15,9 +15,6 @@
  */
 package eu.cessda.cvs.domain.search;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import eu.cessda.cvs.utils.VersionNumber;
 import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -43,24 +40,12 @@ public class VersionCodeStat implements Serializable {
     @Field( type = FieldType.Keyword, store = true )
     private List<String> codes = new ArrayList<>();
 
-    @JsonIgnore
     public VersionNumber getVersionNumber() {
         return versionNumber;
     }
 
-    @JsonGetter("versionNumber")
-    public String getVersionNumberAsString() {
-        return VersionNumber.toString(versionNumber);
-    }
-
-    @JsonIgnore
     public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
-    }
-
-    @JsonSetter("versionNumber")
-    public void setVersionNumber(String str) {
-        setVersionNumber(VersionNumber.fromString(str));
     }
 
     public List<String> getCodes() {

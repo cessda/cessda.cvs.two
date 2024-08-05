@@ -15,81 +15,43 @@
  */
 package eu.cessda.cvs.config;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.type.MapType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import org.elasticsearch.client.Client;
-import org.springframework.boot.autoconfigure.data.elasticsearch.ElasticsearchProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import eu.cessda.cvs.utils.VersionNumber;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.EntityMapper;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.convert.ReadingConverter;
+import org.springframework.data.convert.WritingConverter;
+import org.springframework.data.elasticsearch.core.convert.ElasticsearchCustomConversions;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.Arrays;
 
 @Configuration
-@EnableConfigurationProperties(ElasticsearchProperties.class)
-public class ElasticsearchConfiguration {
-
-    private final ObjectMapper mapper;
-
-    public ElasticsearchConfiguration(ObjectMapper mapper) {
-        this.mapper = mapper;
-    }
-
-    @Bean
-    public EntityMapper getEntityMapper() {
-        return new CustomEntityMapper(mapper);
-    }
-
+public class ElasticsearchConfiguration
+{
     @Bean
     @Primary
-    public ElasticsearchOperations elasticsearchTemplate(Client client, ObjectMapper objectMapper) {
-        return new ElasticsearchTemplate(client, new CustomEntityMapper(objectMapper));
+    public ElasticsearchCustomConversions elasticsearchCustomConversions() {
+        return new ElasticsearchCustomConversions(
+            Arrays.asList(new VersionNumberToString(), new StringToVersionNumber()));
     }
 
-    public static class CustomEntityMapper implements EntityMapper {
-        private static final MapType MAP_STRING_OBJECT_TYPE = TypeFactory.defaultInstance()
-            .constructMapType( HashMap.class, String.class, Object.class );
-
-        private final ObjectMapper objectMapper;
-
-        public CustomEntityMapper(ObjectMapper objectMapper) {
-            this.objectMapper = objectMapper;
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-            objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, true);
-            objectMapper.configure(SerializationFeature.INDENT_OUTPUT, false);
-            objectMapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, true);
-        }
-
+    @WritingConverter
+    static class VersionNumberToString implements Converter<VersionNumber, String>
+    {
         @Override
-        public String mapToString(Object object) throws JsonProcessingException {
-            return objectMapper.writeValueAsString(object);
+        public String convert(VersionNumber source) {
+            return source.toString();
         }
-
-        @Override
-        public <T> T mapToObject(String source, Class<T> clazz) throws JsonProcessingException {
-            return objectMapper.readValue(source, clazz);
-        }
-
-        @Override
-        public Map<String, Object> mapObject(Object source) {
-            return objectMapper.convertValue(source , MAP_STRING_OBJECT_TYPE);
-        }
-
-        @Override
-        public <T> T readObject (Map<String, Object> source, Class<T> targetType) {
-            return objectMapper.convertValue(source, targetType);
-        }
-
     }
 
+    @ParametersAreNonnullByDefault
+    @ReadingConverter
+    static class StringToVersionNumber implements Converter<String, VersionNumber> {
+        @Override
+        public VersionNumber convert(String source) {
+            return VersionNumber.fromString( source );
+        }
+    }
 }

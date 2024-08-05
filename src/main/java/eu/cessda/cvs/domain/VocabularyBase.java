@@ -16,9 +16,6 @@
 package eu.cessda.cvs.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import eu.cessda.cvs.utils.VersionNumber;
 import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
@@ -594,14 +591,8 @@ public class VocabularyBase implements Serializable {
         this.notation = notation;
     }
 
-    @JsonIgnore
     public VersionNumber getVersionNumber() {
         return versionNumber;
-    }
-
-    @JsonGetter("versionNumber")
-    public String getVersionNumberAsString() {
-        return VersionNumber.toString(versionNumber);
     }
 
     public VocabularyBase versionNumber(VersionNumber versionNumber) {
@@ -609,14 +600,8 @@ public class VocabularyBase implements Serializable {
         return this;
     }
 
-    @JsonIgnore
     public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
-    }
-
-    @JsonSetter("versionNumber")
-    public void setVersionNumber(String str) {
-        setVersionNumber(VersionNumber.fromString(str));
     }
 
     public Long getInitialPublication() {

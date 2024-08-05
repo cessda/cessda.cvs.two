@@ -156,16 +156,4 @@ class VocabularyDTOTest {
         VocabularyDTO vocabularyDTO2 = new VocabularyDTO(vocabularySnippet);
         assertThat(vocabularyDTO2.getSourceLanguage()).isNotEqualTo(vocabularySnippet.getLanguage());
     }
-
-    @Test
-    void setGetVersionNumberAsString() {
-        VocabularyDTO vocabularyDTO = new VocabularyDTO();
-
-        vocabularyDTO.setVersionNumber((String) null);
-        assertThat(vocabularyDTO.getVersionNumberAsString()).isNull();
-
-        String versionNumber = "9.9.9";
-        vocabularyDTO.setVersionNumber(versionNumber);
-        assertThat(vocabularyDTO.getVersionNumberAsString()).isEqualTo(versionNumber);
-    }
 }

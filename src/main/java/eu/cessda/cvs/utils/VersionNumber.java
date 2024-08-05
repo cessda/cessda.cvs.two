@@ -16,46 +16,23 @@
 package eu.cessda.cvs.utils;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@JsonSerialize(using = VersionNumber.Serializer.class)
+@JsonSerialize(using = ToStringSerializer.class)
 @JsonDeserialize(using = VersionNumber.Deserializer.class)
 public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     private static final Comparator<Integer> nullSafeIntegerComparator = Comparator.nullsFirst(Integer::compareTo);
-
-    public static class Serializer extends StdSerializer<VersionNumber> {
-
-        private static final long serialVersionUID = 1L;
-
-        public Serializer() {
-            this(null);
-        }
-
-        public Serializer(Class<VersionNumber> t) {
-            super(t);
-        }
-
-        @Override
-        public void serialize(VersionNumber value, JsonGenerator gen, SerializerProvider provider) throws IOException {
-            gen.writeString(value.toString());
-        }
-
-    }
 
     private static final long serialVersionUID = 1L;
 
@@ -128,21 +105,19 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         return versionNumber != null ? versionNumber.toString() : null;
     }
 
-    public static class Deserializer extends StdDeserializer<VersionNumber> {
+    public static class Deserializer extends FromStringDeserializer<VersionNumber> {
 
-        private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = -8397284193430713709L;
 
-        public Deserializer() {
-            this(null);
-        }
-
-        public Deserializer(Class<VersionNumber> t) {
-            super(t);
+        public Deserializer()
+        {
+            super( VersionNumber.class );
         }
 
         @Override
-        public VersionNumber deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-            return VersionNumber.fromString(p.getText());
+        protected VersionNumber _deserialize( String value, DeserializationContext ctxt )
+        {
+            return VersionNumber.fromString(value);
         }
     }
 

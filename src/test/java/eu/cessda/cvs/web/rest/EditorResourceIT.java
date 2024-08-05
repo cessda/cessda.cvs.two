@@ -540,7 +540,7 @@ class EditorResourceIT {
         assertThat(versionUpdated.getVersionChanges()).isEqualTo(INIT_VERSION_CHANGES);
         // test with null version number and license id, should not change the licence and version number
         vocabularySnippetForEnSl.setLicenseId( null );
-        vocabularySnippetForEnSl.setVersionNumberFromString(null);
+        vocabularySnippetForEnSl.setVersionNumber( null );
         Version versionUpdatedAfterUpdate = updateVersionInfoTest(version);
         assertThat(versionUpdatedAfterUpdate.getLicenseId()).isEqualTo(license.getId());
         assertThat(versionUpdatedAfterUpdate.getNumber()).isEqualTo(version.getNumber());

@@ -15,15 +15,11 @@
  */
 package eu.cessda.cvs.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import eu.cessda.cvs.domain.Code;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.utils.HashFunction;
 import eu.cessda.cvs.utils.VersionNumber;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Lob;
@@ -329,24 +325,12 @@ public class CodeDTO implements Serializable {
         this.versionId = versionId;
     }
 
-    @JsonIgnore
     public VersionNumber getVersionNumber() {
         return versionNumber;
     }
 
-    @JsonGetter("versionNumber")
-    public String getVersionNumberAsString() {
-        return VersionNumber.toString(versionNumber);
-    }
-
-    @JsonIgnore
     public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
-    }
-
-    @JsonSetter("versionNumber")
-    public void setVersionNumber(String str) {
-        setVersionNumber(VersionNumber.fromString(str));
     }
 
     public String getTitleSq() {
