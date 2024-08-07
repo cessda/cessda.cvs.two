@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
-import {UntypedFormBuilder, Validators} from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 
-import {PasswordResetInitService} from './password-reset-init.service';
+import { PasswordResetInitService } from './password-reset-init.service';
 
 @Component({
   selector: 'jhi-password-reset-init',
-  templateUrl: './password-reset-init.component.html'
+  templateUrl: './password-reset-init.component.html',
 })
 export class PasswordResetInitComponent implements AfterViewInit {
   @ViewChild('email', { static: false })
@@ -28,10 +28,13 @@ export class PasswordResetInitComponent implements AfterViewInit {
 
   success = false;
   resetRequestForm = this.fb.group({
-    email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]]
+    email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
   });
 
-  constructor(private passwordResetInitService: PasswordResetInitService, private fb: UntypedFormBuilder) {}
+  constructor(
+    private passwordResetInitService: PasswordResetInitService,
+    private fb: FormBuilder,
+  ) {}
 
   ngAfterViewInit(): void {
     if (this.email) {
@@ -40,6 +43,6 @@ export class PasswordResetInitComponent implements AfterViewInit {
   }
 
   requestReset(): void {
-    this.passwordResetInitService.save(this.resetRequestForm.get(['email'])!.value).subscribe(() => (this.success = true));
+    this.passwordResetInitService.save(this.resetRequestForm.value.email!).subscribe(() => (this.success = true));
   }
 }

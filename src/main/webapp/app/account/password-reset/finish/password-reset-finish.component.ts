@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {UntypedFormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
-import {LoginModalService} from 'app/core/login/login-modal.service';
-import {PasswordResetFinishService} from './password-reset-finish.service';
+import { LoginModalService } from 'app/core/login/login-modal.service';
+import { PasswordResetFinishService } from './password-reset-finish.service';
 
 @Component({
   selector: 'jhi-password-reset-finish',
-  templateUrl: './password-reset-finish.component.html'
+  templateUrl: './password-reset-finish.component.html',
 })
 export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
   @ViewChild('newPassword', { static: false })
@@ -36,14 +36,14 @@ export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
 
   passwordForm = this.fb.group({
     newPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
-    confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]]
+    confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
   });
 
   constructor(
     private passwordResetFinishService: PasswordResetFinishService,
     private loginModalService: LoginModalService,
     private route: ActivatedRoute,
-    private fb: UntypedFormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -65,15 +65,16 @@ export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
     this.doNotMatch = false;
     this.error = false;
 
-    const newPassword = this.passwordForm.get(['newPassword'])!.value;
-    const confirmPassword = this.passwordForm.get(['confirmPassword'])!.value;
+    // Form validation passed - assert new passwords is valid
+    const newPassword = this.passwordForm.value.newPassword!;
+    const confirmPassword = this.passwordForm.value.confirmPassword;
 
     if (newPassword !== confirmPassword) {
       this.doNotMatch = true;
     } else {
       this.passwordResetFinishService.save(this.key, newPassword).subscribe(
         () => (this.success = true),
-        () => (this.error = true)
+        () => (this.error = true),
       );
     }
   }
