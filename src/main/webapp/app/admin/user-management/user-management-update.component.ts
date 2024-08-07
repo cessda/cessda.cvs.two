@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { LANGUAGES } from 'app/core/language/language.constants';
@@ -42,21 +42,21 @@ export class UserManagementUpdateComponent implements OnInit {
   selectedLanguage: string;
 
   editForm = this.fb.group({
-    id: [],
+    id: [''],
     login: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern('^[_.@A-Za-z0-9-]*')]],
     firstName: ['', [Validators.maxLength(50)]],
     lastName: ['', [Validators.maxLength(50)]],
     email: ['', [Validators.minLength(5), Validators.maxLength(254), Validators.email]],
-    activated: [],
-    langKey: [],
-    authorities: [],
+    activated: [false],
+    langKey: [''],
+    authorities: [['']],
   });
 
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
     private agencyService: AgencyService,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
   ) {
     this.selectedAgencyId = 1;
     this.selectedAgencyRole = 'ADMIN_TL';
@@ -72,8 +72,8 @@ export class UserManagementUpdateComponent implements OnInit {
           this.userAgencyToCompare(ua1) < this.userAgencyToCompare(ua2)
             ? -1
             : this.userAgencyToCompare(ua1) > this.userAgencyToCompare(ua2)
-            ? 1
-            : 0,
+              ? 1
+              : 0,
         );
 
         if (this.user.id === undefined) {
@@ -142,13 +142,13 @@ export class UserManagementUpdateComponent implements OnInit {
   }
 
   private updateUser(user: User): void {
-    user.login = this.editForm.get(['login'])!.value;
-    user.firstName = this.editForm.get(['firstName'])!.value;
-    user.lastName = this.editForm.get(['lastName'])!.value;
-    user.email = this.editForm.get(['email'])!.value;
-    user.activated = this.editForm.get(['activated'])!.value;
-    user.langKey = this.editForm.get(['langKey'])!.value;
-    user.authorities = this.editForm.get(['authorities'])!.value;
+    user.login = this.editForm.controls.login.value!;
+    user.firstName = this.editForm.controls.firstName.value!;
+    user.lastName = this.editForm.controls.lastName.value!;
+    user.email = this.editForm.controls.email.value!;
+    user.activated = this.editForm.controls.activated.value!;
+    user.langKey = this.editForm.controls.langKey.value!;
+    user.authorities = this.editForm.controls.authorities.value || [];
   }
 
   private onSaveSuccess(): void {
