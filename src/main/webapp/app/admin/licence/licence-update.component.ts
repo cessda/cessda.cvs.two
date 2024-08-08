@@ -15,7 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -38,23 +38,23 @@ export class LicenceUpdateComponent implements OnInit {
   };
 
   editForm = this.fb.group({
-    id: [],
-    name: [null, [Validators.required, Validators.maxLength(255)]],
-    link: [
+    id: new FormControl<number|null>(null),
+    name: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(255)]),
+    link: new FormControl<string | null>(
       null,
       [
         Validators.pattern(
           '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
         ),
       ],
-    ],
-    abbr: [null, [Validators.required, Validators.maxLength(100)]],
+    ),
+    abbr: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(100)]),
   });
 
   constructor(
     protected licenceService: LicenceService,
     protected activatedRoute: ActivatedRoute,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     protected fileUploadService: FileUploadService,
   ) {}
 

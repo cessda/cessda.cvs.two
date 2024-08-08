@@ -15,13 +15,14 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
 import { Resolver } from 'app/shared/model/resolver.model';
 import { ResolverService } from './resolver.service';
+import { ResourceType } from 'app/shared/model/enumerations/resource-type.model';
+import { ResolverType } from 'app/shared/model/enumerations/resolver-type.model';
 
 @Component({
   selector: 'jhi-resolver-update',
@@ -31,18 +32,18 @@ export class ResolverUpdateComponent implements OnInit {
   isSaving = false;
 
   editForm = this.fb.group({
-    id: [],
-    resourceId: [],
-    resourceType: [],
-    resourceUrl: [null, [Validators.required]],
-    resolverType: [],
-    resolverURI: [null, [Validators.required]],
+    id: new FormControl<number | null>(null),
+    resourceId: new FormControl<string | null>(null),
+    resourceType: new FormControl<ResourceType | null>(null),
+    resourceUrl: new FormControl<string | null>(null, Validators.required),
+    resolverType: new FormControl<ResolverType | null>(null),
+    resolverURI: new FormControl<string | null>(null, Validators.required),
   });
 
   constructor(
     protected resolverService: ResolverService,
     protected activatedRoute: ActivatedRoute,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -78,14 +79,12 @@ export class ResolverUpdateComponent implements OnInit {
 
   private createFromForm(): Resolver {
     return {
-      id: this.editForm.get(['id'])?.value,
-      resourceId: this.editForm.get(['resourceId'])?.value,
-      resourceType: this.editForm.get(['resourceType'])?.value,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      resourceUrl: this.editForm.get(['resourceUrl'])!.value,
-      resolverType: this.editForm.get(['resolverType'])?.value,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      resolverURI: this.editForm.get(['resolverURI'])!.value,
+      id: this.editForm.controls.id.value!,
+      resourceId: this.editForm.controls.resourceId.value!,
+      resourceType: this.editForm.controls.resourceType.value!,
+      resourceUrl: this.editForm.controls.resourceUrl.value!,
+      resolverType: this.editForm.controls.resolverType.value!,
+      resolverURI: this.editForm.controls.resolverURI.value!,
     };
   }
 
