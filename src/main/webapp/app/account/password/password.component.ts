@@ -30,7 +30,7 @@ export class PasswordComponent implements OnInit {
   error = false;
   success = false;
   account$?: Observable<Account | null>;
-  passwordForm = this.fb.group({
+  passwordForm = this.fb.nonNullable.group({
     currentPassword: ['', [Validators.required]],
     newPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
@@ -51,11 +51,10 @@ export class PasswordComponent implements OnInit {
     this.success = false;
     this.doNotMatch = false;
 
-    // Form validation passed - assert current and new passwords are valid
-    const currentPassword = this.passwordForm.value.currentPassword!;
-    const newPassword = this.passwordForm.value.newPassword!;
+    const currentPassword = this.passwordForm.controls.currentPassword.value;
+    const newPassword = this.passwordForm.controls.newPassword.value;
 
-    if (newPassword !== this.passwordForm.value.confirmPassword) {
+    if (newPassword !== this.passwordForm.controls.confirmPassword.value) {
       this.doNotMatch = true;
     } else {
       this.passwordService.save(newPassword, currentPassword).subscribe(
