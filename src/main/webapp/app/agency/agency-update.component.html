@@ -23,7 +23,7 @@
             <div>
                 <jhi-alert-error></jhi-alert-error>
 
-                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                <div class="form-group" [hidden]="!editForm.controls.id.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
@@ -32,13 +32,13 @@
                     <label class="form-control-label label-required" jhiTranslate="cvsApp.agency.name" for="field_name">Name</label>
                     <input type="text" class="form-control" name="name" id="field_name"
                            formControlName="name"/>
-                    <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+                    <div *ngIf="editForm.controls.name.invalid && (editForm.controls.name.dirty || editForm.controls.name.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.controls.name.errors?.required" jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('name')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
+                               *ngIf="editForm.controls.name.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
                         This field cannot be longer than 240 characters.
                         </small>
                     </div>
@@ -48,13 +48,13 @@
                     <label class="form-control-label label-required" jhiTranslate="cvsApp.agency.link" for="field_link">Link</label>
                     <input type="text" class="form-control" name="link" id="field_link"
                            formControlName="link"/>
-                    <div *ngIf="editForm.get('link')!.invalid && (editForm.get('link')!.dirty || editForm.get('link')!.touched)">
+                    <div *ngIf="editForm.controls.link.invalid && (editForm.controls.link.dirty || editForm.controls.link.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('link')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.controls.link.errors?.required" jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('link')?.errors?.pattern">
+                               *ngIf="editForm.controls.link.errors?.pattern">
                             Not a valid URL.
                         </small>
                     </div>
@@ -69,7 +69,7 @@
                 <div class="form-group">
                     <label class="form-control-label">Agency logo</label>
                     <br/>
-                    <img *ngIf="currentImage" [src]="'/content/images/agency/' + currentImage" alt="{{editForm.get('name')!.value}}" class="mh-60px"/>
+                    <img *ngIf="currentImage" [src]="'/content/images/agency/' + currentImage" alt="{{editForm.controls.name.value}}" class="mh-60px"/>
                     <div *ngIf="currentFileUpload" class="progress" [hidden]="progress.percentage === 100">
                         <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
                              attr.aria-valuenow="{{progress.percentage}}"
