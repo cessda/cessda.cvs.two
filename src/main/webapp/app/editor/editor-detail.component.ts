@@ -691,8 +691,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       versionId: this.version?.id,
       language: this.version?.language,
       itemType: this.version?.itemType,
-      versionNotes: this.editorDetailForm.get(['versionNotes'])!.value,
-      versionChanges: this.editorDetailForm.get(['versionChanges'])!.value,
+      versionNotes: this.editorDetailForm.controls.versionNotes!.value,
+      versionChanges: this.editorDetailForm.controls.versionChanges!.value,
     };
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
   }
@@ -806,14 +806,14 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   onVersionNotesEditorCreated(quill: Quill): void {
-    if (this.editorDetailForm.get(['versionNotes'])!.value) {
-      quill.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['versionNotes'])!.value);
+    if (this.editorDetailForm.controls.versionNotes!.value) {
+      quill.clipboard.dangerouslyPasteHTML(this.editorDetailForm.controls.versionNotes!.value);
     }
   }
 
   onVersionChangesEditorCreated(quill: Quill): void {
-    if (this.editorDetailForm.get(['versionChanges'])!.value) {
-      quill.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['versionChanges'])!.value);
+    if (this.editorDetailForm.controls.versionChanges!.value) {
+      quill.clipboard.dangerouslyPasteHTML(this.editorDetailForm.controls.versionChanges!.value);
     }
   }
 
