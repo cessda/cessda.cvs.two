@@ -18,7 +18,7 @@ import { Component, Input } from '@angular/core';
 import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
 import { JhiEventManager } from 'ng-jhipster';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { Account } from 'app/core/user/account.model';
 import { Comment } from 'app/shared/model/comment.model';
 import moment from 'moment';
@@ -49,7 +49,7 @@ export class EditorDetailCvCommentItemComponent {
   constructor(
     protected editorService: EditorService,
     protected eventManager: JhiEventManager,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
   ) {
     this.isSaving = false;
   }
@@ -86,12 +86,12 @@ export class EditorDetailCvCommentItemComponent {
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<Comment>>): void {
     result.subscribe(
-      response => this.onSaveSuccess(response.body!),
+      () => this.onSaveSuccess(),
       () => this.onSaveError(),
     );
   }
 
-  protected onSaveSuccess(newComment: Comment): void {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.isWriteComment = false;
     this.eventManager.broadcast('commentListModification');
