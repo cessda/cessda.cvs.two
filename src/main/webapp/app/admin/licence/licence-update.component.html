@@ -34,11 +34,11 @@
                            formControlName="name" placeholder="e.g. Creative Commons Attribution 4.0 International"/>
                     <div *ngIf="editForm.controls.name.invalid && (editForm.controls.name.dirty || editForm.controls.name.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.controls.name.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.controls.name.errors?.['required']" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
-                               *ngIf="editForm.controls.name.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                               *ngIf="editForm.controls.name.errors?.['maxlength']" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
                         This field cannot be longer than 255 characters.
                         </small>
                     </div>
@@ -50,11 +50,11 @@
                            formControlName="abbr" placeholder="e.g. CC BY"/>
                     <div *ngIf="editForm.controls.abbr.invalid && (editForm.controls.abbr.dirty || editForm.controls.abbr.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.controls.abbr.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.controls.abbr.errors?.['required']" jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
                         <small class="form-text text-danger"
-                               *ngIf="editForm.controls.abbr.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                               *ngIf="editForm.controls.abbr.errors?.['maxlength']" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
                             This field cannot be longer than 100 characters.
                         </small>
                     </div>
@@ -66,7 +66,7 @@
                            formControlName="link" placeholder="e.g. http://creativecommons.org/licenses/by/4.0/"/>
                     <div *ngIf="editForm.controls.link.invalid && (editForm.controls.link.dirty || editForm.controls.link.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.controls.link.errors?.pattern">
+                               *ngIf="editForm.controls.link.errors?.['pattern']">
                             Not a valid URL.
                         </small>
                     </div>

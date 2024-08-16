@@ -23,7 +23,7 @@
             <div>
                 <jhi-alert-error></jhi-alert-error>
 
-                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                <div class="form-group" [hidden]="!editForm.controls.id.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
@@ -48,9 +48,9 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.uri" for="field_uri">Uri</label>
                     <input type="text" class="form-control" name="uri" id="field_uri"
                            formControlName="uri"/>
-                    <div *ngIf="editForm.get('uri')!.invalid && (editForm.get('uri')!.dirty || editForm.get('uri')!.touched)">
+                    <div *ngIf="editForm.controls.uri.invalid && (editForm.controls.uri.dirty || editForm.controls.uri.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('uri')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
+                               *ngIf="editForm.controls.uri.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
                         This field cannot be longer than 240 characters.
                         </small>
                     </div>

@@ -47,7 +47,7 @@
                            formControlName="resourceUrl"/>
                     <div *ngIf="editForm.controls.resourceUrl.invalid && (editForm.controls.resourceUrl.dirty || editForm.controls.resourceUrl.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.controls.resourceUrl.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.controls.resourceUrl.errors?.['required']" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>
@@ -67,7 +67,7 @@
                            formControlName="resolverURI"/>
                     <div *ngIf="editForm.controls.resolverURI.invalid && (editForm.controls.resolverURI.dirty || editForm.controls.resolverURI.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.controls.resolverURI.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.controls.resolverURI.errors?.['required']" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                     </div>

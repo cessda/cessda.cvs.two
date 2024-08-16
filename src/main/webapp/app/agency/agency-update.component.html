@@ -108,9 +108,9 @@
                         <span>For example this URI configuration https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]/[VERSION]/[LANGUAGE],</span><br/>
                         <span>will generate URI https://vocabularies.cessda.eu/vocabulary/TopicClassification/1.0/en</span><br/>
                     </small>
-                    <div *ngIf="editForm.get('uri')!.invalid && (editForm.get('uri')!.dirty || editForm.get('uri')!.touched)">
+                    <div *ngIf="editForm.controls.uri.invalid && (editForm.controls.uri.dirty || editForm.controls.uri.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('uri')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                               *ngIf="editForm.controls.uri.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
                         This field cannot be longer than 255 characters.
                         </small>
                     </div>
@@ -125,9 +125,9 @@
                         <span>For example this URI configuration https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]_[CODE]/[VERSION]/[LANGUAGE],</span><br/>
                         <span>will generate URI https://vocabularies.cessda.eu/vocabulary/TopicClassification_Demography/1.0/en</span><br/>
                     </small>
-                    <div *ngIf="editForm.get('uriCode')!.invalid && (editForm.get('uriCode')!.dirty || editForm.get('uriCode')!.touched)">
+                    <div *ngIf="editForm.controls.uriCode.invalid && (editForm.controls.uriCode.dirty || editForm.controls.uriCode.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('uriCode')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                               *ngIf="editForm.controls.uriCode.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
                             This field cannot be longer than 255 characters.
                         </small>
                     </div>
@@ -137,9 +137,9 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.agency.canonicalUri" for="field_canonicalUri">Canonical Uri</label>
                     <input type="text" class="form-control" name="canonicalUri" id="field_canonicalUri"
                            formControlName="canonicalUri"/>
-                    <div *ngIf="editForm.get('canonicalUri')!.invalid && (editForm.get('canonicalUri')!.dirty || editForm.get('canonicalUri')!.touched)">
+                    <div *ngIf="editForm.controls.canonicalUri.invalid && (editForm.controls.canonicalUri.dirty || editForm.controls.canonicalUri.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('canonicalUri')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                               *ngIf="editForm.controls.canonicalUri.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
                         This field cannot be longer than 255 characters.
                         </small>
                     </div>
