@@ -15,7 +15,7 @@
  */
 import { ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed, inject } from '@angular/core/testing';
-import { UntypedFormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 
 import { CvsTestModule } from '../../../../test.module';
@@ -31,7 +31,7 @@ describe('Component Tests', () => {
       fixture = TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [PasswordResetInitComponent],
-        providers: [UntypedFormBuilder],
+        providers: [FormBuilder],
       })
         .overrideTemplate(PasswordResetInitComponent, '')
         .createComponent(PasswordResetInitComponent);

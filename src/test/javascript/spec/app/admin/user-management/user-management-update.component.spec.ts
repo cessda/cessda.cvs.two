@@ -15,7 +15,7 @@
  */
 import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
-import { UntypedFormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
@@ -39,7 +39,7 @@ describe('Component Tests', () => {
         imports: [CvsTestModule],
         declarations: [UserManagementUpdateComponent],
         providers: [
-          UntypedFormBuilder,
+          FormBuilder,
           {
             provide: ActivatedRoute,
             useValue: route,
