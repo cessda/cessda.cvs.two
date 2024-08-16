@@ -21,7 +21,7 @@ import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { JhiEventManager } from 'ng-jhipster';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AccountService } from 'app/core/auth/account.service';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Account } from 'app/core/user/account.model';
 import { CODE_ALREADY_EXIST_TYPE } from 'app/shared';
@@ -53,21 +53,34 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   conceptsToPlace: Concept[] = [];
   conceptsToPlaceTemp: Concept[] = [];
 
-  codeAddEditForm = this.fb.group({
-    notation: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(240), Validators.pattern('^[_+A-Za-z0-9-]*$')]],
-    title: ['', [Validators.required]],
+  private readonly formControls = {
+    notation: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(2), Validators.maxLength(240), Validators.pattern('^[_+A-Za-z0-9-]*$')],
+    }),
+    title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     definition: ['', []],
-    codeInsertMode: [],
-    changeType: ['', [Validators.required]],
-    changeDesc: [],
-  });
+    codeInsertMode: new FormControl(''),
+    changeType: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    changeDesc: new FormControl(''),
+  };
+
+  // Make 'notation', 'codeInsertMode', 'changeType' and 'changeDesc' optional
+  codeAddEditForm = this.fb.group<
+    Omit<typeof this.formControls, 'notation' | 'codeInsertMode' | 'changeType' | 'changeDesc'> & {
+      notation?: FormControl<string>;
+      codeInsertMode?: FormControl<string | null>;
+      changeType?: FormControl<string>;
+      changeDesc?: FormControl<string | null>;
+    }
+  >(this.formControls);
 
   constructor(
     private accountService: AccountService,
     protected editorService: EditorService,
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private router: Router,
     private modalService: NgbModal,
     private _ngZone: NgZone,
@@ -149,70 +162,70 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   }
 
   private createFromForm(): CodeSnippet {
-    if (this.isNew) {
-      if (this.conceptParam) {
-        this.codeInsertMode = this.codeAddEditForm.get('codeInsertMode')!.value;
-      }
+    if (this.conceptParam) {
+      this.codeInsertMode = this.codeAddEditForm.controls.codeInsertMode!.value!;
+    }
 
-      const pos = this.calculatePosition();
-      const [insertionRefConceptId, relPosToRefConcept] = this.getConceptInsertionAddress();
+    const pos = this.calculatePosition();
+    const [insertionRefConceptId, relPosToRefConcept] = this.getConceptInsertionAddress();
 
-      const codeSnippet: CodeSnippet = {
-        actionType: ActionType.CREATE_CODE,
-        versionId: this.versionParam.id,
-        introducedInVersionId: this.versionParam.id,
-        title: this.codeAddEditForm.get(['title'])!.value,
-        definition: this.codeAddEditForm.get(['definition'])!.value,
-        position: pos,
-        insertionRefConceptId,
-        relPosToRefConcept,
-      };
-      if (this.codeInsertMode === 'INSERT_AS_ROOT') {
-        codeSnippet.notation = this.codeAddEditForm.get(['notation'])!.value;
-      } else if (this.codeInsertMode === 'INSERT_AS_CHILD') {
-        codeSnippet.parent = this.conceptParam.notation;
-        codeSnippet.notation = codeSnippet.parent + '.' + this.codeAddEditForm.get(['notation'])!.value;
-      } else {
-        codeSnippet.parent = this.conceptParam.parent;
-        codeSnippet.notation =
-          (codeSnippet.parent !== undefined ? codeSnippet.parent + '.' : '') + this.codeAddEditForm.get(['notation'])!.value;
-      }
-      codeSnippet.changeType = 'Code added';
-      codeSnippet.changeDesc = codeSnippet.notation;
-      return codeSnippet;
+    const codeSnippet: CodeSnippet = {
+      actionType: ActionType.CREATE_CODE,
+      versionId: this.versionParam.id,
+      introducedInVersionId: this.versionParam.id,
+      title: this.codeAddEditForm.controls.title.value,
+      definition: this.codeAddEditForm.controls.definition.value || undefined,
+      position: pos,
+      insertionRefConceptId,
+      relPosToRefConcept,
+    };
+    if (this.codeInsertMode === 'INSERT_AS_ROOT') {
+      codeSnippet.notation = this.codeAddEditForm.controls.notation?.value;
+    } else if (this.codeInsertMode === 'INSERT_AS_CHILD') {
+      codeSnippet.parent = this.conceptParam.notation;
+      codeSnippet.notation = codeSnippet.parent + '.' + this.codeAddEditForm.controls.notation!.value;
     } else {
-      if (this.isSlForm) {
-        const cdSnippet: CodeSnippet = {
-          ...this.codeSnippet,
-          actionType: ActionType.EDIT_CODE,
-          conceptId: this.conceptParam.id,
-          versionId: this.versionParam.id,
-          notation: this.codeAddEditForm.get(['notation'])!.value,
-          title: this.codeAddEditForm.get(['title'])!.value,
-          definition: this.codeAddEditForm.get(['definition'])!.value,
-          changeType: this.codeAddEditForm.get('changeType') ? this.codeAddEditForm.get('changeType')!.value : undefined,
-          changeDesc: this.codeAddEditForm.get('changeDesc') ? this.codeAddEditForm.get('changeDesc')!.value : undefined,
-        };
-        if (this.conceptParam.parent) {
-          cdSnippet.notation = this.conceptParam.parent + '.' + this.codeAddEditForm.get(['notation'])!.value;
-        }
-        return cdSnippet;
-      } else {
-        const cdSnippet: CodeSnippet = {
-          ...this.codeSnippet,
-          actionType: ActionType.ADD_TL_CODE,
-          conceptId: this.conceptParam.id,
-          versionId: this.versionParam.id,
-          title: this.codeAddEditForm.get(['title'])!.value,
-          definition: this.codeAddEditForm.get(['definition'])!.value,
-          changeType: this.codeAddEditForm.get('changeType') ? this.codeAddEditForm.get('changeType')!.value : 'Code translation added',
-          changeDesc: this.codeAddEditForm.get('changeDesc') ? this.codeAddEditForm.get('changeDesc')!.value : this.conceptParam.notation,
-        };
-        if (this.conceptParam.title) {
-          cdSnippet.actionType = ActionType.EDIT_TL_CODE;
-        }
-        return cdSnippet;
+      codeSnippet.parent = this.conceptParam.parent;
+      codeSnippet.notation =
+        (codeSnippet.parent !== undefined ? codeSnippet.parent + '.' : '') + this.codeAddEditForm.controls.notation!.value;
+    }
+    codeSnippet.changeType = 'Code added';
+    codeSnippet.changeDesc = codeSnippet.notation;
+    return codeSnippet;
+  }
+
+  private updateFromForm(): CodeSnippet {
+    if (this.isSlForm) {
+      const cdSnippet: CodeSnippet = {
+        ...this.codeSnippet,
+        actionType: ActionType.EDIT_CODE,
+        conceptId: this.conceptParam.id,
+        versionId: this.versionParam.id,
+        notation: this.codeAddEditForm.controls.notation?.value,
+        title: this.codeAddEditForm.controls.title.value,
+        definition: this.codeAddEditForm.controls.definition.value || undefined,
+        changeType: this.codeAddEditForm.controls.changeType?.value || undefined,
+        changeDesc: this.codeAddEditForm.controls.changeDesc?.value || undefined,
+      };
+      if (this.conceptParam.parent) {
+        cdSnippet.notation = this.conceptParam.parent + '.' + this.codeAddEditForm.controls.notation?.value;
       }
+      return cdSnippet;
+    } else {
+      const cdSnippet: CodeSnippet = {
+        ...this.codeSnippet,
+        actionType: ActionType.ADD_TL_CODE,
+        conceptId: this.conceptParam.id,
+        versionId: this.versionParam.id,
+        title: this.codeAddEditForm.controls.title.value,
+        definition: this.codeAddEditForm.controls.definition.value || undefined,
+        changeType: this.codeAddEditForm.controls.changeType?.value || 'Code translation added',
+        changeDesc: this.codeAddEditForm.controls.changeDesc?.value || this.conceptParam.notation,
+      };
+      if (this.conceptParam.title) {
+        cdSnippet.actionType = ActionType.EDIT_TL_CODE;
+      }
+      return cdSnippet;
     }
   }
 
@@ -266,10 +279,11 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     if (this.codeAddEditForm.valid) {
       this.isSaving = true;
       this.errorCodeExists = false;
-      this.codeSnippet = this.createFromForm();
       if (this.isNew) {
+        this.codeSnippet = this.createFromForm();
         this.subscribeToSaveResponse(this.editorService.createCode(this.codeSnippet));
       } else {
+        this.codeSnippet = this.updateFromForm();
         this.subscribeToSaveResponse(this.editorService.updateCode(this.codeSnippet));
       }
     }
@@ -311,12 +325,12 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
 
     this.conceptsToPlace = [...(this.conceptsToPlaceTemp || [])]; // shallow copy for preview
 
-    this.codeInsertMode = this.codeAddEditForm.get('codeInsertMode')?.value;
+    this.codeInsertMode = this.codeAddEditForm.controls.codeInsertMode?.value || undefined;
 
     const pos = this.calculatePosition();
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const notationFormValue: string = this.codeAddEditForm.get(['notation'])!.value;
+    const notationFormValue: string = this.codeAddEditForm.controls.notation!.value;
 
     let parent: string | undefined;
     let notation: string;

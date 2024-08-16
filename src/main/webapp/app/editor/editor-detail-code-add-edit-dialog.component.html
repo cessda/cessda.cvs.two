@@ -53,26 +53,26 @@
                         </div>
                         <span *ngIf="!isNew && conceptParam.parent">{{conceptParam.parent}}.</span>
                         <input type="text" class="form-control" id="field_notation" name="notation" formControlName="notation" (input)="updateTreePreview()"/>
-                        <div *ngIf="codeAddEditForm.get('notation')!.invalid && (codeAddEditForm.get('notation')!.dirty || codeAddEditForm.get('notation')!.touched) || isSubmitting">
+                        <div *ngIf="codeAddEditForm.controls.notation!.invalid && (codeAddEditForm.controls.notation!.dirty || codeAddEditForm.controls.notation!.touched) || isSubmitting">
                             <small class="form-text text-danger"
-                                   *ngIf="codeAddEditForm.get('notation')?.errors?.required" jhiTranslate="entity.validation.required">
+                                   *ngIf="codeAddEditForm.controls.notation?.errors?.required" jhiTranslate="entity.validation.required">
                                 This field is required.
                             </small>
 
                             <small class="form-text text-danger"
-                                   *ngIf="codeAddEditForm.get('notation')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength"
+                                   *ngIf="codeAddEditForm.controls.notation?.errors?.maxlength" jhiTranslate="entity.validation.maxlength"
                                    [translateValues]="{max: 240}">
                                 This field cannot be longer than 240 characters.
                             </small>
 
                             <small class="form-text text-danger"
-                                   *ngIf="codeAddEditForm.get('notation')?.errors?.minlength" jhiTranslate="entity.validation.minlength"
+                                   *ngIf="codeAddEditForm.controls.notation?.errors?.minlength" jhiTranslate="entity.validation.minlength"
                                    [translateValues]="{min: 2}">
                                 This field is required to be at least 2 characters.
                             </small>
 
                             <small class="form-text text-danger"
-                                   *ngIf="codeAddEditForm.get('notation')?.errors?.pattern">
+                                   *ngIf="codeAddEditForm.controls.notation?.errors?.pattern">
                                 Code can only contain letters (a-z A-Z), digits (0-9) and limited symbols ( +-_).
                             </small>
                         </div>
@@ -111,9 +111,9 @@
                 </div>
                 <div class="detail-column">
                     <input type="text" class="form-control" id="field_title" name="title" formControlName="title"/>
-                    <div *ngIf="codeAddEditForm.get('title')!.invalid && (codeAddEditForm.get('title')!.dirty || codeAddEditForm.get('title')!.touched) || isSubmitting">
+                    <div *ngIf="codeAddEditForm.controls.title.invalid && (codeAddEditForm.controls.title.dirty || codeAddEditForm.controls.title.touched) || isSubmitting">
                         <small class="form-text text-danger"
-                               *ngIf="codeAddEditForm.get('title')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="codeAddEditForm.controls.title.errors?.required" jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
                     </div>
