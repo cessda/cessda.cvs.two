@@ -18,9 +18,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
-import { Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { Comment } from 'app/shared/model/comment.model';
@@ -48,7 +47,7 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
   };
 
   commentForm = this.fb.group({
-    content: ['', [Validators.required]],
+    content: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
 
   constructor(
@@ -56,9 +55,8 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
     private commentService: CommentService,
     protected editorService: EditorService,
     public activeModal: NgbActiveModal,
-    private router: Router,
     protected eventManager: JhiEventManager,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private _ngZone: NgZone,
   ) {
     this.isSaving = false;
@@ -79,7 +77,7 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
     this._ngZone.runOutsideAngular(() => {
       setTimeout(() => {
         const element = document.querySelector('#commentInput');
-        element!.scrollIntoView({ behavior: 'smooth' });
+        element?.scrollIntoView({ behavior: 'smooth' });
       }, 500);
     });
     this.eventSubscriber = this.eventManager.subscribe('commentListModification', () => this.loadComment());
@@ -100,7 +98,7 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
     const newComment = {
       info: this.account.lastName + (this.account.firstName ? ', ' + this.account.firstName : ''),
       userId: this.account.id,
-      content: this.commentForm.get(['content'])!.value,
+      content: this.commentForm.controls.content.value,
       versionId: this.versionParam.id,
     };
     this.subscribeToSaveResponse(this.editorService.createComment(newComment));
@@ -115,7 +113,7 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
 
   protected onSaveSuccess(newComment: Comment): void {
     this.isSaving = false;
-    this.versionParam.comments!.push(newComment);
+    this.versionParam.comments.push(newComment);
     this.commentForm.patchValue({ content: '' });
     this.isWriteComment = false;
     this.loadComment();
