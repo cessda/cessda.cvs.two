@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="col-md-12 justify-content-center" *ngIf="isSubmitting">
-                <div class="alert alert-danger" *ngIf="codeAddEditForm.get('changeType')?.errors?.required">
+                <div class="alert alert-danger" *ngIf="codeAddEditForm.controls.changeType?.errors?.required">
                     <strong>You need to select 'Change type' before saving.</strong> Make only one change at a time.
                 </div>
             </div>
@@ -47,9 +47,9 @@
                     </div>
                     <div *ngIf="isSlForm" class="detail-column">
                         <div *ngIf="isNew && isEnablePreview">
-                            <span *ngIf="codeAddEditForm.get('codeInsertMode')!.value === 'INSERT_AS_CHILD'">{{conceptParam.notation}}.</span>
-                            <span *ngIf="conceptParam && conceptParam.parent  && (codeAddEditForm.get('codeInsertMode')!.value === 'INSERT_AFTER' ||
-                                codeAddEditForm.get('codeInsertMode')!.value === 'INSERT_BEFORE')">{{conceptParam.parent}}.</span>
+                            <span *ngIf="codeAddEditForm.controls.codeInsertMode?.value === 'INSERT_AS_CHILD'">{{conceptParam.notation}}.</span>
+                            <span *ngIf="conceptParam && conceptParam.parent  && (codeAddEditForm.controls.codeInsertMode?.value === 'INSERT_AFTER' ||
+                                codeAddEditForm.controls.codeInsertMode?.value === 'INSERT_BEFORE')">{{conceptParam.parent}}.</span>
                         </div>
                         <span *ngIf="!isNew && conceptParam.parent">{{conceptParam.parent}}.</span>
                         <input type="text" class="form-control" id="field_notation" name="notation" formControlName="notation" (input)="updateTreePreview()"/>
@@ -168,7 +168,7 @@
             </div>
         </div>
 
-        <div *ngIf="codeAddEditForm.get('changeType')" class="row-content">
+        <div *ngIf="codeAddEditForm.controls.changeType" class="row-content">
             <div class="card bg-light w-100">
                 <div class="card-header">
                     Change notes
@@ -187,9 +187,9 @@
                                 <option value="Code definition rephrased">Code definition rephrased</option>
                                 <option value="Code definition added">Code definition added</option>
                             </select>
-                            <div *ngIf="codeAddEditForm.get('changeType')!.invalid && (codeAddEditForm.get('changeType')!.dirty || codeAddEditForm.get('changeType')!.touched) || isSubmitting">
+                            <div *ngIf="codeAddEditForm.controls.changeType.invalid && (codeAddEditForm.controls.changeType.dirty || codeAddEditForm.controls.changeType.touched) || isSubmitting">
                                 <small class="form-text text-danger"
-                                       *ngIf="codeAddEditForm.get('changeType')?.errors?.required" jhiTranslate="entity.validation.required">
+                                       *ngIf="codeAddEditForm.controls.changeType.errors?.required" jhiTranslate="entity.validation.required">
                                     This field is required.
                                 </small>
                             </div>

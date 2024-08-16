@@ -661,8 +661,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       versionId: this.version!.id,
       language: this.version!.language,
       itemType: this.version!.itemType,
-      translateAgency: this.editorDetailForm.get(['translateAgency'])!.value,
-      translateAgencyLink: this.editorDetailForm.get(['translateAgencyLink'])!.value,
+      translateAgency: this.editorDetailForm.controls.translateAgency.value,
+      translateAgencyLink: this.editorDetailForm.controls.translateAgencyLink.value,
     };
 
     if (this.editorDetailForm.valid) {
@@ -678,7 +678,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       versionId: this.version!.id,
       language: this.version!.language,
       itemType: this.version!.itemType,
-      notes: this.editorDetailForm.get(['notes'])!.value,
+      notes: this.editorDetailForm.controls.notes.value,
     };
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
   }

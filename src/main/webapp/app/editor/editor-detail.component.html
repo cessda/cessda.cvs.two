@@ -314,7 +314,7 @@
                             <span *ngIf="vocabulary!.selectedLang !== vocabulary!.sourceLanguage">CV notes ({{vocabulary!.selectedLang}})</span>
                         </div>
                         <div class="detail-column">
-                            <div *ngIf="!isNotesEdit" [innerHTML]="editorDetailForm.get(['notes'])!.value ? editorDetailForm.get(['notes'])!.value: ''"></div>
+                            <div *ngIf="!isNotesEdit" [innerHTML]="editorDetailForm.controls.notes.value ? editorDetailForm.controls.notes.value: ''"></div>
 
                             <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_NOTE_CV', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}">
                                 <a *ngIf="!isNotesEdit" class="btn btn-sm btn-primary" ngbTooltip="edit notes" href="javascript:void(0);" (click)="isNotesEdit = !isNotesEdit">

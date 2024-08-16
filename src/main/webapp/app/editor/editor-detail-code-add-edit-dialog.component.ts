@@ -254,8 +254,8 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   }
 
   confirmChange(): void {
-    if (this.codeAddEditForm.valid && this.codeAddEditForm.get('changeType') != null) {
-      if (this.codeAddEditForm.get('changeType')!.value === 'Code value changed') {
+    if (this.codeAddEditForm.valid && this.codeAddEditForm.controls.changeType) {
+      if (this.codeAddEditForm.controls.changeType.value === 'Code value changed') {
         const ngbModalRef: NgbModalRef = this.modalService.open(EditorDetailCvAddEditConfirmModalComponent);
         ngbModalRef.result
           .then(result => {
