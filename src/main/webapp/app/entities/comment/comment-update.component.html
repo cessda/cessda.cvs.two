@@ -32,9 +32,9 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.comment.info" for="field_info">Info</label>
                     <input type="text" class="form-control" name="info" id="field_info"
                            formControlName="info"/>
-                    <div *ngIf="editForm.get('info')!.invalid && (editForm.get('info')!.dirty || editForm.get('info')!.touched)">
+                    <div *ngIf="editForm.controls.info.invalid && (editForm.controls.info.dirty || editForm.controls.info.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('info')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                               *ngIf="editForm.controls.info.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
                         This field cannot be longer than 255 characters.
                         </small>
                     </div>
