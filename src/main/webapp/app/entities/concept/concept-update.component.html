@@ -38,13 +38,13 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.concept.notation" for="field_notation">Notation</label>
                     <input type="text" class="form-control" name="notation" id="field_notation"
                            formControlName="notation"/>
-                    <div *ngIf="editForm.get('notation')!.invalid && (editForm.get('notation')!.dirty || editForm.get('notation')!.touched)">
+                    <div *ngIf="editForm.controls.notation.invalid && (editForm.controls.notation.dirty || editForm.controls.notation.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('notation')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.controls.notation.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('notation')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
+                               *ngIf="editForm.controls.notation.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
                         This field cannot be longer than 240 characters.
                         </small>
                     </div>
@@ -78,9 +78,9 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.concept.parent" for="field_parent">Parent</label>
                     <input type="text" class="form-control" name="parent" id="field_parent"
                            formControlName="parent"/>
-                    <div *ngIf="editForm.get('parent')!.invalid && (editForm.get('parent')!.dirty || editForm.get('parent')!.touched)">
+                    <div *ngIf="editForm.controls.parent.invalid && (editForm.controls.parent.dirty || editForm.controls.parent.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('parent')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
+                               *ngIf="editForm.controls.parent.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
                         This field cannot be longer than 240 characters.
                         </small>
                     </div>
