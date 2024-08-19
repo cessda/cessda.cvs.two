@@ -32,13 +32,13 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.metadataField.metadataKey" for="field_metadataKey">Metadata Key</label>
                     <input type="text" class="form-control" name="metadataKey" id="field_metadataKey"
                            formControlName="metadataKey"/>
-                    <div *ngIf="editForm.get('metadataKey')!.invalid && (editForm.get('metadataKey')!.dirty || editForm.get('metadataKey')!.touched)">
+                    <div *ngIf="editForm.controls.metadataKey.invalid && (editForm.controls.metadataKey.dirty || editForm.controls.metadataKey.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('metadataKey')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.controls.metadataKey.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('metadataKey')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
+                               *ngIf="editForm.controls.metadataKey.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
                         This field cannot be longer than 240 characters.
                         </small>
                     </div>
