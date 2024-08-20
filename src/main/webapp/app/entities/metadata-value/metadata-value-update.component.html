@@ -32,9 +32,9 @@
                     <label class="form-control-label" for="field_identifier">Identifier</label>
                     <input type="text" class="form-control" name="identifier" id="field_identifier"
                            formControlName="identifier"/>
-                    <div *ngIf="editForm.get('identifier')!.invalid && (editForm.get('identifier')!.dirty || editForm.get('identifier')!.touched)">
+                    <div *ngIf="editForm.controls.identifier.invalid && (editForm.controls.identifier.dirty || editForm.controls.identifier.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('identifier')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
+                               *ngIf="editForm.controls.identifier.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
                             This field cannot be longer than 240 characters.
                         </small>
                     </div>
