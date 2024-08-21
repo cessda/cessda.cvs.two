@@ -16,7 +16,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { UntypedFormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -24,6 +24,7 @@ import { UserAgency } from 'app/shared/model/user-agency.model';
 import { UserAgencyService } from './user-agency.service';
 import { Agency } from 'app/shared/model/agency.model';
 import { AgencyService } from 'app/agency/agency.service';
+import { AgencyRole } from 'app/shared/model/enumerations/agency-role.model';
 
 @Component({
   selector: 'jhi-user-agency-update',
@@ -34,17 +35,17 @@ export class UserAgencyUpdateComponent implements OnInit {
   agencies: Agency[] = [];
 
   editForm = this.fb.group({
-    id: [],
-    agencyRole: [],
-    language: [],
-    agencyId: [],
+    id: new FormControl<number | null>(null),
+    agencyRole: new FormControl<AgencyRole | null>(null),
+    language: new FormControl<string | null>(null),
+    agencyId: new FormControl<number | null>(null),
   });
 
   constructor(
     protected userAgencyService: UserAgencyService,
     protected agencyService: AgencyService,
     protected activatedRoute: ActivatedRoute,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -80,10 +81,10 @@ export class UserAgencyUpdateComponent implements OnInit {
 
   private createFromForm(): UserAgency {
     return {
-      id: this.editForm.get(['id'])!.value,
-      agencyRole: this.editForm.get(['agencyRole'])!.value,
-      language: this.editForm.get(['language'])!.value,
-      agencyId: this.editForm.get(['agencyId'])!.value,
+      id: this.editForm.controls.id.value !== null ? this.editForm.controls.id.value : undefined,
+      agencyRole: this.editForm.controls.agencyRole.value || undefined,
+      language: this.editForm.controls.language.value || undefined,
+      agencyId: this.editForm.controls.agencyId.value !== null ? this.editForm.controls.agencyId.value : undefined,
     };
   }
 
