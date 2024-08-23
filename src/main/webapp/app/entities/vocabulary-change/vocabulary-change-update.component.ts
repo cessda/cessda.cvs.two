@@ -15,7 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
@@ -24,6 +24,7 @@ import { VocabularyChange } from 'app/shared/model/vocabulary-change.model';
 import { VocabularyChangeService } from './vocabulary-change.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
+import { Moment } from 'moment';
 
 @Component({
   selector: 'jhi-vocabulary-change-update',
@@ -34,14 +35,14 @@ export class VocabularyChangeUpdateComponent implements OnInit {
   dateDp: NgbInputDatepicker | undefined;
 
   editForm = this.fb.group({
-    id: [],
-    vocabularyId: [],
-    versionId: [],
-    changeType: [null, [Validators.required, Validators.maxLength(60)]],
-    description: [],
-    userId: [],
-    userName: [null, [Validators.maxLength(120)]],
-    date: [],
+    id: new FormControl<number | null>(null),
+    vocabularyId: new FormControl<number | null>(null),
+    versionId: new FormControl<number | null>(null),
+    changeType: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(60)] }),
+    description: new FormControl<string | null>(null),
+    userId: new FormControl<number | null>(null),
+    userName: new FormControl<string | null>(null, [Validators.maxLength(120)]),
+    date: new FormControl<Moment | null>(null),
   });
 
   constructor(
@@ -49,7 +50,7 @@ export class VocabularyChangeUpdateComponent implements OnInit {
     protected eventManager: JhiEventManager,
     protected vocabularyChangeService: VocabularyChangeService,
     protected activatedRoute: ActivatedRoute,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -93,14 +94,14 @@ export class VocabularyChangeUpdateComponent implements OnInit {
 
   private createFromForm(): VocabularyChange {
     return {
-      id: this.editForm.get(['id'])!.value,
-      vocabularyId: this.editForm.get(['vocabularyId'])!.value,
-      versionId: this.editForm.get(['versionId'])!.value,
-      changeType: this.editForm.get(['changeType'])!.value,
-      description: this.editForm.get(['description'])!.value,
-      userId: this.editForm.get(['userId'])!.value,
-      userName: this.editForm.get(['userName'])!.value,
-      date: this.editForm.get(['date'])!.value,
+      id: this.editForm.controls.id.value !== null ? this.editForm.controls.id.value : undefined,
+      vocabularyId: this.editForm.controls.vocabularyId.value !== null ? this.editForm.controls.vocabularyId.value : undefined,
+      versionId: this.editForm.controls.versionId.value !== null ? this.editForm.controls.versionId.value : undefined,
+      changeType: this.editForm.controls.changeType.value,
+      description: this.editForm.controls.description.value || undefined,
+      userId: this.editForm.controls.userId.value !== null ? this.editForm.controls.userId.value : undefined,
+      userName: this.editForm.controls.userName.value || undefined,
+      date: this.editForm.controls.date.value || undefined,
     };
   }
 
