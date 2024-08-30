@@ -85,6 +85,11 @@ p {
   min-height: 100%;
 }
 
+// Needed to prevent the backdrop overlaying the login modal - see https://github.com/ng-bootstrap/ng-bootstrap/issues/2686
+ngb-modal-backdrop {
+  z-index: 1050 !important;
+}
+
 /* ==========================================================================
 Browser Upgrade Prompt
 ========================================================================== */

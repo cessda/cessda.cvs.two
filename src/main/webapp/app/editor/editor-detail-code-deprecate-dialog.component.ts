@@ -19,7 +19,7 @@ import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
 import { Concept } from 'app/shared/model/concept.model';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { CodeSnippet } from 'app/shared/model/code-snippet.model';
@@ -53,7 +53,7 @@ export class EditorDetailCodeDeprecateDialogComponent {
     public activeModal: NgbActiveModal,
     private router: Router,
     protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
   ) {
     this.isConfirmedDeprecation = false;
     this.isConfirmedReplacementYes = false;

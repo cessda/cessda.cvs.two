@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
+import {UntypedFormBuilder, Validators} from '@angular/forms';
 import {JhiLanguageService} from 'ng-jhipster';
 
 import {AccountService} from 'app/core/auth/account.service';
@@ -36,7 +36,7 @@ export class SettingsComponent implements OnInit {
     langKey: [undefined]
   });
 
-  constructor(private accountService: AccountService, private fb: FormBuilder, private languageService: JhiLanguageService) {}
+  constructor(private accountService: AccountService, private fb: UntypedFormBuilder, private languageService: JhiLanguageService) {}
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {

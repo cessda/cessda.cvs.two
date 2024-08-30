@@ -18,7 +18,7 @@ import { Component, Input } from '@angular/core';
 import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
 import { JhiEventManager } from 'ng-jhipster';
-import { FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, Validators } from '@angular/forms';
 import { Account } from 'app/core/user/account.model';
 import { Comment } from 'app/shared/model/comment.model';
 import moment from 'moment';
@@ -49,7 +49,7 @@ export class EditorDetailCvCommentItemComponent {
   constructor(
     protected editorService: EditorService,
     protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
   ) {
     this.isSaving = false;
   }

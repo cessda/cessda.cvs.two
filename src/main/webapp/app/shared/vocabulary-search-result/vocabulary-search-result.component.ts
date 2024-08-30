@@ -17,7 +17,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { EditorService } from 'app/editor/editor.service';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Account } from 'app/core/user/account.model';
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
@@ -71,7 +71,7 @@ export class VocabularySearchResultComponent implements OnInit {
   isFilterCollapse = false;
   isActionCollapse = false;
 
-  searchForm: FormGroup;
+  searchForm: UntypedFormGroup;
 
   constructor(
     private accountService: AccountService,
@@ -82,7 +82,7 @@ export class VocabularySearchResultComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private eventManager: JhiEventManager,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
   ) {
     this.searchForm = this.fb.group({

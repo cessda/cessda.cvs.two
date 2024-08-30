@@ -22,7 +22,7 @@ import { Vocabulary, createNewVocabulary } from 'app/shared/model/vocabulary.mod
 import { Version } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { HomeService } from 'app/home/home.service';
 import { RouteEventsService, VocabularyLanguageFromKeyPipe } from 'app/shared';
 import { DiffContent } from 'ngx-text-diff/lib/ngx-text-diff.model';
@@ -85,7 +85,7 @@ export class HomeDetailComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected homeService: HomeService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private routeEventsService: RouteEventsService,
     private _ngZone: NgZone,
     protected eventManager: JhiEventManager,
