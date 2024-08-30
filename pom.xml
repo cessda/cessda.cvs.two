@@ -84,7 +84,7 @@
         <!-- Plugin versions -->
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
         <maven-idea-plugin.version>2.2.1</maven-idea-plugin.version>
-        <maven-checkstyle.version>3.4.0</maven-checkstyle.version>
+        <maven-checkstyle.version>3.5.0</maven-checkstyle.version>
         <checkstyle.version>10.17.0</checkstyle.version>
         <spring-nohttp-checkstyle.version>0.0.11</spring-nohttp-checkstyle.version>
         <frontend-maven-plugin.version>1.15.0</frontend-maven-plugin.version>
