@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
@@ -25,7 +26,6 @@ export interface GuinessCompatibleSpy extends jasmine.Spy {
 }
 
 export class SpyObject {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/explicit-module-boundary-types
   constructor(type?: any) {
     if (type) {
       Object.keys(type.prototype).forEach(prop => {

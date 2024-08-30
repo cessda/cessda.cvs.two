@@ -35,15 +35,15 @@ pipeline {
                         }
                     }
                 }
-                stage('Lint Angular') {
-                    stage {
-                        sh 'npm run lint -- --format checkstyle --output-file target/eslint/report.xml'
+                stage('Lint Project') {
+                    steps {
+                        sh 'npm run lint -- --format checkstyle --output-file target/eslint-reports/report.xml'
                     }
                     post {
-						always {
-							recordIssues(tools: [esLint(pattern: 'target/eslint/report.xml')])
-						}
-					}
+                        always {
+                            recordIssues(tools: [esLint(pattern: 'target/eslint-reports/report.xml')])
+                        }
+                    }
                 }
                 stage('Compile Angular') {
                     steps {
