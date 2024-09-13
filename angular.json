@@ -31,6 +31,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
+              "moment",
               "quill",
               "quill-better-table",
               "quill-blot-formatter"
