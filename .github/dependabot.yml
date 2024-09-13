@@ -39,3 +39,6 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-patch"]
+      # Ignore logstash-logback-encoder dependency updates beyond version 7.0
+      - dependency-name: "net.logstash.logback:logstash-logback-encoder"
+        versions: ["[7.0)"]
