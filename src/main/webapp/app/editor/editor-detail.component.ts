@@ -562,10 +562,6 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   openAddEditCodePopup(isNew: boolean, codeInsertMode?: string): void {
-    if (!this.concept) {
-      throw new TypeError('concept was null');
-    }
-
     if (!this.version) {
       throw new TypeError('version was null');
     }

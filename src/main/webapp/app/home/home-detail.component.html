@@ -191,25 +191,24 @@
             <!-- Details  -->
             <div class="content-details">
                 <!--tabs-->
-                <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" formControlName="tabSelected" #detailTab id="detailTab">
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="detail"> Details
-                    </label>
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="version"> Versions
-                    </label>
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="identity"> Identity and general
-                    </label>
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="usage"> Usage
-                    </label>
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="license"> Licence and citation
-                    </label>
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="export"> Export/Download
-                    </label>
+                <div class="btn-group btn-group-toggle" role="group" formControlName="tabSelected" #detailTab id="detailTab">
+                    <input type="radio" formControlName="tabSelected" value="detail" class="btn-check" id="detailTabButton">
+                    <label class="btn btn-outline-primary" for="detailTabButton">Details</label>
+
+                    <input type="radio" formControlName="tabSelected" value="version" class="btn-check" id="versionTabButton">
+                    <label class="btn btn-outline-primary" for="versionTabButton">Versions</label>
+
+                    <input type="radio" formControlName="tabSelected" value="identity" class="btn-check" id="identityTabButton">
+                    <label class="btn btn-outline-primary" for="identityTabButton">Identity and general</label>
+                    
+                    <input type="radio" formControlName="tabSelected" value="usage" class="btn-check" id="usageTabButton">
+                    <label class="btn btn-outline-primary" for="usageTabButton">Usage</label>
+
+                    <input type="radio" formControlName="tabSelected" value="license" class="btn-check" id="licenseTabButton">
+                    <label class="btn btn-outline-primary" for="licenseTabButton">Licence and citation</label>
+
+                    <input type="radio" formControlName="tabSelected" value="export" class="btn-check" id="exportTabButton">
+                    <label class="btn btn-outline-primary" for="exportTabButton">Export/Download</label>
                 </div>
 
                 <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleDetailPanel()">&nbsp;

@@ -188,4 +188,21 @@ public class EsQueryResultDetail implements Serializable {
     public void setCodeSize(int codeSize) {
         this.codeSize = codeSize;
     }
+
+    @Override
+    public String toString()
+    {
+        return "EsQueryResultDetail{" +
+            "searchScope=" + searchScope +
+            ", searchTerm='" + searchTerm + '\'' +
+            ", sortLanguage='" + sortLanguage + '\'' +
+            ", page=" + page +
+            ", aggFields=" + aggFields +
+            ", esFilters=" + esFilters +
+            ", isSearchAllLanguages=" + isSearchAllLanguages +
+            ", withHighlight=" + withHighlight +
+            ", codeSize=" + codeSize +
+            ", vocabularies=" + vocabularies +
+            '}';
+    }
 }

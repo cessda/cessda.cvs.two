@@ -35,7 +35,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.*;
@@ -92,8 +91,7 @@ public class FileUploadResource
 
         FileUploadService.uploadFile( fileUploadHelper );
 
-        return ResponseEntity.status( HttpStatus.CREATED )
-            .location( new URI( UPLOADED_IMAGES_URI + "agency/" + fileUploadHelper.getUploadedFile().getFileName() ) )
+        return ResponseEntity.created( new URI( UPLOADED_IMAGES_URI + "agency/" + fileUploadHelper.getUploadedFile().getFileName() ) )
             .body( fileUploadHelper.getUploadedFile().getFileName().toString() );
     }
 
@@ -114,8 +112,7 @@ public class FileUploadResource
 
         FileUploadService.uploadFile( fileUploadHelper );
 
-        return ResponseEntity.status( HttpStatus.CREATED )
-            .location( new URI( UPLOADED_IMAGES_URI + "license/" + fileUploadHelper.getUploadedFile().getFileName() ) )
+        return ResponseEntity.created( new URI( UPLOADED_IMAGES_URI + "license/" + fileUploadHelper.getUploadedFile().getFileName() ) )
             .body( fileUploadHelper.getUploadedFile().getFileName().toString() );
     }
 
@@ -136,8 +133,7 @@ public class FileUploadResource
 
         FileUploadService.uploadFile( fileUploadHelper );
 
-        return ResponseEntity.status( HttpStatus.CREATED )
-            .location( new URI( UPLOADED_FILE_URI + fileUploadHelper.getUploadedFile().getFileName() ) )
+        return ResponseEntity.created( new URI( UPLOADED_FILE_URI + fileUploadHelper.getUploadedFile().getFileName() ) )
             .body( fileUploadHelper.getUploadedFile().getFileName().toString() );
     }
 
@@ -160,7 +156,7 @@ public class FileUploadResource
         catch ( FileNotFoundException e )
         {
             // If a FileNotFoundException is thrown, return a 404
-            return ResponseEntity.status( HttpStatus.NOT_FOUND ).build();
+            return ResponseEntity.notFound().build();
         }
 
         // Configure Docx4J HTML settings
@@ -203,9 +199,7 @@ public class FileUploadResource
             htmlWriter.write( doc.toString() );
         }
 
-        return ResponseEntity.status( HttpStatus.CREATED )
-            .location( new URI( UPLOADED_FILE_URI + fileName + HTML ) )
-            .build();
+        return ResponseEntity.created( new URI( UPLOADED_FILE_URI + fileName + HTML ) ).build();
     }
 
     @PostMapping( "/html2section/{fileName}/{metadataKey}" )
@@ -243,6 +237,6 @@ public class FileUploadResource
             metadataFieldService.save( metadataFieldDTO );
         } );
 
-        return ResponseEntity.status( HttpStatus.OK ).body( new SimpleResponse( "OK", fileName ) );
+        return ResponseEntity.ok( new SimpleResponse( "OK", fileName ) );
     }
 }

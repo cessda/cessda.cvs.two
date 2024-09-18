@@ -27,9 +27,6 @@ management:
         enabled: false
 
 spring:
-  profiles:
-    include:
-      - swagger
   devtools:
     restart:
       enabled: false
@@ -50,14 +47,9 @@ spring:
         useServerPrepStmts: true
   jpa:
     show-sql: false
-  data:
-    elasticsearch:
-      cluster-name: docker-cluster
-      cluster-nodes: cvs-elasticsearch:9300
-      properties:
-        path:
-          logs: target/elasticsearch/log
-          data: target/elasticsearch/data
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
   mail:
     host: smtp-relay.gmail.com
     port: 465
