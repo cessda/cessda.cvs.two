@@ -26,10 +26,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.zalando.problem.Problem;
 
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 
 /**
@@ -122,5 +124,11 @@ public class FileUploadResource
         fileUploadService.html2section(fileName, metadataKey);
 
         return ResponseEntity.ok( new SimpleResponse( "OK", fileName ) );
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<?> handleNoSuchFileException(NoSuchFileException e)
+    {
+       return ResponseEntity.notFound().build();
     }
 }
