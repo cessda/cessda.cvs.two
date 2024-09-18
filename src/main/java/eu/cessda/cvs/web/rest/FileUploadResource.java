@@ -103,7 +103,7 @@ public class FileUploadResource
     }
 
     @PostMapping( "/docx2html/{fileName}" )
-    public ResponseEntity<SimpleResponse> docx2html( @PathVariable String fileName ) throws IOException, Docx4JException, URISyntaxException
+    public ResponseEntity<Void> docx2html( @PathVariable String fileName ) throws IOException, Docx4JException, URISyntaxException
     {
         // Strip out potential path parameters
         fileName = FilenameUtils.getName( fileName );
@@ -115,7 +115,7 @@ public class FileUploadResource
     }
 
     @PostMapping( "/html2section/{fileName}/{metadataKey}" )
-    public ResponseEntity<SimpleResponse> html2section( @PathVariable String fileName, @PathVariable String metadataKey ) throws IOException
+    public ResponseEntity<Void> html2section( @PathVariable String fileName, @PathVariable String metadataKey ) throws IOException
     {
         // Strip out potential path parameters
         fileName =  FilenameUtils.getName( fileName );
@@ -123,11 +123,11 @@ public class FileUploadResource
         log.info( "Extracting metadata key {} from file {}", metadataKey, fileName );
         fileUploadService.html2section(fileName, metadataKey);
 
-        return ResponseEntity.ok( new SimpleResponse( "OK", fileName ) );
+        return ResponseEntity.ok().build();
     }
 
     @ExceptionHandler
-    public ResponseEntity<?> handleNoSuchFileException(NoSuchFileException e)
+    public ResponseEntity<Void> handleNoSuchFileException(NoSuchFileException e)
     {
        return ResponseEntity.notFound().build();
     }

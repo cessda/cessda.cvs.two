@@ -166,7 +166,11 @@ export class AgencyUpdateComponent implements OnInit {
       if (event.type === HttpEventType.UploadProgress && event.total) {
         this.progress.percentage = Math.round((event.loaded / event.total) * 100);
       } else if (event.type === HttpEventType.Response && event.body) {
-        this.currentImage = event.body.toString();
+        const location = event.headers.get('location');
+        if (location) {
+          const uploadedImage = location.split('/').pop();
+          this.currentImage = uploadedImage;
+        }
       }
     });
   }

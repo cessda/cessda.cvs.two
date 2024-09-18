@@ -30,7 +30,7 @@ export class FileUploadService {
    * return the  uploaded filename
    * @param file
    */
-  uploadAgencyImage(file: File): Observable<HttpEvent<{}>> {
+  uploadAgencyImage(file: File): Observable<HttpEvent<void>> {
     const formdata: FormData = new FormData();
     formdata.append('file', file);
 
@@ -45,7 +45,7 @@ export class FileUploadService {
    * return the  uploaded filename
    * @param file
    */
-  uploadLicenseImage(file: File): Observable<HttpEvent<{}>> {
+  uploadLicenseImage(file: File): Observable<HttpEvent<void>> {
     const formdata: FormData = new FormData();
     formdata.append('file', file);
 
@@ -61,7 +61,7 @@ export class FileUploadService {
    * return the  uploaded filename
    * @param file
    */
-  uploadFile(file: File): Observable<HttpEvent<{}>> {
+  uploadFile(file: File): Observable<HttpEvent<void>> {
     const formdata: FormData = new FormData();
     formdata.append('file', file);
 
@@ -77,7 +77,7 @@ export class FileUploadService {
     return this.http.post<SimpleResponse>(`${this.resourceUrl}/docx2html/${fileName}`, null, { observe: 'response' });
   }
 
-  fillMetadataWithHtmlFile(fileName: string, metadataKey: string): Observable<HttpResponse<SimpleResponse>> {
-    return this.http.post<SimpleResponse>(`${this.resourceUrl}/html2section/${fileName}/${metadataKey}`, null, { observe: 'response' });
+  fillMetadataWithHtmlFile(fileName: string, metadataKey: string): Observable<HttpResponse<void>> {
+    return this.http.post<void>(`${this.resourceUrl}/html2section/${fileName}/${metadataKey}`, null, { observe: 'response' });
   }
 }
