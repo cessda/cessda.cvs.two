@@ -15,67 +15,78 @@
  */
 package eu.cessda.cvs.service;
 
-import org.apache.commons.io.FilenameUtils;
+import eu.cessda.cvs.config.ApplicationProperties;
+import eu.cessda.cvs.domain.enumeration.ObjectType;
+import eu.cessda.cvs.service.dto.MetadataValueDTO;
+import org.docx4j.Docx4J;
+import org.docx4j.convert.out.HTMLSettings;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.imgscalr.Scalr;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.FastByteArrayOutputStream;
 
 import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
+import java.util.Set;
 import java.util.UUID;
 
+@Service
 public class FileUploadService {
 
-    private FileUploadService() {}
+    private static final Logger log = LoggerFactory.getLogger( FileUploadService.class );
 
-    public static void uploadFile( FileUploadHelper fileUploadHelper ) throws IOException
+    private final ApplicationProperties applicationProperties;
+    private final MetadataFieldService metadataFieldService;
+
+    @Autowired
+    private FileUploadService(ApplicationProperties applicationProperties, MetadataFieldService metadataFieldService) {
+        this.applicationProperties = applicationProperties;
+        this.metadataFieldService = metadataFieldService;
+    }
+
+    public Path uploadFile( FileUploadHelper fileUploadHelper ) throws IOException
     {
         switch ( fileUploadHelper.getFileUploadType()) {
             case IMAGE_AGENCY:
+                return uploadImage( fileUploadHelper, Path.of( applicationProperties.getAgencyImagePath() ) );
             case IMAGE_LICENSE:
-                uploadImage(fileUploadHelper);
-                break;
+                return uploadImage( fileUploadHelper, Path.of( applicationProperties.getLicenseImagePath() ) );
             case DOCX:
-                uploadSpecificFile(fileUploadHelper );
-                break;
+                return uploadSpecificFile( fileUploadHelper );
             default:
+                throw new IllegalArgumentException("Unexpected value: " + fileUploadHelper.getFileUploadType());
         }
     }
 
-    private static void uploadSpecificFile( FileUploadHelper fileUploadHelper ) throws IOException
+    private Path uploadSpecificFile( FileUploadHelper fileUploadHelper ) throws IOException
     {
+        Path baseDirectory = Path.of(applicationProperties.getUploadFilePath());
+
         // Create destination directory if it does not exist.
-        createUploadDirectory( fileUploadHelper.getUploadBaseDirectory() );
+        Files.createDirectories(baseDirectory);
 
-        // Generate destination file name and try to retrieve the file extension from the upload
-        Path destinationFileName = fileUploadHelper.getUploadBaseDirectory().resolve(UUID.randomUUID().toString());
-        String fileExtension = FilenameUtils.getExtension( fileUploadHelper.getSourceFile().getOriginalFilename() );
-
-        final Path uploadedFile;
-        if (fileExtension != null && !fileExtension.isEmpty()) {
-            uploadedFile = Path.of( destinationFileName + "." + fileExtension );
-        } else {
-            uploadedFile = destinationFileName;
-        }
+        // Generate destination file name
+        Path destinationFileName = baseDirectory.resolve( UUID.randomUUID().toString() );
+        String fileExtension = fileUploadHelper.getFileUploadType().getExtension();
+        Path uploadedFile = Path.of(destinationFileName + "." + fileExtension);
 
         // Transfer the file to the destination. To work around an MVC bug, uploadedFile is converted to an absolute location.
         fileUploadHelper.getSourceFile().transferTo( uploadedFile.toAbsolutePath() );
-        fileUploadHelper.setUploadedFile( uploadedFile );
-    }
-
-    /**
-     * Create the upload directory, and it's parent directories, if it doesn't exist.
-     * @param directory the directory to create.
-     * @throws IOException if an IO error occurs.
-     */
-    private static void createUploadDirectory( Path directory ) throws IOException
-    {
-        if (!Files.isDirectory( directory ))
-        {
-            Files.createDirectories( directory );
-        }
+        return uploadedFile;
     }
 
     /**
@@ -83,18 +94,17 @@ public class FileUploadService {
      * @param fileUploadHelper the upload context, this will be mutated.
      * @throws IOException if an IO error occurs.
      */
-    private static void uploadImage( FileUploadHelper fileUploadHelper ) throws IOException {
+    private static Path uploadImage( FileUploadHelper fileUploadHelper, Path baseDirectory ) throws IOException {
 
-        String fileName = UUID.randomUUID() + ".jpg";
+        String fileName = UUID.randomUUID() + "." + fileUploadHelper.getFileUploadType().getExtension();
 
-
-        Path destFile = fileUploadHelper.getUploadBaseDirectory().resolve(fileName);
-        Path pathFileThumb = fileUploadHelper.getUploadBaseDirectory().resolve("thumbs");
+        Path destFile = baseDirectory.resolve(fileName);
+        Path pathFileThumb = baseDirectory.resolve("thumbs");
         Path destFileThumb = pathFileThumb.resolve( fileName );
 
         // Create destination directories if it does not exist.
-        createUploadDirectory( fileUploadHelper.getUploadBaseDirectory() );
-        createUploadDirectory( pathFileThumb );
+        Files.createDirectories(baseDirectory);
+        Files.createDirectories(pathFileThumb);
 
         BufferedImage img = ImageIO.read( fileUploadHelper.getSourceFile().getInputStream() );
 
@@ -107,8 +117,7 @@ public class FileUploadService {
         ImageIO.write(fillTransparentPixels( scaledImgThumb ), "jpg", destFileThumb.toFile());
 
         // Set destination files on successful writes
-        fileUploadHelper.setUploadedFile( destFile );
-        fileUploadHelper.setUploadedThumbFile( destFileThumb );
+        return destFile;
     }
 
     private static BufferedImage fillTransparentPixels( BufferedImage image )
@@ -125,4 +134,73 @@ public class FileUploadService {
         return image2;
     }
 
+    public Path docx2html(String fileName, String uploadedFileUri) throws IOException, Docx4JException {
+        WordprocessingMLPackage wordMLPackage;
+
+        try ( var inputStream = new FileInputStream( new File( applicationProperties.getUploadFilePath(), fileName ) ) )
+        {
+            wordMLPackage = Docx4J.load( inputStream );
+        }
+
+        // Configure Docx4J HTML settings
+        HTMLSettings htmlSettings = Docx4J.createHTMLSettings();
+        htmlSettings.setImageDirPath( applicationProperties.getUploadFilePath() );
+        htmlSettings.setImageTargetUri( uploadedFileUri );
+        htmlSettings.setOpcPackage( wordMLPackage );
+
+        // Store the HTML in this buffer
+        var outputBuffer = new FastByteArrayOutputStream();
+
+        // Export to HTML, then parse with Jsoup
+        Docx4J.toHTML( htmlSettings, outputBuffer, Docx4J.FLAG_EXPORT_PREFER_XSL );
+        Document doc = Jsoup.parse( outputBuffer.getInputStream(), null, applicationProperties.getUploadFilePath() );
+
+        // Replace linked images with embedded Base64 encoded versions
+        for ( Element element : doc.select( "img" ) )
+        {
+            String src = element.attr( "src" );
+            if ( !src.startsWith( "data:" ) )
+            {
+                Path imageFile = Path.of( applicationProperties.getStaticFilePath(), src );
+                try
+                {
+                    // Attempt to load the image data from the file
+                    byte[] imageFileBytes = Files.readAllBytes(imageFile);
+                    String imageBase64LogoData = DatatypeConverter.printBase64Binary(imageFileBytes);
+                    String type = Files.probeContentType( imageFile );
+                    element.attr( "src", "data:" + type + ";base64," + imageBase64LogoData );
+                } catch ( IOException e ) {
+                    // Remove the image element if the image cannot be loaded
+                    log.warn( "Loading image from {} failed: {}", imageFile, e.toString() );
+                    element.remove();
+                }
+            }
+        }
+
+        var outputHTMLFile = Path.of( applicationProperties.getUploadFilePath(), fileName + ".html" );
+        try ( BufferedWriter htmlWriter = Files.newBufferedWriter( outputHTMLFile, doc.charset() ) )
+        {
+            htmlWriter.write( doc.toString() );
+        }
+
+        return outputHTMLFile;
+    }
+
+    public void html2section(String fileName, String metadataKey) throws IOException {
+        Path initialFile = Path.of( applicationProperties.getUploadFilePath(), fileName + ".html" );
+        Document doc = Jsoup.parse( initialFile, null );
+        Elements elements = doc.body().children();
+
+        metadataFieldService.findOneByMetadataKey(metadataKey).ifPresent(metadataFieldDTO ->
+        {
+            MetadataValueDTO item = new MetadataValueDTO( "section-1", ObjectType.SYSTEM,
+                metadataFieldDTO.getId(), metadataFieldDTO.getMetadataKey(), 1 );
+            item.setValue( elements.toString() );
+
+            Set<MetadataValueDTO> metadataValues = Collections.singleton(item);
+
+            metadataFieldDTO.setMetadataValues( metadataValues );
+            metadataFieldService.save( metadataFieldDTO );
+        } );
+    }
 }
