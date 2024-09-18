@@ -137,7 +137,7 @@ public class FileUploadService {
     public Path docx2html(String fileName, String uploadedFileUri) throws IOException, Docx4JException {
         WordprocessingMLPackage wordMLPackage;
 
-        try ( var inputStream = new FileInputStream( new File( applicationProperties.getUploadFilePath(), fileName ) ) )
+        try ( var inputStream = Files.newInputStream( Path.of( applicationProperties.getUploadFilePath(), fileName ) ) )
         {
             wordMLPackage = Docx4J.load( inputStream );
         }
