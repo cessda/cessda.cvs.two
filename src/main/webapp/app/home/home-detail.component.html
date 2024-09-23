@@ -191,25 +191,24 @@
             <!-- Details  -->
             <div class="content-details">
                 <!--tabs-->
-                <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" formControlName="tabSelected" #detailTab id="detailTab">
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="detail"> Details
-                    </label>
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="version"> Versions
-                    </label>
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="identity"> Identity and general
-                    </label>
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="usage"> Usage
-                    </label>
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="license"> Licence and citation
-                    </label>
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="export"> Export/Download
-                    </label>
+                <div class="btn-group" role="group" #detailTab id="detailTab">
+                    <input type="radio" class="btn-check" value="detail" id="detailButton" autocomplete="off" checked formControlName="tabSelected">
+                    <label class="btn btn-outline-primary" for="detailButton">Details</label>
+
+                    <input type="radio" class="btn-check" value="version" id="versionButton" autocomplete="off" formControlName="tabSelected">
+                    <label class="btn btn-outline-primary" for="versionButton">Versions</label>
+
+                    <input type="radio" class="btn-check" value="identity" id="identityButton" autocomplete="off" formControlName="tabSelected">
+                    <label class="btn btn-outline-primary" for="identityButton">Identity and general</label>
+
+                    <input type="radio" class="btn-check" value="usage" id="usageButton" autocomplete="off" formControlName="tabSelected">
+                    <label class="btn btn-outline-primary" for="usageButton">Usage</label>
+
+                    <input type="radio" class="btn-check" value="license" id="licenseButton" autocomplete="off" formControlName="tabSelected">
+                    <label class="btn btn-outline-primary" for="licenseButton">Licence and citation</label>
+
+                    <input type="radio" class="btn-check" value="export" id="exportButton" autocomplete="off" formControlName="tabSelected">
+                    <label class="btn btn-outline-primary" for="exportButton">Export/Download</label>
                 </div>
 
                 <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleDetailPanel()">&nbsp;

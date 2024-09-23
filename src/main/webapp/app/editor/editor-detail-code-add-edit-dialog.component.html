@@ -142,16 +142,15 @@
         <div *ngIf="isEnablePreview && conceptParam" class="row-content">
             <div class="row-details">
                 <div class="row-detail form-group">
-                    <div class="btn-group btn-group-toggle" ngbRadioGroup name="insert-choice" formControlName="codeInsertMode" (ngModelChange)="updateTreePreview()">
-                        <label ngbButtonLabel class="btn-primary">
-                            <input ngbButton type="radio" value="INSERT_AFTER"> Insert after
-                        </label>
-                        <label ngbButtonLabel class="btn-primary">
-                            <input ngbButton type="radio" value="INSERT_BEFORE"> Insert before
-                        </label>
-                        <label ngbButtonLabel class="btn-primary">
-                            <input ngbButton type="radio" value="INSERT_AS_CHILD"> Insert as child
-                        </label>
+                    <div class="btn-group" role="group" name="insert-choice" (ngModelChange)="updateTreePreview()">
+                        <input type="radio" class="btn-check" value="INSERT_AFTER" id="insertAfterButton" autocomplete="off" checked formControlName="codeInsertMode">
+                        <label class="btn btn-outline-primary" for="insertAfterButton">Insert after</label>
+
+                        <input type="radio" class="btn-check" value="INSERT_BEFORE" id="insertBeforeButton" autocomplete="off" formControlName="codeInsertMode">
+                        <label class="btn btn-outline-primary" for="insertBeforeButton">Insert before</label>
+
+                        <input type="radio" class="btn-check" value="INSERT_AS_CHILD" id="insertAsChildButton" autocomplete="off" formControlName="codeInsertMode">
+                        <label class="btn btn-outline-primary" for="insertAsChildButton">Insert as child</label>
                     </div>
                 </div>
             </div>
