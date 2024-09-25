@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, ElementRef, Input, Renderer2} from '@angular/core';
+import { Component, ElementRef, Input, Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'jhi-password-strength-bar',
@@ -29,12 +29,15 @@ import {Component, ElementRef, Input, Renderer2} from '@angular/core';
       </ul>
     </div>
   `,
-  styleUrls: ['password-strength-bar.scss']
+  styleUrls: ['password-strength-bar.scss'],
 })
 export class PasswordStrengthBarComponent {
   colors = ['#F00', '#F90', '#FF0', '#9F0', '#0F0'];
 
-  constructor(private renderer: Renderer2, private elementRef: ElementRef) {}
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef,
+  ) {}
 
   measureStrength(p: string): number {
     let force = 0;
@@ -80,7 +83,7 @@ export class PasswordStrengthBarComponent {
   }
 
   @Input()
-  set passwordToCheck(password: string) {
+  set passwordToCheck(password: string | null | undefined) {
     if (password) {
       const c = this.getColor(this.measureStrength(password));
       const element = this.elementRef.nativeElement;

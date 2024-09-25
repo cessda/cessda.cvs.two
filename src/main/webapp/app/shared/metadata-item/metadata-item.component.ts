@@ -16,7 +16,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
 import { JhiEventManager } from 'ng-jhipster';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { MetadataValue } from 'app/shared/model/metadata-value.model';
@@ -42,22 +42,25 @@ export class MetadataItemComponent implements OnInit {
   isSaving = false;
 
   metadataForm = this.fb.group({
-    identifier: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(40), Validators.pattern('^[a-z0-9-]*$')]],
-    position: ['', [Validators.required]],
-    content: ['', [Validators.minLength(30)]],
-    tableRow: [],
-    tableColumn: [],
+    identifier: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(2), Validators.maxLength(40), Validators.pattern('^[a-z0-9-]*$')],
+    }),
+    position: new FormControl(0, { nonNullable: true, validators: [Validators.required] }),
+    content: new FormControl('', { nonNullable: true, validators: [Validators.minLength(30)] }),
+    tableRow: new FormControl<number | null>(null),
+    tableColumn: new FormControl<number | null>(null),
   });
 
   constructor(
     protected editorService: EditorService,
     protected eventManager: JhiEventManager,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
   ) {}
 
   public editorCreated(event: Quill): void {
     this.quill = event;
-    this.quill.clipboard.dangerouslyPasteHTML(this.metadataForm.get(['content'])!.value);
+    this.quill.clipboard.dangerouslyPasteHTML(this.metadataForm.controls.content.value);
   }
 
   ngOnInit(): void {
@@ -90,9 +93,9 @@ export class MetadataItemComponent implements OnInit {
   private createFromForm() {
     return {
       ...this.metadataValue,
-      identifier: this.metadataForm.get(['identifier'])!.value as string,
-      position: (this.metadataForm.get(['position'])!.value ? this.metadataForm.get(['position'])!.value : this.position) as number,
-      value: this.metadataForm.get(['content'])!.value as string,
+      identifier: this.metadataForm.controls.identifier.value,
+      position: this.metadataForm.controls.position.value ? this.metadataForm.controls.position.value : this.position,
+      value: this.metadataForm.controls.content.value,
       objectType: ObjectType.SYSTEM,
       metadataKey: this.metadataField!.metadataKey,
     };

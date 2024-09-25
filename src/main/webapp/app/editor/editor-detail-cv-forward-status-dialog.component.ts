@@ -21,7 +21,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { HttpResponse } from '@angular/common/http';
 import { AccountService } from 'app/core/auth/account.service';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Account } from 'app/core/user/account.model';
@@ -79,12 +79,17 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']],
   };
 
-  cvForwardStatusForm = this.fb.group({
-    versionNotes: [''],
-    versionChanges: [''],
-    versionNumberSl: ['', [Validators.required, Validators.pattern('^\\d{1,2}\\.\\d{1,2}$')]],
-    licenseId: ['', Validators.required],
-  });
+  private readonly formControls = {
+    versionNotes: new FormControl(''),
+    versionChanges: new FormControl(''),
+    versionNumberSl: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.pattern('^\\d{1,2}\\.\\d{1,2}$')],
+    }),
+    licenseId: new FormControl<number | null>(null, { nonNullable: true, validators: [Validators.required] }),
+  };
+
+  cvForwardStatusForm = this.fb.group<Partial<typeof this.formControls>>(this.formControls);
 
   constructor(
     private licenceService: LicenceService,
@@ -94,7 +99,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     protected editorService: EditorService,
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private router: Router,
   ) {
     this.isSaving = false;
@@ -182,7 +187,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       this.cvForwardStatusForm.patchValue({
         versionNotes: this.versionParam.versionNotes,
       });
-      this.versionNotesEditor?.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionNotes'])!.value);
+      this.versionNotesEditor?.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.controls.versionNotes!.value!);
     }
   }
 
@@ -201,7 +206,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
           versionChanges: this.vocabularyChanges.map(vc => vc.changeType + ': ' + vc.description).join('<br/>'),
         });
       }
-      this.versionChangesEditor?.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionChanges'])!.value);
+      this.versionChangesEditor?.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.controls.versionChanges!.value!);
     }
   }
 
@@ -222,19 +227,15 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       vocabularySnippet.actionType = this.isSlForm
         ? ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE
         : ActionType.FORWARD_CV_TL_STATUS_READY_TO_PUBLISH;
-      vocabularySnippet.licenseId = this.cvForwardStatusForm.get(['licenseId'])!.value;
+      vocabularySnippet.licenseId = this.cvForwardStatusForm.controls.licenseId?.value || undefined;
 
       if (this.versionParam.previousVersion !== undefined && this.versionParam.previousVersion !== null) {
-        vocabularySnippet.versionNotes = this.cvForwardStatusForm.get(['versionNotes'])
-          ? this.cvForwardStatusForm.get(['versionNotes'])!.value
-          : undefined;
-        vocabularySnippet.versionChanges = this.cvForwardStatusForm.get(['versionChanges'])
-          ? this.cvForwardStatusForm.get(['versionChanges'])!.value
-          : undefined;
+        vocabularySnippet.versionNotes = this.cvForwardStatusForm.controls.versionNotes?.value || undefined;
+        vocabularySnippet.versionChanges = this.cvForwardStatusForm.controls.versionChanges?.value || undefined;
       }
       // check validity
       if (this.isSlForm) {
-        vocabularySnippet.versionNumber = this.cvForwardStatusForm.get(['versionNumberSl'])!.value + '.' + this.proposedPatchNumber;
+        vocabularySnippet.versionNumber = this.cvForwardStatusForm.controls.versionNumberSl!.value + '.' + this.proposedPatchNumber;
         this.isVersionInvalid = VocabularyUtil.compareVersionNumbers(vocabularySnippet.versionNumber, this.versionParam.number!) === -1;
       } else {
         this.missingTranslations = [];
@@ -258,8 +259,8 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   saveVersionInfo(): void {
     this.isSaving = true;
 
-    const versionNotes = this.cvForwardStatusForm.get(['versionNotes']);
-    const versionChanges = this.cvForwardStatusForm.get(['versionChanges']);
+    const versionNotes = this.cvForwardStatusForm.controls.versionNotes;
+    const versionChanges = this.cvForwardStatusForm.controls.versionChanges;
 
     const vocabularySnippet: VocabularySnippet = {
       actionType: ActionType.EDIT_VERSION_INFO_CV,
@@ -269,12 +270,12 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       language: this.versionParam.language,
       itemType: this.versionParam.itemType,
       status: this.versionParam.status,
-      versionNotes: versionNotes ? versionNotes.value : undefined,
-      versionChanges: versionChanges ? versionChanges.value : undefined,
-      licenseId: this.cvForwardStatusForm.get(['licenseId'])!.value,
+      versionNotes: versionNotes?.value || undefined,
+      versionChanges: versionChanges?.value || undefined,
+      licenseId: this.cvForwardStatusForm.controls.licenseId?.value || undefined,
     };
     if (this.isSlForm) {
-      vocabularySnippet.versionNumber = this.cvForwardStatusForm.get(['versionNumberSl'])!.value;
+      vocabularySnippet.versionNumber = this.cvForwardStatusForm.controls.versionNumberSl!.value;
     } else {
       vocabularySnippet.versionNumber = VocabularyUtil.getSlMajorMinorVersionNumber(this.slVersionNumber) + '.' + this.proposedPatchNumber;
     }

@@ -32,21 +32,21 @@
                     <input type="text" class="form-control" id="firstName" name="firstName" placeholder="{{ 'settings.form.firstname.placeholder' | translate }}"
                            formControlName="firstName">
 
-                    <div *ngIf="settingsForm.get('firstName')!.invalid && (settingsForm.get('firstName')!.dirty || settingsForm.get('firstName')!.touched)">
+                    <div *ngIf="settingsForm.controls.firstName.invalid && (settingsForm.controls.firstName.dirty || settingsForm.controls.firstName.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="settingsForm.get('firstName')?.errors?.required"
+                               *ngIf="settingsForm.controls.firstName.errors?.required"
                                jhiTranslate="settings.messages.validate.firstname.required">
                             Your first name is required.
                         </small>
 
                         <small class="form-text text-danger"
-                               *ngIf="settingsForm.get('firstName')?.errors?.minlength"
+                               *ngIf="settingsForm.controls.firstName.errors?.minlength"
                                jhiTranslate="settings.messages.validate.firstname.minlength">
                             Your first name is required to be at least 1 character.
                         </small>
 
                         <small class="form-text text-danger"
-                               *ngIf="settingsForm.get('firstName')?.errors?.maxlength"
+                               *ngIf="settingsForm.controls.firstName.errors?.maxlength"
                                jhiTranslate="settings.messages.validate.firstname.maxlength">
                             Your first name cannot be longer than 50 characters.
                         </small>
@@ -58,21 +58,21 @@
                     <input type="text" class="form-control" id="lastName" name="lastName" placeholder="{{ 'settings.form.lastname.placeholder' | translate }}"
                            formControlName="lastName">
 
-                    <div *ngIf="settingsForm.get('lastName')!.invalid && (settingsForm.get('lastName')!.dirty || settingsForm.get('lastName')!.touched)">
+                    <div *ngIf="settingsForm.controls.lastName.invalid && (settingsForm.controls.lastName.dirty || settingsForm.controls.lastName.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="settingsForm.get('lastName')?.errors?.required"
+                               *ngIf="settingsForm.controls.lastName.errors?.required"
                                jhiTranslate="settings.messages.validate.lastname.required">
                             Your last name is required.
                         </small>
 
                         <small class="form-text text-danger"
-                               *ngIf="settingsForm.get('lastName')?.errors?.minlength"
+                               *ngIf="settingsForm.controls.lastName.errors?.minlength"
                                jhiTranslate="settings.messages.validate.lastname.minlength">
                             Your last name is required to be at least 1 character.
                         </small>
 
                         <small class="form-text text-danger"
-                               *ngIf="settingsForm.get('lastName')?.errors?.maxlength"
+                               *ngIf="settingsForm.controls.lastName.errors?.maxlength"
                                jhiTranslate="settings.messages.validate.lastname.maxlength">
                             Your last name cannot be longer than 50 characters.
                         </small>
@@ -84,27 +84,27 @@
                     <input type="email" class="form-control" id="email" name="email" placeholder="{{ 'global.form.email.placeholder' | translate }}"
                            formControlName="email">
 
-                    <div *ngIf="settingsForm.get('email')!.invalid && (settingsForm.get('email')!.dirty || settingsForm.get('email')!.touched)">
+                    <div *ngIf="settingsForm.controls.email.invalid && (settingsForm.controls.email.dirty || settingsForm.controls.email.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="settingsForm.get('email')?.errors?.required"
+                               *ngIf="settingsForm.controls.email.errors?.required"
                                jhiTranslate="global.messages.validate.email.required">
                             Your email is required.
                         </small>
 
                         <small class="form-text text-danger"
-                               *ngIf="settingsForm.get('email')?.errors?.email"
+                               *ngIf="settingsForm.controls.email.errors?.email"
                                jhiTranslate="global.messages.validate.email.invalid">
                             Your email is invalid.
                         </small>
 
                         <small class="form-text text-danger"
-                               *ngIf="settingsForm.get('email')?.errors?.minlength"
+                               *ngIf="settingsForm.controls.email.errors?.minlength"
                                jhiTranslate="global.messages.validate.email.minlength">
                             Your email is required to be at least 5 characters.
                         </small>
 
                         <small class="form-text text-danger"
-                               *ngIf="settingsForm.get('email')?.errors?.maxlength"
+                               *ngIf="settingsForm.controls.email.errors?.maxlength"
                                jhiTranslate="global.messages.validate.email.maxlength">
                             Your email cannot be longer than 100 characters.
                         </small>

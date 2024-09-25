@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, async } from '@angular/core/testing';
-import { UntypedFormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { throwError, of } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
@@ -45,7 +45,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [SettingsComponent],
-        providers: [UntypedFormBuilder],
+        providers: [FormBuilder],
       })
         .overrideTemplate(SettingsComponent, '')
         .compileComponents();

@@ -19,7 +19,7 @@ import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
 import { Concept } from 'app/shared/model/concept.model';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { CodeSnippet } from 'app/shared/model/code-snippet.model';
@@ -45,7 +45,7 @@ export class EditorDetailCodeDeprecateDialogComponent {
   codeSnippet?: CodeSnippet;
 
   deprecateCodeForm = this.fb.group({
-    replacingCodeId: ['', [Validators.required]],
+    replacingCodeId: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
 
   constructor(
@@ -53,7 +53,7 @@ export class EditorDetailCodeDeprecateDialogComponent {
     public activeModal: NgbActiveModal,
     private router: Router,
     protected eventManager: JhiEventManager,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
   ) {
     this.isConfirmedDeprecation = false;
     this.isConfirmedReplacementYes = false;
@@ -86,7 +86,7 @@ export class EditorDetailCodeDeprecateDialogComponent {
   }
 
   setReplacingCode(): void {
-    this.replacingCodeId = Number(this.deprecateCodeForm.get(['replacingCodeId'])?.value);
+    this.replacingCodeId = Number(this.deprecateCodeForm.controls.replacingCodeId.value);
     for (const concept of this.conceptList) {
       if (concept.id === this.replacingCodeId) {
         this.replacingCode = concept;

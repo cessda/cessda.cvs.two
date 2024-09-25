@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
-import { UntypedFormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 
@@ -31,16 +31,16 @@ export class LoginModalComponent implements AfterViewInit {
   authenticationError = false;
 
   loginForm = this.fb.group({
-    username: [''],
-    password: [''],
-    rememberMe: [false],
+    username: new FormControl<string>('', { nonNullable: true }),
+    password: new FormControl<string>('', { nonNullable: true }),
+    rememberMe: new FormControl(false, { nonNullable: true }),
   });
 
   constructor(
     private loginService: LoginService,
     private router: Router,
     public activeModal: NgbActiveModal,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
   ) {}
 
   ngAfterViewInit(): void {
@@ -53,19 +53,16 @@ export class LoginModalComponent implements AfterViewInit {
 
   cancel(): void {
     this.authenticationError = false;
-    this.loginForm.patchValue({
-      username: '',
-      password: '',
-    });
+    this.loginForm.reset();
     this.activeModal.dismiss('cancel');
   }
 
   login(): void {
     this.loginService
       .login({
-        username: this.loginForm.get('username')!.value,
-        password: this.loginForm.get('password')!.value,
-        rememberMe: this.loginForm.get('rememberMe')!.value,
+        username: this.loginForm.controls.username.value,
+        password: this.loginForm.controls.password.value,
+        rememberMe: this.loginForm.controls.rememberMe.value,
       })
       .subscribe(
         () => {
