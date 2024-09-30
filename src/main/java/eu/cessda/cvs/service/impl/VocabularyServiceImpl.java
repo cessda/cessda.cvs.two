@@ -2120,7 +2120,10 @@ public class VocabularyServiceImpl implements VocabularyService
             {
                 readLicenseLogo( versionDTO );
             }
+        }
 
+        for (VersionDTO versionDTO : vocabularyDTO.getVersions())
+        {
             if (versionDTO.getCanonicalUri() != null)
             {
                 int index = versionDTO.getCanonicalUri().lastIndexOf(':');

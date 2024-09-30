@@ -48,14 +48,11 @@ import java.util.Map;
 @Service
 public class ExportService
 {
-
-    public static final String HTML = "html";
-
     public enum DownloadType
 	{
 		SKOS("rdf", MediaType.APPLICATION_XML),
         PDF("pdf", MediaType.APPLICATION_PDF),
-        HTML(ExportService.HTML, MediaType.TEXT_HTML),
+        HTML("html", MediaType.TEXT_HTML),
         WORD("docx", new MediaType("application", "vnd.openxmlformats-officedocument.wordprocessingml.document" ));
 
 		private final String type;
@@ -109,10 +106,10 @@ public class ExportService
             case PDF:
             case HTML:
             case WORD:
-                content = templateEngine.process( HTML + "/" + templateName + "_" + type, ctx );
+                content = templateEngine.process( DownloadType.HTML.type + "/" + templateName + "_" + type, ctx );
                 break;
             case SKOS:
-                content = templateEngine.process( "xml" + "/"  + templateName + "_" + type, ctx )
+                content = templateEngine.process( DownloadType.SKOS.type + "/"  + templateName + "_" + type, ctx )
                     .replaceAll( "(?m)^[ \t]*\r?\n", "" );
                 break;
             default:
