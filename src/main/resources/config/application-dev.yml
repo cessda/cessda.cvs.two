@@ -40,7 +40,7 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://localhost:3306/cvs?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3311/cvs?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC&createDatabaseIfNotExist=true
     username: root
     password:
     hikari:
@@ -128,8 +128,4 @@ jhipster:
 # ===================================================================
 
 application:
-  static-file-path: src/main/webapp
-  vocab-json-path: src/main/webapp/content/vocabularies/
-  agency-image-path: src/main/webapp/content/images/agency/
-  license-image-path: src/main/webapp/content/images/license/
-  upload-file-path: src/main/webapp/content/file/
+  static-file-path: target/static-resources

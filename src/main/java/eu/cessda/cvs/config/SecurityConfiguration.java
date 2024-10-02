@@ -66,6 +66,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/test/**");
     }
 
+    @SuppressWarnings( "ProhibitedExceptionDeclared" )
     @Override
     public void configure(HttpSecurity http) throws Exception {
         // @formatter:off
@@ -78,7 +79,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(problemSupport)
         .and()
             .headers()
-            .contentSecurityPolicy("default-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://analytics.cessda.eu http://cdn.matomo.cloud/cessda.matomo.cloud/matomo https://eosc-helpdesk.eosc-portal.eu/api/v1/form_config https://eosc-helpdesk.eosc-portal.eu/api/v1/form_submit; frame-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net http://cdn.matomo.cloud/cessda.matomo.cloud data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net https://analytics.cessda.eu https://storage.googleapis.com http://cdn.matomo.cloud/cessda.matomo.cloud/matomo.js https://code.jquery.com/jquery-3.6.0.min.js https://eosc-helpdesk.eosc-portal.eu/assets/form/form.js; style-src 'self' https://fonts.googleapis.com https://eosc-helpdesk.eosc-portal.eu/assets/form/form.css 'unsafe-inline'; img-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net https://analytics.cessda.eu http://cdn.matomo.cloud/cessda.matomo.cloud data:; font-src 'self' https://fonts.gstatic.com data:")
+            .contentSecurityPolicy("default-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://analytics.cessda.eu http://cdn.matomo.cloud/cessda.matomo.cloud/matomo https://helpdesk.cessda.eu/api/v1/form_config https://helpdesk.cessda.eu/api/v1/form_submit; frame-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net http://cdn.matomo.cloud/cessda.matomo.cloud data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net https://analytics.cessda.eu https://storage.googleapis.com http://cdn.matomo.cloud/cessda.matomo.cloud/matomo.js https://code.jquery.com/jquery-3.6.0.min.js https://helpdesk.cessda.eu/assets/form/form.js; style-src 'self' https://fonts.googleapis.com https://helpdesk.cessda.eu/assets/form/form.css 'unsafe-inline'; img-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net https://analytics.cessda.eu http://cdn.matomo.cloud/cessda.matomo.cloud data:; font-src 'self' https://fonts.gstatic.com data:")
         .and()
             .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
         .and()
