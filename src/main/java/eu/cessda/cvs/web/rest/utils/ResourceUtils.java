@@ -23,7 +23,6 @@ import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.utils.VersionUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,9 +33,6 @@ public class ResourceUtils {
     public static final String VALUE = "@value";
     public static final String ID = "@id";
     public static final String TYPE = "@type";
-
-    public static final String MEDIATYPE_RDF_VALUE = "application/rdf+xml";
-    public static final MediaType MEDIATYPE_RDF = MediaType.parseMediaType(MEDIATYPE_RDF_VALUE);
 
     private ResourceUtils(){}
 

@@ -30,7 +30,6 @@ import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
-import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -241,7 +240,7 @@ class VocabularyResourceV2IT {
         MediaType.APPLICATION_XHTML_XML_VALUE,
         VocabularyResourceV2.DOCX_TYPE,
         VocabularyResourceV2.JSONLD_TYPE,
-        ResourceUtils.MEDIATYPE_RDF_VALUE,
+        ExportService.MEDIATYPE_RDF_VALUE,
     } )
     void getVocabulariesTest(String mediaType) throws Exception {
         restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
@@ -299,9 +298,9 @@ class VocabularyResourceV2IT {
     void exportVocabulariesPublishedTest() throws Exception {
         // Retireve the SKOS output
         restMockMvc.perform(get("/v2/vocabularies/rdf/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(ResourceUtils.MEDIATYPE_RDF_VALUE))
+            .accept( ExportService.MEDIATYPE_RDF_VALUE))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(ResourceUtils.MEDIATYPE_RDF_VALUE));
+            .andExpect(content().contentType( ExportService.MEDIATYPE_RDF_VALUE));
 
         // Retireve the HTML output
         restMockMvc.perform(get("/v2/vocabularies/html/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
@@ -341,9 +340,9 @@ class VocabularyResourceV2IT {
         final CharSequence charSequence = "null";
         // Retrieve the SKOS export
         restMockMvc.perform(get("/v2/vocabularies/rdf/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(ResourceUtils.MEDIATYPE_RDF_VALUE))
+            .accept( ExportService.MEDIATYPE_RDF_VALUE))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(ResourceUtils.MEDIATYPE_RDF_VALUE));
+            .andExpect(content().contentType( ExportService.MEDIATYPE_RDF_VALUE));
 
         result = restMockMvc.perform(get("/v2/vocabularies/rdf/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)).andReturn();
         String content = result.getResponse().getContentAsString();

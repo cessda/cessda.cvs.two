@@ -229,33 +229,19 @@ public interface VocabularyService {
      * @param versionList combination of language and version number, e.g. en_1.0
      * @param downloadType one of the following file types PDF, DOCX, HTML, RDF
      * @param requestURL request URL for statistical purposes
+     * @param onlyPublished only select published vocabularies
+     * @param outputStream stream for the result to be written to.
      * @return the generated file name
      */
-    String generateVocabularyPublishFileDownload(
+    String generateVocabularyFileDownload(
         String vocabularyNotation,
         String versionSl,
         String versionList,
         ExportService.DownloadType downloadType,
         String requestURL,
+        boolean onlyPublished,
         OutputStream outputStream);
 
-    /**
-     * Generate files to be exported for specific vocabulary from the editor
-     *
-     * @param vocabularyNotation the vocabulary notation
-     * @param versionSl the Source Language version
-     * @param versionList combination of language anf version number, e.g. en_1.0
-     * @param downloadType one of the following file types PDF, DOCX, HTML, RDF
-     * @param requestURL request URL for statistical purposes
-     * @return the generated file name
-     */
-    String generateVocabularyEditorFileDownload(
-        String vocabularyNotation,
-        String versionSl,
-        String versionList,
-        ExportService.DownloadType downloadType,
-        String requestURL,
-        OutputStream outputStream);
 
     /**
      *

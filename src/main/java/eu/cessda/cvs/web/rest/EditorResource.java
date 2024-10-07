@@ -1040,39 +1040,13 @@ public class EditorResource {
     }
 
     /**
-     *  get a SKOS file of vocabulary {cv} with version {v} with included versions {lv} from Editor DB
+     *  get a file of vocabulary {cv} with version {v} with included versions {lv} from Editor DB
      *
      * @param cv controlled vocabulary
      * @param v controlled vocabulary version
      * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
      */
-    @GetMapping("/editors/download/rdf/{cv}/{v}")
-    public ResponseEntity<Resource> getVocabularyInSkos(
-        HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
-        @RequestParam(name = "lv", required = true) String lv
-    ) {
-        log.debug("Editor REST request to get a SKOS-RDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
-
-        var outputStream = new FastByteArrayOutputStream();
-        String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.SKOS, ResourceUtils.getURLWithContextPath(request), outputStream );
-
-        InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
-        return ResponseEntity.ok()
-            .headers(headers)
-            .contentType(ResourceUtils.MEDIATYPE_RDF)
-            .body(resource);
-    }
-
-    /**
-     *  get a PDF file of vocabulary {cv} with version {v} with included versions {lv} from Editor DB
-     *
-     * @param cv controlled vocabulary
-     * @param v controlled vocabulary version
-     * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
-     */
-    @GetMapping("/editors/download/pdf/{cv}/{v}")
+    @GetMapping(path = "/editors/download/{cv}/{v}", produces = { ExportService.MEDIATYPE_RDF_VALUE, MediaType.APPLICATION_PDF_VALUE, MediaType.TEXT_HTML_VALUE })
     public ResponseEntity<Resource> getVocabularyInPdf(
         HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
         @RequestParam(name = "lv", required = true) String lv
@@ -1080,41 +1054,17 @@ public class EditorResource {
         log.debug("Editor REST request to get a PDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
 
         var outputStream = new FastByteArrayOutputStream();
-        String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.PDF, ResourceUtils.getURLWithContextPath(request), outputStream );
+        var requestURL = ResourceUtils.getURLWithContextPath( request );
+        var mediaType = MediaType.parseMediaType( request.getHeader( "accept" ) );
+        var type = ExportService.DownloadType.fromMediaType( mediaType ).orElseThrow(); // produces attribute should restrict to acceptable values
+        String fileName = vocabularyService.generateVocabularyFileDownload( cv, v, lv, type , requestURL, false, outputStream );
 
         InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
         return ResponseEntity.ok()
             .headers(headers)
-            .contentType(MediaType.parseMediaType("application/pdf"))
-            .body(resource);
-    }
-
-    /**
-     *  get a HTML file of vocabulary {cv} with version {v} with included versions {lv} from Editor DB
-     *
-     * @param cv controlled vocabulary
-     * @param v controlled vocabulary version
-     * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
-     */
-    @GetMapping("/editors/download/html/{cv}/{v}")
-    public ResponseEntity<Resource> getVocabularyInHtml(
-        HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
-        @RequestParam(name = "lv", required = true) String lv
-    ) {
-        log.debug("Editor REST request to get a HTML file of vocabulary {} with version {} with included versions {}", cv, v, lv);
-
-        var outputStream = new FastByteArrayOutputStream();
-        String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.HTML, ResourceUtils.getURLWithContextPath(request), outputStream );
-
-        InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
-        return ResponseEntity.ok()
-            .headers(headers)
-            .contentType(MediaType.parseMediaType("text/html"))
+            .contentType(type.getMediaType())
             .body(resource);
     }
 

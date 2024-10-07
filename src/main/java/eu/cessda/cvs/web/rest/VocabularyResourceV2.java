@@ -604,7 +604,7 @@ public class VocabularyResourceV2 {
      */
     @GetMapping(
         value="/vocabularies/{vocabulary}/{versionNumberSl}",
-        produces = { ResourceUtils.MEDIATYPE_RDF_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE }
+        produces = { ExportService.MEDIATYPE_RDF_VALUE, MediaType.APPLICATION_XML_VALUE, MediaType.TEXT_XML_VALUE }
     )
     @ApiOperation( value = "Get a Vocabulary in Skos RDF file" )
     public ResponseEntity<Resource> getVocabularySkosRdf(
@@ -760,7 +760,7 @@ public class VocabularyResourceV2 {
      * @return Vocabulary in SKOS/RDF format
      */
     @GetMapping("/vocabularies/rdf/{vocabulary}/{versionNumberSl}")
-    @ApiOperation( value = "Get a Vocabulary in SKOS format", hidden = true, produces = ResourceUtils.MEDIATYPE_RDF_VALUE )
+    @ApiOperation( value = "Get a Vocabulary in SKOS format", hidden = true, produces = ExportService.MEDIATYPE_RDF_VALUE )
     public ResponseEntity<Resource> getVocabularyInSkos(
         HttpServletRequest request,
         @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String vocabulary,
@@ -779,7 +779,7 @@ public class VocabularyResourceV2 {
         String requestURL = ResourceUtils.getURLWithContextPath( request );
 
         var outputStream = new FastByteArrayOutputStream();
-        String fileName = vocabularyService.generateVocabularyPublishFileDownload(vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.HTML, requestURL, outputStream);
+        String fileName = vocabularyService.generateVocabularyFileDownload(vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.HTML, requestURL, true, outputStream);
 
         InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
         HttpHeaders headers = new HttpHeaders();
@@ -807,7 +807,7 @@ public class VocabularyResourceV2 {
         String requestURL = ResourceUtils.getURLWithContextPath( request );
 
         var outputStream = new FastByteArrayOutputStream();
-        String fileName = vocabularyService.generateVocabularyPublishFileDownload(vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.PDF, requestURL, outputStream );
+        String fileName = vocabularyService.generateVocabularyFileDownload(vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.PDF, requestURL, true, outputStream );
 
         InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
         HttpHeaders headers = new HttpHeaders();
@@ -825,7 +825,7 @@ public class VocabularyResourceV2 {
         String requestURL = ResourceUtils.getURLWithContextPath( request );
 
         var outputStream = new FastByteArrayOutputStream();
-        String fileName = vocabularyService.generateVocabularyPublishFileDownload( vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.WORD, requestURL, outputStream );
+        String fileName = vocabularyService.generateVocabularyFileDownload( vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.WORD, requestURL, true, outputStream );
 
         InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
         HttpHeaders headers = new HttpHeaders();
@@ -837,12 +837,12 @@ public class VocabularyResourceV2 {
         String requestURL = ResourceUtils.getURLWithContextPath( request );
 
         var outputStream = new FastByteArrayOutputStream();
-        String fileName = vocabularyService.generateVocabularyPublishFileDownload( vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.SKOS, requestURL, outputStream );
+        String fileName = vocabularyService.generateVocabularyFileDownload( vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.SKOS, requestURL, true, outputStream );
 
         InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName );
-        return ResponseEntity.ok().headers(headers).contentType(ResourceUtils.MEDIATYPE_RDF).body(resource);
+        return ResponseEntity.ok().headers(headers).contentType( ExportService.MEDIATYPE_RDF).body(resource);
     }
 
     /**
