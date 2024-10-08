@@ -37,11 +37,11 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.xml.bind.JAXBException;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -51,6 +51,8 @@ public class ExportService
 {
     public static final String MEDIATYPE_RDF_VALUE = "application/rdf+xml";
     public static final MediaType MEDIATYPE_RDF = MediaType.parseMediaType(MEDIATYPE_RDF_VALUE);
+    public static final String MEDIATYPE_WORD_VALUE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    public static final MediaType MEDIATYPE_WORD = MediaType.parseMediaType( MEDIATYPE_WORD_VALUE );
 
     private final FontSet fontSet;
 
@@ -59,7 +61,7 @@ public class ExportService
 		SKOS("rdf", MEDIATYPE_RDF),
         PDF("pdf", MediaType.APPLICATION_PDF),
         HTML("html", MediaType.TEXT_HTML),
-        WORD("docx", new MediaType("application", "vnd.openxmlformats-officedocument.wordprocessingml.document" ));
+        WORD("docx", MEDIATYPE_WORD );
 
 		private final String type;
         private final MediaType mediaType;
@@ -98,7 +100,7 @@ public class ExportService
 	private final SpringTemplateEngine templateEngine;
 
     @SuppressWarnings( "DataFlowIssue" )
-	public ExportService(SpringTemplateEngine templateEngine )
+	public ExportService( SpringTemplateEngine templateEngine )
 	{
         this.templateEngine = templateEngine;
         this.fontSet = new FontSet();
@@ -157,9 +159,9 @@ public class ExportService
 
 	private void createTextFile( String contents, OutputStream outputStream ) throws IOException
     {
-        BufferedWriter bw = new BufferedWriter( new OutputStreamWriter( outputStream ) );
-        bw.write( contents );
-        bw.flush();
+        OutputStreamWriter writer = new OutputStreamWriter( outputStream, StandardCharsets.UTF_8 );
+        writer.write( contents );
+        writer.flush();
 	}
 
     public void createPdfFile( String contents, OutputStream outputStream )

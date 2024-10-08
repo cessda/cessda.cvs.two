@@ -22,11 +22,7 @@ import { Version } from 'app/shared/model/version.model';
 import { UntypedFormGroup } from '@angular/forms';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Router } from '@angular/router';
-
-interface FileFormat {
-  extension: string;
-  mimeType: string;
-}
+import { FileFormat } from 'app/shared/vocabulary-download/FileFormat';
 
 @Component({
   selector: 'jhi-vocabulary-download',

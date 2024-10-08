@@ -74,7 +74,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -1676,7 +1675,7 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     private Path createDirectoryAndFileName(String notation, String versionNumber, boolean isAllLatestVersion ) throws IOException {
-        Path dirPath = Path.of(applicationProperties.getVocabJsonPath() + notation);
+        Path dirPath = applicationProperties.getVocabJsonPath().resolve( notation );
 
         if (!isAllLatestVersion) {
             // Add the version number to the path
@@ -1694,8 +1693,16 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     @Override
-    public String generateVocabularyFileDownload( String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, String requestURL, boolean onlyPublished, OutputStream outputStream )
+    public Path generateVocabularyFileDownload( String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, String requestURL, boolean onlyPublished )
     {
+        var fileName = vocabularyNotation + "-" + versionSl + "_" + versionList + "." + downloadType;
+        var resolvedPath = applicationProperties.getExportFilePath().resolve( fileName );
+
+        // Test if a pre-existing export is present
+        if (Files.isRegularFile( resolvedPath )) {
+            return resolvedPath;
+        }
+
         log.info( "Generate file {} for Vocabulary {} versionSl {}", downloadType, vocabularyNotation, versionSl );
         VocabularyDTO vocabularyDTO = getVocabularyByNotationAndVersion( vocabularyNotation, versionSl, onlyPublished );
 
@@ -1761,12 +1768,10 @@ public class VocabularyServiceImpl implements VocabularyService
         int year;
         if ( vocabularyDTO.getPublicationDate() != null) {
             year = vocabularyDTO.getPublicationDate().getYear();
+        } else if ( vocabularyDTO.getLastModified() != null ) {
+            year = vocabularyDTO.getLastModified().getYear();
         } else {
-            if ( vocabularyDTO.getLastModified() != null) {
-                year = vocabularyDTO.getLastModified().getYear();
-            } else {
-                year = LocalDate.now().getYear();
-            }
+            year = LocalDate.now().getYear();
         }
         map.put( "year", year );
         map.put( "baseUrl", requestURL );
@@ -1776,11 +1781,16 @@ public class VocabularyServiceImpl implements VocabularyService
             suffix = "-ddi";
         }
 
+        // Write to export file
         try
         {
-            // The output stream is set by the calling method
-            exportService.generateFileByThymeleafTemplate( "export" + suffix, map, downloadType, outputStream );
-            return vocabularyNotation + "-" + versionSl + "_" + versionList + "." + downloadType;
+            // Create all necessary directories
+            Files.createDirectories( resolvedPath.getParent() );
+            try ( var outputStream = Files.newOutputStream( resolvedPath ) )
+            {
+                exportService.generateFileByThymeleafTemplate( "export" + suffix, map, downloadType, outputStream );
+                return resolvedPath;
+            }
         }
         catch ( IOException | JAXBException | Docx4JException e )
         {

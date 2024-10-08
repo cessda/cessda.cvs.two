@@ -44,17 +44,6 @@ public class ResourceUtils {
         return ResponseEntity.ok().headers(headers).body(compareVersions);
     }
 
-    /**
-     * Get server base path from the Servlet request
-     * @param request
-     * @return
-     */
-    public static String getBasePath(HttpServletRequest request) {
-        if( request.getScheme().equals( "http" ) && request.getServerPort() != 80)
-            return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-        return request.getScheme() + "://" + request.getServerName() + request.getContextPath() + "/";
-    }
-
     public static List<Map<String, Object>> convertVocabularyDtoToJsonLdSkosMos(VocabularyDTO vocabularyDTO, Set<CodeDTO> codeDtos, Set<String> languages){
         List<Map<String, Object>> vocabularyJsonLds = new ArrayList<>();
         String lang = "en";

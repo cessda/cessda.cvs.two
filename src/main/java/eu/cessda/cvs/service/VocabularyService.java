@@ -25,7 +25,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -230,18 +229,15 @@ public interface VocabularyService {
      * @param downloadType one of the following file types PDF, DOCX, HTML, RDF
      * @param requestURL request URL for statistical purposes
      * @param onlyPublished only select published vocabularies
-     * @param outputStream stream for the result to be written to.
-     * @return the generated file name
+     * @return the generated file's resolved path
      */
-    String generateVocabularyFileDownload(
+    Path generateVocabularyFileDownload(
         String vocabularyNotation,
         String versionSl,
         String versionList,
         ExportService.DownloadType downloadType,
         String requestURL,
-        boolean onlyPublished,
-        OutputStream outputStream);
-
+        boolean onlyPublished);
 
     /**
      *

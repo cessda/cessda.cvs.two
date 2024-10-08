@@ -38,7 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,7 +46,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -56,6 +55,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -1047,25 +1047,20 @@ public class EditorResource {
      * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
      */
     @GetMapping(path = "/editors/download/{cv}/{v}", produces = { ExportService.MEDIATYPE_RDF_VALUE, MediaType.APPLICATION_PDF_VALUE, MediaType.TEXT_HTML_VALUE })
-    public ResponseEntity<Resource> getVocabularyInPdf(
+    public ResponseEntity<Resource> getVocabularyDownload(
         HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
         @RequestParam(name = "lv", required = true) String lv
     ) {
         log.debug("Editor REST request to get a PDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
 
-        var outputStream = new FastByteArrayOutputStream();
         var requestURL = ResourceUtils.getURLWithContextPath( request );
         var mediaType = MediaType.parseMediaType( request.getHeader( "accept" ) );
         var type = ExportService.DownloadType.fromMediaType( mediaType ).orElseThrow(); // produces attribute should restrict to acceptable values
-        String fileName = vocabularyService.generateVocabularyFileDownload( cv, v, lv, type , requestURL, false, outputStream );
-
-        InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
+        Path fileName = vocabularyService.generateVocabularyFileDownload( cv, v, lv, type , requestURL, false );
         return ResponseEntity.ok()
-            .headers(headers)
+            .header(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName.getFileName())
             .contentType(type.getMediaType())
-            .body(resource);
+            .body(new FileSystemResource( fileName ) );
     }
 
     /**
