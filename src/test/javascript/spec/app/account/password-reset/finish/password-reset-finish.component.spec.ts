@@ -15,7 +15,7 @@
  */
 import { ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
-import { UntypedFormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
@@ -34,7 +34,7 @@ describe('Component Tests', () => {
         imports: [CvsTestModule],
         declarations: [PasswordResetFinishComponent],
         providers: [
-          UntypedFormBuilder,
+          FormBuilder,
           {
             provide: ActivatedRoute,
             useValue: new MockActivatedRoute({ key: 'XYZPDQ' }),

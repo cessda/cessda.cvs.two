@@ -55,14 +55,6 @@
                             <span>Cv Actions</span>
                         </a>
                         <div id="action-panel" class="acc-body" [ngbCollapse]="isCvActionCollapse">
-                            <!--Not needed anymore as we are not creating the CV here only adding new SL, TL versions
-                                div *ngIf="!(version!.status === 'READY_TO_TRANSLATE' || version!.status === 'READY_TO_PUBLISH')">
-                                <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT']}"
-                                        class="btn sk-select-min sk-input-f mtop10" (click)="openAddEditCvPopup( true , true)">
-                                    <fa-icon [icon]="'plus'"></fa-icon>
-                                    <span>Add Cv</span>
-                                </button>
-                            </div-->
                             <div *ngIf="(enableAddTl && !(version!.status === 'READY_TO_PUBLISH' || version!.status === 'PUBLISHED'))">
                                 <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CV', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_TL','ADMIN_CONTENT'], language:tlLanguageStatus}"
                                         class="btn sk-select-min sk-input-f mtop10" (click)="openAddEditCvPopup( true, false )">
@@ -314,7 +306,7 @@
                             <span *ngIf="vocabulary!.selectedLang !== vocabulary!.sourceLanguage">CV notes ({{vocabulary!.selectedLang}})</span>
                         </div>
                         <div class="detail-column">
-                            <div *ngIf="!isNotesEdit" [innerHTML]="editorDetailForm.get(['notes'])!.value ? editorDetailForm.get(['notes'])!.value: ''"></div>
+                            <div *ngIf="!isNotesEdit" [innerHTML]="editorDetailForm.controls.notes.value ? editorDetailForm.controls.notes.value: ''"></div>
 
                             <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_NOTE_CV', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}">
                                 <a *ngIf="!isNotesEdit" class="btn btn-sm btn-primary" ngbTooltip="edit notes" href="javascript:void(0);" (click)="isNotesEdit = !isNotesEdit">
@@ -435,7 +427,7 @@
                             <fa-icon *ngIf="isDetailCollapse" icon="caret-right"></fa-icon>
                             <span>Details</span>
                         </a>
-                        <div class="detail-panel" [ngClass]="{'select-by-tab': editorDetailForm.get('tabSelected')!.value === 'detail', 'not-select-by-tab': editorDetailForm.get('tabSelected')!.value !== 'detail'}" #detailEPanel id="detailEPanel" >
+                        <div class="detail-panel" [ngClass]="{'select-by-tab': editorDetailForm.controls.tabSelected.value === 'detail', 'not-select-by-tab': editorDetailForm.controls.tabSelected.value !== 'detail'}" #detailEPanel id="detailEPanel" >
                             <div class="concept-row row-header">
                                 <span class="column1">Code value</span>
                                 <span *ngIf="version!.languageSl" class="columnSl2">
@@ -491,7 +483,7 @@
                             <fa-icon *ngIf="isVersionCollapse" icon="caret-right"></fa-icon>
                             <span>Versions</span>
                         </a>
-                        <div class="detail-panel" [ngClass]="{'select-by-tab': editorDetailForm.get('tabSelected')!.value === 'version', 'not-select-by-tab': editorDetailForm.get('tabSelected')!.value !== 'version'}" #versionEPanel id="versionEPanel">
+                        <div class="detail-panel" [ngClass]="{'select-by-tab': editorDetailForm.controls.tabSelected.value === 'version', 'not-select-by-tab': editorDetailForm.controls.tabSelected.value !== 'version'}" #versionEPanel id="versionEPanel">
                             <!-- self version -->
                             <div class="item-panel">
                                 <a class="option-label m-w-300 v-label float-left" href="javascript:void(0);"
@@ -626,7 +618,7 @@
                             <fa-icon *ngIf="isIdentityCollapse" icon="caret-right"></fa-icon>
                             <span>Identity</span>
                         </a>
-                        <div class="detail-panel" [ngClass]="{'select-by-tab': editorDetailForm.get('tabSelected')!.value === 'identity', 'not-select-by-tab': editorDetailForm.get('tabSelected')!.value !== 'identity'}" #identityEPanel id="identityEPanel">
+                        <div class="detail-panel" [ngClass]="{'select-by-tab': editorDetailForm.controls.tabSelected.value === 'identity', 'not-select-by-tab': editorDetailForm.controls.tabSelected.value !== 'identity'}" #identityEPanel id="identityEPanel">
                             <div *ngIf="version!.canonicalUri" class="row-detail small-block-n">
                                 <div class="label-column">
                                     <span>Canonical URI</span>
@@ -663,7 +655,7 @@
                                     </a>
                                 </div>
                             </div>
-                            <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_IDENTITY_CV', agencyId:vocabulary!.agencyId!!, agencyRoles:['ADMIN_TL','ADMIN_CONTENT'], language:version!.language}">
+                            <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_IDENTITY_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN_TL','ADMIN_CONTENT'], language:version!.language}">
                                 <a *ngIf="!isIdentityEdit && version!.itemType === 'TL'" class="btn btn-primary btn-sm" ngbTooltip="edit translation-agency" href="javascript:void(0);" (click)="isIdentityEdit = !isIdentityEdit">
                                     <fa-icon icon="edit"></fa-icon> <span> Edit</span>
                                 </a>
@@ -681,9 +673,9 @@
                                 </div>
                                 <div class="detail-column">
                                     <input type="text" class="form-control" id="field_translateAgencyLink" name="translateAgencyLink" formControlName="translateAgencyLink"/>
-                                    <div *ngIf="editorDetailForm.get('translateAgencyLink')!.invalid && (editorDetailForm.get('translateAgencyLink')!.dirty || editorDetailForm.get('translateAgencyLink')!.touched)">
+                                    <div *ngIf="editorDetailForm.controls.translateAgencyLink.invalid && (editorDetailForm.controls.translateAgencyLink.dirty || editorDetailForm.controls.translateAgencyLink.touched)">
                                         <small class="form-text text-danger"
-                                               *ngIf="editorDetailForm.get('translateAgencyLink')?.errors?.pattern || editorDetailForm.get('translateAgencyLink')?.errors?.required">
+                                               *ngIf="editorDetailForm.controls.translateAgencyLink.errors?.pattern || editorDetailForm.controls.translateAgencyLink.errors?.required">
                                             Not a valid URL.
                                         </small>
                                     </div>
@@ -704,7 +696,7 @@
                             <fa-icon *ngIf="isUsageCollapse" icon="caret-right"></fa-icon>
                             <span>Usages</span>
                         </a>
-                        <div class="detail-panel" [ngClass]="{'select-by-tab': editorDetailForm.get('tabSelected')!.value === 'usage', 'not-select-by-tab': editorDetailForm.get('tabSelected')!.value !== 'usage'}" #usageEPanel id="usageEPanel">
+                        <div class="detail-panel" [ngClass]="{'select-by-tab': editorDetailForm.controls.tabSelected.value === 'usage', 'not-select-by-tab': editorDetailForm.controls.tabSelected.value !== 'usage'}" #usageEPanel id="usageEPanel">
                             <div *ngIf="!isDdiUsageEdit" class="small-block-n" [innerHTML]="version!.ddiUsage ? version!.ddiUsage: 'no information'"></div>
 
                             <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_DDI_CV', agencyId:vocabulary!.agencyId!!, agencyRoles:['ADMIN_SL','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}">
@@ -731,7 +723,7 @@
                             <fa-icon *ngIf="isLicenseCollapse" icon="caret-right"></fa-icon>
                             <span>Licenses</span>
                         </a>
-                        <div class="detail-panel" [ngClass]="{'select-by-tab': editorDetailForm.get('tabSelected')!.value === 'license', 'not-select-by-tab': editorDetailForm.get('tabSelected')!.value !== 'license'}" #licenseEPanel id="licenseEPanel">
+                        <div class="detail-panel" [ngClass]="{'select-by-tab': editorDetailForm.controls.tabSelected.value === 'license', 'not-select-by-tab': editorDetailForm.controls.tabSelected.value !== 'license'}" #licenseEPanel id="licenseEPanel">
                             <div class="small-block-n">
                                 <p style="width: 100%">Copyright ©
                                     <a [href]="vocabulary!.agencyLink" target="_blank">
@@ -777,7 +769,7 @@
                             <fa-icon *ngIf="isExportCollapse" icon="caret-right"></fa-icon>
                             <span>Exports</span>
                         </a>
-                        <div class="detail-panel" [ngClass]="{'select-by-tab': editorDetailForm.get('tabSelected')!.value === 'export', 'not-select-by-tab': editorDetailForm.get('tabSelected')!.value !== 'export'}" #exportEPanel id="exportEPanel">
+                        <div class="detail-panel" [ngClass]="{'select-by-tab': editorDetailForm.controls.tabSelected.value === 'export', 'not-select-by-tab': editorDetailForm.controls.tabSelected.value !== 'export'}" #exportEPanel id="exportEPanel">
                             <jhi-vocabulary-download
                                 [appScope]="appScope"
                                 [enableDocxExport]="enableDocxExport"

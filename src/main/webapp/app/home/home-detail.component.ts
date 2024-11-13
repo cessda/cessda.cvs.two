@@ -22,7 +22,7 @@ import { Vocabulary, createNewVocabulary } from 'app/shared/model/vocabulary.mod
 import { Version } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { UntypedFormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { HomeService } from 'app/home/home.service';
 import { RouteEventsService, VocabularyLanguageFromKeyPipe } from 'app/shared';
 import { DiffContent } from 'ngx-text-diff/lib/ngx-text-diff.model';
@@ -76,7 +76,7 @@ export class HomeDetailComponent implements OnInit {
   });
 
   detailForm = this.fb.group({
-    tabSelected: [],
+    tabSelected: new FormControl<string | null>(null),
     downloadFormGroup: this.downloadFormGroup,
   });
 
@@ -85,7 +85,7 @@ export class HomeDetailComponent implements OnInit {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected homeService: HomeService,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private routeEventsService: RouteEventsService,
     private _ngZone: NgZone,
     protected eventManager: JhiEventManager,

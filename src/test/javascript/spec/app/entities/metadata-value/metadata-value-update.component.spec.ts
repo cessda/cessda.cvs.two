@@ -15,7 +15,7 @@
  */
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
-import { UntypedFormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { of } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [MetadataValueUpdateComponent],
-        providers: [UntypedFormBuilder],
+        providers: [FormBuilder],
       })
         .overrideTemplate(MetadataValueUpdateComponent, '')
         .compileComponents();

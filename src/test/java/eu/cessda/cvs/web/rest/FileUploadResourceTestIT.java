@@ -16,9 +16,10 @@
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
-import org.apache.commons.io.FileUtils;
+import eu.cessda.cvs.config.ApplicationProperties;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.file.PathUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -31,9 +32,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
@@ -51,6 +52,9 @@ class FileUploadResourceTestIT
 {
 
     @Autowired
+    private ApplicationProperties applicationProperties;
+
+    @Autowired
     private MockMvc fileUploadResourceMockMvc;
 
     @Test
@@ -63,7 +67,9 @@ class FileUploadResourceTestIT
             .andReturn();
 
         // Test if the newly created resource can be found at the location header
-        fileUploadResourceMockMvc.perform( get( result.getResponse().getHeader( "location" ) ) )
+        String location = result.getResponse().getHeader( "location" );
+        assertThat( location ).isNotNull();
+        fileUploadResourceMockMvc.perform( get( location ) )
             .andExpect( status().isOk() )
             .andExpect( content().contentType( MediaType.IMAGE_JPEG ) );
     }
@@ -78,7 +84,9 @@ class FileUploadResourceTestIT
             .andReturn();
 
         // Test if the newly created resource can be found at the location header
-        fileUploadResourceMockMvc.perform( get( result.getResponse().getHeader( "location" ) ) )
+        String location = result.getResponse().getHeader( "location" );
+        assertThat( location ).isNotNull();
+        fileUploadResourceMockMvc.perform( get( location ) )
             .andExpect( status().isOk() )
             .andExpect( content().contentType( MediaType.IMAGE_JPEG ) );
     }
@@ -96,7 +104,9 @@ class FileUploadResourceTestIT
             .andReturn();
 
         // Test if the newly created resource can be found at the location header
-        fileUploadResourceMockMvc.perform( get( result.getResponse().getHeader( "location" ) ) )
+        String location = result.getResponse().getHeader( "location" );
+        assertThat( location ).isNotNull();
+        fileUploadResourceMockMvc.perform( get( location ) )
             .andExpect( status().isOk() )
             // Uploaded file should be bitwise identical to the source
             .andExpect( content().bytes( topicClassificationJson ) );
@@ -121,8 +131,8 @@ class FileUploadResourceTestIT
             .andExpect( header().string("location", containsString(fileName + ".html"))  );
 
         // Verify that the HTML has been generated
-        File htmlFile = new File( "target/classes/static/content/file/", fileName + ".html" );
-        assertThat( FileUtils.readFileToString( htmlFile, StandardCharsets.UTF_8) ).contains( "Test document" );
+        Path htmlFile = applicationProperties.getUploadFilePath().resolve( fileName + ".html" );
+        assertThat( PathUtils.readString( htmlFile, StandardCharsets.UTF_8 ) ).contains( "Test document" );
     }
 
     @Test

@@ -24,7 +24,7 @@ import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Agency } from 'app/shared/model/agency.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Account } from 'app/core/user/account.model';
@@ -46,12 +46,15 @@ export class EditorCvAddDialogComponent implements OnInit {
   errorNotationExists = false;
 
   cvAddForm = this.fb.group({
-    agency: [],
-    sourceLanguage: [],
-    notation: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(240), Validators.pattern('^[+A-Za-z0-9-]*$')]],
-    title: ['', [Validators.required]],
-    definition: ['', [Validators.required]],
-    notes: [],
+    agency: new FormControl<number | null>(null),
+    sourceLanguage: new FormControl<string | null>(null),
+    notation: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(2), Validators.maxLength(240), Validators.pattern('^[+A-Za-z0-9-]*$')],
+    }),
+    title: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    definition: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    notes: new FormControl<string | null>(null),
   });
 
   constructor(
@@ -61,7 +64,7 @@ export class EditorCvAddDialogComponent implements OnInit {
     protected vocabularyService: VocabularyService,
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private router: Router,
   ) {
     this.isSaving = false;
@@ -134,18 +137,18 @@ export class EditorCvAddDialogComponent implements OnInit {
   }
 
   private createFromForm(): VocabularySnippet {
-    const selectedAgencyId = Number(this.cvAddForm.get(['agency'])!.value);
+    const selectedAgencyId = Number(this.cvAddForm.controls.agency.value);
     return {
       actionType: ActionType.CREATE_CV,
       agencyId: selectedAgencyId,
-      language: this.cvAddForm.get(['sourceLanguage'])!.value,
+      language: this.cvAddForm.controls.sourceLanguage.value || undefined,
       itemType: 'SL',
-      notation: this.cvAddForm.get(['notation'])!.value,
+      notation: this.cvAddForm.controls.notation.value,
       versionNumber: '1.0.0',
       status: 'DRAFT',
-      title: this.cvAddForm.get(['title'])!.value,
-      definition: this.cvAddForm.get(['definition'])!.value,
-      notes: this.cvAddForm.get(['notes'])!.value,
+      title: this.cvAddForm.controls.title.value,
+      definition: this.cvAddForm.controls.definition.value,
+      notes: this.cvAddForm.controls.notes.value || undefined,
     };
   }
 

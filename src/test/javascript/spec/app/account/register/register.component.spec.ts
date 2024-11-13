@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, async, inject, tick, fakeAsync } from '@angular/core/testing';
-import { UntypedFormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { of, throwError } from 'rxjs';
 import { JhiLanguageService } from 'ng-jhipster';
 
@@ -33,7 +33,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [RegisterComponent],
-        providers: [UntypedFormBuilder],
+        providers: [FormBuilder],
       })
         .overrideTemplate(RegisterComponent, '')
         .compileComponents();

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
-import { UntypedFormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -38,7 +38,7 @@ describe('Component Tests', () => {
         imports: [CvsTestModule],
         declarations: [LoginModalComponent],
         providers: [
-          UntypedFormBuilder,
+          FormBuilder,
           {
             provide: LoginService,
             useClass: MockLoginService,
@@ -104,9 +104,9 @@ describe('Component Tests', () => {
 
       // THEN
       expect(comp.authenticationError).toEqual(false);
-      expect(comp.loginForm.get('username')!.value).toEqual(expected.username);
-      expect(comp.loginForm.get('password')!.value).toEqual(expected.password);
-      expect(comp.loginForm.get('rememberMe')!.value).toEqual(expected.rememberMe);
+      expect(comp.loginForm.controls.username.value).toEqual(expected.username);
+      expect(comp.loginForm.controls.password.value).toEqual(expected.password);
+      expect(comp.loginForm.controls.rememberMe.value).toEqual(expected.rememberMe);
       expect(mockActiveModal.dismissSpy).toHaveBeenCalledWith('cancel');
     });
 

@@ -119,8 +119,4 @@ jhipster:
 # ===================================================================
 
 application:
-  static-file-path: target/classes/static
-  vocab-json-path: target/classes/static/content/vocabularies-test/
-  agency-image-path: target/classes/static/content/images/agency/
-  license-image-path: target/classes/static/content/images/license/
-  upload-file-path: target/classes/static/content/file/
+  static-file-path: target/test-static-resources

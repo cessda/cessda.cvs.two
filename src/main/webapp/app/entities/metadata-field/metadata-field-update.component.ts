@@ -15,8 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
@@ -24,6 +23,7 @@ import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } 
 import { MetadataField } from 'app/shared/model/metadata-field.model';
 import { MetadataFieldService } from './metadata-field.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
+import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
 
 @Component({
   selector: 'jhi-metadata-field-update',
@@ -33,10 +33,10 @@ export class MetadataFieldUpdateComponent implements OnInit {
   isSaving = false;
 
   editForm = this.fb.group({
-    id: [],
-    metadataKey: [null, [Validators.required, Validators.maxLength(240)]],
-    description: [],
-    objectType: [],
+    id: new FormControl<number | null>(null),
+    metadataKey: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(240)] }),
+    description: new FormControl<string | null>(null),
+    objectType: new FormControl<ObjectType | null>(null),
   });
 
   constructor(
@@ -44,7 +44,7 @@ export class MetadataFieldUpdateComponent implements OnInit {
     protected eventManager: JhiEventManager,
     protected metadataFieldService: MetadataFieldService,
     protected activatedRoute: ActivatedRoute,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -84,10 +84,10 @@ export class MetadataFieldUpdateComponent implements OnInit {
 
   private createFromForm(): MetadataField {
     return {
-      id: this.editForm.get(['id'])!.value,
-      metadataKey: this.editForm.get(['metadataKey'])!.value,
-      description: this.editForm.get(['description'])!.value,
-      objectType: this.editForm.get(['objectType'])!.value,
+      id: this.editForm.controls.id.value !== null ? this.editForm.controls.id.value : undefined,
+      metadataKey: this.editForm.controls.metadataKey.value,
+      description: this.editForm.controls.description.value || undefined,
+      objectType: this.editForm.controls.objectType.value || undefined,
       metadataValues: [],
     };
   }

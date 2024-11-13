@@ -15,8 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
@@ -36,16 +35,16 @@ export class ConceptUpdateComponent implements OnInit {
   versions: Version[] = [];
 
   editForm = this.fb.group({
-    id: [],
-    uri: [],
-    notation: [null, [Validators.required, Validators.maxLength(240)]],
-    title: [],
-    definition: [],
-    previousConcept: [],
-    slConcept: [],
-    parent: [null, [Validators.maxLength(240)]],
-    position: [],
-    versionId: [],
+    id: new FormControl<number | null>(null),
+    uri: new FormControl<string | null>(null),
+    notation: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(240)] }),
+    title: new FormControl<string | null>(null),
+    definition: new FormControl<string | null>(null),
+    previousConcept: new FormControl<number | null>(null),
+    slConcept: new FormControl<number | null>(null),
+    parent: new FormControl<string | null>(null, [Validators.maxLength(240)]),
+    position: new FormControl<number | null>(null),
+    versionId: new FormControl<number | null>(null),
   });
 
   constructor(
@@ -54,7 +53,7 @@ export class ConceptUpdateComponent implements OnInit {
     protected conceptService: ConceptService,
     protected versionService: VersionService,
     protected activatedRoute: ActivatedRoute,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -103,16 +102,16 @@ export class ConceptUpdateComponent implements OnInit {
   private createFromForm(): Concept {
     return {
       visible: true,
-      id: this.editForm.get(['id'])?.value,
-      uri: this.editForm.get(['uri'])?.value,
-      notation: this.editForm.get(['notation'])?.value || '',
-      title: this.editForm.get(['title'])?.value,
-      definition: this.editForm.get(['definition'])?.value,
-      previousConcept: this.editForm.get(['previousConcept'])?.value,
-      slConcept: this.editForm.get(['slConcept'])?.value,
-      parent: this.editForm.get(['parent'])?.value || '',
-      position: this.editForm.get(['position'])?.value,
-      versionId: this.editForm.get(['versionId'])?.value,
+      id: this.editForm.controls.id.value !== null ? this.editForm.controls.id.value : undefined,
+      uri: this.editForm.controls.uri.value || undefined,
+      notation: this.editForm.controls.notation.value || '',
+      title: this.editForm.controls.title.value || undefined,
+      definition: this.editForm.controls.definition.value || undefined,
+      previousConcept: this.editForm.controls.previousConcept.value !== null ? this.editForm.controls.previousConcept.value : undefined,
+      slConcept: this.editForm.controls.slConcept.value || undefined,
+      parent: this.editForm.controls.parent.value || '',
+      position: this.editForm.controls.position.value !== null ? this.editForm.controls.position.value : undefined,
+      versionId: this.editForm.controls.versionId.value !== null ? this.editForm.controls.versionId.value : undefined,
     };
   }
 

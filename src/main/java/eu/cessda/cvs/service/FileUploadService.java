@@ -18,26 +18,19 @@ package eu.cessda.cvs.service;
 import eu.cessda.cvs.config.ApplicationProperties;
 import eu.cessda.cvs.domain.enumeration.ObjectType;
 import eu.cessda.cvs.service.dto.MetadataValueDTO;
-import org.docx4j.Docx4J;
-import org.docx4j.convert.out.HTMLSettings;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.imgscalr.Scalr;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.FastByteArrayOutputStream;
 
 import javax.imageio.ImageIO;
-import javax.xml.bind.DatatypeConverter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -62,9 +55,9 @@ public class FileUploadService {
     {
         switch ( fileUploadHelper.getFileUploadType()) {
             case IMAGE_AGENCY:
-                return uploadImage( fileUploadHelper, Path.of( applicationProperties.getAgencyImagePath() ) );
+                return uploadImage( fileUploadHelper, applicationProperties.getAgencyImagePath() );
             case IMAGE_LICENSE:
-                return uploadImage( fileUploadHelper, Path.of( applicationProperties.getLicenseImagePath() ) );
+                return uploadImage( fileUploadHelper,applicationProperties.getLicenseImagePath() );
             case DOCX:
                 return uploadSpecificFile( fileUploadHelper );
             default:
@@ -74,7 +67,7 @@ public class FileUploadService {
 
     private Path uploadSpecificFile( FileUploadHelper fileUploadHelper ) throws IOException
     {
-        Path baseDirectory = Path.of(applicationProperties.getUploadFilePath());
+        Path baseDirectory = applicationProperties.getUploadFilePath();
 
         // Create destination directory if it does not exist.
         Files.createDirectories(baseDirectory);
@@ -134,60 +127,8 @@ public class FileUploadService {
         return image2;
     }
 
-    public Path docx2html(String fileName, String uploadedFileUri) throws IOException, Docx4JException {
-        WordprocessingMLPackage wordMLPackage;
-
-        try ( var inputStream = Files.newInputStream( Path.of( applicationProperties.getUploadFilePath(), fileName ) ) )
-        {
-            wordMLPackage = Docx4J.load( inputStream );
-        }
-
-        // Configure Docx4J HTML settings
-        HTMLSettings htmlSettings = Docx4J.createHTMLSettings();
-        htmlSettings.setImageDirPath( applicationProperties.getUploadFilePath() );
-        htmlSettings.setImageTargetUri( uploadedFileUri );
-        htmlSettings.setOpcPackage( wordMLPackage );
-
-        // Store the HTML in this buffer
-        var outputBuffer = new FastByteArrayOutputStream();
-
-        // Export to HTML, then parse with Jsoup
-        Docx4J.toHTML( htmlSettings, outputBuffer, Docx4J.FLAG_EXPORT_PREFER_XSL );
-        Document doc = Jsoup.parse( outputBuffer.getInputStream(), null, applicationProperties.getUploadFilePath() );
-
-        // Replace linked images with embedded Base64 encoded versions
-        for ( Element element : doc.select( "img" ) )
-        {
-            String src = element.attr( "src" );
-            if ( !src.startsWith( "data:" ) )
-            {
-                Path imageFile = Path.of( applicationProperties.getStaticFilePath(), src );
-                try
-                {
-                    // Attempt to load the image data from the file
-                    byte[] imageFileBytes = Files.readAllBytes(imageFile);
-                    String imageBase64LogoData = DatatypeConverter.printBase64Binary(imageFileBytes);
-                    String type = Files.probeContentType( imageFile );
-                    element.attr( "src", "data:" + type + ";base64," + imageBase64LogoData );
-                } catch ( IOException e ) {
-                    // Remove the image element if the image cannot be loaded
-                    log.warn( "Loading image from {} failed: {}", imageFile, e.toString() );
-                    element.remove();
-                }
-            }
-        }
-
-        var outputHTMLFile = Path.of( applicationProperties.getUploadFilePath(), fileName + ".html" );
-        try ( BufferedWriter htmlWriter = Files.newBufferedWriter( outputHTMLFile, doc.charset() ) )
-        {
-            htmlWriter.write( doc.toString() );
-        }
-
-        return outputHTMLFile;
-    }
-
     public void html2section(String fileName, String metadataKey) throws IOException {
-        Path initialFile = Path.of( applicationProperties.getUploadFilePath(), fileName + ".html" );
+        Path initialFile = applicationProperties.getUploadFilePath().resolve(fileName + ".html" );
         Document doc = Jsoup.parse( initialFile, null );
         Elements elements = doc.body().children();
 
