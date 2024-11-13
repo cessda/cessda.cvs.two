@@ -100,8 +100,8 @@ public class MailServiceIT {
     private MailService mailService;
 
     @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
+    public void setup() throws Exception {
+        MockitoAnnotations.openMocks(this).close();
         doNothing().when(javaMailSender).send(any(MimeMessage.class));
         mailService = new MailService(jHipsterProperties, javaMailSender, messageSource, templateEngine);
     }

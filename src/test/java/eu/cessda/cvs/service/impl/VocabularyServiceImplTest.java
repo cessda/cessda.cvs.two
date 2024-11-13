@@ -33,11 +33,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Random;
+import java.nio.file.Path;
+import java.util.*;
 
 import static java.lang.Math.abs;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -200,10 +201,11 @@ class VocabularyServiceImplTest
     }
 
     @Test
-    void shouldGetPublishedCVPaths() {
+    void shouldGetPublishedCVPaths() throws IOException, URISyntaxException
+    {
         // Setup
-        ApplicationProperties applicationProperties = new ApplicationProperties();
-        applicationProperties.setVocabJsonPath( "src/main/webapp/content/vocabularies" );
+        URL content = Objects.requireNonNull( this.getClass().getResource( "/static/content" ) );
+        ApplicationProperties applicationProperties = new ApplicationProperties( Path.of( content.toURI() ) );
         VocabularyServiceImpl vocabularyService = new VocabularyServiceImpl( null,
             null,
             null,

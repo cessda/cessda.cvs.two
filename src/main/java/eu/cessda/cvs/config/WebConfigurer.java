@@ -19,46 +19,46 @@ import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.JHipsterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.web.server.WebServerFactory;
-import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
-import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.PathResource;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static java.net.URLDecoder.decode;
-
 /**
  * Configuration of web application with Servlet 3.0 APIs.
  */
 @Configuration
-public class WebConfigurer implements ServletContextInitializer, WebServerFactoryCustomizer<WebServerFactory> {
+public class WebConfigurer implements ServletContextInitializer, WebMvcConfigurer
+{
 
     private final Logger log = LoggerFactory.getLogger(WebConfigurer.class);
 
     private final Environment env;
 
+    private final ApplicationProperties applicationProperties;
     private final JHipsterProperties jHipsterProperties;
 
-    public WebConfigurer(Environment env, JHipsterProperties jHipsterProperties) {
+    public WebConfigurer(Environment env, ApplicationProperties applicationProperties, JHipsterProperties jHipsterProperties) {
         this.env = env;
+        this.applicationProperties = applicationProperties;
         this.jHipsterProperties = jHipsterProperties;
     }
 
@@ -78,36 +78,14 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
      * Customize the Servlet engine: Mime types, the document root, the cache.
      */
     @Override
-    public void customize(WebServerFactory server) {
-        // When running in an IDE or with ./mvnw spring-boot:run, set location of the static web assets.
-        setLocationForStaticAssets(server);
-    }
-
-    private void setLocationForStaticAssets(WebServerFactory server) {
-        if (server instanceof ConfigurableServletWebServerFactory) {
-            ConfigurableServletWebServerFactory servletWebServer = (ConfigurableServletWebServerFactory) server;
-            File root;
-            String prefixPath = resolvePathPrefix();
-            root = new File(prefixPath + "target/classes/static/");
-            if (root.exists() && root.isDirectory()) {
-                servletWebServer.setDocumentRoot(root);
-            }
+    @ParametersAreNonnullByDefault
+    public void addResourceHandlers( ResourceHandlerRegistry registry ) {
+        // Configure mapping for upload directories
+        if (applicationProperties.getStaticFilePath() != null)
+        {
+            registry.addResourceHandler( "/content/**" )
+                .addResourceLocations( new PathResource( applicationProperties.getStaticFilePath() ), new ClassPathResource( "/static/content/" ) );
         }
-    }
-
-    /**
-     * Resolve path prefix to static resources.
-     */
-    private String resolvePathPrefix() {
-        String fullExecutablePath;
-        fullExecutablePath = decode(this.getClass().getResource("").getPath(), StandardCharsets.UTF_8);
-        String rootPath = Paths.get(".").toUri().normalize().getPath();
-        String extractedPath = fullExecutablePath.replace(rootPath, "");
-        int extractionEndIndex = extractedPath.indexOf("target/");
-        if (extractionEndIndex <= 0) {
-            return "";
-        }
-        return extractedPath.substring(0, extractionEndIndex);
     }
 
     /**

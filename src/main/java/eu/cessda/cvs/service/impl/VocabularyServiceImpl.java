@@ -78,7 +78,6 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
@@ -800,7 +799,7 @@ public class VocabularyServiceImpl implements VocabularyService
         vocabularyEditorSearchRepository.deleteById( id );
         vocabularyPublishSearchRepository.deleteById( id );
         // delete files if any
-        deleteCvJsonDirectoryAndContent( Path.of( applicationProperties.getVocabJsonPath(), notation ) );
+        deleteCvJsonDirectoryAndContent( applicationProperties.getVocabJsonPath().resolve( notation ) );
     }
 
     public void deleteCvJsonDirectoryAndContent( Path dirPath ) {
@@ -818,7 +817,7 @@ public class VocabularyServiceImpl implements VocabularyService
                 e.addSuppressed( ede );
             }
 
-            // directory wasn't empty or an IO error occured
+            // directory wasn't empty or an IO error occurred
             log.error( "Unable to delete directory", e );
         }
     }
@@ -1123,7 +1122,7 @@ public class VocabularyServiceImpl implements VocabularyService
     @Override
     public List<Path> getPublishedCvPaths() {
         try ( Stream<Path> paths = Files.find(
-            Paths.get( applicationProperties.getVocabJsonPath() ), 2, (p, a) -> a.isRegularFile()
+            applicationProperties.getVocabJsonPath(), 2, (p, a) -> a.isRegularFile()
         ) ) {
             return paths.collect( Collectors.toList() );
         } catch (IOException e) {
@@ -1512,7 +1511,7 @@ public class VocabularyServiceImpl implements VocabularyService
         output.append( "Performing Vocabulary Publish JSON files creation.\n" );
         // remove all static JSON files on vocabulary (delete entire and including vocabulary
         // directory)
-        deleteCvJsonDirectoryAndContent( Path.of( applicationProperties.getVocabJsonPath() ) );
+        deleteCvJsonDirectoryAndContent( applicationProperties.getVocabJsonPath() );
         output.append( "Clean up: All existing JSON files are deleted.\n" );
 
         List<VocabularyDTO> vocabularyDTOS = findAll();
@@ -2120,7 +2119,10 @@ public class VocabularyServiceImpl implements VocabularyService
             {
                 readLicenseLogo( versionDTO );
             }
+        }
 
+        for (VersionDTO versionDTO : vocabularyDTO.getVersions())
+        {
             if (versionDTO.getCanonicalUri() != null)
             {
                 int index = versionDTO.getCanonicalUri().lastIndexOf(':');
@@ -2132,7 +2134,7 @@ public class VocabularyServiceImpl implements VocabularyService
 
     private void readAgencyLogo( VocabularyDTO vocabularyDTO, AgencyDTO agencyDTO )
     {
-        Path logoFile = Path.of(applicationProperties.getAgencyImagePath(), vocabularyDTO.getAgencyLogo());
+        Path logoFile = applicationProperties.getAgencyImagePath().resolve( vocabularyDTO.getAgencyLogo() );
         try
         {
             String base64Data = readFileToBase64( logoFile );
@@ -2147,7 +2149,7 @@ public class VocabularyServiceImpl implements VocabularyService
 
     private void readLicenseLogo( VersionDTO versionDTO )
     {
-        Path licenceLogo = Path.of(applicationProperties.getLicenseImagePath(), versionDTO.getLicenseLogo());
+        Path licenceLogo = applicationProperties.getLicenseImagePath().resolve( versionDTO.getLicenseLogo() );
         try
         {
             String base64Data = readFileToBase64( licenceLogo );

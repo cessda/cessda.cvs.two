@@ -30,8 +30,6 @@ hr {
   color: #D3D3D3; /*lightgrey */
   margin-top: 2em;
   margin-bottom: 2em;
-  margin-left: 10%;
-  margin-right: 10%;
 }
 table, th, td {
   border-style: solid;
@@ -48,7 +46,6 @@ thead {
   font-size: 120%;
 }
 th, td {
-  padding: 0.5em;
   vertical-align: top;
 }
 td.Code {
@@ -113,7 +110,7 @@ div.CodeList {
 
 		    <div class="page">
 		      <div style="width: 100%;">
-		      	<div style="width:130px;float:left;padding-right:15px">
+		      	<div th:if="${agency.logo != null}" style="width:130px;float:left;padding-right:15px">
 		      		<img alt="agency-logo" style="width:120px" th:src="@{${agency.logo}}"/>
 		    	</div>
 		    	<div>
@@ -174,9 +171,9 @@ div.CodeList {
 			        </thead>
 			        <tbody>
 			           <tr th:each="concept : ${version.concepts}" th:if="${!concept.deprecated}" >
-                        <td style="width: 25%;white-space:pre-line;word-break:break-all;word-wrap:break-word;" th:text="${concept.notation}"></td>
-			            <td style="width: 25%" th:text="${concept.title}"></td>
-			            <td style="width: 50%" th:text="${concept.definition}"></td>
+                        <td style="white-space:pre-line;word-break:break-all;" th:text="${concept.notation}"></td>
+                        <td style="word-break:break-word;" th:text="${concept.title}"></td>
+			            <td th:text="${concept.definition}"></td>
 			          </tr>
 			        </tbody>
 			      </table>
@@ -226,7 +223,7 @@ div.CodeList {
 		        <h2>License and citation</h2>
 			    <p>Copyright © <a th:href="${agency.link}" th:text="${agency.name}"></a> <span th:text="${year}"></span>.</p>
 			    <p th:if="${version.licenseName != null}">
-			    	<a rel="license" th:href="${version.licenseLink}">
+			    	<a th:if="${version.licenseLogo != null}" rel="license" th:href="${version.licenseLink}">
 			    	<img style="border-width:0;width:140px" alt="licanse-logo" th:attr="src=${version.licenseLogo},title=${version.licenseName},alt=${version.licenseName}" />
 			    	</a>
 					<span>This work is licensed under a
