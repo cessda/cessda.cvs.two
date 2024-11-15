@@ -124,8 +124,12 @@ export class LicenceUpdateComponent implements OnInit {
     this.fileUploadService.uploadLicenseImage(this.currentFileUpload).subscribe(event => {
       if (event.type === HttpEventType.UploadProgress && event.total) {
         this.progress.percentage = Math.round((100 * event.loaded) / event.total);
-      } else if (event instanceof HttpResponse && event.body) {
-        this.currentImage = event.body.toString();
+      } else if (event instanceof HttpResponse && event.headers.get('location')) {
+        const location = event.headers.get('location');
+        if (location) {
+          const uploadedImage = location.split('/').pop();
+          this.currentImage = uploadedImage;
+        }
       }
     });
 
