@@ -46,7 +46,7 @@ public class FileUploadService {
     private final MetadataFieldService metadataFieldService;
 
     @Autowired
-    private FileUploadService(ApplicationProperties applicationProperties, MetadataFieldService metadataFieldService) {
+    public FileUploadService(ApplicationProperties applicationProperties, MetadataFieldService metadataFieldService) {
         this.applicationProperties = applicationProperties;
         this.metadataFieldService = metadataFieldService;
     }

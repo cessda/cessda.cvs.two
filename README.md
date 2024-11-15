@@ -1,6 +1,6 @@
-[![SQAaaS badge](https://github.com/EOSC-synergy/SQAaaS/raw/master/badges/badges_150x116/badge_software_silver.png)](https://api.eu.badgr.io/public/assertions/eBNxDLMXQ8S_cyYB0pvxpw "SQAaaS silver badge achieved")
+[![SQAaaS badge](https://github.com/EOSC-synergy/SQAaaS/raw/master/badges/badges_150x116/badge_software_silver.png)](https://api.eu.badgr.io/public/assertions/eBNxDLMXQ8S_cyYB0pvxpw 'SQAaaS silver badge achieved')
 
-[![SQAaaS badge shields.io](https://img.shields.io/badge/sqaaas%20software-silver-lightgrey)](https://api.eu.badgr.io/public/assertions/eBNxDLMXQ8S_cyYB0pvxpw "SQAaaS silver badge achieved")
+[![SQAaaS badge shields.io](https://img.shields.io/badge/sqaaas%20software-silver-lightgrey)](https://api.eu.badgr.io/public/assertions/eBNxDLMXQ8S_cyYB0pvxpw 'SQAaaS silver badge achieved')
 
 [![Build Status](https://jenkins.cessda.eu/buildStatus/icon?job=cessda.cvs.two%2Fmain)](https://jenkins.cessda.eu/job/cessda.cvs.two/job/main/)
 [![Bugs](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=bugs)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
@@ -43,7 +43,7 @@ Several frameworks and languages are used in this application.
 | Maven                | Build tool                            |
 | Java                 | Programming language and API          |
 | Spring Boot          | Web application framework (Back-End)  |
-| Angular 10           | Web application framework (Front-End) |
+| Angular              | Web application framework (Front-End) |
 
 ## Development
 
