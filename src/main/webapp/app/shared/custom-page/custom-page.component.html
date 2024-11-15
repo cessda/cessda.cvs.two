@@ -79,13 +79,13 @@
                 <jhi-alert-error></jhi-alert-error>
                 <jhi-alert></jhi-alert>
                 <div class="w-100" *ngIf="pageType !== 'about'">
-                    <button class="btn btn-sm float-right" (click)="downloadAsFile('pdf')" ngbTooltip="Download API documentation as PDF">
+                    <button class="btn btn-sm float-right" (click)="downloadAsFile({ extension: 'pdf', mimeType: 'application/pdf' })" ngbTooltip="Download API documentation as PDF">
                         <fa-icon *ngIf="!generatingFile" icon="file-pdf">PDF</fa-icon>
                         <fa-icon *ngIf="generatingFile"[icon]="'circle-notch'" [spin]="true"></fa-icon>
                     </button>&nbsp;&nbsp;&nbsp;
                 </div>
 
-                <button *ngIf="enableDocxExport" class="btn btn-sm float-right" (click)="downloadAsFile('word')" ngbTooltip="Download API documentation as Word Docx">
+                <button *ngIf="enableDocxExport" class="btn btn-sm float-right" (click)="downloadAsFile({ extension: 'docx', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' })" ngbTooltip="Download API documentation as Word Docx">
                     <fa-icon *ngIf="!generatingFile" icon="file-word">Word</fa-icon>
                     <fa-icon *ngIf="generatingFile"[icon]="'circle-notch'" [spin]="true"></fa-icon>
                 </button>

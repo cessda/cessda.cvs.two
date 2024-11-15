@@ -61,9 +61,10 @@ export class MetadataFieldService {
     return this.http.get<MetadataField>(`${this.resourceUrl}/metadata-key/${metadataKey}`, { observe: 'response' });
   }
 
-  downloadMetadataFile(metadataKey: string, downloadType: string): Observable<Blob> {
-    return this.http.get(`${this.resourceUrl}/download-${downloadType}/${metadataKey}`, {
+  downloadMetadataFile(metadataKey: string, mimeType: string): Observable<Blob> {
+    return this.http.get(`${this.resourceUrl}/download/${metadataKey}`, {
       responseType: 'blob',
+      headers: { accept: mimeType },
     });
   }
 }

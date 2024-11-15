@@ -28,19 +28,17 @@ import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import javax.xml.bind.JAXBException;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -162,35 +160,46 @@ public class MetadataFieldResource {
      * @param metadataKey the metadataKey of the metadataFieldDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the metadataFieldDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/metadata-fields/download-pdf/{metadataKey}")
-    public ResponseEntity<Resource> getMetadataPdfFileByMetadataKey(@PathVariable String metadataKey) throws JAXBException, IOException, Docx4JException {
-        return exportMetadataAsFile(metadataKey, ExportService.DownloadType.PDF);
-    }
+    @GetMapping( path = "/metadata-fields/download/{metadataKey}", produces = { MediaType.APPLICATION_PDF_VALUE, ExportService.MEDIATYPE_WORD_VALUE })
+    public ResponseEntity<StreamingResponseBody> getMetadataPdfFileByMetadataKey( @RequestHeader("Accept") String accept, @PathVariable String metadataKey)
+    {
+        var mediaType = MediaType.parseMediaType( accept );
+        var downloadType = ExportService.DownloadType.fromMediaType( mediaType ).orElseThrow();
+        Optional<MetadataFieldDTO> metadataFieldDTO = metadataFieldService.findOneByMetadataKey( metadataKey );
 
-    @GetMapping("/metadata-fields/download-word/{metadataKey}")
-    public ResponseEntity<Resource> getMetadataDocxFileByMetadataKey(@PathVariable String metadataKey) throws JAXBException, IOException, Docx4JException {
-        return exportMetadataAsFile(metadataKey, ExportService.DownloadType.WORD);
-    }
-
-    private ResponseEntity<Resource> exportMetadataAsFile(String metadataKey, ExportService.DownloadType downloadType) throws IOException, JAXBException, Docx4JException {
-        Optional<MetadataFieldDTO> metadataFieldDTO = metadataFieldService.findOneByMetadataKey(metadataKey);
         Map<String, Object> map = new HashMap<>();
         // sort by position
         if( metadataFieldDTO.isPresent() ) {
-            final LinkedHashSet<MetadataValueDTO> metadataValueDTOS = metadataFieldDTO.get().getMetadataValues().stream().sorted(Comparator.comparing(MetadataValueDTO::getPosition))
-                .collect(Collectors.toCollection(LinkedHashSet::new));
-            metadataFieldDTO.get().setMetadataValues(metadataValueDTOS);
-            map.put("sections", metadataValueDTOS.stream().filter(mv -> mv.getIdentifier() != null && !mv.getIdentifier().equals("overview"))
-                .map(mv -> VocabularyUtils.toStrictXhtml(mv.getValue())).collect(Collectors.toList()));
+            List<MetadataValueDTO> metadataValueDTOS = new ArrayList<>( metadataFieldDTO.get().getMetadataValues() );
+            metadataValueDTOS.sort( Comparator.comparing( MetadataValueDTO::getPosition ) );
+            var sections = new ArrayList<>();
+            for ( MetadataValueDTO mv : metadataValueDTOS )
+            {
+                if ( mv.getIdentifier() != null && !mv.getIdentifier().equals( "overview" ) )
+                {
+                    String strictXhtml = VocabularyUtils.toStrictXhtml( mv.getValue() );
+                    sections.add( strictXhtml );
+                }
+            }
+            map.put("sections", sections );
         }
 
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        exportService.generateFileByThymeleafTemplate("document",  map, downloadType, outputStream);
-        ByteArrayResource resource = new ByteArrayResource( outputStream.toByteArray() );
+        var body = (StreamingResponseBody) outputStream ->
+        {
+            try
+            {
+                exportService.generateFileByThymeleafTemplate( "document", map, downloadType, outputStream );
+            }
+            catch ( JAXBException | Docx4JException e )
+            {
+                throw new IllegalStateException( e );
+            }
+        };
+
         return ResponseEntity.ok()
             .contentType( downloadType.getMediaType() )
             .header( HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + "document." + downloadType )
-            .body(resource);
+            .body( body );
     }
 
     /**

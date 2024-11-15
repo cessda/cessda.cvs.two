@@ -69,4 +69,8 @@ public class ApplicationProperties {
     public Path getUploadFilePath() {
         return staticFilePath.resolve( "file" );
     }
+
+    public Path getExportFilePath() {
+        return staticFilePath.resolve( "export" );
+    }
 }

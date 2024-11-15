@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
@@ -71,10 +71,11 @@ export class HomeService {
     return this.http.get<Vocabulary>(`${this.resourceDownloadUrl}/${notation}/latest`, { params: options, observe: 'response' });
   }
 
-  downloadVocabularyFile(notation: string, slNumber: string, downloadType: string, req?: Record<string, string>): Observable<Blob> {
+  downloadVocabularyFile(notation: string, slNumber: string, mimeType: string, req?: Record<string, string>): Observable<Blob> {
     const options = createRequestOption(req);
-    return this.http.get(`${this.resourceDownloadUrl}/${downloadType}/${notation}/${slNumber}`, {
+    return this.http.get(`${this.resourceDownloadUrl}/${notation}/${slNumber}`, {
       params: options,
+      headers: new HttpHeaders({ accept: mimeType }),
       responseType: 'blob',
     });
   }

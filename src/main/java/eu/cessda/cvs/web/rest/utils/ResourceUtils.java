@@ -23,7 +23,6 @@ import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.utils.VersionUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,9 +34,6 @@ public class ResourceUtils {
     public static final String ID = "@id";
     public static final String TYPE = "@type";
 
-    public static final String MEDIATYPE_RDF_VALUE = "application/rdf+xml";
-    public static final MediaType MEDIATYPE_RDF = MediaType.parseMediaType(MEDIATYPE_RDF_VALUE);
-
     private ResourceUtils(){}
 
     public static ResponseEntity<List<String>> getListResponseEntity(VersionDTO version1, VersionDTO version2) {
@@ -46,17 +42,6 @@ public class ResourceUtils {
         headers.add("X-Prev-Cv-Version", version2.getNotation() + " " +version2.getItemType() + " v." + version2.getNumber());
         headers.add("X-Current-Cv-Version", version1.getNotation() + " " +version1.getItemType() + " v." + version1.getNumber());
         return ResponseEntity.ok().headers(headers).body(compareVersions);
-    }
-
-    /**
-     * Get server base path from the Servlet request
-     * @param request
-     * @return
-     */
-    public static String getBasePath(HttpServletRequest request) {
-        if( request.getScheme().equals( "http" ) && request.getServerPort() != 80)
-            return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-        return request.getScheme() + "://" + request.getServerName() + request.getContextPath() + "/";
     }
 
     public static List<Map<String, Object>> convertVocabularyDtoToJsonLdSkosMos(VocabularyDTO vocabularyDTO, Set<CodeDTO> codeDtos, Set<String> languages){
