@@ -19,6 +19,7 @@ import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.domain.MetadataField;
 import eu.cessda.cvs.domain.enumeration.ObjectType;
 import eu.cessda.cvs.repository.MetadataFieldRepository;
+import eu.cessda.cvs.service.ExportService;
 import eu.cessda.cvs.service.MetadataFieldService;
 import eu.cessda.cvs.service.dto.MetadataFieldDTO;
 import eu.cessda.cvs.service.mapper.MetadataFieldMapper;
@@ -226,7 +227,8 @@ public class MetadataFieldResourceIT {
         metadataFieldRepository.saveAndFlush(metadataField);
 
         // Get the metadataField
-        restMetadataFieldMockMvc.perform( get("/api/metadata-fields/download-pdf/{metadataKey}", metadataField.getMetadataKey()) )
+        restMetadataFieldMockMvc.perform( get("/api/metadata-fields/download/{metadataKey}", metadataField.getMetadataKey())
+                .accept( MediaType.APPLICATION_PDF ))
             .andExpect(status().isOk())
             .andExpect( content().contentType( MediaType.APPLICATION_PDF ) )
             .andExpect( header().string( HttpHeaders.CONTENT_DISPOSITION, equalTo( "attachment; filename=document.pdf" ) ) );
@@ -240,9 +242,10 @@ public class MetadataFieldResourceIT {
         metadataFieldRepository.saveAndFlush(metadataField);
 
         // Get the metadataField
-        restMetadataFieldMockMvc.perform( get("/api/metadata-fields/download-word/{metadataKey}", metadataField.getMetadataKey()) )
+        restMetadataFieldMockMvc.perform( get( "/api/metadata-fields/download/{metadataKey}", metadataField.getMetadataKey() )
+                .accept( ExportService.MEDIATYPE_WORD ) )
             .andExpect(status().isOk())
-            .andExpect( content().contentType( new MediaType("application", "vnd.openxmlformats-officedocument.wordprocessingml.document" ) ) )
+            .andExpect( content().contentType( ExportService.MEDIATYPE_WORD ) )
             .andExpect( header().string( HttpHeaders.CONTENT_DISPOSITION, equalTo( "attachment; filename=document.docx" ) ) );
     }
 

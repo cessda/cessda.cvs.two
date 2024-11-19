@@ -23,7 +23,7 @@ pipeline {
         stage('Node.JS') {
             agent {
                 docker {
-                    image 'node:16'
+                    image 'node:18'
                     reuseNode true
                 }
             }
@@ -92,7 +92,7 @@ pipeline {
         }
         stage('Build and Push Docker Image') {
             steps {
-                sh 'gcloud auth configure-docker'
+                sh "gcloud auth configure-docker ${ARTIFACT_REGISTRY_HOST}"
                 withMaven {
                     sh "./mvnw jib:build -Pci -Djib.to.image=${IMAGE_TAG}"
                 }

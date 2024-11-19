@@ -21,7 +21,7 @@ import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 
 @Component({
@@ -35,8 +35,8 @@ export class EditorDetailCvNewVersionDialogComponent implements OnInit {
   unPublishedTls: string;
   allTls: string;
 
-  newVersionForm = this.fb.group({
-    agreeNewVersion: ['', [Validators.required]],
+  newVersionForm = this.fb.group<{ agreeNewVersion?: FormControl<string> }>({
+    agreeNewVersion: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
 
   constructor(
@@ -44,7 +44,7 @@ export class EditorDetailCvNewVersionDialogComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private router: Router,
     protected eventManager: JhiEventManager,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
   ) {
     this.isSaving = false;

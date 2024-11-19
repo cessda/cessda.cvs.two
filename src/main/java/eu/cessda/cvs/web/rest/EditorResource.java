@@ -38,7 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,7 +46,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -352,7 +351,7 @@ public class EditorResource {
 
                 if( versionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
                     // remove published JSON file, re-create the JSON file and re-index for published vocabulary
-                    vocabularyService.deleteCvJsonDirectoryAndContent( Path.of( applicationProperties.getVocabJsonPath(), vocabularyDTO.getNotation() ));
+                    vocabularyService.deleteCvJsonDirectoryAndContent( applicationProperties.getVocabJsonPath().resolve( vocabularyDTO.getNotation() ));
                     vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
                     vocabularyService.indexPublished(vocabularyDTO);
                 }
@@ -394,7 +393,7 @@ public class EditorResource {
         vocabularyService.indexEditor( vocabularyDTO );
         if( isTlPublished ) {
             // remove published JSON file, re-create the JSON file and re-index for published vocabulary
-            vocabularyService.deleteCvJsonDirectoryAndContent( Path.of( applicationProperties.getVocabJsonPath(), vocabularyDTO.getNotation() ) );
+            vocabularyService.deleteCvJsonDirectoryAndContent( applicationProperties.getVocabJsonPath().resolve( vocabularyDTO.getNotation() ) );
             vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
             vocabularyService.indexPublished(vocabularyDTO );
         }
@@ -839,9 +838,6 @@ public class EditorResource {
      * {@code PUT  /editors/comments} : Updates an existing comment via editor Rest API.
      *
      * @param commentDTO the commentDTO to update.
-     *
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new CommentDTO, or with status {@code 400 (Bad Request)} if the comment has already an ID.
-     *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated commentDTO,
      * or with status {@code 400 (Bad Request)} if the commentDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the commentDTO couldn't be updated.
@@ -972,9 +968,6 @@ public class EditorResource {
      * {@code PUT  /editors/metadatas} : Updates an existing metadataValueDTO via editor Rest API.
      *
      * @param metadataValueDTO the metadataValueDTO to update.
-     *
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new MetadataValueDTO, or with status {@code 400 (Bad Request)} if the metadataValueDTO has already an ID.
-     *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated metadataValueDTO,
      * or with status {@code 400 (Bad Request)} if the metadataValueDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the metadataValueDTO couldn't be updated.
@@ -1047,82 +1040,27 @@ public class EditorResource {
     }
 
     /**
-     *  get a SKOS file of vocabulary {cv} with version {v} with included versions {lv} from Editor DB
+     *  get a file of vocabulary {cv} with version {v} with included versions {lv} from Editor DB
      *
      * @param cv controlled vocabulary
      * @param v controlled vocabulary version
      * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
      */
-    @GetMapping("/editors/download/rdf/{cv}/{v}")
-    public ResponseEntity<Resource> getVocabularyInSkos(
-        HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
-        @RequestParam(name = "lv", required = true) String lv
-    ) {
-        log.debug("Editor REST request to get a SKOS-RDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
-
-        var outputStream = new FastByteArrayOutputStream();
-        String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.SKOS, ResourceUtils.getURLWithContextPath(request), outputStream );
-
-        InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
-        return ResponseEntity.ok()
-            .headers(headers)
-            .contentType(ResourceUtils.MEDIATYPE_RDF)
-            .body(resource);
-    }
-
-    /**
-     *  get a PDF file of vocabulary {cv} with version {v} with included versions {lv} from Editor DB
-     *
-     * @param cv controlled vocabulary
-     * @param v controlled vocabulary version
-     * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
-     */
-    @GetMapping("/editors/download/pdf/{cv}/{v}")
-    public ResponseEntity<Resource> getVocabularyInPdf(
+    @GetMapping(path = "/editors/download/{cv}/{v}", produces = { ExportService.MEDIATYPE_RDF_VALUE, MediaType.APPLICATION_PDF_VALUE, MediaType.TEXT_HTML_VALUE })
+    public ResponseEntity<Resource> getVocabularyDownload(
         HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
         @RequestParam(name = "lv", required = true) String lv
     ) {
         log.debug("Editor REST request to get a PDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
 
-        var outputStream = new FastByteArrayOutputStream();
-        String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.PDF, ResourceUtils.getURLWithContextPath(request), outputStream );
-
-        InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
+        var requestURL = ResourceUtils.getURLWithContextPath( request );
+        var mediaType = MediaType.parseMediaType( request.getHeader( "accept" ) );
+        var type = ExportService.DownloadType.fromMediaType( mediaType ).orElseThrow(); // produces attribute should restrict to acceptable values
+        Path fileName = vocabularyService.generateVocabularyFileDownload( cv, v, lv, type , requestURL, false );
         return ResponseEntity.ok()
-            .headers(headers)
-            .contentType(MediaType.parseMediaType("application/pdf"))
-            .body(resource);
-    }
-
-    /**
-     *  get a HTML file of vocabulary {cv} with version {v} with included versions {lv} from Editor DB
-     *
-     * @param cv controlled vocabulary
-     * @param v controlled vocabulary version
-     * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
-     */
-    @GetMapping("/editors/download/html/{cv}/{v}")
-    public ResponseEntity<Resource> getVocabularyInHtml(
-        HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
-        @RequestParam(name = "lv", required = true) String lv
-    ) {
-        log.debug("Editor REST request to get a HTML file of vocabulary {} with version {} with included versions {}", cv, v, lv);
-
-        var outputStream = new FastByteArrayOutputStream();
-        String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.HTML, ResourceUtils.getURLWithContextPath(request), outputStream );
-
-        InputStreamResource resource = new InputStreamResource(outputStream.getInputStream());
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
-        return ResponseEntity.ok()
-            .headers(headers)
-            .contentType(MediaType.parseMediaType("text/html"))
-            .body(resource);
+            .header(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName.getFileName())
+            .contentType(type.getMediaType())
+            .body(new FileSystemResource( fileName ) );
     }
 
     /**

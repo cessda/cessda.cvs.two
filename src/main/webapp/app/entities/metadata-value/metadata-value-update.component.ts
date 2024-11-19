@@ -15,8 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
@@ -26,6 +25,7 @@ import { MetadataValueService } from './metadata-value.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { MetadataField } from 'app/shared/model/metadata-field.model';
 import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field.service';
+import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
 
 @Component({
   selector: 'jhi-metadata-value-update',
@@ -36,13 +36,13 @@ export class MetadataValueUpdateComponent implements OnInit {
   metadatafields: MetadataField[] = [];
 
   editForm = this.fb.group({
-    id: [],
-    identifier: [null, [Validators.maxLength(240)]],
-    position: [],
-    value: [],
-    objectType: [],
-    objectId: [],
-    metadataFieldId: [],
+    id: new FormControl<number | null>(null),
+    identifier: new FormControl<string | null>(null, [Validators.maxLength(240)]),
+    position: new FormControl<number | null>(null),
+    value: new FormControl<string | null>(null),
+    objectType: new FormControl<ObjectType | null>(null),
+    objectId: new FormControl<number | null>(null),
+    metadataFieldId: new FormControl<number | null>(null),
   });
 
   constructor(
@@ -51,7 +51,7 @@ export class MetadataValueUpdateComponent implements OnInit {
     protected metadataValueService: MetadataValueService,
     protected metadataFieldService: MetadataFieldService,
     protected activatedRoute: ActivatedRoute,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -75,8 +75,10 @@ export class MetadataValueUpdateComponent implements OnInit {
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
-    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-      this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
+      error: (err: JhiFileLoadError) => {
+        this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
+      },
     });
   }
 
@@ -96,13 +98,13 @@ export class MetadataValueUpdateComponent implements OnInit {
 
   private createFromForm(): MetadataValue {
     return {
-      id: this.editForm.get(['id'])!.value,
-      identifier: this.editForm.get(['identifier'])!.value,
-      position: this.editForm.get(['position'])!.value,
-      value: this.editForm.get(['value'])!.value,
-      objectType: this.editForm.get(['objectType'])!.value,
-      objectId: this.editForm.get(['objectId'])!.value,
-      metadataFieldId: this.editForm.get(['metadataFieldId'])!.value,
+      id: this.editForm.controls.id.value !== null ? this.editForm.controls.id.value : undefined,
+      identifier: this.editForm.controls.identifier.value || undefined,
+      position: this.editForm.controls.position.value !== null ? this.editForm.controls.position.value : undefined,
+      value: this.editForm.controls.value.value || undefined,
+      objectType: this.editForm.controls.objectType.value || undefined,
+      objectId: this.editForm.controls.objectId.value !== null ? this.editForm.controls.objectId.value : undefined,
+      metadataFieldId: this.editForm.controls.metadataFieldId.value !== null ? this.editForm.controls.metadataFieldId.value : undefined,
     };
   }
 
@@ -122,7 +124,7 @@ export class MetadataValueUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: MetadataField): any {
-    return item.id;
+  trackById(_index: number, item: MetadataField) {
+    return item.id!;
   }
 }

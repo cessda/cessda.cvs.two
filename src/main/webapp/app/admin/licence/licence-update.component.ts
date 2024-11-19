@@ -15,7 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -38,23 +38,20 @@ export class LicenceUpdateComponent implements OnInit {
   };
 
   editForm = this.fb.group({
-    id: [],
-    name: [null, [Validators.required, Validators.maxLength(255)]],
-    link: [
-      null,
-      [
-        Validators.pattern(
-          '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
-        ),
-      ],
-    ],
-    abbr: [null, [Validators.required, Validators.maxLength(100)]],
+    id: new FormControl<number | null>(null),
+    name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(255)] }),
+    link: new FormControl<string | null>(null, [
+      Validators.pattern(
+        '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
+      ),
+    ]),
+    abbr: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(100)] }),
   });
 
   constructor(
     protected licenceService: LicenceService,
     protected activatedRoute: ActivatedRoute,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     protected fileUploadService: FileUploadService,
   ) {}
 
@@ -91,10 +88,10 @@ export class LicenceUpdateComponent implements OnInit {
 
   private createFromForm(): Licence {
     return {
-      id: this.editForm.get(['id'])?.value,
-      name: this.editForm.get(['name'])?.value,
-      link: this.editForm.get(['link'])?.value,
-      abbr: this.editForm.get(['abbr'])?.value,
+      id: this.editForm.controls.id.value || undefined,
+      name: this.editForm.controls.name.value,
+      link: this.editForm.controls.link.value || undefined,
+      abbr: this.editForm.controls.abbr.value,
     };
   }
 
@@ -127,8 +124,12 @@ export class LicenceUpdateComponent implements OnInit {
     this.fileUploadService.uploadLicenseImage(this.currentFileUpload).subscribe(event => {
       if (event.type === HttpEventType.UploadProgress && event.total) {
         this.progress.percentage = Math.round((100 * event.loaded) / event.total);
-      } else if (event instanceof HttpResponse && event.body) {
-        this.currentImage = event.body.toString();
+      } else if (event instanceof HttpResponse && event.headers.get('location')) {
+        const location = event.headers.get('location');
+        if (location) {
+          const uploadedImage = location.split('/').pop();
+          this.currentImage = uploadedImage;
+        }
       }
     });
 

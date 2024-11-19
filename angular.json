@@ -30,10 +30,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "allowedCommonJsDependencies": [
-              "quill-better-table",
-              "quill-blot-formatter"
-            ],
+            "allowedCommonJsDependencies": ["moment", "quill", "quill-better-table", "quill-blot-formatter"],
             "outputPath": "target/classes/static",
             "index": "src/main/webapp/index.html",
             "main": "src/main/webapp/app/app.main.ts",
@@ -41,9 +38,7 @@
             "assets": [
               {
                 "glob": "**/*.{js,css,html,png}",
-                "ignore": [
-                  "**/index.html"
-                ],
+                "ignore": ["**/index.html"],
                 "input": "node_modules/swagger-ui-dist/",
                 "output": "swagger-ui"
               },
@@ -59,9 +54,7 @@
               },
               {
                 "glob": "**/*",
-                "ignore": [
-                  "scss/**/*"
-                ],
+                "ignore": ["scss/**/*"],
                 "input": "src/main/webapp/content/",
                 "output": "content"
               },
@@ -74,9 +67,7 @@
               "src/main/webapp/manifest.webapp",
               "src/main/webapp/robots.txt"
             ],
-            "styles": [
-              "src/main/webapp/content/scss/global.scss"
-            ],
+            "styles": ["src/main/webapp/content/scss/global.scss"],
             "scripts": []
           },
           "configurations": {
@@ -112,10 +103,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/main/webapp/**/*.ts",
-              "src/main/webapp/**/*.html"
-            ]
+            "lintFilePatterns": ["src/main/webapp/**/*.ts", "src/main/webapp/**/*.html"]
           }
         }
       }
@@ -123,9 +111,7 @@
   },
   "cli": {
     "packageManager": "npm",
-    "schematicCollections": [
-      "@angular-eslint/schematics"
-    ]
+    "schematicCollections": ["@angular-eslint/schematics"]
   },
   "schematics": {
     "@angular-eslint/schematics:application": {

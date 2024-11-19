@@ -15,7 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
@@ -43,22 +43,22 @@ export class AgencyUpdateComponent implements OnInit {
   };
 
   editForm = this.fb.group({
-    id: [],
-    name: [null, [Validators.required, Validators.maxLength(240)]],
-    link: [
-      null,
-      [
+    id: new FormControl<number | null>(null),
+    name: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(240)] }),
+    link: new FormControl('', {
+      nonNullable: true,
+      validators: [
         Validators.required,
         Validators.pattern(
           '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
         ),
       ],
-    ],
-    description: [],
-    licenseId: [],
-    uri: [null, [Validators.maxLength(255)]],
-    uriCode: [null, [Validators.maxLength(255)]],
-    canonicalUri: [null, [Validators.maxLength(255)]],
+    }),
+    description: new FormControl<string | null>(null),
+    licenseId: new FormControl<number | null>(null),
+    uri: new FormControl<string | null>(null, [Validators.maxLength(255)]),
+    uriCode: new FormControl<string | null>(null, [Validators.maxLength(255)]),
+    canonicalUri: new FormControl<string | null>(null, [Validators.maxLength(255)]),
   });
 
   constructor(
@@ -68,7 +68,7 @@ export class AgencyUpdateComponent implements OnInit {
     protected agencyService: AgencyService,
     protected activatedRoute: ActivatedRoute,
     protected fileUploadService: FileUploadService,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -101,8 +101,10 @@ export class AgencyUpdateComponent implements OnInit {
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
-    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-      this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
+      error: (err: JhiFileLoadError) => {
+        this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
+      },
     });
   }
 
@@ -123,14 +125,14 @@ export class AgencyUpdateComponent implements OnInit {
 
   private createFromForm(): Agency {
     const agency = createNewAgency({
-      id: this.editForm.get(['id'])!.value,
-      name: this.editForm.get(['name'])!.value,
-      link: this.editForm.get(['link'])!.value,
-      description: this.editForm.get(['description'])!.value,
-      licenseId: +this.editForm.get(['licenseId'])!.value,
-      uri: this.editForm.get(['uri'])!.value,
-      uriCode: this.editForm.get(['uriCode'])!.value,
-      canonicalUri: this.editForm.get(['canonicalUri'])!.value,
+      id: this.editForm.controls.id.value || undefined,
+      name: this.editForm.controls.name.value,
+      link: this.editForm.controls.link.value,
+      description: this.editForm.controls.description.value || undefined,
+      licenseId: this.editForm.controls.licenseId.value || undefined,
+      uri: this.editForm.controls.uri.value || undefined,
+      uriCode: this.editForm.controls.uriCode.value || undefined,
+      canonicalUri: this.editForm.controls.canonicalUri.value || undefined,
     });
     if (agency.licenseId) {
       agency.license = this.licences.filter(l => l.id === agency.licenseId)[0].name;
@@ -166,7 +168,11 @@ export class AgencyUpdateComponent implements OnInit {
       if (event.type === HttpEventType.UploadProgress && event.total) {
         this.progress.percentage = Math.round((event.loaded / event.total) * 100);
       } else if (event.type === HttpEventType.Response && event.body) {
-        this.currentImage = event.body.toString();
+        const location = event.headers.get('location');
+        if (location) {
+          const uploadedImage = location.split('/').pop();
+          this.currentImage = uploadedImage;
+        }
       }
     });
   }

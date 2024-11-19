@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="col-md-12 justify-content-center" *ngIf="isSubmitting">
-                <div class="alert alert-danger" *ngIf="codeAddEditForm.get('changeType')?.errors?.required">
+                <div class="alert alert-danger" *ngIf="codeAddEditForm.controls.changeType?.errors?.required">
                     <strong>You need to select 'Change type' before saving.</strong> Make only one change at a time.
                 </div>
             </div>
@@ -47,32 +47,32 @@
                     </div>
                     <div *ngIf="isSlForm" class="detail-column">
                         <div *ngIf="isNew && isEnablePreview">
-                            <span *ngIf="codeAddEditForm.get('codeInsertMode')!.value === 'INSERT_AS_CHILD'">{{conceptParam.notation}}.</span>
-                            <span *ngIf="conceptParam && conceptParam.parent  && (codeAddEditForm.get('codeInsertMode')!.value === 'INSERT_AFTER' ||
-                                codeAddEditForm.get('codeInsertMode')!.value === 'INSERT_BEFORE')">{{conceptParam.parent}}.</span>
+                            <span *ngIf="codeAddEditForm.controls.codeInsertMode?.value === 'INSERT_AS_CHILD'">{{conceptParam.notation}}.</span>
+                            <span *ngIf="conceptParam && conceptParam.parent  && (codeAddEditForm.controls.codeInsertMode?.value === 'INSERT_AFTER' ||
+                                codeAddEditForm.controls.codeInsertMode?.value === 'INSERT_BEFORE')">{{conceptParam.parent}}.</span>
                         </div>
                         <span *ngIf="!isNew && conceptParam.parent">{{conceptParam.parent}}.</span>
                         <input type="text" class="form-control" id="field_notation" name="notation" formControlName="notation" (input)="updateTreePreview()"/>
-                        <div *ngIf="codeAddEditForm.get('notation')!.invalid && (codeAddEditForm.get('notation')!.dirty || codeAddEditForm.get('notation')!.touched) || isSubmitting">
+                        <div *ngIf="codeAddEditForm.controls.notation!.invalid && (codeAddEditForm.controls.notation!.dirty || codeAddEditForm.controls.notation!.touched) || isSubmitting">
                             <small class="form-text text-danger"
-                                   *ngIf="codeAddEditForm.get('notation')?.errors?.required" jhiTranslate="entity.validation.required">
+                                   *ngIf="codeAddEditForm.controls.notation?.errors?.required" jhiTranslate="entity.validation.required">
                                 This field is required.
                             </small>
 
                             <small class="form-text text-danger"
-                                   *ngIf="codeAddEditForm.get('notation')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength"
+                                   *ngIf="codeAddEditForm.controls.notation?.errors?.maxlength" jhiTranslate="entity.validation.maxlength"
                                    [translateValues]="{max: 240}">
                                 This field cannot be longer than 240 characters.
                             </small>
 
                             <small class="form-text text-danger"
-                                   *ngIf="codeAddEditForm.get('notation')?.errors?.minlength" jhiTranslate="entity.validation.minlength"
+                                   *ngIf="codeAddEditForm.controls.notation?.errors?.minlength" jhiTranslate="entity.validation.minlength"
                                    [translateValues]="{min: 2}">
                                 This field is required to be at least 2 characters.
                             </small>
 
                             <small class="form-text text-danger"
-                                   *ngIf="codeAddEditForm.get('notation')?.errors?.pattern">
+                                   *ngIf="codeAddEditForm.controls.notation?.errors?.pattern">
                                 Code can only contain letters (a-z A-Z), digits (0-9) and limited symbols ( +-_).
                             </small>
                         </div>
@@ -111,9 +111,9 @@
                 </div>
                 <div class="detail-column">
                     <input type="text" class="form-control" id="field_title" name="title" formControlName="title"/>
-                    <div *ngIf="codeAddEditForm.get('title')!.invalid && (codeAddEditForm.get('title')!.dirty || codeAddEditForm.get('title')!.touched) || isSubmitting">
+                    <div *ngIf="codeAddEditForm.controls.title.invalid && (codeAddEditForm.controls.title.dirty || codeAddEditForm.controls.title.touched) || isSubmitting">
                         <small class="form-text text-danger"
-                               *ngIf="codeAddEditForm.get('title')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="codeAddEditForm.controls.title.errors?.required" jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
                     </div>
@@ -142,16 +142,15 @@
         <div *ngIf="isEnablePreview && conceptParam" class="row-content">
             <div class="row-details">
                 <div class="row-detail form-group">
-                    <div class="btn-group btn-group-toggle" ngbRadioGroup name="insert-choice" formControlName="codeInsertMode" (ngModelChange)="updateTreePreview()">
-                        <label ngbButtonLabel class="btn-primary">
-                            <input ngbButton type="radio" value="INSERT_AFTER"> Insert after
-                        </label>
-                        <label ngbButtonLabel class="btn-primary">
-                            <input ngbButton type="radio" value="INSERT_BEFORE"> Insert before
-                        </label>
-                        <label ngbButtonLabel class="btn-primary">
-                            <input ngbButton type="radio" value="INSERT_AS_CHILD"> Insert as child
-                        </label>
+                    <div class="btn-group btn-group-toggle" role="group" name="insert-choice">
+                        <input type="radio" formControlName="codeInsertMode" (ngModelChange)="updateTreePreview()" value="INSERT_AFTER" class="btn-check" id="insertAfterButton">
+                        <label class="btn btn-outline-primary" for="insertAfterButton">Insert after</label>
+
+                        <input type="radio" formControlName="codeInsertMode" (ngModelChange)="updateTreePreview()" value="INSERT_BEFORE" class="btn-check" id="insertBeforeButton">
+                        <label class="btn btn-outline-primary" for="insertBeforeButton">Insert before</label>
+
+                        <input type="radio" formControlName="codeInsertMode" (ngModelChange)="updateTreePreview()" value="INSERT_AS_CHILD" class="btn-check" id="insertChildButton">
+                        <label class="btn btn-outline-primary" for="insertChildButton">Insert as child</label>
                     </div>
                 </div>
             </div>
@@ -168,7 +167,7 @@
             </div>
         </div>
 
-        <div *ngIf="codeAddEditForm.get('changeType')" class="row-content">
+        <div *ngIf="codeAddEditForm.controls.changeType" class="row-content">
             <div class="card bg-light w-100">
                 <div class="card-header">
                     Change notes
@@ -187,9 +186,9 @@
                                 <option value="Code definition rephrased">Code definition rephrased</option>
                                 <option value="Code definition added">Code definition added</option>
                             </select>
-                            <div *ngIf="codeAddEditForm.get('changeType')!.invalid && (codeAddEditForm.get('changeType')!.dirty || codeAddEditForm.get('changeType')!.touched) || isSubmitting">
+                            <div *ngIf="codeAddEditForm.controls.changeType.invalid && (codeAddEditForm.controls.changeType.dirty || codeAddEditForm.controls.changeType.touched) || isSubmitting">
                                 <small class="form-text text-danger"
-                                       *ngIf="codeAddEditForm.get('changeType')?.errors?.required" jhiTranslate="entity.validation.required">
+                                       *ngIf="codeAddEditForm.controls.changeType.errors?.required" jhiTranslate="entity.validation.required">
                                     This field is required.
                                 </small>
                             </div>

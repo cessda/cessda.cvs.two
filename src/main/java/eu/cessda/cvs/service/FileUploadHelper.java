@@ -20,49 +20,19 @@ import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Path;
 
 public class FileUploadHelper {
-    private FileUploadType fileUploadType;
-    private MultipartFile sourceFile;
-    private Path uploadBaseDirectory;
-    private Path uploadedFile;
-    private Path uploadedThumbFile;
+    private final FileUploadType fileUploadType;
+    private final MultipartFile sourceFile;
+
+    public FileUploadHelper(FileUploadType fileUploadType, MultipartFile sourceFile) {
+        this.fileUploadType = fileUploadType;
+        this.sourceFile = sourceFile;
+    }
 
     public FileUploadType getFileUploadType() {
         return fileUploadType;
     }
 
-    public void setFileUploadType(FileUploadType fileUploadType) {
-        this.fileUploadType = fileUploadType;
-    }
-
     public MultipartFile getSourceFile() {
         return sourceFile;
-    }
-
-    public void setSourceFile(MultipartFile sourceFile) {
-        this.sourceFile = sourceFile;
-    }
-
-    public Path getUploadBaseDirectory() {
-        return uploadBaseDirectory;
-    }
-
-    public void setUploadBaseDirectory(Path uploadBaseDirectory) {
-        this.uploadBaseDirectory = uploadBaseDirectory;
-    }
-
-    public Path getUploadedFile() {
-        return uploadedFile;
-    }
-
-    public void setUploadedFile(Path uploadedFile) {
-        this.uploadedFile = uploadedFile;
-    }
-
-    public Path getUploadedThumbFile() {
-        return uploadedThumbFile;
-    }
-
-    public void setUploadedThumbFile(Path uploadedThumbFile) {
-        this.uploadedThumbFile = uploadedThumbFile;
     }
 }

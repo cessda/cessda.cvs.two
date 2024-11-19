@@ -15,8 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { UntypedFormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -31,18 +30,18 @@ export class ResolverUpdateComponent implements OnInit {
   isSaving = false;
 
   editForm = this.fb.group({
-    id: [],
-    resourceId: [],
-    resourceType: [],
-    resourceUrl: [null, [Validators.required]],
-    resolverType: [],
-    resolverURI: [null, [Validators.required]],
+    id: new FormControl<number | null>(null),
+    resourceId: new FormControl(''),
+    resourceType: new FormControl(''),
+    resourceUrl: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    resolverType: new FormControl(''),
+    resolverURI: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
 
   constructor(
     protected resolverService: ResolverService,
     protected activatedRoute: ActivatedRoute,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -77,15 +76,14 @@ export class ResolverUpdateComponent implements OnInit {
   }
 
   private createFromForm(): Resolver {
+    const resolverType = this.editForm.controls.resolverType.value;
     return {
-      id: this.editForm.get(['id'])?.value,
-      resourceId: this.editForm.get(['resourceId'])?.value,
-      resourceType: this.editForm.get(['resourceType'])?.value,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      resourceUrl: this.editForm.get(['resourceUrl'])!.value,
-      resolverType: this.editForm.get(['resolverType'])?.value,
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      resolverURI: this.editForm.get(['resolverURI'])!.value,
+      id: this.editForm.controls.id.value || undefined,
+      resourceId: this.editForm.controls.resourceId.value || undefined,
+      resourceType: this.editForm.controls.resourceType.value === 'VOCABULARY' ? 'VOCABULARY' : undefined,
+      resourceUrl: this.editForm.controls.resourceUrl.value,
+      resolverType: resolverType === 'DOI' || resolverType === 'URN' ? resolverType : undefined,
+      resolverURI: this.editForm.controls.resolverURI.value,
     };
   }
 

@@ -21,7 +21,7 @@ import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.mod
 import { Version } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { EditorService } from 'app/editor/editor.service';
 import { RouteEventsService } from 'app/shared';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -128,22 +128,22 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   });
 
   editorDetailForm = this.fb.group({
-    tabSelected: [],
+    tabSelected: new FormControl<string | null>(null),
     downloadFormGroup: this.downloadFormGroup,
-    ddiUsage: [],
-    translateAgency: [],
-    translateAgencyLink: [
-      '',
-      [
+    ddiUsage: new FormControl<string | null>(null),
+    translateAgency: new FormControl<string | null>(null),
+    translateAgencyLink: new FormControl('', {
+      nonNullable: true,
+      validators: [
         Validators.required,
         Validators.pattern(
           '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
         ),
       ],
-    ],
-    notes: [],
-    versionNotes: [],
-    versionChanges: [],
+    }),
+    notes: new FormControl<string | null>(null),
+    versionNotes: new FormControl<string | null>(null),
+    versionChanges: new FormControl<string | null>(null),
   });
 
   constructor(
@@ -152,7 +152,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected editorService: EditorService,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private routeEventsService: RouteEventsService,
     private _ngZone: NgZone,
     protected modalService: NgbModal,
@@ -211,8 +211,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   setActiveVersion(language: string, versionNumber?: string): void {
-    this.vocabulary!.selectedLang = language;
-    this.vocabulary!.selectedVersion = versionNumber;
+    this.vocabulary.selectedLang = language;
+    this.vocabulary.selectedVersion = versionNumber;
     this.version = VocabularyUtil.getVersionByLangAndNumber(this.vocabulary!, versionNumber);
     this.closeNotes();
     this.closeCurrentVersionInfo();
@@ -562,10 +562,6 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   openAddEditCodePopup(isNew: boolean, codeInsertMode?: string): void {
-    if (!this.concept) {
-      throw new TypeError('concept was null');
-    }
-
     if (!this.version) {
       throw new TypeError('version was null');
     }
@@ -641,28 +637,28 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   saveDdiUsage(): void {
-    const vocabSnippet = {
+    const vocabSnippet: VocabularySnippet = {
       actionType: ActionType.EDIT_DDI_CV,
-      agencyId: this.vocabulary!.agencyId,
-      vocabularyId: this.vocabulary!.id,
+      agencyId: this.vocabulary.agencyId,
+      vocabularyId: this.vocabulary.id,
       versionId: this.version!.id,
       language: this.version!.language,
       itemType: this.version!.itemType,
-      ddiUsage: this.editorDetailForm.get(['ddiUsage'])!.value,
+      ddiUsage: this.editorDetailForm.controls.ddiUsage.value || undefined,
     };
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
   }
 
   saveTranslateIdentity(): void {
-    const vocabSnippet = {
+    const vocabSnippet: VocabularySnippet = {
       actionType: ActionType.EDIT_IDENTITY_CV,
       agencyId: this.vocabulary!.agencyId,
       vocabularyId: this.vocabulary!.id,
       versionId: this.version!.id,
       language: this.version!.language,
       itemType: this.version!.itemType,
-      translateAgency: this.editorDetailForm.get(['translateAgency'])!.value,
-      translateAgencyLink: this.editorDetailForm.get(['translateAgencyLink'])!.value,
+      translateAgency: this.editorDetailForm.controls.translateAgency.value || undefined,
+      translateAgencyLink: this.editorDetailForm.controls.translateAgencyLink.value,
     };
 
     if (this.editorDetailForm.valid) {
@@ -678,7 +674,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       versionId: this.version!.id,
       language: this.version!.language,
       itemType: this.version!.itemType,
-      notes: this.editorDetailForm.get(['notes'])!.value,
+      notes: this.editorDetailForm.controls.notes.value || undefined,
     };
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
   }
@@ -691,8 +687,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       versionId: this.version?.id,
       language: this.version?.language,
       itemType: this.version?.itemType,
-      versionNotes: this.editorDetailForm.get(['versionNotes'])!.value,
-      versionChanges: this.editorDetailForm.get(['versionChanges'])!.value,
+      versionNotes: this.editorDetailForm.controls.versionNotes.value || undefined,
+      versionChanges: this.editorDetailForm.controls.versionChanges.value || undefined,
     };
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
   }
@@ -806,14 +802,14 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   onVersionNotesEditorCreated(quill: Quill): void {
-    if (this.editorDetailForm.get(['versionNotes'])!.value) {
-      quill.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['versionNotes'])!.value);
+    if (this.editorDetailForm.controls.versionNotes!.value) {
+      quill.clipboard.dangerouslyPasteHTML(this.editorDetailForm.controls.versionNotes!.value);
     }
   }
 
   onVersionChangesEditorCreated(quill: Quill): void {
-    if (this.editorDetailForm.get(['versionChanges'])!.value) {
-      quill.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['versionChanges'])!.value);
+    if (this.editorDetailForm.controls.versionChanges!.value) {
+      quill.clipboard.dangerouslyPasteHTML(this.editorDetailForm.controls.versionChanges!.value);
     }
   }
 

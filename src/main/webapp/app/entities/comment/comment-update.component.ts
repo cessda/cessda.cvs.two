@@ -15,8 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { UntypedFormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import moment from 'moment';
@@ -38,12 +37,12 @@ export class CommentUpdateComponent implements OnInit {
   versions: Version[] = [];
 
   editForm = this.fb.group({
-    id: [],
-    info: [null, [Validators.maxLength(255)]],
-    content: [],
-    userId: [],
-    dateTime: [],
-    versionId: [],
+    id: new FormControl<number | null>(null),
+    info: new FormControl<string | null>(null, [Validators.maxLength(255)]),
+    content: new FormControl<string | null>(null),
+    userId: new FormControl<number | null>(null),
+    dateTime: new FormControl<string | null>(null),
+    versionId: new FormControl<number | null>(null),
   });
 
   constructor(
@@ -52,7 +51,7 @@ export class CommentUpdateComponent implements OnInit {
     protected commentService: CommentService,
     protected versionService: VersionService,
     protected activatedRoute: ActivatedRoute,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -80,8 +79,10 @@ export class CommentUpdateComponent implements OnInit {
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
-    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-      this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
+      error: (err: JhiFileLoadError) => {
+        this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
+      },
     });
   }
 
@@ -101,15 +102,15 @@ export class CommentUpdateComponent implements OnInit {
 
   private createFromForm(): Comment {
     // Extract dateTime to its own variable so that it can be truthy-tested
-    const dateTime = this.editForm.get(['dateTime'])?.value;
+    const dateTime = this.editForm.controls.dateTime.value;
 
     return {
-      id: this.editForm.get(['id'])?.value,
-      info: this.editForm.get(['info'])?.value,
-      content: this.editForm.get(['content'])?.value,
-      userId: this.editForm.get(['userId'])?.value,
+      id: this.editForm.controls.id.value !== null ? this.editForm.controls.id.value : undefined,
+      info: this.editForm.controls.info.value || undefined,
+      content: this.editForm.controls.content.value || undefined,
+      userId: this.editForm.controls.userId.value || undefined,
       dateTime: dateTime ? moment(dateTime, DATE_TIME_FORMAT) : undefined,
-      versionId: this.editForm.get(['versionId'])?.value,
+      versionId: this.editForm.controls.versionId.value !== null ? this.editForm.controls.versionId.value : undefined,
     };
   }
 

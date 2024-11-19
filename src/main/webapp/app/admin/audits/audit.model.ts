@@ -21,4 +21,5 @@ export interface Audit {
   principal: string;
   timestamp: string;
   type: string;
+  expanded: boolean;
 }

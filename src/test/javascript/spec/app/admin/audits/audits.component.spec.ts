@@ -124,7 +124,7 @@ describe('Component Tests', () => {
         // GIVEN
         const headers = new HttpHeaders().append('X-Total-Count', '1');
         const auditData: AuditData = { key: 'remoteAddress', value: '127.0.0.1' };
-        const audit: Audit = { data: auditData, principal: 'user', timestamp: '20140101', type: 'AUTHENTICATION_SUCCESS' };
+        const audit: Audit = { data: auditData, principal: 'user', timestamp: '20140101', type: 'AUTHENTICATION_SUCCESS', expanded: false };
         spyOn(service, 'query').and.returnValue(
           of(
             new HttpResponse({

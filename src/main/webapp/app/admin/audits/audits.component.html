@@ -59,18 +59,26 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let audit of audits">
-                    <td><span>{{ audit.timestamp | date:'medium' }}</span></td>
-                    <td><span>{{ audit.principal }}</span></td>
-                    <td>{{ audit.type }}</td>
-                    <td>
-                        <span *ngIf="audit.data" ng-show="audit.data.extra">
-                            <p *ngFor="let item of audit.data | keyvalue">
-                                {{ item.key }}: {{ item.value }}
-                            </p>
-                        </span>
-                    </td>
-                </tr>
+                <ng-container>
+                    <tr *ngFor="let audit of audits">
+                        <td><span>{{ audit.timestamp | date:'medium' }}</span></td>
+                        <td><span>{{ audit.principal }}</span></td>
+                        <td>{{ audit.type }}</td>
+                        <td>
+                            <span *ngIf="audit.data" ng-show="audit.data.extra">
+                                <span (click)="audit.expanded = !audit.expanded">
+                                    <p> {{ audit.expanded ? '&ndash;' : '+'}} {{ (audit.data | keyvalue)[0].key }}: {{ (audit.data | keyvalue)[0].value }}</p>
+                                </span>
+                                
+                                <ng-container *ngIf="audit.expanded">
+                                    <p *ngFor="let item of audit.data | keyvalue | slice:1">
+                                        {{ item.key }}: {{ item.value }}
+                                    </p>
+                                </ng-container>
+                            </span>
+                        </td>
+                    </tr>
+                </ng-container>
             </tbody>
         </table>
     </div>
