@@ -59,11 +59,11 @@ public class ApplicationProperties {
     }
 
     public Path getAgencyImagePath() {
-        return staticFilePath.resolve( "images/agency" );
+        return staticFilePath.resolve( "images" ).resolve( "agency" );
     }
 
     public Path getLicenseImagePath() {
-        return staticFilePath.resolve( "images/license" );
+        return staticFilePath.resolve( "images" ).resolve( "license" );
     }
 
     public Path getUploadFilePath() {

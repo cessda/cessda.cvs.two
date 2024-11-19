@@ -20,6 +20,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openhtmltopdf.slf4j.Slf4jLogger;
 import io.github.jhipster.config.JHipsterProperties;
+import org.docx4j.Docx4jProperties;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -65,5 +66,8 @@ public class LoggingConfiguration {
 
         // Configure openhtmltopdf logging
         com.openhtmltopdf.util.XRLog.setLoggerImpl( new Slf4jLogger() );
+
+        // Configure Docx4J logging
+        Docx4jProperties.getProperties().setProperty( "docx4j.Log4j.Configurator.disabled", "true" );
     }
 }

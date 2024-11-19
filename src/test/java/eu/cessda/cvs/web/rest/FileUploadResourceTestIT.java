@@ -63,7 +63,7 @@ class FileUploadResourceTestIT
         MockMultipartFile cessdaPNG = new MockMultipartFile( "file", Files.readAllBytes( Paths.get( "src/main/webapp/content/images/agency/cessda.png" ) ) );
         MvcResult result = fileUploadResourceMockMvc.perform( multipart( "/api/upload/agency-image" ).file( cessdaPNG ) )
             .andExpect( status().isCreated() )
-            .andExpect( content().string( containsString( ".jpg" ) ) )
+            .andExpect( header().string( "location", containsString( ".jpg" ) ) )
             .andReturn();
 
         // Test if the newly created resource can be found at the location header
@@ -80,7 +80,7 @@ class FileUploadResourceTestIT
         MockMultipartFile cessdaPNG = new MockMultipartFile( "file", Files.readAllBytes( Paths.get( "src/main/webapp/content/images/license/by.png" ) ) );
         MvcResult result = fileUploadResourceMockMvc.perform( multipart( "/api/upload/license-image" ).file( cessdaPNG ) )
             .andExpect( status().isCreated() )
-            .andExpect( content().string( containsString( ".jpg" ) ) )
+            .andExpect( header().string( "location", containsString( ".jpg" ) ) )
             .andReturn();
 
         // Test if the newly created resource can be found at the location header

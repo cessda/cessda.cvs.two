@@ -84,7 +84,7 @@
         <!-- Plugin versions -->
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
         <maven-idea-plugin.version>2.2.1</maven-idea-plugin.version>
-        <maven-checkstyle.version>3.5.0</maven-checkstyle.version>
+        <maven-checkstyle.version>3.6.0</maven-checkstyle.version>
         <checkstyle.version>10.18.1</checkstyle.version>
         <spring-nohttp-checkstyle.version>0.0.11</spring-nohttp-checkstyle.version>
         <frontend-maven-plugin.version>1.15.0</frontend-maven-plugin.version>
@@ -93,7 +93,7 @@
         <jib-maven-plugin.version>3.4.0</jib-maven-plugin.version>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
-        <sonar-maven-plugin.version>4.0.0.4121</sonar-maven-plugin.version>
+        <sonar-maven-plugin.version>5.0.0.4389</sonar-maven-plugin.version>
         <!-- jhipster-needle-maven-property -->
 
         <!-- SonarQube Properties -->
@@ -712,7 +712,7 @@
             <plugin>
                 <groupId>com.github.alexcojocaru</groupId>
                 <artifactId>elasticsearch-maven-plugin</artifactId>
-                <version>6.28</version>
+                <version>6.29</version>
                 <configuration>
                     <!-- THE ELASTICSEARCH VERSION; REPLACE WITH THE VERSION YOU NEED -->
                     <version>${elasticsearch.version}</version>
@@ -748,7 +748,7 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>4.5</version>
+                <version>4.6</version>
                 <configuration>
                     <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
                     <properties>
