@@ -1695,8 +1695,14 @@ public class VocabularyServiceImpl implements VocabularyService
     @Override
     public Path generateVocabularyFileDownload( String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, String requestURL, boolean onlyPublished )
     {
-        var fileName = vocabularyNotation + "-" + versionSl + "_" + versionList + "." + downloadType;
-        var resolvedPath = applicationProperties.getExportFilePath().resolve( fileName );
+        var fileNameStringBuilder = new StringBuilder().append( vocabularyNotation ).append( "-" ).append( versionSl );
+        if (versionList != null)
+        {
+            // version list may be null, only append if non-null
+            fileNameStringBuilder.append( "_" ).append( versionList );
+        }
+        fileNameStringBuilder.append( "." ).append( downloadType );
+        var resolvedPath = applicationProperties.getExportFilePath().resolve( fileNameStringBuilder.toString() );
 
         // Test if a pre-existing export is present
         if (Files.isRegularFile( resolvedPath )) {
