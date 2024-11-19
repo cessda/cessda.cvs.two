@@ -74,7 +74,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
@@ -1676,7 +1675,7 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     private Path createDirectoryAndFileName(String notation, String versionNumber, boolean isAllLatestVersion ) throws IOException {
-        Path dirPath = Path.of(applicationProperties.getVocabJsonPath() + notation);
+        Path dirPath = applicationProperties.getVocabJsonPath().resolve( notation );
 
         if (!isAllLatestVersion) {
             // Add the version number to the path
@@ -1694,30 +1693,117 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     @Override
-    public String generateVocabularyPublishFileDownload(
-        String vocabularyNotation,
-        String versionSl,
-        String versionList,
-        ExportService.DownloadType downloadType,
-        String requestURL,
-        OutputStream outputStream) {
-        log.info( "Publication generate file {} for Vocabulary {} versionSl {}", downloadType, vocabularyNotation, versionSl );
-        VocabularyDTO vocabularyDTO = getVocabularyByNotationAndVersion( vocabularyNotation, versionSl, true );
-        return generateVocabularyFileDownload( vocabularyNotation, versionSl, versionList, downloadType, requestURL, vocabularyDTO, outputStream );
+    public Path generateVocabularyFileDownload( String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, String requestURL, boolean onlyPublished )
+    {
+        var fileNameStringBuilder = new StringBuilder().append( vocabularyNotation ).append( "-" ).append( versionSl );
+        if (versionList != null)
+        {
+            // version list may be null, only append if non-null
+            fileNameStringBuilder.append( "_" ).append( versionList );
+        }
+        fileNameStringBuilder.append( "." ).append( downloadType );
+        var resolvedPath = applicationProperties.getExportFilePath().resolve( fileNameStringBuilder.toString() );
+
+        // Test if a pre-existing export is present
+        if (Files.isRegularFile( resolvedPath )) {
+            return resolvedPath;
+        }
+
+        log.info( "Generate file {} for Vocabulary {} versionSl {}", downloadType, vocabularyNotation, versionSl );
+        VocabularyDTO vocabularyDTO = getVocabularyByNotationAndVersion( vocabularyNotation, versionSl, onlyPublished );
+
+        Set<VersionDTO> includedVersions = filterOutVocabularyVersions( versionList, vocabularyDTO );
+
+        // 604 - duplicate entries in SKOS output
+        if ( downloadType.equals( ExportService.DownloadType.SKOS ) ) {
+            Map<String, VersionDTO> latestVersionsMap = new LinkedHashMap<>();
+            for (VersionDTO versionDTO : includedVersions) {
+                latestVersionsMap.merge(versionDTO.getLanguage(), versionDTO,
+                    // Select the latest version (defined by the lower result from the comparator)
+                    (r, k) -> VocabularyUtils.VERSION_DTO_COMPARATOR.compare(r, k) < 0 ? r : k
+                );
+            }
+            includedVersions = new LinkedHashSet<>(latestVersionsMap.values());
+        }
+
+        vocabularyDTO.setVersions( includedVersions );
+        Map<String, Object> map = new HashMap<>();
+        for ( VersionDTO includedVersion : includedVersions ) {
+            // escaping HTML to strict XHTML
+            includedVersion.setVersionNotes( VocabularyUtils.toStrictXhtml( includedVersion.getVersionNotes() ) );
+            includedVersion.setVersionChanges( VocabularyUtils.toStrictXhtml( includedVersion.getVersionChanges() ) );
+            includedVersion.setDdiUsage( VocabularyUtils.toStrictXhtml( includedVersion.getDdiUsage() ) );
+            // sort concepts by position (see #330)
+            includedVersion.setConcepts(
+                includedVersion.getConcepts().stream().sorted( Comparator.comparing( ConceptDTO::getPosition ) )
+                    .collect( Collectors.toCollection( LinkedHashSet::new ) ) );
+        }
+
+        // sorted versions
+        map.put( "versions", includedVersions );
+
+        // agency object
+        AgencyDTO agencyDTO = new AgencyDTO();
+        agencyDTO.setName( vocabularyDTO.getAgencyName() );
+        agencyDTO.setLink( vocabularyDTO.getAgencyLink() );
+
+        if ( downloadType.equals( ExportService.DownloadType.SKOS ) ) {
+            final VersionDTO versionIncluded = includedVersions.iterator().next();
+            String uriSl = versionIncluded.getUriSl();
+            if ( uriSl == null ) {
+                uriSl = versionIncluded.getUri();
+            }
+            map.put( "docId", uriSl );
+            map.put( "docVersionOf", vocabularyDTO.getUri() );
+            map.put( "docNotation", vocabularyDTO.getNotation() );
+            map.put( "docSourceLanguage", vocabularyDTO.getSourceLanguage() );
+            map.put( "docVersion", versionIncluded.getNumber().toString() );
+            map.put( "docLicense", versionIncluded.getLicenseName() );
+            map.put( "docLicenseUrl", versionIncluded.getLicenseLink() );
+            map.put( "docRight", versionIncluded.getLicenseName() );
+            map.put( CODE_PATH, CodeDTO.generateCodesFromVersion( includedVersions, false ) );
+        } else {
+            vocabularyDTO.setVersions( includedVersions );
+            prepareAdditionalAttributesForNonSkos( vocabularyDTO, map, agencyDTO );
+        }
+
+        map.put( "agency", agencyDTO );
+
+        // Derive the year from the date of publication, falling back to the last modified date if present.
+        // Otherwise, the current date is used to provide the year.
+        int year;
+        if ( vocabularyDTO.getPublicationDate() != null) {
+            year = vocabularyDTO.getPublicationDate().getYear();
+        } else if ( vocabularyDTO.getLastModified() != null ) {
+            year = vocabularyDTO.getLastModified().getYear();
+        } else {
+            year = LocalDate.now().getYear();
+        }
+        map.put( "year", year );
+        map.put( "baseUrl", requestURL );
+
+        String suffix = "";
+        if (agencyDTO.getName().equals("DDI Alliance") && downloadType.equals(ExportService.DownloadType.SKOS)) {
+            suffix = "-ddi";
+        }
+
+        // Write to export file
+        try
+        {
+            // Create all necessary directories
+            Files.createDirectories( resolvedPath.getParent() );
+            try ( var outputStream = Files.newOutputStream( resolvedPath ) )
+            {
+                exportService.generateFileByThymeleafTemplate( "export" + suffix, map, downloadType, outputStream );
+                return resolvedPath;
+            }
+        }
+        catch ( IOException | JAXBException | Docx4JException e )
+        {
+            throw new VocabularyFileGenerationFailedException( e );
+        }
     }
 
-    @Override
-    public String generateVocabularyEditorFileDownload(
-        String vocabularyNotation,
-        String versionSl,
-        String versionList,
-        ExportService.DownloadType downloadType,
-        String requestURL,
-        OutputStream outputStream) {
-        log.info( "Editor generate file {} for Vocabulary {} versionSl {}", downloadType, vocabularyNotation, versionSl );
-        VocabularyDTO vocabularyDTO = getVocabularyByNotationAndVersion( vocabularyNotation, versionSl, false );
-        return generateVocabularyFileDownload( vocabularyNotation, versionSl, versionList, downloadType, requestURL, vocabularyDTO, outputStream );
-    }
 
     @Override
     @Transactional
@@ -1980,104 +2066,6 @@ public class VocabularyServiceImpl implements VocabularyService
             for ( Concept concept : version.getConcepts() ) {
                 concept.setUri( null );
             }
-        }
-    }
-
-    private String generateVocabularyFileDownload(
-        String vocabularyNotation,
-        String versionSl,
-        String versionList,
-        ExportService.DownloadType downloadType,
-        String requestURL,
-        VocabularyDTO vocabularyDTO,
-        OutputStream outputStream) {
-
-        Set<VersionDTO> includedVersions = filterOutVocabularyVersions( versionList, vocabularyDTO);
-
-        // 604 - duplicate entries in SKOS output
-        if ( downloadType.equals( ExportService.DownloadType.SKOS ) ) {
-            Map<String, VersionDTO> latestVersionsMap = new LinkedHashMap<>();
-            for (VersionDTO versionDTO : includedVersions) {
-                latestVersionsMap.merge(versionDTO.getLanguage(), versionDTO,
-                    // Select the latest version (defined by the lower result from the comparator)
-                    (r, k) -> VocabularyUtils.VERSION_DTO_COMPARATOR.compare(r, k) < 0 ? r : k
-                );
-            }
-            includedVersions = new LinkedHashSet<>(latestVersionsMap.values());
-        }
-
-        vocabularyDTO.setVersions( includedVersions );
-        Map<String, Object> map = new HashMap<>();
-        for ( VersionDTO includedVersion : includedVersions ) {
-            // escaping HTML to strict XHTML
-            includedVersion.setVersionNotes( VocabularyUtils.toStrictXhtml( includedVersion.getVersionNotes() ) );
-            includedVersion.setVersionChanges( VocabularyUtils.toStrictXhtml( includedVersion.getVersionChanges() ) );
-            includedVersion.setDdiUsage( VocabularyUtils.toStrictXhtml( includedVersion.getDdiUsage() ) );
-            // sort concepts by position (see #330)
-            includedVersion.setConcepts(
-                includedVersion.getConcepts().stream().sorted( Comparator.comparing( ConceptDTO::getPosition ) )
-                    .collect( Collectors.toCollection( LinkedHashSet::new ) ) );
-        }
-
-        // sorted versions
-        map.put( "versions", includedVersions );
-
-        // agency object
-        AgencyDTO agencyDTO = new AgencyDTO();
-        agencyDTO.setName( vocabularyDTO.getAgencyName() );
-        agencyDTO.setLink( vocabularyDTO.getAgencyLink() );
-
-        if ( downloadType.equals( ExportService.DownloadType.SKOS ) ) {
-            final VersionDTO versionIncluded = includedVersions.iterator().next();
-            String uriSl = versionIncluded.getUriSl();
-            if ( uriSl == null ) {
-                uriSl = versionIncluded.getUri();
-            }
-            map.put( "docId", uriSl );
-            map.put( "docVersionOf", vocabularyDTO.getUri() );
-            map.put( "docNotation", vocabularyDTO.getNotation() );
-            map.put( "docSourceLanguage", vocabularyDTO.getSourceLanguage() );
-            map.put( "docVersion", versionIncluded.getNumber().toString() );
-            map.put( "docLicense", versionIncluded.getLicenseName() );
-            map.put( "docLicenseUrl", versionIncluded.getLicenseLink() );
-            map.put( "docRight", versionIncluded.getLicenseName() );
-            map.put( CODE_PATH, CodeDTO.generateCodesFromVersion( includedVersions, false ) );
-        } else {
-            vocabularyDTO.setVersions( includedVersions );
-            prepareAdditionalAttributesForNonSkos( vocabularyDTO, map, agencyDTO );
-        }
-
-        map.put( "agency", agencyDTO );
-
-        // Derive the year from the date of publication, falling back to the last modified date if present.
-        // Otherwise, the current date is used to provide the year.
-        int year;
-        if (vocabularyDTO.getPublicationDate() != null) {
-            year = vocabularyDTO.getPublicationDate().getYear();
-        } else {
-            if (vocabularyDTO.getLastModified() != null) {
-                year = vocabularyDTO.getLastModified().getYear();
-            } else {
-                year = LocalDate.now().getYear();
-            }
-        }
-        map.put( "year", year );
-        map.put( "baseUrl", requestURL );
-
-        String suffix = "";
-        if (agencyDTO.getName().equals("DDI Alliance") && downloadType.equals(ExportService.DownloadType.SKOS)) {
-            suffix = "-ddi";
-        }
-
-        try
-        {
-            // The output stream is set by the calling method
-            exportService.generateFileByThymeleafTemplate( "export" + suffix, map, downloadType, outputStream );
-            return vocabularyNotation + "-" + versionSl + "_" + versionList + "." + downloadType;
-        }
-        catch ( IOException | JAXBException | Docx4JException e )
-        {
-            throw new VocabularyFileGenerationFailedException( e );
         }
     }
 

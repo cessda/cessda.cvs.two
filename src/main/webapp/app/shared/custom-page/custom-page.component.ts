@@ -24,6 +24,7 @@ import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { ActivatedRoute } from '@angular/router';
 import { FileUploadService } from 'app/shared/upload/file-upload.service';
+import { FileFormat } from 'app/shared/vocabulary-download/FileFormat';
 
 @Component({
   selector: 'jhi-custom-page',
@@ -147,17 +148,13 @@ export class CustomPageComponent implements OnInit, OnDestroy {
     );
   }
 
-  downloadAsFile(format: string): void {
+  downloadAsFile(format: FileFormat): void {
     if (this.generatingFile) {
       return;
     }
     this.generatingFile = true;
-    this.metadataFieldService.downloadMetadataFile(this.metadataKey, format).subscribe((res: Blob) => {
-      this.generateDownloadFile(
-        res,
-        format === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        format === 'pdf' ? 'pdf' : 'docx',
-      );
+    this.metadataFieldService.downloadMetadataFile(this.metadataKey, format.mimeType).subscribe((res: Blob) => {
+      this.generateDownloadFile(res, format.mimeType, format.extension);
     });
   }
 
