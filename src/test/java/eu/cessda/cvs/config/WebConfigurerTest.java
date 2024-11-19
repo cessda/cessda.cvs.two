@@ -20,6 +20,7 @@ import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.web.filter.CachingHttpHeadersFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.http.HttpHeaders;
 import org.springframework.mock.env.MockEnvironment;
 import org.springframework.mock.web.MockServletContext;
@@ -54,6 +55,8 @@ public class WebConfigurerTest {
 
     private JHipsterProperties props;
 
+    private WebProperties web;
+
     @BeforeEach
     public void setup() throws IOException {
         ApplicationProperties app = new ApplicationProperties( "target/classes/static" );
@@ -66,8 +69,9 @@ public class WebConfigurerTest {
 
         env = new MockEnvironment();
         props = new JHipsterProperties();
+        web = new WebProperties();
 
-        webConfigurer = new WebConfigurer(env, app, props);
+        webConfigurer = new WebConfigurer(env, app, props, web);
     }
 
     @Test

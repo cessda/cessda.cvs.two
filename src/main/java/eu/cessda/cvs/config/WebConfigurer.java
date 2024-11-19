@@ -15,15 +15,14 @@
  */
 package eu.cessda.cvs.config;
 
-import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.JHipsterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.Profiles;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.PathResource;
 import org.springframework.web.cors.CorsConfiguration;
@@ -55,11 +54,13 @@ public class WebConfigurer implements ServletContextInitializer, WebMvcConfigure
 
     private final ApplicationProperties applicationProperties;
     private final JHipsterProperties jHipsterProperties;
+    private final WebProperties webProperties;
 
-    public WebConfigurer(Environment env, ApplicationProperties applicationProperties, JHipsterProperties jHipsterProperties) {
+    public WebConfigurer( Environment env, ApplicationProperties applicationProperties, JHipsterProperties jHipsterProperties, WebProperties webProperties ) {
         this.env = env;
         this.applicationProperties = applicationProperties;
         this.jHipsterProperties = jHipsterProperties;
+        this.webProperties = webProperties;
     }
 
     @Override
@@ -68,9 +69,7 @@ public class WebConfigurer implements ServletContextInitializer, WebMvcConfigure
             log.info("Web application configuration, using profiles: {}", (Object[]) env.getActiveProfiles());
         }
         EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
-        if (env.acceptsProfiles(Profiles.of(JHipsterConstants.SPRING_PROFILE_PRODUCTION))) {
-            initCachingHttpHeadersFilter(servletContext, disps);
-        }
+        initCachingHttpHeadersFilter(servletContext, disps);
         log.info("Web application fully configured");
     }
 
@@ -84,7 +83,8 @@ public class WebConfigurer implements ServletContextInitializer, WebMvcConfigure
         if (applicationProperties.getStaticFilePath() != null)
         {
             registry.addResourceHandler( "/content/**" )
-                .addResourceLocations( new PathResource( applicationProperties.getStaticFilePath() ), new ClassPathResource( "/static/content/" ) );
+                .addResourceLocations( new PathResource( applicationProperties.getStaticFilePath() ), new ClassPathResource( "/static/content/" ) )
+                .setCacheControl( webProperties.getResources().getCache().getCachecontrol().toHttpCacheControl() );
         }
     }
 
@@ -109,7 +109,6 @@ public class WebConfigurer implements ServletContextInitializer, WebMvcConfigure
                 });
 
         cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/i18n/*");
-        cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/content/*");
         cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/app/*");
         cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/v2/*");
         cachingHttpHeadersFilter.setAsyncSupported(true);
