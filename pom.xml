@@ -91,6 +91,7 @@
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
         <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
         <jib-maven-plugin.version>3.4.0</jib-maven-plugin.version>
+        <jib-layer-with-modification-time-extension-maven.version>1.0.1</jib-layer-with-modification-time-extension-maven.version>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
         <sonar-maven-plugin.version>5.0.0.4389</sonar-maven-plugin.version>
@@ -467,31 +468,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>war</goal>
-                        </goals>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <warSourceIncludes>WEB-INF/**,META-INF/**</warSourceIncludes>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <warSourceDirectory>target/classes/static/</warSourceDirectory>
-                    <webResources>
-                        <resource>
-                            <directory>src/main/webapp</directory>
-                            <includes>
-                                <include>WEB-INF/**</include>
-                            </includes>
-                        </resource>
-                    </webResources>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
                 <version>${frontend-maven-plugin.version}</version>
@@ -544,6 +520,13 @@
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>${jib-maven-plugin.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.infobip.jib</groupId>
+                        <artifactId>jib-layer-with-modification-time-extension-maven</artifactId>
+                        <version>${jib-layer-with-modification-time-extension-maven.version}</version>
+                    </dependency>
+                </dependencies>
                 <configuration>
                     <to>
                         <image>cvs:latest</image>
@@ -557,6 +540,18 @@
                         </environment>
                         <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
                     </container>
+                    <pluginExtensions combine.children="append">
+                        <pluginExtension>
+                            <implementation>
+                                com.infobip.jib.extension.lwmt.LayerWithModificationTimeJibExtension
+                            </implementation>
+                            <configuration implementation="com.infobip.jib.extension.lwmt.Configuration">
+                                <filters>
+                                    <filter>**/static/**</filter>
+                                </filters>
+                            </configuration>
+                        </pluginExtension>
+                    </pluginExtensions>
                 </configuration>
             </plugin>
             <plugin>
@@ -692,7 +687,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <fork>true</fork>
                     <!--
                     Enable the line below to have remote debugging of your application on port 5005
                     <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>
@@ -1012,6 +1006,27 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-war-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>war</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <warSourceIncludes>WEB-INF/**,META-INF/**</warSourceIncludes>
+                            <failOnMissingWebXml>false</failOnMissingWebXml>
+                            <warSourceDirectory>target/classes/static/</warSourceDirectory>
+                            <webResources>
+                                <resource>
+                                    <directory>src/main/webapp</directory>
+                                    <includes>
+                                        <include>WEB-INF/**</include>
+                                    </includes>
+                                </resource>
+                            </webResources>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
