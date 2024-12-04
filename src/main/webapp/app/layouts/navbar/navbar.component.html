@@ -89,7 +89,7 @@
                         <button *ngIf="!isSearching" class="input-group-append btn" (click)="clear()" [ngClass]="currentSearch ? 'visible':'not-visible'">
                             <span class="square-icon m-t-5px"><fa-icon [icon]="'times'"></fa-icon></span>
                         </button>
-                        <select #searchLang class="lang-input form-control" id="searchLang" name="searchLang" [(ngModel)]="currentLang">
+                        <select #searchInputLang class="lang-input form-control" id="searchInputLang" name="searchInputLang" [(ngModel)]="currentSearchLang">
                             <option *ngFor="let lang of searchLangs" value="{{lang}}">{{getLangFormatted(lang)}}</option>
                         </select>
                     </div>

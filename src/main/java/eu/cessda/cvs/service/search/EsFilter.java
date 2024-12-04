@@ -25,6 +25,34 @@ public class EsFilter implements Serializable {
     private static final long serialVersionUID = -3650519521378103904L;
 
     public enum FilterType {KEYWORD, RANGE}
+	
+	public enum ClauseType {
+		
+		OPTIONAL("or"),
+		COMPULSORY("and");
+		
+		private String value;
+
+		ClauseType(String value) {
+			this.value = value;
+		}
+
+		public String toString() {
+			return this.value;
+		}
+
+		public static ClauseType fromString(String s) throws IllegalArgumentException {
+			for (ClauseType clauseType : ClauseType.values()) {
+				if (s.equalsIgnoreCase(clauseType.toString())) {
+					return clauseType;
+				}
+			}
+			throw new IllegalArgumentException(
+				String.format("Unknown value with name %s in Enum FilterClauseType", s));
+		}
+	}
+
+	public static final ClauseType DEFAULT_FILTER_CLAUSE_TYPE = ClauseType.COMPULSORY;
 
     public static final String AGENCY_AGG = "agencyName";
     public static final String LANGS_AGG = "languages";
@@ -38,18 +66,27 @@ public class EsFilter implements Serializable {
 	private List<String> values = new ArrayList<>();
 	// aggregration active filter
 	private Map<String, Long> filteredBucket = new LinkedHashMap<>();
+	// method of multiple values combination
+	private ClauseType filterClauseType;
 
 	// aggregation exclude active filter
 	private Map<String, Long> bucket = new LinkedHashMap<>();
 
 	public EsFilter() {
 		filterType = FilterType.KEYWORD;
+		filterClauseType = DEFAULT_FILTER_CLAUSE_TYPE;
 	}
 	public FilterType getFilterType() {
 		return filterType;
 	}
 	public void setFilterType(FilterType filterType) {
 		this.filterType = filterType;
+	}
+	public ClauseType getFilterClauseType() {
+		return filterClauseType;
+	}
+	public void setClauseType(ClauseType filterClauseType) {
+		this.filterClauseType = filterClauseType;
 	}
 	public String getField() {
 		return field;

@@ -22,7 +22,7 @@ import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Account } from 'app/core/user/account.model';
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Observable } from 'rxjs';
-import { AGGR_AGENCY, AGGR_STATUS } from 'app/shared/constants/aggregration.constants';
+import { AGGR_AGENCY, AGGR_LANGUAGE, AGGR_LANGUAGE_PUBLISHED, AGGR_STATUS } from 'app/shared/constants/aggregration.constants';
 import { ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared/constants/pagination.constants';
 import { Bucket } from 'app/shared/model/bucket';
 import { AccountService } from 'app/core/auth/account.service';
@@ -51,6 +51,7 @@ export class VocabularySearchResultComponent implements OnInit {
 
   vocabularies: Vocabulary[] = [];
   currentSearch = '';
+  currentSearchLang = '_all';
 
   totalItems = 0;
   itemsPerPage = ITEMS_PER_PAGE;
@@ -60,13 +61,16 @@ export class VocabularySearchResultComponent implements OnInit {
   ascending = true;
 
   aggAgencyBucket: Bucket[] = [];
+  aggLanguageBucket: Bucket[] = [];
   aggStatusBucket: Bucket[] = [];
   activeAggAgency: string[] = [];
   activeAggLanguage: string[] = [];
+  activeAggLanguageClauseType: string = 'and';
   activeAggStatus: string[] = [];
   activeAgg = '';
 
   isAggAgencyCollapsed = false;
+  isAggLanguageCollapsed = false;
   isAggStatusCollapsed = false;
   isFilterCollapse = false;
   isActionCollapse = false;
@@ -87,6 +91,8 @@ export class VocabularySearchResultComponent implements OnInit {
   ) {
     this.searchForm = this.fb.group({
       aggAgency: [],
+      aggLanguage: [],
+      aggLanguageClauseType: 'and',
       aggStatus: [],
       size: [this.itemsPerPage],
       sortBy: ['code,asc'],
@@ -103,6 +109,10 @@ export class VocabularySearchResultComponent implements OnInit {
 
   isEditorScope(): boolean {
     return this.appScope === AppScope.EDITOR;
+  }
+
+  isLanguageAdmin(): boolean {
+    return this.isEditorScope() && !this.accountService.isAdmin();
   }
 
   toggleFilterPanelHidden(): void {
@@ -190,10 +200,6 @@ export class VocabularySearchResultComponent implements OnInit {
     });
   }
 
-  isLanguageAdmin(): boolean {
-    return this.appScope === AppScope.EDITOR && !this.accountService.isAdmin();
-  }
-
   private filterAdminAgencies(): string {
     this.activeAggAgency = [];
 
@@ -221,6 +227,8 @@ export class VocabularySearchResultComponent implements OnInit {
     this.activeAggLanguage = [];
     this.activeAggStatus = [];
     this.searchForm.patchValue({ aggAgency: [] });
+    this.searchForm.patchValue({ aggLanguage: [] });
+    this.searchForm.patchValue({ aggLanguageClauseType: 'and'});
     this.searchForm.patchValue({ aggStatus: [] });
   }
 
@@ -251,8 +259,15 @@ export class VocabularySearchResultComponent implements OnInit {
       } else {
         this.currentSearch = '';
       }
-
       searchRequest['q'] = this.currentSearch;
+
+      const ql = params.get('ql');
+      if (ql) {
+        this.currentSearchLang = ql;
+      } else {
+        this.currentSearchLang = this.getCurrentLanguage();
+      }
+      searchRequest['ql'] = this.currentSearchLang;
 
       const size = params.get('size');
       if (size) {
@@ -260,7 +275,6 @@ export class VocabularySearchResultComponent implements OnInit {
       } else {
         this.itemsPerPage = ITEMS_PER_PAGE;
       }
-
       searchRequest['size'] = this.itemsPerPage;
 
       const page = params.get('page');
@@ -269,7 +283,6 @@ export class VocabularySearchResultComponent implements OnInit {
       } else {
         this.page = INITIAL_PAGE;
       }
-
       // Pages requested from the server are zero-indexed
       searchRequest['page'] = this.page - 1;
 
@@ -287,7 +300,6 @@ export class VocabularySearchResultComponent implements OnInit {
         this.predicate = DEFAULT_PREDICATE;
         this.ascending = true;
       }
-
       searchRequest['sort'] = VocabularySearchResultComponent.sort(this.predicate, this.ascending);
 
       const filters = params.get('f');
@@ -316,7 +328,7 @@ export class VocabularySearchResultComponent implements OnInit {
 
       // Send the search request to the server
       let searchObservable: Observable<HttpResponse<CvResult>>;
-      if (this.appScope === AppScope.EDITOR) {
+      if (this.isEditorScope()) {
         searchObservable = this.editorService.search(searchRequest);
       } else {
         searchObservable = this.homeService.search(searchRequest);
@@ -353,6 +365,9 @@ export class VocabularySearchResultComponent implements OnInit {
         // format bucket and add as autocomplete and patch form value
         this.aggAgencyBucket = this.formatBuckets(aggr.buckets.concat(aggr.filteredBuckets));
         this.searchForm.patchValue({ aggAgency: this.prepareActiveBuckets(this.aggAgencyBucket, aggr) });
+      } else if (aggr.field === AGGR_LANGUAGE || aggr.field === AGGR_LANGUAGE_PUBLISHED) {
+        this.aggLanguageBucket = this.formatBuckets(aggr.buckets.concat(aggr.filteredBuckets));
+        this.searchForm.patchValue({ aggLanguage: this.prepareActiveBuckets(this.aggLanguageBucket, aggr) });
       } else if (aggr.field === AGGR_STATUS) {
         this.aggStatusBucket = this.formatBuckets(aggr.buckets.concat(aggr.filteredBuckets));
         this.searchForm.patchValue({ aggStatus: this.prepareActiveBuckets(this.aggStatusBucket, aggr) });
@@ -436,6 +451,26 @@ export class VocabularySearchResultComponent implements OnInit {
     this.buildFilterAndRefreshSearch();
   }
 
+  onAddLanguage(addedItem: TagModel): void {
+    this.activeAggLanguage.push((addedItem as TagModelClass)['k']);
+    this.buildFilterAndRefreshSearch();
+  }
+
+  onRemoveLanguage(removedItem: TagModel): void {
+    this.activeAggLanguage.forEach((item, index) => {
+      if (item === (removedItem as TagModelClass)['k']) {
+        this.activeAggLanguage.splice(index, 1);
+      }
+    });
+    this.buildFilterAndRefreshSearch();
+  }
+
+  onAggLanguageClauseTypeChange(): void {
+    this.activeAggLanguageClauseType = this.searchForm.value.aggLanguageClauseType
+    console.log(this.activeAggLanguageClauseType);
+    this.buildFilterAndRefreshSearch();
+  }
+
   onAddStatus(addedItem: TagModel): void {
     this.activeAggStatus.push((addedItem as TagModelClass)['k']);
     this.buildFilterAndRefreshSearch();
@@ -464,6 +499,14 @@ export class VocabularySearchResultComponent implements OnInit {
         activeAgg += ';';
       }
       activeAgg += 'language:' + this.activeAggLanguage.join(',');
+      if (this.activeAggLanguage.length > 1) {
+        let split = activeAgg.split("~");
+        if (split.length > 1) {
+          activeAgg = split[0] + '~' + this.activeAggLanguageClauseType; 
+        } else {
+          activeAgg = '~' + this.activeAggLanguageClauseType;
+        }
+      } 
     }
     if (this.activeAggStatus.length > 0) {
       if ((this.activeAggAgency.length > 0 && !this.isLanguageAdmin()) || this.activeAggLanguage.length > 0) {
@@ -475,7 +518,7 @@ export class VocabularySearchResultComponent implements OnInit {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: {
-        f: activeAgg === '' ? null : activeAgg,
+        f: activeAgg === '' ? null : activeAgg
       },
       queryParamsHandling: 'merge',
     });

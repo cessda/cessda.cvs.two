@@ -89,12 +89,11 @@ public class VocabularyResourceV2 {
     @ApiOperation( value = "Searching the vocabularies", hidden = true )
     public ResponseEntity<CvResult> searchVocabularies(
         @ApiParam( value = "the query, e.g. Family" ) @RequestParam(name = "q", required = false) String q,
+        @ApiParam( value = "the language used for searching with the query, e.g. en" ) @RequestParam(name = "ql", required = false) String ql,
         @ApiParam( value = "the filter, e.g agency:DDI Alliance;language:en" ) @RequestParam(name = "f", required = false) String f,
         Pageable pageable) {
         log.debug("REST request search vocabulary by query");
-        if (q == null)
-            q = "";
-        EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(q, f, pageable, SearchScope.PUBLICATIONSEARCH);
+        EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(q, ql, f, pageable, SearchScope.PUBLICATIONSEARCH);
         vocabularyService.search(esq);
         Page<VocabularyDTO> vocabulariesPage = esq.getVocabularies();
 
@@ -139,7 +138,7 @@ public class VocabularyResourceV2 {
          Pageable pageable
     ) {
         log.debug("REST request search vocabulary, produces JSON");
-        EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(query, agency, lang, pageable, SearchScope.PUBLICATIONSEARCH);
+        EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(query, null, Map.of("agency", agency, "language", lang), pageable, SearchScope.PUBLICATIONSEARCH);
         vocabularyService.search(esq);
         Page<VocabularyDTO> vocabulariesPage = esq.getVocabularies();
         // remove unused property
@@ -191,6 +190,12 @@ public class VocabularyResourceV2 {
             example = "Economics"
         ) @RequestParam (required = false) String query,
         @ApiParam(
+            name = "searchLanguage",
+            type = "String",
+            value = "The search term language",
+            example = "en"
+        ) @RequestParam (required = false) String searchLanguage,
+        @ApiParam(
             name = "agency",
             type = "String",
             value = "The agency",
@@ -205,7 +210,7 @@ public class VocabularyResourceV2 {
         Pageable pageable
     ) {
         log.debug("REST request search vocabulary, produces JSON LD");
-        EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(query, agency, lang, pageable, SearchScope.PUBLICATIONSEARCH);
+        EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(query, searchLanguage, Map.of("agency", agency, "language", lang), pageable, SearchScope.PUBLICATIONSEARCH);
         vocabularyService.search(esq);
         Page<VocabularyDTO> vocabulariesPage = esq.getVocabularies();
         List<Object> vocabularyJsonLds = ResourceUtils.convertVocabulariesToJsonLd(esq, vocabulariesPage);
@@ -238,6 +243,12 @@ public class VocabularyResourceV2 {
             required = true
         ) @RequestParam String query,
         @ApiParam(
+            name = "searchLanguage",
+            type = "String",
+            value = "The search term language",
+            example = "en"
+        ) @RequestParam (required = false) String searchLanguage,
+        @ApiParam(
             name = "agency",
             type = "String",
             value = "The agency",
@@ -265,16 +276,7 @@ public class VocabularyResourceV2 {
         ) @RequestParam( required = false ) Integer size
     ) {
         log.debug("REST request to get a page of Vocabularies");
-        if (query == null)
-            query = "";
-        String filter = "language:" +lang;
-        if( agency != null ) {
-            filter += ";agency:" + agency;
-        }
-        if( vocab != null ) {
-            filter += ";vocab:" + vocab;
-        }
-        EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(query, filter, null, SearchScope.PUBLICATIONSEARCH);
+        EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(query, searchLanguage, Map.of("agency", agency, "language", lang, "vocab", vocab), null, SearchScope.PUBLICATIONSEARCH);
         esq.setCodeSize( size == null ? 20 : size );
         vocabularyService.searchCode(esq);
         Page<VocabularyDTO> vocabulariesPage = esq.getVocabularies();

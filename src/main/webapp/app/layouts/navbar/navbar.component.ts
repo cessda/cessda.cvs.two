@@ -39,7 +39,7 @@ import VocabularyUtil from 'app/shared/util/vocabulary-util';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
-  @ViewChild('searchLang', { static: true }) searchLang!: ElementRef;
+  @ViewChild('searchInputLang', { static: true }) searchInputLang!: ElementRef;
   inProduction?: boolean;
   eventSubscriber?: Subscription;
   isNavbarCollapsed = true;
@@ -47,7 +47,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   swaggerEnabled?: boolean;
   version: string;
   currentSearch?: string;
-  currentLang?: string;
+  currentSearchLang?: string;
   isSearching: boolean;
 
   isEditorSearch = false;
@@ -69,28 +69,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {
     this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
     this.isSearching = false;
-    this.currentLang = 'en';
+    this.currentSearchLang = '_all';
 
     this.loadLanguages();
 
     this.activatedRoute.queryParams.subscribe(params => {
       this.currentSearch = params['q'];
-
-      if (params['f']) {
-        const activeFilters: string[] = params['f'].split(';', 2);
-        activeFilters.forEach(af => {
-          const activeFilter: string[] = af.split(':', 2);
-          if (activeFilter.length === 2) {
-            if (activeFilter[0] === 'language') {
-              if (this.searchLangs.some(lang => lang === activeFilter[1])) {
-                this.currentLang = activeFilter[1];
-              } else {
-                this.currentLang = 'en';
-              }
-            }
-          }
-        });
-      }
+      this.currentSearchLang = this.searchLangs.some(lang => lang === params['ql']) ? params['ql'] : '_all';
     });
 
     this.router.events.subscribe(() => {
@@ -144,7 +129,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.search(text);
       });
 
-    fromEvent(this.searchLang.nativeElement, 'change')
+    fromEvent(this.searchInputLang.nativeElement, 'change')
       .pipe(
         map((event: any) => {
           return event.target.value;
@@ -179,19 +164,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   search(query: string | undefined): void {
-    if (query) {
-      if (this.isEditorSearch) {
-        this.router.navigate(['/editor'], { queryParams: { q: query, f: 'language:' + this.currentLang, sort: 'relevance' } });
-      } else {
-        this.router.navigate([''], { queryParams: { q: query, f: 'language:' + this.currentLang, sort: 'relevance' } });
+    this.router.navigate(
+      this.isEditorSearch ? ['/editor'] : [''],
+      {
+        relativeTo: this.activatedRoute,
+        queryParams: {
+          q: query === '' ? null : query,
+          ql: this.searchInputLang.nativeElement.value,
+          sort: query ? 'relevance' : 'code,asc'
+        },
+        queryParamsHandling: 'merge',
       }
-    } else {
-      if (this.isEditorSearch) {
-        this.router.navigate(['/editor'], { queryParams: { f: 'language:' + this.currentLang, sort: 'code,asc' } });
-      } else {
-        this.router.navigate([''], { queryParams: { f: 'language:' + this.currentLang, sort: 'code,asc' } });
-      }
-    }
+    );
   }
 
   clear(): void {
@@ -206,7 +190,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   collapseNavbar(): void {
     this.isNavbarCollapsed = true;
-    this.currentLang = 'en';
+    this.currentSearchLang = 'en';
   }
 
   isAuthenticated(): boolean {

@@ -100,8 +100,8 @@ public class ResourceUtils {
         if ( !vocabulariesPage.getContent().isEmpty() ) {
             vocabulariesPage.getContent().forEach(vocabularyDTO -> {
                 Set<String> languages = new LinkedHashSet<>();
-                if( esq.getSortLanguage() != null )
-                    languages.add( esq.getSortLanguage() );
+                if( esq.getSearchLanguage() != null )
+                    languages.add( esq.getSearchLanguage() );
                 else
                     languages.addAll( vocabularyDTO.getLanguagesPublished());
                 List<Map<String, Object>> vocabularyJsonLdMap = convertVocabularyDtoToJsonLd(vocabularyDTO, vocabularyDTO.getCodes(), languages);

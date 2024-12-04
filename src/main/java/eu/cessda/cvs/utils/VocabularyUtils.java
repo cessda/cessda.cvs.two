@@ -15,6 +15,24 @@
  */
 package eu.cessda.cvs.utils;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import eu.cessda.cvs.domain.Concept;
 import eu.cessda.cvs.domain.Version;
 import eu.cessda.cvs.domain.Vocabulary;
@@ -27,17 +45,6 @@ import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.web.rest.domain.Aggr;
 import eu.cessda.cvs.web.rest.domain.Bucket;
 import eu.cessda.cvs.web.rest.domain.CvResult;
-import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
-import java.util.*;
 
 public final class VocabularyUtils
 {
@@ -63,46 +70,68 @@ public final class VocabularyUtils
 	}
 
 	public static EsQueryResultDetail prepareEsQuerySearching(
-			String query,
-			String agency,
-			String lang,
-			Pageable pageable,
-			SearchScope searchScope )
-	{
-		String filter = null;
-		if ( agency != null )
-		{
-			filter = "agency:" + agency + ";";
-		}
-		if ( lang != null )
-		{
-			filter += "language:" + lang;
-		}
-
-		return VocabularyUtils.prepareEsQuerySearching( query, filter, pageable, searchScope );
+		String q,
+		String ql,
+		Map<String, String> f,
+		Pageable pageable,
+		SearchScope searchScope
+	) {
+		return prepareEsQuerySearching(
+			q,
+			ql,
+			filtersToString(f),
+			pageable, searchScope
+		);
 	}
 
-	public static EsQueryResultDetail prepareEsQuerySearching( String q, String f, Pageable pageable, SearchScope searchScope )
+	public static EsQueryResultDetail prepareEsQuerySearching( String q, String ql, String f, Pageable pageable, SearchScope searchScope )
 	{
 		if ( q == null )
 			q = "";
-
 		EsQueryResultDetail esq = new EsQueryResultDetail( searchScope );
 		esq.setSearchTerm( q );
 
-		// prepare filter
-		if ( f == null || f.isEmpty() ) {
-			f = "language:en";
+		if (ql == null)
+			ql = "_all";
+
+		if (ql.equalsIgnoreCase("_all")) {
+			esq.setSearchAllLanguages(true);
+			esq.setSearchLanguage( "All" );
+		} else {
+			esq.setSearchLanguage( ql );
+		}
+
+		if ( f == null ) {
+			f = "";
 		}
 		VocabularyUtils.prepareActiveFilters( f, esq, searchScope );
 
 		if ( pageable != null )
 		{
-			Pageable newPageable = VocabularyUtils.buildNewPageable( pageable, esq.getSortLanguage() );
+			Pageable newPageable = VocabularyUtils.buildNewPageable( pageable, esq.getSearchLanguage() );
 			esq.setPage( newPageable );
 		}
 
 		return esq;
+	}
+
+	public static String filtersToString(Map<String, String> filters) {
+		return filters
+			.entrySet()
+			.stream()
+			.collect(
+				Collectors.groupingBy(
+					Map.Entry::getKey,
+					Collectors.mapping(
+						Map.Entry::getValue,
+						Collectors.joining(",")
+					)
+				)
+			)
+			.entrySet()
+			.stream()
+			.map(e -> e.getKey() + ":" + e.getValue())
+			.collect(Collectors.joining(";"));
 	}
 
 	public static void prepareActiveFilters( String f, EsQueryResultDetail esq, SearchScope searchScope )
@@ -128,29 +157,18 @@ public final class VocabularyUtils
 			return;
 		// prepare the selected filter
 		List<String> activeFilters = new ArrayList<>();
-		if ( field.equals( EsFilter.LANGS_PUB_AGG ) || field.equals( EsFilter.LANGS_AGG ) )
-		{
-			if ( filterSplit[1].contains( "_all" ) )
-			{
-				esq.setSearchAllLanguages( true );
-				esq.setSortLanguage("All");
-				return;
-			}
-			else if ( filterSplit[1].contains( "," ) )
-			{
-				activeFilters.add( filterSplit[1] );
-			}
-			else
-			{
-				activeFilters.add( filterSplit[1] );
-				esq.setSortLanguage( filterSplit[1] );
-			}
+		
+		// resolve filter clause type
+		String[] filterValueSplit = filterSplit[1].split("~");
+		EsFilter.ClauseType clauseType = null;
+		if (filterValueSplit.length > 1) {
+			clauseType = EsFilter.ClauseType.fromString(filterValueSplit[1]);
+			filterSplit[1] = filterValueSplit[0];
 		}
-		else
-		{
-			String[] enableFilters = filterSplit[1].split( "," );
-			Collections.addAll( activeFilters, enableFilters );
-		}
+		final EsFilter.ClauseType activeClauseType = clauseType;
+
+		String[] enableFilters = filterSplit[1].split( "," );
+		Collections.addAll( activeFilters, enableFilters );
 
 		// add the filter
 		esq.getEsFilters().forEach( esf ->
@@ -158,6 +176,9 @@ public final class VocabularyUtils
 			if ( esf.getField().equals( field ) )
 			{
 				esf.setValues( activeFilters );
+				if (activeClauseType != null) {
+					esf.setClauseType(activeClauseType);
+				}
 			}
 		} );
 	}

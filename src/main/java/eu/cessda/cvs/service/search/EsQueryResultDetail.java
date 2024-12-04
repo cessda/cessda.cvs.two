@@ -35,7 +35,7 @@ public class EsQueryResultDetail implements Serializable {
 
     // Query properties with default value, to be updated during query
 	private String searchTerm = "";
-	private String sortLanguage = "en";
+	private String searchLanguage = "_all";
     private transient Pageable page = PageRequest.of( 0, PAGE_SIZE, Sort.by(Sort.Direction.ASC, "_score"));
 	private List<String> aggFields = new ArrayList<>( Arrays.asList( EsFilter.AGENCY_AGG, EsFilter.LANGS_PUB_AGG,EsFilter.NOTATION_AGG ));
 	private List<EsFilter> esFilters = new ArrayList<>();
@@ -157,12 +157,12 @@ public class EsQueryResultDetail implements Serializable {
 		return false;
 	}
 
-    public String getSortLanguage() {
-        return sortLanguage;
+    public String getSearchLanguage() {
+        return searchLanguage;
     }
 
-    public void setSortLanguage(String sortLanguage) {
-        this.sortLanguage = sortLanguage;
+    public void setSearchLanguage(String searchLanguage) {
+        this.searchLanguage = searchLanguage;
     }
 
     public boolean isSearchAllLanguages() {
@@ -195,7 +195,7 @@ public class EsQueryResultDetail implements Serializable {
         return "EsQueryResultDetail{" +
             "searchScope=" + searchScope +
             ", searchTerm='" + searchTerm + '\'' +
-            ", sortLanguage='" + sortLanguage + '\'' +
+            ", searchLanguage='" + searchLanguage + '\'' +
             ", page=" + page +
             ", aggFields=" + aggFields +
             ", esFilters=" + esFilters +

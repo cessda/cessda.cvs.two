@@ -257,17 +257,32 @@ public class VocabularyServiceImpl implements VocabularyService
 
         for ( EsFilter esFilter : esFilters ) {
             if ( esFilter.getValues() != null && !esFilter.getValues().isEmpty() ) {
-                if ( esFilter.getValues().size() == 1 ) { // use AND if an item in the filter is selected
-                    boolQueryFilter.must( QueryBuilders.termQuery( esFilter.getField(), esFilter.getValues().get( 0 ) ) );
-                } else {
-                    BoolQueryBuilder withinFilterBoolQueryFilter = QueryBuilders.boolQuery();
-                    // use OR for multiple values within a filter
-                    for ( String filterValue : esFilter.getValues() ) {
-                        withinFilterBoolQueryFilter.should( QueryBuilders.termQuery( esFilter.getField(), filterValue ) );
+                switch (esFilter.getFilterClauseType()) {
+                    case OPTIONAL: {
+                        if ( esFilter.getValues().size() == 1 ) { // use AND if an item in the filter is selected
+                            boolQueryFilter.must( QueryBuilders.termQuery( esFilter.getField(), esFilter.getValues().get( 0 ) ) );
+                        } else {
+                            BoolQueryBuilder withinFilterBoolQueryFilter = QueryBuilders.boolQuery();
+                            // use OR for multiple values within a filter
+                            for ( String filterValue : esFilter.getValues() ) {
+                                withinFilterBoolQueryFilter.should( QueryBuilders.termQuery( esFilter.getField(), filterValue ) );
+                            }
+                            // use AND to combine filter with the rest
+                            boolQueryFilter.must( withinFilterBoolQueryFilter );
+                        }
+                        break;
                     }
-                    // use AND to combine filter with the rest
-                    boolQueryFilter.must( withinFilterBoolQueryFilter );
+                    case COMPULSORY: {
+                        if ( esFilter.getValues() != null && !esFilter.getValues().isEmpty() ) {
+                            // use AND for multiple values within a filter
+                            for ( String filterValue : esFilter.getValues() ) {
+                                boolQueryFilter.must( QueryBuilders.termQuery( esFilter.getField(), filterValue ) );
+                            }
+                        }
+                        break;
+                    }
                 }
+
             }
 
         }
@@ -1176,7 +1191,7 @@ public class VocabularyServiceImpl implements VocabularyService
         // determine which language fields include into query
         List<String> languageFields = new ArrayList<>();
         if ( !esQueryResultDetail.isSearchAllLanguages() ) {
-            languageFields.add( StringUtils.capitalize( esQueryResultDetail.getSortLanguage() ) );
+            languageFields.add( StringUtils.capitalize( esQueryResultDetail.getSearchLanguage() ) );
         } else {
             // search on all fields
             languageFields.addAll( Language.getCapitalizedIsos() );
@@ -1245,13 +1260,7 @@ public class VocabularyServiceImpl implements VocabularyService
         }
 
         // set selected language in case language filter is selected with specific language
-        String fieldType;
-        if ( esQueryResultDetail.getSearchScope().equals(SearchScope.EDITORSEARCH)) {
-            fieldType = EsFilter.LANGS_AGG;
-        } else {
-            fieldType = EsFilter.LANGS_PUB_AGG;
-        }
-        setVocabularySelectedLanguage( esQueryResultDetail, vocabularyPage.getContent(), fieldType);
+        setVocabularySelectedLanguage(vocabularyPage.getContent(), esQueryResultDetail.getSearchLanguage());
 
         esQueryResultDetail.setVocabularies( vocabularyPage );
     }
@@ -1260,7 +1269,7 @@ public class VocabularyServiceImpl implements VocabularyService
     public EsQueryResultDetail searchCode( EsQueryResultDetail esQueryResultDetail ) {
         // params
         String term = esQueryResultDetail.getSearchTerm();
-        String language = StringUtils.capitalize( esQueryResultDetail.getSortLanguage() );
+        String language = StringUtils.capitalize( esQueryResultDetail.getSearchLanguage() );
 
         // nested query for codes
         BoolQueryBuilder boolQuery;
@@ -2158,26 +2167,18 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     private void setVocabularySelectedLanguage(
-        EsQueryResultDetail esQueryResultDetail,
         List<VocabularyDTO> vocabularyList,
-        String fieldType
+        String lang
     ) {
-        if ( esQueryResultDetail.isAnyFilterActive() ) {
-            esQueryResultDetail.getEsFilterByField( fieldType ).ifPresent( langFilter ->
-            {
-                if ( langFilter.getValues().size() == 1 ) {
-                    for ( VocabularyDTO vocab : vocabularyList ) {
-                        vocab.setSelectedLang( langFilter.getValues().get( 0 ) );
-                    }
+        vocabularyList
+            .stream()
+            .forEach(v -> {
+                if (lang == null || lang.isEmpty() || lang.equalsIgnoreCase("_all") || lang.equalsIgnoreCase("All")) {
+                    v.setSelectedLang(v.getSourceLanguage());
+                } else {
+                    v.setSelectedLang(lang);
                 }
-            } );
-        } else {
-            for ( VocabularyDTO vocab : vocabularyList ) {
-                if ( vocab.getSelectedLang() == null ) {
-                    vocab.setSelectedLang( vocab.getSourceLanguage() );
-                }
-            }
-        }
+            });
     }
 
     public ConceptDTO cloneConcept(ConceptDTO c, Long newVersionId) {

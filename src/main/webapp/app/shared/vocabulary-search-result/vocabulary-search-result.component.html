@@ -89,6 +89,51 @@
                         </div>
                     </div>
 
+                    <div class="filter-panel">
+                        <a class="acc-header option-label col-12" href="javascript:void(0);" (click)="isAggLanguageCollapsed = !isAggLanguageCollapsed"
+                           [attr.aria-expanded]="isAggLanguageCollapsed" aria-controls="language-filter">&nbsp;
+                            <fa-icon *ngIf="!isAggLanguageCollapsed" icon="caret-down"></fa-icon>
+                            <fa-icon *ngIf="isAggLanguageCollapsed" icon="caret-right"></fa-icon>
+                            <span *ngIf="isEditorScope">Language</span>
+                            <span *ngIf="!isEditorScope">Published Language</span>
+                            <fa-icon icon="question-circle" style="float:right" ngbTooltip="Language of the vocabularies"></fa-icon>
+                        </a>
+                        <div id="language-filter" class="acc-body" [ngbCollapse]="isAggLanguageCollapsed">
+                            <div class="form-group mb-0">
+                                <div>
+                                    <tag-input formControlName="aggLanguage"
+                                               [onlyFromAutocomplete]="true"
+                                               class = 'sk-select-min'
+                                               (onAdd)="onAddLanguage($event)"
+                                               (onRemove)="onRemoveLanguage($event)"
+                                               [animationDuration]="{ enter: '0ms', leave: '0ms' }"
+                                               [placeholder]="'Search languages'"
+                                               [ripple]="false"
+                                               [secondaryPlaceholder]="'Search languages'">
+                                        <tag-input-dropdown
+                                            [showDropdownIfEmpty]="true"
+                                            [keepOpen]="false"
+                                            [focusFirstElement]="true"
+                                            [dynamicUpdate]="false"
+                                            [autocompleteItems]="aggLanguageBucket || []">
+                                        </tag-input-dropdown>
+                                    </tag-input>
+                                </div>
+                                <br/>
+                                <div style="text-align: right;">
+                                    <div class="btn-group btn-group-toggle" role="group">
+                                        <input class="btn-check" type="radio" value="and" formControlName="aggLanguageClauseType" (change)="onAggLanguageClauseTypeChange()" id="aggLanguageClauseTypeAnd">
+                                        <label class="btn btn-outline-secondary btn-sm" for="aggLanguageClauseTypeAnd">and</label>
+                                        <input class="btn-check" type="radio" value="or" formControlName="aggLanguageClauseType" (change)="onAggLanguageClauseTypeChange()" id="aggLanguageClauseTypeOr">
+                                        <label class="btn btn-outline-secondary btn-sm" for="aggLanguageClauseTypeOr">or</label>
+                                    </div>
+                                    &nbsp;
+                                    <fa-icon icon="question-circle" style="float:right" ngbTooltip="Clause type when combining multiple languages"></fa-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div *ngIf="isEditorScope()" class="filter-panel">
                         <a class="acc-header option-label col-12" href="javascript:void(0);" (click)="isAggStatusCollapsed = !isAggStatusCollapsed"
                            [attr.aria-expanded]="isAggStatusCollapsed" aria-controls="status-filter">&nbsp;
@@ -122,7 +167,7 @@
                         </div>
                     </div>
 
-                    <div *ngIf="activeAggAgency.length !== 0 || activeAggStatus.length !== 0" class="filter-panel acc-header">
+                    <div *ngIf="activeAggAgency.length !== 0 || activeAggLanguage.length !== 0 || activeAggStatus.length !== 0" class="filter-panel acc-header">
                         <button (click)="clearFilterAndReload()" class="btn sk-select-min sk-input-f">
                             <span class="option-label">Clear filter </span>
                         </button>
