@@ -38,6 +38,7 @@ import { TagModel, TagModelClass } from 'ngx-chips/core/accessor';
 
 const INITIAL_PAGE = 1;
 const DEFAULT_PREDICATE = 'code';
+const DEFAULT_AGG_LANGUAGE_CLAUSE_TYPE = 'and';
 
 @Component({
   selector: 'jhi-vocabulary-search-result',
@@ -65,7 +66,7 @@ export class VocabularySearchResultComponent implements OnInit {
   aggStatusBucket: Bucket[] = [];
   activeAggAgency: string[] = [];
   activeAggLanguage: string[] = [];
-  activeAggLanguageClauseType: string = 'and';
+  activeAggLanguageClauseType: string = DEFAULT_AGG_LANGUAGE_CLAUSE_TYPE;
   activeAggStatus: string[] = [];
   activeAgg = '';
 
@@ -74,6 +75,8 @@ export class VocabularySearchResultComponent implements OnInit {
   isAggStatusCollapsed = false;
   isFilterCollapse = false;
   isActionCollapse = false;
+
+  isAggLanguageClauseTypeEnabled = false;
 
   searchForm: UntypedFormGroup;
 
@@ -92,10 +95,10 @@ export class VocabularySearchResultComponent implements OnInit {
     this.searchForm = this.fb.group({
       aggAgency: [],
       aggLanguage: [],
-      aggLanguageClauseType: 'and',
+      aggLanguageClauseType: DEFAULT_AGG_LANGUAGE_CLAUSE_TYPE,
       aggStatus: [],
       size: [this.itemsPerPage],
-      sortBy: ['code,asc'],
+      sortBy: [DEFAULT_PREDICATE + ',asc'],
     });
 
     // #352:
@@ -183,7 +186,7 @@ export class VocabularySearchResultComponent implements OnInit {
       this.predicate = 'relevance';
     } else {
       this.ascending = true;
-      this.predicate = 'code';
+      this.predicate = DEFAULT_PREDICATE;
     }
     this.clearFilter();
     if (pred) {
@@ -228,7 +231,7 @@ export class VocabularySearchResultComponent implements OnInit {
     this.activeAggStatus = [];
     this.searchForm.patchValue({ aggAgency: [] });
     this.searchForm.patchValue({ aggLanguage: [] });
-    this.searchForm.patchValue({ aggLanguageClauseType: 'and'});
+    this.searchForm.patchValue({ aggLanguageClauseType: DEFAULT_AGG_LANGUAGE_CLAUSE_TYPE});
     this.searchForm.patchValue({ aggStatus: [] });
   }
 
@@ -311,7 +314,11 @@ export class VocabularySearchResultComponent implements OnInit {
             if (activeFilter[0] === 'agency') {
               this.activeAggAgency = activeFilter[1].split(',');
             } else if (activeFilter[0] === 'language') {
-              this.activeAggLanguage = activeFilter[1].split(',');
+              const afs = activeFilter[1].split("~");
+              if (afs.length > 1) {
+                this.activeAggLanguageClauseType = afs[1];
+              }
+              this.activeAggLanguage = afs[0].split(',');
             } else if (activeFilter[0] === 'status') {
               this.activeAggStatus = activeFilter[1].split(',');
             }
@@ -321,6 +328,7 @@ export class VocabularySearchResultComponent implements OnInit {
       } else {
         this.activeAggAgency = [];
         this.activeAggLanguage = [];
+        this.activeAggLanguageClauseType = DEFAULT_AGG_LANGUAGE_CLAUSE_TYPE;
         this.activeAggStatus = [];
       }
 
@@ -500,12 +508,7 @@ export class VocabularySearchResultComponent implements OnInit {
       }
       activeAgg += 'language:' + this.activeAggLanguage.join(',');
       if (this.activeAggLanguage.length > 1) {
-        let split = activeAgg.split("~");
-        if (split.length > 1) {
-          activeAgg = split[0] + '~' + this.activeAggLanguageClauseType; 
-        } else {
-          activeAgg = '~' + this.activeAggLanguageClauseType;
-        }
+          activeAgg += '~' + this.activeAggLanguageClauseType;
       } 
     }
     if (this.activeAggStatus.length > 0) {

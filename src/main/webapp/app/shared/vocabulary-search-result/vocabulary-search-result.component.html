@@ -119,16 +119,28 @@
                                         </tag-input-dropdown>
                                     </tag-input>
                                 </div>
-                                <br/>
-                                <div style="text-align: right;">
+                                <div *ngIf="isAggLanguageClauseTypeEnabled" style="text-align: right;">
+                                    <br/>
                                     <div class="btn-group btn-group-toggle" role="group">
-                                        <input class="btn-check" type="radio" value="and" formControlName="aggLanguageClauseType" (change)="onAggLanguageClauseTypeChange()" id="aggLanguageClauseTypeAnd">
+                                        <input type="radio"
+                                            class="btn-check"
+                                            value="and"
+                                            formControlName="aggLanguageClauseType"
+                                            (change)="onAggLanguageClauseTypeChange()"
+                                            id="aggLanguageClauseTypeAnd"
+                                            [attr.disabled]="this.activeAggLanguage.length < 2 ? true : null">
                                         <label class="btn btn-outline-secondary btn-sm" for="aggLanguageClauseTypeAnd">and</label>
-                                        <input class="btn-check" type="radio" value="or" formControlName="aggLanguageClauseType" (change)="onAggLanguageClauseTypeChange()" id="aggLanguageClauseTypeOr">
+                                        <input type="radio"
+                                            class="btn-check"
+                                            value="or"
+                                            formControlName="aggLanguageClauseType"
+                                            (change)="onAggLanguageClauseTypeChange()"
+                                            id="aggLanguageClauseTypeOr"
+                                            [attr.disabled]="this.activeAggLanguage.length < 2 ? true : null">
                                         <label class="btn btn-outline-secondary btn-sm" for="aggLanguageClauseTypeOr">or</label>
                                     </div>
                                     &nbsp;
-                                    <fa-icon icon="question-circle" style="float:right" ngbTooltip="Clause type when combining multiple languages"></fa-icon>
+                                    <fa-icon icon="question-circle" style="float:right" ngbTooltip="Clause for combining multiple values of the language filter"></fa-icon>
                                 </div>
                             </div>
                         </div>
