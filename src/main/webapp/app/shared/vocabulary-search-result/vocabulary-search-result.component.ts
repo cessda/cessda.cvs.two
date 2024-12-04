@@ -507,7 +507,7 @@ export class VocabularySearchResultComponent implements OnInit {
         activeAgg += ';';
       }
       activeAgg += 'language:' + this.activeAggLanguage.join(',');
-      if (this.activeAggLanguage.length > 1) {
+      if (this.isAggLanguageClauseTypeEnabled && this.activeAggLanguage.length > 1) {
           activeAgg += '~' + this.activeAggLanguageClauseType;
       } 
     }
