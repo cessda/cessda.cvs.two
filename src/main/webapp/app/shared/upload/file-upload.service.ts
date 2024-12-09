@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpEvent, HttpRequest, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpEvent, HttpRequest, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import {SERVER_API_URL} from 'app/app.constants';
-import {SimpleResponse} from 'app/shared/model/simple-response.model';
+import { SERVER_API_URL } from 'app/app.constants';
+import { SimpleResponse } from 'app/shared/model/simple-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class FileUploadService {
@@ -36,7 +36,7 @@ export class FileUploadService {
 
     const req = new HttpRequest('POST', `${this.resourceUrl}/agency-image`, formdata, {
       reportProgress: true,
-      responseType: 'text'
+      responseType: 'text',
     });
 
     return this.http.request(req);
@@ -51,7 +51,7 @@ export class FileUploadService {
 
     const req = new HttpRequest('POST', `${this.resourceUrl}/license-image`, formdata, {
       reportProgress: true,
-      responseType: 'text'
+      responseType: 'text',
     });
 
     return this.http.request(req);
@@ -67,7 +67,7 @@ export class FileUploadService {
 
     const req = new HttpRequest('POST', `${this.resourceUrl}/file`, formdata, {
       reportProgress: true,
-      responseType: 'text'
+      responseType: 'text',
     });
 
     return this.http.request(req);

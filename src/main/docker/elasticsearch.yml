@@ -29,5 +29,5 @@ services:
     command:
       - sh
       - -c
-      - "./bin/elasticsearch-plugin list | grep -q analysis-icu || ./bin/elasticsearch-plugin install analysis-icu;
-        /usr/local/bin/docker-entrypoint.sh elasticsearch"
+      - './bin/elasticsearch-plugin list | grep -q analysis-icu || ./bin/elasticsearch-plugin install analysis-icu;
+        /usr/local/bin/docker-entrypoint.sh elasticsearch'
