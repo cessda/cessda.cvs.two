@@ -24,7 +24,8 @@ module.exports = [
       '/swagger-resources',
       '/v2/api-docs',
       '/h2-console',
-      '/auth'
+      '/auth',
+      '/content'
     ],
     target: 'http://localhost:8080',
     secure: false,

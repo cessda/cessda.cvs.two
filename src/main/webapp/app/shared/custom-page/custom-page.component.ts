@@ -20,7 +20,7 @@ import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field
 import { METADATA_KEY_ABOUT, METADATA_KEY_API } from 'app/shared/constants/metadata.constants';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { MetadataValue } from 'app/shared/model/metadata-value.model';
-import { Subscription } from 'rxjs';
+import { map, Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { ActivatedRoute } from '@angular/router';
 import { FileUploadService } from 'app/shared/upload/file-upload.service';
@@ -87,29 +87,28 @@ export class CustomPageComponent implements OnInit, OnDestroy {
     this.inDocxProgress = true;
     this.uploadFileStatus = 'uploading DOCX file...';
     this.progress.percentage = 0;
-    this.fileUploadService.uploadFile(this.currentFileUpload).subscribe(event => {
-      if (event.type === HttpEventType.UploadProgress) {
-        this.progress.percentage = Math.round((100 * event.loaded) / (event.total || 0));
-      } else if (event instanceof HttpResponse) {
-        this.uploadFileStatus = 'Uploading complete, extracting DOCX to HTML... Please wait!';
-
-        const location = event.headers.get('location') || '';
-        const fileName = location.split('/').pop();
-        if (!fileName) {
-          throw new TypeError('File name not returned from server!');
+    this.fileUploadService
+      .uploadFile(this.currentFileUpload)
+      .pipe(FileUploadService.uploadFileHandler)
+      .subscribe(status => {
+        this.progress.percentage = status.progress;
+        if (status.location) {
+          this.uploadFileStatus = 'Uploading complete, extracting DOCX to HTML... Please wait!';
+          const fileName = status.location.split('/').pop();
+          if (!fileName) {
+            throw new TypeError('File name not returned from server!');
+          }
+          this.fileUploadService.convertDocsToHtml(fileName).subscribe({
+            next: response => {
+              this.uploadFileStatus = 'Docx contents is extracted. See the results:';
+              this.uploadFileName = response.body?.message || fileName;
+            },
+            error: () => {
+              this.uploadFileStatus = 'There is a problem!. Please try again later';
+            },
+          });
         }
-
-        this.fileUploadService.convertDocsToHtml(fileName).subscribe(
-          response => {
-            this.uploadFileStatus = 'Docx contents is extracted. See the results:';
-            this.uploadFileName = response.body?.message || fileName;
-          },
-          () => {
-            this.uploadFileStatus = 'There is a problem!. Please try again later';
-          },
-        );
-      }
-    });
+      });
   }
 
   private refreshContent(): void {

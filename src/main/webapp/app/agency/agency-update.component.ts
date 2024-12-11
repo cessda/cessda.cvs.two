@@ -17,7 +17,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
 import { Agency, createNewAgency } from 'app/shared/model/agency.model';
@@ -164,17 +164,15 @@ export class AgencyUpdateComponent implements OnInit {
     this.currentFileUpload = selectedFiles[0]!;
 
     this.progress.percentage = 0;
-    this.fileUploadService.uploadAgencyImage(this.currentFileUpload).subscribe(event => {
-      if (event.type === HttpEventType.UploadProgress && event.total) {
-        this.progress.percentage = Math.round((event.loaded / event.total) * 100);
-      } else if (event.type === HttpEventType.Response && event.body) {
-        const location = event.headers.get('location');
-        if (location) {
-          const uploadedImage = location.split('/').pop();
-          this.currentImage = uploadedImage;
+    this.fileUploadService
+      .uploadAgencyImage(this.currentFileUpload)
+      .pipe(FileUploadService.uploadFileHandler)
+      .subscribe(status => {
+        this.progress.percentage = status.progress;
+        if (status.location) {
+          this.currentImage = status.location.split('/').pop();
         }
-      }
-    });
+      });
   }
 
   removePicture(): void {

@@ -53,12 +53,6 @@
                 "output": "swagger-ui"
               },
               {
-                "glob": "**/*",
-                "ignore": ["scss/**/*"],
-                "input": "src/main/webapp/content/",
-                "output": "content"
-              },
-              {
                 "glob": "*",
                 "input": "src/main/webapp/i18n/",
                 "output": "i18n"
