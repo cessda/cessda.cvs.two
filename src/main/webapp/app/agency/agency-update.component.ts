@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
 import { Agency, createNewAgency } from 'app/shared/model/agency.model';
@@ -80,7 +80,7 @@ export class AgencyUpdateComponent implements OnInit {
           sort: ['id,asc'],
         })
         .subscribe((res: HttpResponse<Licence[]>) => {
-          this.licences = res.body!;
+          this.licences = res.body || [];
           this.updateForm(agency);
         });
     });
@@ -141,10 +141,10 @@ export class AgencyUpdateComponent implements OnInit {
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<Agency>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError(),
-    );
+    result.subscribe({
+      next: () => this.onSaveSuccess(),
+      error: () => this.onSaveError(),
+    });
   }
 
   protected onSaveSuccess(): void {
