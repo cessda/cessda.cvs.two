@@ -137,15 +137,15 @@ export class CustomPageComponent implements OnInit, OnDestroy {
   }
 
   fillSections(): void {
-    this.fileUploadService.fillMetadataWithHtmlFile(this.uploadFileName, this.metadataKey).subscribe(
-      () => {
+    this.fileUploadService.fillMetadataWithHtmlFile(this.uploadFileName, this.metadataKey).subscribe({
+      next: () => {
         this.refreshContent();
         location.reload();
       },
-      () => {
+      error: () => {
         this.uploadFileStatus = 'There is a problem!. Please try again later';
       },
-    );
+    });
   }
 
   downloadAsFile(format: FileFormat): void {
