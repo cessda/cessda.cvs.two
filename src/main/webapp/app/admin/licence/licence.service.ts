@@ -48,7 +48,7 @@ export class LicenceService {
     return this.http.get<Licence[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  delete(id: number): Observable<HttpResponse<{}>> {
+  delete(id: number): Observable<HttpResponse<unknown>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
