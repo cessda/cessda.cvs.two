@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -121,17 +121,15 @@ export class LicenceUpdateComponent implements OnInit {
       return;
     }
     this.progress.percentage = 0;
-    this.fileUploadService.uploadLicenseImage(this.currentFileUpload).subscribe(event => {
-      if (event.type === HttpEventType.UploadProgress && event.total) {
-        this.progress.percentage = Math.round((100 * event.loaded) / event.total);
-      } else if (event instanceof HttpResponse && event.headers.get('location')) {
-        const location = event.headers.get('location');
-        if (location) {
-          const uploadedImage = location.split('/').pop();
-          this.currentImage = uploadedImage;
+    this.fileUploadService
+      .uploadLicenseImage(this.currentFileUpload)
+      .pipe(FileUploadService.uploadFileHandler)
+      .subscribe(status => {
+        this.progress.percentage = status.progress;
+        if (status.location) {
+          this.currentImage = status.location.split('/').pop();
         }
-      }
-    });
+      });
 
     this.selectedFiles = null;
   }
