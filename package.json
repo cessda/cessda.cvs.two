@@ -24,7 +24,7 @@
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",
     "@popperjs/core": "^2.10.2",
-    "@swimlane/ngx-charts": "^20.5.0",
+    "@swimlane/ngx-charts": "^21.1.2",
     "bootstrap": "^5.2.0",
     "jquery": "^3.7.1",
     "moment": "^2.30.1",
