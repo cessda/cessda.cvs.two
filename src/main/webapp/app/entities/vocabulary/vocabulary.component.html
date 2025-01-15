@@ -49,7 +49,7 @@
         </div>
     </div>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="vocabularies?.length === 0; else elseBlock">
+    <div class="alert alert-warning" id="no-result" *ngIf="vocabularies?.length === 0 && !searching; else elseBlock">
         <span jhiTranslate="cvsApp.vocabulary.home.notFound">No vocabularies found</span>
     </div>
 
