@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2020",
+    "target": "ES2022",
     "module": "es2020",
     "moduleResolution": "node",
     "sourceMap": true,
@@ -15,7 +15,8 @@
     "paths": {
       "app/*": ["src/main/webapp/app/*"]
     },
-    "importHelpers": true
+    "importHelpers": true,
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "genDir": "target/classes/aot",

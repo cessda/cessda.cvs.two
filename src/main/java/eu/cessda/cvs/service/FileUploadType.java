@@ -16,5 +16,15 @@
 package eu.cessda.cvs.service;
 
 public enum FileUploadType{
-    IMAGE_AGENCY, IMAGE_LICENSE, DOCX
+    IMAGE_AGENCY("jpg"), IMAGE_LICENSE("jpg"), DOCX("docx");
+
+    private final String extension;
+
+    FileUploadType(String extension) {
+        this.extension = extension;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
 }

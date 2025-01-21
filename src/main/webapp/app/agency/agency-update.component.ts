@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -80,7 +80,7 @@ export class AgencyUpdateComponent implements OnInit {
           sort: ['id,asc'],
         })
         .subscribe((res: HttpResponse<Licence[]>) => {
-          this.licences = res.body!;
+          this.licences = res.body || [];
           this.updateForm(agency);
         });
     });
@@ -141,10 +141,10 @@ export class AgencyUpdateComponent implements OnInit {
   }
 
   protected subscribeToSaveResponse(result: Observable<HttpResponse<Agency>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError(),
-    );
+    result.subscribe({
+      next: () => this.onSaveSuccess(),
+      error: () => this.onSaveError(),
+    });
   }
 
   protected onSaveSuccess(): void {
@@ -164,13 +164,15 @@ export class AgencyUpdateComponent implements OnInit {
     this.currentFileUpload = selectedFiles[0]!;
 
     this.progress.percentage = 0;
-    this.fileUploadService.uploadAgencyImage(this.currentFileUpload).subscribe(event => {
-      if (event.type === HttpEventType.UploadProgress && event.total) {
-        this.progress.percentage = Math.round((event.loaded / event.total) * 100);
-      } else if (event.type === HttpEventType.Response && event.body) {
-        this.currentImage = event.body.toString();
-      }
-    });
+    this.fileUploadService
+      .uploadAgencyImage(this.currentFileUpload)
+      .pipe(FileUploadService.uploadFileHandler)
+      .subscribe(status => {
+        this.progress.percentage = status.progress;
+        if (status.location) {
+          this.currentImage = status.location.split('/').pop();
+        }
+      });
   }
 
   removePicture(): void {
