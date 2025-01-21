@@ -324,10 +324,11 @@ export class VocabularySearchResultComponent implements OnInit {
       }
 
       // Subscribe to the result of the search request
-      searchObservable.subscribe(
-        (res: HttpResponse<CvResult>) => this.onSuccess(res.body),
-        (e: HttpErrorResponse) => this.onError(e),
-      );
+      searchObservable.subscribe({
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        next: (res: HttpResponse<CvResult>) => this.onSuccess(res.body!),
+        error: (e: HttpErrorResponse) => this.onError(e),
+      });
     });
 
     this.router.events.subscribe(evt => {
