@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
@@ -32,6 +32,7 @@ import { VocabularyDeleteDialogComponent } from './vocabulary-delete-dialog.comp
 })
 export class VocabularyComponent implements OnInit, OnDestroy {
   vocabularies: Vocabulary[] = [];
+  searching: boolean = true;
   eventSubscriber?: Subscription;
   currentSearch: string;
   totalItems = 0;
@@ -56,6 +57,7 @@ export class VocabularyComponent implements OnInit, OnDestroy {
   }
 
   loadPage(page?: number): void {
+    this.searching = true;
     const pageToLoad: number = page || this.page;
 
     if (this.currentSearch) {
@@ -68,7 +70,7 @@ export class VocabularyComponent implements OnInit, OnDestroy {
         })
         .subscribe(
           (res: HttpResponse<Vocabulary[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-          () => this.onError(),
+          (e: HttpErrorResponse) => this.onError(e),
         );
       return;
     }
@@ -81,7 +83,7 @@ export class VocabularyComponent implements OnInit, OnDestroy {
       })
       .subscribe(
         (res: HttpResponse<Vocabulary[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError(),
+        (e: HttpErrorResponse) => this.onError(e),
       );
   }
 
@@ -130,6 +132,7 @@ export class VocabularyComponent implements OnInit, OnDestroy {
   }
 
   protected onSuccess(data: Vocabulary[] | null, headers: HttpHeaders, page: number): void {
+    this.searching = false;
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
@@ -144,7 +147,9 @@ export class VocabularyComponent implements OnInit, OnDestroy {
     this.vocabularies = data || [];
   }
 
-  protected onError(): void {
+  protected onError(e: HttpErrorResponse): void {
+    this.searching = false;
+    console.error(e);
     this.ngbPaginationPage = this.page;
   }
 }

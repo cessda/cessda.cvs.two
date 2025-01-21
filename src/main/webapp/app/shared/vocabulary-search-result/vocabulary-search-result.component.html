@@ -149,7 +149,7 @@
                 </ng-container>
             </div>
             <div class="result-column">
-                <div class="alert alert-warning" *ngIf="vocabularies.length === 0; else elseBlock;">
+                <div class="alert alert-warning" *ngIf="vocabularies.length === 0 && !searching; else elseBlock;">
                     <span jhiTranslate="cvsApp.vocabulary.home.notFound">No vocabularies found</span>
                 </div>
                 <ng-template #elseBlock>
