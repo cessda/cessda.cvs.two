@@ -30,7 +30,7 @@
     "moment": "^2.30.1",
     "ng-jhipster": "file:vendor/ng-jhipster-0.16.0.tgz",
     "ngx-chips": "^3.0.0",
-    "ngx-cookie-service": "^15.0.0",
+    "ngx-cookie-service": "^19.0.0",
     "ngx-infinite-scroll": "^15.0.0",
     "ngx-quill": "^21.0.2",
     "ngx-text-diff": "file:vendor/ngx-text-diff-0.6.0.tgz",
