@@ -170,6 +170,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      if (this.searchInput) {
+        this.searchInput.nativeElement.focus();
+      }
+    }, 0);
+  }
+
   search(query: string | undefined): void {
     if (query) {
       if (this.isEditorSearch) {
