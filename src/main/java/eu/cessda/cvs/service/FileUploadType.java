@@ -16,7 +16,7 @@
 package eu.cessda.cvs.service;
 
 public enum FileUploadType{
-    IMAGE_AGENCY("jpg"), IMAGE_LICENSE("jpg"), DOCX("docx");
+    IMAGE_AGENCY("png"), IMAGE_LICENSE("png"), DOCX("docx");
 
     private final String extension;
 
