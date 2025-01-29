@@ -50,7 +50,7 @@ export class VocabularySearchResultComponent implements OnInit {
   account: Account | null = null;
 
   vocabularies: Vocabulary[] = [];
-  searching: boolean = true;
+  searching = true;
 
   currentSearch = '';
 
