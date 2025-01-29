@@ -10,15 +10,10 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
-    "lib": [
-      "es2018",
-      "dom"
-    ],
+    "lib": ["es2018", "dom"],
     "baseUrl": "./",
     "paths": {
-      "app/*": [
-        "src/main/webapp/app/*"
-      ]
+      "app/*": ["src/main/webapp/app/*"]
     },
     "importHelpers": true,
     "useDefineForClassFields": false

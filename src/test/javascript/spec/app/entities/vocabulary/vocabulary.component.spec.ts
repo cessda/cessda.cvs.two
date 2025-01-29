@@ -21,7 +21,7 @@ import { ActivatedRoute, Data } from '@angular/router';
 import { CvsTestModule } from '../../../test.module';
 import { VocabularyComponent } from 'app/entities/vocabulary/vocabulary.component';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
-import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
+import { createNewVocabulary } from 'app/shared/model/vocabulary.model';
 
 describe('Component Tests', () => {
   describe('Vocabulary Management Component', () => {

@@ -52,6 +52,7 @@ describe('Component Tests', () => {
     });
 
     describe('page title', () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let routerState: any;
       const defaultPageTitle = 'global.title';
       const parentRoutePageTitle = 'parentTitle';
