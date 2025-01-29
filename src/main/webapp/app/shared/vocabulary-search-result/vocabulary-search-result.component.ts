@@ -50,6 +50,8 @@ export class VocabularySearchResultComponent implements OnInit {
   account: Account | null = null;
 
   vocabularies: Vocabulary[] = [];
+  searching: boolean = true;
+
   currentSearch = '';
 
   totalItems = 0;
@@ -151,6 +153,7 @@ export class VocabularySearchResultComponent implements OnInit {
   }
 
   private onSuccess(data: CvResult): void {
+    this.searching = false;
     this.totalItems = data.totalElements;
     this.vocabularies = data.vocabularies;
     // assign selectedLang if still null
@@ -164,6 +167,7 @@ export class VocabularySearchResultComponent implements OnInit {
   }
 
   private onError(e: HttpErrorResponse): void {
+    this.searching = false;
     console.error(e);
     this.eventManager.broadcast({ name: 'onSearching', content: false });
   }
