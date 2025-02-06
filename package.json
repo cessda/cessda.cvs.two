@@ -21,7 +21,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
     "@ng-bootstrap/ng-bootstrap": "^14.2.0",
-    "@ngx-translate/core": "^14.0.0",
+    "@ngx-translate/core": "^16.0.4",
     "@ngx-translate/http-loader": "^7.0.0",
     "@popperjs/core": "^2.10.2",
     "@swimlane/ngx-charts": "^20.5.0",
