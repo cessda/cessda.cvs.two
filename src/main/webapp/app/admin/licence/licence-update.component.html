@@ -84,11 +84,11 @@
                         </div>
                     </div>
                     <br/>
-                    <small>JPG / GIF / PNG (maximal image size: 2 MB).</small>
+                    <small>PNG (maximal image size: 2 MB).</small>
                     <br/>
                     <label class="btn btn-default">
                         <input type="file" (change)="selectFile($event)"
-                               accept="image/png,image/gif,image/jpeg"/>
+                               accept="image/png"/>
                     </label>
                     <button *ngIf="currentImage" type="button"
                             class="btn pull-right btn-secondary"
