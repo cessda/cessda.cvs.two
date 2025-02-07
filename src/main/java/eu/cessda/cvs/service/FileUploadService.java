@@ -28,7 +28,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -103,28 +102,14 @@ public class FileUploadService {
 
         // Scale image to an appropriate size
         BufferedImage scaledImg = Scalr.resize(img, Scalr.Mode.AUTOMATIC, 300, 300);
-        ImageIO.write(fillTransparentPixels( scaledImg ), "jpg", destFile.toFile());
+        ImageIO.write( scaledImg, fileUploadHelper.getFileUploadType().getExtension(), destFile.toFile() );
 
         // Create thumbnail variant of the image
         BufferedImage scaledImgThumb = Scalr.resize(img, Scalr.Mode.AUTOMATIC, 180, 180);
-        ImageIO.write(fillTransparentPixels( scaledImgThumb ), "jpg", destFileThumb.toFile());
+        ImageIO.write( scaledImgThumb, fileUploadHelper.getFileUploadType().getExtension(), destFileThumb.toFile() );
 
         // Set destination files on successful writes
         return destFile;
-    }
-
-    private static BufferedImage fillTransparentPixels( BufferedImage image )
-    {
-        int w = image.getWidth();
-        int h = image.getHeight();
-        BufferedImage image2 = new BufferedImage(w, h,
-            BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = image2.createGraphics();
-        g.setColor( Color.white );
-        g.fillRect(0,0,w,h);
-        g.drawRenderedImage(image, null);
-        g.dispose();
-        return image2;
     }
 
     public void html2section(String fileName, String metadataKey) throws IOException {
