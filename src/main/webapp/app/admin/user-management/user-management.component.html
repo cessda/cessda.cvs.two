@@ -56,12 +56,12 @@
                     </td>
                     <td>
                         <div *ngFor="let authority of user.authorities">
-                            <span class="badge badge-info">{{ authority }}</span>
+                            <span class="badge text-bg-info">{{ authority }}</span>
                         </div>
                     </td>
                     <td>
                         <div *ngFor="let userAgency of user.userAgencies">
-                            <span class="badge badge-info">{{ getAgencyName(userAgency.agencyId || 0)  + ': ' + userAgency.agencyRole + '-' + (userAgency.language! | vocabularyLanguageFromKey) }}</span>
+                            <span class="badge text-bg-info">{{ getAgencyName(userAgency.agencyId || 0)  + ': ' + userAgency.agencyRole + '-' + (userAgency.language! | vocabularyLanguageFromKey) }}</span>
                         </div>
                     </td>
                     <td>{{ user.createdDate | date:'dd/MM/yy HH:mm' }}</td>

@@ -21,7 +21,7 @@
         <div class="navbar-inner">
             <a class="cessda-abbr" href="https://www.cessda.eu/"><span>Consortium of European Social Science Data Archives</span></a>
             <div class="navbar-top-menu" [ngSwitch]="isAuthenticated()">
-                <ul class="navbar-nav-top ml-auto">
+                <ul class="navbar-nav-top ms-auto">
                     <li ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                         <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
                           <span *ngIf="!getImageUrl()">

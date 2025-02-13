@@ -47,7 +47,7 @@
                 &nbsp;
                 <fa-icon *ngIf="!isCommentCollapse" icon="caret-down"></fa-icon>
                 <fa-icon *ngIf="isCommentCollapse" icon="caret-right"></fa-icon>
-                <span>&nbsp;<fa-icon icon="comment"></fa-icon> Comments <span class="badge badge-info">{{comments.length >= 0}}</span></span>
+                <span>&nbsp;<fa-icon icon="comment"></fa-icon> Comments <span class="badge text-bg-info">{{comments.length >= 0}}</span></span>
             </a>
             <div id="comment-panel" class="acc-body" [ngbCollapse]="isCommentCollapse">
                 <div>
@@ -69,7 +69,7 @@
                 <fa-icon *ngIf="!isTextDiffCollapse" icon="caret-down"></fa-icon>
                 <fa-icon *ngIf="isTextDiffCollapse" icon="caret-right"></fa-icon>
                 <span>&nbsp;<fa-icon icon="compress"></fa-icon> Compare prev version {{comparePrevVersion}} with Current version
-                    <span class="badge badge-info">({{compareNoOfDifference > 0 ? compareNoOfDifference +  ' differences' : 'identical'}})</span>
+                    <span class="badge text-bg-info">({{compareNoOfDifference > 0 ? compareNoOfDifference +  ' differences' : 'identical'}})</span>
                 </span>
             </a>
             <div *ngIf="versionParam.status !== 'DRAFT' && versionParam.previousVersion" id="text-diff-panel" class="acc-body" [ngbCollapse]="isTextDiffCollapse">
@@ -91,7 +91,7 @@
                 &nbsp;
                 <fa-icon *ngIf="!isVocabularyChangeCollapse" icon="caret-down"></fa-icon>
                 <fa-icon *ngIf="isVocabularyChangeCollapse" icon="caret-right"></fa-icon>
-                <span>&nbsp;<fa-icon icon="sticky-note"></fa-icon> Vocabulary/Codes change logs <span class="badge badge-info">{{vocabularyChanges!.length}}</span></span>
+                <span>&nbsp;<fa-icon icon="sticky-note"></fa-icon> Vocabulary/Codes change logs <span class="badge text-bg-info">{{vocabularyChanges!.length}}</span></span>
             </a>
             <div id="vocabularyChange-panel" class="acc-body" [ngbCollapse]="isVocabularyChangeCollapse">
                 <div>
