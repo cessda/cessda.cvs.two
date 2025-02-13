@@ -40,6 +40,7 @@ describe('Component Tests', () => {
 
     it('sets focus after the view has been initialized', () => {
       const node = {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         focus(): void {},
       };
       comp.email = new ElementRef(node);

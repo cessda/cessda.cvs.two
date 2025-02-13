@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
@@ -29,8 +30,8 @@ export class MockActivatedRoute extends ActivatedRoute {
       pagingParams: {
         page: 10,
         ascending: false,
-        predicate: 'id'
-      }
+        predicate: 'id',
+      },
     });
   }
 }

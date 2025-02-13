@@ -16,7 +16,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { JhiDataUtils } from 'ng-jhipster';
 
 import { CvsTestModule } from '../../../test.module';
 import { VocabularyChangeDetailComponent } from 'app/entities/vocabulary-change/vocabulary-change-detail.component';
@@ -25,7 +24,6 @@ describe('Component Tests', () => {
   describe('VocabularyChange Management Detail Component', () => {
     let comp: VocabularyChangeDetailComponent;
     let fixture: ComponentFixture<VocabularyChangeDetailComponent>;
-    let dataUtils: JhiDataUtils;
     const route = { data: of({ vocabularyChange: { id: 123 } }) } as unknown as ActivatedRoute;
 
     beforeEach(() => {
@@ -38,7 +36,6 @@ describe('Component Tests', () => {
         .compileComponents();
       fixture = TestBed.createComponent(VocabularyChangeDetailComponent);
       comp = fixture.componentInstance;
-      dataUtils = fixture.debugElement.injector.get(JhiDataUtils);
     });
 
     describe('OnInit', () => {

@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'jhi-api-docs',
-  template: '<jhi-custom-page [pageType]="\'api-docs\'"></jhi-custom-page>'
+  template: '<jhi-custom-page [pageType]="\'api-docs\'"></jhi-custom-page>',
 })
-export class ApiDocsComponent {
-  constructor() {}
-}
-
+export class ApiDocsComponent {}
