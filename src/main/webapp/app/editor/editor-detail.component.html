@@ -33,7 +33,7 @@
                     <button type="button"ngbTooltip="View/Add comments"  class="btn btn-primary btn-sm" (click)="openCvCommentPopup()">
                         <fa-icon icon="comment"></fa-icon>
                         <span class="d-none d-sm-inline-block"> Comments</span>
-                        <span class="badge badge-light">{{version!.comments!.length}}</span>
+                        <span class="badge text-bg-light">{{version!.comments.length}}</span>
                     </button>
                     <a *ngIf="version!.status === 'PUBLISHED'" ngbTooltip="Go to publication" type="button" class="btn btn-primary btn-sm" [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{lang: vocabulary!.selectedLang}">
                         <fa-icon icon="eye"></fa-icon>
@@ -410,7 +410,7 @@
 
                             <input type="radio" formControlName="tabSelected" value="identity" class="btn-check" id="identityTabButton">
                             <label class="btn btn-outline-primary" for="identityTabButton">Identity and general</label>
-                            
+
                             <input type="radio" formControlName="tabSelected" value="usage" class="btn-check" id="usageTabButton">
                             <label class="btn btn-outline-primary" for="usageTabButton">Usage</label>
 
@@ -486,7 +486,7 @@
                         <div class="detail-panel" [ngClass]="{'select-by-tab': editorDetailForm.controls.tabSelected.value === 'version', 'not-select-by-tab': editorDetailForm.controls.tabSelected.value !== 'version'}" #versionEPanel id="versionEPanel">
                             <!-- self version -->
                             <div class="item-panel">
-                                <a class="option-label m-w-300 v-label float-left" href="javascript:void(0);"
+                                <a class="option-label m-w-300 v-label float-start" href="javascript:void(0);"
                                    [attr.aria-expanded]="isCurrentVersionHistoryOpen" aria-controls="self-history"
                                    (click)="isCurrentVersionHistoryOpen = !isCurrentVersionHistoryOpen">&nbsp;
                                         <fa-icon *ngIf="isCurrentVersionHistoryOpen" icon="caret-down"></fa-icon>
