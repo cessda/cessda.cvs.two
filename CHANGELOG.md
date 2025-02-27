@@ -14,6 +14,47 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
+## [3.4.0] - 2025-03-18
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14849410.svg)](https://doi.org/10.5281/zenodo.14849410)
+
+### Important Dependency Updates
+
+- [PR-864](https://github.com/cessda/cessda.cvs.two/pull/864), [PR-915](https://github.com/cessda/cessda.cvs.two/pull/915), [PR-965](https://github.com/cessda/cessda.cvs.two/pull/965) Updated Angular from version 12 to version 15
+- [PR-910](https://github.com/cessda/cessda.cvs.two/pull/910) Updated Spring Boot to version 2.4.13
+
+### Added
+
+- [#926](https://github.com/cessda/cessda.cvs.two/issues/926), [PR-958](https://github.com/cessda/cessda.cvs.two/pull/958) Generate and store temporary instances of exported resources on the file system
+- [PR-905](https://github.com/cessda/cessda.cvs.two/pull/905) Added tests for SecurityUtils methods
+- [PR-954](https://github.com/cessda/cessda.cvs.two/pull/954) Refactored the static file path mechanism to allow the directory to serve and upload static resources from to be configured
+- [PR-964](https://github.com/cessda/cessda.cvs.two/pull/964) Implemented `Cache-Control` headers for non-secured API endpoints
+
+### Changed
+
+- [#794](https://github.com/cessda/cessda.cvs.two/issues/794) Collapse the 'extra data' field in audit display by default
+- [#885](https://github.com/cessda/cessda.cvs.two/issues/885) Updated the SQAaaS quality check badge
+- [PR-774](https://github.com/cessda/cessda.cvs.two/pull/774) Improved type safety throughout the web application
+- [PR-802](https://github.com/cessda/cessda.cvs.two/pull/802) Removed redundant catch blocks that only logged an error message
+- [PR-846](https://github.com/cessda/cessda.cvs.two/pull/846) Converted some requests that return HTTP 500 status codes to return more semantically correct HTTP 400 codes
+- [PR-949](https://github.com/cessda/cessda.cvs.two/pull/949) Migrated `UntypedFormBuilder` instances to typed `FormBuilder` instances
+
+### Fixed
+
+- [#805](https://github.com/cessda/cessda.cvs.two/issues/805) Fixed unmapped Mapstruct properties warnings being emitted when compiling CVS
+- [#902](https://github.com/cessda/cessda.cvs.two/issues/902) Fixed the audit logs repeating every 30 entries
+- [#969](https://github.com/cessda/cessda.cvs.two/issues/969) Fixed the search field resetting and blocking entries when searching from a vocabulary
+- [#983](https://github.com/cessda/cessda.cvs.two/issues/983) Fixed showing "No vocabularies found" whilst the search was initializing
+- [#1006](https://github.com/cessda/cessda.cvs.two/issues/1006) Fixed styling issues caused by changes in Bootstrap 5
+- [PR-804](https://github.com/cessda/cessda.cvs.two/pull/804) Fixed various Java compiler warnings
+- [PR-890](https://github.com/cessda/cessda.cvs.two/pull/890) Fixed XSS warnings raised by CodeQL
+- [PR-943](https://github.com/cessda/cessda.cvs.two/pull/943) Fixed tab selections breaking because of the removal of the `ngbRadioGroup` attribute from Angular Bootstrap
+- [PR-950](https://github.com/cessda/cessda.cvs.two/pull/950) Fixed XSS vulnerabilities reported by CodeQL by not using the provided file names to derive any part of the uploaded file names
+- [PR-954](https://github.com/cessda/cessda.cvs.two/pull/954) Fixed most warnings logged by `html2pdf`
+- [PR-954](https://github.com/cessda/cessda.cvs.two/pull/954) Fixed licence images not being converted correctly
+- [PR-977](https://github.com/cessda/cessda.cvs.two/pull/977) Fixed agency and licence image uploads not working after PR-954
+- [PR-980](https://github.com/cessda/cessda.cvs.two/pull/980) Fixed rendering of close buttons in modal dialogs
+
 ## [3.3.1] - 2023-11-21
 
 ### Fixed
@@ -348,6 +389,7 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Swagger UI for the APIs.
 - New set of /v2 REST APIs for searching and exporting CVs to several formats (PDF, HTML, DOCX)
 
+[3.4.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.4.0
 [3.3.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.3.1
 [3.3.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.3.0
 [3.2.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.2.0
