@@ -50,7 +50,7 @@ export class VocabularySearchResultComponent implements OnInit {
   account: Account | null = null;
 
   vocabularies: Vocabulary[] = [];
-  searching: boolean = true;
+  searching = true;
 
   currentSearch = '';
 
@@ -132,12 +132,12 @@ export class VocabularySearchResultComponent implements OnInit {
     return bundle === VocabularyUtil.getVersionNumberByLangIso(vocab, lang);
   }
 
-  getTitleByLang(vocab: Vocabulary): string {
-    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[0]!;
+  getTitleByLang(vocab: Vocabulary) {
+    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[0];
   }
 
-  getDefinitionByLang(vocab: Vocabulary): string {
-    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[1]!;
+  getDefinitionByLang(vocab: Vocabulary) {
+    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[1];
   }
 
   getCodeTitleByLang(code: Code, selectedLang: string): string {
@@ -148,8 +148,8 @@ export class VocabularySearchResultComponent implements OnInit {
     return VocabularyUtil.getTitleDefByLangIso(code, selectedLang)[1];
   }
 
-  getVersionByLang(vocab: Vocabulary): string {
-    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[2]!;
+  getVersionByLang(vocab: Vocabulary) {
+    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[2];
   }
 
   private onSuccess(data: CvResult): void {
@@ -234,6 +234,7 @@ export class VocabularySearchResultComponent implements OnInit {
   }
 
   trackNotation(_index: number, item: Vocabulary | Code): string {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return item.notation!;
   }
 
@@ -327,10 +328,11 @@ export class VocabularySearchResultComponent implements OnInit {
       }
 
       // Subscribe to the result of the search request
-      searchObservable.subscribe(
-        (res: HttpResponse<CvResult>) => this.onSuccess(res.body!),
-        (e: HttpErrorResponse) => this.onError(e),
-      );
+      searchObservable.subscribe({
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        next: (res: HttpResponse<CvResult>) => this.onSuccess(res.body!),
+        error: (e: HttpErrorResponse) => this.onError(e),
+      });
     });
 
     this.router.events.subscribe(evt => {

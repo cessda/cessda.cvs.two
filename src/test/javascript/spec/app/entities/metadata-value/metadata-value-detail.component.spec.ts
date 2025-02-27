@@ -16,7 +16,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { JhiDataUtils } from 'ng-jhipster';
 
 import { CvsTestModule } from '../../../test.module';
 import { MetadataValueDetailComponent } from 'app/entities/metadata-value/metadata-value-detail.component';
@@ -25,7 +24,6 @@ describe('Component Tests', () => {
   describe('MetadataValue Management Detail Component', () => {
     let comp: MetadataValueDetailComponent;
     let fixture: ComponentFixture<MetadataValueDetailComponent>;
-    let dataUtils: JhiDataUtils;
     const route = { data: of({ metadataValue: { id: 123 } }) } as unknown as ActivatedRoute;
 
     beforeEach(() => {
@@ -38,7 +36,6 @@ describe('Component Tests', () => {
         .compileComponents();
       fixture = TestBed.createComponent(MetadataValueDetailComponent);
       comp = fixture.componentInstance;
-      dataUtils = fixture.debugElement.injector.get(JhiDataUtils);
     });
 
     describe('OnInit', () => {

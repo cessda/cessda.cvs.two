@@ -32,7 +32,7 @@ import { VocabularyDeleteDialogComponent } from './vocabulary-delete-dialog.comp
 })
 export class VocabularyComponent implements OnInit, OnDestroy {
   vocabularies: Vocabulary[] = [];
-  searching: boolean = true;
+  searching = true;
   eventSubscriber?: Subscription;
   currentSearch: string;
   totalItems = 0;
@@ -68,10 +68,10 @@ export class VocabularyComponent implements OnInit, OnDestroy {
           size: this.itemsPerPage,
           sort: this.sort(),
         })
-        .subscribe(
-          (res: HttpResponse<Vocabulary[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-          (e: HttpErrorResponse) => this.onError(e),
-        );
+        .subscribe({
+          next: (res: HttpResponse<Vocabulary[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+          error: (e: HttpErrorResponse) => this.onError(e),
+        });
       return;
     }
 
@@ -81,10 +81,10 @@ export class VocabularyComponent implements OnInit, OnDestroy {
         size: this.itemsPerPage,
         sort: this.sort(),
       })
-      .subscribe(
-        (res: HttpResponse<Vocabulary[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        (e: HttpErrorResponse) => this.onError(e),
-      );
+      .subscribe({
+        next: (res: HttpResponse<Vocabulary[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        error: (e: HttpErrorResponse) => this.onError(e),
+      });
   }
 
   search(query: string): void {

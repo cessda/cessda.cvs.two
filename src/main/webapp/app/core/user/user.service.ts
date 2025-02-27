@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import {SERVER_API_URL} from 'app/app.constants';
-import {createRequestOption, Pagination} from 'app/shared/util/request-util';
-import {IUser} from './user.model';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption, Pagination } from 'app/shared/util/request-util';
+import { IUser } from './user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -44,7 +44,7 @@ export class UserService {
     return this.http.get<IUser[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  delete(login: string): Observable<{}> {
+  delete(login: string) {
     return this.http.delete(`${this.resourceUrl}/${login}`);
   }
 
