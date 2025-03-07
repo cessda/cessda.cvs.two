@@ -1641,20 +1641,23 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     private void addVersionHistories( VocabularyDTO vocabulary, VersionDTO version ) {
-        var olderVersionHistories = versionService.findOlderPublishedByVocabularyLanguageId(
-            vocabulary.getId(), version.getLanguage(), version.getId()
-        ).stream().map(olderVersion -> {
+        var olderVersions = versionService.findOlderPublishedByVocabularyLanguageId( vocabulary.getId(), version.getLanguage(), version.getId() );
+        var olderVersionHistories = new ArrayList<Map<String, Object>>(olderVersions.size());
+        for ( VersionDTO olderVersion : olderVersions )
+        {
             Map<String, Object> versionHistoryMap = new LinkedHashMap<>();
             versionHistoryMap.put( "id", olderVersion.getId() );
             versionHistoryMap.put( "version", olderVersion.getNumber() );
             versionHistoryMap.put( "date", olderVersion.getPublicationDate().toString() );
             versionHistoryMap.put( "note", olderVersion.getVersionNotes() );
             versionHistoryMap.put( "changes", olderVersion.getVersionChanges() );
-            if ( olderVersion.getPreviousVersion() != null && !olderVersion.getPreviousVersion().equals( olderVersion.getId() ) ) {
+            if ( olderVersion.getPreviousVersion() != null &&
+                !olderVersion.getPreviousVersion().equals( olderVersion.getId() ) )
+            {
                 versionHistoryMap.put( "prevVersion", olderVersion.getPreviousVersion() );
             }
-            return versionHistoryMap;
-        }).collect(Collectors.toList());
+            olderVersionHistories.add( versionHistoryMap );
+        }
         version.setVersionHistories( olderVersionHistories );
     }
 
