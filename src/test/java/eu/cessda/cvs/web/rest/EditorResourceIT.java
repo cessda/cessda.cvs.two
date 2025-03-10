@@ -589,8 +589,7 @@ class EditorResourceIT {
     }
 
     private void deleteVocabularyOrVersion(Version versionToDelete, boolean isDeleteVocabulary) throws Exception {
-        List<Vocabulary> vocabularies = vocabularyRepository.findAll();
-        int vocabSizeBeforeDelete = vocabularies.size();
+        List<Vocabulary> vocabulariesBeforeDelete = vocabularyRepository.findAll();
 
         // Delete version/vocab
         restMockMvc.perform(delete("/api/editors/vocabularies/{id}", versionToDelete.getId())
@@ -598,13 +597,12 @@ class EditorResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        vocabularies = vocabularyRepository.findAll();
+        List<Vocabulary> vocabulariesAfterDelete = vocabularyRepository.findAll();
         if( isDeleteVocabulary ) {
-            assertThat(vocabularies).hasSize(vocabSizeBeforeDelete - 1);
+            assertThat(vocabulariesAfterDelete).hasSize(vocabulariesBeforeDelete.size() - 1);
         } else {
             //TODO: add more assertion
-            final Vocabulary vocabulary = vocabularies.stream().filter(v -> v.getNotation().equals(versionToDelete.getNotation())).findFirst().orElse(null);
-            assertThat(vocabulary).isNotNull();
+            assertThat(vocabulariesAfterDelete).anyMatch(v -> v.getNotation().equals(versionToDelete.getNotation()));
         }
 
     }

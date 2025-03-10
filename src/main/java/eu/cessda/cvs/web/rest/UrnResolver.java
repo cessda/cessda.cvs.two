@@ -74,7 +74,7 @@ public class UrnResolver {
 
     private Optional<ResponseEntity<String>> getVersionByUrnStartWith(String baseUrl, String urn) {
         return versionService.findByUrnStartingWith(urn).stream()
-            .filter(v -> v.getStatus().equals(Status.PUBLISHED.toString())).findFirst()
+            .filter(v -> v.getStatus() == Status.PUBLISHED ).findFirst()
             .map(versionDTO -> {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setLocation(URI.create( baseUrl + "/vocabulary/" + versionDTO.getNotation()));

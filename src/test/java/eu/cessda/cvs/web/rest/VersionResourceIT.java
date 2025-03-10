@@ -17,6 +17,8 @@ package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.domain.Version;
+import eu.cessda.cvs.domain.enumeration.ItemType;
+import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.repository.VersionRepository;
 import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.dto.VersionDTO;
@@ -53,11 +55,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class VersionResourceIT {
 
-    private static final String DEFAULT_STATUS = "AAAAAAAAAA";
-    private static final String UPDATED_STATUS = "BBBBBBBBBB";
+    private static final String DEFAULT_STATUS = Status.DRAFT.toString();
+    private static final String UPDATED_STATUS = Status.PUBLISHED.toString();
 
-    private static final String DEFAULT_ITEM_TYPE = "AAAAAAAAAA";
-    private static final String UPDATED_ITEM_TYPE = "BBBBBBBBBB";
+    private static final String DEFAULT_ITEM_TYPE = ItemType.SL.toString();
+    private static final String UPDATED_ITEM_TYPE = ItemType.TL.toString();
 
     private static final String DEFAULT_LANGUAGE = "AAAAAAAAAA";
     private static final String UPDATED_LANGUAGE = "BBBBBBBBBB";

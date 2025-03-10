@@ -70,7 +70,7 @@ class VocabularyServiceImplTest
         dto.setId( versionId );
         dto.setVocabularyId( vocabularyId );
         dto.setLanguage( "en" );
-        dto.setItemType( "" );
+        dto.setItemType( null );
 
         // Create a Vocabulary entity, this exists as an intermediary only
         Vocabulary vocabulary = new Vocabulary();

@@ -60,7 +60,7 @@ public class VocabularyDTO implements Serializable {
         this();
         this.agencyId = vocabularySnippet.getAgencyId();
         this.notation = vocabularySnippet.getNotation();
-        if( vocabularySnippet.getItemType().equals(ItemType.SL))
+        if( vocabularySnippet.getItemType() == ItemType.SL )
             this.sourceLanguage = vocabularySnippet.getLanguage();
 
         setStatusByVocabularySnippet(vocabularySnippet);
@@ -2127,21 +2127,21 @@ public class VocabularyDTO implements Serializable {
 
     public static void fillVocabularyByVersions( VocabularyDTO vocab, Set<VersionDTO> versions ) {
         // use to ignore version with same lang, eg. FRv2.0.2 and FRv2.0.1 only FRv.2.0.2 will be chosen
-        Set<String> versionLangs = new HashSet<>();
+        var versionLangs = new HashSet<String>();
         for (VersionDTO version : versions) {
             if( versionLangs.contains( version.getLanguage()) )
                 continue;
             versionLangs.add( version.getLanguage());
             // fill vocabulary
             vocab.setTitleDefinition(version.getTitle(), version.getDefinition(), version.getLanguage(), false);
-            if( version.getStatus().equals( Status.PUBLISHED.toString())) {
+            if( version.getStatus() == Status.PUBLISHED ) {
                 vocab.addLanguagePublished(version.getLanguage());
                 vocab.setVersionByLanguage(version.getLanguage(), version.getNumber().toString());
             } else {
                 vocab.setVersionByLanguage(version.getLanguage(), version.getNumber() + "_" + version.getStatus());
             }
             vocab.addLanguage( version.getLanguage() );
-            vocab.addStatuses( version.getStatus() );
+            vocab.addStatuses( version.getStatus().toString() );
         }
 
     }

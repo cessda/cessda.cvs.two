@@ -714,7 +714,7 @@ public class VocabularyResourceV2 {
             }
 
             // check if there is published version
-            if ( voc.getVersions().stream().anyMatch( v -> v.getStatus().equals( Status.PUBLISHED.toString() ) ) )
+            if ( voc.getVersions().stream().anyMatch( v -> v.getStatus() == Status.PUBLISHED ) )
             {
                 Map<String, Map<String, Map<String, String>>> vocabMap = agencyCvMap.computeIfAbsent( voc.getAgencyName(), k -> new LinkedHashMap<>() );
                 List<VersionDTO> versions = new ArrayList<>( voc.getVersions() );

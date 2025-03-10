@@ -308,7 +308,7 @@ public class EditorResource {
         SecurityUtils.checkResourceAuthorization(ActionType.DELETE_CV,
             vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
 
-        if( versionDTO.getItemType().equals(ItemType.TL.toString()) ){
+        if( versionDTO.getItemType() == ItemType.TL ){
             deleteTlVocabulary(versionDTO, vocabularyDTO);
         } else {
             if( versionDTO.isInitialVersion() ) {
@@ -349,7 +349,7 @@ public class EditorResource {
                 // indexing editor
                 vocabularyService.indexEditor(vocabularyDTO);
 
-                if( versionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
+                if( versionDTO.getStatus() == Status.PUBLISHED ) {
                     // remove published JSON file, re-create the JSON file and re-index for published vocabulary
                     vocabularyService.deleteCvJsonDirectoryAndContent( applicationProperties.getVocabJsonPath().resolve( vocabularyDTO.getNotation() ));
                     vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
@@ -361,7 +361,7 @@ public class EditorResource {
     }
 
     private void deleteTlVocabulary(VersionDTO versionDTO, VocabularyDTO vocabularyDTO) throws IOException {
-        boolean isTlPublished = versionDTO.getStatus().equals( Status.PUBLISHED.toString());
+        boolean isTlPublished = versionDTO.getStatus() == Status.PUBLISHED;
         vocabularyDTO.removeVersion( versionDTO);
         if( isTlPublished ) {
             // if published update vocabulary
@@ -453,7 +453,7 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + codeSnippets[0].getVersionId()));
 
         // reject if version status is published
-        if (versionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
+        if ( versionDTO.getStatus() == Status.PUBLISHED ) {
             throw new IllegalArgumentException("Unable to add Code " + codeSnippets[0].getNotation() + ", Version is already PUBLISHED");
         }
 
