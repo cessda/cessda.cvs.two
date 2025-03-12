@@ -66,6 +66,7 @@ export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
     this.error = false;
 
     // Form validation passed - assert new passwords is valid
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const newPassword = this.passwordForm.value.newPassword!;
     const confirmPassword = this.passwordForm.value.confirmPassword;
 

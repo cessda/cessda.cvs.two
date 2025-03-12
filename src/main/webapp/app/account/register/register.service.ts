@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-import {SERVER_API_URL} from 'app/app.constants';
-import {IUser} from 'app/core/user/user.model';
+import { SERVER_API_URL } from 'app/app.constants';
+import { IUser } from 'app/core/user/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class RegisterService {
   constructor(private http: HttpClient) {}
 
-  save(account: IUser): Observable<{}> {
+  save(account: IUser) {
     return this.http.post(SERVER_API_URL + 'api/register', account);
   }
 }
