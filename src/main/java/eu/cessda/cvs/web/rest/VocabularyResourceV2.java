@@ -282,8 +282,7 @@ public class VocabularyResourceV2 {
         if ( !vocabulariesPage.getContent().isEmpty() ) {
             for ( VocabularyDTO vocabularyDTO : vocabulariesPage.getContent() )
             {
-                var jsonldMap = ResourceUtils.convertVocabularyDtoToJsonLdSkosMos( vocabularyDTO, vocabularyDTO.getCodes(), lang );
-                return jsonldMap;
+                return ResourceUtils.convertVocabularyDtoToJsonLdSkosMos( vocabularyDTO, vocabularyDTO.getCodes(), lang );
             }
         }
 

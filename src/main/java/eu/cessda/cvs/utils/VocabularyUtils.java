@@ -171,7 +171,7 @@ public final class VocabularyUtils
 			field = EsFilter.NOTATION_AGG;
 		if ( filterSplit[0].equals( "language" ) )
 		{
-			if ( searchScope.equals( SearchScope.PUBLICATIONSEARCH ) )
+			if ( searchScope == SearchScope.PUBLICATIONSEARCH )
 				field = EsFilter.LANGS_PUB_AGG;
 			else
 				field = EsFilter.LANGS_AGG;

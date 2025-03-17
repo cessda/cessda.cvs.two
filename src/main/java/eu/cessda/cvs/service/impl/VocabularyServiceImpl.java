@@ -419,7 +419,7 @@ public class VocabularyServiceImpl implements VocabularyService
             newVersion = new VersionDTO(prevVersionDTO, null);
             // update vocabularyDTO
             vocabularyDTO.setVersionNumber(newVersion.getNumber());
-            vocabularyDTO.setStatus(Status.DRAFT.toString());
+            vocabularyDTO.setStatus(Status.DRAFT);
         } else {
             // check if user authorized to create new TL version
             SecurityUtils.checkResourceAuthorization(
@@ -531,7 +531,7 @@ public class VocabularyServiceImpl implements VocabularyService
         final Agency agency = agencyRepository.getOne( vocabularyDTO.getAgencyId() );
 
         // set Vocabulary attribute for initial version
-        vocabularyDTO.setStatus( Status.DRAFT.toString() );
+        vocabularyDTO.setStatus( Status.DRAFT );
         vocabularyDTO.setAgencyLink( agency.getLink() );
         vocabularyDTO.setAgencyName( agency.getName() );
         vocabularyDTO.setAgencyLogo( agency.getLogopath() );
@@ -1893,7 +1893,7 @@ public class VocabularyServiceImpl implements VocabularyService
                     vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
                 versionDTO.setStatus( Status.REVIEW );
                 versionDTO.setLastStatusChangeDate( LocalDate.now() );
-                vocabularyDTO.setStatus( Status.REVIEW.toString() );
+                vocabularyDTO.setStatus( Status.REVIEW );
                 break;
             case FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE:
                 SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE,
@@ -1901,7 +1901,7 @@ public class VocabularyServiceImpl implements VocabularyService
                 versionDTO.setStatus( Status.READY_TO_TRANSLATE );
                 versionDTO.setLastStatusChangeDate( LocalDate.now() );
                 vocabularyDTO.setVersionNumberByVocabularySnippet(vocabularySnippet);
-                vocabularyDTO.setStatus( Status.READY_TO_TRANSLATE.toString() );
+                vocabularyDTO.setStatus( Status.READY_TO_TRANSLATE );
                 // we will only publish the version info!!!
                 versionDTO.prepareSlPublishing( vocabularySnippet, licence, agency );
                 break;
@@ -1991,7 +1991,7 @@ public class VocabularyServiceImpl implements VocabularyService
                 versionDTO.setPublicationDate(LocalDate.now());
                 versionDTO.setDeprecatedConceptsValidUntilVersionId(versionDTO.getId());
                 vocabularyDTO.prepareSlPublishing(versionDTO);
-                vocabularyDTO.setStatus(Status.PUBLISHED.toString());
+                vocabularyDTO.setStatus(Status.PUBLISHED);
                 break;
             case FORWARD_CV_TL_STATUS_REVIEW:
                 SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_TL_STATUS_REVIEW,

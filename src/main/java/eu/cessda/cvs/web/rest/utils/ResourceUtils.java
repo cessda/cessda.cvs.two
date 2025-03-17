@@ -274,7 +274,7 @@ public class ResourceUtils {
         if( versionsIterator.hasNext() )
         {
             final VersionDTO versionDto = versionsIterator.next();
-            if( versionDto.getItemType().equals(ItemType.TL.toString()) )
+            if( versionDto.getItemType() == ItemType.TL )
             {
                 docId = versionDto.getUriSl();
             }

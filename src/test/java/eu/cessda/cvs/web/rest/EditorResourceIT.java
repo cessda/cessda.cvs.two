@@ -63,8 +63,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class EditorResourceIT {
 
-    private static final String INIT_STATUS = "DRAFT";
-    private static final String EDIT_STATUS = "REVIEW";
+    private static final Status INIT_STATUS = Status.DRAFT;
+    private static final Status EDIT_STATUS = Status.REVIEW;
 
     private static final String AGENCY_URI = "https://vocabularies-dev.cessda.eu/vocabulary/[VOCABULARY]?v=[VERSION]";
     private static final String AGENCY_URI_CODE = "https://vocabularies-dev.cessda.eu/vocabulary/[VOCABULARY]_[CODE]?v=[VERSION]";
@@ -840,7 +840,7 @@ class EditorResourceIT {
         assertThat(tlVersion).isNotNull();
         // must be generated equal TL concepts to SL concepts
         assertThat(tlVersion.getConcepts().size()).isEqualTo(slVersion.getConcepts().size());
-        assertThat(tlVersion.getStatus()).isEqualTo(INIT_STATUS);
+        assertThat(tlVersion.getStatus()).isEqualTo(INIT_STATUS.toString());
         assertThat(tlVersion.getNotation()).isEqualTo(NOTATION);
         assertThat(tlVersion.getNumber()).isEqualTo(INIT_VERSION_NUMBER_TL);
         assertThat(tlVersion.getLanguage()).isEqualTo(TARGET_LANGUAGE);
@@ -1257,7 +1257,7 @@ class EditorResourceIT {
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSizeBeforeCreate + 1);
         Vocabulary testVocabulary = vocabularyList.get(vocabularyList.size() - 1);
-        assertThat(testVocabulary.getStatus()).isEqualTo(INIT_STATUS);
+        assertThat(testVocabulary.getStatus()).isEqualTo(INIT_STATUS.toString());
         assertThat(testVocabulary.getNotation()).isEqualTo(NOTATION);
         assertThat(testVocabulary.getVersionNumber()).isEqualTo(INIT_VERSION_NUMBER_SL);
         assertThat(testVocabulary.getSourceLanguage()).isEqualTo(SOURCE_LANGUAGE);
@@ -1269,7 +1269,7 @@ class EditorResourceIT {
 
         assertThat(testVocabulary.getVersions().size()).isEqualTo(1);
         final Version slVersion = testVocabulary.getVersions().iterator().next();
-        assertThat(slVersion.getStatus()).isEqualTo(INIT_STATUS);
+        assertThat(slVersion.getStatus()).isEqualTo(INIT_STATUS.toString());
         assertThat(slVersion.getNotation()).isEqualTo(NOTATION);
         assertThat(slVersion.getNumber()).isEqualTo(INIT_VERSION_NUMBER_SL);
         assertThat(slVersion.getLanguage()).isEqualTo(SOURCE_LANGUAGE);
