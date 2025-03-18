@@ -38,6 +38,7 @@ _For each release, use the following sub-sections:_
 - [PR-802](https://github.com/cessda/cessda.cvs.two/pull/802) Removed redundant catch blocks that only logged an error message
 - [PR-846](https://github.com/cessda/cessda.cvs.two/pull/846) Converted some requests that return HTTP 500 status codes to return more semantically correct HTTP 400 codes
 - [PR-949](https://github.com/cessda/cessda.cvs.two/pull/949) Migrated `UntypedFormBuilder` instances to typed `FormBuilder` instances
+- [PR-990](https://github.com/cessda/cessda.cvs.two/pull/990) Enabled ESLint reports in Jenkins
 
 ### Fixed
 
@@ -54,6 +55,7 @@ _For each release, use the following sub-sections:_
 - [PR-954](https://github.com/cessda/cessda.cvs.two/pull/954) Fixed licence images not being converted correctly
 - [PR-977](https://github.com/cessda/cessda.cvs.two/pull/977) Fixed agency and licence image uploads not working after PR-954
 - [PR-980](https://github.com/cessda/cessda.cvs.two/pull/980) Fixed rendering of close buttons in modal dialogs
+- [PR-990](https://github.com/cessda/cessda.cvs.two/pull/990) Fixed errors and warnings reported by ESLint
 
 ## [3.3.1] - 2023-11-21
 
