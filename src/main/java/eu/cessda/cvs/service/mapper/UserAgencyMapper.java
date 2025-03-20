@@ -36,7 +36,7 @@ public interface UserAgencyMapper extends EntityMapper<UserAgencyDTO, UserAgency
     @Mapping(target = "user", ignore = true)
     UserAgency toEntity(UserAgencyDTO userAgencyDTO);
 
-    default UserAgency fromId(Long id) {
+    static UserAgency fromId(Long id) {
         if (id == null) {
             return null;
         }

@@ -51,7 +51,6 @@ import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
 import org.elasticsearch.search.aggregations.bucket.filter.Filters;
 import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
@@ -60,10 +59,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
-import org.springframework.data.elasticsearch.core.SearchHit;
-import org.springframework.data.elasticsearch.core.SearchHitSupport;
-import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.*;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
@@ -1328,13 +1324,13 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     private void buildNonFilteredAggregation( EsQueryResultDetail esQueryResultDetail, SearchHits<?> searchResponse, String field ) {
-        Aggregations aggregations = searchResponse.getAggregations();
+        ElasticsearchAggregations aggregations = (ElasticsearchAggregations) searchResponse.getAggregations();
         if ( aggregations == null )
         {
             return;
         }
 
-        Terms aggregation = aggregations.get( field + COUNT );
+        Terms aggregation = (Terms) aggregations.aggregations().asMap().get( field + COUNT );
         if ( aggregation == null)
         {
             return;
@@ -1349,13 +1345,13 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     private void buildFilteredAggregation( EsQueryResultDetail esQueryResultDetail, SearchHits<?> searchResponse, String field ) {
-        Aggregations aggregations = searchResponse.getAggregations();
+        ElasticsearchAggregations aggregations = (ElasticsearchAggregations) searchResponse.getAggregations();
         if (aggregations == null)
         {
             return;
         }
 
-        Filters aggFilters = aggregations.get( "aggregration_filter" );
+        Filters aggFilters = (Filters) aggregations.aggregations().asMap().get( "aggregration_filter" );
         if ( aggFilters == null )
         {
             return;
@@ -1487,7 +1483,7 @@ public class VocabularyServiceImpl implements VocabularyService
         if ( !esQueryResultDetail.isAnyFilterActive() ) {
             for ( String aggField : esQueryResultDetail.getAggFields() )
             {
-                searchQueryBuilder.addAggregation(
+                searchQueryBuilder.withAggregations(
                     AggregationBuilders.terms( aggField + COUNT ).field( aggField ).size( SIZE_OF_ITEMS_ON_AGGREGATION ) );
             }
         } else {
@@ -1500,7 +1496,7 @@ public class VocabularyServiceImpl implements VocabularyService
                     AggregationBuilders.terms( aggField + COUNT ).field( aggField ).size( SIZE_OF_ITEMS_ON_AGGREGATION ) );
             }
 
-            searchQueryBuilder.addAggregation( filtersAggregation );
+            searchQueryBuilder.withAggregations( filtersAggregation );
         }
     }
 
