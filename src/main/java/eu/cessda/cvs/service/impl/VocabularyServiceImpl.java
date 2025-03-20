@@ -2057,7 +2057,7 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     private void updateUriForVersionAndConcept( String agencyUri, String agencyUriCode, Vocabulary vocabulary, Version version ) {
-        if ( version.getStatus().equals( Status.PUBLISHED.toString() ) ) {
+        if ( version.getStatus() == Status.PUBLISHED ) {
             version.setUri( VocabularyUtils.generateUri( agencyUri, vocabulary, version, null ) );
             for ( Concept concept : version.getConcepts() ) {
                 concept.setUri( VocabularyUtils.generateUri( agencyUriCode, vocabulary, version, concept ) );

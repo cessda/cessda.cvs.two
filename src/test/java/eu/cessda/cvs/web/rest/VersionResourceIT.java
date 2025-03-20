@@ -55,11 +55,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class VersionResourceIT {
 
-    private static final String DEFAULT_STATUS = Status.DRAFT.toString();
-    private static final String UPDATED_STATUS = Status.PUBLISHED.toString();
+    private static final Status DEFAULT_STATUS = Status.DRAFT;
+    private static final Status UPDATED_STATUS = Status.PUBLISHED;
 
-    private static final String DEFAULT_ITEM_TYPE = ItemType.SL.toString();
-    private static final String UPDATED_ITEM_TYPE = ItemType.TL.toString();
+    private static final ItemType DEFAULT_ITEM_TYPE = ItemType.SL;
+    private static final ItemType UPDATED_ITEM_TYPE = ItemType.TL;
 
     private static final String DEFAULT_LANGUAGE = "AAAAAAAAAA";
     private static final String UPDATED_LANGUAGE = "BBBBBBBBBB";
@@ -307,8 +307,8 @@ public class VersionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(version.getId().intValue())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
-            .andExpect(jsonPath("$.[*].itemType").value(hasItem(DEFAULT_ITEM_TYPE)))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
+            .andExpect(jsonPath("$.[*].itemType").value(hasItem(DEFAULT_ITEM_TYPE.toString())))
             .andExpect(jsonPath("$.[*].language").value(hasItem(DEFAULT_LANGUAGE)))
             .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE.toString())))
             .andExpect(jsonPath("$.[*].publicationDate").value(hasItem(DEFAULT_PUBLICATION_DATE.toString())))
@@ -347,8 +347,8 @@ public class VersionResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(version.getId().intValue()))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
-            .andExpect(jsonPath("$.itemType").value(DEFAULT_ITEM_TYPE))
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
+            .andExpect(jsonPath("$.itemType").value(DEFAULT_ITEM_TYPE.toString()))
             .andExpect(jsonPath("$.language").value(DEFAULT_LANGUAGE))
             .andExpect(jsonPath("$.creationDate").value(DEFAULT_CREATION_DATE.toString()))
             .andExpect(jsonPath("$.publicationDate").value(DEFAULT_PUBLICATION_DATE.toString()))

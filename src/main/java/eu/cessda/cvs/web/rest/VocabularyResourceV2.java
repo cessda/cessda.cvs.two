@@ -222,7 +222,7 @@ public class VocabularyResourceV2 {
      * @param vocab The specific vocabulary e.g. TopicClassification
      * @param lang The language e.g. en
      * @param size The maximum size of codes returned, default 20
-     * @return list of Codes in JSON-LD based on Skosmos format
+     * @return map of Codes in JSON-LD based on Skosmos format
      */
     @GetMapping(
         value="/search/codes",
