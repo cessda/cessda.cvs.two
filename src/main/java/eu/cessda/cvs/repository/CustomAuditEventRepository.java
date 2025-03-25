@@ -38,6 +38,7 @@ import java.util.Map;
 public class CustomAuditEventRepository implements AuditEventRepository {
 
     private static final String AUTHORIZATION_FAILURE = "AUTHORIZATION_FAILURE";
+    private static final String AUTHENTICATION_FAILURE = "AUTHENTICATION_FAILURE";
 
     /**
      * Should be the same as in Liquibase migration.
@@ -74,8 +75,12 @@ public class CustomAuditEventRepository implements AuditEventRepository {
             persistentAuditEvent.setPrincipal(event.getPrincipal());
             persistentAuditEvent.setAuditEventType(event.getType());
             persistentAuditEvent.setAuditEventDate(event.getTimestamp());
-            Map<String, String> eventData = auditEventConverter.convertDataToStrings(event.getData());
-            persistentAuditEvent.setData(truncate(eventData));
+            
+            //log only extra data for events which are not related to the authentication
+            if (!AUTHENTICATION_FAILURE.equals(event.getType())) {
+                Map<String, String> eventData = auditEventConverter.convertDataToStrings(event.getData());
+                persistentAuditEvent.setData(truncate(eventData));
+            }
             persistenceAuditEventRepository.save(persistentAuditEvent);
         }
     }

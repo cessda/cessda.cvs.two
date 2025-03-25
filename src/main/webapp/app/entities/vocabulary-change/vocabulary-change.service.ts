@@ -22,10 +22,10 @@ import moment from 'moment';
 import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption, SearchWithPagination } from 'app/shared/util/request-util';
-import { IVocabularyChange } from 'app/shared/model/vocabulary-change.model';
+import { VocabularyChange } from 'app/shared/model/vocabulary-change.model';
 
-type EntityResponseType = HttpResponse<IVocabularyChange>;
-type EntityArrayResponseType = HttpResponse<IVocabularyChange[]>;
+type EntityResponseType = HttpResponse<VocabularyChange>;
+type EntityArrayResponseType = HttpResponse<VocabularyChange[]>;
 
 @Injectable({ providedIn: 'root' })
 export class VocabularyChangeService {
@@ -34,46 +34,46 @@ export class VocabularyChangeService {
 
   constructor(protected http: HttpClient) {}
 
-  create(vocabularyChange: IVocabularyChange): Observable<EntityResponseType> {
+  create(vocabularyChange: VocabularyChange): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(vocabularyChange);
     return this.http
-      .post<IVocabularyChange>(this.resourceUrl, copy, { observe: 'response' })
+      .post<VocabularyChange>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
-  update(vocabularyChange: IVocabularyChange): Observable<EntityResponseType> {
+  update(vocabularyChange: VocabularyChange): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(vocabularyChange);
     return this.http
-      .put<IVocabularyChange>(this.resourceUrl, copy, { observe: 'response' })
+      .put<VocabularyChange>(this.resourceUrl, copy, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   find(id: number): Observable<EntityResponseType> {
     return this.http
-      .get<IVocabularyChange>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+      .get<VocabularyChange>(`${this.resourceUrl}/${id}`, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
-      .get<IVocabularyChange[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .get<VocabularyChange[]>(this.resourceUrl, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
-  delete(id: number): Observable<HttpResponse<{}>> {
+  delete(id: number): Observable<HttpResponse<object>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http
-      .get<IVocabularyChange[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
+      .get<VocabularyChange[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
   }
 
-  protected convertDateFromClient(vocabularyChange: IVocabularyChange): IVocabularyChange {
-    const copy: IVocabularyChange = Object.assign({}, vocabularyChange, {
+  protected convertDateFromClient(vocabularyChange: VocabularyChange): VocabularyChange {
+    const copy: VocabularyChange = Object.assign({}, vocabularyChange, {
       date: vocabularyChange.date && vocabularyChange.date.isValid() ? vocabularyChange.date.format(DATE_FORMAT) : undefined,
     });
     return copy;
@@ -88,7 +88,7 @@ export class VocabularyChangeService {
 
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
     if (res.body) {
-      res.body.forEach((vocabularyChange: IVocabularyChange) => {
+      res.body.forEach((vocabularyChange: VocabularyChange) => {
         vocabularyChange.date = vocabularyChange.date ? moment(vocabularyChange.date) : undefined;
       });
     }
@@ -96,6 +96,6 @@ export class VocabularyChangeService {
   }
 
   getByVersionId(versionId: number): Observable<EntityArrayResponseType> {
-    return this.http.get<IVocabularyChange[]>(`${this.resourceUrl}/version-id/${versionId}`, { observe: 'response' });
+    return this.http.get<VocabularyChange[]>(`${this.resourceUrl}/version-id/${versionId}`, { observe: 'response' });
   }
 }

@@ -1,13 +1,12 @@
 pipeline {
     options {
-        buildDiscarder logRotator(artifactNumToKeepStr: '1', numToKeepStr: '20')
-        quietPeriod 300
+        disableConcurrentBuilds abortPrevious: true
     }
 
     environment {
         productName = "cvs"
         componentName = "frontend"
-        image_tag = "${docker_repo}/${productName}-${componentName}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+        image_tag = "${DOCKER_ARTIFACT_REGISTRY}/${productName}-${componentName}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
 
         // Fixes NPM trying to use / as the home directory
         HOME = '.'
@@ -21,54 +20,74 @@ pipeline {
     }
 
     stages {
-        // Building on main
-        stage('Pull SDK Docker Image') {
+        stage('Node.JS') {
+            agent {
+                docker {
+                    image 'node:18'
+                    reuseNode true
+                }
+            }
+            stages {
+                stage('Install NPM dependencies') {
+                    steps {
+                        configFileProvider([configFile(fileId: 'be684558-5540-4ad6-a155-7c1b4278abc0', targetLocation: '.npmrc')]) {
+                            sh 'npm ci'
+                        }
+                    }
+                }
+                stage('Lint Project') {
+                    steps {
+                        catchError(buildResult: 'UNSTABLE') {
+                            sh 'npm run lint -- --format checkstyle --output-file target/eslint-reports/report.xml'
+                        }
+                    }
+                    post {
+                        always {
+                            recordIssues(tools: [esLint(pattern: 'target/eslint-reports/report.xml')])
+                        }
+                    }
+                }
+                stage('Compile Angular') {
+                    steps {
+                        sh 'npm run build-prod'
+                    }
+                }
+                stage('Run Jest tests') {
+                    steps {
+                        sh 'npm test -- --coverage'
+                    }
+                    post {
+                        always {
+                            junit 'target/test-results/TESTS-results-jest.xml'
+                        }
+                    }
+                }
+            }
+        }
+        stage('Compile Java') {
             agent {
                 docker {
                     image 'eclipse-temurin:11'
                     reuseNode true
                 }
             }
-            stages {
-                stage('Build Project') {
-                    steps {
-                        withMaven {
-                            configFileProvider([configFile(fileId: 'be684558-5540-4ad6-a155-7c1b4278abc0', targetLocation: '.npmrc')]) {
-                                sh "./mvnw clean install -Pprod"
-                            }
-                        }
-                    }
-                    when { branch 'main' }
-                }
-                // Not running on main - test only (for PRs and integration branches)
-                stage('Test Project') {
-                    steps {
-                        withMaven {
-                            configFileProvider([configFile(fileId: 'be684558-5540-4ad6-a155-7c1b4278abc0', targetLocation: '.npmrc')]) {
-                                sh './mvnw clean verify -Pprod'
-                            }
-                        }
-                    }
-                    when { not { branch 'main' } }
-                }
-                stage('Record Issues') {
-                    steps {
-                        recordIssues aggregatingResults: true, tools: [java()]
-                    }
+            steps {
+                withMaven {
+                    sh "./mvnw verify -Pci"
                 }
             }
-            post {
-                always {
-                    junit 'target/test-results/TESTS-results-jest.xml'
-                }
+        }
+        stage('Record Issues') {
+            steps {
+                recordIssues aggregatingResults: true, tools: [java()]
             }
         }
         stage('Run Sonar Scan') {
             steps {
                 withSonarQubeEnv('cessda-sonar') {
-                    nodejs('node-14') {
+                    nodejs('node-18') {
                         withMaven {
-                            sh "./mvnw sonar:sonar -Pprod"
+                            sh "./mvnw sonar:sonar -Pci"
                         }
                     }
                 }
@@ -85,11 +104,11 @@ pipeline {
         }
         stage('Build and Push Docker Image') {
             steps {
-                sh 'gcloud auth configure-docker'
+                sh "gcloud auth configure-docker ${ARTIFACT_REGISTRY_HOST}"
                 withMaven {
-                    sh "./mvnw jib:build -Pprod -Djib.to.image=${IMAGE_TAG}"
+                    sh "./mvnw jib:build -Pci -Djib.to.image=${IMAGE_TAG}"
                 }
-                sh "gcloud container images add-tag ${IMAGE_TAG} ${docker_repo}/${productName}-${componentName}:${env.BRANCH_NAME}-latest"
+                sh "gcloud artifacts docker tags add ${IMAGE_TAG} ${DOCKER_ARTIFACT_REGISTRY}/${productName}-${componentName}:${env.BRANCH_NAME}-latest"
             }
             when { branch 'main' }
         }

@@ -25,7 +25,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -111,7 +110,7 @@ public interface VocabularyService {
      * Delete the entire CV publish JSON directory given path
      * @param path of the JSON CV published files
      */
-    void deleteCvJsonDirectoryAndContent(String path);
+    void deleteCvJsonDirectoryAndContent(Path path);
 
     /**
      * get Vocabulary by notation
@@ -175,13 +174,6 @@ public interface VocabularyService {
     void indexAllPublished();
 
     /**
-     * Perform indexing in a published vocabulary given JSON file path
-     *
-     * @param jsonPath the VocabularyDTO JSON file path
-     */
-    void indexPublished( Path jsonPath );
-
-    /**
      * Perform indexing in a published vocabulary for the publication
      *
      * @param vocabulary the VocabularyDTO needs to be re-indexed
@@ -236,33 +228,16 @@ public interface VocabularyService {
      * @param versionList combination of language and version number, e.g. en_1.0
      * @param downloadType one of the following file types PDF, DOCX, HTML, RDF
      * @param requestURL request URL for statistical purposes
-     * @return the generated file name
+     * @param onlyPublished only select published vocabularies
+     * @return the generated file's resolved path
      */
-    String generateVocabularyPublishFileDownload(
+    Path generateVocabularyFileDownload(
         String vocabularyNotation,
         String versionSl,
         String versionList,
         ExportService.DownloadType downloadType,
         String requestURL,
-        OutputStream outputStream);
-
-    /**
-     * Generate files to be exported for specific vocabulary from the editor
-     *
-     * @param vocabularyNotation the vocabulary notation
-     * @param versionSl the Source Language version
-     * @param versionList combination of language anf version number, e.g. en_1.0
-     * @param downloadType one of the following file types PDF, DOCX, HTML, RDF
-     * @param requestURL request URL for statistical purposes
-     * @return the generated file name
-     */
-    String generateVocabularyEditorFileDownload(
-        String vocabularyNotation,
-        String versionSl,
-        String versionList,
-        ExportService.DownloadType downloadType,
-        String requestURL,
-        OutputStream outputStream);
+        boolean onlyPublished);
 
     /**
      *
@@ -285,5 +260,5 @@ public interface VocabularyService {
      * @param vocabularySnippet
      * @return
      */
-    VersionDTO forwardStatus(VocabularySnippet vocabularySnippet);
+    VersionDTO forwardStatus(VocabularySnippet vocabularySnippet) throws IllegalActionTypeException;
 }

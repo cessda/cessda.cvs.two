@@ -16,15 +16,16 @@
 import { Component, Input } from '@angular/core';
 
 import { EditorService } from 'app/editor/editor.service';
-import { IVersion } from 'app/shared/model/version.model';
+import { Version } from 'app/shared/model/version.model';
 import { JhiEventManager } from 'ng-jhipster';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Account } from 'app/core/user/account.model';
-import { IComment } from 'app/shared/model/comment.model';
+import { Comment } from 'app/shared/model/comment.model';
 import moment from 'moment';
 import { Moment } from 'moment';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
+import { QuillModules } from 'ngx-quill';
 
 @Component({
   selector: 'jhi-comment-item',
@@ -32,12 +33,12 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class EditorDetailCvCommentItemComponent {
   @Input() account?: Account;
-  @Input() comment!: IComment;
-  @Input() versionParam!: IVersion;
+  @Input() comment!: Comment;
+  @Input() versionParam!: Version;
   isSaving: boolean;
   isWriteComment = false;
 
-  quillModules: any = {
+  quillModules: QuillModules = {
     toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']],
   };
 
@@ -45,7 +46,11 @@ export class EditorDetailCvCommentItemComponent {
     content: ['', [Validators.required]],
   });
 
-  constructor(protected editorService: EditorService, protected eventManager: JhiEventManager, private fb: FormBuilder) {
+  constructor(
+    protected editorService: EditorService,
+    protected eventManager: JhiEventManager,
+    private fb: FormBuilder,
+  ) {
     this.isSaving = false;
   }
 
@@ -64,9 +69,9 @@ export class EditorDetailCvCommentItemComponent {
 
   doDeleteComment(): void {
     this.editorService.deleteComment(this.comment.id!).subscribe(() => {
-      const index = this.versionParam.comments!.indexOf(this.comment, 0);
+      const index = this.versionParam.comments.indexOf(this.comment, 0);
       if (index > -1) {
-        this.versionParam.comments!.splice(index, 1);
+        this.versionParam.comments.splice(index, 1);
       }
       this.eventManager.broadcast('commentListModification');
     });
@@ -79,14 +84,14 @@ export class EditorDetailCvCommentItemComponent {
     this.subscribeToSaveResponse(this.editorService.updateComment(this.comment));
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IComment>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Comment>>): void {
     result.subscribe(
-      response => this.onSaveSuccess(response.body!),
-      () => this.onSaveError()
+      () => this.onSaveSuccess(),
+      () => this.onSaveError(),
     );
   }
 
-  protected onSaveSuccess(newComment: IComment): void {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.isWriteComment = false;
     this.eventManager.broadcast('commentListModification');

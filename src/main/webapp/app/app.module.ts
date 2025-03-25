@@ -37,48 +37,17 @@ import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // ngx-quill rich text
-import { QuillConfig, QuillModule } from 'ngx-quill';
-// @ts-ignore
-import * as Quill from 'quill';
-// @ts-ignore
-import QuillBetterTable from 'quill-better-table';
-// @ts-ignore
+import { QuillModule } from 'ngx-quill';
+import Quill from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
 // ngx-text-diff
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgxTextDiffModule } from 'ngx-text-diff';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
-Quill.register(
-  {
-    'modules/better-table': QuillBetterTable,
-    'modules/blotFormatter': BlotFormatter,
-  },
-  true
-);
-
-const quillConfig: QuillConfig = {
-  modules: {
-    table: false, // disable table module
-    'better-table': {
-      operationMenu: {
-        items: {
-          unmergeCells: {
-            text: 'Another unmerge cells name',
-          },
-        },
-        color: {
-          colors: ['green', 'red', 'yellow', 'blue', '#ededed', 'grey', 'white'],
-          text: 'Background Colors:',
-        },
-      },
-    },
-    keyboard: {
-      bindings: QuillBetterTable.keyboardBindings,
-    },
-    blotFormatter: {},
-  },
-};
+Quill.register({
+  'modules/blotFormatter': BlotFormatter,
+});
 
 @NgModule({
   imports: [
@@ -96,7 +65,7 @@ const quillConfig: QuillConfig = {
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    QuillModule.forRoot(quillConfig),
+    QuillModule.forRoot(),
     ScrollingModule,
     NgxTextDiffModule,
     NgxChartsModule,

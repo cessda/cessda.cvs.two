@@ -42,9 +42,6 @@
             var u="https://cessda.matomo.cloud/";
             _paq.push(['setTrackerUrl', u+'matomo.php']);
             _paq.push(['setSiteId', '3']);
-            var secondaryTrackerUrl = 'https://analytics.cessda.eu/matomo.php';
-            var secondaryWebsiteId = 3;
-            _paq.push(['addTracker', secondaryTrackerUrl, secondaryWebsiteId]);
             var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
             g.type='text/javascript'; g.async=true; g.src='//cdn.matomo.cloud/cessda.matomo.cloud/matomo.js'; s.parentNode.insertBefore(g,s);
         })();
@@ -70,13 +67,13 @@
         <h1>You must enable javascript to view this page.</h1>
     </noscript>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
- 
+
   <button id="zammad-feedback-form" style="position: fixed; right: 0; bottom: 0;" >Send feedback</button>
-  <script id="zammad_form_script" src="https://eosc-helpdesk.eosc-portal.eu/assets/form/form.js"></script>
+  <script id="zammad_form_script" src="https://helpdesk.cessda.eu/assets/form/form.js"></script>
   <script>
     $(function() {
       $('#zammad-feedback-form').ZammadForm({
-    agreementMessage:'  Accept CESSDA <a target="_blank" href="https://www.cessda.eu/Privacy-policy">Data Privacy Policy</a> & <a target="_blank" href="https://www.cessda.eu/Acceptable-Use-Policy">Acceptable Use Policy</a>', 
+    agreementMessage:'  Accept CESSDA <a target="_blank" href="https://www.cessda.eu/Privacy-policy">Data Privacy Policy</a> & <a target="_blank" href="https://www.cessda.eu/Acceptable-Use-Policy">Acceptable Use Policy</a>',
     messageTitle: 'CVS Feedback Form',
     messageSubmit: 'Submit',
     messageThankYou: 'Thank you for your inquiry (#%s)! We\'ll contact you as soon as possible.',

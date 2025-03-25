@@ -17,8 +17,8 @@ package eu.cessda.cvs.service;
 
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
 import com.itextpdf.layout.font.FontProvider;
+import com.itextpdf.layout.font.FontSet;
 import org.docx4j.convert.in.xhtml.FormattingOption;
 import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
 import org.docx4j.jaxb.Context;
@@ -37,26 +37,46 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.xml.bind.JAXBException;
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ExportService
 {
+    public static final String MEDIATYPE_RDF_VALUE = "application/rdf+xml";
+    public static final MediaType MEDIATYPE_RDF = MediaType.parseMediaType(MEDIATYPE_RDF_VALUE);
+    public static final String MEDIATYPE_WORD_VALUE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    public static final MediaType MEDIATYPE_WORD = MediaType.parseMediaType( MEDIATYPE_WORD_VALUE );
 
-    public static final String HTML = "html";
+    private final FontSet fontSet;
 
     public enum DownloadType
 	{
-		SKOS("rdf", MediaType.APPLICATION_XML),
+		SKOS("rdf", MEDIATYPE_RDF),
         PDF("pdf", MediaType.APPLICATION_PDF),
-        HTML(ExportService.HTML, MediaType.TEXT_HTML),
-        WORD("docx", new MediaType("application", "vnd.openxmlformats-officedocument.wordprocessingml.document" ));
+        HTML("html", MediaType.TEXT_HTML),
+        WORD("docx", MEDIATYPE_WORD );
 
 		private final String type;
         private final MediaType mediaType;
+
+        public static Optional<DownloadType> fromMediaType( MediaType mediaType )
+        {
+            for ( var downloadType : DownloadType.values() )
+            {
+                if ( mediaType.includes( downloadType.getMediaType() ))
+                {
+                    return Optional.of( downloadType );
+                }
+            }
+            return Optional.empty();
+        }
 
 		DownloadType( String type, MediaType mediaType )
 		{
@@ -69,31 +89,33 @@ public class ExportService
             return mediaType;
         }
 
-		public boolean equalsType( String otherType )
-		{
-			return type.equals( otherType );
-		}
-
-		@Override
+        @Override
 		public String toString()
 		{
 			return this.type;
 		}
     }
 
+    private final ObjectFactory factory = new ObjectFactory();
 	private final SpringTemplateEngine templateEngine;
 
-	public ExportService(SpringTemplateEngine templateEngine )
+    @SuppressWarnings( "DataFlowIssue" )
+	public ExportService( SpringTemplateEngine templateEngine )
 	{
-		this.templateEngine = templateEngine;
+        this.templateEngine = templateEngine;
+        this.fontSet = new FontSet();
+
+        // Add all fonts
+        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Black.otf").toString() );
+        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Bold.otf" ).toString() );
+        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-DemiLight.otf" ).toString() );
+        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Light.otf" ).toString() );
+        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Medium.otf" ).toString() );
+        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Regular.otf" ).toString() );
+        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Thin.otf" ).toString() );
 	}
 
-	public File exportQuestion()
-	{
-		return null;
-	}
-
-	public void generateFileByThymeleafTemplate(
+    public void generateFileByThymeleafTemplate(
 			String templateName,
 			Map<String, Object> map,
 			DownloadType type,
@@ -110,10 +132,10 @@ public class ExportService
             case PDF:
             case HTML:
             case WORD:
-                content = templateEngine.process( HTML + "/" + templateName + "_" + type, ctx );
+                content = templateEngine.process( DownloadType.HTML.type + "/" + templateName + "_" + type, ctx );
                 break;
             case SKOS:
-                content = templateEngine.process( "xml" + "/"  + templateName + "_" + type, ctx )
+                content = templateEngine.process( DownloadType.SKOS.type + "/"  + templateName + "_" + type, ctx )
                     .replaceAll( "(?m)^[ \t]*\r?\n", "" );
                 break;
             default:
@@ -137,24 +159,18 @@ public class ExportService
 
 	private void createTextFile( String contents, OutputStream outputStream ) throws IOException
     {
-        BufferedWriter bw = new BufferedWriter( new OutputStreamWriter( outputStream ) );
-        bw.write( contents );
-        bw.flush();
+        OutputStreamWriter writer = new OutputStreamWriter( outputStream, StandardCharsets.UTF_8 );
+        writer.write( contents );
+        writer.flush();
 	}
 
-	public void createPdfFile( String contents, OutputStream outputStream )
+    public void createPdfFile( String contents, OutputStream outputStream )
     {
-        ConverterProperties properties = new ConverterProperties();
-        FontProvider fontProvider = new DefaultFontProvider(false, false, false);
-        var fontsResource = this.getClass().getResource("/fonts");
-        assert fontsResource != null;
-        fontProvider.addDirectory(fontsResource.getPath());
-        properties.setFontProvider(fontProvider);
-        HtmlConverter.convertToPdf(contents, outputStream, properties);
+        // Generate the PDF
+        HtmlConverter.convertToPdf(contents, outputStream, new ConverterProperties().setFontProvider(new FontProvider(fontSet)));
 	}
 
-    public void createWordFile(  String contents, OutputStream outputStream ) throws Docx4JException, JAXBException {
-        ObjectFactory factory = new ObjectFactory();
+    public void createWordFile( String contents, OutputStream outputStream ) throws Docx4JException, JAXBException {
         // Setup font mapping
         RFonts rfonts = Context.getWmlObjectFactory().createRFonts();
         rfonts.setAscii( "Century Gothic" );
@@ -184,7 +200,7 @@ public class ExportService
         body.setSectPr(sectPr);
 
         Relationship relationship = createFooterPart( wordMLPackage, factory );
-        createFooterReference(wordMLPackage, relationship, factory);
+        createFooterReference(wordMLPackage, relationship );
 
         NumberingDefinitionsPart ndp = new NumberingDefinitionsPart();
         wordMLPackage.getMainDocumentPart().addTargetPart( ndp );
@@ -252,7 +268,7 @@ public class ExportService
 
     }
 
-    public static void createFooterReference(WordprocessingMLPackage wordMLPackage, Relationship relationship, ObjectFactory factory){
+    public void createFooterReference(WordprocessingMLPackage wordMLPackage, Relationship relationship){
 
         List<SectionWrapper> sections =
             wordMLPackage.getDocumentModel().getSections();

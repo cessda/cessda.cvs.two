@@ -18,15 +18,15 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import moment from 'moment';
 import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
-import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
+import { createNewVocabulary, Status, Vocabulary } from 'app/shared/model/vocabulary.model';
 
 describe('Service Tests', () => {
   describe('Vocabulary Service', () => {
     let injector: TestBed;
     let service: VocabularyService;
     let httpMock: HttpTestingController;
-    let elemDefault: IVocabulary;
-    let expectedResult: IVocabulary | IVocabulary[] | boolean | null;
+    let elemDefault: Vocabulary;
+    let expectedResult: Vocabulary | Vocabulary[] | boolean | null;
     let currentDate: moment.Moment;
 
     beforeEach(() => {
@@ -39,113 +39,112 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new Vocabulary(
-        0,
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        0,
-        0,
-        false,
-        false,
-        false,
-        'AAAAAAA',
-        'en',
-        'AAAAAAA',
-        '1.0',
-        0,
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        currentDate,
-        currentDate,
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA',
-        'AAAAAAA'
-      );
+      elemDefault = createNewVocabulary({
+        id: 0,
+        status: Status.DRAFT,
+        uri: 'AAAAAA',
+        notation: 'AAAAAA',
+        versionNumber: 'AAAAAA',
+        initialPublication: 0,
+        previousPublication: 0,
+        archived: false,
+        withdrawn: false,
+        discoverable: false,
+        selectedLang: 'en',
+        selectedCode: 'AAAAAA',
+        selectedVersion: '1.0',
+        agencyId: 0,
+        agencyName: 'AAAAAA',
+        agencyLogo: 'AAAAAA',
+        agencyLink: 'AAAAAA',
+        publicationDate: currentDate,
+        lastModified: currentDate,
+        notes: 'AAAAAA',
+        versionSq: 'AAAAAA',
+        titleSq: 'AAAAAA',
+        definitionSq: 'AAAAAA',
+        versionBs: 'AAAAAA',
+        titleBs: 'AAAAAA',
+        definitionBs: 'AAAAAA',
+        versionBg: 'AAAAAA',
+        titleBg: 'AAAAAA',
+        definitionBg: 'AAAAAA',
+        versionHr: 'AAAAAA',
+        titleHr: 'AAAAAA',
+        definitionHr: 'AAAAAA',
+        versionCs: 'AAAAAA',
+        titleCs: 'AAAAAA',
+        definitionCs: 'AAAAAA',
+        versionDa: 'AAAAAA',
+        titleDa: 'AAAAAA',
+        definitionDa: 'AAAAAA',
+        versionNl: 'AAAAAA',
+        titleNl: 'AAAAAA',
+        definitionNl: 'AAAAAA',
+        versionEn: 'AAAAAA',
+        titleEn: 'AAAAAA',
+        definitionEn: 'AAAAAA',
+        versionEt: 'AAAAAA',
+        titleEt: 'AAAAAA',
+        definitionEt: 'AAAAAA',
+        versionFi: 'AAAAAA',
+        titleFi: 'AAAAAA',
+        definitionFi: 'AAAAAA',
+        versionFr: 'AAAAAA',
+        titleFr: 'AAAAAA',
+        definitionFr: 'AAAAAA',
+        versionDe: 'AAAAAA',
+        titleDe: 'AAAAAA',
+        definitionDe: 'AAAAAA',
+        versionEl: 'AAAAAA',
+        titleEl: 'AAAAAA',
+        definitionEl: 'AAAAAA',
+        versionHu: 'AAAAAA',
+        titleHu: 'AAAAAA',
+        definitionHu: 'AAAAAA',
+        versionIt: 'AAAAAA',
+        titleIt: 'AAAAAA',
+        definitionIt: 'AAAAAA',
+        versionJa: 'AAAAAA',
+        titleJa: 'AAAAAA',
+        definitionJa: 'AAAAAA',
+        versionLt: 'AAAAAA',
+        titleLt: 'AAAAAA',
+        definitionLt: 'AAAAAA',
+        versionMk: 'AAAAAA',
+        titleMk: 'AAAAAA',
+        definitionMk: 'AAAAAA',
+        versionNo: 'AAAAAA',
+        titleNo: 'AAAAAA',
+        definitionNo: 'AAAAAA',
+        versionPl: 'AAAAAA',
+        titlePl: 'AAAAAA',
+        definitionPl: 'AAAAAA',
+        versionPt: 'AAAAAA',
+        titlePt: 'AAAAAA',
+        definitionPt: 'AAAAAA',
+        versionRo: 'AAAAAA',
+        titleRo: 'AAAAAA',
+        definitionRo: 'AAAAAA',
+        versionRu: 'AAAAAA',
+        titleRu: 'AAAAAA',
+        definitionRu: 'AAAAAA',
+        versionSr: 'AAAAAA',
+        titleSr: 'AAAAAA',
+        definitionSr: 'AAAAAA',
+        versionSk: 'AAAAAA',
+        titleSk: 'AAAAAA',
+        definitionSk: 'AAAAAA',
+        versionSl: 'AAAAAA',
+        titleSl: 'AAAAAA',
+        definitionSl: 'AAAAAA',
+        versionEs: 'AAAAAA',
+        titleEs: 'AAAAAA',
+        definitionEs: 'AAAAAA',
+        versionSv: 'AAAAAA',
+        titleSv: 'AAAAAA',
+        definitionSv: 'AAAAAA',
+      });
     });
 
     describe('Service methods', () => {
@@ -155,7 +154,7 @@ describe('Service Tests', () => {
             publicationDate: currentDate.format(DATE_FORMAT),
             lastModified: currentDate.format(DATE_TIME_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         service.find(123).subscribe(resp => (expectedResult = resp.body));
@@ -172,7 +171,7 @@ describe('Service Tests', () => {
             publicationDate: currentDate.format(DATE_FORMAT),
             lastModified: currentDate.format(DATE_TIME_FORMAT),
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign(
@@ -180,10 +179,10 @@ describe('Service Tests', () => {
             publicationDate: currentDate,
             lastModified: currentDate,
           },
-          returnedFromService
+          returnedFromService,
         );
 
-        service.create(new Vocabulary()).subscribe(resp => (expectedResult = resp.body));
+        service.create(createNewVocabulary()).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
@@ -298,7 +297,7 @@ describe('Service Tests', () => {
             titleSv: 'BBBBBB',
             definitionSv: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign(
@@ -306,7 +305,7 @@ describe('Service Tests', () => {
             publicationDate: currentDate,
             lastModified: currentDate,
           },
-          returnedFromService
+          returnedFromService,
         );
 
         service.update(expected).subscribe(resp => (expectedResult = resp.body));
@@ -423,7 +422,7 @@ describe('Service Tests', () => {
             titleSv: 'BBBBBB',
             definitionSv: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign(
@@ -431,7 +430,7 @@ describe('Service Tests', () => {
             publicationDate: currentDate,
             lastModified: currentDate,
           },
-          returnedFromService
+          returnedFromService,
         );
 
         service.query().subscribe(resp => (expectedResult = resp.body));

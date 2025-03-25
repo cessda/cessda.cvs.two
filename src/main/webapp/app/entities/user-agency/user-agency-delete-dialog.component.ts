@@ -17,19 +17,19 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { IUserAgency } from 'app/shared/model/user-agency.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 import { UserAgencyService } from './user-agency.service';
 
 @Component({
-  templateUrl: './user-agency-delete-dialog.component.html'
+  templateUrl: './user-agency-delete-dialog.component.html',
 })
 export class UserAgencyDeleteDialogComponent {
-  userAgency?: IUserAgency;
+  userAgency?: UserAgency;
 
   constructor(
     protected userAgencyService: UserAgencyService,
     public activeModal: NgbActiveModal,
-    protected eventManager: JhiEventManager
+    protected eventManager: JhiEventManager,
   ) {}
 
   cancel(): void {

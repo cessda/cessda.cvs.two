@@ -20,8 +20,7 @@
         <h4 class="modal-title">
             <span>Deprecation of the code <strong>{{conceptParam.notation}}</strong></span>
         </h4>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                (click)="clear()">&times;</button>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="clear()"></button>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
@@ -43,9 +42,9 @@
                                     <option *ngIf="!concept.deprecated && concept.id !== conceptParam.id" [value]="concept.id">{{concept.notation}}</option>
                                 </ng-container>
                             </select>
-                            <div *ngIf="deprecateCodeForm.get('replacingCodeId')!.invalid && (deprecateCodeForm.get('replacingCodeId')!.dirty || deprecateCodeForm.get('replacingCodeId')!.touched)">
+                            <div *ngIf="deprecateCodeForm.controls.replacingCodeId.invalid && (deprecateCodeForm.controls.replacingCodeId.dirty || deprecateCodeForm.controls.replacingCodeId.touched)">
                                 <small class="form-text text-danger"
-                                       *ngIf="deprecateCodeForm.get('replacingCodeId')?.errors?.required" jhiTranslate="entity.validation.required">
+                                       *ngIf="deprecateCodeForm.controls.replacingCodeId.errors?.required" jhiTranslate="entity.validation.required">
                                     This field is required.
                                 </small>
                             </div>
@@ -76,13 +75,13 @@
             </button>
             <button id="jhi-confirm-replace-concept-yes" class="btn btn-primary" (click)="confirmReplacementYes()">
                 <fa-icon></fa-icon>&nbsp;<span jhiTranslate="entity.action.yes">Yes</span>
-            </button>            
+            </button>
         </div>
         <!-- #1.1 confirmed that the code being deprecated is replaced by another code -->
         <div *ngIf="isConfirmedReplacementYes && !isSetReplacingCodeId()">
-            <button id="jhi-confirm-replace-concept-yes" class="btn btn-primary" [disabled]="deprecateCodeForm.get('replacingCodeId')!.invalid" (click)="setReplacingCode()">
+            <button id="jhi-confirm-replace-concept-yes" class="btn btn-primary" [disabled]="deprecateCodeForm.controls.replacingCodeId.invalid" (click)="setReplacingCode()">
                 <fa-icon></fa-icon>&nbsp;<span jhiTranslate="entity.action.ok">OK</span>
-            </button>                        
+            </button>
         </div>
         <!-- #2 to confirm code deprecation -->
         <div *ngIf="(isConfirmedReplacementYes && isSetReplacingCodeId()) || isConfirmedReplacementNo">

@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
  * A DTO representing a user, with his authorities.
  */
 public class UserDTO implements Serializable {
+    private static final long serialVersionUID = -3508997745704450197L;
 
     private Long id;
 

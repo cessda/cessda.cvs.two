@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
@@ -13,53 +14,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-import {FormBuilder} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, FormControl } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 
-import {IUserAgency, UserAgency} from 'app/shared/model/user-agency.model';
-import {UserAgencyService} from './user-agency.service';
-import {IAgency} from 'app/shared/model/agency.model';
-import {AgencyService} from 'app/agency/agency.service';
+import { UserAgency } from 'app/shared/model/user-agency.model';
+import { UserAgencyService } from './user-agency.service';
+import { Agency } from 'app/shared/model/agency.model';
+import { AgencyService } from 'app/agency/agency.service';
+import { AgencyRole } from 'app/shared/model/enumerations/agency-role.model';
 
 @Component({
   selector: 'jhi-user-agency-update',
-  templateUrl: './user-agency-update.component.html'
+  templateUrl: './user-agency-update.component.html',
 })
 export class UserAgencyUpdateComponent implements OnInit {
   isSaving = false;
-  agencies: IAgency[] = [];
+  agencies: Agency[] = [];
 
   editForm = this.fb.group({
-    id: [],
-    agencyRole: [],
-    language: [],
-    agencyId: []
+    id: new FormControl<number | null>(null),
+    agencyRole: new FormControl<AgencyRole | null>(null),
+    language: new FormControl<string | null>(null),
+    agencyId: new FormControl<number | null>(null),
   });
 
   constructor(
     protected userAgencyService: UserAgencyService,
     protected agencyService: AgencyService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ userAgency }) => {
       this.updateForm(userAgency);
 
-      this.agencyService.query().subscribe((res: HttpResponse<IAgency[]>) => (this.agencies = res.body || []));
+      this.agencyService.query().subscribe((res: HttpResponse<Agency[]>) => (this.agencies = res.body || []));
     });
   }
 
-  updateForm(userAgency: IUserAgency): void {
+  updateForm(userAgency: UserAgency): void {
     this.editForm.patchValue({
       id: userAgency.id,
       agencyRole: userAgency.agencyRole,
       language: userAgency.language,
-      agencyId: userAgency.agencyId
+      agencyId: userAgency.agencyId,
     });
   }
 
@@ -77,20 +79,19 @@ export class UserAgencyUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IUserAgency {
+  private createFromForm(): UserAgency {
     return {
-      ...new UserAgency(),
-      id: this.editForm.get(['id'])!.value,
-      agencyRole: this.editForm.get(['agencyRole'])!.value,
-      language: this.editForm.get(['language'])!.value,
-      agencyId: this.editForm.get(['agencyId'])!.value
+      id: this.editForm.controls.id.value !== null ? this.editForm.controls.id.value : undefined,
+      agencyRole: this.editForm.controls.agencyRole.value || undefined,
+      language: this.editForm.controls.language.value || undefined,
+      agencyId: this.editForm.controls.agencyId.value !== null ? this.editForm.controls.agencyId.value : undefined,
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IUserAgency>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<UserAgency>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 
@@ -103,7 +104,7 @@ export class UserAgencyUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: IAgency): any {
-    return item.id;
+  trackById(index: number, item: Agency): number {
+    return item.id || index;
   }
 }

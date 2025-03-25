@@ -13,19 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
-import {SERVER_API_URL} from 'app/app.constants';
+import { SERVER_API_URL } from 'app/app.constants';
 
 @Injectable({ providedIn: 'root' })
 export class ActivateService {
   constructor(private http: HttpClient) {}
 
-  get(key: string): Observable<{}> {
+  get(key: string) {
     return this.http.get(SERVER_API_URL + 'api/activate', {
-      params: new HttpParams().set('key', key)
+      params: new HttpParams().set('key', key),
     });
   }
 }

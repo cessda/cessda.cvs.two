@@ -145,15 +145,15 @@ jhipster:
     from: no-reply@cessda.eu
   swagger:
     default-include-pattern: /(v1|v2|urn)/.*
-    title: cvs API
-    description: cvs API documentation
+    title: CVS API
+    description: CESSDA Vocabularies Service API Documentation
     version: 0.0.1
-    terms-of-service-url:
-    contact-name:
+    terms-of-service-url: https://www.cessda.eu/Acceptable-Use-Policy
+    contact-name: CESSDA Support
     contact-url:
-    contact-email:
-    license:
-    license-url:
+    contact-email: support@cessda.eu
+    license: Apache 2.0
+    license-url: http://www.apache.org/licenses/LICENSE-2.0.html
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
@@ -164,7 +164,4 @@ jhipster:
 # ===================================================================
 
 application:
-  static-file-path: /app/resources/static
-  vocab-json-path: /app/resources/static/content/vocabularies/
-  agency-image-path: /app/resources/static/content/images/agency/
-  license-image-path: /app/resources/static/content/images/license/
+  static-file-path: # Unset by default

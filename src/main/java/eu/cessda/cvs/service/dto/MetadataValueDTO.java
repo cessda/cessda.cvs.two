@@ -25,6 +25,7 @@ import java.util.Objects;
  * A DTO for the {@link eu.cessda.cvs.domain.MetadataValue} entity.
  */
 public class MetadataValueDTO implements Serializable {
+    private static final long serialVersionUID = 504933053033683641L;
 
     private Long id;
 

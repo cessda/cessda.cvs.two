@@ -17,19 +17,19 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
-import { IVocabularyChange } from 'app/shared/model/vocabulary-change.model';
+import { VocabularyChange } from 'app/shared/model/vocabulary-change.model';
 import { VocabularyChangeService } from './vocabulary-change.service';
 
 @Component({
-  templateUrl: './vocabulary-change-delete-dialog.component.html'
+  templateUrl: './vocabulary-change-delete-dialog.component.html',
 })
 export class VocabularyChangeDeleteDialogComponent {
-  vocabularyChange?: IVocabularyChange;
+  vocabularyChange?: VocabularyChange;
 
   constructor(
     protected vocabularyChangeService: VocabularyChangeService,
     public activeModal: NgbActiveModal,
-    protected eventManager: JhiEventManager
+    protected eventManager: JhiEventManager,
   ) {}
 
   cancel(): void {

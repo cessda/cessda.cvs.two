@@ -20,8 +20,7 @@
         <h4 class="modal-title">
             <span>Confirm create new version from {{versionParam.itemType}} {{versionParam.language! | vocabularyLanguageFromKey}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}</span>
         </h4>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                (click)="clear()">&times;</button>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="clear()"></button>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
@@ -44,9 +43,9 @@
                     <input class="form-check-input checkbox-2x" type="checkbox" name="agreeNewVersion" id="agreeNewVersion" formControlName="agreeNewVersion" required />
                     <span>I have read the warning and want to create the new SL version.</span>
                 </label>
-                <div *ngIf="newVersionForm.get('agreeNewVersion')!.invalid && (newVersionForm.get('agreeNewVersion')!.dirty || newVersionForm.get('agreeNewVersion')!.touched)">
+                <div *ngIf="newVersionForm.controls.agreeNewVersion && newVersionForm.controls.agreeNewVersion.invalid && (newVersionForm.controls.agreeNewVersion.dirty || newVersionForm.controls.agreeNewVersion.touched)">
                     <small class="form-text"
-                           *ngIf="newVersionForm.get('agreeNewVersion')?.errors?.required">
+                           *ngIf="newVersionForm.controls.agreeNewVersion.errors?.required">
                         Please checks the checkbox to continue.
                     </small>
                 </div>

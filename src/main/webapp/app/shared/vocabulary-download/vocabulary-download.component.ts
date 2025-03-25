@@ -18,10 +18,11 @@ import { HomeService } from 'app/home/home.service';
 import { EditorService } from 'app/editor/editor.service';
 import { JhiEventManager } from 'ng-jhipster';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
-import { IVersion } from 'app/shared/model/version.model';
-import { FormGroup } from '@angular/forms';
+import { Version } from 'app/shared/model/version.model';
+import { UntypedFormGroup } from '@angular/forms';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Router } from '@angular/router';
+import { FileFormat } from 'app/shared/vocabulary-download/FileFormat';
 
 @Component({
   selector: 'jhi-vocabulary-download',
@@ -29,10 +30,10 @@ import { Router } from '@angular/router';
 })
 export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
   @Input() appScope!: AppScope;
-  @Input() versions!: IVersion[];
+  @Input() versions!: Version[];
   @Input() slVersionNumber!: string;
   @Input() enableDocxExport!: boolean;
-  @Input() downloadFormGroup!: FormGroup;
+  @Input() downloadFormGroup!: UntypedFormGroup;
   @Input() notation!: string;
 
   downloadCheckboxes: string[];
@@ -60,8 +61,8 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     // initialize download checkbox
     const languages: string[] = this.getUniqueVersionLangs();
     for (let i = 0; i < languages.length; i++) {
-      const versions: IVersion[] = this.getVersionsByLang(languages[i]);
-      if (!versions[0].number!.startsWith(this.getSlMajorMinorVersionNumber(this.slVersionNumber))) {
+      const versions: Version[] = this.getVersionsByLang(languages[i]);
+      if (!versions[0].number?.startsWith(this.getSlMajorMinorVersionNumber(this.slVersionNumber))) {
         continue;
       }
       this.downloadCheckboxes[i] = languages[i] + '-' + versions[0].number;
@@ -95,7 +96,7 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     return VocabularyUtil.getUniqueVersionLangs(this.versions, this.appScope);
   }
 
-  getVersionsByLang(lang?: string): IVersion[] {
+  getVersionsByLang(lang?: string): Version[] {
     return this.versions.filter(v => v.language === lang);
   }
 
@@ -108,15 +109,15 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
   }
 
   downloadSkos(): void {
-    this.downloadEditorVocabularyFile('rdf', this.getCheckedItems(this.skosSelected), 'text/xml');
+    this.downloadEditorVocabularyFile(this.getCheckedItems(this.skosSelected), { extension: 'rdf', mimeType: 'application/rdf+xml' });
   }
 
   downloadPdf(): void {
-    this.downloadEditorVocabularyFile('pdf', this.getCheckedItems(this.pdfSelected), 'application/pdf');
+    this.downloadEditorVocabularyFile(this.getCheckedItems(this.pdfSelected), { extension: 'pdf', mimeType: 'application/pdf' });
   }
 
   downloadHtml(): void {
-    this.downloadEditorVocabularyFile('html', this.getCheckedItems(this.htmlSelected), 'text/html');
+    this.downloadEditorVocabularyFile(this.getCheckedItems(this.htmlSelected), { extension: 'html', mimeType: 'text/html' });
   }
 
   toggleSelectAll(downloadType: string, event: Event): void {
@@ -161,35 +162,34 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
   }
 
   downloadDocx(): void {
-    this.downloadEditorVocabularyFile(
-      'docx',
-      this.getCheckedItems(this.docxSelected),
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    );
+    this.downloadEditorVocabularyFile(this.getCheckedItems(this.docxSelected), {
+      extension: 'docx',
+      mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    });
   }
 
-  private downloadEditorVocabularyFile(fileFormat: string, checkedItems: string, mimeType: string): void {
+  private downloadEditorVocabularyFile(checkedItems: string, fileFormat: FileFormat): void {
     if (this.appScope === AppScope.EDITOR) {
       this.editorService
-        .downloadVocabularyFile(this.notation, this.slVersionNumber, fileFormat, {
+        .downloadVocabularyFile(this.notation, this.slVersionNumber, fileFormat.mimeType, {
           lv: checkedItems,
         })
         .subscribe((res: Blob) => {
-          this.generateDownloadFile(res, mimeType, checkedItems, fileFormat);
+          this.generateDownloadFile(res, checkedItems, fileFormat);
         });
     } else {
       this.homeService
-        .downloadVocabularyFile(this.notation, this.slVersionNumber, fileFormat, {
+        .downloadVocabularyFile(this.notation, this.slVersionNumber, fileFormat.mimeType, {
           languageVersion: checkedItems,
         })
         .subscribe((res: Blob) => {
-          this.generateDownloadFile(res, mimeType, checkedItems, fileFormat);
+          this.generateDownloadFile(res, checkedItems, fileFormat);
         });
     }
   }
 
-  private generateDownloadFile(res: Blob, mimeType: string, checkedItems: string, fileFormat: string): void {
-    const newBlob = new Blob([res], { type: mimeType });
+  private generateDownloadFile(res: Blob, checkedItems: string, fileFormat: FileFormat): void {
+    const newBlob = new Blob([res], { type: fileFormat.mimeType });
     if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
       (window.navigator as any).msSaveOrOpenBlob(newBlob);
       return;
@@ -197,7 +197,7 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     const data = window.URL.createObjectURL(newBlob);
     const link = document.createElement('a');
     link.href = data;
-    link.download = this.notation + '-' + this.slVersionNumber + '_' + checkedItems + '.' + fileFormat;
+    link.download = this.notation + '-' + this.slVersionNumber + '_' + checkedItems + '.' + fileFormat.extension;
     link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
     setTimeout(function (): void {
       window.URL.revokeObjectURL(data);

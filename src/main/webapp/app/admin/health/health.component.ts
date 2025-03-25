@@ -13,21 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnInit} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {Health, HealthDetails, HealthKey, HealthService, HealthStatus} from './health.service';
-import {HealthModalComponent} from './health-modal.component';
+import { Health, HealthDetails, HealthKey, HealthService, HealthStatus } from './health.service';
+import { HealthModalComponent } from './health-modal.component';
 
 @Component({
   selector: 'jhi-health',
-  templateUrl: './health.component.html'
+  templateUrl: './health.component.html',
 })
 export class HealthComponent implements OnInit {
   health?: Health;
 
-  constructor(private modalService: NgbModal, private healthService: HealthService) {}
+  constructor(
+    private modalService: NgbModal,
+    private healthService: HealthService,
+  ) {}
 
   ngOnInit(): void {
     this.refresh();
@@ -35,9 +38,9 @@ export class HealthComponent implements OnInit {
 
   getBadgeClass(statusState: HealthStatus): string {
     if (statusState === 'UP') {
-      return 'badge-success';
+      return 'text-bg-success';
     } else {
-      return 'badge-danger';
+      return 'text-bg-danger';
     }
   }
 
@@ -48,7 +51,7 @@ export class HealthComponent implements OnInit {
         if (error.status === 503) {
           this.health = error.error;
         }
-      }
+      },
     );
   }
 

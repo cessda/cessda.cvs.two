@@ -15,9 +15,6 @@
  */
 package eu.cessda.cvs.domain;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.utils.VersionNumber;
@@ -25,6 +22,7 @@ import eu.cessda.cvs.utils.VersionNumber;
 import java.io.Serializable;
 
 public class VocabularySnippet implements Serializable {
+    private static final long serialVersionUID = -2321795469828997616L;
 
     private ActionType actionType;
     private Long agencyId;
@@ -121,27 +119,12 @@ public class VocabularySnippet implements Serializable {
         this.notation = notation;
     }
 
-    @JsonIgnore
     public VersionNumber getVersionNumber() {
         return versionNumber;
     }
 
-    @JsonGetter("versionNumber")
-    public String getVersionNumberAsString() {
-        if (versionNumber != null) {
-            return versionNumber.toString();
-        }
-        return null;
-    }
-
-    @JsonIgnore
     public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
-    }
-
-    @JsonSetter("versionNumber")
-    public void setVersionNumberFromString(String str) {
-        setVersionNumber(str != null ? VersionNumber.fromString(str) : null);
     }
 
     public String getStatus() {

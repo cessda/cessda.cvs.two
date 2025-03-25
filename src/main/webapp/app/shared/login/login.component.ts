@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 
@@ -22,7 +22,7 @@ import { LoginService } from 'app/core/login/login.service';
 
 @Component({
   selector: 'jhi-login-modal',
-  templateUrl: './login.component.html'
+  templateUrl: './login.component.html',
 })
 export class LoginModalComponent implements AfterViewInit {
   @ViewChild('username', { static: false })
@@ -31,34 +31,38 @@ export class LoginModalComponent implements AfterViewInit {
   authenticationError = false;
 
   loginForm = this.fb.group({
-    username: [''],
-    password: [''],
-    rememberMe: [false]
+    username: new FormControl<string>('', { nonNullable: true }),
+    password: new FormControl<string>('', { nonNullable: true }),
+    rememberMe: new FormControl(false, { nonNullable: true }),
   });
 
-  constructor(private loginService: LoginService, private router: Router, public activeModal: NgbActiveModal, private fb: FormBuilder) {}
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    public activeModal: NgbActiveModal,
+    private fb: FormBuilder,
+  ) {}
 
   ngAfterViewInit(): void {
-    if (this.username) {
-      setTimeout(() => this.username!.nativeElement.focus(), 0);
-    }
+    setTimeout(() => {
+      if (this.username) {
+        this.username.nativeElement.focus();
+      }
+    }, 0);
   }
 
   cancel(): void {
     this.authenticationError = false;
-    this.loginForm.patchValue({
-      username: '',
-      password: ''
-    });
+    this.loginForm.reset();
     this.activeModal.dismiss('cancel');
   }
 
   login(): void {
     this.loginService
       .login({
-        username: this.loginForm.get('username')!.value,
-        password: this.loginForm.get('password')!.value,
-        rememberMe: this.loginForm.get('rememberMe')!.value
+        username: this.loginForm.controls.username.value,
+        password: this.loginForm.controls.password.value,
+        rememberMe: this.loginForm.controls.rememberMe.value,
       })
       .subscribe(
         () => {
@@ -72,7 +76,7 @@ export class LoginModalComponent implements AfterViewInit {
             this.router.navigate(['']);
           }
         },
-        () => (this.authenticationError = true)
+        () => (this.authenticationError = true),
       );
   }
 

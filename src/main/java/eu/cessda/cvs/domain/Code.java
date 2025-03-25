@@ -15,9 +15,6 @@
  */
 package eu.cessda.cvs.domain;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import eu.cessda.cvs.utils.VersionNumber;
 import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
@@ -281,26 +278,14 @@ public class Code implements Serializable {
         this.parent = parent;
     }
 
-    @JsonIgnore
     public VersionNumber getVersionNumber()
     {
         return versionNumber;
     }
 
-    @JsonGetter("versionNumber")
-    public String getVersionNumberAsString() {
-        return VersionNumber.toString(versionNumber);
-    }
-
-    @JsonIgnore
     public void setVersionNumber( VersionNumber versionNumber )
     {
         this.versionNumber = versionNumber;
-    }
-
-    @JsonSetter("versionNumber")
-    public void setVersionNumber(String str) {
-        setVersionNumber(VersionNumber.fromString(str));
     }
 
     public Integer getPosition() {

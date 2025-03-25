@@ -24,6 +24,7 @@ import java.util.Objects;
  * A DTO for the {@link eu.cessda.cvs.domain.Comment} entity.
  */
 public class CommentDTO implements Serializable {
+    private static final long serialVersionUID = -3647910600758884671L;
 
     private Long id;
 

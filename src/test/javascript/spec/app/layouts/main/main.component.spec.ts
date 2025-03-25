@@ -36,7 +36,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule, TranslateModule.forRoot()],
         declarations: [MainComponent],
-        providers: [Title]
+        providers: [Title],
       })
         .overrideTemplate(MainComponent, '')
         .compileComponents();
@@ -52,6 +52,7 @@ describe('Component Tests', () => {
     });
 
     describe('page title', () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let routerState: any;
       const defaultPageTitle = 'global.title';
       const parentRoutePageTitle = 'parentTitle';
@@ -89,7 +90,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(parentRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
 
         it('should set page title to child route pageTitle if child routes exist and pageTitle is set for child route', () => {
@@ -102,7 +103,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(childRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(childRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(childRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
 
         it('should set page title to parent route pageTitle if child routes exists but pageTitle is not set for child route data', () => {
@@ -115,7 +116,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(parentRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
 
         it('should set page title to parent route pageTitle if child routes exists but data is not set for child route', () => {
@@ -128,7 +129,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(parentRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
       });
 
@@ -151,7 +152,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(parentRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
 
         it('should set page title to child route pageTitle if child routes exist and pageTitle is set for child route', () => {
@@ -164,7 +165,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(childRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(childRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(childRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
 
         it('should set page title to parent route pageTitle if child routes exists but pageTitle is not set for child route data', () => {
@@ -177,7 +178,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(parentRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
 
         it('should set page title to parent route pageTitle if child routes exists but data is not set for child route', () => {
@@ -190,7 +191,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(parentRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
       });
     });

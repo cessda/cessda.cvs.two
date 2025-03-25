@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subject, Subscription} from 'rxjs';
-import {DiffContent} from 'ngx-text-diff/lib/ngx-text-diff.model';
-import {HomeService} from 'app/home/home.service';
-import {HttpResponse} from '@angular/common/http';
-import {EditorService} from 'app/editor/editor.service';
-import {JhiEventManager, JhiEventWithContent} from 'ng-jhipster';
-import {IConcept} from 'app/shared/model/concept.model';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { DiffContent } from 'ngx-text-diff/lib/ngx-text-diff.model';
+import { HomeService } from 'app/home/home.service';
+import { HttpResponse } from '@angular/common/http';
+import { EditorService } from 'app/editor/editor.service';
+import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { Concept } from 'app/shared/model/concept.model';
 
 @Component({
   selector: 'jhi-version-compare',
-  templateUrl: './version-compare.component.html'
+  templateUrl: './version-compare.component.html',
 })
 export class VersionCompareComponent implements OnInit, OnDestroy {
   @Input() notation!: string;
@@ -39,7 +39,11 @@ export class VersionCompareComponent implements OnInit, OnDestroy {
   contentSubject: Subject<DiffContent> = new Subject<DiffContent>();
   contentObservable$: Observable<DiffContent> = this.contentSubject.asObservable();
 
-  constructor(private homeService: HomeService, private editorService: EditorService, protected eventManager: JhiEventManager) {}
+  constructor(
+    private homeService: HomeService,
+    private editorService: EditorService,
+    protected eventManager: JhiEventManager,
+  ) {}
 
   doCvCompare(): void {
     if (this.dataSource === 'json' || this.dataSource === 'JSON') {
@@ -58,7 +62,7 @@ export class VersionCompareComponent implements OnInit, OnDestroy {
   private setDiffContent(left: string, right: string): DiffContent {
     return {
       leftContent: left,
-      rightContent: right
+      rightContent: right,
     } as DiffContent;
   }
 
@@ -70,7 +74,7 @@ export class VersionCompareComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.eventSubscriber = this.eventManager.subscribe('closeComparison', (response: JhiEventWithContent<IConcept>) => {
+    this.eventSubscriber = this.eventManager.subscribe('closeComparison', (response: JhiEventWithContent<Concept>) => {
       this.isOpen = false;
     });
   }

@@ -19,6 +19,7 @@ import eu.cessda.cvs.domain.Vocabulary;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 /**
@@ -27,9 +28,19 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring", uses = {VersionMapper.class})
 public interface VocabularyMapper extends EntityMapper<VocabularyDTO, Vocabulary> {
 
+    @Mapping(target = "statusByVocabularySnippet", ignore = true)
+    @Mapping(target = "versionNumberByVocabularySnippet", ignore = true)
+    @Mapping(target = "contentByVocabularySnippet", ignore = true)
+    @Mapping(target = "agencyLink", ignore = true)
+    @Mapping(target = "codes", ignore = true)
+    @Mapping(target = "removeVersion", ignore = true)
+    @Mapping(target = "languages", ignore = true)
+    @Mapping(target = "languagesPublished", ignore = true)
+    @Mapping(target = "statuses", ignore = true)
     VocabularyDTO toDto(Vocabulary vocabulary);
 
-    Vocabulary toEntity(VocabularyDTO vocabularyDTO);
+    @Mapping( target = "removeVersion", ignore = true )
+    Vocabulary toEntity( VocabularyDTO vocabularyDTO);
 
     @AfterMapping
     default void setTitleAll(@MappingTarget VocabularyDTO vocabularyDTO) {

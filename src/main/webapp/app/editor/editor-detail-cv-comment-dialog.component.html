@@ -32,8 +32,7 @@
         <h4 class="modal-title">
             <span>Comments Cv <strong>{{versionParam.notation}}</strong> {{versionParam.itemType}} ({{versionParam.language}}) v.{{versionParam.number}}{{versionParam.status === 'PUBLISHED' ? '':'-'+ versionParam.status}}</span>
         </h4>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                (click)="clear()">&times;</button>
+        <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="clear()"></button>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
@@ -54,9 +53,9 @@
             <form *ngIf="versionParam"  novalidate [formGroup]="commentForm">
                 <div *ngIf="isWriteComment">
                     <quill-editor class="small-quill"[placeholder]="'what you want to say?'" [modules]="quillModules" name="content" formControlName="content"></quill-editor>
-                    <div *ngIf="commentForm.get('content')!.invalid && (commentForm.get('content')!.dirty || commentForm.get('content')!.touched)">
+                    <div *ngIf="commentForm.controls.content.invalid && (commentForm.controls.content.dirty || commentForm.controls.content.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="commentForm.get('content')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="commentForm.controls.content.errors?.required" jhiTranslate="entity.validation.required">
                             Comment is empty!
                         </small>
                     </div>

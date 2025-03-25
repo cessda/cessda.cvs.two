@@ -19,14 +19,10 @@ module.exports = {
     preset: 'jest-preset-angular',
     setupFiles: ['jest-date-mock'],
     setupFilesAfterEnv: ['<rootDir>/src/test/javascript/jest.ts'],
+    globalSetup: 'jest-preset-angular/global-setup',
     cacheDirectory: '<rootDir>/target/jest-cache',
     coverageDirectory: '<rootDir>/target/test-results/',
-    globals: {
-        'ts-jest': {
-            stringifyContentPathRegex: '\\.html$',
-            tsconfig: '<rootDir>/tsconfig.json'
-        }
-    },
+    coverageProvider: 'v8',
     coveragePathIgnorePatterns: [
         '/node_modules/',
         '<rootDir>/src/test/javascript'
@@ -36,10 +32,13 @@ module.exports = {
         'default',
         [ 'jest-junit', { outputDirectory: './target/test-results/', outputName: 'TESTS-results-jest.xml' } ]
     ],
+    testResultsProcessor: 'jest-sonar-reporter',
     testMatch: ['<rootDir>/src/test/javascript/spec/**/@(*.)@(spec.ts)'],
     testRunner: 'jasmine2',
     rootDir: '../../../',
-    testURL: 'http://localhost/'
+    testEnvironmentOptions: {
+      url: 'http://localhost/'
+    }
 };
 
 function mapTypescriptAliasToJestAlias(alias = {}) {
@@ -48,7 +47,7 @@ function mapTypescriptAliasToJestAlias(alias = {}) {
         return jestAliases;
     }
     Object.entries(tsconfig.compilerOptions.paths)
-        .filter(([key, value]) => {
+        .filter(([_key, value]) => {
             // use Typescript alias in Jest only if this has value
             if (value.length) {
                 return true;

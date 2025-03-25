@@ -15,10 +15,8 @@
  */
 package eu.cessda.cvs.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import eu.cessda.cvs.domain.Vocabulary;
 import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.domain.enumeration.ItemType;
@@ -42,6 +40,7 @@ import java.util.stream.Collectors;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VocabularyDTO implements Serializable {
+    private static final long serialVersionUID = -8464813042927663693L;
 
     private Long id;
 
@@ -437,27 +436,14 @@ public class VocabularyDTO implements Serializable {
         this.notation = notation;
     }
 
-    @JsonIgnore
     public VersionNumber getVersionNumber() {
         return versionNumber;
     }
 
-    @JsonGetter("versionNumber")
-    public String getVersionNumberAsString() {
-        if (versionNumber != null) {
-            return versionNumber.toString();
-        }
-        return null;
-    }
-
-    @JsonIgnore
     public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
     }
-    @JsonSetter("versionNumber")
-    public void setVersionNumber(String str) {
-        setVersionNumber(str != null ? VersionNumber.fromString(str) : null);
-    }
+
     public Long getInitialPublication() {
         return initialPublication;
     }
@@ -1408,7 +1394,7 @@ public class VocabularyDTO implements Serializable {
         List<VersionDTO> versionGroups = new ArrayList<>();
         List<VersionDTO> vGroups = this.versions.stream()
             .filter(v -> v.getNumber().equals(versionNumber))
-            .sorted(VocabularyUtils.versionDtoComparator())
+            .sorted(VocabularyUtils.VERSION_DTO_COMPARATOR)
             .collect(Collectors.toList());
 
         if( noSameLanguage ) {
@@ -1430,7 +1416,7 @@ public class VocabularyDTO implements Serializable {
         List<VersionDTO> versionGroups = new ArrayList<>();
         List<VersionDTO> vGroups = this.versions.stream()
             .filter(v -> v.getNumber().equalMinorVersionNumber(minorVersionNumber))
-            .sorted(VocabularyUtils.versionDtoComparator())
+            .sorted(VocabularyUtils.VERSION_DTO_COMPARATOR)
             .collect(Collectors.toList());
 
         if( noSameLanguage ) {
@@ -2125,8 +2111,18 @@ public class VocabularyDTO implements Serializable {
 
     public static Optional<VocabularyDTO> findByIdFromList(List<VocabularyDTO> vocabs, String docId) {
         if( docId == null )
+        {
             return Optional.empty();
-        return vocabs.stream().filter( voc -> voc.getId().equals( Long.parseLong(docId))).findFirst();
+        }
+        var longDocId = Long.parseLong( docId ) ;
+        for ( VocabularyDTO vocab : vocabs )
+        {
+            if (vocab.getId() != null && vocab.getId() == longDocId )
+            {
+                return Optional.of( vocab );
+            }
+        }
+        return Optional.empty();
     }
 
     public static void fillVocabularyByVersions( VocabularyDTO vocab, Set<VersionDTO> versions ) {

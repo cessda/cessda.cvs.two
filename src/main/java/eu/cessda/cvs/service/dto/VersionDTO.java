@@ -15,10 +15,8 @@
  */
 package eu.cessda.cvs.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import eu.cessda.cvs.domain.Agency;
 import eu.cessda.cvs.domain.Licence;
 import eu.cessda.cvs.domain.Version;
@@ -48,8 +46,9 @@ import java.util.stream.Collectors;
 @JsonInclude( JsonInclude.Include.NON_NULL )
 public class VersionDTO implements Serializable
 {
+    private static final long serialVersionUID = 6451702494637350395L;
 
-	private Long id;
+    private Long id;
 
 	@NotNull
 	@Size( max = 20 )
@@ -301,27 +300,15 @@ public class VersionDTO implements Serializable
 		this.lastModified = lastModified;
 	}
 
-	@JsonIgnore
 	public VersionNumber getNumber()
 	{
 		return number;
 	}
 
-	@JsonGetter("number")
-    public String getNumberAsString() {
-		return VersionNumber.toString(number);
-    }
-
-	@JsonIgnore
 	public void setNumber( VersionNumber number )
 	{
 		this.number = number;
 	}
-
-	@JsonSetter("number")
-    public void setNumber(String str) {
-        setNumber(VersionNumber.fromString(str));
-    }
 
 	public String getUri()
 	{

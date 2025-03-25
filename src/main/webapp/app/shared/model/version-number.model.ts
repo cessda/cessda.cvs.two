@@ -13,15 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package eu.cessda.cvs.service;
+export class VersionNumber {
+  readonly major: number;
+  readonly minor: number;
+  readonly patch: number;
 
-public class VocabularyNotFoundException extends RuntimeException {
+  constructor(major: number, minor: number, patch: number) {
+    this.major = major;
+    this.minor = minor;
+    this.patch = patch;
+  }
 
-    public VocabularyNotFoundException() {
-        super("Vocabulary not found!");
-    }
-
-    public VocabularyNotFoundException(String message) {
-        super(message);
-    }
+  toString(): string {
+    return `${this.major}.${this.minor}.${this.patch}`;
+  }
 }

@@ -20,9 +20,9 @@ import { ActivatedRoute } from '@angular/router';
 import { LANGUAGES } from 'app/core/language/language.constants';
 import { User } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
-import { IUserAgency, UserAgency } from 'app/shared/model/user-agency.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 import { HttpResponse } from '@angular/common/http';
-import { IAgency } from 'app/shared/model/agency.model';
+import { Agency } from 'app/shared/model/agency.model';
 import { AgencyService } from 'app/agency/agency.service';
 
 @Component({
@@ -35,21 +35,21 @@ export class UserManagementUpdateComponent implements OnInit {
   authorities: string[] = [];
   isSaving = false;
 
-  agencies?: IAgency[];
+  agencies: Agency[] = [];
 
-  selectedAgencyId?: number;
-  selectedAgencyRole?: string;
-  selectedLanguage?: string;
+  selectedAgencyId: number;
+  selectedAgencyRole: string;
+  selectedLanguage: string;
 
   editForm = this.fb.group({
-    id: [],
+    id: [''],
     login: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50), Validators.pattern('^[_.@A-Za-z0-9-]*')]],
     firstName: ['', [Validators.maxLength(50)]],
     lastName: ['', [Validators.maxLength(50)]],
     email: ['', [Validators.minLength(5), Validators.maxLength(254), Validators.email]],
-    activated: [],
-    langKey: [],
-    authorities: [],
+    activated: [false],
+    langKey: [''],
+    authorities: [['']],
   });
 
   constructor(
@@ -72,8 +72,8 @@ export class UserManagementUpdateComponent implements OnInit {
           this.userAgencyToCompare(ua1) < this.userAgencyToCompare(ua2)
             ? -1
             : this.userAgencyToCompare(ua1) > this.userAgencyToCompare(ua2)
-            ? 1
-            : 0,
+              ? 1
+              : 0,
         );
 
         if (this.user.id === undefined) {
@@ -91,18 +91,18 @@ export class UserManagementUpdateComponent implements OnInit {
         size: 1000,
         sort: ['name,asc'],
       })
-      .subscribe((res: HttpResponse<IAgency[]>) => {
-        this.agencies = res.body!;
-        this.selectedAgencyId = this.agencies[0].id!;
+      .subscribe((res: HttpResponse<Agency[]>) => {
+        this.agencies = res.body || [];
+        this.selectedAgencyId = this.agencies[0].id || 1;
       });
   }
 
-  userAgencyToCompare(ua: IUserAgency): string {
+  userAgencyToCompare(ua: UserAgency): string {
     return ua.agencyId! + ua.agencyRole! + (ua.language ? ua.language : '');
   }
 
   getAgencyName(agencyId: number): string {
-    if (this.agencies === undefined) {
+    if (this.agencies.length === 0) {
       return agencyId + '';
     }
     return this.agencies.filter(a => a.id === agencyId)[0].name!;
@@ -142,13 +142,13 @@ export class UserManagementUpdateComponent implements OnInit {
   }
 
   private updateUser(user: User): void {
-    user.login = this.editForm.get(['login'])!.value;
-    user.firstName = this.editForm.get(['firstName'])!.value;
-    user.lastName = this.editForm.get(['lastName'])!.value;
-    user.email = this.editForm.get(['email'])!.value;
-    user.activated = this.editForm.get(['activated'])!.value;
-    user.langKey = this.editForm.get(['langKey'])!.value;
-    user.authorities = this.editForm.get(['authorities'])!.value;
+    user.login = this.editForm.controls.login.value!;
+    user.firstName = this.editForm.controls.firstName.value!;
+    user.lastName = this.editForm.controls.lastName.value!;
+    user.email = this.editForm.controls.email.value!;
+    user.activated = this.editForm.controls.activated.value!;
+    user.langKey = this.editForm.controls.langKey.value!;
+    user.authorities = this.editForm.controls.authorities.value || [];
   }
 
   private onSaveSuccess(): void {
@@ -160,7 +160,7 @@ export class UserManagementUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  deleteAgencyRole(ua: IUserAgency): void {
+  deleteAgencyRole(ua: UserAgency): void {
     if (
       confirm(
         'Are you sure to delete agency role ' +
@@ -171,9 +171,11 @@ export class UserManagementUpdateComponent implements OnInit {
           '? The agency-role deletion will only be completed after the form is saved.',
       )
     ) {
-      const index = this.user.userAgencies!.indexOf(ua);
-      if (index > -1) {
-        this.user.userAgencies!.splice(index, 1);
+      if (this.user.userAgencies) {
+        const index = this.user.userAgencies.indexOf(ua);
+        if (index > -1) {
+          this.user.userAgencies.splice(index, 1);
+        }
       }
     }
   }
@@ -182,25 +184,28 @@ export class UserManagementUpdateComponent implements OnInit {
     if (
       confirm(
         'Are you sure to add agency role ' +
-          this.getAgencyName(this.selectedAgencyId!) +
+          this.getAgencyName(this.selectedAgencyId) +
           ': ' +
           this.selectedAgencyRole +
-          (this.selectedLanguage !== '' ? '-' + this.selectedLanguage! : '') +
+          (this.selectedLanguage !== '' ? '-' + this.selectedLanguage : '') +
           '? The agency-role addition will only be completed after the form is saved.',
       )
     ) {
-      const userAgency = {
-        ...new UserAgency(),
+      const userAgency: UserAgency = {
         userId: this.user.id,
-        agencyRole: this.selectedAgencyRole,
+        agencyRole: this.selectedAgencyRole as UserAgency['agencyRole'],
         agencyId: this.selectedAgencyId,
+        agencyName: this.getAgencyName(this.selectedAgencyId),
         language: this.selectedLanguage !== '' ? this.selectedLanguage : undefined,
       };
-      this.user.userAgencies!.push(userAgency);
+      if (!this.user.userAgencies) {
+        this.user.userAgencies = [];
+      }
+      this.user.userAgencies.push(userAgency);
     }
   }
 
-  getValue(event: Event) {
+  getValue(event: Event): string {
     return (event.target as HTMLSelectElement).value;
   }
 }

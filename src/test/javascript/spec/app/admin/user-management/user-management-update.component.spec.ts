@@ -30,9 +30,9 @@ describe('Component Tests', () => {
     let comp: UserManagementUpdateComponent;
     let fixture: ComponentFixture<UserManagementUpdateComponent>;
     let service: UserService;
-    const route: ActivatedRoute = ({
-      data: of({ user: new User(1, 'user', 'first', 'last', 'first@last.com', true, 'en', [Authority.USER], 'admin') })
-    } as any) as ActivatedRoute;
+    const route: ActivatedRoute = {
+      data: of({ user: new User(1, 'user', 'first', 'last', 'first@last.com', true, 'en', [Authority.USER], 'admin') }),
+    } as any as ActivatedRoute;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
@@ -42,9 +42,9 @@ describe('Component Tests', () => {
           FormBuilder,
           {
             provide: ActivatedRoute,
-            useValue: route
-          }
-        ]
+            useValue: route,
+          },
+        ],
       })
         .overrideTemplate(UserManagementUpdateComponent, '')
         .compileComponents();
@@ -114,7 +114,7 @@ describe('Component Tests', () => {
           // THEN
           expect(service.create).toHaveBeenCalledWith(entity);
           expect(comp.isSaving).toEqual(false);
-        })
+        }),
       ));
     });
   });

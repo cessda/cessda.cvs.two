@@ -13,46 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export interface ICodeSnippet {
-  actionType?: string;
+import { ActionType } from './enumerations/action-type.model';
+
+export interface CodeSnippet {
+  actionType: ActionType;
   versionId?: number;
-  introducedInVersionId?: number | null;
-  validUntilVersionId?: number | null;
+  introducedInVersionId?: number;
+  validUntilVersionId?: number;
   conceptId?: number;
   conceptSlId?: number;
   parent?: string;
   notation?: string;
-  title?: any;
-  definition?: any;
+  title?: string;
+  definition?: string;
   position?: number;
-  insertionRefConceptId?: any;
+  insertionRefConceptId?: number;
   relPosToRefConcept?: number;
-  changeType?: any;
-  changeDesc?: any;
+  changeType?: string;
+  changeDesc?: string;
   conceptStructures?: string[];
   conceptStructureIds?: number[];
-  replacedById?: number | null;
-}
-
-export class CodeSnippet implements ICodeSnippet {
-  constructor(
-    public actionType?: string,
-    public versionId?: number,
-    public introducedInVersionId?: number | null,
-    public validUntilVersionId?: number | null,
-    public conceptId?: number,
-    public conceptSlId?: number,
-    public parent?: string,
-    public notation?: string,
-    public title?: any,
-    public definition?: any,
-    public position?: number,
-    public insertionRefConceptId?: any,
-    public relPosToRefConcept?: number,
-    public changeType?: any,
-    public changeDesc?: any,
-    public conceptStructures?: string[],
-    public conceptStructureIds?: number[],
-    public replacedById?: number | null
-  ) {}
+  replacedById?: number;
 }

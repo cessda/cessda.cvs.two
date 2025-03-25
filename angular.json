@@ -30,7 +30,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "allowedCommonJsDependencies": ["quill-better-table", "quill-blot-formatter"],
+            "allowedCommonJsDependencies": ["moment", "quill", "quill-better-table", "quill-blot-formatter"],
             "outputPath": "target/classes/static",
             "index": "src/main/webapp/index.html",
             "main": "src/main/webapp/app/app.main.ts",
@@ -109,9 +109,16 @@
       }
     }
   },
-  "defaultProject": "cvs",
   "cli": {
     "packageManager": "npm",
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": ["@angular-eslint/schematics"]
+  },
+  "schematics": {
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
+    }
   }
 }

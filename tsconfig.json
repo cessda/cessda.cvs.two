@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2015",
+    "target": "ES2022",
     "module": "es2020",
     "moduleResolution": "node",
     "sourceMap": true,
@@ -9,14 +9,14 @@
     "strict": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "suppressImplicitAnyIndexErrors": true,
     "skipLibCheck": true,
     "lib": ["es2018", "dom"],
     "baseUrl": "./",
     "paths": {
       "app/*": ["src/main/webapp/app/*"]
     },
-    "importHelpers": true
+    "importHelpers": true,
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "genDir": "target/classes/aot",

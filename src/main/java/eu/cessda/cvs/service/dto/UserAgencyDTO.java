@@ -25,6 +25,7 @@ import java.util.Objects;
  * A DTO for the {@link eu.cessda.cvs.domain.UserAgency} entity.
  */
 public class UserAgencyDTO implements Serializable {
+    private static final long serialVersionUID = 6683764195118500502L;
 
     private Long id;
 
@@ -126,6 +127,7 @@ public class UserAgencyDTO implements Serializable {
             ", agencyRole='" + getAgencyRole() + "'" +
             ", language='" + getLanguage() + "'" +
             ", agencyId=" + getAgencyId() +
+            ", agencyName=" + getAgencyName() +
             "}";
     }
 }

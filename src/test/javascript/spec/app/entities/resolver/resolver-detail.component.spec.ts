@@ -19,19 +19,18 @@ import { of } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
 import { ResolverDetailComponent } from 'app/admin/resolver/resolver-detail.component';
-import { Resolver } from 'app/shared/model/resolver.model';
 
 describe('Component Tests', () => {
   describe('Resolver Management Detail Component', () => {
     let comp: ResolverDetailComponent;
     let fixture: ComponentFixture<ResolverDetailComponent>;
-    const route = ({ data: of({ resolver: new Resolver(123) }) } as any) as ActivatedRoute;
+    const route = { data: of({ resolver: { id: 123, resolverURI: '', resourceUrl: '' } }) } as unknown as ActivatedRoute;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [ResolverDetailComponent],
-        providers: [{ provide: ActivatedRoute, useValue: route }]
+        providers: [{ provide: ActivatedRoute, useValue: route }],
       })
         .overrideTemplate(ResolverDetailComponent, '')
         .compileComponents();

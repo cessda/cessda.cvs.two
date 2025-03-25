@@ -13,36 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { IUserAgency } from 'app/shared/model/user-agency.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 
-export interface IAgency {
+export interface Agency {
   id?: number;
-  name?: string;
-  link?: string;
-  description?: any;
+  name: string;
+  link: string;
+  description?: string;
   logopath?: string;
   license?: string;
   licenseId?: number;
   uri?: string;
   uriCode?: string;
   canonicalUri?: string;
-  userAgencies?: IUserAgency[];
+  userAgencies: UserAgency[];
   deletable?: boolean;
 }
 
-export class Agency implements IAgency {
-  constructor(
-    public id?: number,
-    public name?: string,
-    public link?: string,
-    public description?: any,
-    public logopath?: string,
-    public license?: string,
-    public licenseId?: number,
-    public uri?: string,
-    public uriCode?: string,
-    public canonicalUri?: string,
-    public userAgencies?: IUserAgency[],
-    public deletable?: boolean
-  ) {}
+export function createNewAgency(agency?: Partial<Agency>): Agency {
+  return {
+    name: '',
+    link: '',
+    userAgencies: [],
+    ...agency,
+  };
 }

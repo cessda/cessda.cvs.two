@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { HttpEventType, HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import { Agency, IAgency } from 'app/shared/model/agency.model';
+import { Agency, createNewAgency } from 'app/shared/model/agency.model';
 import { AgencyService } from './agency.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { FileUploadService } from 'app/shared/upload/file-upload.service';
-import { ILicence } from 'app/shared/model/licence.model';
+import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from 'app/admin/licence/licence.service';
 
 @Component({
@@ -34,10 +33,9 @@ import { LicenceService } from 'app/admin/licence/licence.service';
 })
 export class AgencyUpdateComponent implements OnInit {
   isSaving = false;
-  selectedFiles?: FileList;
-  currentFileUpload?: File | null;
+  currentFileUpload: File | null = null;
   currentImage?: string;
-  licences?: ILicence[];
+  licences: Licence[] = [];
   progress: {
     percentage: number;
   } = {
@@ -45,22 +43,22 @@ export class AgencyUpdateComponent implements OnInit {
   };
 
   editForm = this.fb.group({
-    id: [],
-    name: [null, [Validators.required, Validators.maxLength(240)]],
-    link: [
-      null,
-      [
+    id: new FormControl<number | null>(null),
+    name: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(240)] }),
+    link: new FormControl('', {
+      nonNullable: true,
+      validators: [
         Validators.required,
         Validators.pattern(
           '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
         ),
       ],
-    ],
-    description: [],
-    licenseId: [],
-    uri: [null, [Validators.maxLength(255)]],
-    uriCode: [null, [Validators.maxLength(255)]],
-    canonicalUri: [null, [Validators.maxLength(255)]],
+    }),
+    description: new FormControl<string | null>(null),
+    licenseId: new FormControl<number | null>(null),
+    uri: new FormControl<string | null>(null, [Validators.maxLength(255)]),
+    uriCode: new FormControl<string | null>(null, [Validators.maxLength(255)]),
+    canonicalUri: new FormControl<string | null>(null, [Validators.maxLength(255)]),
   });
 
   constructor(
@@ -81,14 +79,14 @@ export class AgencyUpdateComponent implements OnInit {
           size: 50,
           sort: ['id,asc'],
         })
-        .subscribe((res: HttpResponse<ILicence[]>) => {
-          this.licences = res.body!;
+        .subscribe((res: HttpResponse<Licence[]>) => {
+          this.licences = res.body || [];
           this.updateForm(agency);
         });
     });
   }
 
-  updateForm(agency: IAgency): void {
+  updateForm(agency: Agency): void {
     this.editForm.patchValue({
       id: agency.id,
       name: agency.name,
@@ -103,8 +101,10 @@ export class AgencyUpdateComponent implements OnInit {
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
-    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-      this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
+      error: (err: JhiFileLoadError) => {
+        this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
+      },
     });
   }
 
@@ -123,29 +123,28 @@ export class AgencyUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IAgency {
-    const agency = {
-      ...new Agency(),
-      id: this.editForm.get(['id'])!.value,
-      name: this.editForm.get(['name'])!.value,
-      link: this.editForm.get(['link'])!.value,
-      description: this.editForm.get(['description'])!.value,
-      licenseId: +this.editForm.get(['licenseId'])!.value,
-      uri: this.editForm.get(['uri'])!.value,
-      uriCode: this.editForm.get(['uriCode'])!.value,
-      canonicalUri: this.editForm.get(['canonicalUri'])!.value,
-    };
+  private createFromForm(): Agency {
+    const agency = createNewAgency({
+      id: this.editForm.controls.id.value || undefined,
+      name: this.editForm.controls.name.value,
+      link: this.editForm.controls.link.value,
+      description: this.editForm.controls.description.value || undefined,
+      licenseId: this.editForm.controls.licenseId.value || undefined,
+      uri: this.editForm.controls.uri.value || undefined,
+      uriCode: this.editForm.controls.uriCode.value || undefined,
+      canonicalUri: this.editForm.controls.canonicalUri.value || undefined,
+    });
     if (agency.licenseId) {
-      agency.license = this.licences!.filter(l => l.id === agency.licenseId)[0].name;
+      agency.license = this.licences.filter(l => l.id === agency.licenseId)[0].name;
     }
     return agency;
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IAgency>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError(),
-    );
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Agency>>): void {
+    result.subscribe({
+      next: () => this.onSaveSuccess(),
+      error: () => this.onSaveError(),
+    });
   }
 
   protected onSaveSuccess(): void {
@@ -158,18 +157,22 @@ export class AgencyUpdateComponent implements OnInit {
   }
 
   selectFile(selectFileEvent: Event): void {
-    this.selectedFiles = (selectFileEvent.target as HTMLInputElement).files || undefined;
-    this.progress.percentage = 0;
-    this.currentFileUpload = this.selectedFiles!.item(0);
-    this.fileUploadService.uploadAgencyImage(this.currentFileUpload!).subscribe(event => {
-      if (event.type === HttpEventType.UploadProgress) {
-        this.progress.percentage = Math.round((100 * event.loaded) / event.total!);
-      } else if (event instanceof HttpResponse) {
-        this.currentImage = event.body!.toString();
-      }
-    });
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const selectedFiles = (selectFileEvent.target as HTMLInputElement).files!;
 
-    this.selectedFiles = undefined;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    this.currentFileUpload = selectedFiles[0]!;
+
+    this.progress.percentage = 0;
+    this.fileUploadService
+      .uploadAgencyImage(this.currentFileUpload)
+      .pipe(FileUploadService.uploadFileHandler)
+      .subscribe(status => {
+        this.progress.percentage = status.progress;
+        if (status.location) {
+          this.currentImage = status.location.split('/').pop();
+        }
+      });
   }
 
   removePicture(): void {

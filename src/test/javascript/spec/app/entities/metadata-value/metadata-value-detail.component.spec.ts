@@ -16,30 +16,26 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { JhiDataUtils } from 'ng-jhipster';
 
 import { CvsTestModule } from '../../../test.module';
 import { MetadataValueDetailComponent } from 'app/entities/metadata-value/metadata-value-detail.component';
-import { MetadataValue } from 'app/shared/model/metadata-value.model';
 
 describe('Component Tests', () => {
   describe('MetadataValue Management Detail Component', () => {
     let comp: MetadataValueDetailComponent;
     let fixture: ComponentFixture<MetadataValueDetailComponent>;
-    let dataUtils: JhiDataUtils;
-    const route = ({ data: of({ metadataValue: new MetadataValue(123) }) } as any) as ActivatedRoute;
+    const route = { data: of({ metadataValue: { id: 123 } }) } as unknown as ActivatedRoute;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [MetadataValueDetailComponent],
-        providers: [{ provide: ActivatedRoute, useValue: route }]
+        providers: [{ provide: ActivatedRoute, useValue: route }],
       })
         .overrideTemplate(MetadataValueDetailComponent, '')
         .compileComponents();
       fixture = TestBed.createComponent(MetadataValueDetailComponent);
       comp = fixture.componentInstance;
-      dataUtils = fixture.debugElement.injector.get(JhiDataUtils);
     });
 
     describe('OnInit', () => {
@@ -51,6 +47,5 @@ describe('Component Tests', () => {
         expect(comp.metadataValue).toEqual(jasmine.objectContaining({ id: 123 }));
       });
     });
-
   });
 });

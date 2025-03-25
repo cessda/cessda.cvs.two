@@ -37,9 +37,9 @@ describe('Component Tests', () => {
           FormBuilder,
           {
             provide: ActivatedRoute,
-            useValue: new MockActivatedRoute({ key: 'XYZPDQ' })
-          }
-        ]
+            useValue: new MockActivatedRoute({ key: 'XYZPDQ' }),
+          },
+        ],
       })
         .overrideTemplate(PasswordResetFinishComponent, '')
         .createComponent(PasswordResetFinishComponent);
@@ -58,7 +58,8 @@ describe('Component Tests', () => {
 
     it('sets focus after the view has been initialized', () => {
       const node = {
-        focus(): void {}
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        focus(): void {},
       };
       comp.newPassword = new ElementRef(node);
       spyOn(node, 'focus');
@@ -71,7 +72,7 @@ describe('Component Tests', () => {
     it('should ensure the two passwords entered match', () => {
       comp.passwordForm.patchValue({
         newPassword: 'password',
-        confirmPassword: 'non-matching'
+        confirmPassword: 'non-matching',
       });
 
       comp.finishReset();
@@ -85,7 +86,7 @@ describe('Component Tests', () => {
         spyOn(service, 'save').and.returnValue(of({}));
         comp.passwordForm.patchValue({
           newPassword: 'password',
-          confirmPassword: 'password'
+          confirmPassword: 'password',
         });
 
         comp.finishReset();
@@ -93,7 +94,7 @@ describe('Component Tests', () => {
 
         expect(service.save).toHaveBeenCalledWith('XYZPDQ', 'password');
         expect(comp.success).toBe(true);
-      })
+      }),
     ));
 
     it('should notify of generic error', inject(
@@ -102,7 +103,7 @@ describe('Component Tests', () => {
         spyOn(service, 'save').and.returnValue(throwError('ERROR'));
         comp.passwordForm.patchValue({
           newPassword: 'password',
-          confirmPassword: 'password'
+          confirmPassword: 'password',
         });
 
         comp.finishReset();
@@ -111,7 +112,7 @@ describe('Component Tests', () => {
         expect(service.save).toHaveBeenCalledWith('XYZPDQ', 'password');
         expect(comp.success).toBe(false);
         expect(comp.error).toBe(true);
-      })
+      }),
     ));
   });
 });

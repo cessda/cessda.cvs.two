@@ -21,7 +21,7 @@ import { ActivatedRoute, Data } from '@angular/router';
 import { CvsTestModule } from '../../../test.module';
 import { AgencyComponent } from 'app/agency/agency.component';
 import { AgencyService } from 'app/agency/agency.service';
-import { Agency } from 'app/shared/model/agency.model';
+import { createNewAgency } from 'app/shared/model/agency.model';
 
 describe('Component Tests', () => {
   describe('Agency Management Component', () => {
@@ -43,13 +43,13 @@ describe('Component Tests', () => {
                     pagingParams: {
                       predicate: 'id',
                       reverse: false,
-                      page: 0
-                    }
-                  })
-              }
-            }
-          }
-        ]
+                      page: 0,
+                    },
+                  }),
+              },
+            },
+          },
+        ],
       })
         .overrideTemplate(AgencyComponent, '')
         .compileComponents();
@@ -65,10 +65,10 @@ describe('Component Tests', () => {
       spyOn(service, 'query').and.returnValue(
         of(
           new HttpResponse({
-            body: [new Agency(123)],
-            headers
-          })
-        )
+            body: [createNewAgency({ id: 123 })],
+            headers,
+          }),
+        ),
       );
 
       // WHEN
@@ -85,10 +85,10 @@ describe('Component Tests', () => {
       spyOn(service, 'query').and.returnValue(
         of(
           new HttpResponse({
-            body: [new Agency(123)],
-            headers
-          })
-        )
+            body: [createNewAgency({ id: 123 })],
+            headers,
+          }),
+        ),
       );
 
       // WHEN

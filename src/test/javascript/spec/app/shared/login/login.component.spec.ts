@@ -41,9 +41,9 @@ describe('Component Tests', () => {
           FormBuilder,
           {
             provide: LoginService,
-            useClass: MockLoginService
-          }
-        ]
+            useClass: MockLoginService,
+          },
+        ],
       })
         .overrideTemplate(LoginModalComponent, '')
         .compileComponents();
@@ -64,13 +64,13 @@ describe('Component Tests', () => {
         const credentials = {
           username: 'admin',
           password: 'admin',
-          rememberMe: true
+          rememberMe: true,
         };
 
         comp.loginForm.patchValue({
           username: 'admin',
           password: 'admin',
-          rememberMe: true
+          rememberMe: true,
         });
         mockLoginService.setResponse({});
         mockRouter.url = '/admin/metrics';
@@ -83,20 +83,20 @@ describe('Component Tests', () => {
         expect(comp.authenticationError).toEqual(false);
         expect(mockActiveModal.closeSpy).toHaveBeenCalled();
         expect(mockLoginService.loginSpy).toHaveBeenCalledWith(credentials);
-      })
+      }),
     ));
 
     it('should empty the credentials upon cancel', () => {
       // GIVEN
       comp.loginForm.patchValue({
         username: 'admin',
-        password: 'admin'
+        password: 'admin',
       });
 
       const expected = {
         username: '',
         password: '',
-        rememberMe: false
+        rememberMe: false,
       };
 
       // WHEN
@@ -104,9 +104,9 @@ describe('Component Tests', () => {
 
       // THEN
       expect(comp.authenticationError).toEqual(false);
-      expect(comp.loginForm.get('username')!.value).toEqual(expected.username);
-      expect(comp.loginForm.get('password')!.value).toEqual(expected.password);
-      expect(comp.loginForm.get('rememberMe')!.value).toEqual(expected.rememberMe);
+      expect(comp.loginForm.controls.username.value).toEqual(expected.username);
+      expect(comp.loginForm.controls.password.value).toEqual(expected.password);
+      expect(comp.loginForm.controls.rememberMe.value).toEqual(expected.rememberMe);
       expect(mockActiveModal.dismissSpy).toHaveBeenCalledWith('cancel');
     });
 

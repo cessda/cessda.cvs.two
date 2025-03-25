@@ -31,7 +31,12 @@ public interface AgencyMapper extends EntityMapper<AgencyDTO, Agency> {
     @Mapping(target = "removeUserAgency", ignore = true)
     Agency toEntity(AgencyDTO agencyDTO);
 
-    default Agency fromId(Long id) {
+    @Mapping( target = "logo", ignore = true )
+    @Mapping( target = "deletable", ignore = true )
+    @Mapping( target = "copyright", ignore = true )
+    AgencyDTO toDto( Agency entity );
+
+    default Agency fromId( Long id) {
         if (id == null) {
             return null;
         }

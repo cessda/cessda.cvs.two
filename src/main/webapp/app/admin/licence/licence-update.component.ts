@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
-import { ILicence, Licence } from 'app/shared/model/licence.model';
+import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from './licence.service';
 import { FileUploadService } from 'app/shared/upload/file-upload.service';
 
@@ -30,25 +30,22 @@ import { FileUploadService } from 'app/shared/upload/file-upload.service';
 export class LicenceUpdateComponent implements OnInit {
   isSaving = false;
 
-  selectedFiles?: FileList;
-  currentFileUpload?: File | null;
+  selectedFiles: FileList | null = null;
+  currentFileUpload: File | null = null;
   currentImage?: string;
   progress: { percentage: number } = {
     percentage: 0,
   };
 
   editForm = this.fb.group({
-    id: [],
-    name: [null, [Validators.required, Validators.maxLength(255)]],
-    link: [
-      null,
-      [
-        Validators.pattern(
-          '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
-        ),
-      ],
-    ],
-    abbr: [null, [Validators.required, Validators.maxLength(100)]],
+    id: new FormControl<number | null>(null),
+    name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(255)] }),
+    link: new FormControl<string | null>(null, [
+      Validators.pattern(
+        '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
+      ),
+    ]),
+    abbr: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(100)] }),
   });
 
   constructor(
@@ -64,7 +61,7 @@ export class LicenceUpdateComponent implements OnInit {
     });
   }
 
-  updateForm(licence: ILicence): void {
+  updateForm(licence: Licence): void {
     this.editForm.patchValue({
       id: licence.id,
       name: licence.name,
@@ -89,17 +86,16 @@ export class LicenceUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): ILicence {
+  private createFromForm(): Licence {
     return {
-      ...new Licence(),
-      id: this.editForm.get(['id'])!.value,
-      name: this.editForm.get(['name'])!.value,
-      link: this.editForm.get(['link'])!.value,
-      abbr: this.editForm.get(['abbr'])!.value,
+      id: this.editForm.controls.id.value || undefined,
+      name: this.editForm.controls.name.value,
+      link: this.editForm.controls.link.value || undefined,
+      abbr: this.editForm.controls.abbr.value,
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<ILicence>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Licence>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
       () => this.onSaveError(),
@@ -116,18 +112,26 @@ export class LicenceUpdateComponent implements OnInit {
   }
 
   selectFile(selectFileEvent: Event): void {
-    this.selectedFiles = (selectFileEvent.target as HTMLInputElement).files || undefined;
+    this.selectedFiles = (selectFileEvent.target as HTMLInputElement).files;
+    if (!this.selectedFiles) {
+      return;
+    }
+    this.currentFileUpload = this.selectedFiles.item(0);
+    if (!this.currentFileUpload) {
+      return;
+    }
     this.progress.percentage = 0;
-    this.currentFileUpload = this.selectedFiles!.item(0);
-    this.fileUploadService.uploadLicenseImage(this.currentFileUpload!).subscribe(event => {
-      if (event.type === HttpEventType.UploadProgress) {
-        this.progress.percentage = Math.round((100 * event.loaded) / event.total!);
-      } else if (event instanceof HttpResponse) {
-        this.currentImage = event.body!.toString();
-      }
-    });
+    this.fileUploadService
+      .uploadLicenseImage(this.currentFileUpload)
+      .pipe(FileUploadService.uploadFileHandler)
+      .subscribe(status => {
+        this.progress.percentage = status.progress;
+        if (status.location) {
+          this.currentImage = status.location.split('/').pop();
+        }
+      });
 
-    this.selectedFiles = undefined;
+    this.selectedFiles = null;
   }
 
   removePicture(): void {

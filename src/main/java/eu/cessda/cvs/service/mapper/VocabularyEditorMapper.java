@@ -29,6 +29,13 @@ public interface VocabularyEditorMapper extends EntityMapper<VocabularyDTO, Voca
     @Mapping(source = "codes", target = "codes")
     @Mapping(source = "languages", target = "languages")
     @Mapping(source = "statuses", target = "statuses")
+    @Mapping(target = "statusByVocabularySnippet", ignore = true)
+    @Mapping(target = "versionNumberByVocabularySnippet", ignore = true)
+    @Mapping(target = "contentByVocabularySnippet", ignore = true)
+    @Mapping(target = "agencyLink", ignore = true)
+    @Mapping(target = "versions", ignore = true)
+    @Mapping(target = "removeVersion", ignore = true)
+    @Mapping(target = "languagesPublished", ignore = true)
     VocabularyDTO toDto(VocabularyEditor vocabularyEditor);
 
     @Mapping(source = "codes", target = "codes")

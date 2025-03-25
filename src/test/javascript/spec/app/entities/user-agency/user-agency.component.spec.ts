@@ -43,13 +43,13 @@ describe('Component Tests', () => {
                     pagingParams: {
                       predicate: 'id',
                       reverse: false,
-                      page: 0
-                    }
-                  })
-              }
-            }
-          }
-        ]
+                      page: 0,
+                    },
+                  }),
+              },
+            },
+          },
+        ],
       })
         .overrideTemplate(UserAgencyComponent, '')
         .compileComponents();
@@ -64,11 +64,11 @@ describe('Component Tests', () => {
       const headers = new HttpHeaders().append('link', 'link;link');
       spyOn(service, 'query').and.returnValue(
         of(
-          new HttpResponse({
-            body: [new UserAgency(123)],
-            headers
-          })
-        )
+          new HttpResponse<UserAgency[]>({
+            body: [{ id: 123 }],
+            headers,
+          }),
+        ),
       );
 
       // WHEN
@@ -84,11 +84,11 @@ describe('Component Tests', () => {
       const headers = new HttpHeaders().append('link', 'link;link');
       spyOn(service, 'query').and.returnValue(
         of(
-          new HttpResponse({
-            body: [new UserAgency(123)],
-            headers
-          })
-        )
+          new HttpResponse<UserAgency[]>({
+            body: [{ id: 123 }],
+            headers,
+          }),
+        ),
       );
 
       // WHEN

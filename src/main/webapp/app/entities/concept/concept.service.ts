@@ -19,10 +19,10 @@ import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption, SearchWithPagination } from 'app/shared/util/request-util';
-import { IConcept } from 'app/shared/model/concept.model';
+import { Concept } from 'app/shared/model/concept.model';
 
-type EntityResponseType = HttpResponse<IConcept>;
-type EntityArrayResponseType = HttpResponse<IConcept[]>;
+type EntityResponseType = HttpResponse<Concept>;
+type EntityArrayResponseType = HttpResponse<Concept[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ConceptService {
@@ -31,29 +31,29 @@ export class ConceptService {
 
   constructor(protected http: HttpClient) {}
 
-  create(concept: IConcept): Observable<EntityResponseType> {
-    return this.http.post<IConcept>(this.resourceUrl, concept, { observe: 'response' });
+  create(concept: Concept): Observable<EntityResponseType> {
+    return this.http.post<Concept>(this.resourceUrl, concept, { observe: 'response' });
   }
 
-  update(concept: IConcept): Observable<EntityResponseType> {
-    return this.http.put<IConcept>(this.resourceUrl, concept, { observe: 'response' });
+  update(concept: Concept): Observable<EntityResponseType> {
+    return this.http.put<Concept>(this.resourceUrl, concept, { observe: 'response' });
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IConcept>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http.get<Concept>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IConcept[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http.get<Concept[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  delete(id: number): Observable<HttpResponse<{}>> {
+  delete(id: number): Observable<HttpResponse<object>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IConcept[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
+    return this.http.get<Concept[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }
 }

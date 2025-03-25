@@ -38,14 +38,14 @@ describe('Component Tests', () => {
       login: 'john',
       authorities: [],
       imageUrl: '',
-      userAgencies: []
+      userAgencies: [],
     };
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [SettingsComponent],
-        providers: [FormBuilder]
+        providers: [FormBuilder],
       })
         .overrideTemplate(SettingsComponent, '')
         .compileComponents();
@@ -65,7 +65,7 @@ describe('Component Tests', () => {
         firstName: 'John',
         lastName: 'Doe',
         email: 'john.doe@mail.com',
-        langKey: 'en'
+        langKey: 'en',
       };
 
       // WHEN

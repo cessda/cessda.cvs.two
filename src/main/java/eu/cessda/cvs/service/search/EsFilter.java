@@ -22,7 +22,9 @@ import java.util.List;
 import java.util.Map;
 
 public class EsFilter implements Serializable {
-	public enum FilterType {KEYWORD, RANGE}
+    private static final long serialVersionUID = -3650519521378103904L;
+
+    public enum FilterType {KEYWORD, RANGE}
 
     public static final String AGENCY_AGG = "agencyName";
     public static final String LANGS_AGG = "languages";

@@ -18,94 +18,75 @@ package eu.cessda.cvs.web.rest.domain;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class CvResult implements Serializable {
-    private List<VocabularyDTO> vocabularies;
-    private long totalElements;
-    private int totalPage;
-    private int numberOfElements;
-    private int number;
-    private int size;
-    private boolean last;
-    private boolean first;
-    private List<Aggr> aggrs = new ArrayList<>();
+    private static final long serialVersionUID = 1607897901898491262L;
+
+    private final List<VocabularyDTO> vocabularies;
+    private final long totalElements;
+    private final int totalPage;
+    private final int numberOfElements;
+    private final int number;
+    private final int size;
+    private final boolean last;
+    private final boolean first;
+    private final List<Aggr> aggrs;
+
+    public CvResult(
+        List<VocabularyDTO> vocabularies,
+        long totalElements,
+        int totalPage,
+        int numberOfElements,
+        int number,
+        int size,
+        boolean last,
+        boolean first,
+        List<Aggr> aggrs
+    ) {
+        this.vocabularies = vocabularies;
+        this.totalElements = totalElements;
+        this.totalPage = totalPage;
+        this.numberOfElements = numberOfElements;
+        this.number = number;
+        this.size = size;
+        this.last = last;
+        this.first = first;
+        this.aggrs = aggrs;
+    }
 
     public List<VocabularyDTO> getVocabularies() {
         return vocabularies;
-    }
-
-    public void setVocabularies(List<VocabularyDTO> vocabularies) {
-        this.vocabularies = vocabularies;
     }
 
     public long getTotalElements() {
         return totalElements;
     }
 
-    public void setTotalElements(long totalElements) {
-        this.totalElements = totalElements;
-    }
-
     public int getTotalPage() {
         return totalPage;
     }
-
-    public void setTotalPage(int totalPage) {
-        this.totalPage = totalPage;
-    }
-
     public int getNumberOfElements() {
         return numberOfElements;
-    }
-
-    public void setNumberOfElements(int numberOfElements) {
-        this.numberOfElements = numberOfElements;
     }
 
     public int getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
     public int getSize() {
         return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
     }
 
     public boolean isLast() {
         return last;
     }
 
-    public void setLast(boolean last) {
-        this.last = last;
-    }
-
     public boolean isFirst() {
         return first;
     }
 
-    public void setFirst(boolean first) {
-        this.first = first;
-    }
-
     public List<Aggr> getAggrs() {
         return aggrs;
-    }
-
-    public void setAggrs(List<Aggr> aggrs) {
-        this.aggrs = aggrs;
-    }
-
-    public CvResult addAggr(Aggr aggr) {
-        this.aggrs.add(aggr);
-        return this;
     }
 }

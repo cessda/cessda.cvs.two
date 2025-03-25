@@ -15,22 +15,11 @@
  */
 import { Moment } from 'moment';
 
-export interface IComment {
+export interface Comment {
   id?: number;
   info?: string;
-  content?: any;
+  content?: string;
   userId?: number;
   dateTime?: Moment;
   versionId?: number;
-}
-
-export class Comment implements IComment {
-  constructor(
-    public id?: number,
-    public info?: string,
-    public content?: any,
-    public userId?: number,
-    public dateTime?: Moment,
-    public versionId?: number
-  ) {}
 }

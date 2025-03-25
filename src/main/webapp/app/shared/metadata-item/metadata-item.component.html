@@ -15,7 +15,7 @@
     limitations under the License.
 
 -->
-<div class="{{metadataForm.get('identifier')}}">
+<div class="{{metadataForm.controls.identifier}}">
     <div *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT']" class="w-100">
         <button *ngIf="!isWriting" type="button" ngbTooltip="Edit comment" class="btn btn-sm btn-primary-outline float-right" data-dismiss="modal" (click)="isWriting = !isWriting">
             <fa-icon class="text-secondary" [icon]="'edit'"></fa-icon>
@@ -23,7 +23,7 @@
         </button>
     </div>
     <div *ngIf="!isWriting" id="{{metadataValue.identifier}}" class="detail-column ql-snow">
-        <div class="ql-editor ql-read" [innerHTML]="metadataForm.get('content')? (metadataForm.get('content')!.value | safeHtml) : ''"></div>
+        <div class="ql-editor ql-read" [innerHTML]="metadataForm.controls.content ? (metadataForm.controls.content.value | safeHtml) : ''"></div>
     </div>
     <form novalidate [formGroup]="metadataForm">
         <div *ngIf="isWriting" class="card w-100">
@@ -34,26 +34,26 @@
                     </div>
                     <div class="detail-column  label-column-value">
                         <input type="text" class="form-control" id="field_identifier" name="identifier" formControlName="identifier"/>
-                        <div *ngIf="metadataForm.get('identifier')!.invalid && (metadataForm.get('identifier')!.dirty || metadataForm.get('identifier')!.touched)">
+                        <div *ngIf="metadataForm.controls.identifier.invalid && (metadataForm.controls.identifier.dirty || metadataForm.controls.identifier.touched)">
                             <small class="form-text text-danger"
-                                   *ngIf="metadataForm.get('identifier')?.errors?.required" jhiTranslate="entity.validation.required">
+                                   *ngIf="metadataForm.controls.identifier.errors?.required" jhiTranslate="entity.validation.required">
                                 This field is required.
                             </small>
 
                             <small class="form-text text-danger"
-                                   *ngIf="metadataForm.get('identifier')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength"
+                                   *ngIf="metadataForm.controls.identifier.errors?.maxlength" jhiTranslate="entity.validation.maxlength"
                                    [translateValues]="{max: 240}">
                                 This field cannot be longer than 40 characters.
                             </small>
 
                             <small class="form-text text-danger"
-                                   *ngIf="metadataForm.get('identifier')?.errors?.minlength" jhiTranslate="entity.validation.minlength"
+                                   *ngIf="metadataForm.controls.identifier.errors?.minlength" jhiTranslate="entity.validation.minlength"
                                    [translateValues]="{min: 2}">
                                 This field is required to be at least 2 characters.
                             </small>
 
                             <small class="form-text text-danger"
-                                   *ngIf="metadataForm.get('identifier')?.errors?.pattern">
+                                   *ngIf="metadataForm.controls.identifier.errors?.pattern">
                                 Identifier can only contain lowercase letters (a-z), digits (0-9) and hyphen/minus (-).
                             </small>
                         </div>
@@ -65,9 +65,9 @@
                     </div>
                     <div class="detail-column  label-column-value">
                         <input type="number" class="form-control" name="position" id="field_position" formControlName="position"/>
-                        <div *ngIf="metadataForm.get('position')!.invalid && (metadataForm.get('position')!.dirty || metadataForm.get('position')!.touched)">
+                        <div *ngIf="metadataForm.controls.position.invalid && (metadataForm.controls.position.dirty || metadataForm.controls.position.touched)">
                             <small class="form-text text-danger"
-                                   *ngIf="metadataForm.get('position')?.errors?.required" jhiTranslate="entity.validation.required">
+                                   *ngIf="metadataForm.controls.position.errors?.required" jhiTranslate="entity.validation.required">
                                 This field is required.
                             </small>
                         </div>
@@ -75,18 +75,9 @@
                 </div>
                 <div>
                     <quill-editor class="large-quill" (onEditorCreated)="editorCreated($event)" formControlName="content" [placeholder]="''"></quill-editor>
-                    <button *ngIf="!isTableInsertOptVisible" (click)="showInsertTable()" class="btn btn-sm btn-outline-secondary"
-                            ngbTooltip="Make sure that pointer is already in the right position in the text-area.">Insert Table</button>
-                    <span *ngIf="isTableInsertOptVisible">
-                        <span>Table with </span>
-                        <input style="width:40px" type="number" min="1" max="20" step="1" id="field_tableRow" name="tableRow" formControlName="tableRow"/> <span> rows</span>
-                        <input style="width:40px" type="number" min="1" max="10" step="1" id="field_tableColumn" name="tableColumn" formControlName="tableColumn"/> <span> column</span>
-                        <button ngbTooltip="Make sure that pointer is already in the right position in the text-area."
-                                 (click)="insertTable()" class="btn btn-sm btn-outline-secondary">Insert</button>
-                    </span>
-                    <div *ngIf="metadataForm.get('content')!.invalid && (metadataForm.get('content')!.dirty || metadataForm.get('content')!.touched)">
+                    <div *ngIf="metadataForm.controls.content.invalid && (metadataForm.controls.content.dirty || metadataForm.controls.content.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="metadataForm.get('content')?.errors?.minlength">
+                               *ngIf="metadataForm.controls.content.errors?.minlength">
                             This field is required with minimum of a short sentence content.
                         </small>
                     </div>

@@ -27,8 +27,18 @@ import org.mapstruct.Mapping;
 public interface VersionMapper extends EntityMapper<VersionDTO, Version> {
 
     @Mapping(source = "vocabulary.id", target = "vocabularyId")
+    @Mapping(target = "removeComment", ignore = true)
+    @Mapping(target = "removeConcept", ignore = true)
+    @Mapping(target = "contentByVocabularySnippet", ignore = true)
+    @Mapping(target = "copyright", ignore = true)
+    @Mapping(target = "deprecatedConceptsValidUntilVersionId", ignore = true)
+    @Mapping(target = "licenseLink", ignore = true)
+    @Mapping(target = "licenseLogo", ignore = true)
+    @Mapping(target = "licenseName", ignore = true)
+    @Mapping(target = "versionHistories", ignore = true)
     VersionDTO toDto(Version version);
 
+    @Mapping(target = "removeComment", ignore = true)
     @Mapping(target = "removeConcept", ignore = true)
     @Mapping(source = "vocabularyId", target = "vocabulary")
     Version toEntity(VersionDTO versionDTO);

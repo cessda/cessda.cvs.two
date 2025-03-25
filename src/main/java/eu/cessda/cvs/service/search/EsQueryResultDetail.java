@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class EsQueryResultDetail implements Serializable {
+    private static final long serialVersionUID = -4522175739918034968L;
+
 	public static final int PAGE_SIZE = 30 ;
     private SearchScope searchScope;
 
@@ -185,5 +187,22 @@ public class EsQueryResultDetail implements Serializable {
 
     public void setCodeSize(int codeSize) {
         this.codeSize = codeSize;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "EsQueryResultDetail{" +
+            "searchScope=" + searchScope +
+            ", searchTerm='" + searchTerm + '\'' +
+            ", sortLanguage='" + sortLanguage + '\'' +
+            ", page=" + page +
+            ", aggFields=" + aggFields +
+            ", esFilters=" + esFilters +
+            ", isSearchAllLanguages=" + isSearchAllLanguages +
+            ", withHighlight=" + withHighlight +
+            ", codeSize=" + codeSize +
+            ", vocabularies=" + vocabularies +
+            '}';
     }
 }

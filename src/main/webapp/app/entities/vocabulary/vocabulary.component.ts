@@ -13,25 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 
-import {ITEMS_PER_PAGE} from 'app/shared/constants/pagination.constants';
-import {VocabularyService} from './vocabulary.service';
-import {VocabularyDeleteDialogComponent} from './vocabulary-delete-dialog.component';
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
+import { VocabularyService } from './vocabulary.service';
+import { VocabularyDeleteDialogComponent } from './vocabulary-delete-dialog.component';
 
 @Component({
   selector: 'jhi-vocabulary',
-  templateUrl: './vocabulary.component.html'
+  templateUrl: './vocabulary.component.html',
 })
 export class VocabularyComponent implements OnInit, OnDestroy {
-  vocabularies?: IVocabulary[];
+  vocabularies: Vocabulary[] = [];
+  searching = true;
   eventSubscriber?: Subscription;
   currentSearch: string;
   totalItems = 0;
@@ -47,7 +48,7 @@ export class VocabularyComponent implements OnInit, OnDestroy {
     protected dataUtils: JhiDataUtils,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -56,6 +57,7 @@ export class VocabularyComponent implements OnInit, OnDestroy {
   }
 
   loadPage(page?: number): void {
+    this.searching = true;
     const pageToLoad: number = page || this.page;
 
     if (this.currentSearch) {
@@ -64,12 +66,12 @@ export class VocabularyComponent implements OnInit, OnDestroy {
           page: pageToLoad - 1,
           query: this.currentSearch,
           size: this.itemsPerPage,
-          sort: this.sort()
+          sort: this.sort(),
         })
-        .subscribe(
-          (res: HttpResponse<IVocabulary[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-          () => this.onError()
-        );
+        .subscribe({
+          next: (res: HttpResponse<Vocabulary[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+          error: (e: HttpErrorResponse) => this.onError(e),
+        });
       return;
     }
 
@@ -77,12 +79,12 @@ export class VocabularyComponent implements OnInit, OnDestroy {
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
-        sort: this.sort()
+        sort: this.sort(),
       })
-      .subscribe(
-        (res: HttpResponse<IVocabulary[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
-      );
+      .subscribe({
+        next: (res: HttpResponse<Vocabulary[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        error: (e: HttpErrorResponse) => this.onError(e),
+      });
   }
 
   search(query: string): void {
@@ -107,7 +109,7 @@ export class VocabularyComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackId(index: number, item: IVocabulary): number {
+  trackId(index: number, item: Vocabulary): number {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     return item.id!;
   }
@@ -116,7 +118,7 @@ export class VocabularyComponent implements OnInit, OnDestroy {
     this.eventSubscriber = this.eventManager.subscribe('vocabularyListModification', () => this.loadPage());
   }
 
-  delete(vocabulary: IVocabulary): void {
+  delete(vocabulary: Vocabulary): void {
     const modalRef = this.modalService.open(VocabularyDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.vocabulary = vocabulary;
   }
@@ -129,7 +131,8 @@ export class VocabularyComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  protected onSuccess(data: IVocabulary[] | null, headers: HttpHeaders, page: number): void {
+  protected onSuccess(data: Vocabulary[] | null, headers: HttpHeaders, page: number): void {
+    this.searching = false;
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
@@ -138,13 +141,15 @@ export class VocabularyComponent implements OnInit, OnDestroy {
         page: this.page,
         size: this.itemsPerPage,
         search: this.currentSearch,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
+        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
+      },
     });
     this.vocabularies = data || [];
   }
 
-  protected onError(): void {
+  protected onError(e: HttpErrorResponse): void {
+    this.searching = false;
+    console.error(e);
     this.ngbPaginationPage = this.page;
   }
 }

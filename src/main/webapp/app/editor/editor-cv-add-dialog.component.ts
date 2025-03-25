@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
@@ -20,17 +21,18 @@ import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 import { JhiEventManager } from 'ng-jhipster';
 import { AgencyService } from 'app/agency/agency.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { IAgency } from 'app/shared/model/agency.model';
+import { Agency } from 'app/shared/model/agency.model';
 import { AccountService } from 'app/core/auth/account.service';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Account } from 'app/core/user/account.model';
 import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
 import { VOCABULARY_ALREADY_EXIST_TYPE } from 'app/shared';
 import { EditorService } from 'app/editor/editor.service';
-import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
   selector: 'jhi-editor-cv-add-dialog',
@@ -39,17 +41,20 @@ import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabula
 export class EditorCvAddDialogComponent implements OnInit {
   isSaving: boolean;
   account!: Account;
-  agencies: IAgency[] = [];
+  agencies: Agency[] = [];
   languages: string[] = [];
   errorNotationExists = false;
 
   cvAddForm = this.fb.group({
-    agency: [],
-    sourceLanguage: [],
-    notation: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(240), Validators.pattern('^[+A-Za-z0-9-]*$')]],
-    title: ['', [Validators.required]],
-    definition: ['', [Validators.required]],
-    notes: [],
+    agency: new FormControl<number | null>(null),
+    sourceLanguage: new FormControl<string | null>(null),
+    notation: new FormControl<string>('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(2), Validators.maxLength(240), Validators.pattern('^[+A-Za-z0-9-]*$')],
+    }),
+    title: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    definition: new FormControl<string>('', { nonNullable: true, validators: [Validators.required] }),
+    notes: new FormControl<string | null>(null),
   });
 
   constructor(
@@ -60,7 +65,7 @@ export class EditorCvAddDialogComponent implements OnInit {
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
   ) {
     this.isSaving = false;
   }
@@ -72,19 +77,19 @@ export class EditorCvAddDialogComponent implements OnInit {
         size: 1000,
         sort: ['name,asc'],
       })
-      .subscribe((res: HttpResponse<IAgency[]>) => {
+      .subscribe((res: HttpResponse<Agency[]>) => {
         this.agencies = res.body ? this.filterAgencies(res.body) : [];
         // select first agency
-        this.cvAddForm.patchValue({ agency: this.agencies[0].id! });
-        this.updateLanguageCheckbox(this.agencies[0].id!);
+        this.cvAddForm.patchValue({ agency: this.agencies[0].id });
+        this.updateLanguageCheckbox(this.agencies[0].id);
       });
   }
 
-  filterAgencies(agcs: IAgency[]): IAgency[] {
+  filterAgencies(agcs: Agency[]): Agency[] {
     if (this.accountService.isAdmin()) {
       return agcs;
     }
-    const ags: IAgency[] = [];
+    const ags: Agency[] = [];
     this.account.userAgencies.forEach(ua => {
       if (ua.agencyRole === 'ADMIN_SL') {
         const ag = agcs.filter(agc => agc.id === ua.agencyId)[0];
@@ -97,7 +102,7 @@ export class EditorCvAddDialogComponent implements OnInit {
     return ags;
   }
 
-  updateLanguageCheckbox(agencyId: number): void {
+  updateLanguageCheckbox(agencyId: number | undefined): void {
     this.languages = [];
     if (this.accountService.isAdmin()) {
       for (const langIso in LanguageIso) {
@@ -131,21 +136,19 @@ export class EditorCvAddDialogComponent implements OnInit {
     });
   }
 
-  private createFromForm(): IVocabularySnippet {
-    const selectedAgencyId = this.cvAddForm.get(['agency'])!.value;
-    const selectedAgency = this.agencies.find(a => a.id === +selectedAgencyId);
+  private createFromForm(): VocabularySnippet {
+    const selectedAgencyId = Number(this.cvAddForm.controls.agency.value);
     return {
-      ...new VocabularySnippet(),
-      actionType: 'CREATE_CV',
-      agencyId: selectedAgency!.id,
-      language: this.cvAddForm.get(['sourceLanguage'])!.value,
+      actionType: ActionType.CREATE_CV,
+      agencyId: selectedAgencyId,
+      language: this.cvAddForm.controls.sourceLanguage.value || undefined,
       itemType: 'SL',
-      notation: this.cvAddForm.get(['notation'])!.value,
+      notation: this.cvAddForm.controls.notation.value,
       versionNumber: '1.0.0',
       status: 'DRAFT',
-      title: this.cvAddForm.get(['title'])!.value,
-      definition: this.cvAddForm.get(['definition'])!.value,
-      notes: this.cvAddForm.get(['notes'])!.value,
+      title: this.cvAddForm.controls.title.value,
+      definition: this.cvAddForm.controls.definition.value,
+      notes: this.cvAddForm.controls.notes.value || undefined,
     };
   }
 
@@ -156,10 +159,10 @@ export class EditorCvAddDialogComponent implements OnInit {
     this.subscribeToSaveResponse(this.editorService.createVocabulary(vocabularySnippet), vocabularySnippet.notation!);
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>, notation: string): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Vocabulary>>, notation: string): void {
     result.subscribe(
       () => this.onSaveSuccess(notation),
-      response => this.processError(response)
+      response => this.processError(response),
     );
   }
 
@@ -186,25 +189,29 @@ export class EditorCvAddDialogComponent implements OnInit {
   template: '',
 })
 export class EditorCvAddPopupComponent implements OnInit, OnDestroy {
-  protected ngbModalRef?: NgbModalRef | null;
+  protected ngbModalRef: NgbModalRef | undefined;
 
-  constructor(protected activatedRoute: ActivatedRoute, protected router: Router, protected modalService: NgbModal) {}
+  constructor(
+    protected activatedRoute: ActivatedRoute,
+    protected router: Router,
+    protected modalService: NgbModal,
+  ) {}
 
   ngOnInit(): void {
-    this.ngbModalRef = this.modalService.open(EditorCvAddDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef = this.modalService.open(EditorCvAddDialogComponent, { size: 'xl', backdrop: 'static' });
     this.ngbModalRef.result.then(
-      result => {
+      () => {
         this.router.navigate(['/editor', { outlets: { popup: null } }]);
-        this.ngbModalRef = null;
+        this.ngbModalRef = undefined;
       },
-      reason => {
+      () => {
         this.router.navigate(['/editor', { outlets: { popup: null } }]);
-        this.ngbModalRef = null;
-      }
+        this.ngbModalRef = undefined;
+      },
     );
   }
 
   ngOnDestroy(): void {
-    this.ngbModalRef = null;
+    this.ngbModalRef = undefined;
   }
 }

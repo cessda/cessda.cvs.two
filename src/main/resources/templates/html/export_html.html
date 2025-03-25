@@ -180,7 +180,7 @@
 
 		<div class="page">
 			<div style="width: 100%;">
-				<div style="width:130px;float:left;padding-right:15px">
+				<div style="width:130px;float:left;padding-right:15px" th:if="${agency.logo != null}">
 					<img alt="agency-logo" class="logo" th:src="@{${agency.logo}}"/>
 				</div>
 				<div>
@@ -249,49 +249,52 @@
 		</div>
 		<hr />
 
-		<div class="CodeList page">
-			<h2>Deprecated codes list</h2>
-			<table aria-describedby="page-heading" style="width: 100%;">
-				<tr>
-					<td>
-						<ul th:each="concept : ${version.concepts}" th:if="${concept.deprecated}" >
-							<li>
-								<span style="font-weight: 600;" th:text="${concept.notation}"></span>
-								<ul>
-									<li th:if="${concept.validFrom != null || concept.validUntil != null}">Valid<span th:if="${concept.validFrom != null}" th:text="' from ' + ${concept.validFrom}"></span><span th:if="${concept.validUntil != null}" th:text="' to ' + ${concept.validUntil}"></span></li>
-									<li>URI: <a th:href="${concept.uri}" th:text="${concept.uri}"></a></li>
-									<li>Descriptive term: <span th:utext="${concept.title}"></span></li>
-									<li th:if="${concept.replacedById} != null">
-										Replaced by:
-										<ul>
-											<li><span th:utext="'Code: ' + ${concept.replacedByNotation}"></span></li>
-											<li>URI: <a th:if="${concept.replacedByUri != null}" th:href="${concept.replacedByUri}" th:text="${concept.replacedByUri}"></a><span th:unless="${concept.replacedByUri != null}" style="font-style: italic;">undefined</span></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</td>
-				</tr>
-			</table>
+		<div th:if="${version.concepts.^[deprecated == true]}">
+			<div class="CodeList page">
+				<h2>Deprecated codes list</h2>
+				<table aria-describedby="page-heading" style="width: 100%;">
+					<tr>
+						<td>
+							<ul th:each="concept : ${version.concepts}" th:if="${concept.deprecated}" >
+								<li>
+									<span style="font-weight: 600;" th:text="${concept.notation}"></span>
+									<ul>
+										<li th:if="${concept.validFrom != null || concept.validUntil != null}">Valid<span th:if="${concept.validFrom != null}" th:text="' from ' + ${concept.validFrom}"></span><span th:if="${concept.validUntil != null}" th:text="' to ' + ${concept.validUntil}"></span></li>
+										<li>URI: <a th:href="${concept.uri}" th:text="${concept.uri}"></a></li>
+										<li>Descriptive term: <span th:utext="${concept.title}"></span></li>
+										<li th:if="${concept.replacedById} != null">
+											Replaced by:
+											<ul>
+												<li><span th:utext="'Code: ' + ${concept.replacedByNotation}"></span></li>
+												<li>URI: <a th:if="${concept.replacedByUri != null}" th:href="${concept.replacedByUri}" th:text="${concept.replacedByUri}"></a><span th:unless="${concept.replacedByUri != null}" style="font-style: italic;">undefined</span></li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<hr />
 		</div>
-		<hr />
 
 		<div class="Usage page">
 			<h2>Usage</h2>
 			<div th:remove="tag" th:utext="${version.ddiUsage}"></div>
 		</div>
 		<hr />
-        <h2>Copyright and license</h2>
+        <h2>License and citation</h2>
         <p>Copyright © <a th:href="${agency.link}" th:text="${agency.name}"></a> <span th:text="${year}"></span>.</p>
         <p th:if="${version.licenseName != null}">
-            <a rel="license" th:href="${version.licenseLink}">
-                <img style="border-width:0;width:140px" alt="licanse-logo" th:attr="src=${version.licenseLogo},title=${version.licenseName},alt=${version.licenseName}" />
+            <a rel="license" th:if="${version.licenseLogo != null}" th:href="${version.licenseLink}">
+                <img style="border-width:0;width:140px" alt="license-logo" th:attr="src=${version.licenseLogo},title=${version.licenseName},alt=${version.licenseName}" />
             </a>
             <span>This work is licensed under a
 						<a rel="license" th:href="${version.licenseLink}" th:text="${version.licenseName}"></a>.
 					</span>
         </p>
+		<p><br/></p>
         <p th:if="${version.canonicalUri != null}">Citation:
             <span th:utext="${version.citation}"></span> Available from:
             <a th:href="${baseUrl + '/urn/' + version.canonicalUri}" th:text="${baseUrl + '/urn/' + version.canonicalUri}"></a>

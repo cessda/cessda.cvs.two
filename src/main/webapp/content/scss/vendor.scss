@@ -22,11 +22,9 @@ eg $input-color: red;
 // Override Bootstrap variables
 @import 'bootstrap-variables';
 // Import Bootstrap source files from node_modules
-@import '~bootstrap/scss/bootstrap';
+@import '/node_modules/bootstrap/scss/bootstrap';
 // Import Quill richtext
-@import '~quill/dist/quill.core.css';
-@import '~quill/dist/quill.snow.css';
-
-@import "~quill-better-table/dist/quill-better-table.css";
+@import '/node_modules/quill/dist/quill.core.css';
+@import '/node_modules/quill/dist/quill.snow.css';
 
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */

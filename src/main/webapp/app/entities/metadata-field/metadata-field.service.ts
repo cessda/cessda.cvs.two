@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import {SERVER_API_URL} from 'app/app.constants';
-import {createRequestOption, SearchWithPagination} from 'app/shared/util/request-util';
-import {IMetadataField} from 'app/shared/model/metadata-field.model';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption, SearchWithPagination } from 'app/shared/util/request-util';
+import { MetadataField } from 'app/shared/model/metadata-field.model';
 
-type EntityResponseType = HttpResponse<IMetadataField>;
-type EntityArrayResponseType = HttpResponse<IMetadataField[]>;
+type EntityResponseType = HttpResponse<MetadataField>;
+type EntityArrayResponseType = HttpResponse<MetadataField[]>;
 
 @Injectable({ providedIn: 'root' })
 export class MetadataFieldService {
@@ -31,39 +31,40 @@ export class MetadataFieldService {
 
   constructor(protected http: HttpClient) {}
 
-  create(metadataField: IMetadataField): Observable<EntityResponseType> {
-    return this.http.post<IMetadataField>(this.resourceUrl, metadataField, { observe: 'response' });
+  create(metadataField: MetadataField): Observable<EntityResponseType> {
+    return this.http.post<MetadataField>(this.resourceUrl, metadataField, { observe: 'response' });
   }
 
-  update(metadataField: IMetadataField): Observable<EntityResponseType> {
-    return this.http.put<IMetadataField>(this.resourceUrl, metadataField, { observe: 'response' });
+  update(metadataField: MetadataField): Observable<EntityResponseType> {
+    return this.http.put<MetadataField>(this.resourceUrl, metadataField, { observe: 'response' });
   }
 
   find(id: number): Observable<EntityResponseType> {
-    return this.http.get<IMetadataField>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+    return this.http.get<MetadataField>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IMetadataField[]>(this.resourceUrl, { params: options, observe: 'response' });
+    return this.http.get<MetadataField[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
 
-  delete(id: number): Observable<HttpResponse<{}>> {
+  delete(id: number): Observable<HttpResponse<object>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
   search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
-    return this.http.get<IMetadataField[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
+    return this.http.get<MetadataField[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }
 
   findByKey(metadataKey: string): Observable<EntityResponseType> {
-    return this.http.get<IMetadataField>(`${this.resourceUrl}/metadata-key/${metadataKey}`, { observe: 'response' });
+    return this.http.get<MetadataField>(`${this.resourceUrl}/metadata-key/${metadataKey}`, { observe: 'response' });
   }
 
-  downloadMetadataFile(metadataKey: string, downloadType: string): Observable<Blob> {
-    return this.http.get(`${this.resourceUrl}/download-${downloadType}/${metadataKey}`, {
-      responseType: 'blob'
+  downloadMetadataFile(metadataKey: string, mimeType: string): Observable<Blob> {
+    return this.http.get(`${this.resourceUrl}/download/${metadataKey}`, {
+      responseType: 'blob',
+      headers: { accept: mimeType },
     });
   }
 }

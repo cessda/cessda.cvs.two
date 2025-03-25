@@ -21,7 +21,7 @@ import { ActivatedRoute, Data } from '@angular/router';
 import { CvsTestModule } from '../../../test.module';
 import { VocabularyComponent } from 'app/entities/vocabulary/vocabulary.component';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
-import { Vocabulary } from 'app/shared/model/vocabulary.model';
+import { createNewVocabulary } from 'app/shared/model/vocabulary.model';
 
 describe('Component Tests', () => {
   describe('Vocabulary Management Component', () => {
@@ -43,13 +43,13 @@ describe('Component Tests', () => {
                     pagingParams: {
                       predicate: 'id',
                       reverse: false,
-                      page: 0
-                    }
-                  })
-              }
-            }
-          }
-        ]
+                      page: 0,
+                    },
+                  }),
+              },
+            },
+          },
+        ],
       })
         .overrideTemplate(VocabularyComponent, '')
         .compileComponents();
@@ -65,10 +65,10 @@ describe('Component Tests', () => {
       spyOn(service, 'query').and.returnValue(
         of(
           new HttpResponse({
-            body: [new Vocabulary(123)],
-            headers
-          })
-        )
+            body: [createNewVocabulary({ id: 123 })],
+            headers,
+          }),
+        ),
       );
 
       // WHEN
@@ -85,10 +85,10 @@ describe('Component Tests', () => {
       spyOn(service, 'query').and.returnValue(
         of(
           new HttpResponse({
-            body: [new Vocabulary(123)],
-            headers
-          })
-        )
+            body: [createNewVocabulary({ id: 123 })],
+            headers,
+          }),
+        ),
       );
 
       // WHEN

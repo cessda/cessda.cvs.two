@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import {SERVER_API_URL} from 'app/app.constants';
-import {Level, LoggersResponse} from './log.model';
+import { SERVER_API_URL } from 'app/app.constants';
+import { Level, LoggersResponse } from './log.model';
 
 @Injectable({ providedIn: 'root' })
 export class LogsService {
   constructor(private http: HttpClient) {}
 
-  changeLevel(name: string, configuredLevel: Level): Observable<{}> {
+  changeLevel(name: string, configuredLevel: Level) {
     return this.http.post(SERVER_API_URL + 'management/loggers/' + name, { configuredLevel });
   }
 

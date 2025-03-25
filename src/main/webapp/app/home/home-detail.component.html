@@ -191,25 +191,24 @@
             <!-- Details  -->
             <div class="content-details">
                 <!--tabs-->
-                <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" formControlName="tabSelected" #detailTab id="detailTab">
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="detail"> Details
-                    </label>
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="version"> Versions
-                    </label>
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="identity"> Identity and general
-                    </label>
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="usage"> Usage
-                    </label>
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="license"> Licence and citation
-                    </label>
-                    <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="export"> Export/Download
-                    </label>
+                <div class="btn-group btn-group-toggle" role="group" formControlName="tabSelected" #detailTab id="detailTab">
+                    <input type="radio" formControlName="tabSelected" value="detail" class="btn-check" id="detailTabButton">
+                    <label class="btn btn-outline-primary" for="detailTabButton">Details</label>
+
+                    <input type="radio" formControlName="tabSelected" value="version" class="btn-check" id="versionTabButton">
+                    <label class="btn btn-outline-primary" for="versionTabButton">Versions</label>
+
+                    <input type="radio" formControlName="tabSelected" value="identity" class="btn-check" id="identityTabButton">
+                    <label class="btn btn-outline-primary" for="identityTabButton">Identity and general</label>
+                    
+                    <input type="radio" formControlName="tabSelected" value="usage" class="btn-check" id="usageTabButton">
+                    <label class="btn btn-outline-primary" for="usageTabButton">Usage</label>
+
+                    <input type="radio" formControlName="tabSelected" value="license" class="btn-check" id="licenseTabButton">
+                    <label class="btn btn-outline-primary" for="licenseTabButton">Licence and citation</label>
+
+                    <input type="radio" formControlName="tabSelected" value="export" class="btn-check" id="exportTabButton">
+                    <label class="btn btn-outline-primary" for="exportTabButton">Export/Download</label>
                 </div>
 
                 <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleDetailPanel()">&nbsp;
@@ -217,7 +216,7 @@
                     <fa-icon *ngIf="isDetailCollapse" icon="caret-right"></fa-icon>
                     <span>Details</span>
                 </a>
-                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'detail', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'detail'}" #detailPanel id="detailPanel" >
+                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'detail', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'detail'}" #detailPanel id="detailPanel" >
                     <div class="concept-row row-header">
                         <span class="column1">
                             Code value
@@ -229,7 +228,7 @@
                             Code definition({{vocabulary.selectedLang}})
                         </span>
                     </div>
-                    <jhi-tree [parentNotation]="" [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree>
+                    <jhi-tree [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree>
 
                     <br>
                     <div *ngIf="hasDeprecatedConcepts(getVersionByLangNumber().concepts)">
@@ -256,7 +255,7 @@
                                 <span class="column2">Valid from</span>
                                 <span class="column2">Valid to</span>
                             </div>
-                            <jhi-tree-deprecated [parentNotation]="" [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree-deprecated>
+                            <jhi-tree-deprecated [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree-deprecated>
                         </div>
                     </div>
                 </div>
@@ -266,7 +265,7 @@
                     <fa-icon *ngIf="isVersionCollapse" icon="caret-right"></fa-icon>
                     <span>Versions</span>
                 </a>
-                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'version', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'version'}" #versionPanel id="versionPanel">
+                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'version', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'version'}" #versionPanel id="versionPanel">
                     <!-- self version -->
                     <div class="item-panel">
                         <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="isCurrentVersionHistoryOpen = !isCurrentVersionHistoryOpen"
@@ -312,14 +311,14 @@
 
                     </div>
                     <!-- other older versions -->
-                    <div class="item-panel" *ngFor="let vh of getVersionByLangNumber().versionHistories; let i = index">
+                    <div class="item-panel" *ngFor="let vh of getVersionByLangNumber().versionHistories; index as i;">
                         <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="vh.visible = !vh.visible"
                            [attr.aria-expanded]="vh.visible" [attr.aria-controls]="'history_' + vh.version">&nbsp;
                             <fa-icon *ngIf="vh.visible" icon="caret-down"></fa-icon>
                             <fa-icon *ngIf="!vh.visible" icon="caret-right"></fa-icon>
                             <span>{{getVersionByLangNumber().language}}: {{vh.version}} </span>
                             <span>&nbsp;&nbsp;&nbsp; Published: {{vh.date}}</span>
-                            <a *ngIf="!vh.version?.startsWith(getSlVersionNumber())" [routerLink]="['/vocabulary', vocabulary.notation ]" [queryParams]="{v:getSlVersionNumber(vh.version), lang:vocabulary.selectedLang}">
+                            <a *ngIf="!vh.version.startsWith(getSlVersionNumber())" [routerLink]="['/vocabulary', vocabulary.notation ]" [queryParams]="{v:getSlVersionNumber(vh.version), lang:vocabulary.selectedLang}">
                                 <fa-icon icon="external-link-alt"></fa-icon>
                             </a>
                         </a>
@@ -364,7 +363,7 @@
                     <fa-icon *ngIf="isIdentityCollapse" icon="caret-right"></fa-icon>
                     <span>Identity</span>
                 </a>
-                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'identity', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'identity'}" #identityPanel id="identityPanel">
+                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'identity', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'identity'}" #identityPanel id="identityPanel">
                     <div class="row-detail small-block-n">
                         <div class="label-column">
                             <span>Canonical URI</span>
@@ -407,7 +406,7 @@
                     <fa-icon *ngIf="isUsageCollapse" icon="caret-right"></fa-icon>
                     <span>Usages</span>
                 </a>
-                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'usage', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'usage'}" #usagePanel id="usagePanel">
+                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'usage', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'usage'}" #usagePanel id="usagePanel">
                     <div class="small-block-n" [innerHTML]="getVersionByLangNumber().ddiUsage"></div>
                 </div>
 
@@ -416,7 +415,7 @@
                     <fa-icon *ngIf="isLicenseCollapse" icon="caret-right"></fa-icon>
                     <span>Licenses</span>
                 </a>
-                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'license', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'license'}" #licensePanel id="licensePanel">
+                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'license', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'license'}" #licensePanel id="licensePanel">
                     <div class="small-block-n">
                         <p style="width: 100%">Copyright ©
                             <a [href]="vocabulary.agencyLink" target="_blank">
@@ -462,7 +461,7 @@
                     <fa-icon *ngIf="isExportCollapse" icon="caret-right"></fa-icon>
                     <span>Exports</span>
                 </a>
-                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'export', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'export'}" #exportPanel id="exportPanel">
+                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'export', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'export'}" #exportPanel id="exportPanel">
                     <jhi-vocabulary-download
                         [appScope]="appScope"
                         [enableDocxExport]="enableDocxExport"
