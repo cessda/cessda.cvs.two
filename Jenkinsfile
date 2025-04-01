@@ -35,6 +35,18 @@ pipeline {
                         }
                     }
                 }
+                stage('Lint Project') {
+                    steps {
+                        catchError(buildResult: 'UNSTABLE') {
+                            sh 'npm run lint -- --format checkstyle --output-file target/eslint-reports/report.xml'
+                        }
+                    }
+                    post {
+                        always {
+                            recordIssues(tools: [esLint(pattern: 'target/eslint-reports/report.xml')])
+                        }
+                    }
+                }
                 stage('Compile Angular') {
                     steps {
                         sh 'npm run build-prod'

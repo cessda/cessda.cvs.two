@@ -34,7 +34,7 @@ import { CvResult } from 'app/shared/model/cv-result.model';
 import { Aggr } from 'app/shared/model/aggr';
 import { HomeService } from 'app/home/home.service';
 import { VocabularyLanguageFromKeyPipe } from '../language/vocabulary-language-from-key.pipe';
-import { TagModel, TagModelClass } from 'ngx-chips/core/accessor';
+import { TagModel, TagModelClass } from 'ngx-chips/core/tag-model';
 
 const INITIAL_PAGE = 1;
 const DEFAULT_PREDICATE = 'code';
@@ -50,6 +50,8 @@ export class VocabularySearchResultComponent implements OnInit {
   account: Account | null = null;
 
   vocabularies: Vocabulary[] = [];
+  searching = true;
+
   currentSearch = '';
 
   totalItems = 0;
@@ -130,12 +132,12 @@ export class VocabularySearchResultComponent implements OnInit {
     return bundle === VocabularyUtil.getVersionNumberByLangIso(vocab, lang);
   }
 
-  getTitleByLang(vocab: Vocabulary): string {
-    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[0]!;
+  getTitleByLang(vocab: Vocabulary) {
+    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[0];
   }
 
-  getDefinitionByLang(vocab: Vocabulary): string {
-    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[1]!;
+  getDefinitionByLang(vocab: Vocabulary) {
+    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[1];
   }
 
   getCodeTitleByLang(code: Code, selectedLang: string): string {
@@ -146,11 +148,12 @@ export class VocabularySearchResultComponent implements OnInit {
     return VocabularyUtil.getTitleDefByLangIso(code, selectedLang)[1];
   }
 
-  getVersionByLang(vocab: Vocabulary): string {
-    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[2]!;
+  getVersionByLang(vocab: Vocabulary) {
+    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang)[2];
   }
 
   private onSuccess(data: CvResult): void {
+    this.searching = false;
     this.totalItems = data.totalElements;
     this.vocabularies = data.vocabularies;
     // assign selectedLang if still null
@@ -164,6 +167,7 @@ export class VocabularySearchResultComponent implements OnInit {
   }
 
   private onError(e: HttpErrorResponse): void {
+    this.searching = false;
     console.error(e);
     this.eventManager.broadcast({ name: 'onSearching', content: false });
   }
@@ -230,6 +234,7 @@ export class VocabularySearchResultComponent implements OnInit {
   }
 
   trackNotation(_index: number, item: Vocabulary | Code): string {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return item.notation!;
   }
 
@@ -323,10 +328,11 @@ export class VocabularySearchResultComponent implements OnInit {
       }
 
       // Subscribe to the result of the search request
-      searchObservable.subscribe(
-        (res: HttpResponse<CvResult>) => this.onSuccess(res.body!),
-        (e: HttpErrorResponse) => this.onError(e),
-      );
+      searchObservable.subscribe({
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        next: (res: HttpResponse<CvResult>) => this.onSuccess(res.body!),
+        error: (e: HttpErrorResponse) => this.onError(e),
+      });
     });
 
     this.router.events.subscribe(evt => {

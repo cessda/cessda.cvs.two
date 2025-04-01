@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpEvent, HttpRequest, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse } from '@angular/common/http';
+import { filter, map, Observable, pipe } from 'rxjs';
 
-import {SERVER_API_URL} from 'app/app.constants';
-import {SimpleResponse} from 'app/shared/model/simple-response.model';
+import { SERVER_API_URL } from 'app/app.constants';
+import { SimpleResponse } from 'app/shared/model/simple-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class FileUploadService {
@@ -36,7 +36,7 @@ export class FileUploadService {
 
     const req = new HttpRequest('POST', `${this.resourceUrl}/agency-image`, formdata, {
       reportProgress: true,
-      responseType: 'text'
+      responseType: 'text',
     });
 
     return this.http.request(req);
@@ -51,7 +51,7 @@ export class FileUploadService {
 
     const req = new HttpRequest('POST', `${this.resourceUrl}/license-image`, formdata, {
       reportProgress: true,
-      responseType: 'text'
+      responseType: 'text',
     });
 
     return this.http.request(req);
@@ -67,11 +67,29 @@ export class FileUploadService {
 
     const req = new HttpRequest('POST', `${this.resourceUrl}/file`, formdata, {
       reportProgress: true,
-      responseType: 'text'
+      responseType: 'text',
     });
 
     return this.http.request(req);
   }
+
+  static uploadFileHandler = pipe(
+    filter<HttpEvent<unknown>>(event => event.type === HttpEventType.UploadProgress || event.type === HttpEventType.ResponseHeader),
+    map(event => {
+      if (event.type === HttpEventType.UploadProgress && event.total) {
+        // Respond to a progress event
+        const progress = Math.round((event.loaded / event.total) * 100);
+        return { progress: progress };
+      } else if (event.type === HttpEventType.ResponseHeader) {
+        const location = event.headers.get('location');
+        if (location) {
+          return { progress: 100, location: location };
+        }
+      }
+
+      throw new TypeError('No location returned from server');
+    }),
+  );
 
   convertDocsToHtml(fileName: string): Observable<HttpResponse<SimpleResponse>> {
     return this.http.post<SimpleResponse>(`${this.resourceUrl}/docx2html/${fileName}`, null, { observe: 'response' });

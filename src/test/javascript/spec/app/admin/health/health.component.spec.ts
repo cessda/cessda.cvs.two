@@ -30,7 +30,7 @@ describe('Component Tests', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
-        declarations: [HealthComponent]
+        declarations: [HealthComponent],
       })
         .overrideTemplate(HealthComponent, '')
         .compileComponents();
@@ -46,8 +46,8 @@ describe('Component Tests', () => {
       it('should get badge class', () => {
         const upBadgeClass = comp.getBadgeClass('UP');
         const downBadgeClass = comp.getBadgeClass('DOWN');
-        expect(upBadgeClass).toEqual('badge-success');
-        expect(downBadgeClass).toEqual('badge-danger');
+        expect(upBadgeClass).toEqual('text-bg-success');
+        expect(downBadgeClass).toEqual('text-bg-danger');
       });
     });
 

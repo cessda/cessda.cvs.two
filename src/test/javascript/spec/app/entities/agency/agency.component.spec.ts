@@ -21,7 +21,7 @@ import { ActivatedRoute, Data } from '@angular/router';
 import { CvsTestModule } from '../../../test.module';
 import { AgencyComponent } from 'app/agency/agency.component';
 import { AgencyService } from 'app/agency/agency.service';
-import { Agency, createNewAgency } from 'app/shared/model/agency.model';
+import { createNewAgency } from 'app/shared/model/agency.model';
 
 describe('Component Tests', () => {
   describe('Agency Management Component', () => {

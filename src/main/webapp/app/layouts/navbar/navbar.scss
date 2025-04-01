@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@import '~bootstrap/scss/functions';
-@import '~bootstrap/scss/variables';
+@import '/node_modules/bootstrap/scss/functions';
+@import '/node_modules/bootstrap/scss/variables';
 
 /* ==========================================================================
 Navbar
@@ -51,7 +51,6 @@ Navbar
     background-color: #4e4d56;
     height: 36px;
     .navbar-inner {
-    
       margin: 0 auto;
       width: 100%;
       display: flex;
@@ -92,7 +91,6 @@ Navbar
   .navbar-middle {
     width: 100%;
     .navbar-inner {
-     
       margin: 0 auto;
       width: 100%;
       display: flex;
@@ -154,7 +152,6 @@ Navbar
     height: 50px;
 
     .navbar-inner {
-
       margin: 0 auto;
       width: 100%;
       display: flex;
@@ -168,10 +165,6 @@ Navbar
       }
       .nav-item {
         .nav-link {
-          
-          
-          
-          
           padding: 0 13px;
           color: #fff;
           text-decoration: none;
@@ -183,7 +176,6 @@ Navbar
         .nav-link:hover {
           border: none;
         }
-     
       }
       .secondary-menu {
         display: block;

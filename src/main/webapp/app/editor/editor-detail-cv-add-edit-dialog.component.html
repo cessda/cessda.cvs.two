@@ -23,9 +23,7 @@
             <span *ngIf="!isNew">Edit {{versionParam.itemType}} <strong>{{vocabularyParam.notation}}</strong> from {{vocabularyParam.agencyName}} agency</span>
         </div>
 
-        <button aria-label="Close" class="close" data-dismiss="modal" type="button" (click)="clear()">
-            <span aria-hidden="true">×</span>
-        </button>
+        <button aria-label="Close" class="btn-close" data-dismiss="modal" type="button" (click)="clear()"></button>
     </div>
     <div class="modal-body">
         <div class="row-content">

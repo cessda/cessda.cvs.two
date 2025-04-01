@@ -16,7 +16,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
-import { JhiDataUtils } from 'ng-jhipster';
 
 import { CvsTestModule } from '../../../test.module';
 import { MetadataFieldDetailComponent } from 'app/entities/metadata-field/metadata-field-detail.component';
@@ -25,7 +24,6 @@ describe('Component Tests', () => {
   describe('MetadataField Management Detail Component', () => {
     let comp: MetadataFieldDetailComponent;
     let fixture: ComponentFixture<MetadataFieldDetailComponent>;
-    let dataUtils: JhiDataUtils;
     const route = { data: of({ metadataField: { id: 123 } }) } as unknown as ActivatedRoute;
 
     beforeEach(() => {
@@ -38,7 +36,6 @@ describe('Component Tests', () => {
         .compileComponents();
       fixture = TestBed.createComponent(MetadataFieldDetailComponent);
       comp = fixture.componentInstance;
-      dataUtils = fixture.debugElement.injector.get(JhiDataUtils);
     });
 
     describe('OnInit', () => {

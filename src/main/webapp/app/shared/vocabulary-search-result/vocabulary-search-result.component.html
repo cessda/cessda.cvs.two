@@ -149,7 +149,7 @@
                 </ng-container>
             </div>
             <div class="result-column">
-                <div class="alert alert-warning" *ngIf="vocabularies.length === 0; else elseBlock;">
+                <div class="alert alert-warning" *ngIf="vocabularies.length === 0 && !searching; else elseBlock;">
                     <span jhiTranslate="cvsApp.vocabulary.home.notFound">No vocabularies found</span>
                 </div>
                 <ng-template #elseBlock>
@@ -170,7 +170,7 @@
                                 </div>
                                 <div class="vocab-ver">
                                     <span class="version">Version: {{isEditorScope() ? vocabulary.versionNumber:getVersionByLang(vocabulary)}}</span>
-                                    <a class="badge badge-pill badge-primary" [routerLink]="[getBaseUrl(), vocabulary.notation ]" [queryParams]="{tab:'export'}">
+                                    <a class="badge rounded-pill text-bg-primary" [routerLink]="[getBaseUrl(), vocabulary.notation ]" [queryParams]="{tab:'export'}">
                                         <span>Download</span>
                                     </a>
                                 </div>

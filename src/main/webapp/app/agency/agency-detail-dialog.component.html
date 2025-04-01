@@ -24,16 +24,14 @@
             <div class="col-8" class="card-title">
                 <h4>{{ agency.name }}</h4>
                 <a href="{{ agency.link }}" target="_blank">
-                    <span class="font-italic font-weight-bold">{{urlCleaner(agency.link!)}} </span>
+                    <span class="fst-italic fw-bold">{{urlCleaner(agency.link!)}} </span>
                     <fa-icon icon="external-link-alt"></fa-icon>
                 </a>
             </div>
         </div>
     </div>
 
-    <button aria-label="Close" class="close" data-dismiss="modal" type="button" (click)="clear()">
-        <span aria-hidden="true">×</span>
-    </button>
+    <button aria-label="Close" class="btn-close" data-dismiss="modal" type="button" (click)="clear()"></button>
 </div>
 <div class="modal-body">
     <p class="card-text">{{ agency.description }}</p>
@@ -49,7 +47,7 @@
     </dl>
 
     <div class="card">
-        <div class="card-header font-weight-bold">
+        <div class="card-header fw-bold">
             Statistics
         </div>
         <div class="card-body">
@@ -84,7 +82,7 @@
     <br/>
 
     <div class="card" *ngIf="vocabStats!.length > 0">
-        <div class="card-header font-weight-bold">
+        <div class="card-header fw-bold">
             Vocabularies ({{numberCvPublished}} CVs)
         </div>
         <div class="card-body" class="card-acc-stat">
@@ -104,13 +102,13 @@
                                             </ng-template>
                                             <ng-template ngbPanelContent>
                                                 <div class="row-content">
-                                                    <div class="font-weight-bold small">
+                                                    <div class="fw-bold small">
                                                         <span>Languages:</span>
                                                     </div>
                                                     <div>
                                                         <ng-container *ngFor="let vStatus of getVersionStatus(vocab, vcode.versionNumber); let k = index">{{ k > 0 ? ', ' : ''}}<a href="javascript:void(0)" (click)="closeAndNavigate( vocab.notation, vStatus.language, vcode.versionNumber)"><span ngbTooltip="Published {{vStatus.date}}">{{vStatus.language | vocabularyLanguageFromKey}}-{{vStatus.versionNumber}}</span></a></ng-container>
                                                     </div>
-                                                    <div class="font-weight-bold small">
+                                                    <div class="fw-bold small">
                                                         <span>Codes:</span>
                                                     </div>
                                                     <div>
@@ -133,7 +131,7 @@
 
     <ng-container *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:0, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT']}">
         <div class="card" *ngIf="unpublishedVersions.length > 0">
-            <div class="card-header font-weight-bold">
+            <div class="card-header fw-bold">
                 Unpublished CVs
             </div>
             <div class="card-body p-0">
