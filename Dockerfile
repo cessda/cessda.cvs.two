@@ -24,13 +24,9 @@ LABEL maintainer='CESSDA-ERIC "support@cessda.eu"'
 # User configuration
 RUN addgroup --system --gid=1000 cvs && adduser --system --uid=1000 --ingroup=cvs cvs
 
-# Copy JAR artifacts
-WORKDIR /opt/cessda/vocabularies-service
-COPY target/cvs*/WEB-INF/lib /opt/cessda/vocabularies-service/lib
-COPY target/cvs*/META-INF /opt/cessda/vocabularies-service/META-INF
-COPY target/cvs*/WEB-INF/classes /opt/cessda/vocabularies-service
-COPY target/cvs*/WEB-INF/web.xml /opt/cessda/vocabularies-service/WEB-INF
+# Copy JAR
+COPY target/cvs*.jar /opt/cessda/cvs/cvs.jar
 
 # Entrypoint - Start CVS
 USER cvs
-ENTRYPOINT ["java", "-cp", ".:lib/*", "eu.cessda.cvs.CvsApp"]
+ENTRYPOINT ["java", "-jar", "/opt/cessda/cvs/cvs.jar"]
