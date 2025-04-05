@@ -82,10 +82,10 @@ public class MetadataValueResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated metadataValueDTO,
      * or with status {@code 400 (Bad Request)} if the metadataValueDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the metadataValueDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/metadata-values")
-    public ResponseEntity<MetadataValueDTO> updateMetadataValue(@RequestBody MetadataValueDTO metadataValueDTO) throws URISyntaxException {
+    public ResponseEntity<MetadataValueDTO> updateMetadataValue(@RequestBody MetadataValueDTO metadataValueDTO)
+    {
         log.debug("REST request to update MetadataValue : {}", metadataValueDTO);
         if (metadataValueDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

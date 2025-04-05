@@ -1539,7 +1539,9 @@ public class VocabularyServiceImpl implements VocabularyService
             List<VersionDTO> versions = versionService.findAllPublishedByVocabulary( vocabulary.getId() );
             // skip vocabulary without published version
             if ( versions.isEmpty() )
+            {
                 continue;
+            }
             // remove unused attributes, and add the required attribute for vocabulary
             updateVocabularyContentForJsonfy( agencyMap, vocabulary );
             // put into map based on versionSL, the SL need to be listed in beginning (sorted first)
@@ -1551,8 +1553,7 @@ public class VocabularyServiceImpl implements VocabularyService
             slNumberVersionsMap.put( LATEST, latestVersionsAcrossSl );
             for ( VersionDTO version : versions ) {
                 output.append("Generate JSON file for Vocabulary ").append(vocabulary.getNotation()).append(" Version").append(version.getNumber()).append(".\n");
-                prepareVersionAndConceptForJsonfy( licenceMap, vocabulary, slNumberVersionsMap, version, latestVersionsAcrossSl,
-                    latestVersionsLangs );
+                prepareVersionAndConceptForJsonfy( licenceMap, vocabulary, slNumberVersionsMap, version, latestVersionsAcrossSl, latestVersionsLangs );
             }
             generateJsonFile( mapper, vocabulary, slNumberVersionsMap );
         }

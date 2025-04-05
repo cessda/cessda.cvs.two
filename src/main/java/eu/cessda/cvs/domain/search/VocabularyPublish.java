@@ -87,12 +87,6 @@ public class VocabularyPublish extends VocabularyBase {
     }
 
     @Override
-    public int hashCode()
-    {
-        return Objects.hashCode( getId() );
-    }
-
-    @Override
     public String toString() {
         return "VocabularyPublish{" +
             "id=" + getId() +

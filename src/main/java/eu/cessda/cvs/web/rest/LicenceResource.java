@@ -18,7 +18,6 @@ package eu.cessda.cvs.web.rest;
 import eu.cessda.cvs.config.audit.AuditEventPublisher;
 import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.LicenceService;
-import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.service.dto.LicenceDTO;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
@@ -78,7 +77,7 @@ public class LicenceResource {
             throw new BadRequestAlertException("A new licence cannot already have an ID", ENTITY_NAME, "idexists");
         }
         LicenceDTO result = licenceService.save(licenceDTO);
-        
+
         //notify the auditing mechanism
         String auditUserString = "";
         Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
@@ -98,10 +97,10 @@ public class LicenceResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated licenceDTO,
      * or with status {@code 400 (Bad Request)} if the licenceDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the licenceDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/licences")
-    public ResponseEntity<LicenceDTO> updateLicence(@Valid @RequestBody LicenceDTO licenceDTO) throws URISyntaxException {
+    public ResponseEntity<LicenceDTO> updateLicence(@Valid @RequestBody LicenceDTO licenceDTO)
+    {
         log.debug("REST request to update Licence : {}", licenceDTO);
         if (licenceDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

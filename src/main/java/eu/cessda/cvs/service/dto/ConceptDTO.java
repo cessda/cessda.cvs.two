@@ -96,7 +96,8 @@ public class ConceptDTO implements Serializable {
      * Constructor to generate new TL concept based on SL concept, without any title and definition
      * @param conceptSlDTO the SL concept to be copied
      */
-    public ConceptDTO(ConceptDTO conceptSlDTO) {
+    @SuppressWarnings( "CopyConstructorMissesField" )
+    public ConceptDTO( ConceptDTO conceptSlDTO) {
         this.notation = conceptSlDTO.getNotation();
         this.parent = conceptSlDTO.getParent();
         this.position = conceptSlDTO.getPosition();
