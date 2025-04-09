@@ -14,6 +14,16 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
+## [3.4.1] - 2025-04-09
+
+### Added
+
+- [PR-1034](https://github.com/cessda/cessda.cvs.two/pull/1034) Added the agency name to the alt text of an agency logo
+
+### Fixed
+
+- [#1039](https://github.com/cessda/cessda.cvs.two/issues/1039) Fixed CORS requests failing due to the use of `jhipster.cors.allowed-origins` rather than `jhipster.cors.allowed-origin-patterns`
+
 ## [3.4.0] - 2025-03-18
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14849410.svg)](https://doi.org/10.5281/zenodo.14849410)
@@ -391,6 +401,7 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Swagger UI for the APIs.
 - New set of /v2 REST APIs for searching and exporting CVs to several formats (PDF, HTML, DOCX)
 
+[3.4.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.4.1
 [3.4.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.4.0
 [3.3.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.3.1
 [3.3.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.3.0
