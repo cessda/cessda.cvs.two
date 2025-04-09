@@ -32,7 +32,7 @@ public class MetadataValueMapperTest {
     @Test
     public void testEntityFromId() {
         Long id = 1L;
-        assertThat(metadataValueMapper.fromId(id).getId()).isEqualTo(id);
-        assertThat(metadataValueMapper.fromId(null)).isNull();
+        assertThat(MetadataValueMapper.fromId(id).getId()).isEqualTo(id);
+        assertThat(MetadataValueMapper.fromId(null)).isNull();
     }
 }
