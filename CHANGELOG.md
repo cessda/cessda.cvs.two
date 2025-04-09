@@ -22,6 +22,7 @@ _For each release, use the following sub-sections:_
 
 ### Fixed
 
+- [#1036](https://github.com/cessda/cessda.cvs.two/issues/1036) Fixed user account creation failing due to missing `langKey` value
 - [#1039](https://github.com/cessda/cessda.cvs.two/issues/1039) Fixed CORS requests failing due to the use of `jhipster.cors.allowed-origins` rather than `jhipster.cors.allowed-origin-patterns`
 
 ## [3.4.0] - 2025-03-18
