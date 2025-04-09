@@ -134,7 +134,8 @@ jhipster:
   clientApp:
     name: 'cvsApp'
   cors:
-    allowed-origins: '*'
+    # Allow all origins
+    allowed-origin-patterns: '*'
     # Only allow resources to be read
     allowed-methods: 'GET'
     allowed-headers: '*'
