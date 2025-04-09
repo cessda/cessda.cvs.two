@@ -83,10 +83,10 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             StringBuilder agenciesB = new StringBuilder();
             for (UserAgencyDTO agency : userDTO.getUserAgencies()) {
                 if (agency.getAgencyName() != null) {
-                    agenciesB.append(agency.getAgencyName() + ", ");
+                    agenciesB.append( agency.getAgencyName() ).append( ", " );
                 }
                 if (agency.getLanguage() != null) {
-                    agenciesB.append(agency.getLanguage() + ", ");
+                    agenciesB.append( agency.getLanguage() ).append( ", " );
                 }
                 if (agency.getAgencyRole() != null) {
                     agenciesB.append(agency.getAgencyRole());
@@ -136,11 +136,11 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             case "USER_CREATED":
             case "USER_UPDATED":
                 String agencies = getAgency(userDTO);
-                if (!agencies.equals("")) {
+                if ( !agencies.isEmpty() ) {
                     map.put("agency", agencies);
                 }
                 String authorities = getAuthority(userDTO);
-                if (!agencies.equals("")) {
+                if ( !agencies.isEmpty() ) {
                     map.put("roles", authorities);
                 }
                 break;
@@ -184,10 +184,10 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                     map.put("code_change_type", codeSnippet.getChangeType());
                     map.put("code_change_description", codeSnippet.getChangeDesc());
                 }
-                if (codeSnippet.getNotation() != null && !codeSnippet.getNotation().equals("")) {
+                if (codeSnippet.getNotation() != null && !codeSnippet.getNotation().isEmpty() ) {
                     map.put("code_notation", codeSnippet.getNotation());
                 }
-                if (codeSnippet.getDefinition() != null && !codeSnippet.getDefinition().equals("")) {
+                if (codeSnippet.getDefinition() != null && !codeSnippet.getDefinition().isEmpty() ) {
                     map.put("code_definition", codeSnippet.getDefinition());
                 }
                 map.put(CODE_TITLE, codeSnippet.getTitle());

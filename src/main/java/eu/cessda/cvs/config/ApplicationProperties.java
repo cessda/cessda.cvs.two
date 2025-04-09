@@ -36,7 +36,7 @@ public class ApplicationProperties {
 
     public final Path staticFilePath;
 
-    public ApplicationProperties(Path staticFilePath) throws IOException {
+    public ApplicationProperties(Path staticFilePath) {
         this.staticFilePath = staticFilePath;
     }
 
