@@ -30,6 +30,7 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
@@ -54,9 +55,15 @@ public class FileUploadService {
     {
         switch ( fileUploadHelper.getFileUploadType()) {
             case IMAGE_AGENCY:
-                return uploadImage( fileUploadHelper, applicationProperties.getAgencyImagePath() );
+                try (var inputStream = fileUploadHelper.getSourceFile().getInputStream())
+                {
+                    return uploadImage( inputStream, fileUploadHelper.getFileUploadType().getExtension(), applicationProperties.getAgencyImagePath() );
+                }
             case IMAGE_LICENSE:
-                return uploadImage( fileUploadHelper,applicationProperties.getLicenseImagePath() );
+                try (var inputStream = fileUploadHelper.getSourceFile().getInputStream())
+                {
+                    return uploadImage( inputStream, fileUploadHelper.getFileUploadType().getExtension(), applicationProperties.getLicenseImagePath() );
+                }
             case DOCX:
                 return uploadSpecificFile( fileUploadHelper );
             default:
@@ -83,33 +90,46 @@ public class FileUploadService {
 
     /**
      * Generate appropriate sized images from the source image and write them to storage.
-     * @param fileUploadHelper the upload context, this will be mutated.
+     *
+     * @param source the input stream containing the source image.
+     * @param format the destination image format
+     * @param baseDirectory the directory to store the image in.
+     * @throws IllegalArgumentException if the source or destination image type is not supported.
      * @throws IOException if an IO error occurs.
      */
-    private static Path uploadImage( FileUploadHelper fileUploadHelper, Path baseDirectory ) throws IOException {
+    private static Path uploadImage( InputStream source, String format, Path baseDirectory ) throws IOException {
 
-        String fileName = UUID.randomUUID() + "." + fileUploadHelper.getFileUploadType().getExtension();
+        String fileName = UUID.randomUUID() + "." + format;
 
         Path destFile = baseDirectory.resolve(fileName);
         Path pathFileThumb = baseDirectory.resolve("thumbs");
         Path destFileThumb = pathFileThumb.resolve( fileName );
 
-        // Create destination directories if it does not exist.
+        // Create destination directories if they do not exist.
         Files.createDirectories(baseDirectory);
         Files.createDirectories(pathFileThumb);
 
-        BufferedImage img = ImageIO.read( fileUploadHelper.getSourceFile().getInputStream() );
+        // Attempt to read the source input stream
+        BufferedImage img = ImageIO.read( source );
+        if (img == null)
+        {
+            throw new IllegalArgumentException("Unsupported source image type");
+        }
 
         // Scale image to an appropriate size
-        BufferedImage scaledImg = Scalr.resize(img, Scalr.Mode.AUTOMATIC, 300, 300);
-        ImageIO.write( scaledImg, fileUploadHelper.getFileUploadType().getExtension(), destFile.toFile() );
+        BufferedImage scaledImg = Scalr.resize( img, 300 );
 
-        // Create thumbnail variant of the image
-        BufferedImage scaledImgThumb = Scalr.resize(img, Scalr.Mode.AUTOMATIC, 180, 180);
-        ImageIO.write( scaledImgThumb, fileUploadHelper.getFileUploadType().getExtension(), destFileThumb.toFile() );
+        // Attempt to write the image
+        if (ImageIO.write( scaledImg, format, destFile.toFile() )) {
+            // Create thumbnail variant of the image
+            BufferedImage scaledImgThumb = Scalr.resize( img, 180 );
+            ImageIO.write( scaledImgThumb, format, destFileThumb.toFile() );
 
-        // Set destination files on successful writes
-        return destFile;
+            // Set destination files on successful writes
+            return destFile;
+        } else {
+            throw new IllegalArgumentException(format + " is not a supported image format");
+        }
     }
 
     public void html2section(String fileName, String metadataKey) throws IOException {
