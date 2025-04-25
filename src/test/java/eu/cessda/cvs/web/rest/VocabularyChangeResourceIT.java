@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
@@ -90,12 +92,12 @@ public class VocabularyChangeResourceIT {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static VocabularyChange createEntity(EntityManager em) {
-        VocabularyChange vocabularyChange = new VocabularyChange()
+        return new VocabularyChange()
             .vocabularyId(DEFAULT_VOCABULARY_ID)
             .versionId(DEFAULT_VERSION_ID)
             .changeType(DEFAULT_CHANGE_TYPE)
@@ -103,16 +105,15 @@ public class VocabularyChangeResourceIT {
             .userId(DEFAULT_USER_ID)
             .userName(DEFAULT_USER_NAME)
             .date(DEFAULT_DATE);
-        return vocabularyChange;
     }
     /**
      * Create an updated entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static VocabularyChange createUpdatedEntity(EntityManager em) {
-        VocabularyChange vocabularyChange = new VocabularyChange()
+        return new VocabularyChange()
             .vocabularyId(UPDATED_VOCABULARY_ID)
             .versionId(UPDATED_VERSION_ID)
             .changeType(UPDATED_CHANGE_TYPE)
@@ -120,7 +121,6 @@ public class VocabularyChangeResourceIT {
             .userId(UPDATED_USER_ID)
             .userName(UPDATED_USER_NAME)
             .date(UPDATED_DATE);
-        return vocabularyChange;
     }
 
     @BeforeEach
@@ -130,7 +130,7 @@ public class VocabularyChangeResourceIT {
 
     @Test
     @Transactional
-    public void createVocabularyChange() throws Exception {
+    void createVocabularyChange() throws Exception {
         int databaseSizeBeforeCreate = vocabularyChangeRepository.findAll().size();
 
         // Create the VocabularyChange
@@ -155,7 +155,7 @@ public class VocabularyChangeResourceIT {
 
     @Test
     @Transactional
-    public void createVocabularyChangeWithExistingId() throws Exception {
+    void createVocabularyChangeWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = vocabularyChangeRepository.findAll().size();
 
         // Create the VocabularyChange with an existing ID
@@ -175,7 +175,7 @@ public class VocabularyChangeResourceIT {
 
     @Test
     @Transactional
-    public void getAllVocabularyChanges() throws Exception {
+    void getAllVocabularyChanges() throws Exception {
         // Initialize the database
         vocabularyChangeRepository.saveAndFlush(vocabularyChange);
 
@@ -187,7 +187,7 @@ public class VocabularyChangeResourceIT {
             .andExpect(jsonPath("$.[*].vocabularyId").value(hasItem(DEFAULT_VOCABULARY_ID.intValue())))
             .andExpect(jsonPath("$.[*].versionId").value(hasItem(DEFAULT_VERSION_ID.intValue())))
             .andExpect(jsonPath("$.[*].changeType").value(hasItem(DEFAULT_CHANGE_TYPE)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID.intValue())))
             .andExpect(jsonPath("$.[*].userName").value(hasItem(DEFAULT_USER_NAME)))
             .andExpect(jsonPath("$.[*].date").value(hasItem(DEFAULT_DATE.toString())));
@@ -195,7 +195,7 @@ public class VocabularyChangeResourceIT {
 
     @Test
     @Transactional
-    public void getVocabularyChange() throws Exception {
+    void getVocabularyChange() throws Exception {
         // Initialize the database
         vocabularyChangeRepository.saveAndFlush(vocabularyChange);
 
@@ -207,7 +207,7 @@ public class VocabularyChangeResourceIT {
             .andExpect(jsonPath("$.vocabularyId").value(DEFAULT_VOCABULARY_ID.intValue()))
             .andExpect(jsonPath("$.versionId").value(DEFAULT_VERSION_ID.intValue()))
             .andExpect(jsonPath("$.changeType").value(DEFAULT_CHANGE_TYPE))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.userId").value(DEFAULT_USER_ID.intValue()))
             .andExpect(jsonPath("$.userName").value(DEFAULT_USER_NAME))
             .andExpect(jsonPath("$.date").value(DEFAULT_DATE.toString()));
@@ -215,7 +215,7 @@ public class VocabularyChangeResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingVocabularyChange() throws Exception {
+    void getNonExistingVocabularyChange() throws Exception {
         // Get the vocabularyChange
         restVocabularyChangeMockMvc.perform(get("/api/vocabulary-changes/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -223,14 +223,14 @@ public class VocabularyChangeResourceIT {
 
     @Test
     @Transactional
-    public void updateVocabularyChange() throws Exception {
+    void updateVocabularyChange() throws Exception {
         // Initialize the database
         vocabularyChangeRepository.saveAndFlush(vocabularyChange);
 
         int databaseSizeBeforeUpdate = vocabularyChangeRepository.findAll().size();
 
         // Update the vocabularyChange
-        VocabularyChange updatedVocabularyChange = vocabularyChangeRepository.findById(vocabularyChange.getId()).get();
+        VocabularyChange updatedVocabularyChange = vocabularyChangeRepository.findById(vocabularyChange.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedVocabularyChange are not directly saved in db
         em.detach(updatedVocabularyChange);
         updatedVocabularyChange
@@ -263,7 +263,7 @@ public class VocabularyChangeResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingVocabularyChange() throws Exception {
+    void updateNonExistingVocabularyChange() throws Exception {
         int databaseSizeBeforeUpdate = vocabularyChangeRepository.findAll().size();
 
         // Create the VocabularyChange
@@ -282,7 +282,7 @@ public class VocabularyChangeResourceIT {
 
     @Test
     @Transactional
-    public void deleteVocabularyChange() throws Exception {
+    void deleteVocabularyChange() throws Exception {
         // Initialize the database
         vocabularyChangeRepository.saveAndFlush(vocabularyChange);
 

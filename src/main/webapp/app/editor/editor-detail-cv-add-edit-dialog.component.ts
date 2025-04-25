@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -19,53 +21,65 @@ import { JhiEventManager } from 'ng-jhipster';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AccountService } from 'app/core/auth/account.service';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Account } from 'app/core/user/account.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { VOCABULARY_ALREADY_EXIST_TYPE } from 'app/shared';
 import { EditorService } from 'app/editor/editor.service';
-import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
-import { IVersion } from 'app/shared/model/version.model';
+import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { Version } from 'app/shared/model/version.model';
+import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
   selector: 'jhi-editor-detail-cv-add-edit-dialog',
   templateUrl: './editor-detail-cv-add-edit-dialog.component.html',
 })
 export class EditorDetailCvAddEditDialogComponent implements OnInit {
-  isSaving: boolean;
-  isSubmitting: boolean;
+  isSaving = false;
+  isSubmitting = false;
   account!: Account;
   languages: string[] = [];
   errorNotationExists = false;
   notation? = '';
-  vocabularySnippet?: IVocabularySnippet;
-  vocabularyParam?: IVocabulary;
-  versionParam?: IVersion;
-  versionSlParam?: IVersion;
-  isNew?: boolean;
-  isSlForm?: boolean;
+  vocabularySnippet!: VocabularySnippet;
+  vocabularyParam!: Vocabulary;
+  versionParam!: Version;
+  versionSlParam!: Version;
+  isNew = false;
+  isSlForm = false;
   selectedLanguage = '';
 
-  cvAddEditForm = this.fb.group({
-    language: [],
-    notation: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(240), Validators.pattern('^[_+A-Za-z0-9-]*$')]],
-    title: ['', [Validators.required]],
-    definition: ['', [Validators.required]],
-    notes: [],
-    translateAgency: [],
-    translateAgencyLink: [
-      '',
-      [
-        Validators.pattern(
-          '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})'
-        ),
-      ],
-    ],
-    changeType: ['', [Validators.required]],
-    changeDesc: [],
-  });
+  private readonly formControls = {
+    language: new FormControl<string | null>(null),
+    notation: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(2), Validators.maxLength(240), Validators.pattern('^[_+A-Za-z0-9-]*$')],
+    }),
+    title: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    definition: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    notes: new FormControl<string | null>(null),
+    translateAgency: new FormControl<string | null>(null),
+    translateAgencyLink: new FormControl('', [
+      Validators.pattern(
+        '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
+      ),
+    ]),
+    changeType: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    changeDesc: new FormControl<string | null>(null),
+  };
+
+  cvAddEditForm = this.fb.group<
+    Omit<typeof this.formControls, 'language' | 'notation' | 'translateAgency' | 'translateAgencyLink' | 'changeType' | 'changeDesc'> & {
+      language?: FormControl<string | null>;
+      notation?: FormControl<string>;
+      translateAgency?: FormControl<string | null>;
+      translateAgencyLink?: FormControl<string | null>;
+      changeType?: FormControl<string>;
+      changeDesc?: FormControl<string | null>;
+    }
+  >(this.formControls);
 
   constructor(
     private accountService: AccountService,
@@ -74,20 +88,20 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
     private fb: FormBuilder,
-    private router: Router
-  ) {
-    this.isSaving = false;
-    this.isSubmitting = false;
-  }
+    private router: Router,
+  ) {}
 
   updateLanguageCheckbox(agencyId: number): void {
     // for Add new CV set taken language with []
-    const availableLanguages = VocabularyUtil.getAvailableCvLanguage(this.isNew && this.isSlForm ? [] : this.vocabularyParam!.versions);
+    const versions = this.isNew && this.isSlForm ? [] : this.vocabularyParam.versions;
+    const availableLanguages = VocabularyUtil.getAvailableCvLanguage(versions);
     this.languages = [];
 
-
     if (this.isNew) {
-      if (this.accountService.isAdmin() || this.account.userAgencies.some(ua => ua.agencyRole === 'ADMIN' && ua.agencyId === agencyId)) {
+      if (
+        this.accountService.isAdmin() ||
+        this.account.userAgencies.some(ua => (ua.agencyRole === 'ADMIN' || ua.agencyRole === 'ADMIN_CONTENT') && ua.agencyId === agencyId)
+      ) {
         this.languages = availableLanguages;
       } else {
         this.account.userAgencies.forEach(ua => {
@@ -107,13 +121,16 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     this.fillForm();
   }
 
-  private fillForm(): void {
-    if (this.languages && this.languages.length > 0) {
-      const pos = this.languages.indexOf(this.vocabularyParam!.sourceLanguage!);
-      this.selectedLanguage = this.languages[pos < 0? 0 : pos];
-    } else {
-      this.selectedLanguage = '';
+  private selectLanguage(languages: string[], sourceLanguage: string): string {
+    if (languages && languages.length > 0) {
+      const pos = languages.indexOf(sourceLanguage);
+      return languages[pos < 0 ? 0 : pos];
     }
+    return '';
+  }
+
+  private fillForm(): void {
+    this.selectedLanguage = this.selectLanguage(this.languages, this.vocabularyParam.sourceLanguage);
     if (this.isSlForm) {
       this.cvAddEditForm.removeControl('translateAgency');
       this.cvAddEditForm.removeControl('translateAgencyLink');
@@ -125,28 +142,28 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
       this.cvAddEditForm.removeControl('changeType');
       this.cvAddEditForm.removeControl('changeDesc');
     } else {
-      this.vocabularyParam!.selectedLang = this.vocabularyParam!.sourceLanguage;
+      this.vocabularyParam.selectedLang = this.vocabularyParam.sourceLanguage;
       this.cvAddEditForm.removeControl('language');
       this.cvAddEditForm.removeControl('notation');
       this.cvAddEditForm.patchValue({
-        title: this.versionParam!.title,
-        definition: this.versionParam!.definition,
-        notes: this.versionParam!.notes,
+        title: this.versionParam.title,
+        definition: this.versionParam.definition,
+        notes: this.versionParam.notes,
       });
       if (!this.isSlForm) {
         this.cvAddEditForm.patchValue({
-          translateAgency: this.versionParam!.translateAgency,
-          translateAgencyLink: this.versionParam!.translateAgencyLink,
+          translateAgency: this.versionParam.translateAgency,
+          translateAgencyLink: this.versionParam.translateAgencyLink,
         });
       }
       if (
-        !this.versionParam!.initialVersion ||
-        (this.versionParam!.initialVersion && this.versionParam!.initialVersion === this.versionParam!.id)
+        !this.versionParam.initialVersion ||
+        (this.versionParam.initialVersion && this.versionParam.initialVersion === this.versionParam.id)
       ) {
         this.cvAddEditForm.removeControl('changeType');
         this.cvAddEditForm.removeControl('changeDesc');
       } else {
-        this.cvAddEditForm.patchValue({ changeDesc: this.versionParam!.notation });
+        this.cvAddEditForm.patchValue({ changeDesc: this.versionParam.notation });
       }
     }
   }
@@ -161,62 +178,60 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     this.accountService.identity().subscribe(account => {
       if (account) {
         this.account = account;
-        this.updateLanguageCheckbox(this.vocabularyParam!.agencyId!);
+        this.updateLanguageCheckbox(this.vocabularyParam.agencyId);
       }
     });
   }
 
-  private createFromForm(): IVocabularySnippet {
+  private createFromForm(): VocabularySnippet {
     if (this.isNew) {
       if (this.isSlForm) {
         return {
-          ...new VocabularySnippet(),
-          actionType: 'CREATE_CV',
-          agencyId: this.vocabularyParam!.agencyId,
-          language: this.cvAddEditForm.get(['language'])!.value,
+          actionType: ActionType.CREATE_CV,
+          agencyId: this.vocabularyParam.agencyId,
+          language: this.cvAddEditForm.controls.language?.value || undefined,
           itemType: 'SL',
-          notation: this.cvAddEditForm.get(['notation'])!.value,
-          versionNumber: '1.0',
+          notation: this.cvAddEditForm.controls.notation?.value,
+          versionNumber: '1.0.0',
           status: 'DRAFT',
-          title: this.cvAddEditForm.get(['title'])!.value,
-          definition: this.cvAddEditForm.get(['definition'])!.value,
-          notes: this.cvAddEditForm.get(['notes'])!.value,
+          title: this.cvAddEditForm.controls.title.value,
+          definition: this.cvAddEditForm.controls.definition.value,
+          notes: this.cvAddEditForm.controls.notes.value || undefined,
         };
       } else {
         return {
-          ...new VocabularySnippet(),
-          actionType: 'ADD_TL_CV',
-          agencyId: this.vocabularyParam!.agencyId,
-          language: this.cvAddEditForm.get(['language'])!.value,
+          actionType: ActionType.ADD_TL_CV,
+          agencyId: this.vocabularyParam.agencyId,
+          language: this.cvAddEditForm.controls.language?.value || undefined,
           itemType: 'TL',
-          notation: this.vocabularyParam!.notation,
-          versionNumber: this.versionSlParam!.number + '.1',
+          notation: this.vocabularyParam.notation,
+          versionNumber: this.versionSlParam.number,
           status: 'DRAFT',
-          vocabularyId: this.vocabularyParam!.id,
-          versionSlId: this.versionSlParam!.id,
-          title: this.cvAddEditForm.get(['title'])!.value,
-          definition: this.cvAddEditForm.get(['definition'])!.value,
-          notes: this.cvAddEditForm.get(['notes'])!.value,
-          translateAgency: this.cvAddEditForm.get(['translateAgency'])!.value,
-          translateAgencyLink: this.cvAddEditForm.get(['translateAgencyLink'])!.value,
+          vocabularyId: this.vocabularyParam.id,
+          versionSlId: this.versionSlParam.id,
+          title: this.cvAddEditForm.controls.title.value,
+          definition: this.cvAddEditForm.controls.definition.value,
+          notes: this.cvAddEditForm.controls.notes.value || undefined,
+          translateAgency: this.cvAddEditForm.controls.translateAgency?.value || undefined,
+          translateAgencyLink: this.cvAddEditForm.controls.translateAgencyLink?.value || undefined,
         };
       }
     } else {
       return {
         ...this.vocabularySnippet,
-        actionType: 'EDIT_CV',
-        vocabularyId: this.vocabularyParam!.id,
-        versionId: this.versionParam!.id,
-        language: this.versionParam!.language,
-        itemType: this.versionParam!.itemType,
-        notation: this.versionParam!.notation,
-        notes: this.cvAddEditForm.get(['notes'])!.value,
-        title: this.cvAddEditForm.get(['title'])!.value,
-        definition: this.cvAddEditForm.get(['definition'])!.value,
-        translateAgency: this.isSlForm ? null : this.cvAddEditForm.get(['translateAgency'])!.value,
-        translateAgencyLink: this.isSlForm ? null : this.cvAddEditForm.get(['translateAgencyLink'])!.value,
-        changeType: this.cvAddEditForm.get('changeType') ? this.cvAddEditForm.get('changeType')!.value : undefined,
-        changeDesc: this.cvAddEditForm.get('changeDesc') ? this.cvAddEditForm.get('changeDesc')!.value : undefined,
+        actionType: ActionType.EDIT_CV,
+        vocabularyId: this.vocabularyParam.id,
+        versionId: this.versionParam.id,
+        language: this.versionParam.language,
+        itemType: this.versionParam.itemType,
+        notation: this.versionParam.notation,
+        notes: this.cvAddEditForm.controls.notes.value || undefined,
+        title: this.cvAddEditForm.controls.title.value,
+        definition: this.cvAddEditForm.controls.definition.value,
+        translateAgency: this.isSlForm ? undefined : this.cvAddEditForm.controls.translateAgency?.value || undefined,
+        translateAgencyLink: this.isSlForm ? undefined : this.cvAddEditForm.controls.translateAgencyLink?.value || undefined,
+        changeType: this.cvAddEditForm.controls.changeType?.value,
+        changeDesc: this.cvAddEditForm.controls.changeDesc?.value || undefined,
       };
     }
   }
@@ -236,10 +251,10 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     }
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Vocabulary>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      response => this.processError(response)
+      response => this.processError(response),
     );
   }
 
@@ -251,7 +266,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
       // unable to complete refresh
       // this.router.navigate(['/editor/vocabulary/' + this.notation], { queryParams: { lang: this.vocabularySnippet!.language } });
       // changed to below, in order to complete refresh
-      window.location.href = '/editor/vocabulary/' + this.notation + '?lang=' + this.vocabularySnippet!.language;
+      window.location.href = '/editor/vocabulary/' + this.notation + '?lang=' + this.vocabularySnippet.language;
     }
     this.activeModal.dismiss(true);
     this.eventManager.broadcast('deselectConcept');
@@ -262,5 +277,9 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
       this.errorNotationExists = true;
       this.isSaving = false;
     }
+  }
+
+  changeLanguage(event: Event): void {
+    this.selectedLanguage = (event.target as HTMLSelectElement).value;
   }
 }

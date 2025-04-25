@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
@@ -94,12 +96,12 @@ public class AgencyResourceIT {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static Agency createEntity(EntityManager em) {
-        Agency agency = new Agency()
+        return new Agency()
             .name(DEFAULT_NAME)
             .link(DEFAULT_LINK)
             .description(DEFAULT_DESCRIPTION)
@@ -109,16 +111,15 @@ public class AgencyResourceIT {
             .uri(DEFAULT_URI)
             .uriCode(DEFAULT_URI_CODE)
             .canonicalUri(DEFAULT_CANONICAL_URI);
-        return agency;
     }
     /**
      * Create an updated entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static Agency createUpdatedEntity(EntityManager em) {
-        Agency agency = new Agency()
+        return new Agency()
             .name(UPDATED_NAME)
             .link(UPDATED_LINK)
             .description(UPDATED_DESCRIPTION)
@@ -128,7 +129,6 @@ public class AgencyResourceIT {
             .uri(UPDATED_URI)
             .uriCode(UPDATED_URI_CODE)
             .canonicalUri(UPDATED_CANONICAL_URI);
-        return agency;
     }
 
     @BeforeEach
@@ -138,7 +138,7 @@ public class AgencyResourceIT {
 
     @Test
     @Transactional
-    public void createAgency() throws Exception {
+    void createAgency() throws Exception {
         int databaseSizeBeforeCreate = agencyRepository.findAll().size();
 
         // Create the Agency
@@ -165,7 +165,7 @@ public class AgencyResourceIT {
 
     @Test
     @Transactional
-    public void createAgencyWithExistingId() throws Exception {
+    void createAgencyWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = agencyRepository.findAll().size();
 
         // Create the Agency with an existing ID
@@ -186,7 +186,7 @@ public class AgencyResourceIT {
 
     @Test
     @Transactional
-    public void getAllAgencies() throws Exception {
+    void getAllAgencies() throws Exception {
         // Initialize the database
         agencyRepository.saveAndFlush(agency);
 
@@ -197,7 +197,7 @@ public class AgencyResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(agency.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].link").value(hasItem(DEFAULT_LINK)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].logopath").value(hasItem(DEFAULT_LOGOPATH)))
             .andExpect(jsonPath("$.[*].license").value(hasItem(DEFAULT_LICENSE)))
             .andExpect(jsonPath("$.[*].licenseId").value(hasItem(DEFAULT_LICENSE_ID.intValue())))
@@ -208,7 +208,7 @@ public class AgencyResourceIT {
 
     @Test
     @Transactional
-    public void getAgency() throws Exception {
+    void getAgency() throws Exception {
         // Initialize the database
         agencyRepository.saveAndFlush(agency);
 
@@ -219,7 +219,7 @@ public class AgencyResourceIT {
             .andExpect(jsonPath("$.id").value(agency.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.link").value(DEFAULT_LINK))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.logopath").value(DEFAULT_LOGOPATH))
             .andExpect(jsonPath("$.license").value(DEFAULT_LICENSE))
             .andExpect(jsonPath("$.licenseId").value(DEFAULT_LICENSE_ID.intValue()))
@@ -230,7 +230,7 @@ public class AgencyResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingAgency() throws Exception {
+    void getNonExistingAgency() throws Exception {
         // Get the agency
         restAgencyMockMvc.perform(get("/api/agencies/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -238,14 +238,14 @@ public class AgencyResourceIT {
 
     @Test
     @Transactional
-    public void updateAgency() throws Exception {
+    void updateAgency() throws Exception {
         // Initialize the database
         agencyRepository.saveAndFlush(agency);
 
         int databaseSizeBeforeUpdate = agencyRepository.findAll().size();
 
         // Update the agency
-        Agency updatedAgency = agencyRepository.findById(agency.getId()).get();
+        Agency updatedAgency = agencyRepository.findById(agency.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedAgency are not directly saved in db
         em.detach(updatedAgency);
         updatedAgency
@@ -282,7 +282,7 @@ public class AgencyResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingAgency() throws Exception {
+    void updateNonExistingAgency() throws Exception {
         int databaseSizeBeforeUpdate = agencyRepository.findAll().size();
 
         // Create the Agency
@@ -301,7 +301,7 @@ public class AgencyResourceIT {
 
     @Test
     @Transactional
-    public void deleteAgency() throws Exception {
+    void deleteAgency() throws Exception {
         // Initialize the database
         agencyRepository.saveAndFlush(agency);
 

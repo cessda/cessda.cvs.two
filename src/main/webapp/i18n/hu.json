@@ -1,0 +1,866 @@
+{
+  "activate": {
+    "title": "Aktiválás",
+    "messages": {
+      "success": "<strong>A hozzáférése aktiválásra került.</strong> Kérjük ",
+      "error": "<strong>A hozzáférését nem sikerült aktiválni.</strong> Kérjük használja a regisztrációs oldalt, hogy hozzáférést igényeljen."
+    }
+  },
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "ActivityLogs",
+        "createLabel": "Egy új Activity Log létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Activity Logt",
+        "notFound": "No Activity Logs found"
+      },
+      "created": "Egy új Activity Log lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Activity Log módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Activity Log törölve lett {{ param }} azonosítóval",
+      "delete": { "question": "Biztos benne, hogy törölni szeretné az Activity Logt {{ id }} azonosítóval?" },
+      "detail": { "title": "Activity Log" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    },
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Egy új Agency létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Agencyt",
+        "notFound": "No Agencies found"
+      },
+      "created": "Egy új Agency lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Agency módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Agency törölve lett {{ param }} azonosítóval",
+      "delete": { "question": "Biztos benne, hogy törölni szeretné az Agencyt {{ id }} azonosítóval?" },
+      "detail": { "title": "Agency" },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    },
+    "AgencyRole": {
+      "null": "",
+      "ADMIN": "ADMIN",
+      "VIEW": "VIEW",
+      "ADMIN_SL": "ADMIN_SL",
+      "ADMIN_TL": "ADMIN_TL",
+      "ADMIN_CONTENT": "ADMIN_CONTENT"
+    },
+    "code": {
+      "home": {
+        "title": "Codes",
+        "createLabel": "Egy új Code létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Codet",
+        "notFound": "No Codes found"
+      },
+      "created": "Egy új Code lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Code módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Code törölve lett {{ param }} azonosítóval",
+      "delete": { "question": "Biztos benne, hogy törölni szeretné az Codet {{ id }} azonosítóval?" },
+      "detail": { "title": "Code" },
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv"
+    },
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Egy új Comment létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Commentt",
+        "search": "Comment keresése",
+        "notFound": "No Comments found"
+      },
+      "created": "Egy új Comment lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Comment módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Comment törölve lett {{ param }} azonosítóval",
+      "delete": { "question": "Biztos benne, hogy törölni szeretné az Commentt {{ id }} azonosítóval?" },
+      "detail": { "title": "Comment" },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    },
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Egy új Concept létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Conceptt",
+        "notFound": "No Concepts found"
+      },
+      "created": "Egy új Concept lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Concept módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Concept törölve lett {{ param }} azonosítóval",
+      "delete": { "question": "Biztos benne, hogy törölni szeretné az Conceptt {{ id }} azonosítóval?" },
+      "detail": { "title": "Concept" },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    },
+    "conceptChange": {
+      "home": {
+        "title": "ConceptChanges",
+        "createLabel": "Egy új Concept Change létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Concept Changet",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "Egy új Concept Change lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Concept Change módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Concept Change törölve lett {{ param }} azonosítóval",
+      "delete": { "question": "Biztos benne, hogy törölni szeretné az Concept Changet {{ id }} azonosítóval?" },
+      "detail": { "title": "Concept Change" },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    },
+    "Language": {
+      "null": "",
+      "ALBANIAN": "ALBANIAN",
+      "BOSNIAN": "BOSNIAN",
+      "BULGARIAN": "BULGARIAN",
+      "CROATIAN": "CROATIAN",
+      "CZECH": "CZECH",
+      "DANISH": "DANISH",
+      "DUTCH": "DUTCH",
+      "ENGLISH": "ENGLISH",
+      "ESTONIAN": "ESTONIAN",
+      "FINNISH": "FINNISH",
+      "FRENCH": "FRENCH",
+      "GERMAN": "GERMAN",
+      "GREEK": "GREEK",
+      "HUNGARIAN": "HUNGARIAN",
+      "ITALIAN": "ITALIAN",
+      "JAPANESE": "JAPANESE",
+      "LITHUANIAN": "LITHUANIAN",
+      "MACEDONIAN": "MACEDONIAN",
+      "NORWEGIAN": "NORWEGIAN",
+      "POLISH": "POLISH",
+      "PORTUGUESE": "PORTUGUESE",
+      "ROMANIAN": "ROMANIAN",
+      "RUSSIAN": "RUSSIAN",
+      "SERBIAN": "SERBIAN",
+      "SLOVAK": "SLOVAK",
+      "SLOVENIAN": "SLOVENIAN",
+      "SPANISH": "SPANISH",
+      "SWEDISH": "SWEDISH"
+    },
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Egy új Licence létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Licencet",
+        "notFound": "No Licences found"
+      },
+      "created": "Egy új Licence lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Licence módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Licence törölve lett {{ param }} azonosítóval",
+      "delete": { "question": "Biztos benne, hogy törölni szeretné az Licencet {{ id }} azonosítóval?" },
+      "detail": { "title": "Licence" },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo"
+    },
+    "metadataField": {
+      "home": {
+        "title": "MetadataFields",
+        "createLabel": "Egy új Metadata Field létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Metadata Fieldt",
+        "notFound": "No Metadata Fields found"
+      },
+      "created": "Egy új Metadata Field lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Metadata Field módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Metadata Field törölve lett {{ param }} azonosítóval",
+      "delete": { "question": "Biztos benne, hogy törölni szeretné az Metadata Fieldt {{ id }} azonosítóval?" },
+      "detail": { "title": "Metadata Field" },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    },
+    "metadataValue": {
+      "home": {
+        "title": "MetadataValues",
+        "createLabel": "Egy új Metadata Value létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Metadata Valuet",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "Egy új Metadata Value lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Metadata Value módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Metadata Value törölve lett {{ param }} azonosítóval",
+      "delete": { "question": "Biztos benne, hogy törölni szeretné az Metadata Valuet {{ id }} azonosítóval?" },
+      "detail": { "title": "Metadata Value" },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    },
+    "ObjectType": { "null": "", "AGENCY": "AGENCY", "GROUP": "GROUP", "SYSTEM": "SYSTEM" },
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Egy új Resolver létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Resolvert",
+        "notFound": "No Resolvers found"
+      },
+      "created": "Egy új Resolver lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Resolver módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Resolver törölve lett {{ param }} azonosítóval",
+      "delete": { "question": "Biztos benne, hogy törölni szeretné az Resolvert {{ id }} azonosítóval?" },
+      "detail": { "title": "Resolver" },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    },
+    "ResolverType": { "null": "", "DOI": "DOI", "URN": "URN" },
+    "ResourceType": { "null": "", "VOCABULARY": "VOCABULARY" },
+    "userAgency": {
+      "home": {
+        "title": "UserAgencies",
+        "createLabel": "Egy új User Agency létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson User Agencyt",
+        "notFound": "No User Agencies found"
+      },
+      "created": "Egy új User Agency lett létrehozva {{ param }} azonosítóval",
+      "updated": "A User Agency módosítva lett {{ param }} azonosítóval",
+      "deleted": "A User Agency törölve lett {{ param }} azonosítóval",
+      "delete": { "question": "Biztos benne, hogy törölni szeretné az User Agencyt {{ id }} azonosítóval?" },
+      "detail": { "title": "User Agency" },
+      "agencyRole": "Agency Role",
+      "language": "Language",
+      "agency": "Agency"
+    },
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Egy új Version létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Versiont",
+        "notFound": "No Versions found"
+      },
+      "created": "Egy új Version lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Version módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Version törölve lett {{ param }} azonosítóval",
+      "delete": { "question": "Biztos benne, hogy törölni szeretné az Versiont {{ id }} azonosítóval?" },
+      "detail": { "title": "Version" },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    },
+    "vocabulary": {
+      "home": {
+        "title": "Vocabularies",
+        "createLabel": "Egy új Vocabulary létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Vocabularyt",
+        "notFound": "No Vocabularies found"
+      },
+      "created": "Egy új Vocabulary lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Vocabulary módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Vocabulary törölve lett {{ param }} azonosítóval",
+      "delete": { "question": "Biztos benne, hogy törölni szeretné az Vocabularyt {{ id }} azonosítóval?" },
+      "detail": { "title": "Vocabulary" },
+      "status": "Status",
+      "uri": "Uri",
+      "notation": "Notation",
+      "versionNumber": "Version Number",
+      "initialPublication": "Initial Publication",
+      "previousPublication": "Previous Publication",
+      "archived": "Archived",
+      "withdrawn": "Withdrawn",
+      "discoverable": "Discoverable",
+      "sourceLanguage": "Source Language",
+      "agencyId": "Agency Id",
+      "agencyName": "Agency Name",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "notes": "Notes",
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "versionBs": "Version Bs",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "versionBg": "Version Bg",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "versionHr": "Version Hr",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "versionCs": "Version Cs",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "versionDa": "Version Da",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "versionNl": "Version Nl",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "versionEn": "Version En",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "versionEt": "Version Et",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "versionFi": "Version Fi",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "versionFr": "Version Fr",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "versionDe": "Version De",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "versionEl": "Version El",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "versionHu": "Version Hu",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "versionIt": "Version It",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "versionJa": "Version Ja",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "versionLt": "Version Lt",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "versionMk": "Version Mk",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "versionNo": "Version No",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "versionPl": "Version Pl",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "versionPt": "Version Pt",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "versionRo": "Version Ro",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "versionRu": "Version Ru",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "versionSr": "Version Sr",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "versionSk": "Version Sk",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "versionSl": "Version Sl",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "versionEs": "Version Es",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "versionSv": "Version Sv",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv",
+      "version": "Version"
+    },
+    "vocabularyChange": {
+      "home": {
+        "title": "VocabularyChanges",
+        "createLabel": "Egy új Vocabulary Change létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Vocabulary Changet",
+        "notFound": "No Vocabulary Changes found"
+      },
+      "created": "Egy új Vocabulary Change lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Vocabulary Change módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Vocabulary Change törölve lett {{ param }} azonosítóval",
+      "delete": { "question": "Biztos benne, hogy törölni szeretné az Vocabulary Changet {{ id }} azonosítóval?" },
+      "detail": { "title": "Vocabulary Change" },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  },
+  "audits": {
+    "title": "Biztonsági ellenörzés",
+    "filter": {
+      "title": "Dátum szerinti szűrés",
+      "from": "Kezdet",
+      "to": "Vég",
+      "button": { "weeks": "hetek", "today": "ma", "clear": "törlés", "close": "bezárás" }
+    },
+    "table": {
+      "header": { "principal": "Felhasználó", "date": "Dátum", "status": "Állapot", "data": "Extra információ" },
+      "data": { "remoteAddress": "IP cím:" }
+    },
+    "notFound": "No audit found"
+  },
+  "configuration": {
+    "title": "Beállítások",
+    "filter": "Szűrés (prefix alapján)",
+    "table": { "prefix": "Prefix", "properties": "Beállítások" }
+  },
+  "error": {
+    "title": "Hiba!",
+    "http": {
+      "400": "Bad request.",
+      "403": "Nem vagy jogosult ennek a lapnak a megnézésére.",
+      "404": "Az oldal nem létezik.",
+      "405": "The HTTP verb you used is not supported for this URL.",
+      "500": "Internal server error."
+    },
+    "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
+    "validation": "Validation error on the server.",
+    "internalServerError": "Szerver hiba",
+    "server.not.reachable": "A szerver nem elérhető",
+    "url.not.found": "Nem található",
+    "NotNull": "Az {{fieldName}} mező nem lehet üres!",
+    "Size": "A {{fieldName}} mező nem teljesíti a minimum/maximum hossz követelményeket!",
+    "userexists": "Ezzel a felhasználónévvel már regisztráltak!",
+    "emailexists": "Ezzel az email címmel már regisztráltak!",
+    "idexists": "Az új {{entityName}}-nak/nek nem lehet még ID-ja",
+    "idnull": "Invalid ID",
+    "file": {
+      "could.not.extract": "Could not extract file",
+      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+    }
+  },
+  "global": {
+    "title": "Cvs",
+    "browsehappy": "Ön <strong>elavult</strong> böngészőt használ. Kérjük <a href=\"http://browsehappy.com/?locale=hu\">frissítse böngészőjét</a> hogy javuljon a felhasználói élménye.",
+    "menu": {
+      "home": "Kezdőpont",
+      "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "entities": {
+        "main": "Entitások",
+        "vocabulary": "Vocabulary",
+        "code": "Code",
+        "version": "Version",
+        "concept": "Concept",
+        "conceptChange": "Concept Change",
+        "activityLog": "Activity Log",
+        "licence": "Licence",
+        "metadataField": "Metadata Field",
+        "metadataValue": "Metadata Value",
+        "resolver": "Resolver",
+        "vocabularyChange": "Vocabulary Change",
+        "agency": "Agency",
+        "userAgency": "User Agency",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+      },
+      "account": {
+        "main": "Hozzáférés",
+        "settings": "Beállítások",
+        "password": "Jelszó",
+        "sessions": "Munkamenetek",
+        "login": "Hitelesítés",
+        "logout": "Kilépés",
+        "register": "Regisztráció"
+      },
+      "admin": {
+        "main": "Adminisztráció",
+        "userManagement": "Felhasználókezelés",
+        "tracker": "Felhasználó követés",
+        "metrics": "Metrikák",
+        "health": "Akalmazás állapota",
+        "configuration": "Konfiguráció",
+        "logs": "Naplók",
+        "audits": "Nyomkövetés",
+        "apidocs": "API dokumentáció",
+        "database": "Adatbázis",
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "language": "Nyelvek"
+    },
+    "form": {
+      "username.label": "Azonosító",
+      "username.placeholder": "Az Ön felhasználói neve",
+      "currentpassword.label": "Current password",
+      "currentpassword.placeholder": "Current password",
+      "newpassword.label": "Új jelszó",
+      "newpassword.placeholder": "Új jelszava",
+      "confirmpassword.label": "Új jelszó megerősítése",
+      "confirmpassword.placeholder": "Írja be újra a jelszavát",
+      "email.label": "Email",
+      "email.placeholder": "Az Ön email címe"
+    },
+    "messages": {
+      "info": {
+        "authenticated": {
+          "prefix": "Ha be akar ",
+          "link": "lépni",
+          "suffix": ", kipróbálás céljából használható felhasználók:<br/>- Adminisztrátor (azonosító=\"admin\" és a jelszó=\"admin\") <br/>- Felhasználó (azonosító=\"user\" és jelszó=\"user\")."
+        },
+        "register": { "noaccount": "Nincs még hozzáférése?", "link": "Regisztráljon" }
+      },
+      "error": { "dontmatch": "A jelszó és a jelszó megerősítés nem egyezik meg!" },
+      "validate": {
+        "newpassword": {
+          "required": "A jelszó kötelező.",
+          "minlength": "A jelszó legalább 4 karakterből kell, hogy álljon",
+          "maxlength": "A jelszó nem lehet hosszabb mint 50 karakter",
+          "strength": "A jelszó bonyolultsága:"
+        },
+        "confirmpassword": {
+          "required": "A jelszó megerősítés kötelező.",
+          "minlength": "A jelszó megerősítés legalább 4 betűből kell, hogy álljon",
+          "maxlength": "A jelszó megerősítés nem lehet hosszabb mint 50 betű"
+        },
+        "email": {
+          "required": "Az email cím kötelező.",
+          "invalid": "A megadott email cím nem jó.",
+          "minlength": "Az email cím legalább 5 betüből kell, hogy álljon",
+          "maxlength": "Az email cím nem lehet hosszabb mint 50 betű"
+        }
+      }
+    },
+    "field": { "id": "ID" },
+    "ribbon": { "dev": "Fejlesztői változat" },
+    "item-count": "Showing {{first}} - {{second}} of {{total}} items."
+  },
+  "entity": {
+    "action": {
+      "addblob": "Fájl hozzáadása",
+      "addimage": "Kép hozzáadása",
+      "back": "Vissza",
+      "cancel": "Mégsem",
+      "delete": "Törlés",
+      "edit": "Szerkesztés",
+      "open": "Megnyitás",
+      "save": "Mentés",
+      "view": "Nézet"
+    },
+    "detail": { "field": "Mező", "value": "Érték" },
+    "delete": { "title": "Erősítse meg a törlési szándékát" },
+    "validation": {
+      "required": "Ez a mező kötelező.",
+      "minlength": "Ez a mező legalább {{min}} karaktert kell, hogy tartalmazzon.",
+      "maxlength": "Ez a mező nem lehet hosszabb mint {{max}} karakter.",
+      "min": "Ennek a mezőnek a megengedett minimum értéke {{min}}.",
+      "max": "Ennek a mezőnek a megengedett maximum értéke {{max}}.",
+      "minbytes": "Ennek a mezőnek a megengedett minimum értéke {{min}} bytes.",
+      "maxbytes": "Ennek a mezőnek a megengedett maximum értéke {{max}} bytes.",
+      "pattern": "Ennek a mezőnek meg kell felelni a {{pattern}} mintának.",
+      "number": "Ennek a mezőnek számnak kell lennie.",
+      "datetimelocal": "Ennek a mezőnek dátumnak vagy időpontnak kell lennie."
+    }
+  },
+  "footer": "Ez a lábléc.",
+  "health": {
+    "title": "Rendszer ellenőrzések",
+    "refresh.button": "Frissítés",
+    "stacktrace": "Stacktrace",
+    "details": { "details": "Details", "properties": "Properties", "name": "Name", "value": "Value", "error": "Error" },
+    "indicator": { "diskSpace": "Szabad hely a diszken", "mail": "Email", "db": "Adatbázis" },
+    "table": { "service": "Szervíz neve", "status": "Státusz" },
+    "status": { "UNKNOWN": "UNKNOWN", "UP": "MŰKÖDIK", "DOWN": "NEM MŰKÖDIK" }
+  },
+  "home": {
+    "title": "Üdvözöljük, Java Hipster!",
+    "subtitle": "Ez a nyitóképernyőd",
+    "logged": { "message": "Ön \"{{username}}\"-ként lépett be." },
+    "question": "Ha bármi kérdése van a JHipster-ről:",
+    "link": {
+      "homepage": "JHipster honlapja",
+      "stackoverflow": "JHipster a Stack Overflow-n",
+      "bugtracker": "JHipster hibakövető",
+      "chat": "JHipster public chat room",
+      "follow": "lépjen kapcsolatba @jhipster -rel a Twitter-en"
+    },
+    "like": "Ha tetszik a JHipster, ne feledjen csillagot adni a",
+    "github": "GitHub-on"
+  },
+  "login": {
+    "title": "Hitelesítés",
+    "form": { "password": "Jelszó", "password.placeholder": "Az Ön jelszava", "rememberme": "Automatikus belépés", "button": "Belépés" },
+    "messages": {
+      "error": {
+        "authentication": "<strong>Hitelesítés nem sikerült!</strong> Kérjük ellenörizze, hogy helyesen adta meg nevét és jelszavát, és próbálja újra."
+      }
+    },
+    "password": { "forgot": "Elfelejtette a jelszavát?" }
+  },
+  "logs": {
+    "title": "Naplók",
+    "nbloggers": "{{ total }} naplózó található.",
+    "filter": "Szűrő",
+    "table": { "name": "Név", "level": "Szint" }
+  },
+  "metrics": {
+    "title": "Application Metrics",
+    "refresh.button": "Refresh",
+    "updating": "Updating...",
+    "jvm": {
+      "title": "JVM Metrics",
+      "memory": { "title": "Memory", "total": "Total Memory", "heap": "Heap Memory", "nonheap": "Non-Heap Memory" },
+      "threads": {
+        "title": "Threads",
+        "all": "All",
+        "runnable": "Runnable",
+        "timedwaiting": "Timed waiting",
+        "waiting": "Waiting",
+        "blocked": "Blocked",
+        "dump": {
+          "title": "Threads dump",
+          "id": "Id: ",
+          "blockedtime": "Blocked Time",
+          "blockedcount": "Blocked Count",
+          "waitedtime": "Waited Time",
+          "waitedcount": "Waited Count",
+          "lockname": "Lock name",
+          "stacktrace": "Stacktrace",
+          "show": "Show",
+          "hide": "Hide"
+        }
+      },
+      "gc": {
+        "title": "Garbage collections",
+        "marksweepcount": "Mark Sweep count",
+        "marksweeptime": "Mark Sweep time",
+        "scavengecount": "Scavenge count",
+        "scavengetime": "Scavenge time"
+      },
+      "http": {
+        "title": "HTTP requests (events per second)",
+        "active": "Active requests:",
+        "total": "Total requests:",
+        "table": { "code": "Code", "count": "Count", "mean": "Mean", "average": "Average" },
+        "code": { "ok": "Ok", "notfound": "Not found", "servererror": "Server Error" }
+      }
+    },
+    "servicesstats": {
+      "title": "Services statistics (time in millisecond)",
+      "table": {
+        "name": "Service name",
+        "count": "Count",
+        "mean": "Mean",
+        "min": "Min",
+        "max": "Max",
+        "p50": "p50",
+        "p75": "p75",
+        "p95": "p95",
+        "p99": "p99"
+      }
+    },
+    "cache": { "title": "Cache statistics", "cachename": "Cache name", "hits": "Hits", "misses": "Misses", "evictions": "Evictions" },
+    "datasource": {
+      "usage": "Usage",
+      "title": "DataSource statistics (time in millisecond)",
+      "name": "Pool usage",
+      "count": "Count",
+      "mean": "Mean",
+      "min": "Min",
+      "max": "Max",
+      "p50": "p50",
+      "p75": "p75",
+      "p95": "p95",
+      "p99": "p99"
+    }
+  },
+  "password": {
+    "title": "Jelszó [<strong>{{username}}</strong>]-nak",
+    "form": { "button": "Mentés" },
+    "messages": {
+      "error": "<strong>Hiba történt!</strong> A jelszót nem sikerült megváltoztatni.",
+      "success": "<strong>A jelszó megváltozott!</strong>"
+    }
+  },
+  "register": {
+    "title": "Regisztráció",
+    "form": { "button": "Regisztrálás" },
+    "messages": {
+      "validate": {
+        "login": {
+          "required": "A felhasználói azonosító kötelezően kitöltendő.",
+          "minlength": "A felhasználói azonosító legalább 1 betűböl kell, hogy álljon",
+          "maxlength": "A felhasználói azonosító nem lehet több, mint 50 betü",
+          "pattern": "A felhasználói azonosító csak kisbetükből és számokból állhat."
+        }
+      },
+      "success": "<strong>A regisztrációt elmentettük!</strong> Kérjük ellenörizze emailjét, ahova a megerősítő emailt küldtük.",
+      "error": {
+        "fail": "<strong>A regisztráció nem sikerült!</strong> Kérjük próbálj újra később.",
+        "userexists": "<strong>A felhasználói azonosítót már más regisztrálta!</strong> Kérjük, válasszon másikat.",
+        "emailexists": "<strong>Az email cím már használatban van!</strong> Kérjük adjon meg másikat."
+      }
+    }
+  },
+  "reset": {
+    "request": {
+      "title": "Jelszó visszaállítás",
+      "form": { "button": "Jelszó visszaállítás" },
+      "messages": {
+        "info": "Adja meg email címét, amivel regisztrált",
+        "success": "Email címére elküldtük a leírást, hogyan állíthatja vissza jelszavát.",
+        "notfound": "<strong>Ezzel az email címmel nem regisztráltak!</strong> Kérjük ellenőrizze, és próbálja újra!"
+      }
+    },
+    "finish": {
+      "title": "Jelszó állítás",
+      "form": { "button": "Ellenőrizze új jelszavát" },
+      "messages": {
+        "info": "Válasszon új jelszót",
+        "success": "<strong>Az Ön jelszava meg lett változtatva.</strong> Kérjük ",
+        "keymissing": "A jelszó visszaállító kulcs hiányzik.",
+        "error": "Az Ön jelszavát nem lehetett átállítani. Kérjük vegye figyelembe, hogy a jelszó visszaállító kulcs csak 24 óráig érvényes."
+      }
+    }
+  },
+  "sessions": {
+    "title": "[<strong>{{username}}</strong>]-hoz tartozó aktív munkamenetek",
+    "table": { "ipaddress": "IP cím", "useragent": "Böngésző típusa", "date": "Dátum", "button": "Kiléptet" },
+    "messages": {
+      "success": "<strong>Munkamenet be lett fejezve!</strong>",
+      "error": "<strong>Hiba történt!</strong> A munkamenetet nem sikerült befejezni."
+    }
+  },
+  "settings": {
+    "title": "Felhasználói beállítások [<strong>{{username}}</strong>]-nak",
+    "form": {
+      "firstname": "Keresztnév",
+      "firstname.placeholder": "Az Ön keresztneve",
+      "lastname": "Családnév",
+      "lastname.placeholder": "Az Ön családneve",
+      "language": "Nyelvek",
+      "button": "Mentés"
+    },
+    "messages": {
+      "error": {
+        "fail": "<strong>Hiba történt!</strong> A beállításokat nem sikerült elmenteni.",
+        "emailexists": "<strong>Az email cím már használva van!</strong> Kérjük, válasszon másikat."
+      },
+      "success": "<strong>Beállítások elmentésre kerültek!</strong>",
+      "validate": {
+        "firstname": {
+          "required": "A keresztnév kötelező.",
+          "minlength": "A keresztnév legalább 1 betűböl kell, hogy álljon",
+          "maxlength": "A keresztnév nem lehet több, mint 50 betü"
+        },
+        "lastname": {
+          "required": "A családnév kötelező.",
+          "minlength": "A családnév legalább 1 betűböl kell, hogy álljon",
+          "maxlength": "A családnév nem lehet több, mint 50 betü"
+        }
+      }
+    }
+  },
+  "userManagement": {
+    "home": { "title": "Felhasználók", "createLabel": "Új felhasználó", "createOrEditLabel": "Felhasználó létrehozás vagy módosítás" },
+    "created": "A new user is created with identifier {{ param }}",
+    "updated": "A user is updated with identifier {{ param }}",
+    "deleted": "A user is deleted with identifier {{ param }}",
+    "delete": { "question": "Biztos benne, hogy törölni szeretné az {{ login }} azonosítóval rendelkező felhasználót?" },
+    "detail": { "title": "Felhasználó" },
+    "login": "Azonosító",
+    "firstName": "Keresztnév",
+    "lastName": "Vezetéknév",
+    "email": "Email",
+    "activated": "Aktivált",
+    "deactivated": "Deaktivált",
+    "profiles": "Profil",
+    "langKey": "Nyelv",
+    "createdBy": "Létrehozó",
+    "createdDate": "Létrehozás dátuma",
+    "lastModifiedBy": "Módosította",
+    "lastModifiedDate": "Módosítás dátuma"
+  }
+}

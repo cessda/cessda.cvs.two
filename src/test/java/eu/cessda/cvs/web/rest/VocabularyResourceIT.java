@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
@@ -26,12 +28,13 @@ import eu.cessda.cvs.repository.VocabularyRepository;
 import eu.cessda.cvs.repository.search.VocabularyEditorSearchRepository;
 import eu.cessda.cvs.security.AuthoritiesConstants;
 import eu.cessda.cvs.security.jwt.TokenProvider;
-import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 import eu.cessda.cvs.service.mapper.AgencyMapper;
 import eu.cessda.cvs.service.mapper.VocabularyEditorMapper;
 import eu.cessda.cvs.service.mapper.VocabularyMapper;
+import eu.cessda.cvs.utils.VersionNumber;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -80,8 +83,8 @@ public class VocabularyResourceIT {
     private static final String DEFAULT_NOTATION = "AAAAAAAAAA";
     private static final String UPDATED_NOTATION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_VERSION_NUMBER = "AAAAAAAAAA";
-    private static final String UPDATED_VERSION_NUMBER = "BBBBBBBBBB";
+    private static final VersionNumber DEFAULT_VERSION_NUMBER = VersionNumber.fromString("1.0.0");
+    private static final VersionNumber UPDATED_VERSION_NUMBER = VersionNumber.fromString("2.0.0");
 
     private static final Long DEFAULT_INITIAL_PUBLICATION = 1L;
     private static final Long UPDATED_INITIAL_PUBLICATION = 2L;
@@ -383,9 +386,6 @@ public class VocabularyResourceIT {
     private static final String DEFAULT_LOGOPATH = "AAAAAAAAAA";
     private static final String UPDATED_LOGOPATH = "BBBBBBBBBB";
 
-    private static final String DEFAULT_COPYRIGHT = "AAAAAAAAAA";
-    private static final String UPDATED_COPYRIGHT = "BBBBBBBBBB";
-
     private static final String DEFAULT_LICENSE = "AAAAAAAAAA";
     private static final String UPDATED_LICENSE = "BBBBBBBBBB";
 
@@ -394,9 +394,6 @@ public class VocabularyResourceIT {
 
     private static final String DEFAULT_CANONICAL_URI = "AAAAAAAAAA";
     private static final String UPDATED_CANONICAL_URI = "BBBBBBBBBB";
-
-    private static final String DEFAULT_LOGO = "AAAAAAAAAA";
-    private static final String UPDATED_LOGO = "BBBBBBBBBB";
 
     @Autowired
     private AgencyMapper agencyMapper;
@@ -412,9 +409,6 @@ public class VocabularyResourceIT {
 
     @Autowired
     private VocabularyEditorMapper vocabularyEditorMapper;
-
-    @Autowired
-    private VocabularyService vocabularyService;
 
     @Autowired
     private VocabularyEditorSearchRepository mockVocabularyEditorSearchRepository;
@@ -444,11 +438,9 @@ public class VocabularyResourceIT {
 
     private Agency agency;
 
-    private String jwt;
-
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -558,7 +550,7 @@ public class VocabularyResourceIT {
     }
     /**
      * Create an updated entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -669,12 +661,12 @@ public class VocabularyResourceIT {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static Agency createAgencyEntity() {
-        Agency agency = new Agency()
+        return new Agency()
             .name(DEFAULT_NAME)
             .link(DEFAULT_LINK)
             .description(DEFAULT_DESCRIPTION)
@@ -683,7 +675,6 @@ public class VocabularyResourceIT {
             .licenseId(DEFAULT_LICENSE_ID)
             .uri(DEFAULT_URI)
             .canonicalUri(DEFAULT_CANONICAL_URI);
-        return agency;
     }
 
     @BeforeEach
@@ -698,7 +689,7 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void createVocabulary() throws Exception {
+    void createVocabulary() throws Exception {
         int databaseSizeBeforeCreate = vocabularyRepository.findAll().size();
 
         // Mock user login
@@ -722,7 +713,7 @@ public class VocabularyResourceIT {
             new UsernamePasswordAuthenticationToken(user.getLogin(), "test");
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        jwt = tokenProvider.createToken(authentication, false);
+        String jwt = tokenProvider.createToken(authentication, false);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -851,7 +842,7 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void createVocabularyWithExistingId() throws Exception {
+    void createVocabularyWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = vocabularyRepository.findAll().size();
 
         // Create the Vocabulary with an existing ID
@@ -871,7 +862,7 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void getAllVocabularies() throws Exception {
+    void getAllVocabularies() throws Exception {
         // Initialize the database
         vocabularyRepository.saveAndFlush(vocabulary);
 
@@ -883,7 +874,7 @@ public class VocabularyResourceIT {
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
             .andExpect(jsonPath("$.[*].uri").value(hasItem(DEFAULT_URI)))
             .andExpect(jsonPath("$.[*].notation").value(hasItem(DEFAULT_NOTATION)))
-            .andExpect(jsonPath("$.[*].versionNumber").value(hasItem(DEFAULT_VERSION_NUMBER)))
+            .andExpect(jsonPath("$.[*].versionNumber").value(hasItem(DEFAULT_VERSION_NUMBER.toString())))
             .andExpect(jsonPath("$.[*].initialPublication").value(hasItem(DEFAULT_INITIAL_PUBLICATION.intValue())))
             .andExpect(jsonPath("$.[*].previousPublication").value(hasItem(DEFAULT_PREVIOUS_PUBLICATION.intValue())))
             .andExpect(jsonPath("$.[*].archived").value(hasItem( DEFAULT_ARCHIVED )))
@@ -984,7 +975,7 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void getVocabulary() throws Exception {
+    void getVocabulary() throws Exception {
         // Initialize the database
         vocabularyRepository.saveAndFlush(vocabulary);
 
@@ -996,7 +987,7 @@ public class VocabularyResourceIT {
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
             .andExpect(jsonPath("$.uri").value(DEFAULT_URI))
             .andExpect(jsonPath("$.notation").value(DEFAULT_NOTATION))
-            .andExpect(jsonPath("$.versionNumber").value(DEFAULT_VERSION_NUMBER))
+            .andExpect(jsonPath("$.versionNumber").value(DEFAULT_VERSION_NUMBER.toString()))
             .andExpect(jsonPath("$.initialPublication").value(DEFAULT_INITIAL_PUBLICATION.intValue()))
             .andExpect(jsonPath("$.previousPublication").value(DEFAULT_PREVIOUS_PUBLICATION.intValue()))
             .andExpect(jsonPath("$.archived").value( DEFAULT_ARCHIVED ))
@@ -1097,7 +1088,7 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingVocabulary() throws Exception {
+    void getNonExistingVocabulary() throws Exception {
         // Get the vocabulary
         restVocabularyMockMvc.perform(get("/api/vocabularies/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -1105,14 +1096,14 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void updateVocabulary() throws Exception {
+    void updateVocabulary() throws Exception {
         // Initialize the database
         vocabularyRepository.saveAndFlush(vocabulary);
 
         int databaseSizeBeforeUpdate = vocabularyRepository.findAll().size();
 
         // Update the vocabulary
-        Vocabulary updatedVocabulary = vocabularyRepository.findById(vocabulary.getId()).get();
+        Vocabulary updatedVocabulary = vocabularyRepository.findById(vocabulary.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedVocabulary are not directly saved in db
         em.detach(updatedVocabulary);
         updatedVocabulary
@@ -1339,7 +1330,7 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingVocabulary() throws Exception {
+    void updateNonExistingVocabulary() throws Exception {
         int databaseSizeBeforeUpdate = vocabularyRepository.findAll().size();
 
         // Create the Vocabulary
@@ -1358,7 +1349,7 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void deleteVocabulary() throws Exception {
+    void deleteVocabulary() throws Exception {
         // Initialize the database
         vocabularyRepository.saveAndFlush(vocabulary);
 
@@ -1373,7 +1364,7 @@ public class VocabularyResourceIT {
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSizeBeforeDelete - 1);
     }
-
+ 
     @Test
     @Transactional
     void shouldUpdateVocabularyLogoOnAgencyUpdate() throws Exception
@@ -1382,7 +1373,7 @@ public class VocabularyResourceIT {
         vocabularyRepository.saveAndFlush(vocabulary);
 
         // Update the agency
-        Agency updatedAgency = agencyRepository.findById(agency.getId()).get();
+        Agency updatedAgency = agencyRepository.findById(agency.getId()).orElseThrow();
 
         // Disconnect from session so that the updates on updatedAgency are not directly saved in db
         em.detach(updatedAgency);
@@ -1403,7 +1394,7 @@ public class VocabularyResourceIT {
                 .andExpect(status().isOk());
 
         // Verify the vocabulary was updated.
-        Vocabulary vocabulary = vocabularyRepository.findAll().stream().findFirst().get();
+        Vocabulary vocabulary = vocabularyRepository.findAll().get(0);
         assertThat( vocabulary.getAgencyLogo() ).isEqualTo( UPDATED_AGENCY_LOGO );
         // FIXME - the agency name doesn't appear to get updated, is this intentional?
         //assertThat( vocabulary.getAgencyName() ).isEqualTo( UPDATED_AGENCY_NAME );

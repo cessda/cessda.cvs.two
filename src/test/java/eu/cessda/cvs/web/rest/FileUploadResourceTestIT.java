@@ -1,9 +1,25 @@
+/*
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
-import org.apache.commons.io.FileUtils;
+import eu.cessda.cvs.config.ApplicationProperties;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.file.PathUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,9 +32,9 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
 
@@ -36,6 +52,9 @@ class FileUploadResourceTestIT
 {
 
     @Autowired
+    private ApplicationProperties applicationProperties;
+
+    @Autowired
     private MockMvc fileUploadResourceMockMvc;
 
     @Test
@@ -44,13 +63,15 @@ class FileUploadResourceTestIT
         MockMultipartFile cessdaPNG = new MockMultipartFile( "file", Files.readAllBytes( Paths.get( "src/main/webapp/content/images/agency/cessda.png" ) ) );
         MvcResult result = fileUploadResourceMockMvc.perform( multipart( "/api/upload/agency-image" ).file( cessdaPNG ) )
             .andExpect( status().isCreated() )
-            .andExpect( content().string( containsString( ".jpg" ) ) )
+            .andExpect( header().string( "location", containsString( ".png" ) ) )
             .andReturn();
 
         // Test if the newly created resource can be found at the location header
-        fileUploadResourceMockMvc.perform( get( result.getResponse().getHeader( "location" ) ) )
+        String location = result.getResponse().getHeader( "location" );
+        assertThat( location ).isNotNull();
+        fileUploadResourceMockMvc.perform( get( location ) )
             .andExpect( status().isOk() )
-            .andExpect( content().contentType( MediaType.IMAGE_JPEG ) );
+            .andExpect( content().contentType( MediaType.IMAGE_PNG ) );
     }
 
     @Test
@@ -59,13 +80,15 @@ class FileUploadResourceTestIT
         MockMultipartFile cessdaPNG = new MockMultipartFile( "file", Files.readAllBytes( Paths.get( "src/main/webapp/content/images/license/by.png" ) ) );
         MvcResult result = fileUploadResourceMockMvc.perform( multipart( "/api/upload/license-image" ).file( cessdaPNG ) )
             .andExpect( status().isCreated() )
-            .andExpect( content().string( containsString( ".jpg" ) ) )
+            .andExpect( header().string( "location", containsString( ".png" ) ) )
             .andReturn();
 
         // Test if the newly created resource can be found at the location header
-        fileUploadResourceMockMvc.perform( get( result.getResponse().getHeader( "location" ) ) )
+        String location = result.getResponse().getHeader( "location" );
+        assertThat( location ).isNotNull();
+        fileUploadResourceMockMvc.perform( get( location ) )
             .andExpect( status().isOk() )
-            .andExpect( content().contentType( MediaType.IMAGE_JPEG ) );
+            .andExpect( content().contentType( MediaType.IMAGE_PNG ) );
     }
 
     @Test
@@ -81,7 +104,9 @@ class FileUploadResourceTestIT
             .andReturn();
 
         // Test if the newly created resource can be found at the location header
-        fileUploadResourceMockMvc.perform( get( result.getResponse().getHeader( "location" ) ) )
+        String location = result.getResponse().getHeader( "location" );
+        assertThat( location ).isNotNull();
+        fileUploadResourceMockMvc.perform( get( location ) )
             .andExpect( status().isOk() )
             // Uploaded file should be bitwise identical to the source
             .andExpect( content().bytes( topicClassificationJson ) );
@@ -102,25 +127,22 @@ class FileUploadResourceTestIT
         String fileName = FilenameUtils.getName( result.getResponse().getHeader( "location" ) );
         assertThat(fileName).isNotNull();
         fileUploadResourceMockMvc.perform( post( "/api/upload/docx2html/{fileName}", fileName ) )
-            .andExpect( status().isOk() )
-            .andExpect( jsonPath( "$.status" ).value( "OK" ) )
-            .andExpect( jsonPath( "$.message" ).value( fileName ) );
+            .andExpect( status().isCreated())
+            .andExpect( header().string("location", containsString(fileName + ".html"))  );
 
         // Verify that the HTML has been generated
-        File htmlFile = new File( "target/classes/static/content/file/" + fileName + "_2.html" );
-        assertThat( FileUtils.readFileToString( htmlFile, StandardCharsets.UTF_8) ).contains( "Test document" );
+        Path htmlFile = applicationProperties.getUploadFilePath().resolve( fileName + ".html" );
+        assertThat( PathUtils.readString( htmlFile, StandardCharsets.UTF_8 ) ).contains( "Test document" );
     }
 
     @Test
-    void shouldReturn503IfDocumentWasNotFound() throws Exception
+    void shouldReturn404IfDocumentWasNotFound() throws Exception
     {
         // Attempt to load a document that doesn't exist
         String fileName = FilenameUtils.getName( UUID.randomUUID() + ".docx" );
 
-        // Verify that an internal server error is returned
+        // Verify that a not found response is returned
         fileUploadResourceMockMvc.perform( post( "/api/upload/docx2html/{fileName}", fileName ) )
-            .andExpect( status().isInternalServerError() )
-            .andExpect( jsonPath( "$.status" ).value( "Not OK" ) )
-            .andExpect( jsonPath( "$.message" ).value( fileName ) );
+            .andExpect( status().isNotFound() );
     }
 }

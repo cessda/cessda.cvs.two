@@ -1,93 +1,63 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.web.rest.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Aggr implements Serializable {
-    private String type;
-    private String field;
-    private List<String> values = new ArrayList<>();
-    private List<Bucket> buckets = new ArrayList<>();
-    private List<Bucket> filteredBuckets = new ArrayList<>();
+    private static final long serialVersionUID = -7907701690323224787L;
 
-    public Aggr() {
-        // used for jackson serialization
+    private final String type;
+    private final String field;
+    private final List<String> values;
+    private final List<Bucket> buckets;
+    private final List<Bucket> filteredBuckets;
+
+    public Aggr(
+        String type,
+        String field,
+        List<String> values,
+        List<Bucket> buckets,
+        List<Bucket> filteredBuckets
+    ) {
+        this.type = type;
+        this.field = field;
+        this.values = values;
+        this.buckets = buckets;
+        this.filteredBuckets = filteredBuckets;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public String getField() {
         return field;
-    }
-
-    public void setField(String field) {
-        this.field = field;
     }
 
     public List<Bucket> getBuckets() {
         return buckets;
     }
 
-    public void setBuckets(List<Bucket> buckets) {
-        this.buckets = buckets;
-    }
-
     public List<String> getValues() {
         return values;
     }
 
-    public void setValues(List<String> values) {
-        this.values = values;
-    }
-
-    public void setBucketFromMap(Map<String, Long> buckets) {
-        List<Bucket> bucks = new ArrayList<>();
-        buckets.forEach((k,v) -> {
-            Bucket buck = new Bucket();
-            buck.setK( k );
-            buck.setV( v );
-            bucks.add( buck );
-        });
-        this.buckets = bucks;
-    }
-
     public List<Bucket> getFilteredBuckets() {
         return filteredBuckets;
-    }
-
-    public void setFilteredBuckets(List<Bucket> filteredBuckets) {
-        this.filteredBuckets = filteredBuckets;
-    }
-
-    public void setFilteredBucketFromMap(Map<String, Long> buckets) {
-        List<Bucket> bucks = new ArrayList<>();
-        buckets.forEach((k,v) -> {
-            Bucket buck = new Bucket();
-            buck.setK( k );
-            buck.setV( v );
-            bucks.add( buck );
-        });
-        this.filteredBuckets = bucks;
     }
 }

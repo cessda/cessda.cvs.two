@@ -1,59 +1,58 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 
-import {Component, OnInit} from '@angular/core';
-import {HttpEventType, HttpResponse} from '@angular/common/http';
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-
-import {ILicence, Licence} from 'app/shared/model/licence.model';
-import {LicenceService} from './licence.service';
-import {FileUploadService} from 'app/shared/upload/file-upload.service';
+import { Licence } from 'app/shared/model/licence.model';
+import { LicenceService } from './licence.service';
+import { FileUploadService } from 'app/shared/upload/file-upload.service';
 
 @Component({
   selector: 'jhi-licence-update',
-  templateUrl: './licence-update.component.html'
+  templateUrl: './licence-update.component.html',
 })
 export class LicenceUpdateComponent implements OnInit {
   isSaving = false;
 
-  selectedFiles?: FileList;
-  currentFileUpload?: File | null;
+  selectedFiles: FileList | null = null;
+  currentFileUpload: File | null = null;
   currentImage?: string;
   progress: { percentage: number } = {
-    percentage: 0
+    percentage: 0,
   };
 
   editForm = this.fb.group({
-    id: [],
-    name: [null, [Validators.required, Validators.maxLength(255)]],
-    link: [
-      null,
-      [
-        Validators.pattern(
-          '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})'
-        )
-      ]
-    ],
-    abbr: [null, [Validators.required, Validators.maxLength(100)]]
+    id: new FormControl<number | null>(null),
+    name: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(255)] }),
+    link: new FormControl<string | null>(null, [
+      Validators.pattern(
+        '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
+      ),
+    ]),
+    abbr: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(100)] }),
   });
 
   constructor(
     protected licenceService: LicenceService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
-    protected fileUploadService: FileUploadService
+    protected fileUploadService: FileUploadService,
   ) {}
 
   ngOnInit(): void {
@@ -62,12 +61,12 @@ export class LicenceUpdateComponent implements OnInit {
     });
   }
 
-  updateForm(licence: ILicence): void {
+  updateForm(licence: Licence): void {
     this.editForm.patchValue({
       id: licence.id,
       name: licence.name,
       link: licence.link,
-      abbr: licence.abbr
+      abbr: licence.abbr,
     });
     this.currentImage = licence.logoLink;
   }
@@ -87,20 +86,19 @@ export class LicenceUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): ILicence {
+  private createFromForm(): Licence {
     return {
-      ...new Licence(),
-      id: this.editForm.get(['id'])!.value,
-      name: this.editForm.get(['name'])!.value,
-      link: this.editForm.get(['link'])!.value,
-      abbr: this.editForm.get(['abbr'])!.value
+      id: this.editForm.controls.id.value || undefined,
+      name: this.editForm.controls.name.value,
+      link: this.editForm.controls.link.value || undefined,
+      abbr: this.editForm.controls.abbr.value,
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<ILicence>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Licence>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 
@@ -113,19 +111,27 @@ export class LicenceUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  selectFile(selectFileEvent: { target: { files: FileList | undefined } }): void {
-    this.selectedFiles = selectFileEvent.target.files;
+  selectFile(selectFileEvent: Event): void {
+    this.selectedFiles = (selectFileEvent.target as HTMLInputElement).files;
+    if (!this.selectedFiles) {
+      return;
+    }
+    this.currentFileUpload = this.selectedFiles.item(0);
+    if (!this.currentFileUpload) {
+      return;
+    }
     this.progress.percentage = 0;
-    this.currentFileUpload = this.selectedFiles!.item(0);
-    this.fileUploadService.uploadLicenseImage(this.currentFileUpload!).subscribe(event => {
-      if (event.type === HttpEventType.UploadProgress) {
-        this.progress.percentage = Math.round((100 * event.loaded) / event.total!);
-      } else if (event instanceof HttpResponse) {
-        this.currentImage = event.body!.toString();
-      }
-    });
+    this.fileUploadService
+      .uploadLicenseImage(this.currentFileUpload)
+      .pipe(FileUploadService.uploadFileHandler)
+      .subscribe(status => {
+        this.progress.percentage = status.progress;
+        if (status.location) {
+          this.currentImage = status.location.split('/').pop();
+        }
+      });
 
-    this.selectedFiles = undefined;
+    this.selectedFiles = null;
   }
 
   removePicture(): void {

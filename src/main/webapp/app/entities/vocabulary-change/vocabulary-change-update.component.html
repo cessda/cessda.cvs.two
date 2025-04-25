@@ -1,16 +1,20 @@
 <!--
-  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License").
-  ~ You may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and limitations under the License.
-  -->
 
+    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
@@ -19,7 +23,7 @@
             <div>
                 <jhi-alert-error></jhi-alert-error>
 
-                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                <div class="form-group" [hidden]="!editForm.controls.id.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
@@ -40,13 +44,13 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.vocabularyChange.changeType" for="field_changeType">Change Type</label>
                     <input type="text" class="form-control" name="changeType" id="field_changeType"
                            formControlName="changeType"/>
-                    <div *ngIf="editForm.get('changeType')!.invalid && (editForm.get('changeType')!.dirty || editForm.get('changeType')!.touched)">
+                    <div *ngIf="editForm.controls.changeType.invalid && (editForm.controls.changeType.dirty || editForm.controls.changeType.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('changeType')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.controls.changeType.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('changeType')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 60 }">
+                               *ngIf="editForm.controls.changeType.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 60 }">
                         This field cannot be longer than 60 characters.
                         </small>
                     </div>
@@ -68,9 +72,9 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.vocabularyChange.userName" for="field_userName">User Name</label>
                     <input type="text" class="form-control" name="userName" id="field_userName"
                            formControlName="userName"/>
-                    <div *ngIf="editForm.get('userName')!.invalid && (editForm.get('userName')!.dirty || editForm.get('userName')!.touched)">
+                    <div *ngIf="editForm.controls.userName.invalid && (editForm.controls.userName.dirty || editForm.controls.userName.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('userName')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 120 }">
+                               *ngIf="editForm.controls.userName.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 120 }">
                         This field cannot be longer than 120 characters.
                         </small>
                     </div>

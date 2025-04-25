@@ -1,0 +1,1033 @@
+{
+  "activate": {
+    "title": "Aktivering",
+    "messages": {
+      "success": "<strong>Din bruger er blevet aktiveret.</strong> Du bedes venligst ",
+      "error": "<strong>Din bruger kunne ikke blive aktiveret.</strong> Anvend venligst registeringsformularen for at oprette en bruger."
+    }
+  },
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "Activity Logs",
+        "createLabel": "Create a new Activity Log",
+        "createOrEditLabel": "Create or edit a Activity Log",
+        "notFound": "No Activity Logs found"
+      },
+      "created": "A new Activity Log is created with identifier {{ param }}",
+      "updated": "A Activity Log is updated with identifier {{ param }}",
+      "deleted": "A Activity Log is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Activity Log {{ id }}?"
+      },
+      "detail": {
+        "title": "Activity Log"
+      },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    },
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Create a new Agency",
+        "createOrEditLabel": "Create or edit a Agency",
+        "notFound": "No Agencies found"
+      },
+      "created": "A new Agency is created with identifier {{ param }}",
+      "updated": "A Agency is updated with identifier {{ param }}",
+      "deleted": "A Agency is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Agency {{ id }}?"
+      },
+      "detail": {
+        "title": "Agency"
+      },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    },
+    "AgencyRole": {
+      "null": "",
+      "ADMIN": "ADMIN",
+      "VIEW": "VIEW",
+      "ADMIN_SL": "ADMIN_SL",
+      "ADMIN_TL": "ADMIN_TL",
+      "ADMIN_CONTENT": "ADMIN_CONTENT"
+    },
+    "code": {
+      "home": {
+        "title": "Codes",
+        "createLabel": "Create a new Code",
+        "createOrEditLabel": "Create or edit a Code",
+        "notFound": "No Codes found"
+      },
+      "created": "A new Code is created with identifier {{ param }}",
+      "updated": "A Code is updated with identifier {{ param }}",
+      "deleted": "A Code is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Code {{ id }}?"
+      },
+      "detail": {
+        "title": "Code"
+      },
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv"
+    },
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Create a new Comment",
+        "createOrEditLabel": "Create or edit a Comment",
+        "search": "Search for Comment",
+        "notFound": "No Comments found"
+      },
+      "created": "A new Comment is created with identifier {{ param }}",
+      "updated": "A Comment is updated with identifier {{ param }}",
+      "deleted": "A Comment is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Comment {{ id }}?"
+      },
+      "detail": {
+        "title": "Comment"
+      },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    },
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Create a new Concept",
+        "createOrEditLabel": "Create or edit a Concept",
+        "notFound": "No Concepts found"
+      },
+      "created": "A new Concept is created with identifier {{ param }}",
+      "updated": "A Concept is updated with identifier {{ param }}",
+      "deleted": "A Concept is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Concept {{ id }}?"
+      },
+      "detail": {
+        "title": "Concept"
+      },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    },
+    "conceptChange": {
+      "home": {
+        "title": "Concept Changes",
+        "createLabel": "Create a new Concept Change",
+        "createOrEditLabel": "Create or edit a Concept Change",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "A new Concept Change is created with identifier {{ param }}",
+      "updated": "A Concept Change is updated with identifier {{ param }}",
+      "deleted": "A Concept Change is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Concept Change {{ id }}?"
+      },
+      "detail": {
+        "title": "Concept Change"
+      },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    },
+    "Language": {
+      "null": "",
+      "ALBANIAN": "ALBANIAN",
+      "BOSNIAN": "BOSNIAN",
+      "BULGARIAN": "BULGARIAN",
+      "CROATIAN": "CROATIAN",
+      "CZECH": "CZECH",
+      "DANISH": "DANISH",
+      "DUTCH": "DUTCH",
+      "ENGLISH": "ENGLISH",
+      "ESTONIAN": "ESTONIAN",
+      "FINNISH": "FINNISH",
+      "FRENCH": "FRENCH",
+      "GERMAN": "GERMAN",
+      "GREEK": "GREEK",
+      "HUNGARIAN": "HUNGARIAN",
+      "ITALIAN": "ITALIAN",
+      "JAPANESE": "JAPANESE",
+      "LITHUANIAN": "LITHUANIAN",
+      "MACEDONIAN": "MACEDONIAN",
+      "NORWEGIAN": "NORWEGIAN",
+      "POLISH": "POLISH",
+      "PORTUGUESE": "PORTUGUESE",
+      "ROMANIAN": "ROMANIAN",
+      "RUSSIAN": "RUSSIAN",
+      "SERBIAN": "SERBIAN",
+      "SLOVAK": "SLOVAK",
+      "SLOVENIAN": "SLOVENIAN",
+      "SPANISH": "SPANISH",
+      "SWEDISH": "SWEDISH"
+    },
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Create a new Licence",
+        "createOrEditLabel": "Create or edit a Licence",
+        "notFound": "No Licences found"
+      },
+      "created": "A new Licence is created with identifier {{ param }}",
+      "updated": "A Licence is updated with identifier {{ param }}",
+      "deleted": "A Licence is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Licence {{ id }}?"
+      },
+      "detail": {
+        "title": "Licence"
+      },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo"
+    },
+    "metadataField": {
+      "home": {
+        "title": "Metadata Fields",
+        "createLabel": "Create a new Metadata Field",
+        "createOrEditLabel": "Create or edit a Metadata Field",
+        "notFound": "No Metadata Fields found"
+      },
+      "created": "A new Metadata Field is created with identifier {{ param }}",
+      "updated": "A Metadata Field is updated with identifier {{ param }}",
+      "deleted": "A Metadata Field is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Metadata Field {{ id }}?"
+      },
+      "detail": {
+        "title": "Metadata Field"
+      },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    },
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Create a new Metadata Value",
+        "createOrEditLabel": "Create or edit a Metadata Value",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "A new Metadata Value is created with identifier {{ param }}",
+      "updated": "A Metadata Value is updated with identifier {{ param }}",
+      "deleted": "A Metadata Value is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Metadata Value {{ id }}?"
+      },
+      "detail": {
+        "title": "Metadata Value"
+      },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    },
+    "ObjectType": {
+      "null": "",
+      "AGENCY": "AGENCY",
+      "GROUP": "GROUP",
+      "SYSTEM": "SYSTEM"
+    },
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Create a new Resolver",
+        "createOrEditLabel": "Create or edit a Resolver",
+        "notFound": "No Resolvers found"
+      },
+      "created": "A new Resolver is created with identifier {{ param }}",
+      "updated": "A Resolver is updated with identifier {{ param }}",
+      "deleted": "A Resolver is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Resolver {{ id }}?"
+      },
+      "detail": {
+        "title": "Resolver"
+      },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    },
+    "ResolverType": {
+      "null": "",
+      "DOI": "DOI",
+      "URN": "URN"
+    },
+    "ResourceType": {
+      "null": "",
+      "VOCABULARY": "VOCABULARY"
+    },
+    "userAgency": {
+      "home": {
+        "title": "User Agencies",
+        "createLabel": "Create a new User Agency",
+        "createOrEditLabel": "Create or edit a User Agency",
+        "notFound": "No User Agencies found"
+      },
+      "created": "A new User Agency is created with identifier {{ param }}",
+      "updated": "A User Agency is updated with identifier {{ param }}",
+      "deleted": "A User Agency is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete User Agency {{ id }}?"
+      },
+      "detail": {
+        "title": "User Agency"
+      },
+      "agencyRole": "Agency Role",
+      "language": "Language",
+      "agency": "Agency"
+    },
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Create a new Version",
+        "createOrEditLabel": "Create or edit a Version",
+        "notFound": "No Versions found"
+      },
+      "created": "A new Version is created with identifier {{ param }}",
+      "updated": "A Version is updated with identifier {{ param }}",
+      "deleted": "A Version is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Version {{ id }}?"
+      },
+      "detail": {
+        "title": "Version"
+      },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    },
+    "vocabulary": {
+      "home": {
+        "title": "Vocabularies",
+        "createLabel": "Create a new Vocabulary",
+        "createOrEditLabel": "Create or edit a Vocabulary",
+        "notFound": "No Vocabularies found"
+      },
+      "created": "A new Vocabulary is created with identifier {{ param }}",
+      "updated": "A Vocabulary is updated with identifier {{ param }}",
+      "deleted": "A Vocabulary is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Vocabulary {{ id }}?"
+      },
+      "detail": {
+        "title": "Vocabulary"
+      },
+      "status": "Status",
+      "uri": "Uri",
+      "notation": "Notation",
+      "versionNumber": "Version Number",
+      "initialPublication": "Initial Publication",
+      "previousPublication": "Previous Publication",
+      "archived": "Archived",
+      "withdrawn": "Withdrawn",
+      "discoverable": "Discoverable",
+      "sourceLanguage": "Source Language",
+      "agencyId": "Agency Id",
+      "agencyName": "Agency Name",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "notes": "Notes",
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "versionBs": "Version Bs",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "versionBg": "Version Bg",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "versionHr": "Version Hr",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "versionCs": "Version Cs",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "versionDa": "Version Da",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "versionNl": "Version Nl",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "versionEn": "Version En",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "versionEt": "Version Et",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "versionFi": "Version Fi",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "versionFr": "Version Fr",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "versionDe": "Version De",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "versionEl": "Version El",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "versionHu": "Version Hu",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "versionIt": "Version It",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "versionJa": "Version Ja",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "versionLt": "Version Lt",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "versionMk": "Version Mk",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "versionNo": "Version No",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "versionPl": "Version Pl",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "versionPt": "Version Pt",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "versionRo": "Version Ro",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "versionRu": "Version Ru",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "versionSr": "Version Sr",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "versionSk": "Version Sk",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "versionSl": "Version Sl",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "versionEs": "Version Es",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "versionSv": "Version Sv",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv",
+      "version": "Version"
+    },
+    "vocabularyChange": {
+      "home": {
+        "title": "Vocabulary Changes",
+        "createLabel": "Create a new Vocabulary Change",
+        "createOrEditLabel": "Create or edit a Vocabulary Change",
+        "notFound": "No Vocabulary Changes found"
+      },
+      "created": "A new Vocabulary Change is created with identifier {{ param }}",
+      "updated": "A Vocabulary Change is updated with identifier {{ param }}",
+      "deleted": "A Vocabulary Change is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Vocabulary Change {{ id }}?"
+      },
+      "detail": {
+        "title": "Vocabulary Change"
+      },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  },
+  "audits": {
+    "title": "Revisioner",
+    "filter": {
+      "title": "Filtrer på dato",
+      "from": "fra",
+      "to": "til",
+      "button": {
+        "weeks": "uger",
+        "today": "idag",
+        "clear": "ryd",
+        "close": "luk"
+      }
+    },
+    "table": {
+      "header": {
+        "principal": "Bruger",
+        "date": "Dato",
+        "status": "Tilstand",
+        "data": "Ekstra data"
+      },
+      "data": {
+        "remoteAddress": "Remote Address:"
+      }
+    },
+    "notFound": "No audit found"
+  },
+  "configuration": {
+    "title": "Konfiguration",
+    "filter": "Filtrer (efter præfiks)",
+    "table": {
+      "prefix": "Præfiks",
+      "properties": "Egenskaber"
+    }
+  },
+  "error": {
+    "title": "Fejlside!",
+    "http": {
+      "400": "Bad request.",
+      "403": "Du er ikke autoriseret til at få adgang til siden.",
+      "404": "Siden findes ikke.",
+      "405": "The HTTP verb you used is not supported for this URL.",
+      "500": "Internal server error."
+    },
+    "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
+    "validation": "Validation error on the server.",
+    "internalServerError": "Internal server error",
+    "server.not.reachable": "Server not reachable",
+    "url.not.found": "Not found",
+    "NotNull": "Field {{fieldName}} cannot be empty!",
+    "Size": "Field {{fieldName}} does not meet min/max size requirements!",
+    "userexists": "Login name already used!",
+    "emailexists": "Email is already in use!",
+    "idexists": "A new {{entityName}} cannot already have an ID",
+    "idnull": "Invalid ID",
+    "file": {
+      "could.not.extract": "Could not extract file",
+      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+    }
+  },
+  "global": {
+    "title": "Cvs",
+    "browsehappy": "Du bruger en <strong>forældet</strong> browser. <a href=\"http://browsehappy.com/?locale=da\">Opgrader din browser</a> og få gavn af hele den tilgængelige funktionalitet.",
+    "menu": {
+      "home": "Forsiden",
+      "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "entities": {
+        "main": "Entities",
+        "vocabulary": "Vocabulary",
+        "code": "Code",
+        "version": "Version",
+        "concept": "Concept",
+        "conceptChange": "Concept Change",
+        "activityLog": "Activity Log",
+        "licence": "Licence",
+        "metadataField": "Metadata Field",
+        "metadataValue": "Metadata Value",
+        "resolver": "Resolver",
+        "vocabularyChange": "Vocabulary Change",
+        "agency": "Agency",
+        "userAgency": "User Agency",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+      },
+      "account": {
+        "main": "Konto",
+        "settings": "Indstillinger",
+        "password": "Kodeord",
+        "sessions": "Sessions",
+        "login": "Log ind",
+        "logout": "Log ud",
+        "register": "Register"
+      },
+      "admin": {
+        "main": "Administration",
+        "userManagement": "User management",
+        "tracker": "Brugersporing",
+        "metrics": "Målinger",
+        "health": "Sundheds",
+        "configuration": "Konfiguration",
+        "logs": "Logs",
+        "audits": "Audits",
+        "apidocs": "API",
+        "database": "Database",
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "language": "Sprog"
+    },
+    "form": {
+      "username.label": "Brugernavn",
+      "username.placeholder": "Dit brugernavn",
+      "currentpassword.label": "Current password",
+      "currentpassword.placeholder": "Current password",
+      "newpassword.label": "Nyt kodeord",
+      "newpassword.placeholder": "Indtast det nye kodeord",
+      "confirmpassword.label": "Bekræft det nye kodeordet",
+      "confirmpassword.placeholder": "Bekræft det nye kodeord",
+      "email.label": "Email",
+      "email.placeholder": "Din email adresse"
+    },
+    "messages": {
+      "info": {
+        "authenticated": {
+          "prefix": "Hvis du ønsker at ",
+          "link": "logge ind",
+          "suffix": ", så kan du prøve det med:<br/>- Administrator (brugernavn=\"admin\" and kodeord=\"admin\") <br/>- User (brugernavn=\"user\" and kodeord=\"user\")."
+        },
+        "register": {
+          "noaccount": "You don't have an account yet?",
+          "link": "Register a new account"
+        }
+      },
+      "error": {
+        "dontmatch": "Kodeordet og dets bekræftelse matcher ikke!"
+      },
+      "validate": {
+        "newpassword": {
+          "required": "Kodeord skal indtastes.",
+          "minlength": "Kodeordet skal som minimum være på 4 tegn!",
+          "maxlength": "Kodeordet må ikke overskride 50 tegn!",
+          "strength": "Kodeord strength:"
+        },
+        "confirmpassword": {
+          "required": "Kodeordet skal bekræftes",
+          "minlength": "Kodeordet skal som minimum være på 4 tegn!",
+          "maxlength": "Kodeordet må ikke overskride 50 tegn!"
+        },
+        "email": {
+          "required": "Din email adresse er påkrævet.",
+          "invalid": "Din email adresse er ugyldig!",
+          "minlength": "Din email adresse skal som minimum være på 5 tegn",
+          "maxlength": "Din email adresse må ikke overskride 50 tegn"
+        }
+      }
+    },
+    "field": {
+      "id": "ID"
+    },
+    "ribbon": {
+      "dev": "Development"
+    },
+    "item-count": "Viser {{first}} - {{second}} af {{total}} varer."
+  },
+  "entity": {
+    "action": {
+      "addblob": "Add blob",
+      "addimage": "Add image",
+      "back": "Tilbage",
+      "cancel": "Annuller",
+      "delete": "Slet",
+      "edit": "Editér",
+      "open": "Open",
+      "save": "Gem",
+      "view": "Vis"
+    },
+    "detail": {
+      "field": "Felt",
+      "value": "Værdi"
+    },
+    "delete": {
+      "title": "Bekræft sletning"
+    },
+    "validation": {
+      "required": "Dette felt er påkrævet.",
+      "minlength": "Dette felt skal være på mindst {{min}} karakterer.",
+      "maxlength": "Dette felt kan ikke være længere end {{max}} karakterer.",
+      "min": "Dette felt skal være større end {{min}}.",
+      "max": "Dette felt kan ikke være større end {{max}}.",
+      "minbytes": "This field should be more than {{min}} bytes.",
+      "maxbytes": "This field cannot be more than {{max}} bytes.",
+      "pattern": "Dette felt skal følge mønsteret {{pattern}}.",
+      "number": "Dette felt skal være et nummer.",
+      "datetimelocal": "Dette felt skal være dato og tid."
+    }
+  },
+  "footer": "Det her er sidefoden",
+  "health": {
+    "title": "Sundhed",
+    "refresh.button": "Opdatér",
+    "stacktrace": "Stacktrace",
+    "details": {
+      "details": "Details",
+      "properties": "Properties",
+      "name": "Name",
+      "value": "Value",
+      "error": "Error"
+    },
+    "indicator": {
+      "diskSpace": "Diskplads",
+      "mail": "Email",
+      "db": "Database"
+    },
+    "table": {
+      "service": "Tjenestenavn",
+      "status": "Status"
+    },
+    "status": {
+      "UNKNOWN": "UNKNOWN",
+      "UP": "OP",
+      "DOWN": "NED"
+    }
+  },
+  "home": {
+    "title": "Velkommen, Java Hipster!",
+    "subtitle": "Dette er din startside",
+    "logged": {
+      "message": "Du er logget ind som bruger \"{{username}}\"."
+    },
+    "question": "Hvis du har spørgsmål om JHipster:",
+    "link": {
+      "homepage": "JHipster homepage",
+      "stackoverflow": "JHipster på Stack Overflow",
+      "bugtracker": "JHipster bug tracker",
+      "chat": "JHipster public chat room",
+      "follow": "Kontakt @jhipster på Twitter"
+    },
+    "like": "Hvis du kan lide JHipster, så husk at give os en stjerne på",
+    "github": "GitHub"
+  },
+  "login": {
+    "title": "Autentifikation",
+    "form": {
+      "password": "Kodeord",
+      "password.placeholder": "Dit Kodeord",
+      "rememberme": "Husk mig",
+      "button": "Log ind"
+    },
+    "messages": {
+      "error": {
+        "authentication": "<strong>Autentifikation mislykkedes!</strong> Kontroller venligst brugernavn og kodeord og prøv igen."
+      }
+    },
+    "password": {
+      "forgot": "Did you forget your password?"
+    }
+  },
+  "logs": {
+    "title": "Logs",
+    "nbloggers": "Der findes {{ total }} logger.",
+    "filter": "Filter",
+    "table": {
+      "name": "Navn",
+      "level": "Niveau"
+    }
+  },
+  "metrics": {
+    "title": "Programmålinger",
+    "refresh.button": "Opdatér",
+    "updating": "Ajourføring...",
+    "jvm": {
+      "title": "JVM målinger",
+      "memory": {
+        "title": "Hukommelse",
+        "total": "Total Hukommelse",
+        "heap": "Heap Hukommelse",
+        "nonheap": "Non-Heap Hukommelse"
+      },
+      "threads": {
+        "title": "Tråde",
+        "all": "Alle",
+        "runnable": "Runnable",
+        "timedwaiting": "Ventende tidsbestemt",
+        "waiting": "Ventende",
+        "blocked": "Blokeret",
+        "dump": {
+          "title": "Threads dump",
+          "id": "Id: ",
+          "blockedtime": "Blocked Time",
+          "blockedcount": "Blocked Count",
+          "waitedtime": "Waited Time",
+          "waitedcount": "Waited Count",
+          "lockname": "Lock name",
+          "stacktrace": "Stacktrace",
+          "show": "Show",
+          "hide": "Hide"
+        }
+      },
+      "gc": {
+        "title": "Garbage collections (GC)",
+        "marksweepcount": "Antal markeringer (Mark Sweep)",
+        "marksweeptime": "Markeringstid (Mark Sweep)",
+        "scavengecount": "Antal oprydninger (Scavenge)",
+        "scavengetime": "Oprydningstid (Scavenge)"
+      },
+      "http": {
+        "title": "HTTP forespørgsler (hændelser per sekund)",
+        "active": "Aktive forespørgsler:",
+        "total": "Alle forespørgsler:",
+        "table": {
+          "code": "Kode",
+          "count": "Antal",
+          "mean": "Middel",
+          "average": "Gennemsnit"
+        },
+        "code": {
+          "ok": "Ok",
+          "notfound": "Ikke fundet",
+          "servererror": "Serverfejl"
+        }
+      }
+    },
+    "servicesstats": {
+      "title": "Service statistik (tid i millisekunder)",
+      "table": {
+        "name": "Servicenavn",
+        "count": "Antal",
+        "mean": "Middel",
+        "min": "Min",
+        "max": "Max",
+        "p50": "p50",
+        "p75": "p75",
+        "p95": "p95",
+        "p99": "p99"
+      }
+    },
+    "cache": {
+      "title": "Cache statistik",
+      "cachename": "Cache navn",
+      "hits": "Hits",
+      "misses": "Misses",
+      "evictions": "Antal udsættelser"
+    },
+    "datasource": {
+      "usage": "Usage",
+      "title": "DataSource statistics (time in millisecond)",
+      "name": "Pool usage",
+      "count": "Count",
+      "mean": "Mean",
+      "min": "Min",
+      "max": "Max",
+      "p50": "p50",
+      "p75": "p75",
+      "p95": "p95",
+      "p99": "p99"
+    }
+  },
+  "password": {
+    "title": "Kodeord for [<strong>{{username}}</strong>]",
+    "form": {
+      "button": "Gem"
+    },
+    "messages": {
+      "error": "<strong>Der opstod en fejl!</strong> Kodeordet kunne ikke ændres.",
+      "success": "<strong>Kodeord er blevet ændret!</strong>"
+    }
+  },
+  "register": {
+    "title": "Registration",
+    "form": {
+      "button": "Register"
+    },
+    "messages": {
+      "validate": {
+        "login": {
+          "required": "Dit login er påkrævet.",
+          "minlength": "Dit login skal være på mindst 1 karakter",
+          "maxlength": "Dit login kan ikke være længere end 50 karakterer",
+          "pattern": "Dit login kan kun indeholde små bogstaver og tal"
+        }
+      },
+      "success": "<strong>Registreringen er gemt!</strong> Check venligst din mail for bekræftelse.",
+      "error": {
+        "fail": "<strong>Registreringen fejlede!</strong> Prøv igen senere.",
+        "userexists": "<strong>Loginnavn er allerede i brug!</strong> Prøv med et andet.",
+        "emailexists": "<strong>Email er allerede i brug!</strong> Vælg venligst en anden."
+      }
+    }
+  },
+  "reset": {
+    "request": {
+      "title": "Reset your password",
+      "form": {
+        "button": "Reset password"
+      },
+      "messages": {
+        "info": "Enter the email address you used to register",
+        "success": "Check your emails for details on how to reset your password.",
+        "notfound": "<strong>Email address isn't registered!</strong> Please check and try again"
+      }
+    },
+    "finish": {
+      "title": "Reset password",
+      "form": {
+        "button": "Validate new password"
+      },
+      "messages": {
+        "info": "Choose a new password",
+        "success": "<strong>Your password has been reset.</strong> Please ",
+        "keymissing": "The reset key is missing.",
+        "error": "Your password couldn't be reset. Remember a password request is only valid for 24 hours."
+      }
+    }
+  },
+  "sessions": {
+    "title": "Aktive sessioner for [<strong>{{username}}</strong>]",
+    "table": {
+      "ipaddress": "IP-adresse",
+      "useragent": "User Agent",
+      "date": "Dato",
+      "button": "Luk"
+    },
+    "messages": {
+      "success": "<strong>Session lukket!</strong>",
+      "error": "<strong>Der opstod en fejl!</strong> Sessionen kunne ikke lukkes."
+    }
+  },
+  "settings": {
+    "title": "Brugerindstillinger for [<strong>{{username}}</strong>]",
+    "form": {
+      "firstname": "Fornavn",
+      "firstname.placeholder": "Dit fornavn",
+      "lastname": "Efternavn",
+      "lastname.placeholder": "Dit efternavn",
+      "language": "Sprog",
+      "button": "Gem"
+    },
+    "messages": {
+      "error": {
+        "fail": "<strong>Der opstod en fejl!</strong> Brugerindstillingerne kunne ikke gemmes.",
+        "emailexists": "<strong>Email is already in use!</strong> Please choose another one."
+      },
+      "success": "<strong>Brugerindstillinger gemt!</strong>",
+      "validate": {
+        "firstname": {
+          "required": "Dit fornavn er påkrævet.",
+          "minlength": "Dit fornavn skal som minimum være på 1 tegn",
+          "maxlength": "Dit brugernavn må ikke overskride 50 tegn"
+        },
+        "lastname": {
+          "required": "Dit efternavn er påkrævet.",
+          "minlength": "Dit efternavn skal som minimum være på 1 tegn",
+          "maxlength": "Dit efternavn må ikke overskride 50 tegn"
+        }
+      }
+    }
+  },
+  "userManagement": {
+    "home": {
+      "title": "Users",
+      "createLabel": "Create a new user",
+      "createOrEditLabel": "Create or edit a user"
+    },
+    "created": "A new user is created with identifier {{ param }}",
+    "updated": "A user is updated with identifier {{ param }}",
+    "deleted": "A user is deleted with identifier {{ param }}",
+    "delete": {
+      "question": "Are you sure you want to delete user {{ login }}?"
+    },
+    "detail": {
+      "title": "User"
+    },
+    "login": "Login",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "activated": "Activated",
+    "deactivated": "Deactivated",
+    "profiles": "Profiles",
+    "langKey": "Language",
+    "createdBy": "Created by",
+    "createdDate": "Created date",
+    "lastModifiedBy": "Modified by",
+    "lastModifiedDate": "Modified date"
+  }
+}

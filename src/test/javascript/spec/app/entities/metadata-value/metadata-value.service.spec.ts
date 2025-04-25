@@ -1,20 +1,22 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { MetadataValueService } from 'app/entities/metadata-value/metadata-value.service';
-import { IMetadataValue, MetadataValue } from 'app/shared/model/metadata-value.model';
+import { MetadataValue } from 'app/shared/model/metadata-value.model';
 import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
 
 describe('Service Tests', () => {
@@ -22,12 +24,12 @@ describe('Service Tests', () => {
     let injector: TestBed;
     let service: MetadataValueService;
     let httpMock: HttpTestingController;
-    let elemDefault: IMetadataValue;
-    let expectedResult: IMetadataValue | IMetadataValue[] | boolean | null;
+    let elemDefault: MetadataValue;
+    let expectedResult: MetadataValue | MetadataValue[] | boolean | null;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
 
@@ -35,7 +37,14 @@ describe('Service Tests', () => {
       service = injector.get(MetadataValueService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new MetadataValue(0, 'AAAAAAA', 'AAAAAAA', ObjectType.AGENCY, 0, 0);
+      elemDefault = {
+        id: 0,
+        identifier: 'AAAAAAA',
+        value: 'AAAAAAA',
+        objectType: ObjectType.AGENCY,
+        objectId: 0,
+        metadataFieldId: 0,
+      };
     });
 
     describe('Service methods', () => {
@@ -52,14 +61,14 @@ describe('Service Tests', () => {
       it('should create a MetadataValue', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
 
-        service.create(new MetadataValue()).subscribe(resp => (expectedResult = resp.body));
+        service.create({}).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
@@ -73,9 +82,9 @@ describe('Service Tests', () => {
             value: 'BBBBBB',
             objectType: 'BBBBBB',
             objectId: 1,
-            position: 1
+            position: 1,
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
@@ -94,9 +103,9 @@ describe('Service Tests', () => {
             value: 'BBBBBB',
             objectType: 'BBBBBB',
             objectId: 1,
-            position: 1
+            position: 1,
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);

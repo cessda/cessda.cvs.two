@@ -1,34 +1,38 @@
 <!--
-  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License").
-  ~ You may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and limitations under the License.
-  -->
 
+    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <div *ngFor="let concept of conceptList">
     <ul *ngIf="concept.parent === parentNotation" class="concept-tree ul-level-{{level!}}">
-        <li [attr.id]="concept.deprecated ? 'code_' + concept.notation.split('.').join('') : null">
+        <li [attr.id]="concept.deprecated ? 'code_' + concept.notation!.split('.').join('') : null">
             <div *ngIf="concept.deprecated" class="concept-row">
                 <!-- Column 1 -->
-                <span class="column1"><a href="{{concept.uri}}" target="_blank">{{concept.uri}}</a></span>
+                <span class="column1"><a href="{{concept.uri}}" target="_blank" rel="noopener noreferrer">{{concept.uri}}</a></span>
                 <!-- Column 2 -->
-                <span class="column1 coll-mar-{{level!}}"><button *ngIf="isConceptHasChildren(concept.notation,conceptList)" (click)="concept.visible = !concept.visible" class="invisible-button"><fa-icon *ngIf="!concept.visible" icon="caret-down"></fa-icon><fa-icon *ngIf="concept.visible" icon="caret-right"></fa-icon></button><span class="e-note">{{concept.position}}</span> {{concept.notation}}</span>
+                <span class="column1 coll-mar-{{level!}}"><button *ngIf="isConceptHasChildren(concept.notation)" (click)="concept.visible = !concept.visible" class="invisible-button"><fa-icon *ngIf="!concept.visible" icon="caret-down"></fa-icon><fa-icon *ngIf="concept.visible" icon="caret-right"></fa-icon></button><span class="e-note">{{concept.position}}</span> {{concept.notation}}</span>
                 <!-- Column 3 -->
                 <span class="column2">{{concept.title ? concept.title : ''}}</span>
                 <!-- Column 4 -->
                 <span class="column2">{{concept.validFrom}}</span>
                 <!-- Column 5 -->
-                <span class="column2">{{concept.validUntil}}</span>                
+                <span class="column2">{{concept.validUntil}}</span>
             </div>
-            <jhi-tree-deprecated *ngIf="isConceptHasChildren(concept.notation,conceptList)"
+            <jhi-tree-deprecated *ngIf="isConceptHasChildren(concept.notation)"
                       [ngClass]="{'display-none': concept.visible}"
-                      [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems(conceptList , parentNotation)" [level]="level! + 1"></jhi-tree-deprecated>
+                      [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems()" [level]="level + 1"></jhi-tree-deprecated>
         </li>
     </ul>
 </div>

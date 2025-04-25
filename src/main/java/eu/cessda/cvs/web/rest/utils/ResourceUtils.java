@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.web.rest.utils;
 
 import eu.cessda.cvs.domain.enumeration.ItemType;
@@ -35,22 +37,11 @@ public class ResourceUtils {
     private ResourceUtils(){}
 
     public static ResponseEntity<List<String>> getListResponseEntity(VersionDTO version1, VersionDTO version2) {
-        List<String> compareVersions = VersionUtils.buildComparisonCurrentAndPreviousCV(version1, version2);
+        List<String> compareVersions = VersionUtils.compareCurPrevCV(version1, version2);
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Prev-Cv-Version", version2.getNotation() + " " +version2.getItemType() + " v." + version2.getNumber());
         headers.add("X-Current-Cv-Version", version1.getNotation() + " " +version1.getItemType() + " v." + version1.getNumber());
         return ResponseEntity.ok().headers(headers).body(compareVersions);
-    }
-
-    /**
-     * Get server base path from the Servlet request
-     * @param request
-     * @return
-     */
-    public static String getBasePath(HttpServletRequest request) {
-        if( request.getScheme().equals( "http" ) && request.getServerPort() != 80)
-            return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
-        return request.getScheme() + "://" + request.getServerName() + request.getContextPath() + "/";
     }
 
     public static List<Map<String, Object>> convertVocabularyDtoToJsonLdSkosMos(VocabularyDTO vocabularyDTO, Set<CodeDTO> codeDtos, Set<String> languages){
@@ -83,8 +74,6 @@ public class ResourceUtils {
         contextJsonLdMap.put("versionInfo", vocabularyDTO.getVersionNumber());
 
         List<Object> results = new ArrayList<>();
-        Object[] resultObj = new Object[1];
-        resultObj[0] = results;
         contextJsonLdMap.put("results", results );
 
         // concepts
@@ -175,7 +164,7 @@ public class ResourceUtils {
         List<Map<String,String>> versionInfoList = new ArrayList<>();
         vocabularyJsonLdMap.put("http://www.w3.org/2002/07/owl#versionInfo", versionInfoList);
         Map<String, String> versionInfoMap = new LinkedHashMap<>();
-        versionInfoMap.put(VALUE, vocabularyDTO.getVersionNumber());
+        versionInfoMap.put(VALUE, vocabularyDTO.getVersionNumber().toString());
         versionInfoList.add(versionInfoMap);
         // hasTopConcept
         List<Map<String,String>> hasTopConceptList = new ArrayList<>();
@@ -267,4 +256,7 @@ public class ResourceUtils {
         return docId;
     }
 
+    public static String getURLWithContextPath(HttpServletRequest request) {
+        return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+    }
 }

@@ -1,16 +1,20 @@
 <!--
-  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License").
-  ~ You may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and limitations under the License.
-  -->
 
+    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="cvsApp.comment.home.title">Comments</span>
@@ -45,11 +49,12 @@
         </div>
     </div>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="comments?.length === 0">
+    <div class="alert alert-warning" id="no-result" *ngIf="comments?.length === 0; else elseBlock">
         <span jhiTranslate="cvsApp.comment.home.notFound">No comments found</span>
     </div>
 
-    <div class="table-responsive" id="entities" *ngIf="comments?.length > 0">
+    <ng-template #elseBlock>
+    <div class="table-responsive" id="entities">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
@@ -68,7 +73,7 @@
                     <td>{{ comment.info }}</td>
                     <td>{{ comment.content }}</td>
                     <td>{{ comment.userId }}</td>
-                    <td>{{ comment.dateTime | date:'medium' }}</td>
+                    <td>{{ comment.dateTime?.toDate() | date:'medium' }}</td>
                     <td>
                         <div *ngIf="comment.versionId">
                             <a [routerLink]="['/entity/version', comment.versionId , 'view']" >{{ comment.versionId }}</a>
@@ -102,7 +107,7 @@
         </table>
     </div>
 
-    <div *ngIf="comments?.length > 0">
+    <div>
         <div class="row justify-content-center">
             <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
         </div>
@@ -111,4 +116,6 @@
             <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
+
+    </ng-template>
 </div>

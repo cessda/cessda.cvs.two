@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.service;
 
 import eu.cessda.cvs.config.Constants;
@@ -36,7 +38,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -153,6 +158,12 @@ public class UserService {
         return true;
     }
 
+    /**
+     * Create user, and return the modified user.
+     *
+     * @param userDTO user to update.
+     * @return created user.
+     */
     public User createUser(UserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin().toLowerCase());
@@ -267,6 +278,11 @@ public class UserService {
             .map(UserDTO::new);
     }
 
+    /**
+     * Delete user by login
+     * 
+     * @param login user to delete
+     */
     public void deleteUser(String login) {
         userRepository.findOneByLogin(login).ifPresent(user -> {
             userRepository.delete(user);
@@ -311,7 +327,7 @@ public class UserService {
         Optional<User> userOpt = SecurityUtils.getCurrentUserLogin().flatMap(userRepository::findOneWithAuthoritiesByLogin);
         if( userOpt.isPresent() ){
             user = userOpt.get();
-            user.setUserAgencies( userAgencyRepository.findByUser(user.getId()).stream().collect(Collectors.toSet()));
+            user.setUserAgencies(new HashSet<>(userAgencyRepository.findByUser(user.getId())));
         }
         return Optional.ofNullable(user);
     }
@@ -340,11 +356,21 @@ public class UserService {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
     }
 
-
+     /**
+     * Clear the user cache
+     * 
+     * @param user to clear the cache
+     */
     private void clearUserCaches(User user) {
-        Objects.requireNonNull(cacheManager.getCache(Constants.USERS_BY_LOGIN_CACHE)).evict(user.getLogin());
+        var userByLoginCache = cacheManager.getCache(Constants.USERS_BY_LOGIN_CACHE);
+        if (userByLoginCache != null) {
+            userByLoginCache.evict(user.getLogin());
+        }
         if (user.getEmail() != null) {
-            Objects.requireNonNull(cacheManager.getCache(Constants.USERS_BY_EMAIL_CACHE)).evict(user.getEmail());
+            var userByEmailCache = cacheManager.getCache(Constants.USERS_BY_EMAIL_CACHE);
+            if (userByEmailCache != null) {
+                userByEmailCache.evict(user.getEmail());
+            }
         }
     }
 }

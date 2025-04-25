@@ -1,20 +1,27 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.data.elasticsearch.annotations.*;
+import eu.cessda.cvs.utils.VersionNumber;
+import org.hibernate.annotations.Type;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Mapping;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -54,10 +61,10 @@ public class VocabularyBase implements Serializable {
     private String notation;
 
     @NotNull
-    @Size(max = 20)
-    @Column(name = "version_number", length = 20, nullable = false)
+    @Column(name = "version_number", nullable = false)
     @Field( type = FieldType.Keyword )
-    private String versionNumber;
+    @Type( type = "eu.cessda.cvs.utils.VersionNumberType")
+    private VersionNumber versionNumber;
 
     @Column(name = "initial_publication")
     private Long initialPublication;
@@ -111,6 +118,11 @@ public class VocabularyBase implements Serializable {
     @Field( type = FieldType.Text )
     private String notes;
 
+    @Lob
+    @Column(name = "title_all")
+    @Mapping(mappingPath = "/mappings/titleAll.json")
+	private String titleAll;
+
     @Size(max = 20)
     @Column(name = "version_sq", length = 20)
     @Field( type = FieldType.Keyword )
@@ -118,13 +130,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_sq")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleSq;
+    @Mapping(mappingPath = "/mappings/titleSq.json")
+	private String titleSq;
 
     @Lob
     @Column(name = "definition_sq")
@@ -138,13 +145,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_bs")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleBs;
+    @Mapping(mappingPath = "/mappings/titleBs.json")
+	private String titleBs;
 
     @Lob
     @Column(name = "definition_bs")
@@ -158,13 +160,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_bg")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "bulgarian", searchAnalyzer = "bulgarian" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleBg;
+    @Mapping(mappingPath = "/mappings/titleBg.json")
+	private String titleBg;
 
     @Lob
     @Column(name = "definition_bg")
@@ -178,13 +175,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_hr")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleHr;
+    @Mapping(mappingPath = "/mappings/titleHr.json")
+	private String titleHr;
 
     @Lob
     @Column(name = "definition_hr")
@@ -198,13 +190,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_cs")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "czech", searchAnalyzer = "czech" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleCs;
+    @Mapping(mappingPath = "/mappings/titleCs.json")
+	private String titleCs;
 
     @Lob
     @Column(name = "definition_cs")
@@ -218,13 +205,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_da")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "danish", searchAnalyzer = "danish" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleDa;
+    @Mapping(mappingPath = "/mappings/titleDa.json")
+	private String titleDa;
 
     @Lob
     @Column(name = "definition_da")
@@ -238,13 +220,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_nl")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "dutch", searchAnalyzer = "dutch" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleNl;
+    @Mapping(mappingPath = "/mappings/titleNl.json")
+	private String titleNl;
 
     @Lob
     @Column(name = "definition_nl")
@@ -258,13 +235,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_en")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "english", searchAnalyzer = "english" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleEn;
+    @Mapping(mappingPath = "/mappings/titleEn.json")
+	private String titleEn;
 
     @Lob
     @Column(name = "definition_en")
@@ -278,13 +250,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_et")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleEt;
+    @Mapping(mappingPath = "/mappings/titleEt.json")
+	private String titleEt;
 
     @Lob
     @Column(name = "definition_et")
@@ -298,13 +265,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_fi")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleFi;
+    @Mapping(mappingPath = "/mappings/titleFi.json")
+	private String titleFi;
 
     @Lob
     @Column(name = "definition_fi")
@@ -318,13 +280,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_fr")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "french", searchAnalyzer = "french" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleFr;
+    @Mapping(mappingPath = "/mappings/titleFr.json")
+	private String titleFr;
 
     @Lob
     @Column(name = "definition_fr")
@@ -338,13 +295,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_de")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "german", searchAnalyzer = "german" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleDe;
+    @Mapping(mappingPath = "/mappings/titleDe.json")
+	private String titleDe;
 
     @Lob
     @Column(name = "definition_de")
@@ -358,13 +310,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_el")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "greek", searchAnalyzer = "greek" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleEl;
+    @Mapping(mappingPath = "/mappings/titleEl.json")
+	private String titleEl;
 
     @Lob
     @Column(name = "definition_el")
@@ -378,13 +325,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_hu")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleHu;
+    @Mapping(mappingPath = "/mappings/titleHu.json")
+	private String titleHu;
 
     @Lob
     @Column(name = "definition_hu")
@@ -398,13 +340,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_it")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "italian", searchAnalyzer = "italian" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleIt;
+    @Mapping(mappingPath = "/mappings/titleIt.json")
+	private String titleIt;
 
     @Lob
     @Column(name = "definition_it")
@@ -418,13 +355,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_ja")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleJa;
+    @Mapping(mappingPath = "/mappings/titleJa.json")
+	private String titleJa;
 
     @Lob
     @Column(name = "definition_ja")
@@ -438,13 +370,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_lt")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleLt;
+    @Mapping(mappingPath = "/mappings/titleLt.json")
+	private String titleLt;
 
     @Lob
     @Column(name = "definition_lt")
@@ -458,13 +385,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_mk")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleMk;
+    @Mapping(mappingPath = "/mappings/titleMk.json")
+	private String titleMk;
 
     @Lob
     @Column(name = "definition_mk")
@@ -478,13 +400,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_no")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleNo;
+    @Mapping(mappingPath = "/mappings/titleNo.json")
+	private String titleNo;
 
     @Lob
     @Column(name = "definition_no")
@@ -498,13 +415,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_pl")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titlePl;
+    @Mapping(mappingPath = "/mappings/titlePl.json")
+	private String titlePl;
 
     @Lob
     @Column(name = "definition_pl")
@@ -518,13 +430,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_pt")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titlePt;
+    @Mapping(mappingPath = "/mappings/titlePt.json")
+	private String titlePt;
 
     @Lob
     @Column(name = "definition_pt")
@@ -538,13 +445,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_ro")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "romanian", searchAnalyzer = "romanian" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleRo;
+    @Mapping(mappingPath = "/mappings/titleRo.json")
+	private String titleRo;
 
     @Lob
     @Column(name = "definition_ro")
@@ -558,13 +460,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_ru")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "russian", searchAnalyzer = "russian" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleRu;
+    @Mapping(mappingPath = "/mappings/titleRu.json")
+	private String titleRu;
 
     @Lob
     @Column(name = "definition_ru")
@@ -578,13 +475,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_sr")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleSr;
+    @Mapping(mappingPath = "/mappings/titleSr.json")
+	private String titleSr;
 
     @Lob
     @Column(name = "definition_sr")
@@ -598,13 +490,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_sk")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleSk;
+    @Mapping(mappingPath = "/mappings/titleSk.json")
+	private String titleSk;
 
     @Lob
     @Column(name = "definition_sk")
@@ -618,13 +505,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_sl")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleSl;
+    @Mapping(mappingPath = "/mappings/titleSl.json")
+	private String titleSl;
 
     @Lob
     @Column(name = "definition_sl")
@@ -638,13 +520,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_es")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleEs;
+    @Mapping(mappingPath = "/mappings/titleEs.json")
+	private String titleEs;
 
     @Lob
     @Column(name = "definition_es")
@@ -658,13 +535,8 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "title_sv")
-    @MultiField(
-        mainField = @Field( type = FieldType.Text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" ),
-        otherFields = {
-            @InnerField( suffix = "Key", type = FieldType.Keyword)
-        }
-    )
-    private String titleSv;
+    @Mapping(mappingPath = "/mappings/titleSv.json")
+	private String titleSv;
 
     @Lob
     @Column(name = "definition_sv")
@@ -719,16 +591,16 @@ public class VocabularyBase implements Serializable {
         this.notation = notation;
     }
 
-    public String getVersionNumber() {
+    public VersionNumber getVersionNumber() {
         return versionNumber;
     }
 
-    public VocabularyBase versionNumber(String versionNumber) {
+    public VocabularyBase versionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
         return this;
     }
 
-    public void setVersionNumber(String versionNumber) {
+    public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
     }
 
@@ -896,6 +768,14 @@ public class VocabularyBase implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public String getTitleAll() {
+        return titleAll;
+    }
+
+    public void setTitleAll(String titleAll) {
+        this.titleAll = titleAll;
     }
 
     public String getVersionSq() {
@@ -2034,6 +1914,7 @@ public class VocabularyBase implements Serializable {
             ", publicationDate='" + getPublicationDate() + "'" +
             ", lastModified='" + getLastModified() + "'" +
             ", notes='" + getNotes() + "'" +
+            ", titleAll='" + getTitleAll() + "'" +
             ", versionSq='" + getVersionSq() + "'" +
             ", titleSq='" + getTitleSq() + "'" +
             ", definitionSq='" + getDefinitionSq() + "'" +

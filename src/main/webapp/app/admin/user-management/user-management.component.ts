@@ -1,50 +1,49 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { JhiEventManager, JhiPaginationUtil } from 'ng-jhipster';
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Subscription} from 'rxjs';
-import {flatMap} from 'rxjs/operators';
-import {ActivatedRoute, Router} from '@angular/router';
-import {JhiEventManager} from 'ng-jhipster';
-
-import {ITEMS_PER_PAGE} from 'app/shared/constants/pagination.constants';
-import {AccountService} from 'app/core/auth/account.service';
-import {Account} from 'app/core/user/account.model';
-import {UserService} from 'app/core/user/user.service';
-import {User} from 'app/core/user/user.model';
-import {UserManagementDeleteDialogComponent} from './user-management-delete-dialog.component';
-import {IAgency} from 'app/shared/model/agency.model';
-import {AgencyService} from 'app/agency/agency.service';
-import {IUserAgency} from 'app/shared/model/user-agency.model';
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/user/account.model';
+import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.model';
+import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
+import { Agency } from 'app/shared/model/agency.model';
+import { AgencyService } from 'app/agency/agency.service';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 
 @Component({
   selector: 'jhi-user-mgmt',
-  templateUrl: './user-management.component.html'
+  templateUrl: './user-management.component.html',
 })
 export class UserManagementComponent implements OnInit, OnDestroy {
   currentAccount: Account | null = null;
-  users: User[] | null = null;
-  userListSubscription?: Subscription;
+  users: User[] = [];
+  userListSubscription: Subscription | undefined;
   totalItems = 0;
-  itemsPerPage = ITEMS_PER_PAGE;
-  page!: number;
-  predicate!: string;
-  previousPage!: number;
-  ascending!: boolean;
+  readonly itemsPerPage = ITEMS_PER_PAGE;
+  page = 1;
+  predicate = 'id';
+  ascending = true;
 
-  agencies?: IAgency[];
+  agencies: Agency[] = [];
 
   constructor(
     private userService: UserService,
@@ -53,36 +52,41 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     private router: Router,
     private eventManager: JhiEventManager,
     private modalService: NgbModal,
-    private agencyService: AgencyService
+    private agencyService: AgencyService,
+    private paginationUtil: JhiPaginationUtil,
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data
-      .pipe(
-        flatMap(
-          () => this.accountService.identity(),
-          (data, account) => {
-            this.page = data.pagingParams.page;
-            this.previousPage = data.pagingParams.page;
-            this.ascending = data.pagingParams.ascending;
-            this.predicate = data.pagingParams.predicate;
-            this.currentAccount = account;
-            this.loadAll();
-            this.userListSubscription = this.eventManager.subscribe('userListModification', () => this.loadAll());
-          }
-        )
-      )
-      .subscribe();
+    this.accountService.identity().subscribe(account => (this.currentAccount = account));
+
+    this.activatedRoute.queryParamMap.subscribe(query => {
+      const page = query.get('page');
+      if (page) {
+        this.page = Number.parseInt(page);
+      } else {
+        this.page = 1;
+      }
+
+      const sort = query.get('sort');
+      if (sort) {
+        this.predicate = this.paginationUtil.parsePredicate(sort);
+        this.ascending = this.paginationUtil.parseAscending(sort);
+      } else {
+        this.predicate = 'id';
+        this.ascending = true;
+      }
+
+      this.loadUsers();
+    });
 
     this.agencyService
       .query({
         page: 0,
         size: 1000,
-        sort: ['name,asc']
       })
-      .subscribe((res: HttpResponse<IAgency[]>) => {
-        this.agencies = res.body!;
-      });
+      .subscribe(res => (this.agencies = res.body || []));
+
+    this.userListSubscription = this.eventManager.subscribe('userListModification', () => this.loadUsers());
   }
 
   ngOnDestroy(): void {
@@ -92,33 +96,42 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   }
 
   getAgencyName(agencyId: number): string {
-    return this.agencies!.filter(a => a.id === agencyId)[0].name!;
+    for (let i = 0; i < this.agencies.length; i++) {
+      const agency = this.agencies[i];
+      if (agency.id === agencyId) {
+        return agency.name!;
+      }
+    }
+    return `Unknown agency (${agencyId})`;
   }
 
   setActive(user: User, isActivated: boolean): void {
-    this.userService.update({ ...user, activated: isActivated }).subscribe(() => this.loadAll());
+    this.userService.update({ ...user, activated: isActivated }).subscribe(() => this.loadUsers());
   }
 
-  trackIdentity(index: number, item: User): any {
+  trackIdentity(_index: number, item: User): any {
     return item.id;
   }
 
   loadPage(page: number): void {
-    if (page !== this.previousPage) {
-      this.previousPage = page;
-      this.transition();
-    }
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: {
+        page: page,
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 
-  transition(): void {
-    this.router.navigate(['./'], {
-      relativeTo: this.activatedRoute.parent,
+  updateSort(): void {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
       queryParams: {
-        page: this.page,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
+        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
+      },
+      queryParamsHandling: 'merge',
     });
-    this.loadAll();
+    this.loadUsers();
   }
 
   deleteUser(user: User): void {
@@ -126,14 +139,37 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.user = user;
   }
 
-  private loadAll(): void {
-    this.userService
-      .query({
-        page: this.page - 1,
-        size: this.itemsPerPage,
-        sort: this.sort()
-      })
-      .subscribe((res: HttpResponse<User[]>) => this.onSuccess(res.body, res.headers));
+  private loadUsers(): void {
+    const userObservable = this.userService.query({
+      page: this.page - 1,
+      size: this.itemsPerPage,
+      sort: this.sort(),
+    });
+
+    userObservable.subscribe(res => {
+      const users = res.body || [];
+
+      // Sort user agencies
+      users.forEach(u => {
+        if (u.userAgencies && u.userAgencies.length > 0) {
+          u.userAgencies.sort((ua1, ua2) =>
+            this.userAgencyToCompare(ua1) < this.userAgencyToCompare(ua2)
+              ? -1
+              : this.userAgencyToCompare(ua1) > this.userAgencyToCompare(ua2)
+                ? 1
+                : 0,
+          );
+        }
+      });
+
+      const totalCount = res.headers.get('X-Total-Count');
+      if (totalCount) {
+        this.totalItems = Number.parseInt(totalCount);
+      } else {
+        this.totalItems = users.length;
+      }
+      this.users = users;
+    });
   }
 
   private sort(): string[] {
@@ -144,23 +180,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  private onSuccess(users: User[] | null, headers: HttpHeaders): void {
-    this.totalItems = Number(headers.get('X-Total-Count'));
-    this.users = users;
-    this.users!.forEach(u => {
-      if (u.userAgencies && u.userAgencies.length > 0) {
-        u.userAgencies.sort((ua1, ua2) =>
-          this.userAgencyToCompare(ua1) < this.userAgencyToCompare(ua2)
-            ? -1
-            : this.userAgencyToCompare(ua1) > this.userAgencyToCompare(ua2)
-            ? 1
-            : 0
-        );
-      }
-    });
-  }
-
-  userAgencyToCompare(ua: IUserAgency): string {
+  userAgencyToCompare(ua: UserAgency): string {
     return ua.agencyId! + ua.agencyRole! + (ua.language ? ua.language : '');
   }
 }

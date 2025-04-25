@@ -1,22 +1,25 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.domain.MetadataField;
 import eu.cessda.cvs.domain.enumeration.ObjectType;
 import eu.cessda.cvs.repository.MetadataFieldRepository;
+import eu.cessda.cvs.service.ExportService;
 import eu.cessda.cvs.service.MetadataFieldService;
 import eu.cessda.cvs.service.dto.MetadataFieldDTO;
 import eu.cessda.cvs.service.mapper.MetadataFieldMapper;
@@ -78,29 +81,27 @@ public class MetadataFieldResourceIT {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static MetadataField createEntity(EntityManager em) {
-        MetadataField metadataField = new MetadataField()
+        return new MetadataField()
             .metadataKey(DEFAULT_METADATA_KEY)
             .description(DEFAULT_DESCRIPTION)
             .objectType(DEFAULT_OBJECT_TYPE);
-        return metadataField;
     }
     /**
      * Create an updated entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static MetadataField createUpdatedEntity(EntityManager em) {
-        MetadataField metadataField = new MetadataField()
+        return new MetadataField()
             .metadataKey(UPDATED_METADATA_KEY)
             .description(UPDATED_DESCRIPTION)
             .objectType(UPDATED_OBJECT_TYPE);
-        return metadataField;
     }
 
     @BeforeEach
@@ -110,7 +111,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void createMetadataField() throws Exception {
+    void createMetadataField() throws Exception {
         int databaseSizeBeforeCreate = metadataFieldRepository.findAll().size();
 
         // Create the MetadataField
@@ -131,7 +132,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void createMetadataFieldWithExistingId() throws Exception {
+    void createMetadataFieldWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = metadataFieldRepository.findAll().size();
 
         // Create the MetadataField with an existing ID
@@ -152,7 +153,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void checkMetadataKeyIsRequired() throws Exception {
+    void checkMetadataKeyIsRequired() throws Exception {
         int databaseSizeBeforeTest = metadataFieldRepository.findAll().size();
         // set the field null
         metadataField.setMetadataKey(null);
@@ -171,7 +172,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void getAllMetadataFields() throws Exception {
+    void getAllMetadataFields() throws Exception {
         // Initialize the database
         metadataFieldRepository.saveAndFlush(metadataField);
 
@@ -187,7 +188,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void getMetadataField() throws Exception {
+    void getMetadataField() throws Exception {
         // Initialize the database
         metadataFieldRepository.saveAndFlush(metadataField);
 
@@ -226,7 +227,8 @@ public class MetadataFieldResourceIT {
         metadataFieldRepository.saveAndFlush(metadataField);
 
         // Get the metadataField
-        restMetadataFieldMockMvc.perform( get("/api/metadata-fields/download-pdf/{metadataKey}", metadataField.getMetadataKey()) )
+        restMetadataFieldMockMvc.perform( get("/api/metadata-fields/download/{metadataKey}", metadataField.getMetadataKey())
+                .accept( MediaType.APPLICATION_PDF ))
             .andExpect(status().isOk())
             .andExpect( content().contentType( MediaType.APPLICATION_PDF ) )
             .andExpect( header().string( HttpHeaders.CONTENT_DISPOSITION, equalTo( "attachment; filename=document.pdf" ) ) );
@@ -240,15 +242,16 @@ public class MetadataFieldResourceIT {
         metadataFieldRepository.saveAndFlush(metadataField);
 
         // Get the metadataField
-        restMetadataFieldMockMvc.perform( get("/api/metadata-fields/download-word/{metadataKey}", metadataField.getMetadataKey()) )
+        restMetadataFieldMockMvc.perform( get( "/api/metadata-fields/download/{metadataKey}", metadataField.getMetadataKey() )
+                .accept( ExportService.MEDIATYPE_WORD ) )
             .andExpect(status().isOk())
-            .andExpect( content().contentType( new MediaType("application", "vnd.openxmlformats-officedocument.wordprocessingml.document" ) ) )
+            .andExpect( content().contentType( ExportService.MEDIATYPE_WORD ) )
             .andExpect( header().string( HttpHeaders.CONTENT_DISPOSITION, equalTo( "attachment; filename=document.docx" ) ) );
     }
 
     @Test
     @Transactional
-    public void getNonExistingMetadataKey() throws Exception {
+    void getNonExistingMetadataKey() throws Exception {
         // Get the metadataField
         restMetadataFieldMockMvc.perform(get("/api/metadata-fields/metadata-key/{metadataKey}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -256,7 +259,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingMetadataField() throws Exception {
+    void getNonExistingMetadataField() throws Exception {
         // Get the metadataField
         restMetadataFieldMockMvc.perform(get("/api/metadata-fields/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -264,14 +267,14 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void updateMetadataField() throws Exception {
+    void updateMetadataField() throws Exception {
         // Initialize the database
         metadataFieldRepository.saveAndFlush(metadataField);
 
         int databaseSizeBeforeUpdate = metadataFieldRepository.findAll().size();
 
         // Update the metadataField
-        MetadataField updatedMetadataField = metadataFieldRepository.findById(metadataField.getId()).get();
+        MetadataField updatedMetadataField = metadataFieldRepository.findById(metadataField.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedMetadataField are not directly saved in db
         em.detach(updatedMetadataField);
         updatedMetadataField
@@ -296,7 +299,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingMetadataField() throws Exception {
+    void updateNonExistingMetadataField() throws Exception {
         int databaseSizeBeforeUpdate = metadataFieldRepository.findAll().size();
 
         // Create the MetadataField
@@ -315,7 +318,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void deleteMetadataField() throws Exception {
+    void deleteMetadataField() throws Exception {
         // Initialize the database
         metadataFieldRepository.saveAndFlush(metadataField);
 

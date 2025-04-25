@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
@@ -18,6 +20,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { AuditsService, AuditsQuery } from 'app/admin/audits/audits.service';
 import { Audit } from 'app/admin/audits/audit.model';
 import { SERVER_API_URL } from 'app/app.constants';
+import { AuditData } from 'app/admin/audits/audit-data.model';
 
 describe('Service Tests', () => {
   describe('Audits Service', () => {
@@ -27,7 +30,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
 
       service = TestBed.get(AuditsService);
@@ -49,7 +52,8 @@ describe('Service Tests', () => {
 
       it('should return Audits', () => {
         let expectedResult: HttpResponse<Audit[]> = new HttpResponse({ body: [] });
-        const audit = new Audit({ remoteAddress: '127.0.0.1', sessionId: '123' }, 'user', '20140101', 'AUTHENTICATION_SUCCESS');
+        const auditData: AuditData = { key: 'remoteAddress', value: '127.0.0.1' };
+        const audit: Audit = { data: auditData, principal: 'user', timestamp: '20140101', type: 'AUTHENTICATION_SUCCESS', expanded: false };
 
         service.query(fakeRequest).subscribe(received => {
           expectedResult = received;
@@ -74,7 +78,7 @@ describe('Service Tests', () => {
         const req = httpMock.expectOne({ method: 'GET' });
         req.flush('Invalid request parameters', {
           status: 404,
-          statusText: 'Bad Request'
+          statusText: 'Bad Request',
         });
         expect(expectedResult).toEqual(404);
       });

@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -35,48 +37,17 @@ import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // ngx-quill rich text
-import { QuillConfig, QuillModule } from 'ngx-quill';
-// @ts-ignore
-import * as Quill from 'quill';
-// @ts-ignore
-import QuillBetterTable from 'quill-better-table';
-// @ts-ignore
+import { QuillModule } from 'ngx-quill';
+import Quill from 'quill';
 import BlotFormatter from 'quill-blot-formatter';
 // ngx-text-diff
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgxTextDiffModule } from 'ngx-text-diff';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
-Quill.register(
-  {
-    'modules/better-table': QuillBetterTable,
-    'modules/blotFormatter': BlotFormatter,
-  },
-  true
-);
-
-const quillConfig: QuillConfig = {
-  modules: {
-    table: false, // disable table module
-    'better-table': {
-      operationMenu: {
-        items: {
-          unmergeCells: {
-            text: 'Another unmerge cells name',
-          },
-        },
-        color: {
-          colors: ['green', 'red', 'yellow', 'blue', '#ededed', 'grey', 'white'],
-          text: 'Background Colors:',
-        },
-      },
-    },
-    keyboard: {
-      bindings: QuillBetterTable.keyboardBindings,
-    },
-    blotFormatter: {},
-  },
-};
+Quill.register({
+  'modules/blotFormatter': BlotFormatter,
+});
 
 @NgModule({
   imports: [
@@ -94,7 +65,7 @@ const quillConfig: QuillConfig = {
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    QuillModule.forRoot(quillConfig),
+    QuillModule.forRoot(),
     ScrollingModule,
     NgxTextDiffModule,
     NgxChartsModule,

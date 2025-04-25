@@ -15,9 +15,10 @@
 
 logging:
   level:
-    ROOT: INFO
+    ROOT: WARN
     io.github.jhipster: INFO
     eu.cessda.cvs: INFO
+    com.itextpdf: ERROR
 
 management:
   metrics:
@@ -26,9 +27,6 @@ management:
         enabled: false
 
 spring:
-  profiles:
-    include:
-      - swagger
   devtools:
     restart:
       enabled: false
@@ -49,14 +47,9 @@ spring:
         useServerPrepStmts: true
   jpa:
     show-sql: false
-  data:
-    elasticsearch:
-      cluster-name: docker-cluster
-      cluster-nodes: cvs-elasticsearch:9300
-      properties:
-        path:
-          logs: target/elasticsearch/log
-          data: target/elasticsearch/data
+  elasticsearch:
+    rest:
+      uris: http://localhost:9200
   mail:
     host: smtp-relay.gmail.com
     port: 465
@@ -64,6 +57,11 @@ spring:
     password:
   thymeleaf:
     cache: true
+  web:
+    resources:
+      cache:
+        cache-control:
+          max-age: P30d
 
 # ===================================================================
 # To enable TLS in production, generate a certificate using:
@@ -98,9 +96,6 @@ server:
 # ===================================================================
 
 jhipster:
-  http:
-    cache: # Used by the CachingHttpHeadersFilter
-      timeToLiveInDays: 0
   cache: # Cache configuration
     ehcache: # Ehcache configuration
       time-to-live-seconds: 3600 # By default objects stay 1 hour in the cache
@@ -144,7 +139,3 @@ jhipster:
 
 application:
   static-file-path: /app/resources/static
-  vocab-json-path: /app/resources/static/content/vocabularies/
-  agency-image-path: /app/resources/static/content/images/agency/
-  license-image-path: /app/resources/static/content/images/license/
-  upload-file-path: /app/resources/static/content/file/

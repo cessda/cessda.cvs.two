@@ -1,40 +1,42 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError} from 'ng-jhipster';
-
-import {IMetadataField, MetadataField} from 'app/shared/model/metadata-field.model';
-import {MetadataFieldService} from './metadata-field.service';
-import {AlertError} from 'app/shared/alert/alert-error.model';
+import { MetadataField } from 'app/shared/model/metadata-field.model';
+import { MetadataFieldService } from './metadata-field.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
 
 @Component({
   selector: 'jhi-metadata-field-update',
-  templateUrl: './metadata-field-update.component.html'
+  templateUrl: './metadata-field-update.component.html',
 })
 export class MetadataFieldUpdateComponent implements OnInit {
   isSaving = false;
 
   editForm = this.fb.group({
-    id: [],
-    metadataKey: [null, [Validators.required, Validators.maxLength(240)]],
-    description: [],
-    objectType: []
+    id: new FormControl<number | null>(null),
+    metadataKey: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(240)] }),
+    description: new FormControl<string | null>(null),
+    objectType: new FormControl<ObjectType | null>(null),
   });
 
   constructor(
@@ -42,7 +44,7 @@ export class MetadataFieldUpdateComponent implements OnInit {
     protected eventManager: JhiEventManager,
     protected metadataFieldService: MetadataFieldService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -51,20 +53,18 @@ export class MetadataFieldUpdateComponent implements OnInit {
     });
   }
 
-  updateForm(metadataField: IMetadataField): void {
+  updateForm(metadataField: MetadataField): void {
     this.editForm.patchValue({
       id: metadataField.id,
       metadataKey: metadataField.metadataKey,
       description: metadataField.description,
-      objectType: metadataField.objectType
+      objectType: metadataField.objectType,
     });
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-      this.eventManager.broadcast(
-        new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key })
-      );
+      this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
     });
   }
 
@@ -82,20 +82,20 @@ export class MetadataFieldUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IMetadataField {
+  private createFromForm(): MetadataField {
     return {
-      ...new MetadataField(),
-      id: this.editForm.get(['id'])!.value,
-      metadataKey: this.editForm.get(['metadataKey'])!.value,
-      description: this.editForm.get(['description'])!.value,
-      objectType: this.editForm.get(['objectType'])!.value
+      id: this.editForm.controls.id.value !== null ? this.editForm.controls.id.value : undefined,
+      metadataKey: this.editForm.controls.metadataKey.value,
+      description: this.editForm.controls.description.value || undefined,
+      objectType: this.editForm.controls.objectType.value || undefined,
+      metadataValues: [],
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IMetadataField>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<MetadataField>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 

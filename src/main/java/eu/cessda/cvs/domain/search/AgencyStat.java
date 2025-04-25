@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.domain.search;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -20,6 +22,7 @@ import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.service.dto.ConceptDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
+import eu.cessda.cvs.utils.VersionNumber;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -125,50 +128,53 @@ public class AgencyStat implements Serializable {
     }
 
     public void deleteVocabStat(String cvNotation) {
-        VocabStat vocabStat = this.vocabStats.stream().filter(v -> v.getNotation().equals( cvNotation ))
-            .findFirst().orElse(null);
-        if( vocabStat != null ) {
-            this.vocabStats.remove(vocabStat);
-        }
+        this.vocabStats.stream().filter(v -> v.getNotation().equals(cvNotation))
+            .findFirst().ifPresent(vocabStat -> this.vocabStats.remove(vocabStat));
     }
 
     public AgencyStat updateVocabStat(VocabularyDTO vocabularyDTO) {
+
         VocabStat vocabStat = getVocabStat(vocabularyDTO);
-        String latestSlVersionNumber = null;
-        String latestPublishedSlVersionNumber = null;
+        VersionNumber latestSlVersionNumber = null;
+        VersionNumber latestPublishedSlVersionNumber = null;
 
         Set<String> languages = new LinkedHashSet<>();
         List<VersionStatusStat> versionStatusStats = new ArrayList<>();
         List<VersionCodeStat> versionCodeStats = new ArrayList<>();
 
         for (VersionDTO v : vocabularyDTO.getVersions()) {
-            if( v.getItemType().equals(ItemType.SL.toString())){
-                if( v.getStatus().equals( Status.PUBLISHED.toString() )) {
+            if(v.getItemType().equals(ItemType.SL.toString())){
+                if(v.getStatus().equals(Status.PUBLISHED.toString())) {
                     latestPublishedSlVersionNumber = generatePublishedSlVersionCodeStats(latestPublishedSlVersionNumber, versionCodeStats, v);
                 }
-                if( latestSlVersionNumber == null ) {
+                if(latestSlVersionNumber == null) {
                     latestSlVersionNumber = v.getNumber();
                 }
             }
-            if( v.getStatus().equals( Status.PUBLISHED.toString() ) || v.getNumber().startsWith(latestSlVersionNumber)) {
+            if(v.getStatus().equals(Status.PUBLISHED.toString()) || v.getNumber().equalMinorVersionNumber(latestSlVersionNumber)) {
                 languages.add(v.getLanguage());
-
-                VersionStatusStat versionStatusStat = new VersionStatusStat(v.getLanguage(), v.getItemType(),
-                    v.getNumber(), v.getStatus(), v.getCreationDate(),
-                    v.getStatus().equals(Status.PUBLISHED.toString()) ? v.getPublicationDate() : v.getLastStatusChangeDate());
-                versionStatusStats.add( versionStatusStat );
+                VersionStatusStat versionStatusStat = new VersionStatusStat(
+                    v.getLanguage(),
+                    v.getItemType(),
+                    v.getNumber(),
+                    v.getStatus(),
+                    v.getCreationDate(),
+                    v.getLastChangeDate()
+                );
+                versionStatusStats.add(versionStatusStat);
             }
         }
-        vocabStat.setCurrentVersion( latestSlVersionNumber );
-        vocabStat.setLatestPublishedVersion( latestPublishedSlVersionNumber );
-        vocabStat.setLanguages( new ArrayList<>(languages) );
-        vocabStat.setVersionCodeStats( versionCodeStats );
-        vocabStat.setVersionStatusStats( versionStatusStats );
+
+        vocabStat.setCurrentVersion(VersionNumber.toString(latestSlVersionNumber));
+        vocabStat.setLatestPublishedVersion(VersionNumber.toString(latestPublishedSlVersionNumber));
+        vocabStat.setLanguages(new ArrayList<>(languages));
+        vocabStat.setVersionCodeStats(versionCodeStats);
+        vocabStat.setVersionStatusStats(versionStatusStats);
 
         return this;
     }
 
-    private String generatePublishedSlVersionCodeStats(String latestPublishedSlVersionNumber, List<VersionCodeStat> versionCodeStats, VersionDTO v) {
+    private VersionNumber generatePublishedSlVersionCodeStats(VersionNumber latestPublishedSlVersionNumber, List<VersionCodeStat> versionCodeStats, VersionDTO v) {
         if( latestPublishedSlVersionNumber == null )
             latestPublishedSlVersionNumber = v.getNumber();
 

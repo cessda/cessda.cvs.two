@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 import { ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed, inject, tick, fakeAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
@@ -35,9 +37,9 @@ describe('Component Tests', () => {
           FormBuilder,
           {
             provide: ActivatedRoute,
-            useValue: new MockActivatedRoute({ key: 'XYZPDQ' })
-          }
-        ]
+            useValue: new MockActivatedRoute({ key: 'XYZPDQ' }),
+          },
+        ],
       })
         .overrideTemplate(PasswordResetFinishComponent, '')
         .createComponent(PasswordResetFinishComponent);
@@ -56,7 +58,8 @@ describe('Component Tests', () => {
 
     it('sets focus after the view has been initialized', () => {
       const node = {
-        focus(): void {}
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        focus(): void {},
       };
       comp.newPassword = new ElementRef(node);
       spyOn(node, 'focus');
@@ -69,7 +72,7 @@ describe('Component Tests', () => {
     it('should ensure the two passwords entered match', () => {
       comp.passwordForm.patchValue({
         newPassword: 'password',
-        confirmPassword: 'non-matching'
+        confirmPassword: 'non-matching',
       });
 
       comp.finishReset();
@@ -83,7 +86,7 @@ describe('Component Tests', () => {
         spyOn(service, 'save').and.returnValue(of({}));
         comp.passwordForm.patchValue({
           newPassword: 'password',
-          confirmPassword: 'password'
+          confirmPassword: 'password',
         });
 
         comp.finishReset();
@@ -91,7 +94,7 @@ describe('Component Tests', () => {
 
         expect(service.save).toHaveBeenCalledWith('XYZPDQ', 'password');
         expect(comp.success).toBe(true);
-      })
+      }),
     ));
 
     it('should notify of generic error', inject(
@@ -100,7 +103,7 @@ describe('Component Tests', () => {
         spyOn(service, 'save').and.returnValue(throwError('ERROR'));
         comp.passwordForm.patchValue({
           newPassword: 'password',
-          confirmPassword: 'password'
+          confirmPassword: 'password',
         });
 
         comp.finishReset();
@@ -109,7 +112,7 @@ describe('Component Tests', () => {
         expect(service.save).toHaveBeenCalledWith('XYZPDQ', 'password');
         expect(comp.success).toBe(false);
         expect(comp.error).toBe(true);
-      })
+      }),
     ));
   });
 });

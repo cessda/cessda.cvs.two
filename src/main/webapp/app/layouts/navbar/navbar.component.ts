@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JhiEventManager, JhiEventWithContent, JhiLanguageService } from 'ng-jhipster';
@@ -29,7 +31,6 @@ import { Location } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-
 
 @Component({
   selector: 'jhi-navbar',
@@ -64,7 +65,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private router: Router,
     private location: Location,
     private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
-    private homeService: HomeService
+    private homeService: HomeService,
   ) {
     this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
     this.isSearching = false;
@@ -103,11 +104,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   loadLanguages(): void {
     this.homeService
-      .getAvailableLanguagesIsos(this.isEditorSearch ? {'s':'DRAFT;REVIEW;PUBLISHED;'} : {'s':'PUBLISHED'})
+      .getAvailableLanguagesIsos(
+        this.isEditorSearch ? { s: 'DRAFT;REVIEW;READY_TO_TRANSLATE;READY_TO_PUBLISH;PUBLISHED;' } : { s: 'PUBLISHED' },
+      )
       .subscribe((res: HttpResponse<string[]>) => {
-          this.searchLangs = res.body!;
-          this.searchLangs = VocabularyUtil.sortLangByName(this.searchLangs, 'en');
-          this.searchLangs.push('_all');
+        this.searchLangs = res.body!;
+        this.searchLangs = VocabularyUtil.sortLangByName(this.searchLangs, 'en');
+        this.searchLangs.push('_all');
       });
   }
 
@@ -122,7 +125,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         map((event: any) => {
           return event.target.value;
         }),
-        debounceTime(500)
+        debounceTime(500),
         // distinctUntilChanged()
       )
       .subscribe((text: string) => {
@@ -134,7 +137,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .pipe(
         map((event: any) => {
           return event.target.value;
-        })
+        }),
       )
       .subscribe((text: string) => {
         this.isSearching = true;
@@ -145,11 +148,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
       .pipe(
         map((event: any) => {
           return event.target.value;
-        })
+        }),
       )
-      .subscribe((text: string) => {
+      .subscribe(() => {
         this.isSearching = true;
-        this.search(this.currentSearch ? this.currentSearch : '');
+        this.search(this.currentSearch);
       });
 
     this.registerCvOnSearchEvent();
@@ -167,8 +170,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
     }
   }
 
-  search(query: string): void {
-    if (query !== null && query !== '') {
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      if (this.searchInput) {
+        this.searchInput.nativeElement.focus();
+      }
+    }, 0);
+  }
+
+  search(query: string | undefined): void {
+    if (query) {
       if (this.isEditorSearch) {
         this.router.navigate(['/editor'], { queryParams: { q: query, f: 'language:' + this.currentLang, sort: 'relevance' } });
       } else {
@@ -181,12 +192,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.router.navigate([''], { queryParams: { f: 'language:' + this.currentLang, sort: 'code,asc' } });
       }
     }
-    this.eventManager.broadcast({ name: 'doCvPublicationSearch', content: { term: query, lang: this.currentLang } });
   }
 
   clear(): void {
-    this.currentSearch = '';
-    this.search('');
+    this.currentSearch = undefined;
+    this.search(undefined);
   }
 
   changeLanguage(languageKey: string): void {

@@ -1,47 +1,48 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import moment from 'moment';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import * as moment from 'moment';
-import {DATE_TIME_FORMAT} from 'app/shared/constants/input.constants';
-import {JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError} from 'ng-jhipster';
-
-import {Comment, IComment} from 'app/shared/model/comment.model';
-import {CommentService} from './comment.service';
-import {AlertError} from 'app/shared/alert/alert-error.model';
-import {IVersion} from 'app/shared/model/version.model';
-import {VersionService} from 'app/entities/version/version.service';
+import { Comment } from 'app/shared/model/comment.model';
+import { CommentService } from './comment.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { Version } from 'app/shared/model/version.model';
+import { VersionService } from 'app/entities/version/version.service';
 
 @Component({
   selector: 'jhi-comment-update',
-  templateUrl: './comment-update.component.html'
+  templateUrl: './comment-update.component.html',
 })
 export class CommentUpdateComponent implements OnInit {
   isSaving = false;
-  versions: IVersion[] = [];
+  versions: Version[] = [];
 
   editForm = this.fb.group({
-    id: [],
-    info: [null, [Validators.maxLength(255)]],
-    content: [],
-    userId: [],
-    dateTime: [],
-    versionId: []
+    id: new FormControl<number | null>(null),
+    info: new FormControl<string | null>(null, [Validators.maxLength(255)]),
+    content: new FormControl<string | null>(null),
+    userId: new FormControl<number | null>(null),
+    dateTime: new FormControl<string | null>(null),
+    versionId: new FormControl<number | null>(null),
   });
 
   constructor(
@@ -50,7 +51,7 @@ export class CommentUpdateComponent implements OnInit {
     protected commentService: CommentService,
     protected versionService: VersionService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -62,26 +63,26 @@ export class CommentUpdateComponent implements OnInit {
 
       this.updateForm(comment);
 
-      this.versionService.query().subscribe((res: HttpResponse<IVersion[]>) => (this.versions = res.body || []));
+      this.versionService.query().subscribe((res: HttpResponse<Version[]>) => (this.versions = res.body || []));
     });
   }
 
-  updateForm(comment: IComment): void {
+  updateForm(comment: Comment): void {
     this.editForm.patchValue({
       id: comment.id,
       info: comment.info,
       content: comment.content,
       userId: comment.userId,
       dateTime: comment.dateTime ? comment.dateTime.format(DATE_TIME_FORMAT) : null,
-      versionId: comment.versionId
+      versionId: comment.versionId,
     });
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
-    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-      this.eventManager.broadcast(
-        new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key })
-      );
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
+      error: (err: JhiFileLoadError) => {
+        this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
+      },
     });
   }
 
@@ -99,22 +100,24 @@ export class CommentUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IComment {
+  private createFromForm(): Comment {
+    // Extract dateTime to its own variable so that it can be truthy-tested
+    const dateTime = this.editForm.controls.dateTime.value;
+
     return {
-      ...new Comment(),
-      id: this.editForm.get(['id'])!.value,
-      info: this.editForm.get(['info'])!.value,
-      content: this.editForm.get(['content'])!.value,
-      userId: this.editForm.get(['userId'])!.value,
-      dateTime: this.editForm.get(['dateTime'])!.value ? moment(this.editForm.get(['dateTime'])!.value, DATE_TIME_FORMAT) : undefined,
-      versionId: this.editForm.get(['versionId'])!.value
+      id: this.editForm.controls.id.value !== null ? this.editForm.controls.id.value : undefined,
+      info: this.editForm.controls.info.value || undefined,
+      content: this.editForm.controls.content.value || undefined,
+      userId: this.editForm.controls.userId.value || undefined,
+      dateTime: dateTime ? moment(dateTime, DATE_TIME_FORMAT) : undefined,
+      versionId: this.editForm.controls.versionId.value !== null ? this.editForm.controls.versionId.value : undefined,
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IComment>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Comment>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 
@@ -127,7 +130,8 @@ export class CommentUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: IVersion): any {
-    return item.id;
+  trackById(_index: number, item: Version): number {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return item.id!;
   }
 }

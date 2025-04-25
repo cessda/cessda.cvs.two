@@ -1,35 +1,37 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 
-import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
-
-import {IConcept} from 'app/shared/model/concept.model';
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {IVersion} from 'app/shared/model/version.model';
+import { Concept } from 'app/shared/model/concept.model';
+import { Vocabulary, createNewVocabulary } from 'app/shared/model/vocabulary.model';
+import { Version } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import {FormBuilder} from '@angular/forms';
-import {HomeService} from 'app/home/home.service';
-import {RouteEventsService, VocabularyLanguageFromKeyPipe} from 'app/shared';
-import {DiffContent} from 'ngx-text-diff/lib/ngx-text-diff.model';
-import {Observable, Subject} from 'rxjs';
-import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
+import { FormBuilder, FormControl } from '@angular/forms';
+import { HomeService } from 'app/home/home.service';
+import { RouteEventsService, VocabularyLanguageFromKeyPipe } from 'app/shared';
+import { DiffContent } from 'ngx-text-diff/lib/ngx-text-diff.model';
+import { Observable, Subject } from 'rxjs';
+import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 
 @Component({
   selector: 'jhi-home-detail',
-  templateUrl: './home-detail.component.html'
+  templateUrl: './home-detail.component.html',
 })
 export class HomeDetailComponent implements OnInit {
   @ViewChild('detailPanel', { static: true }) detailPanel!: ElementRef;
@@ -41,7 +43,7 @@ export class HomeDetailComponent implements OnInit {
 
   appScope: AppScope = AppScope.PUBLICATION;
 
-  vocabulary: IVocabulary | null = null;
+  vocabulary: Vocabulary = createNewVocabulary();
 
   isDetailCollapse = true;
   isVersionCollapse = true;
@@ -52,8 +54,9 @@ export class HomeDetailComponent implements OnInit {
 
   isCurrentVersionHistoryOpen = true;
 
-  initialTabSelected?: string;
-  initialLangSelect = null;
+  initialTabSelected: string | undefined;
+  initialLangSelect: string | undefined = undefined;
+  newerVersionNumber: string | null = null;
 
   currentSelectedCode?: string;
 
@@ -64,15 +67,19 @@ export class HomeDetailComponent implements OnInit {
   contentObservable: Subject<DiffContent> = new Subject<DiffContent>();
   contentObservable$: Observable<DiffContent> = this.contentObservable.asObservable();
 
-  detailForm = this.fb.group({
-    tabSelected: [],
-    downloadFormGroup: this.fb.group({
-      skosItems: [],
-      pdfItems: [],
-      htmlItems: [],
-      docxItems: []
-    })
+  downloadFormGroup = this.fb.group({
+    downloadCheckboxes: [],
+    skosItems: [],
+    pdfItems: [],
+    htmlItems: [],
+    docxItems: [],
   });
+
+  detailForm = this.fb.group({
+    tabSelected: new FormControl<string | null>(null),
+    downloadFormGroup: this.downloadFormGroup,
+  });
+
   constructor(
     protected dataUtils: JhiDataUtils,
     protected activatedRoute: ActivatedRoute,
@@ -82,7 +89,7 @@ export class HomeDetailComponent implements OnInit {
     private routeEventsService: RouteEventsService,
     private _ngZone: NgZone,
     protected eventManager: JhiEventManager,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe
+    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
   ) {
     this.initialTabSelected = 'detail';
     this.currentSelectedCode = '';
@@ -108,54 +115,86 @@ export class HomeDetailComponent implements OnInit {
   }
 
   setVocabularyLangVersion(language: string, number: string): void {
-    this.vocabulary!.selectedLang = language;
-    this.vocabulary!.selectedVersion = number;
+    this.vocabulary.selectedLang = language;
+    this.vocabulary.selectedVersion = number;
     this.eventManager.broadcast({ name: 'closeComparison', content: true });
   }
 
-  getSlVersion(): IVersion {
-    return VocabularyUtil.getSlVersion(this.vocabulary!);
+  getLatestVersionNumber(): string {
+    const lang = this.vocabulary.sourceLanguage;
+    if (!lang) {
+      throw TypeError('lang is undefined');
+    }
+    return String(VocabularyUtil.getVersionNumberByLangIso(this.vocabulary, lang));
   }
 
-  getVersionByLangNumber(versionNumber?: string): IVersion {
-    return VocabularyUtil.getVersionByLangAndNumber(this.vocabulary!, versionNumber);
+  getSlVersion(): Version {
+    return VocabularyUtil.getSlVersionOfVocabulary(this.vocabulary);
+  }
+
+  getSlVersionNumber(vnumber?: string): string {
+    if (vnumber) {
+      return VocabularyUtil.getSlVersionNumber(vnumber);
+    } else {
+      return VocabularyUtil.getSlVersionNumberOfVocabulary(this.vocabulary);
+    }
+  }
+
+  getVersionByLangNumber(versionNumber?: string): Version {
+    return VocabularyUtil.getVersionByLangAndNumber(this.vocabulary, versionNumber);
   }
 
   getUniqueVersionLang(): string[] {
     let uniqueLang: string[] = [];
-    this.vocabulary!.versions!.forEach(v => {
-      if (v.number!.startsWith(this.vocabulary!.versions![0].number!) && !uniqueLang.some(l => l === v.language)) {
-        uniqueLang.push(v.language!);
-      }
-    });
-    // sort only the SL & TLs in the current version
-    // commented by #375 -->
-    // uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
-    // <-- commented by #375
-    this.vocabulary!.versions!.forEach(v => {
-      if (!v.number!.startsWith(this.vocabulary!.versions![0].number!) && !uniqueLang.some(l => l === v.language)) {
-        uniqueLang.push(v.language!);
-      }
-    });
+    if (this.vocabulary.versions) {
+      const versions = this.vocabulary.versions;
+      const number = versions[0].number;
+
+      this.vocabulary.versions.forEach(v => {
+        if (v.language && v.number?.startsWith(number || '') && !uniqueLang.some(l => l === v.language)) {
+          uniqueLang.push(v.language);
+        }
+      });
+
+      // sort only the SL & TLs in the current version
+      // commented by #375 -->
+      // uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
+      // <-- commented by #375
+      this.vocabulary.versions.forEach(v => {
+        if (v.language && (!number || !v.number?.startsWith(number)) && !uniqueLang.some(l => l === v.language)) {
+          uniqueLang.push(v.language);
+        }
+      });
+    }
     // added by #375 -->
     uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
     // <-- added by #375
     return uniqueLang;
   }
 
-  getVersionsByLanguage(lang?: string): IVersion[] {
-    return this.vocabulary!.versions!.filter(v => v.language === lang);
+  getVersionsByLanguage(lang?: string): Version[] {
+    return this.vocabulary.versions.filter(v => v.language === lang);
   }
-  getFormattedVersionTooltip(version?: IVersion, sourceLang?: string): string {
-    return (
-      this.vocabLangPipeKey.transform(version!.language!) + ' v.' + version!.number + (version!.language === sourceLang ? ' SOURCE' : '')
-    );
+  getFormattedVersionTooltip(version: Version, sourceLang?: string): string {
+    return this.vocabLangPipeKey.transform(version.language!) + ' v.' + version.number + (version.language === sourceLang ? ' SOURCE' : '');
   }
   getServerUrl(): string {
     return window.location.origin;
   }
 
-  hasDeprecatedConcepts(concepts: IConcept[] | undefined): boolean {
+  isAnyLangVersionInBundle(vocab: Vocabulary, lang: string, bundle?: string): boolean {
+    if (!bundle) {
+      if (vocab.versionNumber) {
+        bundle = vocab.versionNumber;
+      } else {
+        throw new TypeError('vocab.versionNumber is not a string');
+      }
+    }
+    const versions = this.getVersionsByLanguage(lang);
+    return VocabularyUtil.isAnyVersionInBundle(versions, bundle);
+  }
+
+  hasDeprecatedConcepts(concepts: Concept[]): boolean {
     return VocabularyUtil.hasDeprecatedConcepts(concepts);
   }
 
@@ -223,10 +262,6 @@ export class HomeDetailComponent implements OnInit {
     this.isShowingDeprecatedCodes = !this.isShowingDeprecatedCodes;
   }
 
-  getSlVersionByVersion(vnumber: string): string {
-    return VocabularyUtil.getSlVersionByVersionNumber(vnumber);
-  }
-
   ngOnInit(): void {
     this.router.events.subscribe(evt => {
       if (!(evt instanceof NavigationEnd)) {
@@ -235,41 +270,68 @@ export class HomeDetailComponent implements OnInit {
       window.scrollTo(0, 0);
     });
     this.activatedRoute.data.subscribe(({ vocabulary }) => {
+      VocabularyUtil.convertVocabularyToThreeDigitVersionNumer(vocabulary);
       this.vocabulary = vocabulary;
-      if (this.vocabulary!.selectedCode) {
-        this.currentSelectedCode = this.vocabulary!.selectedCode;
+      if (this.vocabulary.selectedCode) {
+        this.currentSelectedCode = this.vocabulary.selectedCode;
       }
-      if (this.initialLangSelect !== null) {
-        if (!this.vocabulary!.versions!.some(v => v.language === this.initialLangSelect)) {
-          this.vocabulary!.selectedLang = this.vocabulary!.sourceLanguage!;
+      if (this.initialLangSelect) {
+        if (this.vocabulary.sourceLanguage && !this.vocabulary.versions.some(v => v.language === this.initialLangSelect)) {
+          this.vocabulary.selectedLang = this.vocabulary.sourceLanguage;
         } else {
-          this.vocabulary!.selectedLang = this.initialLangSelect!;
+          this.vocabulary.selectedLang = this.initialLangSelect;
+        }
+      }
+      if (this.vocabulary.selectedVersion === null) {
+        if (this.vocabulary.selectedLang !== null) {
+          this.vocabulary.selectedVersion = VocabularyUtil.getVersionByLang(this.vocabulary).number;
         }
       }
 
       if (this.currentSelectedCode !== '') {
-        this.isShowingDeprecatedCodes = this.getVersionsByLanguage(this.vocabulary!.selectedLang).some(version => {
-          return version.concepts?.some(concept => {
+        this.isShowingDeprecatedCodes = this.getVersionsByLanguage(this.vocabulary.selectedLang).some(version => {
+          return version.concepts.some(concept => {
             return concept.deprecated;
           });
         });
         this._ngZone.runOutsideAngular(() => {
           setTimeout(() => {
-            const element = document.querySelector('#code_' + this.currentSelectedCode);
-            element!.scrollIntoView({ behavior: 'smooth' });
-            element!.classList.add('highlight');
+            const elementSelector = '#code_' + this.currentSelectedCode;
+            const element = document.querySelector(elementSelector);
+            if (!element) {
+              throw new TypeError(`element ${elementSelector} is null`);
+            }
+            element.scrollIntoView({ behavior: 'smooth' });
+            element.classList.add('highlight');
             this._ngZone.runOutsideAngular(() => {
               window.setTimeout(() => {
-                element!.classList.remove('highlight');
+                element.classList.remove('highlight');
               }, 5000);
             });
           }, 1500);
         });
       }
+
+      if (this.vocabulary.status === 'PUBLISHED') {
+        if (this.vocabulary.versionNumber) {
+          this.newerVersionNumber = this.vocabulary.versionNumber;
+        } else {
+          throw new TypeError('this.vocabulary.versionNumber is not a string');
+        }
+      } else {
+        this.newerVersionNumber = this.getLatestVersionNumber();
+      }
+
+      if (
+        this.vocabulary.versions &&
+        VocabularyUtil.compareVersionNumbers(this.newerVersionNumber, this.vocabulary.versions[0].number!) <= 0
+      ) {
+        this.newerVersionNumber = null;
+      }
     });
 
     this.detailForm.patchValue({
-      tabSelected: this.initialTabSelected
+      tabSelected: this.initialTabSelected,
     });
   }
 
@@ -287,17 +349,17 @@ export class HomeDetailComponent implements OnInit {
   }
 
   getMissingTlVersion(version: string): string {
-    if (version.startsWith(this.getSlVersion().number!)) {
-      return this.getSlVersion().versionHistories![0].version + '.x';
+    if (VocabularyUtil.compareVersionNumbers(version, this.getSlVersion().number!) === 0) {
+      return VocabularyUtil.getSlMajorMinorVersionNumber(this.getSlVersion().versionHistories[0].version!) + '.x';
     }
     let i = 0;
-    this.getSlVersion().versionHistories!.forEach(function(vhSl, index): void {
-      if (version.startsWith(vhSl.version!)) {
+    this.getSlVersion().versionHistories?.forEach(function (vhSl, index): void {
+      if (VocabularyUtil.compareVersionNumbers(version, vhSl.version!) === 0) {
         i = index + 1;
       }
     });
     if (i > 0) {
-      return this.getSlVersion().versionHistories![i].version + '.x';
+      return VocabularyUtil.getSlMajorMinorVersionNumber(this.getSlVersion().versionHistories[i].version!) + '.x';
     }
     return '';
   }

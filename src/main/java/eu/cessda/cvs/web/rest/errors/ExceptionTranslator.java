@@ -1,21 +1,28 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.web.rest.errors;
 
+import eu.cessda.cvs.service.ResourceNotFoundException;
 import io.github.jhipster.web.util.HeaderUtil;
+import org.apache.catalina.connector.ClientAbortException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.ConcurrencyFailureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -32,16 +39,20 @@ import org.zalando.problem.violations.ConstraintViolationProblem;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Controller advice to translate the server side exceptions to client-friendly json structures.
- * The error response follows RFC7807 - Problem Details for HTTP APIs (https://tools.ietf.org/html/rfc7807).
+ * <p>
+ * The error response follows <a href="https://tools.ietf.org/html/rfc7807">RFC7807 - Problem Details for HTTP APIs</a>.
  */
 @ControllerAdvice
+@ParametersAreNonnullByDefault
 public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
+    private static final Logger log = LoggerFactory.getLogger( ExceptionTranslator.class );
 
     private static final String FIELD_ERRORS_KEY = "fieldErrors";
     private static final String MESSAGE_KEY = "message";
@@ -50,6 +61,22 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
+
+    @Override
+    public void log( Throwable throwable, Problem problem, NativeWebRequest request, HttpStatus status )
+    {
+        switch ( status.series() ) {
+            case SERVER_ERROR:
+                log.error(status.getReasonPhrase(), throwable);
+                break;
+            case CLIENT_ERROR:
+                log.info(status.getReasonPhrase(), throwable);
+                break;
+            default:
+                log.trace(status.getReasonPhrase(), throwable);
+                break;
+        }
+    }
 
     /**
      * Post-process the Problem payload to add the message key for the front-end if needed.
@@ -123,12 +150,6 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleVocabularyNotFoundException(eu.cessda.cvs.service.VocabularyNotFoundException ex, NativeWebRequest request) {
-        VocabularyNotFoundException problem = new VocabularyNotFoundException();
-        return create(problem, request, HeaderUtil.createFailureAlert(applicationName,  true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
-    }
-
-    @ExceptionHandler
     public ResponseEntity<Problem> handleCodeAlreadyExistException(eu.cessda.cvs.service.CodeAlreadyExistException ex, NativeWebRequest request) {
         CodeAlreadyExistException problem = new CodeAlreadyExistException();
         return create(problem, request, HeaderUtil.createFailureAlert(applicationName,  true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
@@ -139,7 +160,6 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         InsufficientVocabularyAuthorityException problem = new InsufficientVocabularyAuthorityException();
         return create(problem, request, HeaderUtil.createFailureAlert(applicationName,  true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
     }
-
 
     @ExceptionHandler
     public ResponseEntity<Problem> handleInvalidPasswordException(eu.cessda.cvs.service.InvalidPasswordException ex, NativeWebRequest request) {
@@ -158,5 +178,20 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             .with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE)
             .build();
         return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleResourceNotFound( ResourceNotFoundException ex, NativeWebRequest request) {
+        return create(ex, request, HeaderUtil.createFailureAlert(applicationName, true, ex.getEntityName(), ex.getErrorKey(), ex.getMessage()));
+    }
+
+    @ExceptionHandler
+    public String handleClientAbort( ClientAbortException ex ) throws ClientAbortException
+    {
+        // log at debug level
+        log.debug( ex.getMessage(), ex );
+
+        // continue default handling by rethrowing the exception, which will result in it being ignored
+        throw ex;
     }
 }

@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,8 +24,10 @@ import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
-import eu.cessda.cvs.utils.VersionUtils;
+import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.utils.VocabularyUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
@@ -32,6 +36,9 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * A DTO for the {@link Version} entity.
@@ -39,8 +46,9 @@ import java.util.*;
 @JsonInclude( JsonInclude.Include.NON_NULL )
 public class VersionDTO implements Serializable
 {
+    private static final long serialVersionUID = 6451702494637350395L;
 
-	private Long id;
+    private Long id;
 
 	@NotNull
 	@Size( max = 20 )
@@ -59,8 +67,8 @@ public class VersionDTO implements Serializable
 
 	private ZonedDateTime lastModified;
 
-	@Size( max = 20 )
-	private String number;
+	@Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
+	private VersionNumber number;
 
 	private String uri;
 
@@ -203,11 +211,13 @@ public class VersionDTO implements Serializable
 		// differentiate VersionNumber, uriSl between SL and TL version cloning
 		if ( this.itemType.equals( ItemType.SL.toString() ) )
 		{
-			this.number = VersionUtils.increaseSlVersionByOne( prevVersion.getNumber() );
+			this.number = prevVersion.getNumber().increaseMinorNumber();
 		}
 		else
 		{
-			this.number = VersionUtils.increaseTlVersionByOne( prevVersion.getNumber(), currentSlVersion.getNumber() );
+			this.number = currentSlVersion.getStatus().equals(Status.PUBLISHED.toString()) ?
+				currentSlVersion.getNumber().increasePatchNumber()
+				: currentSlVersion.getNumber();
 			this.translateAgency = prevVersion.getTranslateAgency();
 			this.translateAgencyLink = prevVersion.getTranslateAgencyLink();
 			this.uriSl = currentSlVersion.getUri();
@@ -290,12 +300,12 @@ public class VersionDTO implements Serializable
 		this.lastModified = lastModified;
 	}
 
-	public String getNumber()
+	public VersionNumber getNumber()
 	{
 		return number;
 	}
 
-	public void setNumber( String number )
+	public void setNumber( VersionNumber number )
 	{
 		this.number = number;
 	}
@@ -315,16 +325,7 @@ public class VersionDTO implements Serializable
 		if ( canonicalUri == null )
 			return null;
 
-		String formattedUrn = removeLanguageInformation( canonicalUri );
-		// format any TL URN to SL
-		int index = canonicalUri.lastIndexOf( ':' );
-		if ( formattedUrn.substring( index + 1 ).chars().filter( ch -> ch == '.' ).count() == 2L )
-		{
-			// remove last dot
-			index = canonicalUri.lastIndexOf( '.' );
-			formattedUrn = formattedUrn.substring( 0, index );
-		}
-		return formattedUrn;
+		return removeLanguageInformation(canonicalUri);
 	}
 
 	public void setCanonicalUri( String canonicalUri )
@@ -747,15 +748,15 @@ public class VersionDTO implements Serializable
 		preparePublishing( vocabularySnippet, licence, agency );
 
 		StringBuilder citationSb = new StringBuilder();
-		citationSb.append( agency.getName() + ". " );
+		citationSb.append(agency.getName()).append(". ");
 		citationSb
-				.append( "(" + this.publicationDate.getYear() + "). " )
-				.append( this.title + " (Version " + this.number + ") [Controlled vocabulary]. " );
+            .append("(").append(this.publicationDate.getYear()).append("). ")
+            .append(this.title).append(" (Version ").append(this.number).append(") [Controlled vocabulary]. ");
 		if ( !agency.getName().toLowerCase().contains( "cessda" ) )
 		{
 			citationSb.append( "CESSDA. " );
 		}
-		citationSb.append( this.canonicalUri + ". " );
+		citationSb.append(this.canonicalUri).append(". ");
 		this.citation = citationSb.toString();
 	}
 
@@ -764,15 +765,15 @@ public class VersionDTO implements Serializable
 		preparePublishing( vocabularySnippet, licence, agency );
 
 		StringBuilder citationSb = new StringBuilder();
-		citationSb.append( agency.getName() + ". " );
+		citationSb.append(agency.getName()).append(". ");
 		citationSb
-				.append( "(" + this.publicationDate.getYear() + "). " )
-				.append( this.notation + " [" + this.title + "] (Version " + this.number + ") [Controlled vocabulary]. " );
+            .append("(").append(this.publicationDate.getYear()).append("). ")
+            .append(this.notation).append(" [").append(this.title).append("] (Version ").append(this.number).append(") [Controlled vocabulary]. ");
 		if ( !agency.getName().toLowerCase().contains( "cessda" ) )
 		{
 			citationSb.append( "CESSDA. " );
 		}
-		citationSb.append( this.canonicalUri + ". " );
+		citationSb.append(this.canonicalUri).append(". ");
 		this.citation = citationSb.toString();
 	}
 
@@ -784,9 +785,21 @@ public class VersionDTO implements Serializable
 		this.publicationDate = LocalDate.now();
 		this.licenseId = licence.getId();
 		this.license = licence.getName();
-		this.uri = VocabularyUtils.generateUri( agency.getUri(), true, this, null );
-		this.canonicalUri = agency.getCanonicalUri() + this.notation + ":" + this.number;
-		this.concepts.forEach( c -> c.setUri( VocabularyUtils.generateUri( agency.getUriCode(), false, this, c ) ) );
+		this.updateUri(agency);
+		this.updateCanonicalUri(agency);
+		this.concepts.forEach( c -> c.setUri( VocabularyUtils.generateUri( agency != null ? agency.getUriCode() : "", this, c ) ) );
+	}
+
+	public void updateUri(Agency agency) {
+		this.uri = VocabularyUtils.generateUri(
+			agency != null ? agency.getUri() : "",
+            this,
+			null
+		);
+	}
+
+	public void updateCanonicalUri(Agency agency) {
+		this.canonicalUri = (agency != null ? agency.getCanonicalUri() : "") + this.notation + ":" + this.number;
 	}
 
 	/**
@@ -807,21 +820,71 @@ public class VersionDTO implements Serializable
 		return id != null;
 	}
 
+	private static final Pattern patternLanguageInformation = Pattern.compile("(?::((?:" + Language.getIsos().stream().map(StringUtils::lowerCase).collect(Collectors.joining("|")) + ")-))([0-9]+\\.[0-9]+(\\.[0-9]+)?)$");
+
 	private static String removeLanguageInformation( String canonicalUrlInput )
 	{
 		if ( canonicalUrlInput == null )
 			return null;
-		// find last dash from canonicalURI
-		int lastDashPosition = canonicalUrlInput.lastIndexOf( '-' );
-		// if found and
-		if ( lastDashPosition < 20 )
-			return canonicalUrlInput;
-		return canonicalUrlInput.substring( 0, lastDashPosition );
+		Matcher m = patternLanguageInformation.matcher(canonicalUrlInput);
+		if (m.find() && m.group(1) != null) {
+			canonicalUrlInput = canonicalUrlInput.substring(0, m.start(1)) + canonicalUrlInput.substring(m.end(1));
+		}
+		return canonicalUrlInput;
 	}
 
 	public ConceptDTO findConceptByNotation( String notation )
 	{
 		Optional<ConceptDTO> conceptDTOOptional = concepts.stream().filter( c -> c.getNotation().equals( notation ) ).findFirst();
-		return conceptDTOOptional.isPresent() ? conceptDTOOptional.get() : null;
+		return conceptDTOOptional.orElse(null);
+	}
+
+	public void setDeprecatedConceptsValidUntilVersionId(Long validUntilVersionId) {
+		getConcepts()
+			.stream()
+			.filter(ConceptDTO::getDeprecated)
+			.filter(c -> c.getValidUntilVersionId() == null)
+			.forEach(c -> c.setValidUntilVersionId(validUntilVersionId));
+	}
+
+	@JsonIgnore
+	public VersionDTO copy() {
+		VersionDTO copy = new VersionDTO();
+		copy.setCanonicalUri(this.getCanonicalUri());
+		copy.setCitation(this.getCitation());
+		copy.setCreationDate(this.getCreationDate());
+		copy.setCreator(this.getCreator());
+		copy.setDdiUsage(this.getDdiUsage());
+		copy.setDefinition(this.getDefinition());
+		copy.setDiscussionNotes(this.getDiscussionNotes());
+		copy.setId(this.getId());
+		copy.setInitialVersion(this.getInitialVersion());
+		copy.setItemType(this.getItemType());
+		copy.setLanguage(this.getLanguage());
+		copy.setLastModified(this.getLastModified());
+		copy.setLastStatusChangeDate(this.getLastStatusChangeDate());
+		copy.setLicense(this.getLicense());
+		copy.setLicenseId(this.getLicenseId());
+		copy.setNotation(this.getNotation());
+		copy.setNotes(this.getNotes());
+		copy.setNumber(this.getNumber());
+		copy.setPreviousVersion(this.getPreviousVersion());
+		copy.setPublicationDate(this.getPublicationDate());
+		copy.setPublisher(this.getPublisher());
+		copy.setStatus(this.getStatus());
+		copy.setTitle(this.getTitle());
+		copy.setTranslateAgency(this.getTranslateAgency());
+		copy.setTranslateAgencyLink(this.getTranslateAgencyLink());
+		copy.setUriSl(this.getUriSl());
+		copy.setUri(this.getUri());
+		copy.setVersionChanges(this.getVersionChanges());
+		copy.setVersionNotes(this.getVersionNotes());
+		copy.setVocabularyId(this.getVocabularyId());
+		return copy;
+	}
+
+	@JsonIgnore
+	public LocalDate getLastChangeDate() {
+		return this.getStatus().equals(Status.PUBLISHED.toString()) ? this.getPublicationDate() : this.getLastStatusChangeDate();
 	}
 }

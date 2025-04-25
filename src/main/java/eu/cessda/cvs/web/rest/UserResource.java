@@ -1,23 +1,27 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.config.Constants;
+import eu.cessda.cvs.config.audit.AuditEventPublisher;
 import eu.cessda.cvs.domain.User;
 import eu.cessda.cvs.repository.UserAgencyRepository;
 import eu.cessda.cvs.repository.UserRepository;
 import eu.cessda.cvs.security.AuthoritiesConstants;
+import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.MailService;
 import eu.cessda.cvs.service.UserAgencyService;
 import eu.cessda.cvs.service.UserService;
@@ -26,12 +30,17 @@ import eu.cessda.cvs.service.dto.UserDTO;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import eu.cessda.cvs.web.rest.errors.EmailAlreadyUsedException;
 import eu.cessda.cvs.web.rest.errors.LoginAlreadyUsedException;
+
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -41,11 +50,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * REST controller for managing users.
@@ -74,6 +83,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 public class UserResource {
+
+    @Autowired
+    private AuditEventPublisher auditPublisher;
 
     private final Logger log = LoggerFactory.getLogger(UserResource.class);
 
@@ -109,10 +121,12 @@ public class UserResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new user, or with status {@code 400 (Bad Request)} if the login or email is already in use.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      * @throws BadRequestAlertException {@code 400 (Bad Request)} if the login or email is already in use.
+     * @throws MessagingException if the email cannot be sent.
      */
     @PostMapping("/users")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
+    @PreAuthorize("hasAnyRole(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.ADMIN_CONTENT + "\")")
+    public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException, MessagingException
+    {
         log.debug("REST request to save User : {}", userDTO);
 
         if (userDTO.getId() != null) {
@@ -124,6 +138,15 @@ public class UserResource {
             throw new EmailAlreadyUsedException();
         } else {
             User newUser = userService.createUser(userDTO);
+
+            //notify the auditing mechanism
+            String auditUserString = "";
+            Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+            if (auditUser.isPresent()) {
+                auditUserString = auditUser.get();
+            }
+            auditPublisher.publish(auditUserString, userDTO, null, "USER_CREATED");
+
             mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert(applicationName,  "userManagement.created", newUser.getLogin()))
@@ -140,7 +163,7 @@ public class UserResource {
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already in use.
      */
     @PutMapping("/users")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @PreAuthorize("hasAnyRole(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.ADMIN_CONTENT + "\")")
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
         log.debug("REST request to update User : {}", userDTO);
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
@@ -152,14 +175,14 @@ public class UserResource {
             throw new LoginAlreadyUsedException();
         }
 
-        if( userDTO.getUserAgencies() != null ) {
+        if (userDTO.getUserAgencies() != null) {
             Set<UserAgencyDTO> newUserAgencies = new HashSet<>();
             Set<UserAgencyDTO> userAgencies = userDTO.getUserAgencies();
             Iterator<UserAgencyDTO> userAgenciesIterator = userAgencies.iterator();
-            while( userAgenciesIterator.hasNext() ) {
+            while (userAgenciesIterator.hasNext()) {
                 UserAgencyDTO ua = userAgenciesIterator.next();
-                if( ua.getId() == null ) {
-                    newUserAgencies.add( userAgencyService.save( ua));
+                if (ua.getId() == null) {
+                    newUserAgencies.add(userAgencyService.save(ua));
                     userAgenciesIterator.remove();
                 }
             }
@@ -169,6 +192,14 @@ public class UserResource {
         }
 
         Optional<UserDTO> updatedUser = userService.updateUser(userDTO);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, userDTO, null, "USER_UPDATED");
 
         return ResponseUtil.wrapOrNotFound(updatedUser,
             HeaderUtil.createAlert(applicationName, "userManagement.updated", userDTO.getLogin()));
@@ -192,7 +223,7 @@ public class UserResource {
      * @return a string list of all roles.
      */
     @GetMapping("/users/authorities")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @PreAuthorize("hasAnyRole(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.ADMIN_CONTENT + "\")")
     public List<String> getAuthorities() {
         return userService.getAuthorities();
     }
@@ -210,7 +241,7 @@ public class UserResource {
         Optional<User> userOpt = userService.getUserWithAuthoritiesByLogin(login);
         if( userOpt.isPresent() ){
             user = userOpt.get();
-            user.setUserAgencies( userAgencyRepository.findByUser(user.getId()).stream().collect(Collectors.toSet()));
+            user.setUserAgencies(new HashSet<>(userAgencyRepository.findByUser(user.getId())));
         }
         return ResponseUtil.wrapOrNotFound(
             Optional.ofNullable(user).map(UserDTO::new));
@@ -223,9 +254,23 @@ public class UserResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
-    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+    @PreAuthorize("hasAnyRole(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.ADMIN_CONTENT + "\")")
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
+
+        //notify the auditing mechanism
+        User userTemp = new User();
+        Optional<User> user = userRepository.findOneByLogin(login.toLowerCase());
+        if (user.isPresent()) {
+            userTemp = user.get();
+        }
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, null, userTemp, "USER_DELETED");
+        
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "userManagement.deleted", login)).build();
     }

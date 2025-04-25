@@ -1,26 +1,29 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {ICode} from 'app/shared/model/code.model';
-import {LanguageIso} from 'app/shared/model/enumerations/language-iso.model';
-import {IVersion} from 'app/shared/model/version.model';
-import {IConcept} from 'app/shared/model/concept.model';
-import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
-import {VocabularyLanguageFromKeyPipe} from 'app/shared';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
+import { Code } from 'app/shared/model/code.model';
+import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
+import { Version } from 'app/shared/model/version.model';
+import { Concept } from 'app/shared/model/concept.model';
+import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
+import { VocabularyLanguageFromKeyPipe } from '../language/vocabulary-language-from-key.pipe';
+import { VersionNumber } from 'app/shared/model/version-number.model';
 
 export default class VocabularyUtil {
-  static getTitleDefByLangIso(item: IVocabulary | ICode, langIso: string): string[] {
+  static getTitleDefByLangIso(item: Vocabulary | Code, langIso: string): (string | undefined)[] {
     switch (langIso) {
       case 'sq':
         return [item.titleSq, item.definitionSq, item.versionSq];
@@ -83,92 +86,200 @@ export default class VocabularyUtil {
     }
   }
 
-  static getSlVersion(vocab: IVocabulary): IVersion {
-    return vocab.versions!.filter(v => v.itemType === 'SL')[0];
+  static getVersionNumberByLangIso(item: Vocabulary | Code, langIso: string): string | undefined {
+    switch (langIso) {
+      case 'sq':
+        return item.versionSq;
+      case 'bs':
+        return item.versionBs;
+      case 'bg':
+        return item.versionBg;
+      case 'hr':
+        return item.versionHr;
+      case 'cs':
+        return item.versionCs;
+      case 'da':
+        return item.versionDa;
+      case 'nl':
+        return item.versionNl;
+      case 'en':
+        return item.versionEn;
+      case 'et':
+        return item.versionEt;
+      case 'fi':
+        return item.versionFi;
+      case 'fr':
+        return item.versionFr;
+      case 'de':
+        return item.versionDe;
+      case 'el':
+        return item.versionEl;
+      case 'hu':
+        return item.versionHu;
+      case 'it':
+        return item.versionIt;
+      case 'ja':
+        return item.versionJa;
+      case 'lt':
+        return item.versionLt;
+      case 'mk':
+        return item.versionMk;
+      case 'no':
+        return item.versionNo;
+      case 'pl':
+        return item.versionPl;
+      case 'pt':
+        return item.versionPt;
+      case 'ro':
+        return item.versionRo;
+      case 'ru':
+        return item.versionRu;
+      case 'sr':
+        return item.versionSr;
+      case 'sk':
+        return item.versionSk;
+      case 'sl':
+        return item.versionSl;
+      case 'es':
+        return item.versionEs;
+      case 'sv':
+        return item.versionSv;
+      default:
+        throw new TypeError(`Invalid langIso ${langIso}`);
+    }
   }
 
-  static getMajorVersionNumber(version: IVersion): number {
+  static getStatus(vocab: Vocabulary): string {
+    return vocab.status;
+  }
+
+  static getSlVersionOfVocabulary(vocab: Vocabulary): Version {
+    return vocab.versions.filter(v => v.itemType === 'SL')[0];
+  }
+
+  static parseVersionNumber(vnumber: string): VersionNumber {
+    const regex = /^([0-9]+)\.([0-9]+)(?:\.([0-9]+))?/g;
+    const matches = regex.exec(vnumber);
+    if (matches) {
+      return new VersionNumber(Number(matches[1]), Number(matches[2]), Number(matches[3]));
+    }
+    throw new Error('Invalid version number format');
+  }
+
+  static getSlVersionNumber(vnumber: string): string {
+    return this.parseVersionNumber(vnumber).toString();
+  }
+
+  static getSlMajorMinorVersionNumber(vnumber: string): string {
+    const vnumberParsed = this.parseVersionNumber(vnumber);
+    return `${vnumberParsed.major}.${vnumberParsed.minor}`;
+  }
+
+  static getSlMajorVersionNumber(vnumber: string): number {
+    return this.parseVersionNumber(vnumber).major;
+  }
+
+  static getSlMinorVersionNumber(vnumber: string): number {
+    return this.parseVersionNumber(vnumber).minor;
+  }
+
+  static getTlVersionNumber(vnumber: string): number {
+    return this.parseVersionNumber(vnumber).patch;
+  }
+
+  static getSlVersionNumberOfVocabulary(vocab: Vocabulary): string {
+    const slVersion = this.getSlVersionOfVocabulary(vocab);
+    if (slVersion.number) {
+      return this.getSlVersionNumber(slVersion.number);
+    } else {
+      return '';
+    }
+  }
+
+  static getSlMajorVersionNumberOfVersion(version: Version): number {
     if (version.number) {
-      const regex = /^([0-9]+)\./g;
-      const matches = regex.exec(version.number);
-      if (matches) {
-          return Number(matches[1]);
-      }
+      return this.parseVersionNumber(version.number).major;
     }
     return -1;
   }
 
-  static getMinorVersionNumber(version: IVersion): number {
+  static getSlMinorVersionNumberOfVersion(version: Version): number {
     if (version.number) {
-      const regex = /^([0-9]+)\.([0-9]+)/g;
-      const matches = regex.exec(version.number);
-      if (matches) {
-          return Number(matches[2]);
-      }
+      return this.parseVersionNumber(version.number).minor;
     }
     return -1;
   }
 
-  static getVersionByLang(vocab: IVocabulary): IVersion {
-    return vocab.versions!.filter(v => v.language === vocab.selectedLang)[0];
+  static getVersionByLang(vocab: Vocabulary): Version {
+    return vocab.versions.filter(v => v.language === vocab.selectedLang)[0];
   }
 
-  static getVersionByLangAndNumber(vocab: IVocabulary, versionNumber?: string): IVersion {
+  static getVersionByLangAndNumber(vocab: Vocabulary, versionNumber?: string): Version {
     if (versionNumber) {
-      return vocab.versions!.filter(v => v.language === vocab.selectedLang && v.number === versionNumber)[0];
+      versionNumber = this.threeDigitVersionNumber(versionNumber);
+      return vocab.versions.filter(v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number!) === versionNumber)[0];
     } else if (vocab.selectedVersion) {
-      return vocab.versions!.filter(v => v.language === vocab.selectedLang && v.number === vocab.selectedVersion)[0];
+      vocab.selectedVersion = this.threeDigitVersionNumber(vocab.selectedVersion);
+      return vocab.versions.filter(
+        v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number!) === vocab.selectedVersion,
+      )[0];
     }
     return VocabularyUtil.getVersionByLang(vocab);
   }
 
-  static isConceptHasChildren(notation: string, concepts: IConcept[]): boolean {
+  static isConceptHasChildren(notation: string, concepts: Concept[]): boolean {
     return concepts.filter(c => c.parent === notation).length > 0;
   }
 
-  static hasDeprecatedConcepts(concepts: IConcept[] | undefined): boolean {
-    return concepts !== undefined ? concepts.filter(c => c.deprecated === true).length > 0 : false;
+  static hasDeprecatedConcepts(concepts: Concept[]): boolean {
+    return concepts.filter(c => c.deprecated === true).length > 0;
   }
 
-  static getSlVersionByVersionNumber(vnumber: string): string {
-    if (vnumber.match(/\./g)!.length === 2) {
-      const index = vnumber.lastIndexOf('.');
-      return vnumber.substring(0, index);
-    }
-    return vnumber;
-  }
-
-  static compareVersionNumber(v1: string, v2: string): number {
-    const v1parts = v1.split('.'),
-      v2parts = v2.split('.');
-
-    while (v1parts.length < v2parts.length) v1parts.push('0');
-    while (v2parts.length < v1parts.length) v2parts.push('0');
-
-    for (let i = 0; i < v1parts.length; ++i) {
-      if (v2parts.length === i) {
-        return 1;
-      }
-
-      if (v1parts[i] === v2parts[i]) {
-        continue;
-      } else if (v1parts[i] > v2parts[i]) {
-        return 1;
-      } else {
-        return -1;
-      }
-    }
-
-    if (v1parts.length !== v2parts.length) {
+  static compareNumbers(n1: number, n2: number): number {
+    if (n1 < n2) {
       return -1;
+    } else {
+      if (n1 === n2) {
+        return 0;
+      } else {
+        return 1;
+      }
     }
-
-    return 0;
   }
 
-  static getAvailableCvLanguage(versions: IVersion[] | undefined): string[] {
+  static compareArrays(a1: number[], a2: number[]): number {
+    while (a1.length < a2.length) a1.push(0);
+    while (a2.length < a1.length) a2.push(0);
+    let cmpResult = 0;
+    for (let i = 0; i < a1.length; i++) {
+      cmpResult = this.compareNumbers(a1[i], a2[i]);
+      if (cmpResult !== 0) {
+        return cmpResult;
+      }
+    }
+    return cmpResult;
+  }
+
+  static compareVersionNumbers(v1: string, v2: string): number {
+    const v1Parsed = this.parseVersionNumber(this.threeDigitVersionNumber(v1));
+    const v2Parsed = this.parseVersionNumber(this.threeDigitVersionNumber(v2));
+    const cmpResult = this.compareArrays([v1Parsed.major, v1Parsed.minor], [v2Parsed.major, v2Parsed.minor]);
+    if (cmpResult !== 0) {
+      return cmpResult;
+    }
+    if (v1Parsed.patch === 0 || v2Parsed.patch === 0) {
+      return 0;
+    }
+    return this.compareArrays([v1Parsed.patch], [v2Parsed.patch]);
+  }
+
+  static compareSlVersionNumbers(v1: string, v2: string): number {
+    return this.compareVersionNumbers(this.getSlVersionNumber(v1), this.getSlVersionNumber(v2));
+  }
+
+  static getAvailableCvLanguage(versions: Version[]): string[] {
     const availableLanguages = [];
-    const takenLanguages = versions ? versions.map(v => v.language) : [];
+    const takenLanguages = versions.map(v => v.language);
     for (const langIso in LanguageIso) {
       if (parseInt(langIso, 10) >= 0) {
         if (!takenLanguages.includes(LanguageIso[langIso])) {
@@ -185,7 +296,7 @@ export default class VocabularyUtil {
     // convert languages to enum so it can be sorted
     languages.forEach(l => {
       if (l !== sourceLang) {
-        sortedLangIsos.push(LanguageIso[l]);
+        sortedLangIsos.push(LanguageIso[l as keyof typeof LanguageIso]);
       }
     });
     sortedLangIsos.sort((a, b) => a - b);
@@ -203,12 +314,12 @@ export default class VocabularyUtil {
         sortedLangName.push(l);
       }
     });
-    sortedLangName.sort((a,b) => vocabLangPipeKey.transform(a).localeCompare(vocabLangPipeKey.transform(b)));
+    sortedLangName.sort((a, b) => vocabLangPipeKey.transform(a).localeCompare(vocabLangPipeKey.transform(b)));
     sortedLangName.forEach(l => sortedLang.push(l));
     return sortedLang;
   }
 
-  static getUniqueVersionLangs( versions: IVersion[], appScope:AppScope): string[] {
+  static getUniqueVersionLangs(versions: Version[], appScope: AppScope): string[] {
     let uniqueLang: string[] = [];
     versions.forEach(v => {
       if (appScope === AppScope.EDITOR) {
@@ -232,5 +343,57 @@ export default class VocabularyUtil {
       });
     }
     return uniqueLang;
+  }
+
+  static countMatches(str: string | undefined, sub: string | undefined): number {
+    if (!(str && sub)) {
+      return 0;
+    }
+    let count = 0;
+    let idx = 0;
+    while ((idx = str.indexOf(sub, idx)) >= 0) {
+      count++;
+      idx += sub.length;
+    }
+    return count;
+  }
+
+  static threeDigitVersionNumber(number: string): string {
+    if (this.countMatches(number, '.') === 1) {
+      return number + '.0';
+    } else {
+      return number;
+    }
+  }
+
+  static convertVocabularyToThreeDigitVersionNumer(vocabulary: Vocabulary): void {
+    if (vocabulary.versionNumber) {
+      vocabulary.versionNumber = this.threeDigitVersionNumber(vocabulary.versionNumber);
+      if (vocabulary.versions) {
+        vocabulary.versions.forEach(v => {
+          if (v.number) {
+            v.number = this.threeDigitVersionNumber(v.number);
+          }
+        });
+      }
+    }
+  }
+
+  /**
+   * Returns true if there's at least one version among versions which belongs to the bundle. False otherwise.
+   *
+   * @param vocab
+   * @param lang
+   * @param versions
+   * @param bundle
+   * @returns
+   */
+  static isAnyVersionInBundle(versions: Version[], bundle: string): boolean {
+    for (const version of versions) {
+      if (version.number === bundle) {
+        return true;
+      }
+    }
+    return false;
   }
 }

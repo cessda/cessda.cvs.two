@@ -1,16 +1,20 @@
 <!--
-  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License").
-  ~ You may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and limitations under the License.
-  -->
 
+    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
@@ -19,7 +23,7 @@
             <div>
                 <jhi-alert-error></jhi-alert-error>
 
-                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                <div class="form-group" [hidden]="!editForm.controls.id.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
@@ -28,13 +32,13 @@
                     <label class="form-control-label label-required" jhiTranslate="cvsApp.agency.name" for="field_name">Name</label>
                     <input type="text" class="form-control" name="name" id="field_name"
                            formControlName="name"/>
-                    <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+                    <div *ngIf="editForm.controls.name.invalid && (editForm.controls.name.dirty || editForm.controls.name.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.controls.name.errors?.required" jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('name')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
+                               *ngIf="editForm.controls.name.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
                         This field cannot be longer than 240 characters.
                         </small>
                     </div>
@@ -44,13 +48,13 @@
                     <label class="form-control-label label-required" jhiTranslate="cvsApp.agency.link" for="field_link">Link</label>
                     <input type="text" class="form-control" name="link" id="field_link"
                            formControlName="link"/>
-                    <div *ngIf="editForm.get('link')!.invalid && (editForm.get('link')!.dirty || editForm.get('link')!.touched)">
+                    <div *ngIf="editForm.controls.link.invalid && (editForm.controls.link.dirty || editForm.controls.link.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('link')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.controls.link.errors?.required" jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('link')?.errors?.pattern">
+                               *ngIf="editForm.controls.link.errors?.pattern">
                             Not a valid URL.
                         </small>
                     </div>
@@ -65,7 +69,7 @@
                 <div class="form-group">
                     <label class="form-control-label">Agency logo</label>
                     <br/>
-                    <img *ngIf="currentImage" [src]="'/content/images/agency/' + currentImage" alt="{{editForm.get('name')!.value}}" class="mh-60px"/>
+                    <img *ngIf="currentImage" [src]="'/content/images/agency/' + currentImage" alt="{{editForm.controls.name.value}}" class="mh-60px"/>
                     <div *ngIf="currentFileUpload" class="progress" [hidden]="progress.percentage === 100">
                         <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
                              attr.aria-valuenow="{{progress.percentage}}"
@@ -78,7 +82,7 @@
                     <br/>
                     <label class="btn btn-default">
                         <input type="file" (change)="selectFile($event)"
-                               accept="image/x-png,image/gif,image/jpeg"/>
+                               accept="image/png,image/gif,image/jpeg"/>
                     </label>
                     <button *ngIf="currentImage" type="button"
                             class="btn pull-right btn-secondary"
@@ -104,9 +108,9 @@
                         <span>For example this URI configuration https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]/[VERSION]/[LANGUAGE],</span><br/>
                         <span>will generate URI https://vocabularies.cessda.eu/vocabulary/TopicClassification/1.0/en</span><br/>
                     </small>
-                    <div *ngIf="editForm.get('uri')!.invalid && (editForm.get('uri')!.dirty || editForm.get('uri')!.touched)">
+                    <div *ngIf="editForm.controls.uri.invalid && (editForm.controls.uri.dirty || editForm.controls.uri.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('uri')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                               *ngIf="editForm.controls.uri.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
                         This field cannot be longer than 255 characters.
                         </small>
                     </div>
@@ -117,13 +121,13 @@
                     <input type="text" class="form-control" name="uri" id="field_uri_code" formControlName="uriCode"/>
                     <small>
                         <span>Note: Please use the similar patterns as URI, with one additional required pattern:</span><br/>
-                        <span>- [CODE] ~ This pattern is required and it will be replaced by CV short-name e.g. Demography</span><br/>
+                        <span>- [CODE] or [CODE-HASH-FUNC-LENGTH] ~ This pattern is required and it will be replaced by code notation e.g. Demography. If the latter pattern is used, it will be replaced by a generated hash code from the code notation. Supported hash functions: FUNC &isin; &#123;MD2, MD5, SHA1, SHA256&#125;, LENGTH positive number denoting the truncation of the resulting hash code to the first n characters or 0 for no truncation.</span><br/>
                         <span>For example this URI configuration https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]_[CODE]/[VERSION]/[LANGUAGE],</span><br/>
                         <span>will generate URI https://vocabularies.cessda.eu/vocabulary/TopicClassification_Demography/1.0/en</span><br/>
                     </small>
-                    <div *ngIf="editForm.get('uriCode')!.invalid && (editForm.get('uriCode')!.dirty || editForm.get('uriCode')!.touched)">
+                    <div *ngIf="editForm.controls.uriCode.invalid && (editForm.controls.uriCode.dirty || editForm.controls.uriCode.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('uriCode')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                               *ngIf="editForm.controls.uriCode.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
                             This field cannot be longer than 255 characters.
                         </small>
                     </div>
@@ -133,9 +137,9 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.agency.canonicalUri" for="field_canonicalUri">Canonical Uri</label>
                     <input type="text" class="form-control" name="canonicalUri" id="field_canonicalUri"
                            formControlName="canonicalUri"/>
-                    <div *ngIf="editForm.get('canonicalUri')!.invalid && (editForm.get('canonicalUri')!.dirty || editForm.get('canonicalUri')!.touched)">
+                    <div *ngIf="editForm.controls.canonicalUri.invalid && (editForm.controls.canonicalUri.dirty || editForm.controls.canonicalUri.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('canonicalUri')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                               *ngIf="editForm.controls.canonicalUri.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
                         This field cannot be longer than 255 characters.
                         </small>
                     </div>

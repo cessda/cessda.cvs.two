@@ -1,21 +1,25 @@
 <!--
-  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License").
-  ~ You may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and limitations under the License.
-  -->
 
+    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <div class="row">
     <div class="row-content">
         <div class="content">
             <div *ngIf="metadataValueMenu" class="content-left">
-                <div class="form-group" *jhiHasAnyAuthority="['ROLE_ADMIN']">
+                <div class="form-group" *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT']">
                     <label class="form-control-label">Docx upload:</label>
                     <div *ngIf="inDocxProgress" class="w-100">
                         Status: <fa-icon *ngIf="uploadFileName === ''" [icon]="'circle-notch'" [spin]="true"></fa-icon> {{uploadFileStatus}}
@@ -66,7 +70,7 @@
                         </a>
                     </div>
                     <div *ngIf="metadataValueMenu" class="w-100 acc-body">
-                        <jhi-metadata-item [metadataField]="metadataField" [metadataValue]="metadataValueMenu"
+                        <jhi-metadata-item [metadataField]="metadataField!" [metadataValue]="metadataValueMenu"
                          [isWriting]="metadataValueMenu.id === undefined" [position]="0" [newTabLink]="false"></jhi-metadata-item>
                     </div>
                 </div>
@@ -75,22 +79,22 @@
                 <jhi-alert-error></jhi-alert-error>
                 <jhi-alert></jhi-alert>
                 <div class="w-100" *ngIf="pageType !== 'about'">
-                    <button class="btn btn-sm float-right" (click)="downloadAsFile('pdf')" ngbTooltip="Download API documentation as PDF">
+                    <button class="btn btn-sm float-right" (click)="downloadAsFile({ extension: 'pdf', mimeType: 'application/pdf' })" ngbTooltip="Download API documentation as PDF">
                         <fa-icon *ngIf="!generatingFile" icon="file-pdf">PDF</fa-icon>
                         <fa-icon *ngIf="generatingFile"[icon]="'circle-notch'" [spin]="true"></fa-icon>
                     </button>&nbsp;&nbsp;&nbsp;
                 </div>
 
-                <button *ngIf="enableDocxExport" class="btn btn-sm float-right" (click)="downloadAsFile('word')" ngbTooltip="Download API documentation as Word Docx">
+                <button *ngIf="enableDocxExport" class="btn btn-sm float-right" (click)="downloadAsFile({ extension: 'docx', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' })" ngbTooltip="Download API documentation as Word Docx">
                     <fa-icon *ngIf="!generatingFile" icon="file-word">Word</fa-icon>
                     <fa-icon *ngIf="generatingFile"[icon]="'circle-notch'" [spin]="true"></fa-icon>
                 </button>
                 <div *ngFor="let metadataValue of metadataValues; let i = index" class="row-detail form-group">
-                    <jhi-metadata-item *ngIf="metadataValue.identifier !== 'overview'" [metadataField]="metadataField" [metadataValue]="metadataValue"
+                    <jhi-metadata-item *ngIf="metadataValue.identifier !== 'overview'" [metadataField]="metadataField!" [metadataValue]="metadataValue"
                      [isWriting]="metadataValue.id === undefined" [position]="(i + 1)" [newTabLink]="true" class="w-100"></jhi-metadata-item>
                 </div>
 
-                <div *jhiHasAnyAuthority="['ROLE_ADMIN']" class="w-100">
+                <div *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT']" class="w-100">
                     <button type="button" ngbTooltip="Add Section" (click)="addSection()" class="btn btn-sm btn-primary-outline float-right">
                         <fa-icon class="text-secondary" [icon]="'plus'"></fa-icon>
                         <span> Add Section</span>

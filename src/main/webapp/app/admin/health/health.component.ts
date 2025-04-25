@@ -1,31 +1,36 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {Component, OnInit} from '@angular/core';
-import {HttpErrorResponse} from '@angular/common/http';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-
-import {Health, HealthDetails, HealthKey, HealthService, HealthStatus} from './health.service';
-import {HealthModalComponent} from './health-modal.component';
+import { Health, HealthDetails, HealthKey, HealthService, HealthStatus } from './health.service';
+import { HealthModalComponent } from './health-modal.component';
 
 @Component({
   selector: 'jhi-health',
-  templateUrl: './health.component.html'
+  templateUrl: './health.component.html',
 })
 export class HealthComponent implements OnInit {
   health?: Health;
 
-  constructor(private modalService: NgbModal, private healthService: HealthService) {}
+  constructor(
+    private modalService: NgbModal,
+    private healthService: HealthService,
+  ) {}
 
   ngOnInit(): void {
     this.refresh();
@@ -33,9 +38,9 @@ export class HealthComponent implements OnInit {
 
   getBadgeClass(statusState: HealthStatus): string {
     if (statusState === 'UP') {
-      return 'badge-success';
+      return 'text-bg-success';
     } else {
-      return 'badge-danger';
+      return 'text-bg-danger';
     }
   }
 
@@ -46,7 +51,7 @@ export class HealthComponent implements OnInit {
         if (error.status === 503) {
           this.health = error.error;
         }
-      }
+      },
     );
   }
 

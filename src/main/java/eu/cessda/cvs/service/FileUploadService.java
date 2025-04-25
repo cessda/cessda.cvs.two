@@ -1,81 +1,84 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.service;
 
-import org.apache.commons.io.FilenameUtils;
+import eu.cessda.cvs.config.ApplicationProperties;
+import eu.cessda.cvs.domain.enumeration.ObjectType;
+import eu.cessda.cvs.service.dto.MetadataValueDTO;
 import org.imgscalr.Scalr;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.Set;
 import java.util.UUID;
 
+@Service
 public class FileUploadService {
 
-    private FileUploadService() {}
+    private static final Logger log = LoggerFactory.getLogger( FileUploadService.class );
 
-    public static void uploadFile( FileUploadHelper fileUploadHelper ) throws IOException
+    private final ApplicationProperties applicationProperties;
+    private final MetadataFieldService metadataFieldService;
+
+    @Autowired
+    public FileUploadService(ApplicationProperties applicationProperties, MetadataFieldService metadataFieldService) {
+        this.applicationProperties = applicationProperties;
+        this.metadataFieldService = metadataFieldService;
+    }
+
+    public Path uploadFile( FileUploadHelper fileUploadHelper ) throws IOException
     {
         switch ( fileUploadHelper.getFileUploadType()) {
             case IMAGE_AGENCY:
+                return uploadImage( fileUploadHelper, applicationProperties.getAgencyImagePath() );
             case IMAGE_LICENSE:
-                uploadImage(fileUploadHelper);
-                break;
+                return uploadImage( fileUploadHelper,applicationProperties.getLicenseImagePath() );
             case DOCX:
-                uploadSpecificFile(fileUploadHelper );
-                break;
+                return uploadSpecificFile( fileUploadHelper );
             default:
+                throw new IllegalArgumentException("Unexpected value: " + fileUploadHelper.getFileUploadType());
         }
     }
 
-    private static void uploadSpecificFile( FileUploadHelper fileUploadHelper ) throws IOException
+    private Path uploadSpecificFile( FileUploadHelper fileUploadHelper ) throws IOException
     {
+        Path baseDirectory = applicationProperties.getUploadFilePath();
+
         // Create destination directory if it does not exist.
-        createUploadDirectory( Paths.get( fileUploadHelper.getUploadBaseDirectory() ) );
+        Files.createDirectories(baseDirectory);
 
-        // Generate destination file name and try to retrieve the file extension from the upload
-        String destinationFileName = fileUploadHelper.getUploadBaseDirectory() + File.separator + UUID.randomUUID();
-        String fileExtension = FilenameUtils.getExtension( fileUploadHelper.getSourceFile().getOriginalFilename() );
-
-        final File uploadedFile;
-        if (fileExtension != null && !fileExtension.isEmpty()) {
-            uploadedFile = new File( destinationFileName + "." + fileExtension );
-        } else {
-            uploadedFile = new File( destinationFileName );
-        }
+        // Generate destination file name
+        Path destinationFileName = baseDirectory.resolve( UUID.randomUUID().toString() );
+        String fileExtension = fileUploadHelper.getFileUploadType().getExtension();
+        Path uploadedFile = Path.of(destinationFileName + "." + fileExtension);
 
         // Transfer the file to the destination. To work around an MVC bug, uploadedFile is converted to an absolute location.
-        fileUploadHelper.getSourceFile().transferTo( uploadedFile.getAbsoluteFile() );
-        fileUploadHelper.setUploadedFile( uploadedFile );
-    }
-
-    /**
-     * Create the upload directory, and it's parent directories, if it doesn't exist.
-     * @param directory the directory to create.
-     * @throws IOException if an IO error occurs.
-     */
-    private static void createUploadDirectory( Path directory ) throws IOException
-    {
-        if (!Files.isDirectory( directory ))
-        {
-            Files.createDirectories( directory );
-        }
+        fileUploadHelper.getSourceFile().transferTo( uploadedFile.toAbsolutePath() );
+        return uploadedFile;
     }
 
     /**
@@ -83,46 +86,47 @@ public class FileUploadService {
      * @param fileUploadHelper the upload context, this will be mutated.
      * @throws IOException if an IO error occurs.
      */
-    private static void uploadImage( FileUploadHelper fileUploadHelper ) throws IOException {
+    private static Path uploadImage( FileUploadHelper fileUploadHelper, Path baseDirectory ) throws IOException {
 
-        String fileName = UUID.randomUUID() + ".jpg";
+        String fileName = UUID.randomUUID() + "." + fileUploadHelper.getFileUploadType().getExtension();
 
-
-        File destFile = new File( fileUploadHelper.getUploadBaseDirectory() + File.separator + fileName );
-        File pathFileThumb = new File( fileUploadHelper.getUploadBaseDirectory() + File.separator + "thumbs" );
-        File destFileThumb = new File( pathFileThumb + File.separator + fileName );
+        Path destFile = baseDirectory.resolve(fileName);
+        Path pathFileThumb = baseDirectory.resolve("thumbs");
+        Path destFileThumb = pathFileThumb.resolve( fileName );
 
         // Create destination directories if it does not exist.
-        createUploadDirectory( destFile.toPath().getParent() );
-        createUploadDirectory( pathFileThumb.toPath() );
+        Files.createDirectories(baseDirectory);
+        Files.createDirectories(pathFileThumb);
 
         BufferedImage img = ImageIO.read( fileUploadHelper.getSourceFile().getInputStream() );
 
         // Scale image to an appropriate size
         BufferedImage scaledImg = Scalr.resize(img, Scalr.Mode.AUTOMATIC, 300, 300);
-        ImageIO.write(fillTransparentPixels( scaledImg ), "jpg", destFile);
+        ImageIO.write( scaledImg, fileUploadHelper.getFileUploadType().getExtension(), destFile.toFile() );
 
         // Create thumbnail variant of the image
         BufferedImage scaledImgThumb = Scalr.resize(img, Scalr.Mode.AUTOMATIC, 180, 180);
-        ImageIO.write(fillTransparentPixels( scaledImgThumb ), "jpg", destFileThumb);
+        ImageIO.write( scaledImgThumb, fileUploadHelper.getFileUploadType().getExtension(), destFileThumb.toFile() );
 
         // Set destination files on successful writes
-        fileUploadHelper.setUploadedFile( destFile );
-        fileUploadHelper.setUploadedThumbFile( destFileThumb );
+        return destFile;
     }
 
-    private static BufferedImage fillTransparentPixels( BufferedImage image )
-    {
-        int w = image.getWidth();
-        int h = image.getHeight();
-        BufferedImage image2 = new BufferedImage(w, h,
-            BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = image2.createGraphics();
-        g.setColor( Color.white );
-        g.fillRect(0,0,w,h);
-        g.drawRenderedImage(image, null);
-        g.dispose();
-        return image2;
-    }
+    public void html2section(String fileName, String metadataKey) throws IOException {
+        Path initialFile = applicationProperties.getUploadFilePath().resolve(fileName + ".html" );
+        Document doc = Jsoup.parse( initialFile, null );
+        Elements elements = doc.body().children();
 
+        metadataFieldService.findOneByMetadataKey(metadataKey).ifPresent(metadataFieldDTO ->
+        {
+            MetadataValueDTO item = new MetadataValueDTO( "section-1", ObjectType.SYSTEM,
+                metadataFieldDTO.getId(), metadataFieldDTO.getMetadataKey(), 1 );
+            item.setValue( elements.toString() );
+
+            Set<MetadataValueDTO> metadataValues = Collections.singleton(item);
+
+            metadataFieldDTO.setMetadataValues( metadataValues );
+            metadataFieldService.save( metadataFieldDTO );
+        } );
+    }
 }

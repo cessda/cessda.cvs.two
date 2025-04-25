@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
@@ -20,6 +22,7 @@ import eu.cessda.cvs.repository.*;
 import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.security.AuthoritiesConstants;
 import eu.cessda.cvs.security.jwt.TokenProvider;
+import eu.cessda.cvs.utils.VersionNumber;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,7 +55,7 @@ class VocabularyMaintenanceResourceIT {
     private static final String SOURCE_LANGUAGE = "en";
     private static final ItemType ITEM_TYPE_SL = ItemType.SL;
     private static final String NOTATION = "AAAAAAAAAA";
-    private static final String INIT_VERSION_NUMBER_SL = "1.0";
+    private static final VersionNumber INIT_VERSION_NUMBER_SL = VersionNumber.fromString("1.0");
     private static final String INIT_STATUS = "DRAFT";
     private static final String INIT_TITLE_EN = "AAAAAAAAAA";
     private static final String INIT_DEFINITION_EN = "AAAAAAAAAA";
@@ -171,7 +174,7 @@ class VocabularyMaintenanceResourceIT {
         Version version = vocab.getVersions().stream().filter( v -> v.getLanguage().equals( vocabularySnippet.getLanguage()))
             .findFirst().orElse(null);
         assertThat(version).isNotNull();
-        // publish
+        // review
         vocabularySnippet.setActionType( ActionType.FORWARD_CV_SL_STATUS_REVIEW );
         vocabularySnippet.setVocabularyId( version.getVocabulary().getId() );
         vocabularySnippet.setVersionId( version.getId());
@@ -180,6 +183,17 @@ class VocabularyMaintenanceResourceIT {
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippet)))
             .andExpect(status().isOk());
+        // ready to translate
+        vocabularySnippet.setActionType( ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE );
+        vocabularySnippet.setVocabularyId( version.getVocabulary().getId() );
+        vocabularySnippet.setVersionId(version.getId());
+        vocabularySnippet.setLicenseId(license.getId());
+        restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippet)))
+            .andExpect(status().isOk());
+        // publish
         vocabularySnippet.setActionType( ActionType.FORWARD_CV_SL_STATUS_PUBLISH );
         vocabularySnippet.setLicenseId( license.getId() );
         restMockMvc.perform(put("/api/editors/vocabularies/forward-status")

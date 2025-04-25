@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,7 +22,9 @@ import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
+import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.utils.VocabularyUtils;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
@@ -36,6 +40,7 @@ import java.util.stream.Collectors;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VocabularyDTO implements Serializable {
+    private static final long serialVersionUID = -8464813042927663693L;
 
     private Long id;
 
@@ -45,7 +50,7 @@ public class VocabularyDTO implements Serializable {
         this.discoverable = true;
         this.status = Status.DRAFT.toString();
         this.notation = "NEW_VOCABULARY";
-        this.versionNumber = "1.0";
+        this.versionNumber = new VersionNumber(1,0,0);
         this.sourceLanguage = "en";
         this.agencyId = 0L;
         this.agencyName = "DEFAULT_AGENCY";
@@ -61,6 +66,7 @@ public class VocabularyDTO implements Serializable {
         setStatusByVocabularySnippet(vocabularySnippet);
         setVersionNumberByVocabularySnippet(vocabularySnippet);
         setContentByVocabularySnippet( vocabularySnippet );
+        setTitleAll();
     }
 
     public static void cleanUpContentForApi(VocabularyDTO vocab) {
@@ -74,12 +80,13 @@ public class VocabularyDTO implements Serializable {
     public void setStatusByVocabularySnippet(VocabularySnippet vocabularySnippet){
         this.status = vocabularySnippet.getStatus();
     }
+
     public void setVersionNumberByVocabularySnippet(VocabularySnippet vocabularySnippet){
         this.versionNumber = vocabularySnippet.getVersionNumber();
     }
 
     public void setContentByVocabularySnippet(VocabularySnippet vocabularySnippet){
-        setVersionByLanguage(vocabularySnippet.getLanguage(), vocabularySnippet.getVersionNumber());
+        setVersionByLanguage(vocabularySnippet.getLanguage(), vocabularySnippet.getVersionNumber() != null ? vocabularySnippet.getVersionNumber().toString() : null);
         setTitleDefinition(vocabularySnippet.getTitle(), vocabularySnippet.getDefinition(), vocabularySnippet.getLanguage(), false);
         this.notes = vocabularySnippet.getNotes();
     }
@@ -96,8 +103,8 @@ public class VocabularyDTO implements Serializable {
     private String notation;
 
     @NotNull
-    @Size(max = 20)
-    private String versionNumber;
+    @Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
+    private VersionNumber versionNumber;
 
     private Long initialPublication;
 
@@ -141,6 +148,9 @@ public class VocabularyDTO implements Serializable {
     private Set<CodeDTO> codes = new LinkedHashSet<>();
 
     private Set<VersionDTO> versions = new LinkedHashSet<>();
+
+    @Lob
+    private String titleAll;
 
     @Size(max = 20)
     private String versionSq;
@@ -426,11 +436,11 @@ public class VocabularyDTO implements Serializable {
         this.notation = notation;
     }
 
-    public String getVersionNumber() {
+    public VersionNumber getVersionNumber() {
         return versionNumber;
     }
 
-    public void setVersionNumber(String versionNumber) {
+    public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
     }
 
@@ -536,6 +546,14 @@ public class VocabularyDTO implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public String getTitleAll() {
+        return titleAll;
+    }
+
+    public void setTitleAll(String titleAll) {
+        this.titleAll = titleAll;
     }
 
     public String getVersionSq() {
@@ -1372,11 +1390,33 @@ public class VocabularyDTO implements Serializable {
         return this;
     }
 
-    public List<VersionDTO> getVersionByGroup( String slVersionNumber, boolean noSameLanguage){
+    public List<VersionDTO> getVersionsByVersionNumber(VersionNumber versionNumber, boolean noSameLanguage){
         List<VersionDTO> versionGroups = new ArrayList<>();
         List<VersionDTO> vGroups = this.versions.stream()
-            .filter(v -> v.getNumber().startsWith(slVersionNumber))
-            .sorted(VocabularyUtils.versionDtoComparator())
+            .filter(v -> v.getNumber().equals(versionNumber))
+            .sorted(VocabularyUtils.VERSION_DTO_COMPARATOR)
+            .collect(Collectors.toList());
+
+        if( noSameLanguage ) {
+            Set<String> langs = new HashSet<>();
+            for (VersionDTO vg : vGroups) {
+                if ( langs.contains( vg.getLanguage()))
+                    continue;
+                langs.add(vg.getLanguage());
+                versionGroups.add(vg);
+            }
+        } else {
+            versionGroups = vGroups;
+        }
+
+        return versionGroups;
+    }
+
+    public List<VersionDTO> getVersionsByMinorVersionNumber(VersionNumber minorVersionNumber, boolean noSameLanguage){
+        List<VersionDTO> versionGroups = new ArrayList<>();
+        List<VersionDTO> vGroups = this.versions.stream()
+            .filter(v -> v.getNumber().equalMinorVersionNumber(minorVersionNumber))
+            .sorted(VocabularyUtils.VERSION_DTO_COMPARATOR)
             .collect(Collectors.toList());
 
         if( noSameLanguage ) {
@@ -1648,6 +1688,98 @@ public class VocabularyDTO implements Serializable {
         }
     }
 
+    public void setTitleAll() {
+        Language language = Language.getByIso(sourceLanguage);
+        switch (language) {
+            case ALBANIAN:
+                setTitleAll(getTitleSq());
+                break;
+            case BOSNIAN:
+                setTitleAll(getTitleBs());
+                break;
+            case BULGARIAN:
+                setTitleAll(getTitleBg());
+                break;
+            case CROATIAN:
+                setTitleAll(getTitleHr());
+                break;
+            case CZECH:
+                setTitleAll(getTitleCs());
+                break;
+            case DANISH:
+                setTitleAll(getTitleDa());
+                break;
+            case DUTCH:
+                setTitleAll(getTitleNl());
+                break;
+            case ENGLISH:
+                setTitleAll(getTitleEn());
+                break;
+            case ESTONIAN:
+                setTitleAll(getTitleEt());
+                break;
+            case FINNISH:
+                setTitleAll(getTitleFi());
+                break;
+            case FRENCH:
+                setTitleAll(getTitleFr());
+                break;
+            case GERMAN:
+                setTitleAll(getTitleDe());
+                break;
+            case GREEK:
+                setTitleAll(getTitleEl());
+                break;
+            case HUNGARIAN:
+                setTitleAll(getTitleHu());
+                break;
+            case ITALIAN:
+                setTitleAll(getTitleIt());
+                break;
+            case JAPANESE:
+                setTitleAll(getTitleJa());
+                break;
+            case LITHUANIAN:
+                setTitleAll(getTitleLt());
+                break;
+            case MACEDONIAN:
+                setTitleAll(getTitleMk());
+                break;
+            case NORWEGIAN:
+                setTitleAll(getTitleNo());
+                break;
+            case POLISH:
+                setTitleAll(getTitlePl());
+                break;
+            case PORTUGUESE:
+                setTitleAll(getTitlePt());
+                break;
+            case ROMANIAN:
+                setTitleAll(getTitleRo());
+                break;
+            case RUSSIAN:
+                setTitleAll(getTitleRu());
+                break;
+            case SERBIAN:
+                setTitleAll(getTitleSr());
+                break;
+            case SLOVAK:
+                setTitleAll(getTitleSk());
+                break;
+            case SLOVENIAN:
+                setTitleAll(getTitleSl());
+                break;
+            case SPANISH:
+                setTitleAll(getTitleEs());
+                break;
+            case SWEDISH:
+                setTitleAll(getTitleSv());
+                break;
+            default:
+                throw new IllegalArgumentException("Undefined case in setTitleAll for enum Language " + language);
+        }
+    }
+
     public VocabularyDTO setTitleDefinition( String title, String definition, String language, boolean ignoreNullValue) {
         return setTitleDefinition(title, definition, Language.getByIso(language.toLowerCase()), ignoreNullValue);
     }
@@ -1908,6 +2040,7 @@ public class VocabularyDTO implements Serializable {
         setLanguages( null );
         setLanguagesPublished( null );
         setStatuses( null );
+        setTitleAll(null);
         setTitleCs(null);
         setDefinitionCs(null);
         setTitleDa(null);
@@ -1972,12 +2105,24 @@ public class VocabularyDTO implements Serializable {
         this.uri = this.uri + "/" + this.versionNumber;
         this.publicationDate = versionDTO.getPublicationDate();
         this.archived = true;
+        this.setVersionByLanguage(versionDTO.getLanguage(), versionDTO.getNumber().toString());
+        this.setTitleDefinition(versionDTO.getTitle(), versionDTO.getDefinition(), versionDTO.getLanguage(), false);
     }
 
     public static Optional<VocabularyDTO> findByIdFromList(List<VocabularyDTO> vocabs, String docId) {
         if( docId == null )
+        {
             return Optional.empty();
-        return vocabs.stream().filter( voc -> voc.getId().equals( Long.parseLong(docId))).findFirst();
+        }
+        var longDocId = Long.parseLong( docId ) ;
+        for ( VocabularyDTO vocab : vocabs )
+        {
+            if (vocab.getId() != null && vocab.getId() == longDocId )
+            {
+                return Optional.of( vocab );
+            }
+        }
+        return Optional.empty();
     }
 
     public static void fillVocabularyByVersions( VocabularyDTO vocab, Set<VersionDTO> versions ) {
@@ -1991,7 +2136,7 @@ public class VocabularyDTO implements Serializable {
             vocab.setTitleDefinition(version.getTitle(), version.getDefinition(), version.getLanguage(), false);
             if( version.getStatus().equals( Status.PUBLISHED.toString())) {
                 vocab.addLanguagePublished(version.getLanguage());
-                vocab.setVersionByLanguage(version.getLanguage(), version.getNumber());
+                vocab.setVersionByLanguage(version.getLanguage(), version.getNumber().toString());
             } else {
                 vocab.setVersionByLanguage(version.getLanguage(), version.getNumber() + "_" + version.getStatus());
             }

@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { Title } from '@angular/platform-browser';
@@ -34,7 +36,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule, TranslateModule.forRoot()],
         declarations: [MainComponent],
-        providers: [Title]
+        providers: [Title],
       })
         .overrideTemplate(MainComponent, '')
         .compileComponents();
@@ -50,6 +52,7 @@ describe('Component Tests', () => {
     });
 
     describe('page title', () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       let routerState: any;
       const defaultPageTitle = 'global.title';
       const parentRoutePageTitle = 'parentTitle';
@@ -87,7 +90,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(parentRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
 
         it('should set page title to child route pageTitle if child routes exist and pageTitle is set for child route', () => {
@@ -100,7 +103,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(childRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(childRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(childRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
 
         it('should set page title to parent route pageTitle if child routes exists but pageTitle is not set for child route data', () => {
@@ -113,7 +116,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(parentRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
 
         it('should set page title to parent route pageTitle if child routes exists but data is not set for child route', () => {
@@ -126,7 +129,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(parentRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
       });
 
@@ -149,7 +152,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(parentRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
 
         it('should set page title to child route pageTitle if child routes exist and pageTitle is set for child route', () => {
@@ -162,7 +165,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(childRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(childRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(childRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
 
         it('should set page title to parent route pageTitle if child routes exists but pageTitle is not set for child route data', () => {
@@ -175,7 +178,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(parentRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
 
         it('should set page title to parent route pageTitle if child routes exists but data is not set for child route', () => {
@@ -188,7 +191,7 @@ describe('Component Tests', () => {
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(parentRoutePageTitle);
-          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated');
+          expect(titleService.setTitle).toHaveBeenCalledWith(parentRoutePageTitle + ' translated - ' + defaultPageTitle + ' translated');
         });
       });
     });

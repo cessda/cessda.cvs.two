@@ -1,23 +1,25 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.service;
 
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
 import com.itextpdf.layout.font.FontProvider;
 import org.apache.commons.io.IOUtils;
+import com.itextpdf.layout.font.FontSet;
 import org.docx4j.convert.in.xhtml.FormattingOption;
 import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
 import org.docx4j.jaxb.Context;
@@ -41,24 +43,42 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ExportService
 {
+    public static final String MEDIATYPE_RDF_VALUE = "application/rdf+xml";
+    public static final MediaType MEDIATYPE_RDF = MediaType.parseMediaType(MEDIATYPE_RDF_VALUE);
+    public static final String MEDIATYPE_WORD_VALUE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    public static final MediaType MEDIATYPE_WORD = MediaType.parseMediaType( MEDIATYPE_WORD_VALUE );
 
-    public static final String HTML = "html";
+    private final FontSet fontSet;
 
     public enum DownloadType
 	{
-		SKOS("rdf", MediaType.APPLICATION_XML),
+		SKOS("rdf", MEDIATYPE_RDF),
         PDF("pdf", MediaType.APPLICATION_PDF),
-        HTML(ExportService.HTML, MediaType.TEXT_HTML),
-        WORD("docx", new MediaType("application", "vnd.openxmlformats-officedocument.wordprocessingml.document" ));
+        HTML("html", MediaType.TEXT_HTML),
+        WORD("docx", MEDIATYPE_WORD );
 
 		private final String type;
         private final MediaType mediaType;
+
+        public static Optional<DownloadType> fromMediaType( MediaType mediaType )
+        {
+            for ( var downloadType : DownloadType.values() )
+            {
+                if ( mediaType.includes( downloadType.getMediaType() ))
+                {
+                    return Optional.of( downloadType );
+                }
+            }
+            return Optional.empty();
+        }
 
 		DownloadType( String type, MediaType mediaType )
 		{
@@ -71,12 +91,7 @@ public class ExportService
             return mediaType;
         }
 
-		public boolean equalsType( String otherType )
-		{
-			return type.equals( otherType );
-		}
-
-		@Override
+        @Override
 		public String toString()
 		{
 			return this.type;
@@ -86,9 +101,20 @@ public class ExportService
     private final ObjectFactory factory = new ObjectFactory();
 	private final SpringTemplateEngine templateEngine;
 
-	public ExportService(SpringTemplateEngine templateEngine )
+    @SuppressWarnings( "DataFlowIssue" )
+	public ExportService( SpringTemplateEngine templateEngine )
 	{
-		this.templateEngine = templateEngine;
+        this.templateEngine = templateEngine;
+        this.fontSet = new FontSet();
+
+        // Add all fonts
+        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Black.otf").toString() );
+        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Bold.otf" ).toString() );
+        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-DemiLight.otf" ).toString() );
+        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Light.otf" ).toString() );
+        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Medium.otf" ).toString() );
+        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Regular.otf" ).toString() );
+        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Thin.otf" ).toString() );
 	}
 
     public void generateFileByThymeleafTemplate(
@@ -108,10 +134,10 @@ public class ExportService
             case PDF:
             case HTML:
             case WORD:
-                content = templateEngine.process( HTML + "/" + templateName + "_" + type, ctx );
+                content = templateEngine.process( DownloadType.HTML.type + "/" + templateName + "_" + type, ctx );
                 break;
             case SKOS:
-                content = templateEngine.process( "xml" + "/"  + templateName + "_" + type, ctx )
+                content = templateEngine.process( DownloadType.SKOS.type + "/"  + templateName + "_" + type, ctx )
                     .replaceAll( "(?m)^[ \t]*\r?\n", "" );
                 break;
             default:
@@ -135,26 +161,15 @@ public class ExportService
 
 	private void createTextFile( String contents, OutputStream outputStream ) throws IOException
     {
-        BufferedWriter bw = new BufferedWriter( new OutputStreamWriter( outputStream ) );
-        bw.write( contents );
-        bw.flush();
+        OutputStreamWriter writer = new OutputStreamWriter( outputStream, StandardCharsets.UTF_8 );
+        writer.write( contents );
+        writer.flush();
 	}
 
-	public void createPdfFile( String contents, OutputStream outputStream ) throws IOException
+    public void createPdfFile( String contents, OutputStream outputStream ) throws IOException
     {
-        FontProvider fontProvider = new DefaultFontProvider(false, false, false);
-
-        // Add all fonts
-        fontProvider.addFont( IOUtils.resourceToByteArray("/fonts/NotoSansCJKjp-Black.otf") );
-        fontProvider.addFont( IOUtils.resourceToByteArray( "/fonts/NotoSansCJKjp-Bold.otf" ) );
-        fontProvider.addFont( IOUtils.resourceToByteArray( "/fonts/NotoSansCJKjp-DemiLight.otf" ) );
-        fontProvider.addFont( IOUtils.resourceToByteArray( "/fonts/NotoSansCJKjp-Light.otf" ) );
-        fontProvider.addFont( IOUtils.resourceToByteArray( "/fonts/NotoSansCJKjp-Medium.otf" ) );
-        fontProvider.addFont( IOUtils.resourceToByteArray( "/fonts/NotoSansCJKjp-Regular.otf" ) );
-        fontProvider.addFont( IOUtils.resourceToByteArray( "/fonts/NotoSansCJKjp-Thin.otf" ) );
-
         // Generate the PDF
-        HtmlConverter.convertToPdf(contents, outputStream, new ConverterProperties().setFontProvider(fontProvider));
+        HtmlConverter.convertToPdf(contents, outputStream, new ConverterProperties().setFontProvider(new FontProvider(fontSet)));
 	}
 
     public void createWordFile( String contents, OutputStream outputStream ) throws Docx4JException, JAXBException {

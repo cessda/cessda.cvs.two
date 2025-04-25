@@ -1,16 +1,20 @@
 <!--
-  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License").
-  ~ You may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and limitations under the License.
-  -->
 
+    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
@@ -19,7 +23,7 @@
             <div>
                 <jhi-alert-error></jhi-alert-error>
 
-                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                <div class="form-group" [hidden]="!editForm.controls.id.value">
                     <label for="id" jhiTranslate="global.field.id">ID</label>
                     <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
                 </div>
@@ -28,13 +32,13 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.version.status" for="field_status">Status</label>
                     <input type="text" class="form-control" name="status" id="field_status"
                            formControlName="status"/>
-                    <div *ngIf="editForm.get('status')!.invalid && (editForm.get('status')!.dirty || editForm.get('status')!.touched)">
+                    <div *ngIf="editForm.controls.status.invalid && (editForm.controls.status.dirty || editForm.controls.status.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('status')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.controls.status.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('status')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                               *ngIf="editForm.controls.status.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
                         This field cannot be longer than 20 characters.
                         </small>
                     </div>
@@ -44,13 +48,13 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.version.itemType" for="field_itemType">Item Type</label>
                     <input type="text" class="form-control" name="itemType" id="field_itemType"
                            formControlName="itemType"/>
-                    <div *ngIf="editForm.get('itemType')!.invalid && (editForm.get('itemType')!.dirty || editForm.get('itemType')!.touched)">
+                    <div *ngIf="editForm.controls.itemType.invalid && (editForm.controls.itemType.dirty || editForm.controls.itemType.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('itemType')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="editForm.controls.itemType.errors?.required" jhiTranslate="entity.validation.required">
                         This field is required.
                         </small>
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('itemType')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                               *ngIf="editForm.controls.itemType.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
                         This field cannot be longer than 20 characters.
                         </small>
                     </div>
@@ -60,9 +64,9 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.version.language" for="field_language">Language</label>
                     <input type="text" class="form-control" name="language" id="field_language"
                            formControlName="language"/>
-                    <div *ngIf="editForm.get('language')!.invalid && (editForm.get('language')!.dirty || editForm.get('language')!.touched)">
+                    <div *ngIf="editForm.controls.language.invalid && (editForm.controls.language.dirty || editForm.controls.language.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('language')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                               *ngIf="editForm.controls.language.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
                         This field cannot be longer than 20 characters.
                         </small>
                     </div>
@@ -89,9 +93,9 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.version.number" for="field_number">Number</label>
                     <input type="text" class="form-control" name="number" id="field_number"
                            formControlName="number"/>
-                    <div *ngIf="editForm.get('number')!.invalid && (editForm.get('number')!.dirty || editForm.get('number')!.touched)">
+                    <div *ngIf="editForm.controls.number.invalid && (editForm.controls.number.dirty || editForm.controls.number.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('number')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                               *ngIf="editForm.controls.number.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
                         This field cannot be longer than 20 characters.
                         </small>
                     </div>
@@ -119,9 +123,9 @@
                     <label class="form-control-label" jhiTranslate="cvsApp.version.notation" for="field_notation">Notation</label>
                     <input type="text" class="form-control" name="notation" id="field_notation"
                            formControlName="notation"/>
-                    <div *ngIf="editForm.get('notation')!.invalid && (editForm.get('notation')!.dirty || editForm.get('notation')!.touched)">
+                    <div *ngIf="editForm.controls.notation.invalid && (editForm.controls.notation.dirty || editForm.controls.notation.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('notation')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
+                               *ngIf="editForm.controls.notation.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
                         This field cannot be longer than 240 characters.
                         </small>
                     </div>

@@ -1,28 +1,23 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.utils;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
-import eu.cessda.cvs.service.VocabularyNotFoundException;
-import eu.cessda.cvs.service.dto.VocabularyDTO;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class VocabularyUtilsTest
 {
@@ -37,7 +32,7 @@ class VocabularyUtilsTest
 		final String codeUri3 = "https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]_[CONCEPTID]/[VERSION]";
 		final String notation = "TopicClassification";
 		final String language = "en";
-		final String version = "1.0";
+		final VersionNumber version = new VersionNumber(1, 0);
 		final String code = "Demography";
 		final Long conceptId = (long) 250;
 		// vocabulary
@@ -57,26 +52,5 @@ class VocabularyUtilsTest
 		assertThat( uri6 ).isEqualTo( "https://vocabularies.cessda.eu/vocabulary/%s_%s/%s", notation, code, version );
 		final String uri7 = VocabularyUtils.generateUri( codeUri3, false, notation, version, null, code, conceptId );
 		assertThat( uri7 ).isEqualTo( "https://vocabularies.cessda.eu/vocabulary/%s_%s/%s", notation, conceptId, version );
-	}
-
-	@Test
-	void shouldLoadVocabularyFromPath()
-	{
-		Path vocabularyToLoad = Paths.get( "src/main/webapp/content/vocabularies/DataSourceType/DataSourceType.json" );
-
-		VocabularyDTO loadedVocabulary = VocabularyUtils.generateVocabularyByPath( vocabularyToLoad );
-
-		// Assert that the correct vocabulary is loaded
-		assertThat( loadedVocabulary.getNotation() ).isEqualTo( "DataSourceType" );
-		assertThat( loadedVocabulary.getVersions() ).isNotEmpty();
-	}
-
-	@Test
-	void shouldThrowIfIOExceptionOccurs()
-	{
-		Path invalidPath = Paths.get( "invalidPath.json" );
-
-		assertThatThrownBy( () -> VocabularyUtils.generateVocabularyByPath( invalidPath ) )
-				.isInstanceOf( VocabularyNotFoundException.class );
 	}
 }

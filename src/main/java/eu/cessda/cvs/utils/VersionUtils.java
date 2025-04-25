@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.utils;
 
 import eu.cessda.cvs.service.dto.ConceptDTO;
@@ -18,7 +20,6 @@ import eu.cessda.cvs.service.dto.VersionDTO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class VersionUtils {
@@ -28,53 +29,37 @@ public class VersionUtils {
     public static final String CV_NAME = "Cv Name:";
     public static final String CV_DEF = "Cv Def:";
     public static final String CV_NOTES = "Cv Notes:";
+    public static final String DEPRECATED_SUFFIX = " (DEPRECATED)";
 
     private VersionUtils() {}
 
 	public static int compareVersion(String v1, String v2) {
-        String s1 = normalisedVersion(v1);
-        String s2 = normalisedVersion(v2);
-        return s1.compareTo(s2);
+        return VersionNumber.fromString(v1).compareTo(VersionNumber.fromString(v2));
     }
 
-    public static String normalisedVersion(String version) {
-        return normalisedVersion(version, ".", 4);
+    public static String increaseSlVersionNumber(String versionNumber) {
+        return VersionNumber.fromString(versionNumber).increaseMinorNumber().toString();
     }
 
-    public static String normalisedVersion(String version, String sep, int maxWidth) {
-        String[] split = Pattern.compile(sep, Pattern.LITERAL).split(version);
-        StringBuilder sb = new StringBuilder();
-        final String format = "%" + maxWidth + "s";
-        for (String s : split) {
-            sb.append(String.format(format, s));
-        }
-        return sb.toString();
-    }
-
-    public static String increaseSlVersionByOne( String prevVersionNumber ) {
-        int indexAfterLastDot = prevVersionNumber.lastIndexOf('.') + 1;
-        return prevVersionNumber.substring(0, indexAfterLastDot) +
-            ( Integer.parseInt( prevVersionNumber.substring(indexAfterLastDot) ) + 1 );
-    }
-
-    public static String increaseTlVersionByOne( String prevVersionNumber, String currentSlNumber ) {
-        int indexAfterLastDot = prevVersionNumber.lastIndexOf('.') + 1;
-        if ( VersionUtils.compareVersion( prevVersionNumber, currentSlNumber ) == -1)
-            return currentSlNumber + ".1";
+    public static String increaseTlVersionByOne(String prevVersionNumber, String currentSlVersionNumber) {
+        VersionNumber prev = VersionNumber.fromString(prevVersionNumber);
+        VersionNumber curr = VersionNumber.fromString(currentSlVersionNumber);
+        if (prev.compareTo(curr) < 0)
+            return new VersionNumber(curr.getBasePatchVersion(), 1).toString();
         else
-            return prevVersionNumber.substring(0, indexAfterLastDot) +
-                ( Integer.parseInt( prevVersionNumber.substring(indexAfterLastDot) ) + 1 );
+            return prev.increasePatchNumber().toString();
     }
 
-    public static String getSlNumberFromTl( String tlNumber ) {
-        if( StringUtils.countMatches( tlNumber, ".") == 2){
-            tlNumber = tlNumber.substring( 0, tlNumber.lastIndexOf('.'));
-        }
-        return tlNumber;
+    public static VersionNumber getSlVersionNumber( String tlNumber ) {
+        return VersionNumber.fromString(tlNumber).getBasePatchVersion();
+    }
+
+    public static boolean equalSlVersionNumber(String versionNumber1, String versionNumber2) {
+        return VersionNumber.fromString(versionNumber1).equalMinorVersionNumber(VersionNumber.fromString(versionNumber2));
     }
 
     /**
-     * Spit language version e.g. de-2.0.1 into several part
+     * Split language version e.g. de-2.0.1 into several part
      * @param languageVersion
      * @return array with 4 properties e.g. from example above "2.0", "2.0.2", "de", "TL"
      */
@@ -95,63 +80,60 @@ public class VersionUtils {
         return availableVersionUri.substring(0, availableVersionUri.indexOf( "/" + notation ));
     }
 
-    public static List<String> buildComparisonCurrentAndPreviousCV(VersionDTO versionDTO, VersionDTO prevVersionDTO) {
+    public static void appendVersionToSb(StringBuilder sb, VersionDTO versionDTO) {
+        sb.append(CV_NAME + " ").append(versionDTO.getTitle()).append("\n");
+        sb.append(CV_DEF + " ").append(versionDTO.getDefinition()).append("\n");
+        sb.append(CV_NOTES + " ").append(versionDTO.getNotes() == null ? "" : versionDTO.getNotes()).append("\n\n\n");
+    }
+
+    public static void appendConceptToSb(StringBuilder sb, ConceptDTO conceptDTO) {
+        if (conceptDTO == null) {
+            sb.append(CODE + " \n");
+            sb.append(CODE_TERM + " \n");
+            sb.append(CODE_DEF + " \n\n");
+        } else {
+            sb.append(CODE + " ").append(conceptDTO.getNotation()).append(conceptDTO.getDeprecated() ? DEPRECATED_SUFFIX : "").append("\n");
+            sb.append(CODE_TERM + " ").append(conceptDTO.getTitle()).append(conceptDTO.getDeprecated() ? DEPRECATED_SUFFIX : "").append("\n");
+            sb.append(CODE_DEF + " ").append(conceptDTO.getDefinition()).append(conceptDTO.getDeprecated() ? DEPRECATED_SUFFIX : "").append("\n\n");
+        }
+    }
+
+    public static List<String> compareCurPrevCV(VersionDTO versionDTO, VersionDTO prevVersionDTO) {
         // create comparison based on current version
         StringBuilder currentVersionCvSb = new StringBuilder();
         StringBuilder prevVersionCvSb = new StringBuilder();
 
-        currentVersionCvSb.append( CV_NAME + " " + versionDTO.getTitle() + "\n");
-        currentVersionCvSb.append( CV_DEF + " " + versionDTO.getDefinition() + "\n");
-        currentVersionCvSb.append( CV_NOTES + " " + (versionDTO.getNotes() == null ? "": versionDTO.getNotes()) + "\n\n\n");
-
-        prevVersionCvSb.append( CV_NAME + " " + prevVersionDTO.getTitle() + "\n");
-        prevVersionCvSb.append( CV_DEF + " " + prevVersionDTO.getDefinition() + "\n");
-        prevVersionCvSb.append( CV_NOTES + " " + (prevVersionDTO.getNotes() == null ? "": prevVersionDTO.getNotes()) + "\n\n\n");
+        appendVersionToSb(currentVersionCvSb, versionDTO);
+        appendVersionToSb(prevVersionCvSb, prevVersionDTO);
 
         // get concepts and sorted by position
         List<ConceptDTO> currentConcepts = versionDTO.getConcepts().stream()
             .sorted(Comparator.comparing(ConceptDTO::getPosition)).collect(Collectors.toList());
         Set<ConceptDTO> existingConceptsInPrevAndCurrent = new HashSet<>();
         currentConcepts.forEach(currentConcept -> {
-            currentVersionCvSb.append( CODE + " " + currentConcept.getNotation() + (currentConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-            currentVersionCvSb.append( CODE_TERM + " " + currentConcept.getTitle() + (currentConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-            currentVersionCvSb.append( CODE_DEF + " " + currentConcept.getDefinition() + (currentConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n\n");
-
+            appendConceptToSb(currentVersionCvSb, currentConcept);
             ConceptDTO prevConceptDTO = null;
-
-            if( currentConcept.getPreviousConcept() != null )
+            if( currentConcept.getPreviousConcept() != null ) {
                 prevConceptDTO = prevVersionDTO.getConcepts().stream()
                     .filter(prevConcept -> currentConcept.getPreviousConcept().equals( prevConcept.getId())).findFirst()
                     .orElse(null);
-
+            }
             if( prevConceptDTO == null ) {
                 prevConceptDTO = prevVersionDTO.getConcepts().stream()
                     .filter(prevConcept -> currentConcept.getNotation().equals( prevConcept.getNotation())).findFirst()
                     .orElse(null);
-            }
-
-            if ( prevConceptDTO == null ) {
-                prevVersionCvSb.append(CODE + " \n");
-                prevVersionCvSb.append(CODE_TERM + " \n");
-                prevVersionCvSb.append(CODE_DEF + " \n\n");
             } else {
                 existingConceptsInPrevAndCurrent.add( prevConceptDTO );
-                prevVersionCvSb.append( CODE + " " + prevConceptDTO.getNotation() + (prevConceptDTO.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-                prevVersionCvSb.append( CODE_TERM + " " + prevConceptDTO.getTitle() + (prevConceptDTO.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-                prevVersionCvSb.append( CODE_DEF + " " + prevConceptDTO.getDefinition() + (prevConceptDTO.getDeprecated() ? " (DEPRECATED)" : "") + "\n\n");
             }
+            appendConceptToSb(prevVersionCvSb, prevConceptDTO);
         });
 
         // put deleted concept at the end
         prevVersionDTO.getConcepts().removeAll(existingConceptsInPrevAndCurrent);
 
         for (ConceptDTO prevConcept : prevVersionDTO.getConcepts()) {
-            currentVersionCvSb.append(CODE + " \n");
-            currentVersionCvSb.append(CODE_TERM + " \n");
-            currentVersionCvSb.append(CODE_DEF + " \n\n");
-            prevVersionCvSb.append( CODE + " " + prevConcept.getNotation() + (prevConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-            prevVersionCvSb.append( CODE_TERM + " " + prevConcept.getTitle() + (prevConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-            prevVersionCvSb.append( CODE_DEF + " " + prevConcept.getDefinition() + (prevConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n\n");
+            appendConceptToSb(currentVersionCvSb, null);
+            appendConceptToSb(prevVersionCvSb, prevConcept);
         }
 
         List<String> compareCurrentPrev = new ArrayList<>();

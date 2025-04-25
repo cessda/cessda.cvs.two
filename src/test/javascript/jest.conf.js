@@ -1,34 +1,30 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 const tsconfig = require('../../../tsconfig.json');
 
 module.exports = {
     preset: 'jest-preset-angular',
     setupFiles: ['jest-date-mock'],
     setupFilesAfterEnv: ['<rootDir>/src/test/javascript/jest.ts'],
+    globalSetup: 'jest-preset-angular/global-setup',
     cacheDirectory: '<rootDir>/target/jest-cache',
     coverageDirectory: '<rootDir>/target/test-results/',
-    globals: {
-        'ts-jest': {
-            stringifyContentPathRegex: '\\.html$',
-            tsconfig: '<rootDir>/tsconfig.json',
-            astTransformers: {
-              before: ['jest-preset-angular/build/InlineFilesTransformer', 'jest-preset-angular/build/StripStylesTransformer']
-            }
-        }
-    },
+    coverageProvider: 'v8',
     coveragePathIgnorePatterns: [
+        '/node_modules/',
         '<rootDir>/src/test/javascript'
     ],
     moduleNameMapper: mapTypescriptAliasToJestAlias(),
@@ -37,10 +33,12 @@ module.exports = {
         [ 'jest-junit', { outputDirectory: './target/test-results/', outputName: 'TESTS-results-jest.xml' } ]
     ],
     testResultsProcessor: 'jest-sonar-reporter',
-    transformIgnorePatterns: ['node_modules/'],
     testMatch: ['<rootDir>/src/test/javascript/spec/**/@(*.)@(spec.ts)'],
+    testRunner: 'jasmine2',
     rootDir: '../../../',
-    testURL: 'http://localhost/'
+    testEnvironmentOptions: {
+      url: 'http://localhost/'
+    }
 };
 
 function mapTypescriptAliasToJestAlias(alias = {}) {
@@ -49,7 +47,7 @@ function mapTypescriptAliasToJestAlias(alias = {}) {
         return jestAliases;
     }
     Object.entries(tsconfig.compilerOptions.paths)
-        .filter(([key, value]) => {
+        .filter(([_key, value]) => {
             // use Typescript alias in Jest only if this has value
             if (value.length) {
                 return true;

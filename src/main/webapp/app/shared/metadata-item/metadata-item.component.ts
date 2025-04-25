@@ -1,80 +1,66 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-
-import {JhiEventManager} from 'ng-jhipster';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {HttpResponse} from '@angular/common/http';
-import {IMetadataValue} from 'app/shared/model/metadata-value.model';
-import {ObjectType} from 'app/shared/model/enumerations/object-type.model';
-import {EditorService} from 'app/editor/editor.service';
-import {IMetadataField} from 'app/shared/model/metadata-field.model';
-
-interface Quill {
-  getModule(moduleName: string): BetterTableModule;
-}
-
-interface BetterTableModule {
-  insertTable(rows: number, columns: number): void;
-}
+import { JhiEventManager } from 'ng-jhipster';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
+import { MetadataValue } from 'app/shared/model/metadata-value.model';
+import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
+import { EditorService } from 'app/editor/editor.service';
+import { MetadataField } from 'app/shared/model/metadata-field.model';
+import Quill from 'quill';
 
 @Component({
   selector: 'jhi-metadata-item',
   templateUrl: './metadata-item.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MetadataItemComponent implements OnInit {
-  @Input() metadataField?: IMetadataField;
-  @Input() metadataValue!: IMetadataValue;
+  @Input() metadataField?: MetadataField;
+  @Input() metadataValue!: MetadataValue;
   @Input() isWriting!: boolean;
   @Input() position!: number;
   @Input() newTabLink!: boolean;
 
-  // @ts-ignore
-  public quill: Quill;
+  public quill: Quill | undefined;
 
   isSaving = false;
-  isTableInsertOptVisible = false;
 
   metadataForm = this.fb.group({
-    identifier: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(40), Validators.pattern('^[a-z0-9-]*$')]],
-    position: ['', [Validators.required]],
-    content: ['', [Validators.minLength(30)]],
-    tableRow: [],
-    tableColumn: []
+    identifier: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.minLength(2), Validators.maxLength(40), Validators.pattern('^[a-z0-9-]*$')],
+    }),
+    position: new FormControl(0, { nonNullable: true, validators: [Validators.required] }),
+    content: new FormControl('', { nonNullable: true, validators: [Validators.minLength(30)] }),
+    tableRow: new FormControl<number | null>(null),
+    tableColumn: new FormControl<number | null>(null),
   });
 
-  constructor(protected editorService: EditorService, protected eventManager: JhiEventManager, private fb: FormBuilder) {}
-
-  private get tableModule(): BetterTableModule {
-    return this.quill.getModule("better-table");
-  }
+  constructor(
+    protected editorService: EditorService,
+    protected eventManager: JhiEventManager,
+    private fb: FormBuilder,
+  ) {}
 
   public editorCreated(event: Quill): void {
     this.quill = event;
-    // @ts-ignore
-    this.quill.clipboard.dangerouslyPasteHTML(this.metadataForm.get(['content'])!.value);
-  }
-
-  insertTable(): void {
-    this.tableModule.insertTable(this.metadataForm.get(['tableRow'])!.value, this.metadataForm.get(['tableColumn'])!.value);
-    this.isTableInsertOptVisible = false;
-  }
-
-  showInsertTable(): void {
-    this.isTableInsertOptVisible = true;
+    this.quill.clipboard.dangerouslyPasteHTML(this.metadataForm.controls.content.value);
   }
 
   ngOnInit(): void {
@@ -83,14 +69,14 @@ export class MetadataItemComponent implements OnInit {
       position: this.metadataValue.position ? this.metadataValue.position : this.position,
       content: this.metadataValue.value,
       tableRow: 3,
-      tableColumn: 3
+      tableColumn: 3,
     });
   }
 
   cancel(): void {
     this.isWriting = false;
     this.metadataForm.patchValue({
-      content: this.metadataValue.value
+      content: this.metadataValue.value,
     });
   }
 
@@ -104,14 +90,14 @@ export class MetadataItemComponent implements OnInit {
     });
   }
 
-  private createFromForm(): IMetadataValue {
+  private createFromForm() {
     return {
       ...this.metadataValue,
-      identifier: this.metadataForm.get(['identifier'])!.value,
-      position: this.metadataForm.get(['position'])!.value ? this.metadataForm.get(['position'])!.value : this.position,
-      value: this.metadataForm.get(['content'])!.value,
+      identifier: this.metadataForm.controls.identifier.value,
+      position: this.metadataForm.controls.position.value ? this.metadataForm.controls.position.value : this.position,
+      value: this.metadataForm.controls.content.value,
       objectType: ObjectType.SYSTEM,
-      metadataKey: this.metadataField!.metadataKey
+      metadataKey: this.metadataField!.metadataKey,
     };
   }
 
@@ -120,9 +106,9 @@ export class MetadataItemComponent implements OnInit {
     const metadataValue = this.createFromForm();
     if (!this.newTabLink) {
       // remove any target="_blank"
-      metadataValue.value = (metadataValue.value as string).split(' rel="noopener noreferrer" target="_blank"').join('');
+      metadataValue.value = metadataValue.value.split(' rel="noopener noreferrer" target="_blank"').join('');
       this.metadataForm.patchValue({
-        content: metadataValue.value
+        content: metadataValue.value,
       });
     }
     if (this.metadataValue.id !== undefined) {
@@ -132,14 +118,14 @@ export class MetadataItemComponent implements OnInit {
     }
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IMetadataValue>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<unknown>>): void {
     result.subscribe(
-      response => this.onSaveSuccess(response.body!),
-      () => this.onSaveError()
+      () => this.onSaveSuccess(),
+      () => this.onSaveError(),
     );
   }
 
-  protected onSaveSuccess(newComment: IMetadataValue): void {
+  protected onSaveSuccess(): void {
     this.isSaving = false;
     this.isWriting = false;
     this.eventManager.broadcast('metadataListModification');

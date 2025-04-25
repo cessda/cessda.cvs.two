@@ -22,8 +22,8 @@ management:
         include: ['configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'prometheus', 'threaddump']
   endpoint:
     health:
-      show-details: when_authorized
-      roles: 'ROLE_ADMIN'
+      show-details: WHEN_AUTHORIZED
+      roles: ['ROLE_ADMIN', 'ROLE_ADMIN_TECHNICAL']
     jhimetrics:
       enabled: true
   info:
@@ -61,10 +61,10 @@ spring:
   application:
     name: cvs
   profiles:
-    # The commented value for `active` can be replaced with valid Spring profiles to load.
-    # Otherwise, it will be filled in by maven when building the JAR file
-    # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
-    active: #spring.profiles.active#
+    # Profile can be overridden by setting `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+    active: dev
+    # Always include the Swagger profile
+    include: swagger
   jmx:
     enabled: false
   data:
@@ -134,7 +134,8 @@ jhipster:
   clientApp:
     name: 'cvsApp'
   cors:
-    allowed-origins: '*'
+    # Allow all origins
+    allowed-origin-patterns: '*'
     # Only allow resources to be read
     allowed-methods: 'GET'
     allowed-headers: '*'
@@ -145,15 +146,15 @@ jhipster:
     from: no-reply@cessda.eu
   swagger:
     default-include-pattern: /(v1|v2|urn)/.*
-    title: cvs API
-    description: cvs API documentation
-    version: 0.0.1
-    terms-of-service-url:
-    contact-name:
+    title: CVS API
+    description: CESSDA Vocabularies Service API Documentation
+    version: 3.4.2
+    terms-of-service-url: https://www.cessda.eu/Acceptable-Use-Policy
+    contact-name: CESSDA Support
     contact-url:
-    contact-email:
-    license:
-    license-url:
+    contact-email: support@cessda.eu
+    license: Apache 2.0
+    license-url: http://www.apache.org/licenses/LICENSE-2.0.html
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
@@ -164,7 +165,4 @@ jhipster:
 # ===================================================================
 
 application:
-  static-file-path: /app/resources/static
-  vocab-json-path: /app/resources/static/content/vocabularies/
-  agency-image-path: /app/resources/static/content/images/agency/
-  license-image-path: /app/resources/static/content/images/license/
+  static-file-path: # Unset by default

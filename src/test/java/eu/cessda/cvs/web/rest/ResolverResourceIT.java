@@ -1,52 +1,47 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.domain.Resolver;
+import eu.cessda.cvs.domain.enumeration.ResolverType;
+import eu.cessda.cvs.domain.enumeration.ResourceType;
 import eu.cessda.cvs.repository.ResolverRepository;
 import eu.cessda.cvs.service.ResolverService;
 import eu.cessda.cvs.service.dto.ResolverDTO;
 import eu.cessda.cvs.service.mapper.ResolverMapper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import eu.cessda.cvs.domain.enumeration.ResourceType;
-import eu.cessda.cvs.domain.enumeration.ResolverType;
 /**
  * Integration tests for the {@link ResolverResource} REST controller.
  */
@@ -90,33 +85,31 @@ public class ResolverResourceIT {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static Resolver createEntity(EntityManager em) {
-        Resolver resolver = new Resolver()
+        return new Resolver()
             .resourceId(DEFAULT_RESOURCE_ID)
             .resourceType(DEFAULT_RESOURCE_TYPE)
             .resourceUrl(DEFAULT_RESOURCE_URL)
             .resolverType(DEFAULT_RESOLVER_TYPE)
             .resolverURI(DEFAULT_RESOLVER_URI);
-        return resolver;
     }
     /**
      * Create an updated entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static Resolver createUpdatedEntity(EntityManager em) {
-        Resolver resolver = new Resolver()
+        return new Resolver()
             .resourceId(UPDATED_RESOURCE_ID)
             .resourceType(UPDATED_RESOURCE_TYPE)
             .resourceUrl(UPDATED_RESOURCE_URL)
             .resolverType(UPDATED_RESOLVER_TYPE)
             .resolverURI(UPDATED_RESOLVER_URI);
-        return resolver;
     }
 
     @BeforeEach
@@ -126,7 +119,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void createResolver() throws Exception {
+    void createResolver() throws Exception {
         int databaseSizeBeforeCreate = resolverRepository.findAll().size();
 
         // Create the Resolver
@@ -149,7 +142,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void createResolverWithExistingId() throws Exception {
+    void createResolverWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = resolverRepository.findAll().size();
 
         // Create the Resolver with an existing ID
@@ -170,7 +163,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void checkResourceUrlIsRequired() throws Exception {
+    void checkResourceUrlIsRequired() throws Exception {
         int databaseSizeBeforeTest = resolverRepository.findAll().size();
         // set the field null
         resolver.setResourceUrl(null);
@@ -189,7 +182,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void checkResolverURIIsRequired() throws Exception {
+    void checkResolverURIIsRequired() throws Exception {
         int databaseSizeBeforeTest = resolverRepository.findAll().size();
         // set the field null
         resolver.setResolverURI(null);
@@ -208,7 +201,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void getAllResolvers() throws Exception {
+    void getAllResolvers() throws Exception {
         // Initialize the database
         resolverRepository.saveAndFlush(resolver);
 
@@ -226,7 +219,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void getResolver() throws Exception {
+    void getResolver() throws Exception {
         // Initialize the database
         resolverRepository.saveAndFlush(resolver);
 
@@ -244,7 +237,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingResolver() throws Exception {
+    void getNonExistingResolver() throws Exception {
         // Get the resolver
         restResolverMockMvc.perform(get("/api/resolvers/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -252,14 +245,14 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void updateResolver() throws Exception {
+    void updateResolver() throws Exception {
         // Initialize the database
         resolverRepository.saveAndFlush(resolver);
 
         int databaseSizeBeforeUpdate = resolverRepository.findAll().size();
 
         // Update the resolver
-        Resolver updatedResolver = resolverRepository.findById(resolver.getId()).get();
+        Resolver updatedResolver = resolverRepository.findById(resolver.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedResolver are not directly saved in db
         em.detach(updatedResolver);
         updatedResolver
@@ -288,7 +281,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingResolver() throws Exception {
+    void updateNonExistingResolver() throws Exception {
         int databaseSizeBeforeUpdate = resolverRepository.findAll().size();
 
         // Create the Resolver
@@ -307,7 +300,7 @@ public class ResolverResourceIT {
 
     @Test
     @Transactional
-    public void deleteResolver() throws Exception {
+    void deleteResolver() throws Exception {
         // Initialize the database
         resolverRepository.saveAndFlush(resolver);
 

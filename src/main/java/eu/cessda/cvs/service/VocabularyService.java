@@ -1,16 +1,18 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.service;
 
 import eu.cessda.cvs.domain.CodeSnippet;
@@ -22,8 +24,6 @@ import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
@@ -110,7 +110,7 @@ public interface VocabularyService {
      * Delete the entire CV publish JSON directory given path
      * @param path of the JSON CV published files
      */
-    void deleteCvJsonDirectoryAndContent(String path);
+    void deleteCvJsonDirectoryAndContent(Path path);
 
     /**
      * get Vocabulary by notation
@@ -164,21 +164,6 @@ public interface VocabularyService {
     void indexAgencyStats( VocabularyDTO vocabulary );
 
     /**
-     * Get all of the published CV JSON path in specific version by notation
-     * @param notation
-     * @param versionNumber
-     * @return
-     */
-    Path getPublishedCvPath(String notation, String versionNumber);
-
-    /**
-     * Get all of the published CV JSON path (latest version by notation)
-     * @param notation
-     * @return
-     */
-    Path getPublishedCvPath(String notation);
-
-    /**
      * Get all of the published CVs JSON path
      */
     List<Path> getPublishedCvPaths();
@@ -187,13 +172,6 @@ public interface VocabularyService {
      * Perform indexing in all published vocabularies
      */
     void indexAllPublished();
-
-    /**
-     * Perform indexing in a published vocabulary given JSON file path
-     *
-     * @param jsonPath the VocabularyDTO JSON file path
-     */
-    void indexPublished( Path jsonPath );
 
     /**
      * Perform indexing in a published vocabulary for the publication
@@ -234,30 +212,6 @@ public interface VocabularyService {
     String generateJsonVocabularyPublish( VocabularyDTO... vocabularies ) throws IOException;
 
     /**
-     * Generate files to be exported for specific vocabulary
-     *
-     * @param vocabularyNotation the vocabulary notation
-     * @param versionSl the Source Language version
-     * @param languageVersion combination of language anf version number. e.g en_1.0
-     * @param downloadType one of the following file types PDF, DOCX, HTML, RDF
-     * @param request HttpServletRequest for statistical purpose
-     * @return the generated file
-     */
-    File generateVocabularyPublishFileDownload(String vocabularyNotation, String versionSl, String languageVersion, ExportService.DownloadType downloadType, HttpServletRequest request);
-
-    /**
-     * Generate files to be exported for specific vocabulary from the editor
-     *
-     * @param vocabularyNotation the vocabulary notation
-     * @param versionSl the Source Language version
-     * @param languageVersion combination of language anf version number. e.g en_1.0
-     * @param downloadType one of the following file types PDF, DOCX, HTML, RDF
-     * @param request HttpServletRequest for statistical purpose
-     * @return the generated file
-     */
-    File generateVocabularyEditorFileDownload(String vocabularyNotation, String versionSl, String languageVersion, ExportService.DownloadType downloadType, HttpServletRequest request);
-
-    /**
      * Filter-out vocabularyDTO.versions based on versionList e.g. (en-1.0, fr-1.0.1). Includes all if versionList is null
      * @param versionList
      * @param vocabularyDTO
@@ -265,6 +219,25 @@ public interface VocabularyService {
      */
     Set<VersionDTO> filterOutVocabularyVersions(String versionList, VocabularyDTO vocabularyDTO);
 
+
+    /**
+     * Generate files to be exported for specific vocabulary
+     *
+     * @param vocabularyNotation the vocabulary notation
+     * @param versionSl the Source Language version
+     * @param versionList combination of language and version number, e.g. en_1.0
+     * @param downloadType one of the following file types PDF, DOCX, HTML, RDF
+     * @param requestURL request URL for statistical purposes
+     * @param onlyPublished only select published vocabularies
+     * @return the generated file's resolved path
+     */
+    Path generateVocabularyFileDownload(
+        String vocabularyNotation,
+        String versionSl,
+        String versionList,
+        ExportService.DownloadType downloadType,
+        String requestURL,
+        boolean onlyPublished);
 
     /**
      *
@@ -282,9 +255,10 @@ public interface VocabularyService {
     void updateVocabularyLogo( Long agencyId, String agencyLogoPath );
 
     /**
-     * Forward the status of certain Vocabulary version (DRAFT -> REVIEW -> PUBLISH)
+     * Forward the status of certain Vocabulary version (DRAFT -> REVIEW -> READY_TO_TRANSLATE -> PUBLISH) for SL
+     * Forward the status of certain Vocabulary version (DRAFT -> REVIEW -> READY_TO_PUBLISH) for TL
      * @param vocabularySnippet
      * @return
      */
-    VersionDTO forwardStatus(VocabularySnippet vocabularySnippet);
+    VersionDTO forwardStatus(VocabularySnippet vocabularySnippet) throws IllegalActionTypeException;
 }

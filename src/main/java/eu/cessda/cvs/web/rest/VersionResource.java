@@ -1,18 +1,22 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.web.rest;
 
+import eu.cessda.cvs.config.audit.AuditEventPublisher;
+import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
@@ -21,6 +25,7 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,10 +35,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +49,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 public class VersionResource {
+
+    @Autowired
+    private AuditEventPublisher auditPublisher;
 
     private final Logger log = LoggerFactory.getLogger(VersionResource.class);
 
@@ -72,6 +80,15 @@ public class VersionResource {
             throw new BadRequestAlertException("A new version cannot already have an ID", ENTITY_NAME, "idexists");
         }
         VersionDTO result = versionService.save(versionDTO);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, null, result, null, "CREATE_NEW_VOCABULARY_VERSION");
+
         return ResponseEntity.created(new URI("/api/versions/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -93,6 +110,15 @@ public class VersionResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         VersionDTO result = versionService.save(versionDTO);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, null, result, null, "UPDATE_VERSION");
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, versionDTO.getId().toString()))
             .body(result);
@@ -134,6 +160,21 @@ public class VersionResource {
     @DeleteMapping("/versions/{id}")
     public ResponseEntity<Void> deleteVersion(@PathVariable Long id) {
         log.debug("REST request to delete Version : {}", id);
+
+        Optional<VersionDTO> versionDTO = versionService.findOne(id);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        VersionDTO versionDTOTemp = new VersionDTO();
+        if (versionDTO.isPresent()) {
+            versionDTOTemp = versionDTO.get();
+        }
+        auditPublisher.publish(auditUserString, null, versionDTOTemp, null, "DELETE_VERSION");
+
         versionService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
@@ -162,14 +203,7 @@ public class VersionResource {
     @GetMapping("/search/languages")
     public ResponseEntity<List<String>> searchLanguages( @RequestParam(name = "s" ) String s) {
         log.debug("REST request search vocabulary languages");
-        try
-        {
-            s = URLDecoder.decode( s, "UTF-8" );
-        }
-        catch (UnsupportedEncodingException e)
-        {
-            throw new IllegalStateException(e);
-        }
+        s = URLDecoder.decode( s, StandardCharsets.UTF_8);
         final List<String> status = new ArrayList<>();
         if ( !s.trim().isEmpty() )
         {

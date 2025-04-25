@@ -1,50 +1,54 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 import { Injectable } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
 import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
 import { JhiResolvePagingParams } from 'ng-jhipster';
 import { Observable, of, EMPTY } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
+import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import { VocabularyService } from './vocabulary.service';
 import { VocabularyComponent } from './vocabulary.component';
 import { VocabularyDetailComponent } from './vocabulary-detail.component';
 import { VocabularyUpdateComponent } from './vocabulary-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class VocabularyResolve implements Resolve<IVocabulary> {
-  constructor(private service: VocabularyService, private router: Router) {}
+export class VocabularyResolve implements Resolve<Vocabulary> {
+  constructor(
+    private service: VocabularyService,
+    private router: Router,
+  ) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IVocabulary> | Observable<never> {
+  resolve(route: ActivatedRouteSnapshot): Observable<Vocabulary> | Observable<never> {
     const id = route.params['id'];
     if (id) {
       return this.service.find(id).pipe(
-        flatMap((vocabulary: HttpResponse<Vocabulary>) => {
+        mergeMap(vocabulary => {
           if (vocabulary.body) {
             return of(vocabulary.body);
           } else {
-            this.router.navigate(['404']);
+            this.router.navigate(['404'], { skipLocationChange: true });
             return EMPTY;
           }
-        })
+        }),
       );
     }
-    return of(new Vocabulary());
+    return of(createNewVocabulary());
   }
 }
 
@@ -53,49 +57,49 @@ export const vocabularyRoute: Routes = [
     path: '',
     component: VocabularyComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams
+      pagingParams: JhiResolvePagingParams,
     },
     data: {
       authorities: [Authority.USER],
       defaultSort: 'id,asc',
-      pageTitle: 'cvsApp.vocabulary.home.title'
+      pageTitle: 'cvsApp.vocabulary.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/view',
     component: VocabularyDetailComponent,
     resolve: {
-      vocabulary: VocabularyResolve
+      vocabulary: VocabularyResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.vocabulary.home.title'
+      pageTitle: 'cvsApp.vocabulary.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: 'new',
     component: VocabularyUpdateComponent,
     resolve: {
-      vocabulary: VocabularyResolve
+      vocabulary: VocabularyResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.vocabulary.home.title'
+      pageTitle: 'cvsApp.vocabulary.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: VocabularyUpdateComponent,
     resolve: {
-      vocabulary: VocabularyResolve
+      vocabulary: VocabularyResolve,
     },
     data: {
       authorities: [Authority.USER],
-      pageTitle: 'cvsApp.vocabulary.home.title'
+      pageTitle: 'cvsApp.vocabulary.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

@@ -1,19 +1,22 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.config.ApplicationProperties;
+import eu.cessda.cvs.config.audit.AuditEventPublisher;
 import eu.cessda.cvs.domain.CodeSnippet;
 import eu.cessda.cvs.domain.Vocabulary;
 import eu.cessda.cvs.domain.VocabularySnippet;
@@ -33,12 +36,14 @@ import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,16 +52,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -66,7 +67,11 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class EditorResource {
 
+    @Autowired
+    private AuditEventPublisher auditPublisher;
+
     public static final String UNABLE_TO_FIND_VERSION = "Unable to find version with Id ";
+    public static final String UNABLE_TO_FIND_CONCEPT = "Unable to find concept with Id ";
     public static final String TO_BE_DELETED = " to be deleted";
     public static final String TO_BE_DEPRECATED = " to be deprecated";
     public static final String AS_A_REPLACING_CONCEPT = " as a replacing concept";
@@ -74,10 +79,8 @@ public class EditorResource {
     public static final String INVALID_ID = "Invalid id";
     public static final String ID_EXIST = "idexists";
     public static final String ID_NULL = "idnull";
-    private final Logger log = LoggerFactory.getLogger(EditorResource.class);
-
+    private static final Logger log = LoggerFactory.getLogger(EditorResource.class);
     public static final String ATTACHMENT_FILENAME = "attachment; filename=";
-
     private static final String ENTITY_VOCABULARY_NAME = "vocabulary";
     private static final String ENTITY_VERSION_NAME = "version";
     private static final String ENTITY_CODE_NAME = "code";
@@ -127,23 +130,38 @@ public class EditorResource {
      * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
      */
     @PostMapping("/editors/vocabularies")
-    public ResponseEntity<VocabularyDTO> createVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) throws URISyntaxException {
+    public ResponseEntity<VocabularyDTO> createVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) throws URISyntaxException, IllegalActionTypeException
+    {
         log.debug("REST request to save Vocabulary : {}", vocabularySnippet);
         // check if user authorized to add VocabularyResource
-        if( vocabularySnippet.getActionType().equals( ActionType.CREATE_CV )) {
-            SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CV, vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
+        if ( ActionType.CREATE_CV.equals( vocabularySnippet.getActionType() ) )
+        {
+            SecurityUtils.checkResourceAuthorization( ActionType.CREATE_CV, vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
 
-            if (vocabularySnippet.getVocabularyId() != null) {
-                throw new BadRequestAlertException("A new vocabulary cannot already have an ID", ENTITY_VOCABULARY_NAME, ID_EXIST);
+            if ( vocabularySnippet.getVocabularyId() != null )
+            {
+                throw new BadRequestAlertException( "A new vocabulary cannot already have an ID", ENTITY_VOCABULARY_NAME, ID_EXIST );
             }
         }
-        else if( vocabularySnippet.getActionType().equals( ActionType.ADD_TL_CV )) {
-            SecurityUtils.checkResourceAuthorization(ActionType.ADD_TL_CV, vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
-        } else {
-            throw new IllegalArgumentException( "Illegal action type for POST" + vocabularySnippet.getActionType() );
+        else if ( ActionType.ADD_TL_CV.equals( vocabularySnippet.getActionType() ) )
+        {
+            SecurityUtils.checkResourceAuthorization( ActionType.ADD_TL_CV, vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
+        }
+        else
+        {
+            throw new IllegalActionTypeException( vocabularySnippet.getActionType(), HttpMethod.POST );
         }
 
-        VocabularyDTO result = vocabularyService.saveVocabulary( vocabularySnippet );
+        VocabularyDTO result = vocabularyService.saveVocabulary(vocabularySnippet);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, result, null, vocabularySnippet, "CREATE_VOCABULARY");
+
         return ResponseEntity.created(new URI("/api/vocabularies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_VOCABULARY_NAME, result.getNotation()))
             .body(result);
@@ -153,12 +171,21 @@ public class EditorResource {
      * {@code POST  /editors/vocabularies/new-version/{id}} : Create a new vocabulary version from existing version Rest API.
      *
      * @param id the ID of version to be cloned/add new version
-     * @return
+     * @return the created vocabulary version
      */
     @PostMapping("/editors/vocabularies/new-version/{id}")
-    public ResponseEntity<VersionDTO> createNewVocabularyVersion(@PathVariable Long id){
+    public ResponseEntity<VersionDTO> createNewVocabularyVersion(@PathVariable Long id) {
         log.debug("REST request to create new Vocabulary with version ID: {}", id);
-        VersionDTO result = vocabularyService.createNewVersion( id );
+        VersionDTO result = vocabularyService.createNewVersion(id);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, null, result, null, "CREATE_NEW_VOCABULARY_VERSION");
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_VERSION_NAME, result.getNotation()))
             .body(result);
@@ -183,12 +210,24 @@ public class EditorResource {
         if(
             !(vocabularySnippet.getActionType().equals( ActionType.EDIT_CV ) ||
                 vocabularySnippet.getActionType().equals( ActionType.EDIT_DDI_CV) ||
+                vocabularySnippet.getActionType().equals( ActionType.EDIT_IDENTITY_CV) ||
                 vocabularySnippet.getActionType().equals( ActionType.EDIT_VERSION_INFO_CV) ||
                 vocabularySnippet.getActionType().equals( ActionType.EDIT_NOTE_CV))
         ) {
             throw new IllegalArgumentException( "Incorrect ActionType" + vocabularySnippet.getActionType() );
         }
         VocabularyDTO result = vocabularyService.saveVocabulary(vocabularySnippet);
+
+        //notify the auditing mechanism
+        VocabularyDTO vocabularyDTO = vocabularyService.findOne(vocabularySnippet.getVocabularyId())
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVersionId()));
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, vocabularyDTO, null, vocabularySnippet, "UPDATE_VOCABULARY_" + vocabularySnippet.getActionType());
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VOCABULARY_NAME, result.getNotation()))
             .body(result);
@@ -205,9 +244,21 @@ public class EditorResource {
      * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
      */
     @PutMapping("/editors/vocabularies/forward-status")
-    public ResponseEntity<VersionDTO> forwardStatusVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) {
+    public ResponseEntity<VersionDTO> forwardStatusVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) throws IllegalActionTypeException
+    {
         log.debug("REST request to update forward status Vocabulary : {}", vocabularySnippet);
         VersionDTO versionDTO = vocabularyService.forwardStatus(vocabularySnippet);
+
+        //notify the auditing mechanism
+        VocabularyDTO vocabularyDTO = vocabularyService.findOne(vocabularySnippet.getVocabularyId())
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVersionId()));
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, vocabularyDTO, versionDTO, vocabularySnippet, vocabularySnippet.getActionType().name(), true);
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VERSION_NAME, versionDTO.getNotation()))
             .body(versionDTO);
@@ -262,12 +313,29 @@ public class EditorResource {
         } else {
             if( versionDTO.isInitialVersion() ) {
                 // delete whole vocabulary
+                //notify the auditing mechanism
+                String auditUserString = "";
+                Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+                if (auditUser.isPresent()) {
+                    auditUserString = auditUser.get();
+                }
+                auditPublisher.publish(auditUserString, vocabularyDTO, versionDTO, null, "DELETE_WHOLE_VOCABULARY");
+
                 vocabularyService.delete(versionDTO.getVocabularyId());
             } else {
                 // delete version SL and related TLs
+
+                //notify the auditing mechanism
+                String auditUserString = "";
+                Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+                if (auditUser.isPresent()) {
+                    auditUserString = auditUser.get();
+                }
+                auditPublisher.publish(auditUserString, vocabularyDTO, versionDTO, null, "DELETE_VOCABULARY_SL_AND_RELATED_TL(S)_VERSION");
+
                 VersionDTO finalVersionDTO = versionDTO;
-                List<VersionDTO> versionDTOs = vocabularyDTO.getVersions().stream().filter(v -> v.getNumber().startsWith( finalVersionDTO.getNumber())).collect(Collectors.toList());
-                vocabularyDTO.getVersions().removeAll(versionDTOs);
+                List<VersionDTO> versionDTOs = vocabularyDTO.getVersions().stream().filter(v -> v.getNumber().equalPatchVersionNumber(finalVersionDTO.getNumber())).collect(Collectors.toList());
+                versionDTOs.forEach(vocabularyDTO.getVersions()::remove);
                 // change vocabulary version id to the previous version number
                 vocabularyDTO.clearContent();
 
@@ -275,15 +343,15 @@ public class EditorResource {
                     .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + finalVersionDTO.getId()  ));
 
                 vocabularyDTO.setVersionNumber( prevSlVersionDto.getNumber());
-                Set<VersionDTO> prevVersions = vocabularyDTO.getVersions().stream().filter(v -> v.getNumber().startsWith(prevSlVersionDto.getNumber())).collect(Collectors.toSet());
+                Set<VersionDTO> prevVersions = vocabularyDTO.getVersions().stream().filter(v -> v.getNumber().equalPatchVersionNumber(prevSlVersionDto.getNumber())).collect(Collectors.toSet());
                 VocabularyDTO.fillVocabularyByVersions(vocabularyDTO, prevVersions);
                 vocabularyDTO = vocabularyService.save(vocabularyDTO);
                 // indexing editor
                 vocabularyService.indexEditor(vocabularyDTO);
 
-                if( versionDTO.getStatus().equals( Status.PUBLISHED.toString())) {
+                if( versionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
                     // remove published JSON file, re-create the JSON file and re-index for published vocabulary
-                    vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
+                    vocabularyService.deleteCvJsonDirectoryAndContent( applicationProperties.getVocabJsonPath().resolve( vocabularyDTO.getNotation() ));
                     vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
                     vocabularyService.indexPublished(vocabularyDTO);
                 }
@@ -303,20 +371,29 @@ public class EditorResource {
             } else {
                 // check if there is previous version
                 VersionDTO versionPrevDTO = null;
-                if ( versionDTO.getPreviousVersion() != null )
+                if (versionDTO.getPreviousVersion() != null)
                     versionPrevDTO = versionService.findOne(versionDTO.getPreviousVersion()).orElse(null);
                 if( versionPrevDTO != null) {
                     vocabularyDTO.setTitleDefinition(versionPrevDTO.getTitle(), versionPrevDTO.getDefinition(), versionPrevDTO.getLanguage(), false);
-                    vocabularyDTO.setVersionByLanguage(versionPrevDTO.getLanguage(), versionPrevDTO.getNumber() );
+                    vocabularyDTO.setVersionByLanguage(versionPrevDTO.getLanguage(), versionPrevDTO.getNumber().toString() );
                 }
             }
         }
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, vocabularyDTO, versionDTO, null, "DELETE_TL_VOCABULARY");
+
         vocabularyDTO.removeVersion( versionDTO );
         vocabularyDTO = vocabularyService.save(vocabularyDTO);
         vocabularyService.indexEditor( vocabularyDTO );
         if( isTlPublished ) {
             // remove published JSON file, re-create the JSON file and re-index for published vocabulary
-            vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
+            vocabularyService.deleteCvJsonDirectoryAndContent( applicationProperties.getVocabJsonPath().resolve( vocabularyDTO.getNotation() ) );
             vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
             vocabularyService.indexPublished(vocabularyDTO );
         }
@@ -340,7 +417,18 @@ public class EditorResource {
             throw new BadRequestAlertException("A new code/concept cannot already have an ID", ENTITY_CODE_NAME, ID_EXIST);
         }
 
-        ConceptDTO result = vocabularyService.saveCode( codeSnippet );
+        ConceptDTO result = vocabularyService.saveCode(codeSnippet);
+
+        //notify the auditing mechanism
+        VersionDTO versionDTO = versionService.findOne(codeSnippet.getVersionId())
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + codeSnippet.getVersionId()));
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, null, versionDTO, result, null, codeSnippet, "CREATE_CODE");
+
         return ResponseEntity.created(new URI("/api/concepts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_CODE_NAME, result.getNotation()))
             .body(result);
@@ -366,7 +454,7 @@ public class EditorResource {
 
         // reject if version status is published
         if (versionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
-            throw new IllegalArgumentException( "Unable to add Code " + codeSnippets[0].getNotation() + ", Version is already PUBLISHED" );
+            throw new IllegalArgumentException("Unable to add Code " + codeSnippets[0].getNotation() + ", Version is already PUBLISHED");
         }
 
         final Long vocabularyId = versionDTO.getVocabularyId();
@@ -374,12 +462,9 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException("Unable to add Vocabulary " + vocabularyId));
 
         // check for authorization
-        if( codeSnippets[0].getActionType().equals( ActionType.CREATE_CODE))
-            SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CODE,
-                vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
-        else if( codeSnippets[0].getActionType().equals( ActionType.ADD_TL_CODE))
-            SecurityUtils.checkResourceAuthorization(ActionType.ADD_TL_CODE,
-                vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
+        for ( var snippet : codeSnippets ) {
+            SecurityUtils.checkResourceAuthorization( snippet.getActionType(), vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
+        }
 
         List<ConceptDTO> storedCodes = new ArrayList<>();
         for (CodeSnippet codeSnippet : codeSnippets) {
@@ -387,34 +472,46 @@ public class EditorResource {
 
             ConceptDTO conceptDTO = null;
 
-            if( codeSnippet.getActionType().equals( ActionType.CREATE_CODE)) {
-                conceptDTO = addNewConcept(versionDTO, codeSnippet);
-            } else if( codeSnippet.getActionType().equals( ActionType.ADD_TL_CODE)) {
-                conceptDTO = versionDTO.getConcepts().stream().filter(c -> c.getId().equals(codeSnippet.getConceptId())).findFirst().orElse(null);
-                if( conceptDTO != null ) {
-                    conceptDTO.setTitle( codeSnippet.getTitle() );
-                    conceptDTO.setDefinition( codeSnippet.getDefinition() );
-                }
+            switch ( codeSnippet.getActionType() )
+            {
+                case CREATE_CODE:
+                    conceptDTO = addNewConcept( versionDTO, codeSnippet );
+                    break;
+                case ADD_TL_CODE:
+                    conceptDTO = versionDTO.getConcepts().stream().filter( c -> c.getId().equals( codeSnippet.getConceptId() ) ).findFirst().orElse( null );
+                    if ( conceptDTO != null )
+                    {
+                        conceptDTO.setTitle( codeSnippet.getTitle() );
+                        conceptDTO.setDefinition( codeSnippet.getDefinition() );
+
+                        //notify the auditing mechanism
+                        String auditUserString = SecurityUtils.getCurrentUserLogin().orElse( "" );
+                        auditPublisher.publish( auditUserString, vocabularyDTO, versionDTO, conceptDTO, null, codeSnippet, codeSnippet.getActionType().toString() );
+                    }
+                    break;
+                default:
+                    break;
             }
-            if( conceptDTO == null )
-                continue;
 
-            versionDTO = versionService.save(versionDTO);
+            if ( conceptDTO != null )
+            {
+                versionDTO = versionService.save( versionDTO );
 
-            // check if codeSnippet contains changeType, store if exist
-            vocabularyService.storeChangeType(codeSnippet, versionDTO);
+                // check if codeSnippet contains changeType, store if exist
+                vocabularyService.storeChangeType( codeSnippet, versionDTO );
 
-            // find the newly created code from version
-            ConceptDTO concept= versionDTO.findConceptByNotation(conceptDTO.getNotation());
-            storedCodes.add( concept );
+                // find the newly created code from version
+                ConceptDTO concept = versionDTO.findConceptByNotation( conceptDTO.getNotation() );
+                storedCodes.add( concept );
+            }
         }
 
         // index editor
         vocabularyService.indexEditor(vocabularyDTO);
 
         String conceptsNotation = storedCodes.stream().map(ConceptDTO::getNotation).collect(Collectors.joining());
-        if( conceptsNotation.length() > 20) {
-            conceptsNotation = conceptsNotation.substring(0, 20) + "...";
+        if (conceptsNotation.length() > 20) {
+            conceptsNotation = conceptsNotation.substring(0, 20).trim() + "...";
         }
         conceptsNotation += " (" + storedCodes.size() + " new codes added)";
 
@@ -425,15 +522,19 @@ public class EditorResource {
 
     private ConceptDTO addNewConcept(VersionDTO versionDTO, CodeSnippet codeSnippet) {
         // check if concept already exist for new concept
-        if (versionDTO.getConcepts().stream()
-            .anyMatch(c -> c.getNotation().equals( codeSnippet.getNotation()))) {
-            throw new CodeAlreadyExistException();
+        if (versionDTO.getConcepts().stream().anyMatch(c -> c.getNotation().equals(codeSnippet.getNotation()))) {
+            throw new CodeAlreadyExistException(codeSnippet.getNotation());
         }
         // set position if not available
-        if( codeSnippet.getPosition() == null )
+        if (codeSnippet.getPosition() == null)
             codeSnippet.setPosition( versionDTO.getConcepts().size() - 1 );
         // create concept by codeSnippet
         ConceptDTO newConceptDTO = new ConceptDTO(codeSnippet);
+
+        //notify the auditing mechanism
+        String auditUserString = SecurityUtils.getCurrentUserLogin().orElse( "" );
+        auditPublisher.publish(auditUserString, null, versionDTO, newConceptDTO, null, codeSnippet, codeSnippet.getActionType().toString());
+
         // add concept to version and save version to save new concept
         versionDTO.addConceptAt(newConceptDTO, newConceptDTO.getPosition());
         return newConceptDTO;
@@ -453,15 +554,33 @@ public class EditorResource {
     @PutMapping("/editors/codes")
     public ResponseEntity<ConceptDTO> updateCode(@Valid @RequestBody CodeSnippet codeSnippet) {
         log.debug("REST request to update Code/Concept : {}", codeSnippet);
-        if( !(codeSnippet.getActionType().equals( ActionType.EDIT_CODE ) ||
-            codeSnippet.getActionType().equals( ActionType.ADD_TL_CODE ) ||
-            codeSnippet.getActionType().equals( ActionType.EDIT_TL_CODE ) ||
-            codeSnippet.getActionType().equals( ActionType.DELETE_TL_CODE )))
-            throw new IllegalArgumentException( "Action type " + codeSnippet.getActionType() + "not supported" );
+
+        switch ( codeSnippet.getActionType() )
+        {
+            case EDIT_CODE:
+            case ADD_TL_CODE:
+            case EDIT_TL_CODE:
+            case DELETE_TL_CODE:
+                break;
+            default:
+                throw new IllegalArgumentException( "Action type " + codeSnippet.getActionType() + "not supported" );
+        }
+
         if (codeSnippet.getConceptId() == null) {
             throw new BadRequestAlertException(INVALID_ID, ENTITY_CODE_NAME, ID_NULL);
         }
-        ConceptDTO result = vocabularyService.saveCode( codeSnippet );
+        ConceptDTO result = vocabularyService.saveCode(codeSnippet);
+
+        //notify the auditing mechanism
+        VersionDTO versionDTO = versionService.findOne(codeSnippet.getVersionId())
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + codeSnippet.getVersionId()));
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, null, versionDTO, result, null, codeSnippet, codeSnippet.getActionType().name());
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_CODE_NAME, result.getNotation()))
             .body(result);
@@ -487,7 +606,7 @@ public class EditorResource {
             throw new BadRequestAlertException(INVALID_ID, ENTITY_CODE_NAME, ID_NULL);
         }
         ConceptDTO conceptDTO = conceptService.findOne(codeSnippet.getConceptId())
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find concept with Id " + codeSnippet.getConceptId() + TO_BE_DEPRECATED));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_CONCEPT + codeSnippet.getConceptId() + TO_BE_DEPRECATED));
         VersionDTO versionDTO = versionService.findOne(conceptDTO.getVersionId())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + conceptDTO.getVersionId() ));
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
@@ -503,13 +622,19 @@ public class EditorResource {
         ConceptDTO replacingConceptDTO = null;
         if (codeSnippet.getReplacedById() != null && codeSnippet.getReplacedById() >= 0) {
             replacingConceptDTO = conceptService.findOne(codeSnippet.getReplacedById())
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find concept with Id " + codeSnippet.getReplacedById() + AS_A_REPLACING_CONCEPT));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_CONCEPT + codeSnippet.getReplacedById() + AS_A_REPLACING_CONCEPT));
         }
 
-        Iterator<ConceptDTO> conceptIterator = versionDTO.getConcepts().iterator();
-        while ( conceptIterator.hasNext() ) {
-            ConceptDTO conceptNext = conceptIterator.next();
-            if( conceptNext.equals( conceptDTO )) {
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, vocabularyDTO, versionDTO, conceptDTO, replacingConceptDTO, codeSnippet, codeSnippet.getActionType().name());
+
+        for (ConceptDTO conceptNext : versionDTO.getConcepts()) {
+            if (conceptNext.equals(conceptDTO)) {
                 conceptNext.setDeprecated(true);
                 conceptNext.setReplacedById(codeSnippet.getReplacedById());
 
@@ -517,7 +642,7 @@ public class EditorResource {
                 recordCodeDeprecatedAction(conceptNext, versionDTO, replacingConceptDTO);
             }
             // deprecate any child if exist
-            if( conceptNext.getParent() != null && conceptNext.getParent().startsWith( conceptDTO.getNotation()) ){
+            if (conceptNext.getParent() != null && conceptNext.getParent().startsWith(conceptDTO.getNotation())) {
                 conceptNext.setDeprecated(true);
 
                 // store changes if not initial version
@@ -527,7 +652,7 @@ public class EditorResource {
         versionService.save(versionDTO);
 
         // index editor after deprecation
-        vocabularyService.indexEditor( vocabularyDTO );
+        vocabularyService.indexEditor(vocabularyDTO);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "alert.code.deprecated", conceptDTO.getNotation())).build();
     }
 
@@ -551,27 +676,35 @@ public class EditorResource {
         log.debug("REST request to delete Code/Concept : {}", id);
         // first check version and determine delete strategy
         ConceptDTO conceptDTO = conceptService.findOne(id)
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find concept with Id " + id + TO_BE_DELETED));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_CONCEPT + id + TO_BE_DELETED));
         VersionDTO versionDTO = versionService.findOne(conceptDTO.getVersionId())
-            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + conceptDTO.getVersionId() ));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + conceptDTO.getVersionId()));
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
-            .orElseThrow( () -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + versionDTO.getVocabularyId() ));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + versionDTO.getVocabularyId()));
 
         // check if user authorized to delete VocabularyResource
         SecurityUtils.checkResourceAuthorization(ActionType.DELETE_CODE,
             vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
 
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, vocabularyDTO, versionDTO, conceptDTO, null, null, ActionType.DELETE_CODE.name());
+
         // remove parent-child link and save, orphan concept will be automatically deleted
-        versionDTO.removeConcept( conceptDTO );
+        versionDTO.removeConcept(conceptDTO);
 
         // store changes if not initial version
         recordCodeDeleteAction(conceptDTO, versionDTO);
 
         // remove any child if exist
         Iterator<ConceptDTO> conceptIterator = versionDTO.getConcepts().iterator();
-        while ( conceptIterator.hasNext() ) {
+        while (conceptIterator.hasNext()) {
             ConceptDTO conceptNext = conceptIterator.next();
-            if( conceptNext.getParent() != null && conceptNext.getParent().startsWith( conceptDTO.getNotation()) ){
+            if (conceptNext.getParent() != null && conceptNext.getParent().startsWith( conceptDTO.getNotation())){
                 conceptIterator.remove();
 
                 // store changes if not initial version
@@ -604,7 +737,7 @@ public class EditorResource {
     public ResponseEntity<VersionDTO> reorderCode(@Valid @RequestBody CodeSnippet codeSnippet){
         log.debug("REST request to reorder codes : {}", codeSnippet);
 
-        if ( !codeSnippet.getActionType().equals( ActionType.REORDER_CODE) ) {
+        if ( !codeSnippet.getActionType().equals(ActionType.REORDER_CODE) ) {
             throw new IllegalArgumentException( "ActionType REORDER_CODE needed" );
         }
 
@@ -612,6 +745,16 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + codeSnippet.getVersionId() ));
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
             .orElseThrow( () -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + versionDTO.getVocabularyId() ));
+
+        //notify the auditing mechanism
+        ConceptDTO conceptDTO = conceptService.findOne(codeSnippet.getConceptId())
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_CONCEPT + codeSnippet.getConceptId()));
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, vocabularyDTO, versionDTO, conceptDTO, null, codeSnippet, ActionType.REORDER_CODE.name());
 
         // check if user authorized to reorder VocabularyResource
         SecurityUtils.checkResourceAuthorization(ActionType.REORDER_CODE,
@@ -622,20 +765,21 @@ public class EditorResource {
             ConceptDTO concept = versionDTO.getConcepts().stream().filter(c -> c.getId().equals(codeSnippet.getConceptStructureIds().get(finalI))).findFirst()
                 .orElseThrow(() -> new EntityNotFoundException("Unable to find code/concept with Id " + codeSnippet.getConceptStructureIds().get(finalI)));
 
-            String newNotation = codeSnippet.getConceptStructures().get( finalI );
+            String newNotation = codeSnippet.getConceptStructures().get(finalI);
             int dotIndex = newNotation.lastIndexOf('.');
-            if ( dotIndex < 0 ) {
+            if (dotIndex < 0) {
                 concept.setParent( null );
             } else {
                 concept.setParent( newNotation.substring(0, dotIndex));
             }
-            concept.setNotation( newNotation );
+            concept.setNotation(newNotation);
             concept.setPosition(i);
         }
+
         // save
-        versionService.save( versionDTO );
+        versionService.save(versionDTO);
         // reindex
-        vocabularyService.indexEditor(vocabularyDTO );
+        vocabularyService.indexEditor(vocabularyDTO);
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_VERSION_NAME, versionDTO.getNotation()))
@@ -665,16 +809,24 @@ public class EditorResource {
         @Valid CommentDTO finalCommentDTO = commentDTO;
         VersionDTO versionDTO = versionService.findOne(commentDTO.getVersionId())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + finalCommentDTO.getVersionId() ));
-        if( commentDTO.getUserId() == null )
+        if (commentDTO.getUserId() == null)
             commentDTO.setUserId( SecurityUtils.getCurrentUserId() );
         ZonedDateTime dateTime = ZonedDateTime.now();
-        commentDTO.setDateTime( dateTime );
-        versionDTO.addComment( commentDTO );
+        commentDTO.setDateTime(dateTime);
+        versionDTO.addComment(commentDTO);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, versionDTO, commentDTO, "ADD_COMMENT");
 
         versionDTO = versionService.save(versionDTO);
 
         CommentDTO newSavedComment = versionDTO.getComments().stream().filter(c -> c.getDateTime().equals(dateTime)).findFirst().orElse(null);
-        if( newSavedComment != null )
+        if (newSavedComment != null)
             commentDTO = newSavedComment;
 
         return ResponseEntity.created(new URI("/api/comment/" + commentDTO.getId()))
@@ -686,9 +838,6 @@ public class EditorResource {
      * {@code PUT  /editors/comments} : Updates an existing comment via editor Rest API.
      *
      * @param commentDTO the commentDTO to update.
-     *
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new CommentDTO, or with status {@code 400 (Bad Request)} if the comment has already an ID.
-     *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated commentDTO,
      * or with status {@code 400 (Bad Request)} if the commentDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the commentDTO couldn't be updated.
@@ -712,6 +861,14 @@ public class EditorResource {
         commentFromVersion.setContent( commentDTO.getContent());
         versionService.save(versionDTO );
 
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, versionDTO, commentDTO, "UPDATE_COMMENT");
+
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_COMMENT_NAME, commentFromVersion.getId().toString()))
             .body(commentFromVersion);
@@ -733,6 +890,15 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + commentDTO.getId() ));
         commentDTO.setVersionId( null );
         versionDTO.removeComment(commentDTO);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, versionDTO, commentDTO, "DELETE_COMMENT");
+
         // automatically remove comment
         versionService.save(versionDTO);
 
@@ -760,30 +926,38 @@ public class EditorResource {
             throw new IllegalArgumentException( "MetadataValue need to be linked to metadataKey. metadataKey is null" );
         }
 
-        MetadataFieldDTO metadataFieldDTO = metadataFieldService.findByMetadataKey( metadataValueDTO.getMetadataKey() )
+        MetadataFieldDTO metadataFieldDTO = metadataFieldService.findByMetadataKey(metadataValueDTO.getMetadataKey())
             .orElse(null);
-        if( metadataFieldDTO == null ) {
+        if (metadataFieldDTO == null) {
             metadataFieldDTO = new MetadataFieldDTO();
-            metadataFieldDTO.setMetadataKey( metadataValueDTO.getMetadataKey() );
-            metadataFieldDTO.setObjectType( metadataValueDTO.getObjectType() );
-            metadataFieldDTO = metadataFieldService.save( metadataFieldDTO);
+            metadataFieldDTO.setMetadataKey(metadataValueDTO.getMetadataKey());
+            metadataFieldDTO.setObjectType(metadataValueDTO.getObjectType());
+            metadataFieldDTO = metadataFieldService.save(metadataFieldDTO);
         }
 
-        metadataValueDTO.setMetadataFieldId( metadataFieldDTO.getId());
+        metadataValueDTO.setMetadataFieldId(metadataFieldDTO.getId());
         metadataFieldDTO.addMetadataValue(metadataValueDTO);
 
         metadataFieldDTO = metadataFieldService.save( metadataFieldDTO);
 
-        if( metadataFieldDTO.getMetadataValues().isEmpty()) {
+        if (metadataFieldDTO.getMetadataValues().isEmpty()) {
             throw new EntityNotFoundException( "Unable to get any MetadataValues from metadataFieldDTO "+ metadataFieldDTO.getId() );
         }
 
         MetadataValueDTO result = metadataFieldDTO.getMetadataValues().iterator().next();
 
-        if( metadataFieldDTO.getMetadataValues().size() > 1) {
-            result = metadataFieldDTO.getMetadataValues().stream().filter(v -> v.getValue().equals(metadataValueDTO.getValue() ))
+        if (metadataFieldDTO.getMetadataValues().size() > 1) {
+            result = metadataFieldDTO.getMetadataValues().stream().filter(v -> v.getValue().equals(metadataValueDTO.getValue()))
                 .findFirst().orElse(result);
         }
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, metadataValueDTO, metadataFieldDTO, "CREATE_METADATA");
 
         return ResponseEntity.created(new URI("/api/metadata-values/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_METADATAVALUE_NAME, result.getId().toString()))
@@ -794,9 +968,6 @@ public class EditorResource {
      * {@code PUT  /editors/metadatas} : Updates an existing metadataValueDTO via editor Rest API.
      *
      * @param metadataValueDTO the metadataValueDTO to update.
-     *
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new MetadataValueDTO, or with status {@code 400 (Bad Request)} if the metadataValueDTO has already an ID.
-     *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated metadataValueDTO,
      * or with status {@code 400 (Bad Request)} if the metadataValueDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the metadataValueDTO couldn't be updated.
@@ -818,10 +989,18 @@ public class EditorResource {
         MetadataValueDTO result  = metadataFieldDTO.getMetadataValues().stream().filter(v -> v.getId().equals(metadataValueDTO.getId())).findFirst()
             .orElseThrow(() -> new EntityNotFoundException("Unable to find metadataValue with Id " + metadataValueDTO.getId() ));
 
-        result.setIdentifier( metadataValueDTO.getIdentifier());
-        result.setPosition( metadataValueDTO.getPosition());
-        result.setValue( metadataValueDTO.getValue() );
-        metadataFieldService.save( metadataFieldDTO );
+        result.setIdentifier(metadataValueDTO.getIdentifier());
+        result.setPosition(metadataValueDTO.getPosition());
+        result.setValue(metadataValueDTO.getValue());
+        metadataFieldService.save(metadataFieldDTO);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, metadataValueDTO, metadataFieldDTO, "UPDATE_METADATA");
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_METADATAVALUE_NAME, metadataValueDTO.getId().toString()))
@@ -846,88 +1025,42 @@ public class EditorResource {
         // automatically remove metadataValue
         metadataValueDTO.setMetadataFieldId( null );
         metadataFieldDTO.removeMetadataValue(metadataValueDTO);
-        metadataFieldService.save( metadataFieldDTO );
+        metadataFieldService.save(metadataFieldDTO);
+
+        //notify the auditing mechanism
+        String auditUserString = "";
+        Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
+        if (auditUser.isPresent()) {
+            auditUserString = auditUser.get();
+        }
+        auditPublisher.publish(auditUserString, metadataValueDTO, metadataFieldDTO, "DELETE_METADATA");
 
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true,
             ENTITY_METADATAVALUE_NAME, id.toString())).build();
     }
 
     /**
-     *  get a SKOS file of vocabulary {cv} with version {v} with included versions {lv} from Editor DB
+     *  get a file of vocabulary {cv} with version {v} with included versions {lv} from Editor DB
      *
      * @param cv controlled vocabulary
      * @param v controlled vocabulary version
      * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
-     * @return
-     * @throws IOException
      */
-    @GetMapping("/editors/download/rdf/{cv}/{v}")
-    public ResponseEntity<Resource> getVocabularyInSkos(
+    @GetMapping(path = "/editors/download/{cv}/{v}", produces = { ExportService.MEDIATYPE_RDF_VALUE, MediaType.APPLICATION_PDF_VALUE, MediaType.TEXT_HTML_VALUE })
+    public ResponseEntity<Resource> getVocabularyDownload(
         HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
         @RequestParam(name = "lv", required = true) String lv
-    ) throws IOException {
-        log.debug("Editor REST request to get a SKOS-RDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
-        File rdfFile = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.SKOS, request );
-
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(rdfFile.toPath()) );
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + rdfFile.getName() );
-        return ResponseEntity.ok()
-            .headers(headers)
-            .contentType(MediaType.parseMediaType("text/xml"))
-            .body(resource);
-    }
-
-    /**
-     *  get a PDF file of vocabulary {cv} with version {v} with included versions {lv} from Editor DB
-     *
-     * @param cv controlled vocabulary
-     * @param v controlled vocabulary version
-     * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
-     * @return
-     * @throws IOException
-     */
-    @GetMapping("/editors/download/pdf/{cv}/{v}")
-    public ResponseEntity<Resource> getVocabularyInPdf(
-        HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
-        @RequestParam(name = "lv", required = true) String lv
-    ) throws IOException {
+    ) {
         log.debug("Editor REST request to get a PDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
-        File pdfFile = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.PDF, request );
 
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(pdfFile.toPath()) );
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + pdfFile.getName() );
+        var requestURL = ResourceUtils.getURLWithContextPath( request );
+        var mediaType = MediaType.parseMediaType( request.getHeader( "accept" ) );
+        var type = ExportService.DownloadType.fromMediaType( mediaType ).orElseThrow(); // produces attribute should restrict to acceptable values
+        Path fileName = vocabularyService.generateVocabularyFileDownload( cv, v, lv, type , requestURL, false );
         return ResponseEntity.ok()
-            .headers(headers)
-            .contentType(MediaType.parseMediaType("application/pdf"))
-            .body(resource);
-    }
-
-    /**
-     *  get a HTML file of vocabulary {cv} with version {v} with included versions {lv} from Editor DB
-     *
-     * @param cv controlled vocabulary
-     * @param v controlled vocabulary version
-     * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
-     * @return
-     * @throws IOException
-     */
-    @GetMapping("/editors/download/html/{cv}/{v}")
-    public ResponseEntity<Resource> getVocabularyInHtml(
-        HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
-        @RequestParam(name = "lv", required = true) String lv
-    ) throws IOException {
-        log.debug("Editor REST request to get a HTML file of vocabulary {} with version {} with included versions {}", cv, v, lv);
-        File htmlFile = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.HTML, request );
-
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(htmlFile.toPath()) );
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + htmlFile.getName() );
-        return ResponseEntity.ok()
-            .headers(headers)
-            .contentType(MediaType.parseMediaType("text/html"))
-            .body(resource);
+            .header(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName.getFileName())
+            .contentType(type.getMediaType())
+            .body(new FileSystemResource( fileName ) );
     }
 
     /**

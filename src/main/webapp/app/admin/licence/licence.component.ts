@@ -1,35 +1,37 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { JhiEventManager } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {JhiEventManager} from 'ng-jhipster';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Licence } from 'app/shared/model/licence.model';
 
-import {ILicence} from 'app/shared/model/licence.model';
-
-import {ITEMS_PER_PAGE} from 'app/shared/constants/pagination.constants';
-import {LicenceService} from './licence.service';
-import {LicenceDeleteDialogComponent} from './licence-delete-dialog.component';
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
+import { LicenceService } from './licence.service';
+import { LicenceDeleteDialogComponent } from './licence-delete-dialog.component';
 
 @Component({
   selector: 'jhi-licence',
-  templateUrl: './licence.component.html'
+  templateUrl: './licence.component.html',
 })
 export class LicenceComponent implements OnInit, OnDestroy {
-  licences?: ILicence[];
+  licences: Licence[] = [];
   eventSubscriber?: Subscription;
   currentSearch: string;
   totalItems = 0;
@@ -44,7 +46,7 @@ export class LicenceComponent implements OnInit, OnDestroy {
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -61,11 +63,11 @@ export class LicenceComponent implements OnInit, OnDestroy {
           page: pageToLoad - 1,
           query: this.currentSearch,
           size: this.itemsPerPage,
-          sort: this.sort()
+          sort: this.sort(),
         })
         .subscribe(
-          (res: HttpResponse<ILicence[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-          () => this.onError()
+          (res: HttpResponse<Licence[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+          () => this.onError(),
         );
       return;
     }
@@ -74,11 +76,11 @@ export class LicenceComponent implements OnInit, OnDestroy {
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
-        sort: this.sort()
+        sort: this.sort(),
       })
       .subscribe(
-        (res: HttpResponse<ILicence[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
+        (res: HttpResponse<Licence[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        () => this.onError(),
       );
   }
 
@@ -104,7 +106,7 @@ export class LicenceComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackId(index: number, item: ILicence): number {
+  trackId(index: number, item: Licence): number {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     return item.id!;
   }
@@ -113,7 +115,7 @@ export class LicenceComponent implements OnInit, OnDestroy {
     this.eventSubscriber = this.eventManager.subscribe('licenceListModification', () => this.loadPage());
   }
 
-  delete(licence: ILicence): void {
+  delete(licence: Licence): void {
     const modalRef = this.modalService.open(LicenceDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.licence = licence;
   }
@@ -126,18 +128,10 @@ export class LicenceComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  protected onSuccess(data: ILicence[] | null, headers: HttpHeaders, page: number): void {
+  protected onSuccess(data: Licence[] | null, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
-    // this.router.navigate(['/licence'], {
-    //   queryParams: {
-    //     page: this.page,
-    //     size: this.itemsPerPage,
-    //     search: this.currentSearch,
-    //     sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-    //   }
-    // });
     this.licences = data || [];
   }
 

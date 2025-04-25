@@ -1,25 +1,43 @@
-    <!--
-  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License").
-  ~ You may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and limitations under the License.
-  -->
+<!--
 
+    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <div class="modal-header">
         <div class="modal-title" style="display: flex;">
-            <span *ngIf="versionParam!.status !== 'REVIEW'">Confirm status change for Cv {{versionParam!.itemType}} {{versionParam!.language! | vocabularyLanguageFromKey}} <strong>{{versionParam!.notation}}</strong> </span>
-            <span *ngIf="versionParam!.status === 'REVIEW'">Confirm publishing Cv {{versionParam!.itemType}} {{versionParam!.language! | vocabularyLanguageFromKey}} <strong>{{versionParam!.notation}}</strong> </span>
+            <span *ngIf="versionParam.status === 'DRAFT'">Confirm status change for Cv {{versionParam.itemType}} {{versionParam.language! | vocabularyLanguageFromKey}} <strong>{{versionParam.notation}}</strong> </span>
+            <span *ngIf="versionParam.status === 'REVIEW'">Confirm status change for Cv {{versionParam.itemType}} {{versionParam.language! | vocabularyLanguageFromKey}} <strong>{{versionParam.notation}}</strong> </span>
+            <span *ngIf="versionParam.status === 'READY_TO_TRANSLATE'">Confirm publishing Cv {{versionParam.itemType}} {{versionParam.language! | vocabularyLanguageFromKey}} <strong>{{versionParam.notation}}&nbsp;</strong> </span>
+            <span *ngIf="versionParam.status === 'READY_TO_TRANSLATE' && vocabularyParam.versions && vocabularyParam.versions.length > 1">
+                <span *ngFor="let version of vocabularyParam.versions">
+                    <span *ngIf="version.language && version.status === 'READY_TO_PUBLISH' && version.itemType ==='TL'">
+                        TL {{version.language | vocabularyLanguageFromKey}}
+                    </span>
+                </span>
+            </span>
+            <span *ngIf="versionParam.status === 'PUBLISHED' && vocabularyParam.versions && vocabularyParam.versions.length > 1">
+                <span>Confirm publishing additional TL(s) for CV <strong>{{versionParam.notation}}</strong></span>
+                <span *ngFor="let version of vocabularyParam.versions">
+                    <span *ngIf="version.language && version.status === 'READY_TO_PUBLISH' && version.itemType ==='TL'">
+                        TL {{version.language | vocabularyLanguageFromKey}}
+                    </span>
+                </span>
+            </span>
         </div>
 
-        <button aria-label="Close" class="close" data-dismiss="modal" type="button" (click)="clear()">
-            <span aria-hidden="true">×</span>
-        </button>
+        <button aria-label="Close" class="btn-close" data-dismiss="modal" type="button" (click)="clear()"></button>
     </div>
     <div class="modal-body">
         <div class="row-content">
@@ -29,31 +47,32 @@
                 &nbsp;
                 <fa-icon *ngIf="!isCommentCollapse" icon="caret-down"></fa-icon>
                 <fa-icon *ngIf="isCommentCollapse" icon="caret-right"></fa-icon>
-                <span>&nbsp;<fa-icon icon="comment"></fa-icon> Comments <span class="badge badge-info">{{comments!.length}}</span></span>
+                <span>&nbsp;<fa-icon icon="comment"></fa-icon> Comments <span class="badge text-bg-info">{{comments.length >= 0}}</span></span>
             </a>
             <div id="comment-panel" class="acc-body" [ngbCollapse]="isCommentCollapse">
                 <div>
                     <div class="list-group">
-                        <div *ngIf="!comments! || comments!.length === 0" class="list-group-item">
-                            <p>There is no comments.</p>
+                        <div *ngIf="comments.length === 0" class="list-group-item">
+                            <p>There are no comments.</p>
                         </div>
-                        <div *ngFor="let c of comments!; let i = index" class="list-group-item">
+                        <div *ngFor="let c of comments; let i = index" class="list-group-item">
                             <jhi-comment-item [comment]="c" [versionParam]="versionParam"></jhi-comment-item>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <a *ngIf="versionParam!.previousVersion" class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isTextDiffCollapse = !isTextDiffCollapse"
+
+            <a *ngIf="versionParam.status !== 'DRAFT' && versionParam.previousVersion" class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isTextDiffCollapse = !isTextDiffCollapse"
                [attr.aria-expanded]="isTextDiffCollapse" aria-controls="text-diff-panel">
                 &nbsp;
                 <fa-icon *ngIf="!isTextDiffCollapse" icon="caret-down"></fa-icon>
                 <fa-icon *ngIf="isTextDiffCollapse" icon="caret-right"></fa-icon>
                 <span>&nbsp;<fa-icon icon="compress"></fa-icon> Compare prev version {{comparePrevVersion}} with Current version
-                    <span class="badge badge-info">({{compareNoOfDifference > 1 ? compareNoOfDifference +  ' differences' : 'identical'}})</span>
+                    <span class="badge text-bg-info">({{compareNoOfDifference > 0 ? compareNoOfDifference +  ' differences' : 'identical'}})</span>
                 </span>
             </a>
-            <div *ngIf="versionParam!.previousVersion" id="text-diff-panel" class="acc-body" [ngbCollapse]="isTextDiffCollapse">
+            <div *ngIf="versionParam.status !== 'DRAFT' && versionParam.previousVersion" id="text-diff-panel" class="acc-body" [ngbCollapse]="isTextDiffCollapse">
                 <div>
                     <td-ngx-text-diff
                         [left]="left"
@@ -67,17 +86,17 @@
                 </div>
             </div>
 
-            <a *ngIf="versionParam!.previousVersion" class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isVocabularyChangeCollapse = !isVocabularyChangeCollapse"
+            <a *ngIf="versionParam.status !== 'DRAFT' && versionParam.previousVersion" class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isVocabularyChangeCollapse = !isVocabularyChangeCollapse"
                [attr.aria-expanded]="isVocabularyChangeCollapse" aria-controls="vocabularyChange-panel">
                 &nbsp;
                 <fa-icon *ngIf="!isVocabularyChangeCollapse" icon="caret-down"></fa-icon>
                 <fa-icon *ngIf="isVocabularyChangeCollapse" icon="caret-right"></fa-icon>
-                <span>&nbsp;<fa-icon icon="sticky-note"></fa-icon> Vocabulary/Codes change logs <span class="badge badge-info">{{vocabularyChanges!.length}}</span></span>
+                <span>&nbsp;<fa-icon icon="sticky-note"></fa-icon> Vocabulary/Codes change logs <span class="badge text-bg-info">{{vocabularyChanges!.length}}</span></span>
             </a>
             <div id="vocabularyChange-panel" class="acc-body" [ngbCollapse]="isVocabularyChangeCollapse">
                 <div>
                     <div class="list-group">
-                        <div *ngIf="!vocabularyChanges! || vocabularyChanges!.length === 0" class="list-group-item">
+                        <div *ngIf="!vocabularyChanges || vocabularyChanges!.length === 0" class="list-group-item">
                             <p>There is no vocabulary/code changes log.</p>
                         </div>
                         <div *ngFor="let vc of vocabularyChanges!; let i = index" class="list-group-item">
@@ -94,12 +113,13 @@
         <form name="cvForwardStatusForm" role="form" (ngSubmit)="forwardStatus()" novalidate [formGroup]="cvForwardStatusForm">
             <div class="row-content">
                 <a class="acc-header option-label col-12 mtop10" href="javascript:void(0);">
-                    <span *ngIf="versionParam!.status === 'REVIEW'">&nbsp;<fa-icon [icon]="'archive'"></fa-icon> Manage Cv publication</span>
-                    <span *ngIf="versionParam!.status !== 'REVIEW'">&nbsp;<fa-icon [icon]="'level-up-alt'"></fa-icon> Manage Cv status</span>
+                    <span *ngIf="versionParam.status === 'REVIEW'">&nbsp;<fa-icon [icon]="'archive'"></fa-icon> Manage Cv publication</span>
+                    <span *ngIf="versionParam.status !== 'REVIEW'">&nbsp;<fa-icon [icon]="'level-up-alt'"></fa-icon> Manage Cv status</span>
                 </a>
                 <div class="acc-body">
-                    <span *ngIf="versionParam!.status === 'DRAFT'">Are you sure to change Cv {{versionParam!.itemType}} <strong>{{versionParam!.notation}}</strong> status from DRAFT to REVIEW?</span>
-                    <div *ngIf="versionParam!.status === 'REVIEW' && versionParam!.previousVersion" class="row-detail form-group mb-4">
+                    <span *ngIf="versionParam.status === 'DRAFT'">Are you sure to change Cv {{versionParam.itemType}} <strong>{{versionParam.notation}}</strong> status from DRAFT to REVIEW?</span>
+                    <span *ngIf="versionParam.status === 'PUBLISHED'">Are you sure you want to publish additional TL(s) for CV <strong>{{versionParam.notation}}</strong>?</span>
+                    <div *ngIf="versionParam.status === 'REVIEW' && versionParam.previousVersion" class="row-detail form-group mb-4">
                         <div class="label-column-input label-right">
                             <span>Version notes</span>
                         </div>
@@ -107,10 +127,10 @@
                             <quill-editor class="small-quill" [placeholder]="''" [modules]="quillSimpleModule" name="versionNotes" formControlName="versionNotes" (onEditorCreated)="onVersionNotesEditorCreated($event)"></quill-editor>
                         </div>
                     </div>
-                    <div *ngIf="versionParam!.status === 'REVIEW' && versionParam!.previousVersion" class="row-detail form-group">
+                    <div *ngIf="versionParam.status === 'REVIEW' && versionParam.previousVersion" class="row-detail form-group">
                         <br/>
                     </div>
-                    <div *ngIf="versionParam!.status === 'REVIEW' && versionParam!.previousVersion" class="row-detail form-group">
+                    <div *ngIf="versionParam.status === 'REVIEW' && versionParam.previousVersion" class="row-detail form-group">
                         <div class="label-column-input label-right">
                             <span>Version changes</span>
                         </div>
@@ -118,10 +138,10 @@
                             <quill-editor class="medium-quill" [placeholder]="''" [modules]="quillSimpleModule" name="versionChanges" formControlName="versionChanges" (onEditorCreated)="onVersionChangesEditorCreated($event)"></quill-editor>
                         </div>
                     </div>
-                    <div *ngIf="versionParam!.status === 'REVIEW' && versionParam!.previousVersion" class="row-detail form-group">
+                    <div *ngIf="versionParam.status === 'REVIEW' && versionParam.previousVersion" class="row-detail form-group">
                         <br/>
                     </div>
-                    <div *ngIf="versionParam!.status === 'REVIEW'" class="row-detail form-group">
+                    <div *ngIf="versionParam.status === 'REVIEW'" class="row-detail form-group">
                         <div class="label-column-input label-right">
                             <span class="label-required">License</span>
                         </div>
@@ -131,12 +151,15 @@
                             </select>
                         </div>
                     </div>
-                    <div *ngIf="versionParam!.status === 'REVIEW' && isSlForm" class="row-detail form-group">
+                    <div *ngIf="versionParam.status === 'REVIEW' && isSlForm" class="row-detail form-group">
                         <div class="label-column-input label-right">
                             <span class="label-required">Version number</span>
                         </div>
                         <div class="detail-column">
-                            <input type="text" style="width:100px" class="form-control" id="field_versionNumberSl" name="versionNumberSl" formControlName="versionNumberSl"/>
+                            <span>
+                                <input type="text" style="width:100px;display:inline-block;text-align:right;" class="form-control" id="field_versionNumberSl" name="versionNumberSl" formControlName="versionNumberSl"/>
+                                <span>.{{proposedPatchNumber}}</span>
+                            </span>
                             <div *ngIf="cvForwardStatusForm.get('versionNumberSl')!.invalid && (cvForwardStatusForm.get('versionNumberSl')!.dirty || cvForwardStatusForm.get('versionNumberSl')!.touched)">
                                 <small class="form-text text-danger"
                                        *ngIf="cvForwardStatusForm.get('versionNumberSl')?.errors?.required" jhiTranslate="entity.validation.required">
@@ -145,38 +168,12 @@
 
                                 <small class="form-text text-danger"
                                        *ngIf="cvForwardStatusForm.get('versionNumberSl')?.errors?.pattern">
-                                    Version number format is [number1].[number2], with [number1] is larger than 0. Both of them must be no longer than 2 digits.
+                                    Version number format is [number1].[number2].[number3], with [number1] is larger than 0. Both [number1] and [number2] must be no longer than 2 digits.
                                 </small>
                             </div>
                             <small class="form-text text-danger"
                                    *ngIf="isVersionInvalid">
-                                Version number is lower than {{versionParam!.number}}. Please set version number {{versionParam!.number}} or higher.
-                            </small>
-                        </div>
-                    </div>
-                    <div *ngIf="versionParam!.status === 'REVIEW' && !isSlForm" class="row-detail form-group">
-                        <div class="label-column-input label-right">
-                            <span class="label-required">Version number</span>
-                        </div>
-                        <div class="detail-column label-column-value">
-                            <span>
-                                <span>{{slVersionNumber}}.</span>
-                                <input type="text" style="width:60px;display:inline-block" class="form-control" id="field_versionNumberTl" name="versionNumberTl" formControlName="versionNumberTl"/>
-                            </span>
-                            <div *ngIf="cvForwardStatusForm.get('versionNumberTl')!.invalid && (cvForwardStatusForm.get('versionNumberTl')!.dirty || cvForwardStatusForm.get('versionNumberTl')!.touched)">
-                                <small class="form-text text-danger"
-                                       *ngIf="cvForwardStatusForm.get('versionNumberTl')?.errors?.required" jhiTranslate="entity.validation.required">
-                                    This field is required.
-                                </small>
-
-                                <small class="form-text text-danger"
-                                       *ngIf="cvForwardStatusForm.get('versionNumberTl')?.errors?.pattern">
-                                    Please fill with a positive number no longer that 2 digits.
-                                </small>
-                            </div>
-                            <small class="form-text text-danger"
-                                   *ngIf="isVersionInvalid">
-                                Version number is lower than {{versionParam!.number}}. Please set version number {{versionParam!.number}} or higher.
+                                Version number is lower than {{versionParam.number}}. Please set version number {{versionParam.number}} or higher.
                             </small>
                         </div>
                     </div>
@@ -193,13 +190,15 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
                 </button>
-                <button *ngIf="versionParam!.status === 'REVIEW'" type="button" ngbTooltip="Save current information, without changing CV status" class="btn btn-primary" data-dismiss="modal" (click)="saveVersionInfo()">
+                <button *ngIf="versionParam.status === 'REVIEW'" type="button" ngbTooltip="Save current information, without changing CV status" class="btn btn-primary" data-dismiss="modal" (click)="saveVersionInfo()">
                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
                 </button>
                 <button type="submit" id="save-new-cv" [disabled]="cvForwardStatusForm.invalid || isSaving" class="btn btn-primary">
                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;
-                    <span *ngIf="versionParam!.status === 'DRAFT'">REVIEW</span>
-                    <span *ngIf="versionParam!.status === 'REVIEW'">PUBLISH</span>
+                    <span *ngIf="versionParam.status === 'DRAFT'">REVIEW</span>
+                    <span *ngIf="versionParam.itemType === 'SL' && versionParam.status === 'REVIEW'">READY TO TRANSLATE</span>
+                    <span *ngIf="versionParam.itemType === 'TL' && versionParam.status === 'REVIEW'">READY TO PUBLISH</span>
+                    <span *ngIf="versionParam.status === 'READY_TO_TRANSLATE' || versionParam.status === 'PUBLISHED'">PUBLISH</span>
                 </button>
             </div>
         </form>

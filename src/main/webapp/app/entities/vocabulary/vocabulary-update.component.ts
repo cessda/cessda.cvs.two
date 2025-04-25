@@ -1,140 +1,141 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import moment from 'moment';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import * as moment from 'moment';
-import {DATE_TIME_FORMAT} from 'app/shared/constants/input.constants';
-import {JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError} from 'ng-jhipster';
-
-import {IVocabulary, Vocabulary} from 'app/shared/model/vocabulary.model';
-import {VocabularyService} from './vocabulary.service';
-import {AlertError} from 'app/shared/alert/alert-error.model';
+import { createNewVocabulary, Status, Vocabulary } from 'app/shared/model/vocabulary.model';
+import { VocabularyService } from './vocabulary.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
 
 @Component({
   selector: 'jhi-vocabulary-update',
-  templateUrl: './vocabulary-update.component.html'
+  templateUrl: './vocabulary-update.component.html',
 })
 export class VocabularyUpdateComponent implements OnInit {
   isSaving = false;
-  publicationDateDp: any;
+  publicationDateDp: unknown;
 
   editForm = this.fb.group({
-    id: [],
-    status: [null, [Validators.required, Validators.maxLength(20)]],
-    uri: [null, [Validators.maxLength(240)]],
-    notation: [null, [Validators.required, Validators.maxLength(240)]],
-    versionNumber: [null, [Validators.required, Validators.maxLength(20)]],
-    initialPublication: [],
-    previousPublication: [],
-    archived: [],
-    withdrawn: [],
-    discoverable: [],
-    sourceLanguage: [null, [Validators.required, Validators.maxLength(20)]],
-    agencyId: [null, [Validators.required]],
-    agencyName: [null, [Validators.required]],
-    agencyLogo: [],
-    publicationDate: [],
-    lastModified: [],
-    notes: [],
-    versionSq: [null, [Validators.maxLength(20)]],
-    titleSq: [],
-    definitionSq: [],
-    versionBs: [null, [Validators.maxLength(20)]],
-    titleBs: [],
-    definitionBs: [],
-    versionBg: [null, [Validators.maxLength(20)]],
-    titleBg: [],
-    definitionBg: [],
-    versionHr: [null, [Validators.maxLength(20)]],
-    titleHr: [],
-    definitionHr: [],
-    versionCs: [null, [Validators.maxLength(20)]],
-    titleCs: [],
-    definitionCs: [],
-    versionDa: [null, [Validators.maxLength(20)]],
-    titleDa: [],
-    definitionDa: [],
-    versionNl: [null, [Validators.maxLength(20)]],
-    titleNl: [],
-    definitionNl: [],
-    versionEn: [null, [Validators.maxLength(20)]],
-    titleEn: [],
-    definitionEn: [],
-    versionEt: [null, [Validators.maxLength(20)]],
-    titleEt: [],
-    definitionEt: [],
-    versionFi: [null, [Validators.maxLength(20)]],
-    titleFi: [],
-    definitionFi: [],
-    versionFr: [null, [Validators.maxLength(20)]],
-    titleFr: [],
-    definitionFr: [],
-    versionDe: [null, [Validators.maxLength(20)]],
-    titleDe: [],
-    definitionDe: [],
-    versionEl: [null, [Validators.maxLength(20)]],
-    titleEl: [],
-    definitionEl: [],
-    versionHu: [null, [Validators.maxLength(20)]],
-    titleHu: [],
-    definitionHu: [],
-    versionIt: [null, [Validators.maxLength(20)]],
-    titleIt: [],
-    definitionIt: [],
-    versionJa: [null, [Validators.maxLength(20)]],
-    titleJa: [],
-    definitionJa: [],
-    versionLt: [null, [Validators.maxLength(20)]],
-    titleLt: [],
-    definitionLt: [],
-    versionMk: [null, [Validators.maxLength(20)]],
-    titleMk: [],
-    definitionMk: [],
-    versionNo: [null, [Validators.maxLength(20)]],
-    titleNo: [],
-    definitionNo: [],
-    versionPl: [null, [Validators.maxLength(20)]],
-    titlePl: [],
-    definitionPl: [],
-    versionPt: [null, [Validators.maxLength(20)]],
-    titlePt: [],
-    definitionPt: [],
-    versionRo: [null, [Validators.maxLength(20)]],
-    titleRo: [],
-    definitionRo: [],
-    versionRu: [null, [Validators.maxLength(20)]],
-    titleRu: [],
-    definitionRu: [],
-    versionSr: [null, [Validators.maxLength(20)]],
-    titleSr: [],
-    definitionSr: [],
-    versionSk: [null, [Validators.maxLength(20)]],
-    titleSk: [],
-    definitionSk: [],
-    versionSl: [null, [Validators.maxLength(20)]],
-    titleSl: [],
-    definitionSl: [],
-    versionEs: [null, [Validators.maxLength(20)]],
-    titleEs: [],
-    definitionEs: [],
-    versionSv: [null, [Validators.maxLength(20)]],
-    titleSv: [],
-    definitionSv: []
+    id: new FormControl<number | null>(null),
+    status: new FormControl(Status.DRAFT, { nonNullable: true, validators: [Validators.required, Validators.maxLength(20)] }),
+    uri: new FormControl<string | null>(null, [Validators.maxLength(240)]),
+    notation: new FormControl('NEW_VOCABULARY', { nonNullable: true, validators: [Validators.required, Validators.maxLength(240)] }),
+    versionNumber: new FormControl('1.0.0', { nonNullable: true, validators: [Validators.required, Validators.maxLength(20)] }),
+    initialPublication: new FormControl<number | null>(null),
+    previousPublication: new FormControl<number | null>(null),
+    archived: new FormControl<boolean>(false, { nonNullable: true }),
+    withdrawn: new FormControl<boolean>(false, { nonNullable: true }),
+    discoverable: new FormControl<boolean>(false, { nonNullable: true }),
+    sourceLanguage: new FormControl('en', { nonNullable: true, validators: [Validators.required, Validators.maxLength(20)] }),
+    agencyId: new FormControl<number>(0, { nonNullable: true, validators: [Validators.required] }),
+    agencyName: new FormControl('DEFAULT_AGENCY', { nonNullable: true, validators: [Validators.required] }),
+    agencyLogo: new FormControl<string | null>(null),
+    publicationDate: new FormControl<moment.Moment | null>(null),
+    lastModified: new FormControl<string | null>(null),
+    notes: new FormControl<string | null>(null),
+    versionSq: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleSq: new FormControl<string | null>(null),
+    definitionSq: new FormControl<string | null>(null),
+    versionBs: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleBs: new FormControl<string | null>(null),
+    definitionBs: new FormControl<string | null>(null),
+    versionBg: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleBg: new FormControl<string | null>(null),
+    definitionBg: new FormControl<string | null>(null),
+    versionHr: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleHr: new FormControl<string | null>(null),
+    definitionHr: new FormControl<string | null>(null),
+    versionCs: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleCs: new FormControl<string | null>(null),
+    definitionCs: new FormControl<string | null>(null),
+    versionDa: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleDa: new FormControl<string | null>(null),
+    definitionDa: new FormControl<string | null>(null),
+    versionNl: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleNl: new FormControl<string | null>(null),
+    definitionNl: new FormControl<string | null>(null),
+    versionEn: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleEn: new FormControl<string | null>(null),
+    definitionEn: new FormControl<string | null>(null),
+    versionEt: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleEt: new FormControl<string | null>(null),
+    definitionEt: new FormControl<string | null>(null),
+    versionFi: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleFi: new FormControl<string | null>(null),
+    definitionFi: new FormControl<string | null>(null),
+    versionFr: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleFr: new FormControl<string | null>(null),
+    definitionFr: new FormControl<string | null>(null),
+    versionDe: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleDe: new FormControl<string | null>(null),
+    definitionDe: new FormControl<string | null>(null),
+    versionEl: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleEl: new FormControl<string | null>(null),
+    definitionEl: new FormControl<string | null>(null),
+    versionHu: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleHu: new FormControl<string | null>(null),
+    definitionHu: new FormControl<string | null>(null),
+    versionIt: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleIt: new FormControl<string | null>(null),
+    definitionIt: new FormControl<string | null>(null),
+    versionJa: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleJa: new FormControl<string | null>(null),
+    definitionJa: new FormControl<string | null>(null),
+    versionLt: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleLt: new FormControl<string | null>(null),
+    definitionLt: new FormControl<string | null>(null),
+    versionMk: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleMk: new FormControl<string | null>(null),
+    definitionMk: new FormControl<string | null>(null),
+    versionNo: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleNo: new FormControl<string | null>(null),
+    definitionNo: new FormControl<string | null>(null),
+    versionPl: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titlePl: new FormControl<string | null>(null),
+    definitionPl: new FormControl<string | null>(null),
+    versionPt: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titlePt: new FormControl<string | null>(null),
+    definitionPt: new FormControl<string | null>(null),
+    versionRo: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleRo: new FormControl<string | null>(null),
+    definitionRo: new FormControl<string | null>(null),
+    versionRu: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleRu: new FormControl<string | null>(null),
+    definitionRu: new FormControl<string | null>(null),
+    versionSr: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleSr: new FormControl<string | null>(null),
+    definitionSr: new FormControl<string | null>(null),
+    versionSk: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleSk: new FormControl<string | null>(null),
+    definitionSk: new FormControl<string | null>(null),
+    versionSl: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleSl: new FormControl<string | null>(null),
+    definitionSl: new FormControl<string | null>(null),
+    versionEs: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleEs: new FormControl<string | null>(null),
+    definitionEs: new FormControl<string | null>(null),
+    versionSv: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    titleSv: new FormControl<string | null>(null),
+    definitionSv: new FormControl<string | null>(null),
   });
 
   constructor(
@@ -142,7 +143,7 @@ export class VocabularyUpdateComponent implements OnInit {
     protected eventManager: JhiEventManager,
     protected vocabularyService: VocabularyService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -156,7 +157,7 @@ export class VocabularyUpdateComponent implements OnInit {
     });
   }
 
-  updateForm(vocabulary: IVocabulary): void {
+  updateForm(vocabulary: Vocabulary): void {
     this.editForm.patchValue({
       id: vocabulary.id,
       status: vocabulary.status,
@@ -258,15 +259,15 @@ export class VocabularyUpdateComponent implements OnInit {
       definitionEs: vocabulary.definitionEs,
       versionSv: vocabulary.versionSv,
       titleSv: vocabulary.titleSv,
-      definitionSv: vocabulary.definitionSv
+      definitionSv: vocabulary.definitionSv,
     });
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
-    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-      this.eventManager.broadcast(
-        new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key })
-      );
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
+      error: (err: JhiFileLoadError) => {
+        this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
+      },
     });
   }
 
@@ -284,119 +285,119 @@ export class VocabularyUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IVocabulary {
+  private createFromForm(): Vocabulary {
     return {
-      ...new Vocabulary(),
-      id: this.editForm.get(['id'])!.value,
-      status: this.editForm.get(['status'])!.value,
-      uri: this.editForm.get(['uri'])!.value,
-      notation: this.editForm.get(['notation'])!.value,
-      versionNumber: this.editForm.get(['versionNumber'])!.value,
-      initialPublication: this.editForm.get(['initialPublication'])!.value,
-      previousPublication: this.editForm.get(['previousPublication'])!.value,
-      archived: this.editForm.get(['archived'])!.value,
-      withdrawn: this.editForm.get(['withdrawn'])!.value,
-      discoverable: this.editForm.get(['discoverable'])!.value,
-      sourceLanguage: this.editForm.get(['sourceLanguage'])!.value,
-      agencyId: this.editForm.get(['agencyId'])!.value,
-      agencyName: this.editForm.get(['agencyName'])!.value,
-      agencyLogo: this.editForm.get(['agencyLogo'])!.value,
-      publicationDate: this.editForm.get(['publicationDate'])!.value,
-      lastModified: this.editForm.get(['lastModified'])!.value
-        ? moment(this.editForm.get(['lastModified'])!.value, DATE_TIME_FORMAT)
+      ...createNewVocabulary(),
+      id: this.editForm.controls.id.value !== null ? this.editForm.controls.id.value : undefined,
+      status: this.editForm.controls.status.value,
+      uri: this.editForm.controls.uri.value || undefined,
+      notation: this.editForm.controls.notation.value,
+      versionNumber: this.editForm.controls.versionNumber.value,
+      initialPublication: this.editForm.controls.initialPublication.value || undefined,
+      previousPublication: this.editForm.controls.previousPublication.value || undefined,
+      archived: this.editForm.controls.archived.value,
+      withdrawn: this.editForm.controls.withdrawn.value,
+      discoverable: this.editForm.controls.discoverable.value,
+      sourceLanguage: this.editForm.controls.sourceLanguage.value,
+      agencyId: this.editForm.controls.agencyId.value,
+      agencyName: this.editForm.controls.agencyName.value,
+      agencyLogo: this.editForm.controls.agencyLogo.value || undefined,
+      publicationDate: this.editForm.controls.publicationDate.value || undefined,
+      lastModified: this.editForm.controls.lastModified.value
+        ? moment(this.editForm.controls.lastModified.value, DATE_TIME_FORMAT)
         : undefined,
-      notes: this.editForm.get(['notes'])!.value,
-      versionSq: this.editForm.get(['versionSq'])!.value,
-      titleSq: this.editForm.get(['titleSq'])!.value,
-      definitionSq: this.editForm.get(['definitionSq'])!.value,
-      versionBs: this.editForm.get(['versionBs'])!.value,
-      titleBs: this.editForm.get(['titleBs'])!.value,
-      definitionBs: this.editForm.get(['definitionBs'])!.value,
-      versionBg: this.editForm.get(['versionBg'])!.value,
-      titleBg: this.editForm.get(['titleBg'])!.value,
-      definitionBg: this.editForm.get(['definitionBg'])!.value,
-      versionHr: this.editForm.get(['versionHr'])!.value,
-      titleHr: this.editForm.get(['titleHr'])!.value,
-      definitionHr: this.editForm.get(['definitionHr'])!.value,
-      versionCs: this.editForm.get(['versionCs'])!.value,
-      titleCs: this.editForm.get(['titleCs'])!.value,
-      definitionCs: this.editForm.get(['definitionCs'])!.value,
-      versionDa: this.editForm.get(['versionDa'])!.value,
-      titleDa: this.editForm.get(['titleDa'])!.value,
-      definitionDa: this.editForm.get(['definitionDa'])!.value,
-      versionNl: this.editForm.get(['versionNl'])!.value,
-      titleNl: this.editForm.get(['titleNl'])!.value,
-      definitionNl: this.editForm.get(['definitionNl'])!.value,
-      versionEn: this.editForm.get(['versionEn'])!.value,
-      titleEn: this.editForm.get(['titleEn'])!.value,
-      definitionEn: this.editForm.get(['definitionEn'])!.value,
-      versionEt: this.editForm.get(['versionEt'])!.value,
-      titleEt: this.editForm.get(['titleEt'])!.value,
-      definitionEt: this.editForm.get(['definitionEt'])!.value,
-      versionFi: this.editForm.get(['versionFi'])!.value,
-      titleFi: this.editForm.get(['titleFi'])!.value,
-      definitionFi: this.editForm.get(['definitionFi'])!.value,
-      versionFr: this.editForm.get(['versionFr'])!.value,
-      titleFr: this.editForm.get(['titleFr'])!.value,
-      definitionFr: this.editForm.get(['definitionFr'])!.value,
-      versionDe: this.editForm.get(['versionDe'])!.value,
-      titleDe: this.editForm.get(['titleDe'])!.value,
-      definitionDe: this.editForm.get(['definitionDe'])!.value,
-      versionEl: this.editForm.get(['versionEl'])!.value,
-      titleEl: this.editForm.get(['titleEl'])!.value,
-      definitionEl: this.editForm.get(['definitionEl'])!.value,
-      versionHu: this.editForm.get(['versionHu'])!.value,
-      titleHu: this.editForm.get(['titleHu'])!.value,
-      definitionHu: this.editForm.get(['definitionHu'])!.value,
-      versionIt: this.editForm.get(['versionIt'])!.value,
-      titleIt: this.editForm.get(['titleIt'])!.value,
-      definitionIt: this.editForm.get(['definitionIt'])!.value,
-      versionJa: this.editForm.get(['versionJa'])!.value,
-      titleJa: this.editForm.get(['titleJa'])!.value,
-      definitionJa: this.editForm.get(['definitionJa'])!.value,
-      versionLt: this.editForm.get(['versionLt'])!.value,
-      titleLt: this.editForm.get(['titleLt'])!.value,
-      definitionLt: this.editForm.get(['definitionLt'])!.value,
-      versionMk: this.editForm.get(['versionMk'])!.value,
-      titleMk: this.editForm.get(['titleMk'])!.value,
-      definitionMk: this.editForm.get(['definitionMk'])!.value,
-      versionNo: this.editForm.get(['versionNo'])!.value,
-      titleNo: this.editForm.get(['titleNo'])!.value,
-      definitionNo: this.editForm.get(['definitionNo'])!.value,
-      versionPl: this.editForm.get(['versionPl'])!.value,
-      titlePl: this.editForm.get(['titlePl'])!.value,
-      definitionPl: this.editForm.get(['definitionPl'])!.value,
-      versionPt: this.editForm.get(['versionPt'])!.value,
-      titlePt: this.editForm.get(['titlePt'])!.value,
-      definitionPt: this.editForm.get(['definitionPt'])!.value,
-      versionRo: this.editForm.get(['versionRo'])!.value,
-      titleRo: this.editForm.get(['titleRo'])!.value,
-      definitionRo: this.editForm.get(['definitionRo'])!.value,
-      versionRu: this.editForm.get(['versionRu'])!.value,
-      titleRu: this.editForm.get(['titleRu'])!.value,
-      definitionRu: this.editForm.get(['definitionRu'])!.value,
-      versionSr: this.editForm.get(['versionSr'])!.value,
-      titleSr: this.editForm.get(['titleSr'])!.value,
-      definitionSr: this.editForm.get(['definitionSr'])!.value,
-      versionSk: this.editForm.get(['versionSk'])!.value,
-      titleSk: this.editForm.get(['titleSk'])!.value,
-      definitionSk: this.editForm.get(['definitionSk'])!.value,
-      versionSl: this.editForm.get(['versionSl'])!.value,
-      titleSl: this.editForm.get(['titleSl'])!.value,
-      definitionSl: this.editForm.get(['definitionSl'])!.value,
-      versionEs: this.editForm.get(['versionEs'])!.value,
-      titleEs: this.editForm.get(['titleEs'])!.value,
-      definitionEs: this.editForm.get(['definitionEs'])!.value,
-      versionSv: this.editForm.get(['versionSv'])!.value,
-      titleSv: this.editForm.get(['titleSv'])!.value,
-      definitionSv: this.editForm.get(['definitionSv'])!.value
+      notes: this.editForm.controls.notes.value || undefined,
+      versionSq: this.editForm.controls.versionSq.value || undefined,
+      titleSq: this.editForm.controls.titleSq.value || undefined,
+      definitionSq: this.editForm.controls.definitionSq.value || undefined,
+      versionBs: this.editForm.controls.versionBs.value || undefined,
+      titleBs: this.editForm.controls.titleBs.value || undefined,
+      definitionBs: this.editForm.controls.definitionBs.value || undefined,
+      versionBg: this.editForm.controls.versionBg.value || undefined,
+      titleBg: this.editForm.controls.titleBg.value || undefined,
+      definitionBg: this.editForm.controls.definitionBg.value || undefined,
+      versionHr: this.editForm.controls.versionHr.value || undefined,
+      titleHr: this.editForm.controls.titleHr.value || undefined,
+      definitionHr: this.editForm.controls.definitionHr.value || undefined,
+      versionCs: this.editForm.controls.versionCs.value || undefined,
+      titleCs: this.editForm.controls.titleCs.value || undefined,
+      definitionCs: this.editForm.controls.definitionCs.value || undefined,
+      versionDa: this.editForm.controls.versionDa.value || undefined,
+      titleDa: this.editForm.controls.titleDa.value || undefined,
+      definitionDa: this.editForm.controls.definitionDa.value || undefined,
+      versionNl: this.editForm.controls.versionNl.value || undefined,
+      titleNl: this.editForm.controls.titleNl.value || undefined,
+      definitionNl: this.editForm.controls.definitionNl.value || undefined,
+      versionEn: this.editForm.controls.versionEn.value || undefined,
+      titleEn: this.editForm.controls.titleEn.value || undefined,
+      definitionEn: this.editForm.controls.definitionEn.value || undefined,
+      versionEt: this.editForm.controls.versionEt.value || undefined,
+      titleEt: this.editForm.controls.titleEt.value || undefined,
+      definitionEt: this.editForm.controls.definitionEt.value || undefined,
+      versionFi: this.editForm.controls.versionFi.value || undefined,
+      titleFi: this.editForm.controls.titleFi.value || undefined,
+      definitionFi: this.editForm.controls.definitionFi.value || undefined,
+      versionFr: this.editForm.controls.versionFr.value || undefined,
+      titleFr: this.editForm.controls.titleFr.value || undefined,
+      definitionFr: this.editForm.controls.definitionFr.value || undefined,
+      versionDe: this.editForm.controls.versionDe.value || undefined,
+      titleDe: this.editForm.controls.titleDe.value || undefined,
+      definitionDe: this.editForm.controls.definitionDe.value || undefined,
+      versionEl: this.editForm.controls.versionEl.value || undefined,
+      titleEl: this.editForm.controls.titleEl.value || undefined,
+      definitionEl: this.editForm.controls.definitionEl.value || undefined,
+      versionHu: this.editForm.controls.versionHu.value || undefined,
+      titleHu: this.editForm.controls.titleHu.value || undefined,
+      definitionHu: this.editForm.controls.definitionHu.value || undefined,
+      versionIt: this.editForm.controls.versionIt.value || undefined,
+      titleIt: this.editForm.controls.titleIt.value || undefined,
+      definitionIt: this.editForm.controls.definitionIt.value || undefined,
+      versionJa: this.editForm.controls.versionJa.value || undefined,
+      titleJa: this.editForm.controls.titleJa.value || undefined,
+      definitionJa: this.editForm.controls.definitionJa.value || undefined,
+      versionLt: this.editForm.controls.versionLt.value || undefined,
+      titleLt: this.editForm.controls.titleLt.value || undefined,
+      definitionLt: this.editForm.controls.definitionLt.value || undefined,
+      versionMk: this.editForm.controls.versionMk.value || undefined,
+      titleMk: this.editForm.controls.titleMk.value || undefined,
+      definitionMk: this.editForm.controls.definitionMk.value || undefined,
+      versionNo: this.editForm.controls.versionNo.value || undefined,
+      titleNo: this.editForm.controls.titleNo.value || undefined,
+      definitionNo: this.editForm.controls.definitionNo.value || undefined,
+      versionPl: this.editForm.controls.versionPl.value || undefined,
+      titlePl: this.editForm.controls.titlePl.value || undefined,
+      definitionPl: this.editForm.controls.definitionPl.value || undefined,
+      versionPt: this.editForm.controls.versionPt.value || undefined,
+      titlePt: this.editForm.controls.titlePt.value || undefined,
+      definitionPt: this.editForm.controls.definitionPt.value || undefined,
+      versionRo: this.editForm.controls.versionRo.value || undefined,
+      titleRo: this.editForm.controls.titleRo.value || undefined,
+      definitionRo: this.editForm.controls.definitionRo.value || undefined,
+      versionRu: this.editForm.controls.versionRu.value || undefined,
+      titleRu: this.editForm.controls.titleRu.value || undefined,
+      definitionRu: this.editForm.controls.definitionRu.value || undefined,
+      versionSr: this.editForm.controls.versionSr.value || undefined,
+      titleSr: this.editForm.controls.titleSr.value || undefined,
+      definitionSr: this.editForm.controls.definitionSr.value || undefined,
+      versionSk: this.editForm.controls.versionSk.value || undefined,
+      titleSk: this.editForm.controls.titleSk.value || undefined,
+      definitionSk: this.editForm.controls.definitionSk.value || undefined,
+      versionSl: this.editForm.controls.versionSl.value || undefined,
+      titleSl: this.editForm.controls.titleSl.value || undefined,
+      definitionSl: this.editForm.controls.definitionSl.value || undefined,
+      versionEs: this.editForm.controls.versionEs.value || undefined,
+      titleEs: this.editForm.controls.titleEs.value || undefined,
+      definitionEs: this.editForm.controls.definitionEs.value || undefined,
+      versionSv: this.editForm.controls.versionSv.value || undefined,
+      titleSv: this.editForm.controls.titleSv.value || undefined,
+      definitionSv: this.editForm.controls.definitionSv.value || undefined,
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Vocabulary>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 

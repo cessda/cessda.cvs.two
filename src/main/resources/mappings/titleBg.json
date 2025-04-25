@@ -1,0 +1,14 @@
+{
+  "type": "text",
+  "store": true,
+  "fields": {
+    "Key": {
+      "type": "icu_collation_keyword",
+      "variant": "@collation=dictionary",
+      "country": "BG",
+      "language": "bg"
+    }
+  },
+  "analyzer": "bulgarian",
+  "search_analyzer": "bulgarian"
+}

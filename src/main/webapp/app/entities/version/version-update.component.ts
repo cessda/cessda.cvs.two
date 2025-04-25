@@ -1,70 +1,73 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import moment, { Moment } from 'moment';
+import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import {Component, OnInit} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import * as moment from 'moment';
-import {DATE_TIME_FORMAT} from 'app/shared/constants/input.constants';
-import {JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError} from 'ng-jhipster';
-
-import {IVersion, Version} from 'app/shared/model/version.model';
-import {VersionService} from './version.service';
-import {AlertError} from 'app/shared/alert/alert-error.model';
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {VocabularyService} from 'app/entities/vocabulary/vocabulary.service';
+import { Version } from 'app/shared/model/version.model';
+import { VersionService } from './version.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
+import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
+import { NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'jhi-version-update',
-  templateUrl: './version-update.component.html'
+  templateUrl: './version-update.component.html',
 })
 export class VersionUpdateComponent implements OnInit {
   isSaving = false;
-  vocabularies: IVocabulary[] = [];
-  publicationDateDp: any;
+  vocabularies: Vocabulary[] = [];
+  publicationDateDp: NgbInputDatepicker | undefined;
 
   editForm = this.fb.group({
-    id: [],
-    status: [null, [Validators.required, Validators.maxLength(20)]],
-    itemType: [null, [Validators.required, Validators.maxLength(20)]],
-    language: [null, [Validators.maxLength(20)]],
-    publicationDate: [],
-    lastModified: [],
-    number: [null, [Validators.maxLength(20)]],
-    uri: [],
-    canonicalUri: [],
-    uriSl: [],
-    notation: [null, [Validators.maxLength(240)]],
-    title: [],
-    definition: [],
-    previousVersion: [],
-    initialVersion: [],
-    creator: [],
-    publisher: [],
-    notes: [],
-    versionNotes: [],
-    versionChanges: [],
-    discussionNotes: [],
-    license: [],
-    licenseId: [],
-    citation: [],
-    ddiUsage: [],
-    translateAgency: [],
-    translateAgencyLink: [],
-    vocabularyId: []
+    id: new FormControl<number | null>(null),
+    status: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(20)] }),
+    itemType: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(20)] }),
+    language: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    publicationDate: new FormControl<Moment | null>(null),
+    lastModified: new FormControl<string | null>(null),
+    number: new FormControl<string | null>(null, [Validators.maxLength(20)]),
+    uri: new FormControl<string | null>(null),
+    canonicalUri: new FormControl<string | null>(null),
+    uriSl: new FormControl<string | null>(null),
+    notation: new FormControl<string | null>(null, [Validators.maxLength(240)]),
+    title: new FormControl<string | null>(null),
+    definition: new FormControl<string | null>(null),
+    previousVersion: new FormControl<number | null>(null),
+    initialVersion: new FormControl<number | null>(null),
+    creator: new FormControl<number | null>(null),
+    publisher: new FormControl<number | null>(null),
+    notes: new FormControl<string | null>(null),
+    versionNotes: new FormControl<string | null>(null),
+    versionChanges: new FormControl<string | null>(null),
+    discussionNotes: new FormControl<string | null>(null),
+    license: new FormControl<string | null>(null),
+    licenseId: new FormControl<number | null>(null),
+    citation: new FormControl<string | null>(null),
+    ddiUsage: new FormControl<string | null>(null),
+    translateAgency: new FormControl<string | null>(null),
+    translateAgencyLink: new FormControl<string | null>(null),
+    vocabularyId: new FormControl<number | null>(null),
   });
 
   constructor(
@@ -73,7 +76,7 @@ export class VersionUpdateComponent implements OnInit {
     protected versionService: VersionService,
     protected vocabularyService: VocabularyService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit(): void {
@@ -85,11 +88,11 @@ export class VersionUpdateComponent implements OnInit {
 
       this.updateForm(version);
 
-      this.vocabularyService.query().subscribe((res: HttpResponse<IVocabulary[]>) => (this.vocabularies = res.body || []));
+      this.vocabularyService.query().subscribe((res: HttpResponse<Vocabulary[]>) => (this.vocabularies = res.body || []));
     });
   }
 
-  updateForm(version: IVersion): void {
+  updateForm(version: Version): void {
     this.editForm.patchValue({
       id: version.id,
       status: version.status,
@@ -118,15 +121,15 @@ export class VersionUpdateComponent implements OnInit {
       ddiUsage: version.ddiUsage,
       translateAgency: version.translateAgency,
       translateAgencyLink: version.translateAgencyLink,
-      vocabularyId: version.vocabularyId
+      vocabularyId: version.vocabularyId,
     });
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
-    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-      this.eventManager.broadcast(
-        new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key })
-      );
+    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
+      error: (err: JhiFileLoadError) => {
+        this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
+      },
     });
   }
 
@@ -144,46 +147,48 @@ export class VersionUpdateComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IVersion {
+  private createFromForm(): Version {
     return {
-      ...new Version(),
-      id: this.editForm.get(['id'])!.value,
-      status: this.editForm.get(['status'])!.value,
-      itemType: this.editForm.get(['itemType'])!.value,
-      language: this.editForm.get(['language'])!.value,
-      publicationDate: this.editForm.get(['publicationDate'])!.value,
-      lastModified: this.editForm.get(['lastModified'])!.value
-        ? moment(this.editForm.get(['lastModified'])!.value, DATE_TIME_FORMAT)
+      id: this.editForm.controls.id.value !== null ? this.editForm.controls.id.value : undefined,
+      status: this.editForm.controls.status.value,
+      itemType: this.editForm.controls.itemType.value,
+      language: this.editForm.controls.language.value || undefined,
+      publicationDate: this.editForm.controls.publicationDate.value || undefined,
+      lastModified: this.editForm.controls.lastModified.value
+        ? moment(this.editForm.controls.lastModified.value, DATE_TIME_FORMAT)
         : undefined,
-      number: this.editForm.get(['number'])!.value,
-      uri: this.editForm.get(['uri'])!.value,
-      canonicalUri: this.editForm.get(['canonicalUri'])!.value,
-      uriSl: this.editForm.get(['uriSl'])!.value,
-      notation: this.editForm.get(['notation'])!.value,
-      title: this.editForm.get(['title'])!.value,
-      definition: this.editForm.get(['definition'])!.value,
-      previousVersion: this.editForm.get(['previousVersion'])!.value,
-      initialVersion: this.editForm.get(['initialVersion'])!.value,
-      creator: this.editForm.get(['creator'])!.value,
-      publisher: this.editForm.get(['publisher'])!.value,
-      notes: this.editForm.get(['notes'])!.value,
-      versionNotes: this.editForm.get(['versionNotes'])!.value,
-      versionChanges: this.editForm.get(['versionChanges'])!.value,
-      discussionNotes: this.editForm.get(['discussionNotes'])!.value,
-      license: this.editForm.get(['license'])!.value,
-      licenseId: this.editForm.get(['licenseId'])!.value,
-      citation: this.editForm.get(['citation'])!.value,
-      ddiUsage: this.editForm.get(['ddiUsage'])!.value,
-      translateAgency: this.editForm.get(['translateAgency'])!.value,
-      translateAgencyLink: this.editForm.get(['translateAgencyLink'])!.value,
-      vocabularyId: this.editForm.get(['vocabularyId'])!.value
+      number: this.editForm.controls.number.value || undefined,
+      uri: this.editForm.controls.uri.value || undefined,
+      canonicalUri: this.editForm.controls.canonicalUri.value || undefined,
+      uriSl: this.editForm.controls.uriSl.value || undefined,
+      notation: this.editForm.controls.notation.value || undefined,
+      title: this.editForm.controls.title.value || undefined,
+      definition: this.editForm.controls.definition.value || undefined,
+      previousVersion: this.editForm.controls.previousVersion.value !== null ? this.editForm.controls.previousVersion.value : undefined,
+      initialVersion: this.editForm.controls.initialVersion.value !== null ? this.editForm.controls.initialVersion.value : undefined,
+      creator: this.editForm.controls.creator.value !== null ? this.editForm.controls.creator.value : undefined,
+      publisher: this.editForm.controls.publisher.value !== null ? this.editForm.controls.publisher.value : undefined,
+      notes: this.editForm.controls.notes.value || undefined,
+      versionNotes: this.editForm.controls.versionNotes.value || undefined,
+      versionChanges: this.editForm.controls.versionChanges.value || undefined,
+      discussionNotes: this.editForm.controls.discussionNotes.value || undefined,
+      license: this.editForm.controls.license.value || undefined,
+      licenseId: this.editForm.controls.licenseId.value !== null ? this.editForm.controls.licenseId.value : undefined,
+      citation: this.editForm.controls.citation.value || undefined,
+      ddiUsage: this.editForm.controls.ddiUsage.value || undefined,
+      translateAgency: this.editForm.controls.translateAgency.value || undefined,
+      translateAgencyLink: this.editForm.controls.translateAgencyLink.value || undefined,
+      vocabularyId: this.editForm.controls.vocabularyId.value !== null ? this.editForm.controls.vocabularyId.value : undefined,
+      concepts: [],
+      comments: [],
+      versionHistories: [],
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IVersion>>): void {
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<Version>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onSaveError(),
     );
   }
 
@@ -196,7 +201,7 @@ export class VersionUpdateComponent implements OnInit {
     this.isSaving = false;
   }
 
-  trackById(index: number, item: IVocabulary): any {
-    return item.id;
+  trackById(_index: number, item: Vocabulary): number {
+    return item.id || 0;
   }
 }

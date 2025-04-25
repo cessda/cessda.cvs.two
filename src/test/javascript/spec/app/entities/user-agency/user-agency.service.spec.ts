@@ -1,21 +1,22 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { UserAgencyService } from 'app/entities/user-agency/user-agency.service';
-import { IUserAgency, UserAgency } from 'app/shared/model/user-agency.model';
-import { AgencyRole } from 'app/shared/model/enumerations/agency-role.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 import { Language } from 'app/shared/model/enumerations/language.model';
 
 describe('Service Tests', () => {
@@ -23,19 +24,25 @@ describe('Service Tests', () => {
     let injector: TestBed;
     let service: UserAgencyService;
     let httpMock: HttpTestingController;
-    let elemDefault: IUserAgency;
-    let expectedResult: IUserAgency | IUserAgency[] | boolean | null;
+    let elemDefault: UserAgency;
+    let expectedResult: UserAgency | UserAgency[] | boolean | null;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
-      service = injector.get(UserAgencyService);
-      httpMock = injector.get(HttpTestingController);
+      service = injector.inject(UserAgencyService);
+      httpMock = injector.inject(HttpTestingController);
 
-      elemDefault = new UserAgency(0, 1, AgencyRole.ADMIN, Language.ALBANIAN);
+      elemDefault = {
+        id: 0,
+        userId: 1,
+        agencyName: undefined,
+        agencyRole: 'ADMIN',
+        language: Language.ALBANIAN,
+      };
     });
 
     describe('Service methods', () => {
@@ -52,14 +59,14 @@ describe('Service Tests', () => {
       it('should create a UserAgency', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
 
-        service.create(new UserAgency()).subscribe(resp => (expectedResult = resp.body));
+        service.create({}).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
@@ -70,9 +77,9 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             agencyRole: 'BBBBBB',
-            language: 'BBBBBB'
+            language: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
@@ -88,9 +95,9 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             agencyRole: 'BBBBBB',
-            language: 'BBBBBB'
+            language: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);

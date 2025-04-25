@@ -1,39 +1,42 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {Component, OnInit} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {EditorService} from 'app/editor/editor.service';
-import {IVersion} from 'app/shared/model/version.model';
-import {Router} from '@angular/router';
-import {JhiEventManager} from 'ng-jhipster';
-import {FormBuilder, Validators} from '@angular/forms';
-import {VocabularyLanguageFromKeyPipe} from 'app/shared';
+import { Vocabulary } from 'app/shared/model/vocabulary.model';
+import { EditorService } from 'app/editor/editor.service';
+import { Version } from 'app/shared/model/version.model';
+import { Router } from '@angular/router';
+import { JhiEventManager } from 'ng-jhipster';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 
 @Component({
-  templateUrl: './editor-detail-cv-new-version-dialog.component.html'
+  templateUrl: './editor-detail-cv-new-version-dialog.component.html',
 })
 export class EditorDetailCvNewVersionDialogComponent implements OnInit {
-  vocabularyParam!: IVocabulary;
-  versionParam!: IVersion;
+  vocabularyParam!: Vocabulary;
+  versionParam!: Version;
   isSaving: boolean;
 
   unPublishedTls: string;
+  allTls: string;
 
-  newVersionForm = this.fb.group({
-    agreeNewVersion: ['', [Validators.required]]
+  newVersionForm = this.fb.group<{ agreeNewVersion?: FormControl<string> }>({
+    agreeNewVersion: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
 
   constructor(
@@ -42,16 +45,21 @@ export class EditorDetailCvNewVersionDialogComponent implements OnInit {
     private router: Router,
     protected eventManager: JhiEventManager,
     private fb: FormBuilder,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe
+    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
   ) {
     this.isSaving = false;
     this.unPublishedTls = '';
+    this.allTls = '';
   }
 
   ngOnInit(): void {
     if (this.versionParam.itemType === 'SL') {
-      this.unPublishedTls = this.vocabularyParam
-        .versions!.filter(v => v.itemType === 'TL' && v.status !== 'PUBLISHED')
+      this.allTls = this.vocabularyParam.versions
+        .filter(v => v.itemType === 'TL')
+        .map(v => '- ' + this.vocabLangPipeKey.transform(v.language!) + ' ' + v.number + '-' + v.status)
+        .join('<br/>');
+      this.unPublishedTls = this.vocabularyParam.versions
+        .filter(v => v.itemType === 'TL' && v.status !== 'PUBLISHED')
         .map(v => '- ' + this.vocabLangPipeKey.transform(v.language!) + ' ' + v.number + '-' + v.status)
         .join('<br/>');
       if (this.unPublishedTls === '') {

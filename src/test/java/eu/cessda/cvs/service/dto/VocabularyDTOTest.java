@@ -1,19 +1,24 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.service.dto;
 
+import eu.cessda.cvs.domain.VocabularySnippet;
+import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
+import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
 
@@ -28,12 +33,13 @@ class VocabularyDTOTest {
     void switchGetterAndSetterVocabularyTest(){
         VocabularyDTO vocabularyDTO = new VocabularyDTO();
         for (Language lang : Language.values()) {
+            if (lang.equals(Language.UNKNOWN)) {
+                continue;
+            }
+
             String uuid1 = UUID.randomUUID().toString();
             String uuid2 = UUID.randomUUID().toString();
             String uuid3 = UUID.randomUUID().toString().substring(0,5);
-
-            if( lang.equals(Language.UNKNOWN))
-                continue;
 
             vocabularyDTO.setTitleDefinition(uuid1, uuid2, lang.getIso(), false);
             vocabularyDTO.setVersionByLanguage(lang.getIso(), uuid3);
@@ -112,5 +118,42 @@ class VocabularyDTOTest {
         assertThat(vocabularyDTO1).isNotEqualTo(vocabularyDTO2);
         vocabularyDTO1.setId(null);
         assertThat(vocabularyDTO1).isNotEqualTo(vocabularyDTO2);
+    }
+
+    @Test
+    void contentByVocabularySnippet() {
+        VocabularyDTO vocabularyDTO1 = new VocabularyDTO();
+        VocabularySnippet vocabularySnippet1 = new VocabularySnippet();
+        vocabularySnippet1.setLanguage(Language.ENGLISH.getIso());
+        vocabularySnippet1.setVersionNumber(new VersionNumber(1,0,0));
+        vocabularyDTO1.setContentByVocabularySnippet(vocabularySnippet1);
+        assertThat(vocabularyDTO1.getVersionEn()).isEqualTo(vocabularySnippet1.getVersionNumber().toString());
+
+        VocabularyDTO vocabularyDTO2 = new VocabularyDTO();
+        VocabularySnippet vocabularySnippet2 = new VocabularySnippet();
+        vocabularySnippet2.setLanguage(Language.ENGLISH.getIso());
+        vocabularyDTO2.setContentByVocabularySnippet(vocabularySnippet2);
+        assertThat(vocabularyDTO2.getVersionEn()).isNull();
+    }
+
+    @Test
+    void constructFromSnippet() {
+
+        Language lang = Language.SLOVAK;
+
+        assertThat(new VocabularyDTO().getSourceLanguage()).isNotEqualTo(lang.getIso());
+
+        VocabularySnippet vocabularySnippet = new VocabularySnippet();
+        vocabularySnippet.setLanguage(lang.getIso());
+
+        // snippet is SL
+        vocabularySnippet.setItemType(ItemType.SL);
+        VocabularyDTO vocabularyDTO1 = new VocabularyDTO(vocabularySnippet);
+        assertThat(vocabularyDTO1.getSourceLanguage()).isEqualTo(vocabularySnippet.getLanguage());
+
+        // snippet is TL
+        vocabularySnippet.setItemType(ItemType.TL);
+        VocabularyDTO vocabularyDTO2 = new VocabularyDTO(vocabularySnippet);
+        assertThat(vocabularyDTO2.getSourceLanguage()).isNotEqualTo(vocabularySnippet.getLanguage());
     }
 }

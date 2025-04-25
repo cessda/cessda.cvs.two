@@ -1,52 +1,46 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.domain.UserAgency;
+import eu.cessda.cvs.domain.enumeration.AgencyRole;
 import eu.cessda.cvs.repository.UserAgencyRepository;
 import eu.cessda.cvs.service.UserAgencyService;
 import eu.cessda.cvs.service.dto.UserAgencyDTO;
 import eu.cessda.cvs.service.mapper.UserAgencyMapper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import eu.cessda.cvs.domain.enumeration.AgencyRole;
-import eu.cessda.cvs.domain.enumeration.Language;
 /**
  * Integration tests for the {@link UserAgencyResource} REST controller.
  */
@@ -81,27 +75,25 @@ public class UserAgencyResourceIT {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static UserAgency createEntity(EntityManager em) {
-        UserAgency userAgency = new UserAgency()
+        return new UserAgency()
             .agencyRole(DEFAULT_AGENCY_ROLE)
             .language(DEFAULT_LANGUAGE);
-        return userAgency;
     }
     /**
      * Create an updated entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static UserAgency createUpdatedEntity(EntityManager em) {
-        UserAgency userAgency = new UserAgency()
+        return new UserAgency()
             .agencyRole(UPDATED_AGENCY_ROLE)
             .language(UPDATED_LANGUAGE);
-        return userAgency;
     }
 
     @BeforeEach
@@ -111,7 +103,7 @@ public class UserAgencyResourceIT {
 
     @Test
     @Transactional
-    public void createUserAgency() throws Exception {
+    void createUserAgency() throws Exception {
         int databaseSizeBeforeCreate = userAgencyRepository.findAll().size();
 
         // Create the UserAgency
@@ -131,7 +123,7 @@ public class UserAgencyResourceIT {
 
     @Test
     @Transactional
-    public void createUserAgencyWithExistingId() throws Exception {
+    void createUserAgencyWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = userAgencyRepository.findAll().size();
 
         // Create the UserAgency with an existing ID
@@ -152,7 +144,7 @@ public class UserAgencyResourceIT {
 
     @Test
     @Transactional
-    public void getAllUserAgencies() throws Exception {
+    void getAllUserAgencies() throws Exception {
         // Initialize the database
         userAgencyRepository.saveAndFlush(userAgency);
 
@@ -162,12 +154,12 @@ public class UserAgencyResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(userAgency.getId().intValue())))
             .andExpect(jsonPath("$.[*].agencyRole").value(hasItem(DEFAULT_AGENCY_ROLE.toString())))
-            .andExpect(jsonPath("$.[*].language").value(hasItem(DEFAULT_LANGUAGE.toString())));
+            .andExpect(jsonPath("$.[*].language").value(hasItem(DEFAULT_LANGUAGE)));
     }
 
     @Test
     @Transactional
-    public void getUserAgency() throws Exception {
+    void getUserAgency() throws Exception {
         // Initialize the database
         userAgencyRepository.saveAndFlush(userAgency);
 
@@ -177,12 +169,12 @@ public class UserAgencyResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(userAgency.getId().intValue()))
             .andExpect(jsonPath("$.agencyRole").value(DEFAULT_AGENCY_ROLE.toString()))
-            .andExpect(jsonPath("$.language").value(DEFAULT_LANGUAGE.toString()));
+            .andExpect(jsonPath("$.language").value(DEFAULT_LANGUAGE));
     }
 
     @Test
     @Transactional
-    public void getNonExistingUserAgency() throws Exception {
+    void getNonExistingUserAgency() throws Exception {
         // Get the userAgency
         restUserAgencyMockMvc.perform(get("/api/user-agencies/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -190,14 +182,14 @@ public class UserAgencyResourceIT {
 
     @Test
     @Transactional
-    public void updateUserAgency() throws Exception {
+    void updateUserAgency() throws Exception {
         // Initialize the database
         userAgencyRepository.saveAndFlush(userAgency);
 
         int databaseSizeBeforeUpdate = userAgencyRepository.findAll().size();
 
         // Update the userAgency
-        UserAgency updatedUserAgency = userAgencyRepository.findById(userAgency.getId()).get();
+        UserAgency updatedUserAgency = userAgencyRepository.findById(userAgency.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedUserAgency are not directly saved in db
         em.detach(updatedUserAgency);
         updatedUserAgency
@@ -220,7 +212,7 @@ public class UserAgencyResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingUserAgency() throws Exception {
+    void updateNonExistingUserAgency() throws Exception {
         int databaseSizeBeforeUpdate = userAgencyRepository.findAll().size();
 
         // Create the UserAgency
@@ -239,7 +231,7 @@ public class UserAgencyResourceIT {
 
     @Test
     @Transactional
-    public void deleteUserAgency() throws Exception {
+    void deleteUserAgency() throws Exception {
         // Initialize the database
         userAgencyRepository.saveAndFlush(userAgency);
 

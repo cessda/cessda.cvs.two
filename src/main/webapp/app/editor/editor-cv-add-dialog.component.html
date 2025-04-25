@@ -1,25 +1,24 @@
 <!--
-  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License").
-  ~ You may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and limitations under the License.
-  -->
 
+    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+-->
 <form name="cvAddForm" role="form" (ngSubmit)="save()" novalidate [formGroup]="cvAddForm">
     <div class="modal-header">
-        <div class="modal-title" style="display: flex;">
-           Add Vocabulary
-        </div>
-
-        <button aria-label="Close" class="close" data-dismiss="modal" type="button" (click)="clear()">
-            <span aria-hidden="true">×</span>
-        </button>
+        <div class="modal-title" style="display: flex;">Add Vocabulary</div>
+        <button aria-label="Close" class="btn-close" data-dismiss="modal" type="button" (click)="clear()"></button>
     </div>
     <div class="modal-body">
         <div class="row-content">
@@ -57,27 +56,27 @@
                 </div>
                 <div class="detail-column">
                     <input type="text" class="form-control" id="field_notation" name="notation" formControlName="notation"/>
-                    <div *ngIf="cvAddForm.get('notation')!.invalid && (cvAddForm.get('notation')!.dirty || cvAddForm.get('notation')!.touched)">
+                    <div *ngIf="cvAddForm.controls.notation.invalid && (cvAddForm.controls.notation.dirty || cvAddForm.controls.notation.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="cvAddForm.get('notation')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="cvAddForm.controls.notation.errors?.required" jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
 
                         <small class="form-text text-danger"
-                               *ngIf="cvAddForm.get('notation')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength"
+                               *ngIf="cvAddForm.controls.notation.errors?.maxlength" jhiTranslate="entity.validation.maxlength"
                                [translateValues]="{max: 240}">
                             This field cannot be longer than 240 characters.
                         </small>
 
                         <small class="form-text text-danger"
-                               *ngIf="cvAddForm.get('notation')?.errors?.minlength" jhiTranslate="entity.validation.minlength"
+                               *ngIf="cvAddForm.controls.notation.errors?.minlength" jhiTranslate="entity.validation.minlength"
                                [translateValues]="{min: 2}">
                             This field is required to be at least 2 characters.
                         </small>
 
                         <small class="form-text text-danger"
-                               *ngIf="cvAddForm.get('notation')?.errors?.pattern">
-                            CV Short Name can only contain letters (a-z A-Z), digits (0-9) and limited symbols ( +-_).
+                               *ngIf="cvAddForm.controls.notation.errors?.pattern">
+                            CV Short Name can only contain letters (a-z A-Z), digits (0-9) and limited symbols ( +-).
                         </small>
                     </div>
                 </div>
@@ -89,9 +88,9 @@
                 </div>
                 <div class="detail-column">
                     <input type="text" class="form-control" id="field_title" name="title" formControlName="title"/>
-                    <div *ngIf="cvAddForm.get('title')!.invalid && (cvAddForm.get('title')!.dirty || cvAddForm.get('title')!.touched)">
+                    <div *ngIf="cvAddForm.controls.title.invalid && (cvAddForm.controls.title.dirty || cvAddForm.controls.title.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="cvAddForm.get('title')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="cvAddForm.controls.title.errors?.required" jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
                     </div>
@@ -104,9 +103,9 @@
                 </div>
                 <div class="detail-column">
                     <textarea class="form-control"  id="field_definition" name="definition" formControlName="definition" rows="10"></textarea>
-                    <div *ngIf="cvAddForm.get('definition')!.invalid && (cvAddForm.get('definition')!.dirty || cvAddForm.get('definition')!.touched)">
+                    <div *ngIf="cvAddForm.controls.definition.invalid && (cvAddForm.controls.definition.dirty || cvAddForm.controls.definition.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="cvAddForm.get('definition')?.errors?.required" jhiTranslate="entity.validation.required">
+                               *ngIf="cvAddForm.controls.definition.errors?.required" jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
                     </div>

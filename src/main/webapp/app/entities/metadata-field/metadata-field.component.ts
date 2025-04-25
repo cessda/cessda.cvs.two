@@ -1,35 +1,37 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
-import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { MetadataField } from 'app/shared/model/metadata-field.model';
 
-import {IMetadataField} from 'app/shared/model/metadata-field.model';
-
-import {ITEMS_PER_PAGE} from 'app/shared/constants/pagination.constants';
-import {MetadataFieldService} from './metadata-field.service';
-import {MetadataFieldDeleteDialogComponent} from './metadata-field-delete-dialog.component';
+import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
+import { MetadataFieldService } from './metadata-field.service';
+import { MetadataFieldDeleteDialogComponent } from './metadata-field-delete-dialog.component';
 
 @Component({
   selector: 'jhi-metadata-field',
-  templateUrl: './metadata-field.component.html'
+  templateUrl: './metadata-field.component.html',
 })
 export class MetadataFieldComponent implements OnInit, OnDestroy {
-  metadataFields?: IMetadataField[];
+  metadataFields?: MetadataField[];
   eventSubscriber?: Subscription;
   currentSearch: string;
   totalItems = 0;
@@ -45,7 +47,7 @@ export class MetadataFieldComponent implements OnInit, OnDestroy {
     protected dataUtils: JhiDataUtils,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
   ) {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
@@ -62,11 +64,11 @@ export class MetadataFieldComponent implements OnInit, OnDestroy {
           page: pageToLoad - 1,
           query: this.currentSearch,
           size: this.itemsPerPage,
-          sort: this.sort()
+          sort: this.sort(),
         })
         .subscribe(
-          (res: HttpResponse<IMetadataField[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-          () => this.onError()
+          (res: HttpResponse<MetadataField[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+          () => this.onError(),
         );
       return;
     }
@@ -75,11 +77,11 @@ export class MetadataFieldComponent implements OnInit, OnDestroy {
       .query({
         page: pageToLoad - 1,
         size: this.itemsPerPage,
-        sort: this.sort()
+        sort: this.sort(),
       })
       .subscribe(
-        (res: HttpResponse<IMetadataField[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
-        () => this.onError()
+        (res: HttpResponse<MetadataField[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        () => this.onError(),
       );
   }
 
@@ -105,7 +107,7 @@ export class MetadataFieldComponent implements OnInit, OnDestroy {
     }
   }
 
-  trackId(index: number, item: IMetadataField): number {
+  trackId(index: number, item: MetadataField): number {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     return item.id!;
   }
@@ -114,7 +116,7 @@ export class MetadataFieldComponent implements OnInit, OnDestroy {
     this.eventSubscriber = this.eventManager.subscribe('metadataFieldListModification', () => this.loadPage());
   }
 
-  delete(metadataField: IMetadataField): void {
+  delete(metadataField: MetadataField): void {
     const modalRef = this.modalService.open(MetadataFieldDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.metadataField = metadataField;
   }
@@ -127,7 +129,7 @@ export class MetadataFieldComponent implements OnInit, OnDestroy {
     return result;
   }
 
-  protected onSuccess(data: IMetadataField[] | null, headers: HttpHeaders, page: number): void {
+  protected onSuccess(data: MetadataField[] | null, headers: HttpHeaders, page: number): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
@@ -136,8 +138,8 @@ export class MetadataFieldComponent implements OnInit, OnDestroy {
         page: this.page,
         size: this.itemsPerPage,
         search: this.currentSearch,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
+        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
+      },
     });
     this.metadataFields = data || [];
   }

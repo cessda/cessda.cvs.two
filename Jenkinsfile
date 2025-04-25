@@ -1,13 +1,12 @@
 pipeline {
     options {
-        buildDiscarder logRotator(artifactNumToKeepStr: '1', numToKeepStr: '20')
-        quietPeriod 300
+        disableConcurrentBuilds abortPrevious: true
     }
 
     environment {
         productName = "cvs"
         componentName = "frontend"
-        image_tag = "${docker_repo}/${productName}-${componentName}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+        image_tag = "${DOCKER_ARTIFACT_REGISTRY}/${productName}-${componentName}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
 
         // Fixes NPM trying to use / as the home directory
         HOME = '.'
@@ -21,55 +20,79 @@ pipeline {
     }
 
     stages {
-        // Building on master
-        stage('Pull SDK Docker Image') {
+        stage('Node.JS') {
             agent {
                 docker {
-                    image 'maven:3-jdk-11'
+                    image 'node:18'
                     reuseNode true
                 }
             }
             stages {
-                stage('Build Project') {
+                stage('Install NPM dependencies') {
                     steps {
-                        withMaven {
-                            sh "./mvnw clean install -Pprod"
+                        configFileProvider([configFile(fileId: 'be684558-5540-4ad6-a155-7c1b4278abc0', targetLocation: '.npmrc')]) {
+                            sh 'npm ci'
                         }
                     }
-                    when { branch 'master' }
                 }
-                // Not running on master - test only (for PRs and integration branches)
-                stage('Test Project') {
+                stage('Lint Project') {
                     steps {
-                        withMaven {
-                            sh './mvnw clean verify -Pprod'
+                        catchError(buildResult: 'UNSTABLE') {
+                            sh 'npm run lint -- --format checkstyle --output-file target/eslint-reports/report.xml'
                         }
                     }
-                    when { not { branch 'master' } }
+                    post {
+                        always {
+                            recordIssues(tools: [esLint(pattern: 'target/eslint-reports/report.xml')])
+                        }
+                    }
                 }
-                stage('Record Issues') {
+                stage('Compile Angular') {
                     steps {
-                        recordIssues aggregatingResults: true, tools: [errorProne(), java()]
+                        sh 'npm run build-prod'
+                    }
+                }
+                stage('Run Jest tests') {
+                    steps {
+                        sh 'npm test -- --coverage'
+                    }
+                    post {
+                        always {
+                            junit 'target/test-results/TESTS-results-jest.xml'
+                        }
                     }
                 }
             }
-            post {
-                always {
-                    junit 'target/test-results/TESTS-results-jest.xml'
+        }
+        stage('Compile Java') {
+            agent {
+                docker {
+                    image 'eclipse-temurin:11'
+                    reuseNode true
                 }
+            }
+            steps {
+                withMaven {
+                    sh "./mvnw verify -Pci"
+                }
+            }
+        }
+        stage('Record Issues') {
+            steps {
+                recordIssues aggregatingResults: true, tools: [java()]
             }
         }
         stage('Run Sonar Scan') {
             steps {
                 withSonarQubeEnv('cessda-sonar') {
-                    nodejs('node-12') {
+                    nodejs('node-18') {
                         withMaven {
-                            sh "./mvnw sonar:sonar -Pprod"
+                            sh "./mvnw sonar:sonar -Pci"
                         }
                     }
                 }
             }
-            when { branch 'master' }
+            when { branch 'main' }
         }
         stage("Get Sonar Quality Gate") {
             steps {
@@ -77,23 +100,23 @@ pipeline {
                     waitForQualityGate abortPipeline: false
                 }
             }
-            when { branch 'master' }
+            when { branch 'main' }
         }
         stage('Build and Push Docker Image') {
             steps {
-                sh 'gcloud auth configure-docker'
+                sh "gcloud auth configure-docker ${ARTIFACT_REGISTRY_HOST}"
                 withMaven {
-                    sh "./mvnw jib:build -Pprod -Djib.to.image=${IMAGE_TAG}"
+                    sh "./mvnw jib:build -Pci -Djib.to.image=${IMAGE_TAG}"
                 }
-                sh "gcloud container images add-tag ${IMAGE_TAG} ${docker_repo}/${productName}-${componentName}:${env.BRANCH_NAME}-latest"
+                sh "gcloud artifacts docker tags add ${IMAGE_TAG} ${DOCKER_ARTIFACT_REGISTRY}/${productName}-${componentName}:${env.BRANCH_NAME}-latest"
             }
-            when { branch 'master' }
+            when { branch 'main' }
         }
         stage('Deploy CVS') {
             steps {
-                build job: 'cessda.cvs.deploy/master', parameters: [string(name: 'frontend_image_tag', value: "${env.BRANCH_NAME}-${env.BUILD_NUMBER}")], wait: false
+                build job: 'cessda.cvs.deploy/main', parameters: [string(name: 'frontend_image_tag', value: "${env.BRANCH_NAME}-${env.BUILD_NUMBER}")], wait: false
             }
-            when { branch 'master' }
+            when { branch 'main' }
         }
     }
 }

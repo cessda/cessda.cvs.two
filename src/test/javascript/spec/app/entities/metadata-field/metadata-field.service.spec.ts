@@ -1,20 +1,22 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field.service';
-import { IMetadataField, MetadataField } from 'app/shared/model/metadata-field.model';
+import { MetadataField } from 'app/shared/model/metadata-field.model';
 import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
 
 describe('Service Tests', () => {
@@ -22,19 +24,25 @@ describe('Service Tests', () => {
     let injector: TestBed;
     let service: MetadataFieldService;
     let httpMock: HttpTestingController;
-    let elemDefault: IMetadataField;
-    let expectedResult: IMetadataField | IMetadataField[] | boolean | null;
+    let elemDefault: MetadataField;
+    let expectedResult: MetadataField | MetadataField[] | boolean | null;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule]
+        imports: [HttpClientTestingModule],
       });
       expectedResult = null;
       injector = getTestBed();
       service = injector.get(MetadataFieldService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new MetadataField(0, 'AAAAAAA', 'AAAAAAA', ObjectType.AGENCY);
+      elemDefault = {
+        id: 0,
+        metadataKey: 'AAAAAAA',
+        description: 'AAAAAAA',
+        objectType: ObjectType.AGENCY,
+        metadataValues: [],
+      };
     });
 
     describe('Service methods', () => {
@@ -51,14 +59,14 @@ describe('Service Tests', () => {
       it('should create a MetadataField', () => {
         const returnedFromService = Object.assign(
           {
-            id: 0
+            id: 0,
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
 
-        service.create(new MetadataField()).subscribe(resp => (expectedResult = resp.body));
+        service.create({ metadataKey: '', metadataValues: [] }).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'POST' });
         req.flush(returnedFromService);
@@ -70,9 +78,9 @@ describe('Service Tests', () => {
           {
             metadataKey: 'BBBBBB',
             description: 'BBBBBB',
-            objectType: 'BBBBBB'
+            objectType: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);
@@ -89,9 +97,9 @@ describe('Service Tests', () => {
           {
             metadataKey: 'BBBBBB',
             description: 'BBBBBB',
-            objectType: 'BBBBBB'
+            objectType: 'BBBBBB',
           },
-          elemDefault
+          elemDefault,
         );
 
         const expected = Object.assign({}, returnedFromService);

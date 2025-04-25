@@ -1,0 +1,1033 @@
+{
+  "activate": {
+    "title": "Aktivierung",
+    "messages": {
+      "success": "<strong>Ihr Benutzer wurde aktiviert.</strong> Bitte ",
+      "error": "<strong>Ihr Benutzer konnte nicht aktiviert werden.</strong> Bitte benutzen Sie die Registrierungsmaske, um sich zu registrieren."
+    }
+  },
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "Activity Logs",
+        "createLabel": "Activity Log erstellen",
+        "createOrEditLabel": "Activity Log erstellen oder bearbeiten",
+        "notFound": "No Activity Logs found"
+      },
+      "created": "Activity Log erstellt mit ID {{ param }}",
+      "updated": "Activity Log aktualisiert mit ID {{ param }}",
+      "deleted": "Activity Log gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Activity Log {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Activity Log"
+      },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    },
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Agency erstellen",
+        "createOrEditLabel": "Agency erstellen oder bearbeiten",
+        "notFound": "No Agencies found"
+      },
+      "created": "Agency erstellt mit ID {{ param }}",
+      "updated": "Agency aktualisiert mit ID {{ param }}",
+      "deleted": "Agency gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Agency {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Agency"
+      },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    },
+    "AgencyRole": {
+      "null": "",
+      "ADMIN": "ADMIN",
+      "VIEW": "VIEW",
+      "ADMIN_SL": "ADMIN_SL",
+      "ADMIN_TL": "ADMIN_TL",
+      "ADMIN_CONTENT": "ADMIN_CONTENT"
+    },
+    "code": {
+      "home": {
+        "title": "Codes",
+        "createLabel": "Code erstellen",
+        "createOrEditLabel": "Code erstellen oder bearbeiten",
+        "notFound": "No Codes found"
+      },
+      "created": "Code erstellt mit ID {{ param }}",
+      "updated": "Code aktualisiert mit ID {{ param }}",
+      "deleted": "Code gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Code {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Code"
+      },
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv"
+    },
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Comment erstellen",
+        "createOrEditLabel": "Comment erstellen oder bearbeiten",
+        "search": "Suche nach Comment",
+        "notFound": "No Comments found"
+      },
+      "created": "Comment erstellt mit ID {{ param }}",
+      "updated": "Comment aktualisiert mit ID {{ param }}",
+      "deleted": "Comment gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Comment {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Comment"
+      },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    },
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Concept erstellen",
+        "createOrEditLabel": "Concept erstellen oder bearbeiten",
+        "notFound": "No Concepts found"
+      },
+      "created": "Concept erstellt mit ID {{ param }}",
+      "updated": "Concept aktualisiert mit ID {{ param }}",
+      "deleted": "Concept gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Concept {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Concept"
+      },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    },
+    "conceptChange": {
+      "home": {
+        "title": "Concept Changes",
+        "createLabel": "Concept Change erstellen",
+        "createOrEditLabel": "Concept Change erstellen oder bearbeiten",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "Concept Change erstellt mit ID {{ param }}",
+      "updated": "Concept Change aktualisiert mit ID {{ param }}",
+      "deleted": "Concept Change gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Concept Change {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Concept Change"
+      },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    },
+    "Language": {
+      "null": "",
+      "ALBANIAN": "ALBANIAN",
+      "BOSNIAN": "BOSNIAN",
+      "BULGARIAN": "BULGARIAN",
+      "CROATIAN": "CROATIAN",
+      "CZECH": "CZECH",
+      "DANISH": "DANISH",
+      "DUTCH": "DUTCH",
+      "ENGLISH": "ENGLISH",
+      "ESTONIAN": "ESTONIAN",
+      "FINNISH": "FINNISH",
+      "FRENCH": "FRENCH",
+      "GERMAN": "GERMAN",
+      "GREEK": "GREEK",
+      "HUNGARIAN": "HUNGARIAN",
+      "ITALIAN": "ITALIAN",
+      "JAPANESE": "JAPANESE",
+      "LITHUANIAN": "LITHUANIAN",
+      "MACEDONIAN": "MACEDONIAN",
+      "NORWEGIAN": "NORWEGIAN",
+      "POLISH": "POLISH",
+      "PORTUGUESE": "PORTUGUESE",
+      "ROMANIAN": "ROMANIAN",
+      "RUSSIAN": "RUSSIAN",
+      "SERBIAN": "SERBIAN",
+      "SLOVAK": "SLOVAK",
+      "SLOVENIAN": "SLOVENIAN",
+      "SPANISH": "SPANISH",
+      "SWEDISH": "SWEDISH"
+    },
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Licence erstellen",
+        "createOrEditLabel": "Licence erstellen oder bearbeiten",
+        "notFound": "No Licences found"
+      },
+      "created": "Licence erstellt mit ID {{ param }}",
+      "updated": "Licence aktualisiert mit ID {{ param }}",
+      "deleted": "Licence gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Licence {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Licence"
+      },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo"
+    },
+    "metadataField": {
+      "home": {
+        "title": "Metadata Fields",
+        "createLabel": "Metadata Field erstellen",
+        "createOrEditLabel": "Metadata Field erstellen oder bearbeiten",
+        "notFound": "No Metadata Fields found"
+      },
+      "created": "Metadata Field erstellt mit ID {{ param }}",
+      "updated": "Metadata Field aktualisiert mit ID {{ param }}",
+      "deleted": "Metadata Field gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Metadata Field {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Metadata Field"
+      },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    },
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Metadata Value erstellen",
+        "createOrEditLabel": "Metadata Value erstellen oder bearbeiten",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "Metadata Value erstellt mit ID {{ param }}",
+      "updated": "Metadata Value aktualisiert mit ID {{ param }}",
+      "deleted": "Metadata Value gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Metadata Value {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Metadata Value"
+      },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    },
+    "ObjectType": {
+      "null": "",
+      "AGENCY": "AGENCY",
+      "GROUP": "GROUP",
+      "SYSTEM": "SYSTEM"
+    },
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Resolver erstellen",
+        "createOrEditLabel": "Resolver erstellen oder bearbeiten",
+        "notFound": "No Resolvers found"
+      },
+      "created": "Resolver erstellt mit ID {{ param }}",
+      "updated": "Resolver aktualisiert mit ID {{ param }}",
+      "deleted": "Resolver gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Resolver {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Resolver"
+      },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    },
+    "ResolverType": {
+      "null": "",
+      "DOI": "DOI",
+      "URN": "URN"
+    },
+    "ResourceType": {
+      "null": "",
+      "VOCABULARY": "VOCABULARY"
+    },
+    "userAgency": {
+      "home": {
+        "title": "User Agencies",
+        "createLabel": "User Agency erstellen",
+        "createOrEditLabel": "User Agency erstellen oder bearbeiten",
+        "notFound": "No User Agencies found"
+      },
+      "created": "User Agency erstellt mit ID {{ param }}",
+      "updated": "User Agency aktualisiert mit ID {{ param }}",
+      "deleted": "User Agency gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll User Agency {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "User Agency"
+      },
+      "agencyRole": "Agency Role",
+      "language": "Language",
+      "agency": "Agency"
+    },
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Version erstellen",
+        "createOrEditLabel": "Version erstellen oder bearbeiten",
+        "notFound": "No Versions found"
+      },
+      "created": "Version erstellt mit ID {{ param }}",
+      "updated": "Version aktualisiert mit ID {{ param }}",
+      "deleted": "Version gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Version {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Version"
+      },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    },
+    "vocabulary": {
+      "home": {
+        "title": "Vocabularies",
+        "createLabel": "Vocabulary erstellen",
+        "createOrEditLabel": "Vocabulary erstellen oder bearbeiten",
+        "notFound": "No Vocabularies found"
+      },
+      "created": "Vocabulary erstellt mit ID {{ param }}",
+      "updated": "Vocabulary aktualisiert mit ID {{ param }}",
+      "deleted": "Vocabulary gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Vocabulary {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Vocabulary"
+      },
+      "status": "Status",
+      "uri": "Uri",
+      "notation": "Notation",
+      "versionNumber": "Version Number",
+      "initialPublication": "Initial Publication",
+      "previousPublication": "Previous Publication",
+      "archived": "Archived",
+      "withdrawn": "Withdrawn",
+      "discoverable": "Discoverable",
+      "sourceLanguage": "Source Language",
+      "agencyId": "Agency Id",
+      "agencyName": "Agency Name",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "notes": "Notes",
+      "versionSq": "Version Sq",
+      "titleSq": "Title Sq",
+      "definitionSq": "Definition Sq",
+      "versionBs": "Version Bs",
+      "titleBs": "Title Bs",
+      "definitionBs": "Definition Bs",
+      "versionBg": "Version Bg",
+      "titleBg": "Title Bg",
+      "definitionBg": "Definition Bg",
+      "versionHr": "Version Hr",
+      "titleHr": "Title Hr",
+      "definitionHr": "Definition Hr",
+      "versionCs": "Version Cs",
+      "titleCs": "Title Cs",
+      "definitionCs": "Definition Cs",
+      "versionDa": "Version Da",
+      "titleDa": "Title Da",
+      "definitionDa": "Definition Da",
+      "versionNl": "Version Nl",
+      "titleNl": "Title Nl",
+      "definitionNl": "Definition Nl",
+      "versionEn": "Version En",
+      "titleEn": "Title En",
+      "definitionEn": "Definition En",
+      "versionEt": "Version Et",
+      "titleEt": "Title Et",
+      "definitionEt": "Definition Et",
+      "versionFi": "Version Fi",
+      "titleFi": "Title Fi",
+      "definitionFi": "Definition Fi",
+      "versionFr": "Version Fr",
+      "titleFr": "Title Fr",
+      "definitionFr": "Definition Fr",
+      "versionDe": "Version De",
+      "titleDe": "Title De",
+      "definitionDe": "Definition De",
+      "versionEl": "Version El",
+      "titleEl": "Title El",
+      "definitionEl": "Definition El",
+      "versionHu": "Version Hu",
+      "titleHu": "Title Hu",
+      "definitionHu": "Definition Hu",
+      "versionIt": "Version It",
+      "titleIt": "Title It",
+      "definitionIt": "Definition It",
+      "versionJa": "Version Ja",
+      "titleJa": "Title Ja",
+      "definitionJa": "Definition Ja",
+      "versionLt": "Version Lt",
+      "titleLt": "Title Lt",
+      "definitionLt": "Definition Lt",
+      "versionMk": "Version Mk",
+      "titleMk": "Title Mk",
+      "definitionMk": "Definition Mk",
+      "versionNo": "Version No",
+      "titleNo": "Title No",
+      "definitionNo": "Definition No",
+      "versionPl": "Version Pl",
+      "titlePl": "Title Pl",
+      "definitionPl": "Definition Pl",
+      "versionPt": "Version Pt",
+      "titlePt": "Title Pt",
+      "definitionPt": "Definition Pt",
+      "versionRo": "Version Ro",
+      "titleRo": "Title Ro",
+      "definitionRo": "Definition Ro",
+      "versionRu": "Version Ru",
+      "titleRu": "Title Ru",
+      "definitionRu": "Definition Ru",
+      "versionSr": "Version Sr",
+      "titleSr": "Title Sr",
+      "definitionSr": "Definition Sr",
+      "versionSk": "Version Sk",
+      "titleSk": "Title Sk",
+      "definitionSk": "Definition Sk",
+      "versionSl": "Version Sl",
+      "titleSl": "Title Sl",
+      "definitionSl": "Definition Sl",
+      "versionEs": "Version Es",
+      "titleEs": "Title Es",
+      "definitionEs": "Definition Es",
+      "versionSv": "Version Sv",
+      "titleSv": "Title Sv",
+      "definitionSv": "Definition Sv",
+      "version": "Version"
+    },
+    "vocabularyChange": {
+      "home": {
+        "title": "Vocabulary Changes",
+        "createLabel": "Vocabulary Change erstellen",
+        "createOrEditLabel": "Vocabulary Change erstellen oder bearbeiten",
+        "notFound": "No Vocabulary Changes found"
+      },
+      "created": "Vocabulary Change erstellt mit ID {{ param }}",
+      "updated": "Vocabulary Change aktualisiert mit ID {{ param }}",
+      "deleted": "Vocabulary Change gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Vocabulary Change {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Vocabulary Change"
+      },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  },
+  "audits": {
+    "title": "Audits",
+    "filter": {
+      "title": "Nach Datum filtern",
+      "from": "von",
+      "to": "bis",
+      "button": {
+        "weeks": "Wochen",
+        "today": "heute",
+        "clear": "leeren",
+        "close": "abschließen"
+      }
+    },
+    "table": {
+      "header": {
+        "principal": "Benutzer",
+        "date": "Datum",
+        "status": "Stand",
+        "data": "Extra Informationen"
+      },
+      "data": {
+        "remoteAddress": "Remote-Adresse:"
+      }
+    },
+    "notFound": "No audit found"
+  },
+  "configuration": {
+    "title": "Konfiguration",
+    "filter": "Filter (nach Präfix)",
+    "table": {
+      "prefix": "Präfix",
+      "properties": "Eigenschaften"
+    }
+  },
+  "error": {
+    "title": "Fehlerseite!",
+    "http": {
+      "400": "Ungültige Anfrage.",
+      "403": "Sie haben nicht die nötigen Berechtigungen um diese Seite anzuzeigen.",
+      "404": "Die Seite existiert nicht.",
+      "405": "Die verwendete Anfrage-Methode ist für diese URL nicht erlaubt.",
+      "500": "Interner Serverfehler."
+    },
+    "concurrencyFailure": "Ein anderer Benutzer hat diese Daten zeitgleich mit Ihnen geändert. Ihre Änderungen wurden abgelehnt.",
+    "validation": "Validierungsfehler auf dem Server.",
+    "internalServerError": "Interner Serverfehler",
+    "server.not.reachable": "Server ist nicht erreichbar",
+    "url.not.found": "Nicht gefunden",
+    "NotNull": "Feld {{fieldName}} kann nicht leer sein!",
+    "Size": "Feld {{fieldName}} erfüllt nicht die minimalen/maximalen Voraussetzungen!",
+    "userexists": "Benutzername bereits vergeben!",
+    "emailexists": "Email wird bereits verwendet!",
+    "idexists": "Ein neuer {{entityName}} kann noch keine ID haben",
+    "idnull": "Ungültige ID",
+    "file": {
+      "could.not.extract": "Could not extract file",
+      "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+    }
+  },
+  "global": {
+    "title": "Cvs",
+    "browsehappy": "Sie benutzen einen <strong>veralteten</strong> Browser. Bitte <a href=\"http://browsehappy.com/?locale=de/\">aktualisieren Sie Ihren Browser</a>, um die Benutzerfreundlichkeit zu erhöhen.",
+    "menu": {
+      "home": "Startseite",
+      "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "entities": {
+        "main": "Entitäten",
+        "vocabulary": "Vocabulary",
+        "code": "Code",
+        "version": "Version",
+        "concept": "Concept",
+        "conceptChange": "Concept Change",
+        "activityLog": "Activity Log",
+        "licence": "Licence",
+        "metadataField": "Metadata Field",
+        "metadataValue": "Metadata Value",
+        "resolver": "Resolver",
+        "vocabularyChange": "Vocabulary Change",
+        "agency": "Agency",
+        "userAgency": "User Agency",
+        "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+      },
+      "account": {
+        "main": "Zugang",
+        "settings": "Einstellungen",
+        "password": "Passwort",
+        "sessions": "Sitzungen",
+        "login": "Anmelden",
+        "logout": "Abmelden",
+        "register": "Registrierung"
+      },
+      "admin": {
+        "main": "Administration",
+        "userManagement": "Benutzerverwaltung",
+        "tracker": "Benutzer Aktivitäten",
+        "metrics": "Metriken",
+        "health": "Status",
+        "configuration": "Konfiguration",
+        "logs": "Protokoll",
+        "audits": "Audits",
+        "apidocs": "API",
+        "database": "Datenbank",
+        "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+      },
+      "language": "Sprache"
+    },
+    "form": {
+      "username.label": "Benutzername",
+      "username.placeholder": "Ihr Benutzername",
+      "currentpassword.label": "Aktuelles Passwort",
+      "currentpassword.placeholder": "Aktuelles Passwort",
+      "newpassword.label": "Neues Passwort",
+      "newpassword.placeholder": "Neues Passwort",
+      "confirmpassword.label": "Neues Passwort bestätigen",
+      "confirmpassword.placeholder": "Bestätigen Sie Ihr neues Passwort",
+      "email.label": "Email Adresse",
+      "email.placeholder": "Ihre Email Adresse"
+    },
+    "messages": {
+      "info": {
+        "authenticated": {
+          "prefix": "Wenn Sie sich ",
+          "link": "anmelden",
+          "suffix": " möchten, versuchen Sie es mit <br/>- Administrator (Name=\"admin\" und Passwort=\"admin\")<br/>- Benutzer (Name=\"user\" und Passwort=\"user\")."
+        },
+        "register": {
+          "noaccount": "Sie haben noch keinen Zugang?",
+          "link": "Registrieren Sie sich"
+        }
+      },
+      "error": {
+        "dontmatch": "Das bestätigte Passwort entspricht nicht dem neuen Passwort!"
+      },
+      "validate": {
+        "newpassword": {
+          "required": "Ein neues Passwort wird benötigt.",
+          "minlength": "Das neue Passwort muss mindestens 4 Zeichen lang sein",
+          "maxlength": "Das neue Passwort darf nicht länger als 50 Zeichen sein",
+          "strength": "Passwortstärke:"
+        },
+        "confirmpassword": {
+          "required": "Sie müssen das Passwort bestätigen.",
+          "minlength": "Das bestätigte Passwort muss mindestens 4 Zeichen lang sein",
+          "maxlength": "Das bestätigte Passwort darf nicht länger als 50 Zeichen sein"
+        },
+        "email": {
+          "required": "Ihre Email Adresse wird benötigt.",
+          "invalid": "Ihre Email Adresse ist ungültig.",
+          "minlength": "Ihre Email Adresse muss mindestens 5 Zeichen lang sein",
+          "maxlength": "Ihre Email Adresse darf nicht länger als 50 Zeichen sein"
+        }
+      }
+    },
+    "field": {
+      "id": "ID"
+    },
+    "ribbon": {
+      "dev": "Development"
+    },
+    "item-count": "Ergebnis {{first}} - {{second}} von {{total}} Elemente."
+  },
+  "entity": {
+    "action": {
+      "addblob": "Blob hinzufügen",
+      "addimage": "Bild hinzufügen",
+      "back": "Zurück",
+      "cancel": "Abbrechen",
+      "delete": "Löschen",
+      "edit": "Bearbeiten",
+      "open": "Öffnen",
+      "save": "Speichern",
+      "view": "Details"
+    },
+    "detail": {
+      "field": "Feld",
+      "value": "Wert"
+    },
+    "delete": {
+      "title": "Löschen bestätigen"
+    },
+    "validation": {
+      "required": "Dieses Feld wird benötigt.",
+      "minlength": "Dieses Feld muss mind. {{min}} Zeichen lang sein.",
+      "maxlength": "Dieses Feld darf max. {{max}} Zeichen lang sein.",
+      "min": "Dieses Feld muss größer als {{min}} sein.",
+      "max": "Dieses Feld muss kleiner als {{max}} sein.",
+      "minbytes": "Dieses Feld sollte mehr als {{min}} bytes haben.",
+      "maxbytes": "Dieses Feld sollte nicht mehr als {{max}} bytes haben.",
+      "pattern": "Dieses Feld muss das Muster {{pattern}} erfüllen.",
+      "number": "Dieses Feld muss eine Zahl sein.",
+      "datetimelocal": "Dieses Feld muss eine Datums- und Zeitangabe enthalten."
+    }
+  },
+  "footer": "Dies ist Ihre Fußzeile",
+  "health": {
+    "title": "Gesundheit Ihrer Anwendung",
+    "refresh.button": "Aktualisieren",
+    "stacktrace": "Stacktrace",
+    "details": {
+      "details": "Details",
+      "properties": "Properties",
+      "name": "Name",
+      "value": "Wert",
+      "error": "Error"
+    },
+    "indicator": {
+      "diskSpace": "Festplattenspeicher",
+      "mail": "Email",
+      "db": "Datenbank"
+    },
+    "table": {
+      "service": "Dienst Name",
+      "status": "Status"
+    },
+    "status": {
+      "UNKNOWN": "UNKNOWN",
+      "UP": "UP",
+      "DOWN": "DOWN"
+    }
+  },
+  "home": {
+    "title": "Willkommen, Java Hipster!",
+    "subtitle": "Dies ist Ihre Hauptseite",
+    "logged": {
+      "message": "Sie sind als Benutzer \"{{username}}\" angemeldet."
+    },
+    "question": "Wenn Sie Fragen zu JHipster haben:",
+    "link": {
+      "homepage": "JHipster Hauptseite",
+      "stackoverflow": "JHipster auf Stack Overflow",
+      "bugtracker": "JHipster Fehlereinträge",
+      "chat": "JHipster Chat",
+      "follow": "kontaktieren Sie uns mit @jhipster auf Twitter"
+    },
+    "like": "Wenn Sie JHipster mögen, vergessen Sie nicht uns einen Stern zu geben auf",
+    "github": "GitHub"
+  },
+  "login": {
+    "title": "Anmeldung",
+    "form": {
+      "password": "Passwort",
+      "password.placeholder": "Ihr Passwort",
+      "rememberme": "Automatische Anmeldung",
+      "button": "Anmelden"
+    },
+    "messages": {
+      "error": {
+        "authentication": "<strong>Anmeldung fehlgeschlagen!</strong> Überprüfen Sie bitte Ihre Angaben und versuchen Sie es erneut."
+      }
+    },
+    "password": {
+      "forgot": "Sie haben Ihr Passwort vergessen?"
+    }
+  },
+  "logs": {
+    "title": "Protokolle",
+    "nbloggers": "Es existieren {{ total }} Logger.",
+    "filter": "Filter",
+    "table": {
+      "name": "Name",
+      "level": "Stufe"
+    }
+  },
+  "metrics": {
+    "title": "Anwendungs-Metriken",
+    "refresh.button": "Aktualisieren",
+    "updating": "Aktualisierung...",
+    "jvm": {
+      "title": "JVM Metriken",
+      "memory": {
+        "title": "Hauptspeicher",
+        "total": "Gesamter Hauptspeicher",
+        "heap": "Heap Speicher",
+        "nonheap": "Non-Heap Speicher"
+      },
+      "threads": {
+        "title": "Threads",
+        "all": "Alle",
+        "runnable": "Runnable",
+        "timedwaiting": "Wartezeit",
+        "waiting": "Wartend",
+        "blocked": "Geblockt",
+        "dump": {
+          "title": "Threads dump",
+          "id": "Id: ",
+          "blockedtime": "Geblockte Zeit",
+          "blockedcount": "Geblockte Zahl",
+          "waitedtime": "Gewartete Zeit",
+          "waitedcount": "Gewartete Anzahl",
+          "lockname": "Lock-Name",
+          "stacktrace": "Stacktrace",
+          "show": "Zeigen",
+          "hide": "Verstecken"
+        }
+      },
+      "gc": {
+        "title": "Speicherbereinigung (GC)",
+        "marksweepcount": "Durchlaufmarkierungs (Mark Sweep) Anzahl",
+        "marksweeptime": "Durchlaufmarkierungs (Mark Sweep) Zeit",
+        "scavengecount": "Bereinigungslauf (Scavenge) Anzahl",
+        "scavengetime": "Bereinigungslauf (Scavenge) Zeit"
+      },
+      "http": {
+        "title": "HTTP Anfragen (Ereignisse pro Sekunde)",
+        "active": "Aktive Anfragen:",
+        "total": "Alle Anfragen:",
+        "table": {
+          "code": "Codierung",
+          "count": "Anzahl",
+          "mean": "Durchschnittswert",
+          "average": "Mittelwert"
+        },
+        "code": {
+          "ok": "Ok",
+          "notfound": "Nicht gefunden",
+          "servererror": "Server Fehler"
+        }
+      }
+    },
+    "servicesstats": {
+      "title": "Service Statistiken (Zeit in Millisekunden)",
+      "table": {
+        "name": "Service Name",
+        "count": "Anzahl",
+        "mean": "Durchschnitt",
+        "min": "Minimum",
+        "max": "Maximum",
+        "p50": "p50",
+        "p75": "p75",
+        "p95": "p95",
+        "p99": "p99"
+      }
+    },
+    "cache": {
+      "title": "Cache Statistiken",
+      "cachename": "Cache Name",
+      "hits": "Treffer",
+      "misses": "Keine Treffer",
+      "evictions": "Anzahl entfernter Objekte"
+    },
+    "datasource": {
+      "usage": "Usage",
+      "title": "Datenquelle (Zeit in Millisekunden)",
+      "name": "Pool-Auslastung",
+      "count": "Anzahl",
+      "mean": "Mittel",
+      "min": "Min",
+      "max": "Max",
+      "p50": "p50",
+      "p75": "p75",
+      "p95": "p95",
+      "p99": "p99"
+    }
+  },
+  "password": {
+    "title": "Passwort für [<strong>{{username}}</strong>]",
+    "form": {
+      "button": "Speichern"
+    },
+    "messages": {
+      "error": "<strong>Es ist ein Fehler aufgetreten!</strong> Das Passwort konnte nicht geändert werden.",
+      "success": "<strong>Passwort wurde geändert!</strong>"
+    }
+  },
+  "register": {
+    "title": "Registrierung",
+    "form": {
+      "button": "Registrieren"
+    },
+    "messages": {
+      "validate": {
+        "login": {
+          "required": "Ihr Benutzername wird benötigt.",
+          "minlength": "Ihr Benutzername muss mindestens 1 Zeichen lang sein",
+          "maxlength": "Ihr Benutzername darf nicht länger als 50 Zeichen sein",
+          "pattern": "Ihr Benutzername darf nur Kleinbuchstaben und Ziffern enthalten"
+        }
+      },
+      "success": "<strong>Registrierung gespeichert!</strong> Bitte überprüfen Sie Ihre Emails für die Bestätigung.",
+      "error": {
+        "fail": "<strong>Registrierung fehlgeschlagen!</strong> Bitte versuchen Sie es später nochmal.",
+        "userexists": "<strong>Benutzername bereits vergeben!</strong> Bitte wählen Sie einen anderen aus.",
+        "emailexists": "<strong>Email wird bereits verwendet!</strong> Bitte wählen Sie eine andere aus."
+      }
+    }
+  },
+  "reset": {
+    "request": {
+      "title": "Passwort zurücksetzen",
+      "form": {
+        "button": "Passwort zurücksetzen"
+      },
+      "messages": {
+        "info": "Geben Sie die Email Adresse ein, welche Sie bei der Registrierung verwendet haben.",
+        "success": "Eine Email mit weiteren Instruktionen für das Zurücksetzen des Passworts wurde gesendet.",
+        "notfound": "<strong>Diese Email Adresse existiert nicht!</strong> Überprüfen Sie Ihre Email Adresse und versuchen Sie es nochmal."
+      }
+    },
+    "finish": {
+      "title": "Passwort zurücksetzen",
+      "form": {
+        "button": "Neues Passwort setzen"
+      },
+      "messages": {
+        "info": "Wählen Sie ein neues Passwort",
+        "success": "<strong>Ihr Passwort wurde zurückgesetzt.</strong> Bitte ",
+        "keymissing": "Der Schlüssel zum Zurücksetzen fehlt.",
+        "error": "Ihr Passwort konnte nicht zurückgesetzt werden. Zur Erinnerung, Ihre Anfrage ist nur 24 Stunden gültig."
+      }
+    }
+  },
+  "sessions": {
+    "title": "Aktive Sitzungen für [<strong>{{username}}</strong>]",
+    "table": {
+      "ipaddress": "IP Adresse",
+      "useragent": "User Agent",
+      "date": "Datum",
+      "button": "Schließen"
+    },
+    "messages": {
+      "success": "<strong>Sitzung wurde geschlossen!</strong>",
+      "error": "<strong>Es ist ein Fehler aufgetreten!</strong> Die Sitzung konnte nicht geschlossen werden."
+    }
+  },
+  "settings": {
+    "title": "Einstellungen für Benutzer [<strong>{{username}}</strong>]",
+    "form": {
+      "firstname": "Vorname",
+      "firstname.placeholder": "Ihr Vorname",
+      "lastname": "Nachname",
+      "lastname.placeholder": "Ihr Nachname",
+      "language": "Sprache",
+      "button": "Speichern"
+    },
+    "messages": {
+      "error": {
+        "fail": "<strong>Es ist ein Fehler aufgetreten!</strong> Die Einstellungen konnten nicht gespeichert werden.",
+        "emailexists": "<strong>Email wird bereits verwendet!</strong> Bitte wählen Sie eine andere aus."
+      },
+      "success": "<strong>Einstellungen wurden gespeichert!</strong>",
+      "validate": {
+        "firstname": {
+          "required": "Ihr Vorname wird benötigt.",
+          "minlength": "Ihr Vorname muss mindestens 1 Zeichen lang sein",
+          "maxlength": "Ihr Vorname darf nicht länger als 50 Zeichen sein"
+        },
+        "lastname": {
+          "required": "Ihr Nachname wird benötigt.",
+          "minlength": "Ihr Nachname muss mindestens 1 Zeichen lang sein",
+          "maxlength": "Ihr Nachname darf nicht länger als 50 Zeichen sein"
+        }
+      }
+    }
+  },
+  "userManagement": {
+    "home": {
+      "title": "Benutzer",
+      "createLabel": "Neuen Benutzer erstellen",
+      "createOrEditLabel": "Benutzer erstellen oder bearbeiten"
+    },
+    "created": "Ein neuer Benutzer wurde mit ID {{ param }} erstellt",
+    "updated": "Ein Benutzer mit ID {{ param }} wurde geändert",
+    "deleted": "Ein Benutzer mit ID {{ param }} wurde gelöscht",
+    "delete": {
+      "question": "Sind Sie sicher, dass Sie den Benutzer {{ login }} löschen möchten?"
+    },
+    "detail": {
+      "title": "Benutzer"
+    },
+    "login": "Login",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "email": "Email",
+    "activated": "Aktiv",
+    "deactivated": "Deaktiviert",
+    "profiles": "Profile",
+    "langKey": "Sprache",
+    "createdBy": "Erstellt von",
+    "createdDate": "Erstellt am",
+    "lastModifiedBy": "Bearbeitet von",
+    "lastModifiedDate": "Zuletzt bearbeitet"
+  }
+}
