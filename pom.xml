@@ -91,7 +91,6 @@
         <git-commit-id-plugin.version>4.9.10</git-commit-id-plugin.version>
         <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
         <jib-maven-plugin.version>3.4.0</jib-maven-plugin.version>
-        <jib-layer-with-modification-time-extension-maven.version>1.0.1</jib-layer-with-modification-time-extension-maven.version>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
         <sonar-maven-plugin.version>5.0.0.4389</sonar-maven-plugin.version>
