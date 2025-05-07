@@ -17,8 +17,6 @@ package eu.cessda.cvs.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Path;
-
 public class FileUploadHelper {
     private final FileUploadType fileUploadType;
     private final MultipartFile sourceFile;
