@@ -43,7 +43,7 @@ public interface VocabularyEditorMapper extends EntityMapper<VocabularyDTO, Voca
     @Mapping(source = "statuses", target = "statuses")
     VocabularyEditor toEntity(VocabularyDTO vocabularyDTO);
 
-    default VocabularyEditor fromId(Long id) {
+    static VocabularyEditor fromId(Long id) {
         if (id == null) {
             return null;
         }
