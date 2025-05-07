@@ -483,31 +483,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>war</goal>
-                        </goals>
-                        <phase>package</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <warSourceIncludes>WEB-INF/**,META-INF/**</warSourceIncludes>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                    <warSourceDirectory>target/classes/static/</warSourceDirectory>
-                    <webResources>
-                        <resource>
-                            <directory>src/main/webapp</directory>
-                            <includes>
-                                <include>WEB-INF/**</include>
-                            </includes>
-                        </resource>
-                    </webResources>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
                 <version>${frontend-maven-plugin.version}</version>
@@ -555,25 +530,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <version>${jib-maven-plugin.version}</version>
-                <configuration>
-                    <to>
-                        <image>cvs:latest</image>
-                    </to>
-                    <container>
-                        <ports>
-                            <port>8080</port>
-                        </ports>
-                        <environment>
-                            <SPRING_OUTPUT_ANSI_ENABLED>ALWAYS</SPRING_OUTPUT_ANSI_ENABLED>
-                        </environment>
-                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
-                    </container>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -690,7 +646,6 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <fork>true</fork>
                     <!--
                     Enable the line below to have remote debugging of your application on port 5005
                     <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>
@@ -1010,6 +965,27 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-war-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>war</goal>
+                                </goals>
+                                <phase>package</phase>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <warSourceIncludes>WEB-INF/**,META-INF/**</warSourceIncludes>
+                            <failOnMissingWebXml>false</failOnMissingWebXml>
+                            <warSourceDirectory>target/classes/static/</warSourceDirectory>
+                            <webResources>
+                                <resource>
+                                    <directory>src/main/webapp</directory>
+                                    <includes>
+                                        <include>WEB-INF/**</include>
+                                    </includes>
+                                </resource>
+                            </webResources>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
