@@ -15,10 +15,6 @@
  */
 package eu.cessda.cvs.service;
 
-import com.itextpdf.html2pdf.ConverterProperties;
-import com.itextpdf.html2pdf.HtmlConverter;
-import com.itextpdf.layout.font.FontProvider;
-import com.itextpdf.layout.font.FontSet;
 import org.docx4j.convert.in.xhtml.FormattingOption;
 import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
 import org.docx4j.jaxb.Context;
@@ -32,9 +28,13 @@ import org.docx4j.openpackaging.parts.WordprocessingML.FooterPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.NumberingDefinitionsPart;
 import org.docx4j.relationships.Relationship;
 import org.docx4j.wml.*;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.xhtmlrenderer.layout.SharedContext;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -53,8 +53,6 @@ public class ExportService
     public static final MediaType MEDIATYPE_RDF = MediaType.parseMediaType(MEDIATYPE_RDF_VALUE);
     public static final String MEDIATYPE_WORD_VALUE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
     public static final MediaType MEDIATYPE_WORD = MediaType.parseMediaType( MEDIATYPE_WORD_VALUE );
-
-    private final FontSet fontSet;
 
     public enum DownloadType
 	{
@@ -99,20 +97,9 @@ public class ExportService
     private final ObjectFactory factory = new ObjectFactory();
 	private final SpringTemplateEngine templateEngine;
 
-    @SuppressWarnings( "DataFlowIssue" )
 	public ExportService( SpringTemplateEngine templateEngine )
 	{
         this.templateEngine = templateEngine;
-        this.fontSet = new FontSet();
-
-        // Add all fonts
-        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Black.otf").toString() );
-        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Bold.otf" ).toString() );
-        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-DemiLight.otf" ).toString() );
-        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Light.otf" ).toString() );
-        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Medium.otf" ).toString() );
-        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Regular.otf" ).toString() );
-        this.fontSet.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Thin.otf" ).toString() );
 	}
 
     public void generateFileByThymeleafTemplate(
@@ -164,10 +151,33 @@ public class ExportService
         writer.flush();
 	}
 
-    public void createPdfFile( String contents, OutputStream outputStream )
+    @SuppressWarnings( "DataFlowIssue" )
+    public void createPdfFile( String contents, OutputStream outputStream ) throws IOException
     {
+        // Convert document to XHTML
+        Document parsedHTML = Jsoup.parse( contents );
+        parsedHTML.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+
+        var renderer = new ITextRenderer();
+
+        SharedContext sharedContext = renderer.getSharedContext();
+        sharedContext.setPrint(true);
+        sharedContext.setInteractive(false);
+
+        // Load custom fonts
+        var fontResolver = renderer.getFontResolver();
+        fontResolver.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Black.otf").toString(), true );
+        fontResolver.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Bold.otf" ).toString(), true );
+        fontResolver.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-DemiLight.otf" ).toString(), true );
+        fontResolver.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Light.otf" ).toString(), true );
+        fontResolver.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Medium.otf" ).toString(), true );
+        fontResolver.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Regular.otf" ).toString(), true );
+        fontResolver.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Thin.otf" ).toString(), true );
+
         // Generate the PDF
-        HtmlConverter.convertToPdf(contents, outputStream, new ConverterProperties().setFontProvider(new FontProvider(fontSet)));
+        renderer.setDocumentFromString(parsedHTML.html());
+        renderer.layout();
+        renderer.createPDF(outputStream);
 	}
 
     public void createWordFile( String contents, OutputStream outputStream ) throws Docx4JException, JAXBException {

@@ -361,9 +361,9 @@
         </dependency>
         <!-- pdf creator -->
         <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>html2pdf</artifactId>
-            <version>6.1.0</version>
+            <groupId>org.xhtmlrenderer</groupId>
+            <artifactId>flying-saucer-pdf</artifactId>
+            <version>9.12.0</version>
         </dependency>
         <!-- word creator -->
         <dependency>
