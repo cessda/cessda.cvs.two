@@ -37,10 +37,13 @@ import org.xhtmlrenderer.layout.SharedContext;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import javax.xml.bind.JAXBException;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigInteger;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
@@ -151,7 +154,6 @@ public class ExportService
         writer.flush();
 	}
 
-    @SuppressWarnings( "DataFlowIssue" )
     public void createPdfFile( String contents, OutputStream outputStream ) throws IOException
     {
         // Convert document to XHTML
@@ -166,19 +168,35 @@ public class ExportService
 
         // Load custom fonts
         var fontResolver = renderer.getFontResolver();
-        fontResolver.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Black.otf").toString(), true );
-        fontResolver.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Bold.otf" ).toString(), true );
-        fontResolver.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-DemiLight.otf" ).toString(), true );
-        fontResolver.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Light.otf" ).toString(), true );
-        fontResolver.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Medium.otf" ).toString(), true );
-        fontResolver.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Regular.otf" ).toString(), true );
-        fontResolver.addFont( this.getClass().getResource( "/fonts/NotoSansCJKjp-Thin.otf" ).toString(), true );
+        fontResolver.addFont( getFontPath( "/fonts/NotoSansCJKjp-Black.otf" ), true );
+        fontResolver.addFont( getFontPath( "/fonts/NotoSansCJKjp-Bold.otf" ), true );
+        fontResolver.addFont( getFontPath( "/fonts/NotoSansCJKjp-DemiLight.otf" ), true );
+        fontResolver.addFont( getFontPath( "/fonts/NotoSansCJKjp-Light.otf" ), true );
+        fontResolver.addFont( getFontPath( "/fonts/NotoSansCJKjp-Medium.otf" ), true );
+        fontResolver.addFont( getFontPath( "/fonts/NotoSansCJKjp-Regular.otf" ), true );
+        fontResolver.addFont( getFontPath( "/fonts/NotoSansCJKjp-Thin.otf" ), true );
 
         // Generate the PDF
         renderer.setDocumentFromString(parsedHTML.html());
         renderer.layout();
         renderer.createPDF(outputStream);
 	}
+
+    @SuppressWarnings( "DataFlowIssue" )
+    private String getFontPath( String name )
+    {
+        URL fontURL = this.getClass().getResource( name );
+        try
+        {
+            File fontFile = new File( fontURL.toURI() ) ;
+            return fontFile.getPath();
+        }
+        catch ( IllegalArgumentException | URISyntaxException e )
+        {
+            // fallback
+            return fontURL.toString();
+        }
+    }
 
     public void createWordFile( String contents, OutputStream outputStream ) throws Docx4JException, JAXBException {
         // Setup font mapping
