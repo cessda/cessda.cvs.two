@@ -45,23 +45,24 @@ public class VocabularyDTO implements Serializable {
     private Long id;
 
     public VocabularyDTO() {
-        this.archived = false;
-        this.withdrawn = false;
-        this.discoverable = true;
-        this.status = Status.DRAFT.toString();
         this.notation = "NEW_VOCABULARY";
-        this.versionNumber = new VersionNumber(1,0,0);
         this.sourceLanguage = "en";
         this.agencyId = 0L;
         this.agencyName = "DEFAULT_AGENCY";
     }
 
     public VocabularyDTO(VocabularySnippet vocabularySnippet) {
-        this();
         this.agencyId = vocabularySnippet.getAgencyId();
+        this.agencyName = "DEFAULT_AGENCY";
         this.notation = vocabularySnippet.getNotation();
-        if( vocabularySnippet.getItemType().equals(ItemType.SL))
+        if( vocabularySnippet.getItemType() == ItemType.SL )
+        {
             this.sourceLanguage = vocabularySnippet.getLanguage();
+        }
+        else
+        {
+            this.sourceLanguage = "en";
+        }
 
         setStatusByVocabularySnippet(vocabularySnippet);
         setVersionNumberByVocabularySnippet(vocabularySnippet);
@@ -92,8 +93,7 @@ public class VocabularyDTO implements Serializable {
     }
 
     @NotNull
-    @Size(max = 20)
-    private String status;
+    private Status status = Status.DRAFT;
 
     @Size(max = 240)
     private String uri;
@@ -104,17 +104,17 @@ public class VocabularyDTO implements Serializable {
 
     @NotNull
     @Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
-    private VersionNumber versionNumber;
+    private VersionNumber versionNumber = new VersionNumber(1,0,0);
 
     private Long initialPublication;
 
     private Long previousPublication;
 
-    private Boolean archived;
+    private Boolean archived = false;
 
-    private Boolean withdrawn;
+    private Boolean withdrawn = false;
 
-    private Boolean discoverable;
+    private Boolean discoverable = true;
 
     @NotNull
     @Size(max = 20)
@@ -412,11 +412,11 @@ public class VocabularyDTO implements Serializable {
         this.id = id;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -2100,7 +2100,7 @@ public class VocabularyDTO implements Serializable {
     }
 
     public void prepareSlPublishing( VersionDTO versionDTO) {
-        this.status =  Status.PUBLISHED.toString();
+        this.status =  Status.PUBLISHED;
         this.versionNumber = versionDTO.getNumber();
         this.uri = this.uri + "/" + this.versionNumber;
         this.publicationDate = versionDTO.getPublicationDate();
@@ -2127,21 +2127,21 @@ public class VocabularyDTO implements Serializable {
 
     public static void fillVocabularyByVersions( VocabularyDTO vocab, Set<VersionDTO> versions ) {
         // use to ignore version with same lang, eg. FRv2.0.2 and FRv2.0.1 only FRv.2.0.2 will be chosen
-        Set<String> versionLangs = new HashSet<>();
+        var versionLangs = new HashSet<String>();
         for (VersionDTO version : versions) {
             if( versionLangs.contains( version.getLanguage()) )
                 continue;
             versionLangs.add( version.getLanguage());
             // fill vocabulary
             vocab.setTitleDefinition(version.getTitle(), version.getDefinition(), version.getLanguage(), false);
-            if( version.getStatus().equals( Status.PUBLISHED.toString())) {
+            if( version.getStatus() == Status.PUBLISHED ) {
                 vocab.addLanguagePublished(version.getLanguage());
                 vocab.setVersionByLanguage(version.getLanguage(), version.getNumber().toString());
             } else {
                 vocab.setVersionByLanguage(version.getLanguage(), version.getNumber() + "_" + version.getStatus());
             }
             vocab.addLanguage( version.getLanguage() );
-            vocab.addStatuses( version.getStatus() );
+            vocab.addStatuses( version.getStatus().toString() );
         }
 
     }

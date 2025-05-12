@@ -16,6 +16,7 @@
 package eu.cessda.cvs.domain;
 
 import eu.cessda.cvs.domain.enumeration.ItemType;
+import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.utils.VersionNumber;
 
@@ -34,7 +35,7 @@ public class VocabularySnippet implements Serializable {
     private ItemType itemType;
     private String notation;
     private VersionNumber versionNumber;
-    private String status;
+    private Status status;
     private String title;
     private String definition;
     private String notes;
@@ -127,11 +128,11 @@ public class VocabularySnippet implements Serializable {
         this.versionNumber = versionNumber;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

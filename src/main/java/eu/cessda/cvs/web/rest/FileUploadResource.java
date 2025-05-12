@@ -94,7 +94,7 @@ public class FileUploadResource
     public ResponseEntity<String> uploadLicenseImage( @RequestParam( "file" ) MultipartFile file ) throws URISyntaxException, IOException
     {
         log.debug( "Uploading license-image file {}", file.getName() );
-        FileUploadHelper fileUploadHelper = new FileUploadHelper( FileUploadType.IMAGE_LICENSE, file );;
+        FileUploadHelper fileUploadHelper = new FileUploadHelper( FileUploadType.IMAGE_LICENSE, file );
         Path uploadedFile = fileUploadService.uploadFile( fileUploadHelper );
         return ResponseEntity.created( new URI( UPLOADED_IMAGES_URI + "license/" + uploadedFile.getFileName() ) ).build();
     }
@@ -115,6 +115,7 @@ public class FileUploadResource
         return ResponseEntity.created( new URI( UPLOADED_FILE_URI + uploadedFile.getFileName() ) ).build();
     }
 
+    @SuppressWarnings( "DataFlowIssue" )
     @PostMapping( "/docx2html/{fileName}" )
     public ResponseEntity<Void> docx2html( @PathVariable String fileName ) throws IOException, Docx4JException, URISyntaxException
     {

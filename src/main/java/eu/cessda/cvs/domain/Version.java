@@ -19,6 +19,8 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import eu.cessda.cvs.domain.enumeration.ItemType;
+import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.utils.VersionNumber;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -48,14 +50,14 @@ public class Version implements Serializable {
     private Long id;
 
     @NotNull
-    @Size(max = 20)
     @Column(name = "status", length = 20, nullable = false)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @NotNull
-    @Size(max = 20)
     @Column(name = "item_type", length = 20, nullable = false)
-    private String itemType;
+    @Enumerated(EnumType.STRING)
+    private ItemType itemType;
 
     @Size(max = 20)
     @Column(name = "language", length = 20)
@@ -168,29 +170,29 @@ public class Version implements Serializable {
         this.id = id;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public Version status(String status) {
+    public Version status(Status status) {
         this.status = status;
         return this;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
-    public String getItemType() {
+    public ItemType getItemType() {
         return itemType;
     }
 
-    public Version itemType(String itemType) {
+    public Version itemType(ItemType itemType) {
         this.itemType = itemType;
         return this;
     }
 
-    public void setItemType(String itemType) {
+    public void setItemType(ItemType itemType) {
         this.itemType = itemType;
     }
 

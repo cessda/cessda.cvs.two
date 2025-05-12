@@ -16,6 +16,7 @@
 package eu.cessda.cvs.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.utils.VersionNumber;
 import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
@@ -37,17 +38,17 @@ import java.util.Objects;
 @MappedSuperclass
 public class VocabularyBase implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    @Size(max = 20)
     @Column(name = "status", length = 20, nullable = false)
     @Field( type = FieldType.Keyword )
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Size(max = 240)
     @Column(name = "uri", length = 240)
@@ -552,16 +553,16 @@ public class VocabularyBase implements Serializable {
         this.id = id;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public VocabularyBase status(String status) {
+    public VocabularyBase status(Status status) {
         this.status = status;
         return this;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

@@ -16,6 +16,7 @@
 package eu.cessda.cvs.service.impl;
 
 import eu.cessda.cvs.domain.Version;
+import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.repository.VersionRepository;
 import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.dto.VersionDTO;
@@ -218,7 +219,7 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public List<String> findAllLanguagesByStatus(List<String> status) {
+    public List<String> findAllLanguagesByStatus(List<Status> status) {
         log.debug("Request to get languages used in vocabularies by version status {}", status);
         return versionRepository.findAllLanguagesByStatus(status);
     }

@@ -18,6 +18,7 @@ package eu.cessda.cvs.web.rest;
 import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.domain.*;
 import eu.cessda.cvs.domain.enumeration.ItemType;
+import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.repository.*;
 import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.security.AuthoritiesConstants;
@@ -56,7 +57,7 @@ class VocabularyMaintenanceResourceIT {
     private static final ItemType ITEM_TYPE_SL = ItemType.SL;
     private static final String NOTATION = "AAAAAAAAAA";
     private static final VersionNumber INIT_VERSION_NUMBER_SL = VersionNumber.fromString("1.0");
-    private static final String INIT_STATUS = "DRAFT";
+    private static final Status INIT_STATUS = Status.DRAFT;
     private static final String INIT_TITLE_EN = "AAAAAAAAAA";
     private static final String INIT_DEFINITION_EN = "AAAAAAAAAA";
     private static final String INIT_NOTES = "AAAAAAAAAA";

@@ -20,6 +20,7 @@ import eu.cessda.cvs.domain.Agency;
 import eu.cessda.cvs.domain.Authority;
 import eu.cessda.cvs.domain.User;
 import eu.cessda.cvs.domain.Vocabulary;
+import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.domain.search.VocabularyEditor;
 import eu.cessda.cvs.repository.AgencyRepository;
 import eu.cessda.cvs.repository.AuthorityRepository;
@@ -34,7 +35,6 @@ import eu.cessda.cvs.service.mapper.AgencyMapper;
 import eu.cessda.cvs.service.mapper.VocabularyEditorMapper;
 import eu.cessda.cvs.service.mapper.VocabularyMapper;
 import eu.cessda.cvs.utils.VersionNumber;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -74,8 +74,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class VocabularyResourceIT {
 
-    private static final String DEFAULT_STATUS = "DRAFT";
-    private static final String UPDATED_STATUS = "REVIEW";
+    private static final Status DEFAULT_STATUS = Status.DRAFT;
+    private static final Status UPDATED_STATUS = Status.REVIEW;
 
     private static final String DEFAULT_URI = "AAAAAAAAAA";
     private static final String UPDATED_URI = "BBBBBBBBBB";
@@ -871,7 +871,7 @@ public class VocabularyResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(vocabulary.getId().intValue())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].uri").value(hasItem(DEFAULT_URI)))
             .andExpect(jsonPath("$.[*].notation").value(hasItem(DEFAULT_NOTATION)))
             .andExpect(jsonPath("$.[*].versionNumber").value(hasItem(DEFAULT_VERSION_NUMBER.toString())))
@@ -984,7 +984,7 @@ public class VocabularyResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(vocabulary.getId().intValue()))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
             .andExpect(jsonPath("$.uri").value(DEFAULT_URI))
             .andExpect(jsonPath("$.notation").value(DEFAULT_NOTATION))
             .andExpect(jsonPath("$.versionNumber").value(DEFAULT_VERSION_NUMBER.toString()))
@@ -1364,7 +1364,7 @@ public class VocabularyResourceIT {
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSizeBeforeDelete - 1);
     }
- 
+
     @Test
     @Transactional
     void shouldUpdateVocabularyLogoOnAgencyUpdate() throws Exception

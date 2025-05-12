@@ -74,7 +74,7 @@ public class UrnResolver {
 
     private Optional<ResponseEntity<String>> getVersionByUrnStartWith(String baseUrl, String urn) {
         return versionService.findByUrnStartingWith(urn).stream()
-            .filter(v -> v.getStatus().equals(Status.PUBLISHED.toString())).findFirst()
+            .filter(v -> v.getStatus() == Status.PUBLISHED ).findFirst()
             .map(versionDTO -> {
                 HttpHeaders headers = new HttpHeaders();
                 headers.setLocation(URI.create( baseUrl + "/vocabulary/" + versionDTO.getNotation()));
@@ -94,7 +94,7 @@ public class UrnResolver {
             // Got a language variant
             additionalQuery = "&lang=" + lang;
         } else {
-            versionDTOOptional = versions.stream().filter(v -> v.getItemType().equals(ItemType.SL.toString())).findFirst();
+            versionDTOOptional = versions.stream().filter(v -> v.getItemType() == ItemType.SL ).findFirst();
             additionalQuery = "";
         }
 
@@ -103,7 +103,7 @@ public class UrnResolver {
 
             // Derive the version number
             String versionNumber;
-            if (versionDTO.getItemType().equals(ItemType.SL.toString())) {
+            if ( versionDTO.getItemType() == ItemType.SL ) {
                 versionNumber = versionDTO.getNumber().toString();
             } else {
                 versionNumber = versionDTO.getNumber().getMinorVersion();

@@ -143,21 +143,21 @@ public class AgencyStat implements Serializable {
         List<VersionCodeStat> versionCodeStats = new ArrayList<>();
 
         for (VersionDTO v : vocabularyDTO.getVersions()) {
-            if(v.getItemType().equals(ItemType.SL.toString())){
-                if(v.getStatus().equals(Status.PUBLISHED.toString())) {
+            if( v.getItemType() == ItemType.SL ){
+                if( v.getStatus() == Status.PUBLISHED ) {
                     latestPublishedSlVersionNumber = generatePublishedSlVersionCodeStats(latestPublishedSlVersionNumber, versionCodeStats, v);
                 }
                 if(latestSlVersionNumber == null) {
                     latestSlVersionNumber = v.getNumber();
                 }
             }
-            if(v.getStatus().equals(Status.PUBLISHED.toString()) || v.getNumber().equalMinorVersionNumber(latestSlVersionNumber)) {
+            if( v.getStatus() == Status.PUBLISHED || v.getNumber().equalMinorVersionNumber(latestSlVersionNumber)) {
                 languages.add(v.getLanguage());
                 VersionStatusStat versionStatusStat = new VersionStatusStat(
                     v.getLanguage(),
-                    v.getItemType(),
+                    v.getItemType().toString(),
                     v.getNumber(),
-                    v.getStatus(),
+                    v.getStatus().toString(),
                     v.getCreationDate(),
                     v.getLastChangeDate()
                 );

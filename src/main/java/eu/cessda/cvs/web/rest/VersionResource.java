@@ -16,6 +16,7 @@
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.config.audit.AuditEventPublisher;
+import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.dto.VersionDTO;
@@ -30,6 +31,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -204,17 +206,22 @@ public class VersionResource {
     public ResponseEntity<List<String>> searchLanguages( @RequestParam(name = "s" ) String s) {
         log.debug("REST request search vocabulary languages");
         s = URLDecoder.decode( s, StandardCharsets.UTF_8);
-        final List<String> status = new ArrayList<>();
+        final List<Status> status = new ArrayList<>();
         if ( !s.trim().isEmpty() )
         {
             // Split the string using ; as the split character, and trim the resultant strings
             for ( String split : s.split( ";" ) )
             {
-                status.add( split.trim() );
+                status.add( Status.valueOf(split.trim()) );
             }
         }
         List<String> languagesIsos = versionService.findAllLanguagesByStatus(status);
 
         return ResponseEntity.ok().body( languagesIsos );
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    void handleIllegalArgumentException() {
     }
 }
