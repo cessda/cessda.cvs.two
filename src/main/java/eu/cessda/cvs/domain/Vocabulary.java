@@ -87,6 +87,12 @@ public class Vocabulary extends VocabularyBase
     }
 
     @Override
+    public int hashCode()
+    {
+        return Objects.hash( super.hashCode(), versions );
+    }
+
+    @Override
     public String toString()
     {
         return "Vocabulary{" +
