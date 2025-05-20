@@ -48,7 +48,7 @@ export class UserManagementUpdateComponent implements OnInit {
     lastName: ['', [Validators.maxLength(50)]],
     email: ['', [Validators.minLength(5), Validators.maxLength(254), Validators.email]],
     activated: [false],
-    langKey: [''],
+    langKey: ['en'],
     authorities: [['']],
   });
 

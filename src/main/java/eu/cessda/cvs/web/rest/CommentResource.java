@@ -82,10 +82,10 @@ public class CommentResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated commentDTO,
      * or with status {@code 400 (Bad Request)} if the commentDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the commentDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/comments")
-    public ResponseEntity<CommentDTO> updateComment(@RequestBody CommentDTO commentDTO) throws URISyntaxException {
+    public ResponseEntity<CommentDTO> updateComment(@RequestBody CommentDTO commentDTO)
+    {
         log.debug("REST request to update Comment : {}", commentDTO);
         if (commentDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

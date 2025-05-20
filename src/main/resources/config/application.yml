@@ -61,10 +61,10 @@ spring:
   application:
     name: cvs
   profiles:
-    # The commented value for `active` can be replaced with valid Spring profiles to load.
-    # Otherwise, it will be filled in by maven when building the JAR file
-    # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
-    active: #spring.profiles.active#
+    # Profile can be overridden by setting `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+    active: dev
+    # Always include the Swagger profile
+    include: swagger
   jmx:
     enabled: false
   data:
@@ -134,7 +134,8 @@ jhipster:
   clientApp:
     name: 'cvsApp'
   cors:
-    allowed-origins: '*'
+    # Allow all origins
+    allowed-origin-patterns: '*'
     # Only allow resources to be read
     allowed-methods: 'GET'
     allowed-headers: '*'
@@ -147,7 +148,7 @@ jhipster:
     default-include-pattern: /(v1|v2|urn)/.*
     title: CVS API
     description: CESSDA Vocabularies Service API Documentation
-    version: 0.0.1
+    version: 3.4.2
     terms-of-service-url: https://www.cessda.eu/Acceptable-Use-Policy
     contact-name: CESSDA Support
     contact-url:
