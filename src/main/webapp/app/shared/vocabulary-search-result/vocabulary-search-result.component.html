@@ -156,7 +156,7 @@
                     <div class="table-responsive">
                         <div *ngFor="let vocabulary of vocabularies; trackBy: trackNotation" class="vocab-item">
                             <div class="vocab-logo" *ngIf="vocabulary.agencyLogo !== null">
-                                <img [src]="'/content/images/agency/' + vocabulary.agencyLogo" width="120px" alt="logo"/>
+                                <img [src]="'/content/images/agency/' + vocabulary.agencyLogo" width="120px" [alt]="vocabulary.agencyName + ' logo'"/>
                             </div>
                             <div class="vocab-detail">
                                 <div class="vocab-title">

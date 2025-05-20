@@ -40,7 +40,7 @@ export class AccountService {
     private router: Router,
   ) {}
 
-  save(account: Account): Observable<{}> {
+  save(account: Account) {
     return this.http.post(SERVER_API_URL + 'api/account', account);
   }
 

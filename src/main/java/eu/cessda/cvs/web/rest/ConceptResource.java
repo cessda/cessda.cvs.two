@@ -83,10 +83,10 @@ public class ConceptResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated conceptDTO,
      * or with status {@code 400 (Bad Request)} if the conceptDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the conceptDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/concepts")
-    public ResponseEntity<ConceptDTO> updateConcept(@Valid @RequestBody ConceptDTO conceptDTO) throws URISyntaxException {
+    public ResponseEntity<ConceptDTO> updateConcept(@Valid @RequestBody ConceptDTO conceptDTO)
+    {
         log.debug("REST request to update Concept : {}", conceptDTO);
         if (conceptDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");

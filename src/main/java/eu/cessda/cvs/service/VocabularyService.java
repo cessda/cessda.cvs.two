@@ -24,7 +24,6 @@ import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -199,17 +198,15 @@ public interface VocabularyService {
     /**
      * Generate JSON files for all published vocabularies.
      *
-     * @throws IOException
      */
-    String generateJsonAllVocabularyPublish() throws IOException;
+    String generateJsonAllVocabularyPublish();
 
     /**
      * Generate JSON files for published vocabularies
      *
      * @param vocabularies the published vocabularyDTOs array
-     * @throws IOException
      */
-    String generateJsonVocabularyPublish( VocabularyDTO... vocabularies ) throws IOException;
+    String generateJsonVocabularyPublish( VocabularyDTO... vocabularies );
 
     /**
      * Filter-out vocabularyDTO.versions based on versionList e.g. (en-1.0, fr-1.0.1). Includes all if versionList is null

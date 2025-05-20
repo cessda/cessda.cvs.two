@@ -76,15 +76,19 @@ public class WebConfigurer implements ServletContextInitializer, WebMvcConfigure
     /**
      * Customize the Servlet engine: Mime types, the document root, the cache.
      */
+    @SuppressWarnings( "DataFlowIssue" )
     @Override
     @ParametersAreNonnullByDefault
-    public void addResourceHandlers( ResourceHandlerRegistry registry ) {
+    public void addResourceHandlers( ResourceHandlerRegistry registry )
+    {
         // Configure mapping for upload directories
-        if (applicationProperties.getStaticFilePath() != null)
+        if ( applicationProperties.getStaticFilePath() != null )
         {
             registry.addResourceHandler( "/content/**" )
                 .addResourceLocations( new PathResource( applicationProperties.getStaticFilePath() ), new ClassPathResource( "/static/content/" ) )
-                .setCacheControl( webProperties.getResources().getCache().getCachecontrol().toHttpCacheControl() );
+                .setCachePeriod( ( webProperties.getResources().getCache().getPeriod() != null ) ? (int) webProperties.getResources().getCache().getPeriod().getSeconds() : null )
+                .setCacheControl( webProperties.getResources().getCache().getCachecontrol().toHttpCacheControl() )
+                .setUseLastModified( webProperties.getResources().getCache().isUseLastModified() );
         }
     }
 
