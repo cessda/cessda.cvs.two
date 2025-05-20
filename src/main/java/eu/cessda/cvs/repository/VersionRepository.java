@@ -16,6 +16,7 @@
 package eu.cessda.cvs.repository;
 
 import eu.cessda.cvs.domain.Version;
+import eu.cessda.cvs.domain.enumeration.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -53,5 +54,5 @@ public interface VersionRepository extends JpaRepository<Version, Long> {
     List<Version> findByCanonicalUriStartingWith(String canonicalUri);
 
     @Query("select distinct(language) from Version v where v.status in (:status) order by v.language ASC")
-    List<String> findAllLanguagesByStatus(@Param("status") List<String> status);
+    List<String> findAllLanguagesByStatus(@Param("status") List<Status> status);
 }

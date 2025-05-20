@@ -51,12 +51,10 @@ public class VersionDTO implements Serializable
     private Long id;
 
 	@NotNull
-	@Size( max = 20 )
-	private String status;
+	private Status status;
 
 	@NotNull
-	@Size( max = 20 )
-	private String itemType;
+	private ItemType itemType;
 
 	@Size( max = 20 )
 	private String language;
@@ -133,8 +131,8 @@ public class VersionDTO implements Serializable
 
 	public VersionDTO()
 	{
-		this.status = Status.DRAFT.toString();
-		this.itemType = ItemType.SL.toString();
+		this.status = Status.DRAFT;
+		this.itemType = ItemType.SL;
 	}
 
 	/**
@@ -144,9 +142,9 @@ public class VersionDTO implements Serializable
 	 */
 	public VersionDTO( VocabularyDTO vocabularyDTO )
 	{
-		this.status = Status.DRAFT.toString();
+		this.status = Status.DRAFT;
 		this.creationDate = LocalDate.now();
-		this.itemType = ItemType.SL.toString();
+		this.itemType = ItemType.SL;
 		this.language = vocabularyDTO.getSourceLanguage();
 		this.number = vocabularyDTO.getVersionNumber();
 		this.notation = vocabularyDTO.getNotation();
@@ -167,8 +165,8 @@ public class VersionDTO implements Serializable
 	{
 		this.vocabularyId = versionSlDTO.getVocabularyId();
 		this.creationDate = LocalDate.now();
-		this.status = Status.DRAFT.toString();
-		this.itemType = ItemType.TL.toString();
+		this.status = Status.DRAFT;
+		this.itemType = ItemType.TL;
 		this.language = vocabularySnippet.getLanguage();
 		this.number = vocabularySnippet.getVersionNumber();
 		this.uriSl = versionSlDTO.getUri();
@@ -192,7 +190,7 @@ public class VersionDTO implements Serializable
 	public VersionDTO( VersionDTO prevVersion, VersionDTO currentSlVersion )
 	{
 		this.vocabularyId = prevVersion.getVocabularyId();
-		this.status = Status.DRAFT.toString();
+		this.status = Status.DRAFT;
 		this.itemType = prevVersion.getItemType();
 		this.language = prevVersion.getLanguage();
 		this.notation = prevVersion.getNotation();
@@ -209,13 +207,13 @@ public class VersionDTO implements Serializable
 		this.license = prevVersion.getLicense();
 
 		// differentiate VersionNumber, uriSl between SL and TL version cloning
-		if ( this.itemType.equals( ItemType.SL.toString() ) )
+		if ( this.itemType == ItemType.SL )
 		{
 			this.number = prevVersion.getNumber().increaseMinorNumber();
 		}
 		else
 		{
-			this.number = currentSlVersion.getStatus().equals(Status.PUBLISHED.toString()) ?
+			this.number = currentSlVersion.getStatus() == Status.PUBLISHED ?
 				currentSlVersion.getNumber().increasePatchNumber()
 				: currentSlVersion.getNumber();
 			this.translateAgency = prevVersion.getTranslateAgency();
@@ -240,22 +238,22 @@ public class VersionDTO implements Serializable
 		this.id = id;
 	}
 
-	public String getStatus()
+	public Status getStatus()
 	{
 		return status;
 	}
 
-	public void setStatus( String status )
+	public void setStatus( Status status )
 	{
 		this.status = status;
 	}
 
-	public String getItemType()
+	public ItemType getItemType()
 	{
 		return itemType;
 	}
 
-	public void setItemType( String itemType )
+	public void setItemType( ItemType itemType )
 	{
 		this.itemType = itemType;
 	}
@@ -885,6 +883,6 @@ public class VersionDTO implements Serializable
 
 	@JsonIgnore
 	public LocalDate getLastChangeDate() {
-		return this.getStatus().equals(Status.PUBLISHED.toString()) ? this.getPublicationDate() : this.getLastStatusChangeDate();
+		return this.getStatus() == Status.PUBLISHED ? this.getPublicationDate() : this.getLastStatusChangeDate();
 	}
 }

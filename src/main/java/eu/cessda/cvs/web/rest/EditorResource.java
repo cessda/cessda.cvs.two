@@ -134,7 +134,7 @@ public class EditorResource {
     {
         log.debug("REST request to save Vocabulary : {}", vocabularySnippet);
         // check if user authorized to add VocabularyResource
-        if ( ActionType.CREATE_CV.equals( vocabularySnippet.getActionType() ) )
+        if ( ActionType.CREATE_CV == vocabularySnippet.getActionType() )
         {
             SecurityUtils.checkResourceAuthorization( ActionType.CREATE_CV, vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
 
@@ -143,7 +143,7 @@ public class EditorResource {
                 throw new BadRequestAlertException( "A new vocabulary cannot already have an ID", ENTITY_VOCABULARY_NAME, ID_EXIST );
             }
         }
-        else if ( ActionType.ADD_TL_CV.equals( vocabularySnippet.getActionType() ) )
+        else if ( ActionType.ADD_TL_CV == vocabularySnippet.getActionType() )
         {
             SecurityUtils.checkResourceAuthorization( ActionType.ADD_TL_CV, vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
         }
@@ -208,11 +208,11 @@ public class EditorResource {
             throw new BadRequestAlertException(INVALID_ID, ENTITY_VOCABULARY_NAME, ID_NULL);
         }
         if(
-            !(vocabularySnippet.getActionType().equals( ActionType.EDIT_CV ) ||
-                vocabularySnippet.getActionType().equals( ActionType.EDIT_DDI_CV) ||
-                vocabularySnippet.getActionType().equals( ActionType.EDIT_IDENTITY_CV) ||
-                vocabularySnippet.getActionType().equals( ActionType.EDIT_VERSION_INFO_CV) ||
-                vocabularySnippet.getActionType().equals( ActionType.EDIT_NOTE_CV))
+            !( vocabularySnippet.getActionType() == ActionType.EDIT_CV ||
+                vocabularySnippet.getActionType() == ActionType.EDIT_DDI_CV ||
+                vocabularySnippet.getActionType() == ActionType.EDIT_IDENTITY_CV ||
+                vocabularySnippet.getActionType() == ActionType.EDIT_VERSION_INFO_CV ||
+                vocabularySnippet.getActionType() == ActionType.EDIT_NOTE_CV )
         ) {
             throw new IllegalArgumentException( "Incorrect ActionType" + vocabularySnippet.getActionType() );
         }
@@ -308,7 +308,7 @@ public class EditorResource {
         SecurityUtils.checkResourceAuthorization(ActionType.DELETE_CV,
             vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
 
-        if( versionDTO.getItemType().equals(ItemType.TL.toString()) ){
+        if( versionDTO.getItemType() == ItemType.TL ){
             deleteTlVocabulary(versionDTO, vocabularyDTO);
         } else {
             if( versionDTO.isInitialVersion() ) {
@@ -349,7 +349,7 @@ public class EditorResource {
                 // indexing editor
                 vocabularyService.indexEditor(vocabularyDTO);
 
-                if( versionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
+                if( versionDTO.getStatus() == Status.PUBLISHED ) {
                     // remove published JSON file, re-create the JSON file and re-index for published vocabulary
                     vocabularyService.deleteCvJsonDirectoryAndContent( applicationProperties.getVocabJsonPath().resolve( vocabularyDTO.getNotation() ));
                     vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
@@ -361,7 +361,7 @@ public class EditorResource {
     }
 
     private void deleteTlVocabulary(VersionDTO versionDTO, VocabularyDTO vocabularyDTO) throws IOException {
-        boolean isTlPublished = versionDTO.getStatus().equals( Status.PUBLISHED.toString());
+        boolean isTlPublished = versionDTO.getStatus() == Status.PUBLISHED;
         vocabularyDTO.removeVersion( versionDTO);
         if( isTlPublished ) {
             // if published update vocabulary
@@ -453,7 +453,7 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + codeSnippets[0].getVersionId()));
 
         // reject if version status is published
-        if (versionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
+        if ( versionDTO.getStatus() == Status.PUBLISHED ) {
             throw new IllegalArgumentException("Unable to add Code " + codeSnippets[0].getNotation() + ", Version is already PUBLISHED");
         }
 
@@ -600,7 +600,7 @@ public class EditorResource {
     @PostMapping("/editors/codes/deprecate")
     public ResponseEntity<Void> deprecateCode(@Valid @RequestBody CodeSnippet codeSnippet) {
         log.debug("REST request to deprecate Code/Concept : {}", codeSnippet);
-        if( !(codeSnippet.getActionType().equals( ActionType.DEPRECATE_CODE )) )
+        if( codeSnippet.getActionType() != ActionType.DEPRECATE_CODE )
             throw new IllegalArgumentException( "Action type " + codeSnippet.getActionType() + "not supported" );
         if (codeSnippet.getConceptId() == null) {
             throw new BadRequestAlertException(INVALID_ID, ENTITY_CODE_NAME, ID_NULL);
@@ -737,7 +737,7 @@ public class EditorResource {
     public ResponseEntity<VersionDTO> reorderCode(@Valid @RequestBody CodeSnippet codeSnippet){
         log.debug("REST request to reorder codes : {}", codeSnippet);
 
-        if ( !codeSnippet.getActionType().equals(ActionType.REORDER_CODE) ) {
+        if ( codeSnippet.getActionType() != ActionType.REORDER_CODE ) {
             throw new IllegalArgumentException( "ActionType REORDER_CODE needed" );
         }
 

@@ -27,7 +27,7 @@ import java.util.Set;
 
 @Document(indexName = "vocabularyeditor")
 public class VocabularyEditor extends VocabularyBase {
-    private static final long serialVersionUID = 6335738155427154130L;
+    private static final long serialVersionUID = 3683266166169395311L;
 
     @Field( type = FieldType.Keyword )
     private Set<String> statuses;

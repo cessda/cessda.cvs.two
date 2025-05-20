@@ -115,6 +115,7 @@ public class FileUploadResource
         return ResponseEntity.created( new URI( UPLOADED_FILE_URI + uploadedFile.getFileName() ) ).build();
     }
 
+    @SuppressWarnings( "DataFlowIssue" )
     @PostMapping( "/docx2html/{fileName}" )
     public ResponseEntity<Void> docx2html( @PathVariable String fileName ) throws IOException, Docx4JException, URISyntaxException
     {

@@ -15,6 +15,7 @@
  */
 package eu.cessda.cvs.service;
 
+import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.utils.VersionNumber;
 import org.springframework.data.domain.Page;
@@ -133,5 +134,5 @@ public interface VersionService {
      * @param status
      * @return
      */
-    List<String> findAllLanguagesByStatus(List<String> status);
+    List<String> findAllLanguagesByStatus(List<Status> status);
 }

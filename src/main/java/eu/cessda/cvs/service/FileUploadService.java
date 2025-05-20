@@ -112,7 +112,8 @@ public class FileUploadService {
         return destFile;
     }
 
-    public void html2section(String fileName, String metadataKey) throws IOException {
+    @SuppressWarnings( "DataFlowIssue" )
+    public void html2section( String fileName, String metadataKey) throws IOException {
         Path initialFile = applicationProperties.getUploadFilePath().resolve(fileName + ".html" );
         Document doc = Jsoup.parse( initialFile, null );
         Elements elements = doc.body().children();

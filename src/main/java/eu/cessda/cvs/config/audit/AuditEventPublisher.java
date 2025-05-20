@@ -307,10 +307,6 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
      * @param vocabulary
      * @param version
      * @param vocabularySnippet
-     * @param concept
-     * @param replacingConceptDTO
-     * @param codeSnippet
-     * @param comment
      * @param action
      */
     public void publish(String user, VocabularyDTO vocabulary, VersionDTO version, VocabularySnippet vocabularySnippet, String action) {

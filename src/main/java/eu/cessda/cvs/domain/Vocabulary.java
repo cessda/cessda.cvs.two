@@ -86,4 +86,17 @@ public class Vocabulary extends VocabularyBase
         return Objects.equals( getId(), vocabulary.getId() );
     }
 
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash( super.hashCode(), versions );
+    }
+
+    @Override
+    public String toString()
+    {
+        return "Vocabulary{" +
+            "versions=" + versions +
+            "} " + super.toString();
+    }
 }

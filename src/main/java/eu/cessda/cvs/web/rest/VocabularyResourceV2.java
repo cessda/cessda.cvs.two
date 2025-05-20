@@ -222,7 +222,7 @@ public class VocabularyResourceV2 {
      * @param vocab The specific vocabulary e.g. TopicClassification
      * @param lang The language e.g. en
      * @param size The maximum size of codes returned, default 20
-     * @return list of Codes in JSON-LD based on Skosmos format
+     * @return map of Codes in JSON-LD based on Skosmos format
      */
     @GetMapping(
         value="/search/codes",
@@ -282,8 +282,7 @@ public class VocabularyResourceV2 {
         if ( !vocabulariesPage.getContent().isEmpty() ) {
             for ( VocabularyDTO vocabularyDTO : vocabulariesPage.getContent() )
             {
-                var jsonldMap = ResourceUtils.convertVocabularyDtoToJsonLdSkosMos( vocabularyDTO, vocabularyDTO.getCodes(), lang );
-                return jsonldMap;
+                return ResourceUtils.convertVocabularyDtoToJsonLdSkosMos( vocabularyDTO, vocabularyDTO.getCodes(), lang );
             }
         }
 
@@ -714,7 +713,7 @@ public class VocabularyResourceV2 {
             }
 
             // check if there is published version
-            if ( voc.getVersions().stream().anyMatch( v -> v.getStatus().equals( Status.PUBLISHED.toString() ) ) )
+            if ( voc.getVersions().stream().anyMatch( v -> v.getStatus() == Status.PUBLISHED ) )
             {
                 Map<String, Map<String, Map<String, String>>> vocabMap = agencyCvMap.computeIfAbsent( voc.getAgencyName(), k -> new LinkedHashMap<>() );
                 List<VersionDTO> versions = new ArrayList<>( voc.getVersions() );

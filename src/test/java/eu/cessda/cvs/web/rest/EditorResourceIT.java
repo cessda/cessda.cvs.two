@@ -63,8 +63,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class EditorResourceIT {
 
-    private static final String INIT_STATUS = "DRAFT";
-    private static final String EDIT_STATUS = "REVIEW";
+    private static final Status INIT_STATUS = Status.DRAFT;
+    private static final Status EDIT_STATUS = Status.REVIEW;
 
     private static final String AGENCY_URI = "https://vocabularies-dev.cessda.eu/vocabulary/[VOCABULARY]?v=[VERSION]";
     private static final String AGENCY_URI_CODE = "https://vocabularies-dev.cessda.eu/vocabulary/[VOCABULARY]_[CODE]?v=[VERSION]";
@@ -589,8 +589,7 @@ class EditorResourceIT {
     }
 
     private void deleteVocabularyOrVersion(Version versionToDelete, boolean isDeleteVocabulary) throws Exception {
-        List<Vocabulary> vocabularies = vocabularyRepository.findAll();
-        int vocabSizeBeforeDelete = vocabularies.size();
+        List<Vocabulary> vocabulariesBeforeDelete = vocabularyRepository.findAll();
 
         // Delete version/vocab
         restMockMvc.perform(delete("/api/editors/vocabularies/{id}", versionToDelete.getId())
@@ -598,13 +597,12 @@ class EditorResourceIT {
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
-        vocabularies = vocabularyRepository.findAll();
+        List<Vocabulary> vocabulariesAfterDelete = vocabularyRepository.findAll();
         if( isDeleteVocabulary ) {
-            assertThat(vocabularies).hasSize(vocabSizeBeforeDelete - 1);
+            assertThat(vocabulariesAfterDelete).hasSize(vocabulariesBeforeDelete.size() - 1);
         } else {
             //TODO: add more assertion
-            final Vocabulary vocabulary = vocabularies.stream().filter(v -> v.getNotation().equals(versionToDelete.getNotation())).findFirst().orElse(null);
-            assertThat(vocabulary).isNotNull();
+            assertThat(vocabulariesAfterDelete).anyMatch(v -> v.getNotation().equals(versionToDelete.getNotation()));
         }
 
     }
@@ -619,11 +617,11 @@ class EditorResourceIT {
         // sort to make sure that the order is correct from latest to oldest
         final List<Version> versions = vocabulary.getVersions().stream().sorted(VocabularyUtils.VERSION_COMPARATOR).collect(Collectors.toList());
 
-        final Version versionSl = versions.stream().filter(v -> v.getItemType().equals(ITEM_TYPE_SL.toString())).findFirst().orElse(null);
+        final Version versionSl = versions.stream().filter(v -> v.getItemType() == ITEM_TYPE_SL ).findFirst().orElse(null);
         assertThat(versionSl).isNotNull();
         Version newVersion = versionSl;
         if( isTlVersioning ) {
-            final Version versionTl = versions.stream().filter(v -> v.getItemType().equals(ITEM_TYPE_TL.toString()) &&
+            final Version versionTl = versions.stream().filter(v -> v.getItemType() == ITEM_TYPE_TL &&
                 v.getLanguage().equals(version.getLanguage())).findFirst().orElse(null);
             assertThat(versionTl).isNotNull();
             assertThat(versionTl.getNumber()).isEqualTo(version.getNumber().increasePatch(versionSl.getNumber()));
@@ -661,7 +659,7 @@ class EditorResourceIT {
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSize);
         tlVersion = getLatestVersionByNotationAndLang(vocabularyList, tlVersion.getNotation(), tlVersion.getLanguage());
-        assertThat( tlVersion.getStatus()).isEqualTo(Status.READY_TO_PUBLISH.toString());
+        assertThat( tlVersion.getStatus()).isEqualTo(Status.READY_TO_PUBLISH);
     }
 
     private void forwardTlStatusPublishTest(Version slVersion, Version tlVersion) throws Exception {
@@ -680,7 +678,7 @@ class EditorResourceIT {
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSize);
         tlVersion = getLatestVersionByNotationAndLang(vocabularyList, tlVersion.getNotation(), tlVersion.getLanguage());
-        assertThat( tlVersion.getStatus()).isEqualTo(Status.PUBLISHED.toString());
+        assertThat( tlVersion.getStatus()).isEqualTo(Status.PUBLISHED);
     }
 
     // private void forwardTlStatusPublishTest(Version tlVersion) throws Exception {
@@ -709,7 +707,7 @@ class EditorResourceIT {
     //     List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
     //     assertThat(vocabularyList).hasSize(databaseSize);
     //     tlVersion = getLatestVersionByNotationAndLang(vocabularyList, tlVersion.getNotation(), tlVersion.getLanguage());
-    //     assertThat( tlVersion.getStatus()).isEqualTo(Status.PUBLISHED.toString());
+    //     assertThat( tlVersion.getStatus()).isEqualTo(Status.PUBLISHED);
     // }
 
     private void forwardTlStatusReviewTest(Version tlVersion) throws Exception {
@@ -729,7 +727,7 @@ class EditorResourceIT {
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSize);
         tlVersion = getLatestVersionByNotationAndLang(vocabularyList, tlVersion.getNotation(), tlVersion.getLanguage());
-        assertThat( tlVersion.getStatus()).isEqualTo(Status.REVIEW.toString());
+        assertThat( tlVersion.getStatus()).isEqualTo(Status.REVIEW);
     }
 
     private void deleteTlConceptTest(Concept slConceptRoot1, Version tlVersion, Concept tlConcept1) throws Exception {
@@ -792,7 +790,7 @@ class EditorResourceIT {
         Version tlVersion;
         Concept tlConcept;
         Vocabulary vocabulary = vocabularyRepository.findAll().iterator().next();
-        tlVersion = vocabulary.getVersions().stream().filter(v -> v.getItemType().equals(ITEM_TYPE_TL.toString()))
+        tlVersion = vocabulary.getVersions().stream().filter(v -> v.getItemType() == ITEM_TYPE_TL )
             .findFirst().orElse(null);
         assertThat(tlVersion).isNotNull();
         tlConcept = tlVersion.getConcepts().stream().filter( c -> c.getNotation().equals(slConcept.getNotation()))
@@ -838,7 +836,7 @@ class EditorResourceIT {
         // only contains 1 vocab
         Vocabulary testVocabulary = vocabularyRepository.findAll().iterator().next();
         final Version tlVersion = testVocabulary.getVersions().stream()
-            .filter( v -> v.getItemType().equals(ITEM_TYPE_TL.toString())).findFirst().orElse(null);
+            .filter( v -> v.getItemType() == ITEM_TYPE_TL ).findFirst().orElse(null);
         assertThat(tlVersion).isNotNull();
         // must be generated equal TL concepts to SL concepts
         assertThat(tlVersion.getConcepts().size()).isEqualTo(slVersion.getConcepts().size());
@@ -846,7 +844,7 @@ class EditorResourceIT {
         assertThat(tlVersion.getNotation()).isEqualTo(NOTATION);
         assertThat(tlVersion.getNumber()).isEqualTo(INIT_VERSION_NUMBER_TL);
         assertThat(tlVersion.getLanguage()).isEqualTo(TARGET_LANGUAGE);
-        assertThat(tlVersion.getItemType()).isEqualTo(ITEM_TYPE_TL.toString());
+        assertThat(tlVersion.getItemType()).isEqualTo(ITEM_TYPE_TL);
         assertThat(tlVersion.getNotes()).isEqualTo(INIT_NOTES);
         assertThat(tlVersion.getTitle()).isEqualTo(INIT_TITLE_DE);
         assertThat(tlVersion.getDefinition()).isEqualTo(INIT_DEFINITION_DE);
@@ -1128,7 +1126,7 @@ class EditorResourceIT {
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSize);
         slVersion = getLatestVersionByNotationAndLang(vocabularyList, slVersion.getNotation(), slVersion.getLanguage());
-        assertThat( slVersion.getStatus()).isEqualTo(Status.READY_TO_TRANSLATE.toString());
+        assertThat( slVersion.getStatus()).isEqualTo(Status.READY_TO_TRANSLATE);
     }
 
     private void forwardSlStatusPublishTest(Version slVersion, boolean secondPublish) throws Exception {
@@ -1157,7 +1155,7 @@ class EditorResourceIT {
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSize);
         slVersion = getLatestVersionByNotationAndLang(vocabularyList, slVersion.getNotation(), slVersion.getLanguage());
-        assertThat( slVersion.getStatus()).isEqualTo(Status.PUBLISHED.toString());
+        assertThat( slVersion.getStatus()).isEqualTo(Status.PUBLISHED);
     }
 
     public void forwardStatusWithIncorrectActionTypeTest(Version slVersion) throws Exception {
@@ -1185,7 +1183,7 @@ class EditorResourceIT {
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSize);
         slVersion = getLatestVersionByNotationAndLang(vocabularyList, slVersion.getNotation(), slVersion.getLanguage());
-        assertThat( slVersion.getStatus()).isEqualTo(Status.REVIEW.toString());
+        assertThat( slVersion.getStatus()).isEqualTo(Status.REVIEW);
     }
 
     private Version getLatestVersionByNotationAndLang(List<Vocabulary> vocabularyList, String notation, String lang) {
@@ -1275,7 +1273,7 @@ class EditorResourceIT {
         assertThat(slVersion.getNotation()).isEqualTo(NOTATION);
         assertThat(slVersion.getNumber()).isEqualTo(INIT_VERSION_NUMBER_SL);
         assertThat(slVersion.getLanguage()).isEqualTo(SOURCE_LANGUAGE);
-        assertThat(slVersion.getItemType()).isEqualTo(ITEM_TYPE_SL.toString());
+        assertThat(slVersion.getItemType()).isEqualTo(ITEM_TYPE_SL);
         assertThat(slVersion.getNotes()).isEqualTo(INIT_NOTES);
         assertThat(slVersion.getTitle()).isEqualTo(INIT_TITLE_EN);
         assertThat(slVersion.getDefinition()).isEqualTo(INIT_DEFINITION_EN);
