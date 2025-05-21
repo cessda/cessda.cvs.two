@@ -279,7 +279,12 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     } else {
       vocabularySnippet.versionNumber = VocabularyUtil.getSlMajorMinorVersionNumber(this.slVersionNumber) + '.' + this.proposedPatchNumber;
     }
-    this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabularySnippet));
+    this.isVersionInvalid = VocabularyUtil.compareVersionNumbers(vocabularySnippet.versionNumber, this.versionParam.number!) === -1;
+    if (!this.isVersionInvalid) {
+      this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabularySnippet));
+    } else {
+      this.isSaving = false;
+    }
   }
 
   forwardStatus(): void {
