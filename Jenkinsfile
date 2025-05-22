@@ -102,12 +102,15 @@ pipeline {
             }
             when { branch 'main' }
         }
+        stage('Build Docker image') {
+            steps {
+                sh "docker build -t ${IMAGE_TAG} ."
+            }
+        }
         stage('Build and Push Docker Image') {
             steps {
                 sh "gcloud auth configure-docker ${ARTIFACT_REGISTRY_HOST}"
-                withMaven {
-                    sh "./mvnw jib:build -Pci -Djib.to.image=${IMAGE_TAG}"
-                }
+                sh "docker push ${IMAGE_TAG}"
                 sh "gcloud artifacts docker tags add ${IMAGE_TAG} ${DOCKER_ARTIFACT_REGISTRY}/${productName}-${componentName}:${env.BRANCH_NAME}-latest"
             }
             when { branch 'main' }

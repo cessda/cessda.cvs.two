@@ -1,0 +1,9 @@
+# Ignore node
+.angular
+node
+node_modules
+vendor
+
+# Ignore source
+src
+test

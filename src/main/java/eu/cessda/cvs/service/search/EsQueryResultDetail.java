@@ -56,7 +56,7 @@ public class EsQueryResultDetail implements Serializable {
     }
 
     private void init(SearchScope searchScope) {
-        if( searchScope.equals(SearchScope.EDITORSEARCH)) {
+        if( searchScope == SearchScope.EDITORSEARCH ) {
             aggFields = new ArrayList<>(Arrays.asList( EsFilter.AGENCY_AGG, EsFilter.LANGS_AGG, EsFilter.STATUS_AGG ));
         } else {
             aggFields = new ArrayList<>(Arrays.asList( EsFilter.AGENCY_AGG, EsFilter.LANGS_PUB_AGG, EsFilter.NOTATION_AGG ));

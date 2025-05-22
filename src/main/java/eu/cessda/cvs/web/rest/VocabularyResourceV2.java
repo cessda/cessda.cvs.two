@@ -106,8 +106,8 @@ public class VocabularyResourceV2 {
      * {@code GET  /search/vocabularies} : Search vocabularies returning JSON of Vocabularies and Codes
      *
      * @param query the query term.
-     * @param agency
-     * @param lang
+     * @param agency the agency.
+     * @param lang the language.
      * @param pageable
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vocabularies in body.
      */
@@ -172,8 +172,8 @@ public class VocabularyResourceV2 {
      * {@code GET  /search/vocabularies} : Search vocabularies returning JSON of Vocabularies and Codes
      *
      * @param query the query term.
-     * @param agency
-     * @param lang
+     * @param agency the agency.
+     * @param lang the language.
      * @param pageable
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vocabularies in body.
      */
@@ -222,14 +222,14 @@ public class VocabularyResourceV2 {
      * @param vocab The specific vocabulary e.g. TopicClassification
      * @param lang The language e.g. en
      * @param size The maximum size of codes returned, default 20
-     * @return list of Codes in JSON-LD based on Skosmos format
+     * @return map of Codes in JSON-LD based on Skosmos format
      */
     @GetMapping(
         value="/search/codes",
         produces = JSONLD_TYPE
     )
     @ApiOperation( value = "Searching the vocabularies codes that produces JSON-LD based on Skosmos format" )
-    public ResponseEntity<Object> getAllVocabulariesCode(
+    public Map<String, Object> getAllVocabulariesCode(
         @ApiParam(
             name = "query",
             type = "String",
@@ -279,26 +279,24 @@ public class VocabularyResourceV2 {
         vocabularyService.searchCode(esq);
         Page<VocabularyDTO> vocabulariesPage = esq.getVocabularies();
 
-        Set<String> langSet = new HashSet<>();
-        langSet.add( lang );
-
-        List<Map<String, Object>> vocabularyJsonLds = new ArrayList<>();
         if ( !vocabulariesPage.getContent().isEmpty() ) {
-            vocabulariesPage.getContent().forEach(vocabularyDTO -> {
-                List<Map<String, Object>> vocabularyJsonLdMap = ResourceUtils.convertVocabularyDtoToJsonLdSkosMos(vocabularyDTO, vocabularyDTO.getCodes(), langSet);
-                vocabularyJsonLds.addAll(vocabularyJsonLdMap);
-            });
+            for ( VocabularyDTO vocabularyDTO : vocabulariesPage.getContent() )
+            {
+                return ResourceUtils.convertVocabularyDtoToJsonLdSkosMos( vocabularyDTO, vocabularyDTO.getCodes(), lang );
+            }
         }
-        return ResponseEntity.ok().body( !vocabularyJsonLds.isEmpty() ? vocabularyJsonLds.get(0) : Collections.emptyList());
+
+        // empty response
+        return Collections.emptyMap();
     }
 
     /**
      * {@code GET  /vocabularies/:vocabulary/:versionNumberSl} : Get Vocabulary
      *
-     * @param request
-     * @param vocabulary
-     * @param versionNumberSl
-     * @param languageVersion
+     * @param request the request.
+     * @param vocabulary the vocabulary.
+     * @param versionNumberSl the source language version.
+     * @param languageVersion the included language version.
      * @return Vocabulary by redirecting to CVS Vocabulary detail
      */
     @GetMapping(
@@ -390,7 +388,7 @@ public class VocabularyResourceV2 {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation( value = "Get a Vocabulary in JSON format" )
-    public ResponseEntity<VocabularyDTO> getVocabularyJson(
+    public VocabularyDTO getVocabularyJson(
         HttpServletRequest request,
         @ApiParam(
             name = "vocabulary",
@@ -419,7 +417,7 @@ public class VocabularyResourceV2 {
             log.error( "Error vocabulary with {} SL version number and/or vocabulary with notation {} does not exist", versionNumberSl, vocabulary );
             throw new ResourceNotFoundException( "Unable to find a vocabulary with " + versionNumberSl + " SL version number and/or notation " + vocabulary,  vocabulary, "404");
         } else {
-            return ResponseEntity.ok().body(vocabularyDTO);
+            return vocabularyDTO;
         }
     }
 
@@ -437,7 +435,7 @@ public class VocabularyResourceV2 {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation( value = "Get a Code in JSON format" )
-    public ResponseEntity<List<ConceptDTO>> getCodeJson(
+    public Set<ConceptDTO> getCodeJson(
         HttpServletRequest request,
         @ApiParam(
             name = "vocabulary",
@@ -463,11 +461,13 @@ public class VocabularyResourceV2 {
     ) {
         final String langVersion = language + "-" + versionNumber;
         log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, VersionUtils.getSlVersionNumber(versionNumber), langVersion );
-        List<ConceptDTO> concepts = new ArrayList<>();
         final VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, VersionUtils.getSlVersionNumber(versionNumber).toString(), language + "-" + versionNumber);
-        final Optional<VersionDTO> version = vocabularyDTO.getVersions().stream().findFirst();
-        version.ifPresent(versionDTO -> concepts.addAll(versionDTO.getConcepts()));
-        return ResponseEntity.ok().body( concepts );
+        var versionsIterator = vocabularyDTO.getVersions().iterator();
+        if (versionsIterator.hasNext()) {
+            return versionsIterator.next().getConcepts();
+        } else {
+            return Collections.emptySet();
+        }
     }
 
     /**
@@ -484,7 +484,7 @@ public class VocabularyResourceV2 {
         produces = JSONLD_TYPE
     )
     @ApiOperation( value = "Get a Vocabulary in JSON-LD format" )
-    public ResponseEntity<List<Object>> getVocabularyJsonLd(
+    public List<Map<String, Object>> getVocabularyJsonLd(
         HttpServletRequest request,
         @ApiParam(
             name = "vocabulary",
@@ -590,22 +590,22 @@ public class VocabularyResourceV2 {
      * a JSON file of vocabulary {vocabulary} with version {versionNumberSl} with included versions {languageVersion}.
      * Hidden from Swagger due to API for CVS front-end
      *
-     * @param vocabulary
-     * @param versionNumberSl
-     * @param languageVersion
+     * @param vocabulary the vocabulary.
+     * @param versionNumberSl the CV source language version.
+     * @param languageVersion the included language version.
      * @return Vocabulary in JSON format
      *
      */
     @GetMapping(value = "/vocabularies/json/{vocabulary}/{versionNumberSl}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation( value = "Get a Vocabulary in JSON format", hidden = true )
-    public ResponseEntity<VocabularyDTO> getVocabularyInJson(
+    public VocabularyDTO getVocabularyInJson(
         HttpServletRequest request,
         @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String vocabulary,
         @ApiParam( value = "the CV SL version, e.g. 1.0" ) @PathVariable String versionNumberSl,
         @ApiParam( value = "included language version, e.g. en-1.0_de-1.0.1, separated by _" ) @RequestParam(name = "languageVersion", required = false) String languageVersion
     ) {
         log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, versionNumberSl, languageVersion);
-        return ResponseEntity.ok().body(getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion));
+        return getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion);
     }
 
     /**
@@ -613,15 +613,15 @@ public class VocabularyResourceV2 {
      *  get a vocabulary {vocabulary} in JSON-LD with version {versionNumberSl} with included versions {languageVersion}
      * Hidden from Swagger due to API for CVS front-end
      *
-     * @param vocabulary
-     * @param versionNumberSl
-     * @param languageVersion
+     * @param vocabulary the vocabulary.
+     * @param versionNumberSl the CV SL version.
+     * @param languageVersion the language version.
      * @return Vocabulary in JSON-LD format
      *
      */
     @GetMapping(value = "/vocabularies/jsonld/{vocabulary}/{versionNumberSl}", produces = JSONLD_TYPE)
     @ApiOperation( value = "Get a Vocabulary in JSON-LD format", hidden = true )
-    public ResponseEntity<List<Object>> getVocabularyInJsonLd(
+    public List<Map<String, Object>> getVocabularyInJsonLd(
         HttpServletRequest request,
         @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String vocabulary,
         @ApiParam( value = "the CV SL version, e.g. 1.0" ) @PathVariable String versionNumberSl,
@@ -635,7 +635,7 @@ public class VocabularyResourceV2 {
         HttpServletRequest request,
         @PathVariable @ApiParam(name = "vocabulary", type = "String", value = "The vocabulary", example = "TopicClassification", required = true) String vocabulary,
         @PathVariable @ApiParam(name = "versionNumberSl", type = "String", value = "The version number of Source language", example = "4.0", required = true) String versionNumberSl,
-        @RequestParam @ApiParam(name = "languageVersion", type = "String", value = "included language version, e.g. en-1.0_de-1.0.1, separated by _", example = "en-1.0", required = false) String languageVersion) {
+        @RequestParam @ApiParam(name = "languageVersion", type = "String", value = "included language version, e.g. en-1.0_de-1.0.1, separated by _", example = "en-1.0" ) String languageVersion) {
         String requestURL = ResourceUtils.getURLWithContextPath( request );
 
         Path fileName = vocabularyService.generateVocabularyFileDownload(vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.HTML, requestURL, true);
@@ -647,14 +647,13 @@ public class VocabularyResourceV2 {
             .body(new FileSystemResource( fileName ));
     }
 
-    private ResponseEntity<List<Object>> transformVocabularyToJsonLd(String vocabulary, String versionNumberSl, String languageVersion) {
+    private List<Map<String, Object>> transformVocabularyToJsonLd(String vocabulary, String versionNumberSl, String languageVersion) {
         VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion);
 
-        Set<CodeDTO> codeDtos = CodeDTO.generateCodesFromVersion(vocabularyDTO.getVersions(), false);
-        List<Map<String, Object>> vocabularyJsonLdMap = ResourceUtils.convertVocabularyDtoToJsonLd(vocabularyDTO, codeDtos, vocabularyDTO.getVersions().stream().map(VersionDTO::getLanguage).collect(Collectors.toSet()));
-        List<Object> vocabularyJsonLds = new ArrayList<>(vocabularyJsonLdMap);
+        Set<CodeDTO> codeDTOs = CodeDTO.generateCodesFromVersion(vocabularyDTO.getVersions(), false);
+        var languageSet = vocabularyDTO.getVersions().stream().map( VersionDTO::getLanguage ).collect( Collectors.toSet() );
 
-        return ResponseEntity.ok().body(vocabularyJsonLds);
+        return ResourceUtils.convertVocabularyDtoToJsonLd(vocabularyDTO, codeDTOs, languageSet );
     }
 
     /**
@@ -705,34 +704,41 @@ public class VocabularyResourceV2 {
         Map<String, Map<String, Map<String, Map<String, String>>>> agencyCvMap = new TreeMap<>();
         List<VocabularyDTO> vocabularies = vocabularyService.findAll();
         vocabularies = vocabularies.stream().sorted( Comparator.comparing( VocabularyDTO::getNotation ) ).collect( Collectors.toList() );
-        vocabularies.stream().filter( voc -> !Boolean.TRUE.equals( voc.isWithdrawn() ) ).forEach( voc ->
+        for ( VocabularyDTO voc : vocabularies )
         {
-            if( Boolean.TRUE.equals( voc.isWithdrawn()) )
-                return;
-            // check if there is published version
-            if(voc.getVersions().stream().noneMatch(v -> v.getStatus().equals(Status.PUBLISHED.toString()))) {
-                return;
-            }
-            Map<String, Map<String, Map<String, String>>> vocabMap = agencyCvMap.computeIfAbsent( voc.getAgencyName(), k -> new LinkedHashMap<>() );
-            List<VersionDTO> versions = voc.getVersions().stream()
-                .sorted(Comparator.comparing(VersionDTO::getNumber))
-                .collect( Collectors.toList() );
-            versions.forEach( version ->
+            // ignore withdrawn vocabularies
+            if ( Boolean.TRUE.equals( voc.isWithdrawn() ) )
             {
-                Map<String, Map<String, String>> langMap = vocabMap.computeIfAbsent( version.getNotation(), k -> new LinkedHashMap<>() );
-                Map<String, String> versionMap = langMap.computeIfAbsent(
-                    version.getLanguage() + "(" + version.getItemType() + ")", k -> new LinkedHashMap<>() );
-                versionMap.put( version.getNumber().toString(),
-                    request.getContextPath() + "/" + "v2/vocabularies/" + version.getNotation() + "/" +
-                        version.getNumber().getBasePatchVersion() + "?languageVersion=" + version.getLanguage() + "-" + version.getNumber());
-                for (Map<String, Object> versionHistory : version.getVersionHistories()) {
-                    versionMap.put( versionHistory.get(VERSION).toString(),
+                continue;
+            }
+
+            // check if there is published version
+            if ( voc.getVersions().stream().anyMatch( v -> v.getStatus() == Status.PUBLISHED ) )
+            {
+                Map<String, Map<String, Map<String, String>>> vocabMap = agencyCvMap.computeIfAbsent( voc.getAgencyName(), k -> new LinkedHashMap<>() );
+                List<VersionDTO> versions = new ArrayList<>( voc.getVersions() );
+                versions.sort( Comparator.comparing( VersionDTO::getNumber ) );
+                for ( VersionDTO version : versions )
+                {
+                    Map<String, Map<String, String>> langMap = vocabMap.computeIfAbsent( version.getNotation(), k -> new LinkedHashMap<>() );
+                    Map<String, String> versionMap = langMap.computeIfAbsent(
+                        version.getLanguage() + "(" + version.getItemType() + ")", k -> new LinkedHashMap<>() );
+                    versionMap.put( version.getNumber().toString(),
                         request.getContextPath() + "/" + "v2/vocabularies/" + version.getNotation() + "/" +
-                            VersionUtils.getSlVersionNumber(versionHistory.get(VERSION).toString())  +
-                            "?languageVersion=" + version.getLanguage() + "-" + versionHistory.get(VERSION).toString());
+                            version.getNumber().getBasePatchVersion() + "?languageVersion=" +
+                            version.getLanguage() +
+                            "-" + version.getNumber() );
+                    for ( Map<String, Object> versionHistory : version.getVersionHistories() )
+                    {
+                        versionMap.put( versionHistory.get( VERSION ).toString(),
+                            request.getContextPath() + "/" + "v2/vocabularies/" + version.getNotation() + "/" +
+                                VersionUtils.getSlVersionNumber( versionHistory.get( VERSION ).toString() ) +
+                                "?languageVersion=" + version.getLanguage() + "-" +
+                                versionHistory.get( VERSION ).toString() );
+                    }
                 }
-            } );
-        } );
+            }
+        }
         return agencyCvMap;
     }
 }
