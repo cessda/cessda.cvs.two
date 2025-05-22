@@ -27,7 +27,7 @@ module.exports = [
       '/auth',
       '/content'
     ],
-    target: 'http://localhost:8181',
+    target: 'http://localhost:8080',
     secure: false,
   }
 ]

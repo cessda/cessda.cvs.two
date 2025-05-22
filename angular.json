@@ -111,8 +111,7 @@
   },
   "cli": {
     "packageManager": "npm",
-    "schematicCollections": ["@angular-eslint/schematics"],
-    "analytics": false
+    "schematicCollections": ["@angular-eslint/schematics"]
   },
   "schematics": {
     "@angular-eslint/schematics:application": {
