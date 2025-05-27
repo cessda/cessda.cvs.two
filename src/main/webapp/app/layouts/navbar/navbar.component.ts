@@ -49,6 +49,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   currentSearch?: string;
   currentLang?: string;
   isSearching: boolean;
+  lastSearch?: string;
 
   isEditorSearch = false;
   searchLangs: string[] = ['en', 'da', 'nl', 'fi', 'fr', 'de', 'it', 'ja', 'no', 'pt', 'sr', 'sl', 'sv', '_all'];
@@ -70,6 +71,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
     this.isSearching = false;
     this.currentLang = 'en';
+    this.lastSearch = undefined;
 
     this.loadLanguages();
 
@@ -123,14 +125,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
     fromEvent(this.searchInput.nativeElement, 'keyup')
       .pipe(
         map((event: any) => {
-          return event.target.value;
+          return [event.target.value, event.key] as [string, string];
         }),
         debounceTime(500),
         // distinctUntilChanged()
       )
-      .subscribe((text: string) => {
-        this.isSearching = true;
-        this.search(text);
+      .subscribe(([text, key]) => {
+        if (key == 'Enter' || text != this.lastSearch) {
+          this.isSearching = true;
+          this.search(text);
+        }
       });
 
     fromEvent(this.searchInput.nativeElement, 'paste')
@@ -192,6 +196,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.router.navigate([''], { queryParams: { f: 'language:' + this.currentLang, sort: 'code,asc' } });
       }
     }
+    this.lastSearch = query;
   }
 
   clear(): void {
