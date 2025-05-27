@@ -55,7 +55,6 @@
                             <span>Cv Actions</span>
                         </a>
                         <div id="action-panel" class="acc-body" [ngbCollapse]="isCvActionCollapse">
-                            <!--div *ngIf="(enableAddTl && !(version!.status === 'READY_TO_PUBLISH' || version!.status === 'PUBLISHED'))"-->
                                 <div *ngIf="(enableAddTl && !(version!.status === 'READY_TO_PUBLISH'))">
                                 <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CV', agencyId:vocabulary!.agencyId!, agencyRoles:['ADMIN','ADMIN_TL','ADMIN_CONTENT'], language:tlLanguageStatus}"
                                         class="btn sk-select-min sk-input-f mtop10" (click)="openAddEditCvPopup( true, false )">
