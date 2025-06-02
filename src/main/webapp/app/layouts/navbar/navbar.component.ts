@@ -71,7 +71,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
     this.isSearching = false;
     this.currentLang = 'en';
-    this.lastSearch = undefined;
+    this.lastSearch = this.sessionStorage.retrieve('lastSearch');
 
     this.loadLanguages();
 
@@ -197,6 +197,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
     }
     this.lastSearch = query;
+    this.sessionStorage.store('lastSearch', this.lastSearch);
   }
 
   clear(): void {
