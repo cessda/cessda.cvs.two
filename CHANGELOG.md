@@ -14,6 +14,26 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
+## [3.4.3] - 2025-06-17
+
+### Added
+
+- [#835](https://github.com/cessda/cessda.cvs.two/issues/835) Added the Translation button to already published vocabularies
+- [#1058](https://github.com/cessda/cessda.cvs.two/issues/1058) Added validation so that users cannot set a version number for a TL that is lower than the SL version number
+- [PR-1026](https://github.com/cessda/cessda.cvs.two/pull/1026) Added cache period and use last modified settings, set last modified in the Docker image to allow HTTP caching to work correctly
+
+### Changed
+
+- [PR-1028](https://github.com/cessda/cessda.cvs.two/pull/1028) Fixed problems found by code inspection
+- [#332](https://github.com/cessda/cessda.cvs.two/issues/332) Cleaned up JSON-LD related methods, don't set JSON-LD properties which are `null`
+- [#1022](https://github.com/cessda/cessda.cvs.two/issues/1022) Use enums in place of strings where appropriate in the backend
+
+### Fixed
+
+- [#1030](https://github.com/cessda/cessda.cvs.two/issues/1030) Fixed PDF generation sometimes hanging by replacing iTextPDF html2pdf with Flying Saucer
+- [#1063](https://github.com/cessda/cessda.cvs.two/issues/1063) Fixed performing an unnecessary search refresh on keyup events by storing the last search query in the session storage
+- [#1063](https://github.com/cessda/cessda.cvs.two/issues/1063) Only perform a search request if text was changed or the enter key was pressed
+
 ## [3.4.2] - 2025-05-06
 
 ### Fixed
@@ -409,6 +429,7 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Swagger UI for the APIs.
 - New set of /v2 REST APIs for searching and exporting CVs to several formats (PDF, HTML, DOCX)
 
+[3.4.3]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.4.3
 [3.4.2]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.4.2
 [3.4.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.4.1
 [3.4.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.4.0
