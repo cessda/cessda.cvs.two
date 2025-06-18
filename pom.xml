@@ -34,7 +34,7 @@
     <scm>
         <url>${scm.url}</url>
         <connection>scm:git:${scm.url}</connection>
-        <tag>3.4.2</tag>
+        <tag>3.4.3</tag>
     </scm>
 
     <issueManagement>
