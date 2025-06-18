@@ -16,6 +16,8 @@ _For each release, use the following sub-sections:_
 
 ## [3.5.0] - 2025-06-17
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15688901.svg)](https://doi.org/10.5281/zenodo.15688901)
+
 ### Added
 
 - [#835](https://github.com/cessda/cessda.cvs.two/issues/835) Added the Translation button to already published vocabularies
