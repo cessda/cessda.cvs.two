@@ -96,8 +96,8 @@ spring:
   main:
     allow-bean-definition-overriding: true
   mvc:
-    favicon:
-      enabled: false
+    pathmatch:
+      matching-strategy: ant_path_matcher
   task:
     execution:
       thread-name-prefix: cvs-task-
