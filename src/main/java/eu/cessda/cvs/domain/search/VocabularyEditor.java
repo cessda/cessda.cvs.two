@@ -98,6 +98,12 @@ public class VocabularyEditor extends VocabularyBase {
     }
 
     @Override
+    public int hashCode()
+    {
+        return Objects.hashCode( super.hashCode() );
+    }
+
+    @Override
     public String toString() {
         return "VocabularyEditor{" +
             "id=" + getId() +
