@@ -554,7 +554,7 @@ public class VocabularyResourceV2 {
         var mediaType = MediaType.parseMediaType( request.getHeader( "accept" ) );
         var type = ExportService.DownloadType.fromMediaType( mediaType ).orElseThrow(); // produces attribute should restrict to acceptable values
 
-        Path fileName = vocabularyService.generateVocabularyFileDownload( vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.PDF, requestURL, true );
+        Path fileName = vocabularyService.generateVocabularyFileDownload( vocabulary, versionNumberSl, languageVersion, type, requestURL, true );
 
         return ResponseEntity.ok()
             .contentType( type.getMediaType() )
