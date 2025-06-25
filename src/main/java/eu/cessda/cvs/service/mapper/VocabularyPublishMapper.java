@@ -42,7 +42,7 @@ public interface VocabularyPublishMapper extends EntityMapper<VocabularyDTO, Voc
     @Mapping(source = "languagesPublished", target = "languagesPublished")
     VocabularyPublish toEntity(VocabularyDTO vocabularyDTO);
 
-    default VocabularyPublish fromId(Long id) {
+    static VocabularyPublish fromId(Long id) {
         if (id == null) {
             return null;
         }
