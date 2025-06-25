@@ -123,7 +123,7 @@ public class CvsApp {
     public SpringTemplateEngine templateEngine()
     {
         final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-        templateEngine.addTemplateResolver( xmlTemplateResolver() );
+        templateEngine.addTemplateResolver( rdfTemplateResolver() );
         templateEngine.addTemplateResolver( htmlTemplateResolver() );
         templateEngine.addTemplateResolver( stringTemplateResolver() );
         return templateEngine;
@@ -142,11 +142,11 @@ public class CvsApp {
         return templateResolver;
     }
 
-    private ITemplateResolver xmlTemplateResolver()
+    private ITemplateResolver rdfTemplateResolver()
     {
         final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setOrder( 2 );
-        templateResolver.setResolvablePatterns( Collections.singleton( "xml/*" ) );
+        templateResolver.setResolvablePatterns( Collections.singleton( "rdf/*" ) );
         templateResolver.setPrefix( "templates/" );
         templateResolver.setSuffix( ".xml" );
         templateResolver.setTemplateMode( TemplateMode.XML );
