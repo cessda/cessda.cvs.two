@@ -14,6 +14,15 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
+## [3.5.1] - 2025-06-25
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15736290.svg)](https://doi.org/10.5281/zenodo.15736290)
+
+### Fixed
+
+- [#1083](https://github.com/cessda/cessda.cvs.two/issues/1083) Fixed always downloading a PDF when exporting using the REST API
+- [#1083](https://github.com/cessda/cessda.cvs.two/issues/1083) Fixed RDF exports only returning rdf/export_rdf
+
 ## [3.5.0] - 2025-06-17
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15688901.svg)](https://doi.org/10.5281/zenodo.15688901)
@@ -431,6 +440,7 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Swagger UI for the APIs.
 - New set of /v2 REST APIs for searching and exporting CVs to several formats (PDF, HTML, DOCX)
 
+[3.5.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.5.1
 [3.5.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.5.0
 [3.4.2]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.4.2
 [3.4.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.4.1
