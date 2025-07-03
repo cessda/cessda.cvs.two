@@ -31,7 +31,7 @@
                     {{vocabulary.notation}} v.{{vocabulary.selectedVersion!}}
                 </span>
 
-                <span class="cmt-scn" *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT','ROLE_USER']">
+                <span class="cmt-scn" *jhiHasAnyAuthority="authorities">
                     <a type="button" class="btn btn-primary btn-sm" ngbTooltip="Go to editor" [routerLink]="['/editor/vocabulary', vocabulary.notation ]" [queryParams]="{lang: vocabulary.selectedLang}">
                         <fa-icon icon="eye"></fa-icon>
                         <span class="d-none d-sm-inline-block"> Editor</span>
@@ -200,7 +200,7 @@
 
                     <input type="radio" formControlName="tabSelected" value="identity" class="btn-check" id="identityTabButton">
                     <label class="btn btn-outline-primary" for="identityTabButton">Identity and general</label>
-                    
+
                     <input type="radio" formControlName="tabSelected" value="usage" class="btn-check" id="usageTabButton">
                     <label class="btn btn-outline-primary" for="usageTabButton">Usage</label>
 

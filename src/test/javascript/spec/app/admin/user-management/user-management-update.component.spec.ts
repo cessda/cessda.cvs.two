@@ -31,7 +31,19 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<UserManagementUpdateComponent>;
     let service: UserService;
     const route: ActivatedRoute = {
-      data: of({ user: new User(1, 'user', 'first', 'last', 'first@last.com', true, 'en', [Authority.USER], 'admin') }),
+      data: of({
+        user: {
+          id: 1,
+          login: 'user',
+          firstName: 'first',
+          lastName: 'last',
+          email: 'first@last.com',
+          activated: true,
+          langKey: 'en',
+          authorities: [Authority.USER],
+          createdBy: 'admin',
+        },
+      }),
     } as any as ActivatedRoute;
 
     beforeEach(async(() => {
@@ -104,7 +116,7 @@ describe('Component Tests', () => {
         [],
         fakeAsync(() => {
           // GIVEN
-          const entity = new User();
+          const entity = {};
           spyOn(service, 'create').and.returnValue(of(new HttpResponse({ body: entity })));
           comp.user = entity;
           // WHEN

@@ -23,6 +23,7 @@ import { MetadataValue } from 'app/shared/model/metadata-value.model';
 import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
 import { EditorService } from 'app/editor/editor.service';
 import { MetadataField } from 'app/shared/model/metadata-field.model';
+import { Authority } from '../constants/authority.constants';
 import Quill from 'quill';
 
 @Component({
@@ -37,6 +38,7 @@ export class MetadataItemComponent implements OnInit {
   @Input() position!: number;
   @Input() newTabLink!: boolean;
 
+  public readonly authorities = [Authority.ADMIN, Authority.ADMIN_CONTENT];
   public quill: Quill | undefined;
 
   isSaving = false;

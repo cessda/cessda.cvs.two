@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable, isDevMode} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Injectable, isDevMode } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-import {AccountService} from 'app/core/auth/account.service';
-import {LoginModalService} from 'app/core/login/login-modal.service';
-import {StateStorageService} from './state-storage.service';
+import { AccountService } from 'app/core/auth/account.service';
+import { LoginModalService } from 'app/core/login/login-modal.service';
+import { StateStorageService } from './state-storage.service';
+import { Authority } from 'app/shared/constants/authority.constants';
 
 @Injectable({ providedIn: 'root' })
 export class UserRouteAccessService implements CanActivate {
@@ -28,7 +29,7 @@ export class UserRouteAccessService implements CanActivate {
     private router: Router,
     private loginModalService: LoginModalService,
     private accountService: AccountService,
-    private stateStorageService: StateStorageService
+    private stateStorageService: StateStorageService,
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
@@ -39,7 +40,7 @@ export class UserRouteAccessService implements CanActivate {
     return this.checkLogin(authorities, state.url);
   }
 
-  checkLogin(authorities: string[], url: string): Observable<boolean> {
+  checkLogin(authorities: Authority[], url: string): Observable<boolean> {
     return this.accountService.identity().pipe(
       map(account => {
         if (!authorities || authorities.length === 0) {
@@ -54,7 +55,7 @@ export class UserRouteAccessService implements CanActivate {
           if (isDevMode()) {
             console.error('User has not any of required authorities: ', authorities);
           }
-          this.router.navigate(['accessdenied']);
+          this.router.navigate(['accessdenied'], { skipLocationChange: true });
           return false;
         }
 
@@ -62,7 +63,7 @@ export class UserRouteAccessService implements CanActivate {
         this.router.navigate(['']);
         this.loginModalService.open();
         return false;
-      })
+      }),
     );
   }
 }

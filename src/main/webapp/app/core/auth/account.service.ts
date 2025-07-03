@@ -25,6 +25,7 @@ import { StateStorageService } from 'app/core/auth/state-storage.service';
 import { SERVER_API_URL } from 'app/app.constants';
 import { Account } from 'app/core/user/account.model';
 import { UserAgency } from 'app/shared/model/user-agency.model';
+import { Authority } from 'app/shared/constants/authority.constants';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -49,14 +50,23 @@ export class AccountService {
     this.authenticationState.next(this.userIdentity);
   }
 
-  hasAnyAuthority(authorities: string[] | string): boolean {
+  hasAnyAuthority(authorities: Authority[] | Authority): boolean {
     if (!this.userIdentity || !this.userIdentity.authorities) {
       return false;
     }
     if (!Array.isArray(authorities)) {
       authorities = [authorities];
     }
-    return this.userIdentity.authorities.some((authority: string) => authorities.includes(authority));
+    // Admins are implicitly users - TODO: should this be server side?
+    if (
+      authorities.includes(Authority.USER) &&
+      this.userIdentity.authorities.some(authority =>
+        [Authority.ADMIN, Authority.ADMIN_CONTENT, Authority.ADMIN_TECHNICAL].includes(authority),
+      )
+    ) {
+      return true;
+    }
+    return this.userIdentity.authorities.some((authority: Authority) => authorities.includes(authority));
   }
 
   /**

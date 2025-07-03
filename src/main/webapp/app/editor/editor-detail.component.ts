@@ -48,6 +48,7 @@ import { Quill } from 'quill';
 import { QuillModules } from 'ngx-quill';
 import { AgencyRole } from 'app/shared/model/enumerations/agency-role.model';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
+import { Authority } from 'app/shared/constants/authority.constants';
 
 @Component({
   selector: 'jhi-editor-detail',
@@ -61,6 +62,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   @ViewChild('licenseEPanel', { static: true }) licenseEPanel!: ElementRef;
   @ViewChild('exportEPanel', { static: true }) exportEPanel!: ElementRef;
 
+  authorities = [Authority.ADMIN, Authority.ADMIN_CONTENT, Authority.USER];
   appScope: AppScope = AppScope.EDITOR;
   account!: Account;
 

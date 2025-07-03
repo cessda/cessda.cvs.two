@@ -25,6 +25,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { ActivatedRoute } from '@angular/router';
 import { FileUploadService } from 'app/shared/upload/file-upload.service';
 import { FileFormat } from 'app/shared/vocabulary-download/FileFormat';
+import { Authority } from '../constants/authority.constants';
 
 @Component({
   selector: 'jhi-custom-page',
@@ -32,6 +33,8 @@ import { FileFormat } from 'app/shared/vocabulary-download/FileFormat';
 })
 export class CustomPageComponent implements OnInit, OnDestroy {
   @Input() pageType!: string;
+
+  public readonly authorities = [Authority.ADMIN, Authority.ADMIN_CONTENT];
 
   metadataKey = METADATA_KEY_API;
 

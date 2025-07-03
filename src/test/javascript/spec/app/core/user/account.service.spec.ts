@@ -28,7 +28,7 @@ import { MockLanguageService } from '../../../helpers/mock-language.service';
 import { MockRouter } from '../../../helpers/mock-route.service';
 import { MockStateStorageService } from '../../../helpers/mock-state-storage.service';
 
-function accountWithAuthorities(authorities: string[]): Account {
+function accountWithAuthorities(authorities: Authority[]): Account {
   return {
     id: 1,
     activated: true,
@@ -39,7 +39,7 @@ function accountWithAuthorities(authorities: string[]): Account {
     lastName: '',
     login: '',
     imageUrl: '',
-    userAgencies: []
+    userAgencies: [],
   };
 }
 
@@ -57,17 +57,17 @@ describe('Service Tests', () => {
           JhiDateUtils,
           {
             provide: JhiLanguageService,
-            useClass: MockLanguageService
+            useClass: MockLanguageService,
           },
           {
             provide: StateStorageService,
-            useClass: MockStateStorageService
+            useClass: MockStateStorageService,
           },
           {
             provide: Router,
-            useClass: MockRouter
-          }
-        ]
+            useClass: MockRouter,
+          },
+        ],
       });
 
       service = TestBed.get(AccountService);

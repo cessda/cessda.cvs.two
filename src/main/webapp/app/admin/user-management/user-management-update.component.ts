@@ -130,7 +130,7 @@ export class UserManagementUpdateComponent implements OnInit {
 
   private updateForm(user: User): void {
     this.editForm.patchValue({
-      id: user.id,
+      id: user.id ? String(user.id) : '',
       login: user.login,
       firstName: user.firstName,
       lastName: user.lastName,

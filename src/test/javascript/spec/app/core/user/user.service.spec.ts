@@ -20,7 +20,6 @@ import { JhiDateUtils } from 'ng-jhipster';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserService } from 'app/core/user/user.service';
-import { User } from 'app/core/user/user.model';
 import { SERVER_API_URL } from 'app/app.constants';
 
 describe('Service Tests', () => {
@@ -31,7 +30,7 @@ describe('Service Tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
-        providers: [JhiDateUtils]
+        providers: [JhiDateUtils],
       });
 
       service = TestBed.get(UserService);
@@ -59,7 +58,7 @@ describe('Service Tests', () => {
         });
 
         const req = httpMock.expectOne({ method: 'GET' });
-        req.flush(new User(1, 'user'));
+        req.flush({ id: 1, login: 'user' });
         expect(expectedResult).toEqual('user');
       });
 
@@ -78,14 +77,16 @@ describe('Service Tests', () => {
       it('should propagate not found response', () => {
         let expectedResult = 0;
 
-        service.find('user').subscribe(null, (error: HttpErrorResponse) => {
-          expectedResult = error.status;
+        service.find('user').subscribe({
+          error: (error: HttpErrorResponse) => {
+            expectedResult = error.status;
+          },
         });
 
         const req = httpMock.expectOne({ method: 'GET' });
         req.flush('Invalid request parameters', {
           status: 404,
-          statusText: 'Bad Request'
+          statusText: 'Bad Request',
         });
         expect(expectedResult).toEqual(404);
       });

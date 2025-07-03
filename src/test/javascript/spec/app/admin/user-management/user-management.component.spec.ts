@@ -31,7 +31,7 @@ describe('Component Tests', () => {
     beforeEach(async(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
-        declarations: [UserManagementComponent]
+        declarations: [UserManagementComponent],
       })
         .overrideTemplate(UserManagementComponent, '')
         .compileComponents();
@@ -52,10 +52,10 @@ describe('Component Tests', () => {
           spyOn(service, 'query').and.returnValue(
             of(
               new HttpResponse({
-                body: [new User(123)],
-                headers
-              })
-            )
+                body: [{ id: 123 }],
+                headers,
+              }),
+            ),
           );
 
           // WHEN
@@ -65,7 +65,7 @@ describe('Component Tests', () => {
           // THEN
           expect(service.query).toHaveBeenCalled();
           expect(comp.users && comp.users[0]).toEqual(jasmine.objectContaining({ id: 123 }));
-        })
+        }),
       ));
     });
 
@@ -75,14 +75,14 @@ describe('Component Tests', () => {
         fakeAsync(() => {
           // GIVEN
           const headers = new HttpHeaders().append('link', 'link;link');
-          const user = new User(123);
+          const user = { id: 123 };
           spyOn(service, 'query').and.returnValue(
             of(
               new HttpResponse({
                 body: [user],
-                headers
-              })
-            )
+                headers,
+              }),
+            ),
           );
           spyOn(service, 'update').and.returnValue(of(new HttpResponse({ status: 200 })));
 
@@ -94,7 +94,7 @@ describe('Component Tests', () => {
           expect(service.update).toHaveBeenCalledWith({ ...user, activated: true });
           expect(service.query).toHaveBeenCalled();
           expect(comp.users && comp.users[0]).toEqual(jasmine.objectContaining({ id: 123 }));
-        })
+        }),
       ));
     });
   });

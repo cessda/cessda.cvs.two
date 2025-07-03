@@ -17,6 +17,7 @@ import { Directive, Input, TemplateRef, ViewContainerRef, OnDestroy } from '@ang
 import { Subscription } from 'rxjs';
 
 import { AccountService } from 'app/core/auth/account.service';
+import { Authority } from '../constants/authority.constants';
 
 /**
  * @whatItDoes Conditionally includes an HTML element if current user has any
@@ -33,7 +34,7 @@ import { AccountService } from 'app/core/auth/account.service';
   selector: '[jhiHasAnyAuthority]',
 })
 export class HasAnyAuthorityDirective implements OnDestroy {
-  private authorities: string[] = [];
+  private authorities: Authority[] = [];
   private authenticationSubscription: Subscription | undefined;
 
   constructor(
@@ -43,7 +44,7 @@ export class HasAnyAuthorityDirective implements OnDestroy {
   ) {}
 
   @Input()
-  set jhiHasAnyAuthority(value: string | string[]) {
+  set jhiHasAnyAuthority(value: Authority | Authority[]) {
     this.authorities = typeof value === 'string' ? [value] : value;
     this.updateView();
     // Get notified each time authentication state changes.

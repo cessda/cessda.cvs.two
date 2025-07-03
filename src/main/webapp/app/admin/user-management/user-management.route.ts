@@ -16,24 +16,23 @@
 import { Injectable } from '@angular/core';
 import { Resolve, ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { JhiResolvePagingParams } from 'ng-jhipster';
 
-import { User, IUser } from 'app/core/user/user.model';
+import { User } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
 import { UserManagementComponent } from './user-management.component';
 import { UserManagementDetailComponent } from './user-management-detail.component';
 import { UserManagementUpdateComponent } from './user-management-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class UserManagementResolve implements Resolve<IUser> {
+export class UserManagementResolve implements Resolve<User> {
   constructor(private service: UserService) {}
 
-  resolve(route: ActivatedRouteSnapshot): Observable<IUser> {
+  resolve(route: ActivatedRouteSnapshot): Observable<User> {
     const id = route.params['login'];
     if (id) {
       return this.service.find(id);
     }
-    return of(new User());
+    return of({});
   }
 }
 
