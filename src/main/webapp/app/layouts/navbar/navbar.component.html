@@ -147,7 +147,7 @@
                             </span>
                         </a>
                     </li>
-                    <li *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT']" ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <li *jhiHasAnyAuthority="authorities" ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                         <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
                             <span>
                                 <span jhiTrandbk_my slate="global.menu.admin.main">Admin</span>
@@ -175,7 +175,7 @@
                         </ul>
                     </li>
 
-                    <li *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_TECHNICAL']" ngbDropdown class="nav-item dropdown pointer secondary-menu" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <li *jhiHasAnyAuthority="authorities" ngbDropdown class="nav-item dropdown pointer secondary-menu" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                         <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu-technical">
                             <span>
                                 <span>Technical</span>

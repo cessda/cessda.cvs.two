@@ -15,8 +15,8 @@
  */
 import { UserAgency } from 'app/shared/model/user-agency.model';
 
-export interface IUser {
-  id?: any;
+export interface User {
+  id?: number;
   login?: string;
   firstName?: string;
   lastName?: string;
@@ -30,23 +30,4 @@ export interface IUser {
   lastModifiedDate?: Date;
   password?: string;
   userAgencies?: UserAgency[];
-}
-
-export class User implements IUser {
-  constructor(
-    public id?: any,
-    public login?: string,
-    public firstName?: string,
-    public lastName?: string,
-    public email?: string,
-    public activated?: boolean,
-    public langKey?: string,
-    public authorities?: string[],
-    public createdBy?: string,
-    public createdDate?: Date,
-    public lastModifiedBy?: string,
-    public lastModifiedDate?: Date,
-    public password?: string,
-    public userAgencies?: UserAgency[],
-  ) {}
 }

@@ -25,12 +25,15 @@ import { Agency } from 'app/shared/model/agency.model';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { AgencyService } from './agency.service';
 import { AgencyDeleteDialogComponent } from './agency-delete-dialog.component';
+import { Authority } from 'app/shared/constants/authority.constants';
 
 @Component({
   selector: 'jhi-agency',
   templateUrl: './agency.component.html',
 })
 export class AgencyComponent implements OnInit, OnDestroy {
+  authorities = [Authority.ADMIN, Authority.ADMIN_CONTENT];
+
   agencies: Agency[] = [];
   eventSubscriber?: Subscription;
   currentSearch: string;

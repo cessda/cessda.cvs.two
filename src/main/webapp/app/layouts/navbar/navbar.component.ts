@@ -31,6 +31,7 @@ import { Location } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
+import { Authority } from 'app/shared/constants/authority.constants';
 
 @Component({
   selector: 'jhi-navbar',
@@ -38,6 +39,8 @@ import VocabularyUtil from 'app/shared/util/vocabulary-util';
   styleUrls: ['navbar.scss'],
 })
 export class NavbarComponent implements OnInit, OnDestroy {
+  readonly authorities = [Authority.ADMIN, Authority.ADMIN_TECHNICAL];
+
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
   @ViewChild('searchLang', { static: true }) searchLang!: ElementRef;
   inProduction?: boolean;

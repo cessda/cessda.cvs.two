@@ -16,7 +16,7 @@
 
 -->
 <div class="{{metadataForm.controls.identifier}}">
-    <div *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT']" class="w-100">
+    <div *jhiHasAnyAuthority="authorities" class="w-100">
         <button *ngIf="!isWriting" type="button" ngbTooltip="Edit comment" class="btn btn-sm btn-primary-outline float-right" data-dismiss="modal" (click)="isWriting = !isWriting">
             <fa-icon class="text-secondary" [icon]="'edit'"></fa-icon>
             <span> Edit</span>

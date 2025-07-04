@@ -28,6 +28,7 @@ import { RouteEventsService, VocabularyLanguageFromKeyPipe } from 'app/shared';
 import { DiffContent } from 'ngx-text-diff/lib/ngx-text-diff.model';
 import { Observable, Subject } from 'rxjs';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
+import { Authority } from 'app/shared/constants/authority.constants';
 
 @Component({
   selector: 'jhi-home-detail',
@@ -41,6 +42,7 @@ export class HomeDetailComponent implements OnInit {
   @ViewChild('licensePanel', { static: true }) licensePanel!: ElementRef;
   @ViewChild('exportPanel', { static: true }) exportPanel!: ElementRef;
 
+  authorities = [Authority.ADMIN, Authority.ADMIN_CONTENT, Authority.USER];
   appScope: AppScope = AppScope.PUBLICATION;
 
   vocabulary: Vocabulary = createNewVocabulary();

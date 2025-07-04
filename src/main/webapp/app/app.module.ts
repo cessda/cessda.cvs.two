@@ -22,7 +22,6 @@ import { CvsCoreModule } from 'app/core/core.module';
 import { CvsAppRoutingModule } from './app-routing.module';
 import { CvsHomeModule } from './home/home.module';
 import { CvsEditorModule } from './editor/editor.module';
-import { CvsEntityModule } from './entities/entity.module';
 import { CvsAboutModule } from 'app/about/about.module';
 import { CvsApiDocsModule } from 'app/api-docs/api-docs.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
@@ -59,7 +58,6 @@ Quill.register({
     CvsAboutModule,
     CvsApiDocsModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
-    CvsEntityModule,
     CvsAppRoutingModule,
     TagInputModule,
     BrowserAnimationsModule,

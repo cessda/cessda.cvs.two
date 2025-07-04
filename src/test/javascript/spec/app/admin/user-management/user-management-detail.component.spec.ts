@@ -26,9 +26,21 @@ describe('Component Tests', () => {
   describe('User Management Detail Component', () => {
     let comp: UserManagementDetailComponent;
     let fixture: ComponentFixture<UserManagementDetailComponent>;
-    const route: ActivatedRoute = ({
-      data: of({ user: new User(1, 'user', 'first', 'last', 'first@last.com', true, 'en', [Authority.USER], 'admin') })
-    } as any) as ActivatedRoute;
+    const route: ActivatedRoute = {
+      data: of({
+        user: {
+          id: 1,
+          login: 'user',
+          firstName: 'first',
+          lastName: 'last',
+          email: 'first@last.com',
+          activated: true,
+          langKey: 'en',
+          authorities: [Authority.USER],
+          createdBy: 'admin',
+        },
+      }),
+    } as any as ActivatedRoute;
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
@@ -37,9 +49,9 @@ describe('Component Tests', () => {
         providers: [
           {
             provide: ActivatedRoute,
-            useValue: route
-          }
-        ]
+            useValue: route,
+          },
+        ],
       })
         .overrideTemplate(UserManagementDetailComponent, '')
         .compileComponents();
@@ -68,8 +80,8 @@ describe('Component Tests', () => {
             activated: true,
             langKey: 'en',
             authorities: [Authority.USER],
-            createdBy: 'admin'
-          })
+            createdBy: 'admin',
+          }),
         );
       });
     });

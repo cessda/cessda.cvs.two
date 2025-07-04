@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { Authority } from 'app/shared/constants/authority.constants';
 import { UserAgency } from 'app/shared/model/user-agency.model';
 
 export class Account {
   constructor(
     public id: number,
     public activated: boolean,
-    public authorities: string[],
+    public authorities: Authority[],
     public email: string,
     public firstName: string,
     public langKey: string,
