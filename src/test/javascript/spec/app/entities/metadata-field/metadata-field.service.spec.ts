@@ -26,6 +26,7 @@ describe('Service Tests', () => {
     let httpMock: HttpTestingController;
     let elemDefault: MetadataField;
     let expectedResult: MetadataField | MetadataField[] | boolean | null;
+    let mimeType: string;
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -43,81 +44,34 @@ describe('Service Tests', () => {
         objectType: ObjectType.AGENCY,
         metadataValues: [],
       };
+
+      mimeType = 'application/pdf';
     });
 
     describe('Service methods', () => {
-      it('should find an element', () => {
+      it('should find an element by key', () => {
         const returnedFromService = Object.assign({}, elemDefault);
 
-        service.find(123).subscribe(resp => (expectedResult = resp.body));
+        service.findByKey(elemDefault.metadataKey).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'GET' });
         req.flush(returnedFromService);
         expect(expectedResult).toMatchObject(elemDefault);
       });
 
-      it('should create a MetadataField', () => {
-        const returnedFromService = Object.assign(
-          {
-            id: 0,
-          },
-          elemDefault,
-        );
+      it('should download metadata file', () => {
+        const jsonString = JSON.stringify(Object.assign({}, elemDefault));
+        const returnedFromService = new TextEncoder().encode(jsonString);
 
-        const expected = Object.assign({}, returnedFromService);
-
-        service.create({ metadataKey: '', metadataValues: [] }).subscribe(resp => (expectedResult = resp.body));
-
-        const req = httpMock.expectOne({ method: 'POST' });
-        req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject(expected);
-      });
-
-      it('should update a MetadataField', () => {
-        const returnedFromService = Object.assign(
-          {
-            metadataKey: 'BBBBBB',
-            description: 'BBBBBB',
-            objectType: 'BBBBBB',
-          },
-          elemDefault,
-        );
-
-        const expected = Object.assign({}, returnedFromService);
-
-        service.update(expected).subscribe(resp => (expectedResult = resp.body));
-
-        const req = httpMock.expectOne({ method: 'PUT' });
-        req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject(expected);
-      });
-
-      it('should return a list of MetadataField', () => {
-        const returnedFromService = Object.assign(
-          {
-            metadataKey: 'BBBBBB',
-            description: 'BBBBBB',
-            objectType: 'BBBBBB',
-          },
-          elemDefault,
-        );
-
-        const expected = Object.assign({}, returnedFromService);
-
-        service.query().subscribe(resp => (expectedResult = resp.body));
+        let responseStream: Promise<ArrayBuffer> = Promise.reject();
+        service.downloadMetadataFile(elemDefault.metadataKey, mimeType).subscribe(resp => (responseStream = resp.arrayBuffer()));
 
         const req = httpMock.expectOne({ method: 'GET' });
-        req.flush([returnedFromService]);
-        httpMock.verify();
-        expect(expectedResult).toContainEqual(expected);
-      });
-
-      it('should delete a MetadataField', () => {
-        service.delete(123).subscribe(resp => (expectedResult = resp.ok));
-
-        const req = httpMock.expectOne({ method: 'DELETE' });
-        req.flush({ status: 200 });
-        expect(expectedResult);
+        req.flush(new Blob([returnedFromService]));
+        responseStream.then(r => {
+          const result = new TextDecoder().decode(r);
+          expect(result).toMatchObject(jsonString);
+        });
       });
     });
 

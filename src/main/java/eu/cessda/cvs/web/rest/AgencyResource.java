@@ -18,34 +18,33 @@ package eu.cessda.cvs.web.rest;
 import eu.cessda.cvs.config.audit.AuditEventPublisher;
 import eu.cessda.cvs.domain.search.AgencyStat;
 import eu.cessda.cvs.repository.search.AgencyStatSearchRepository;
+import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.AgencyService;
 import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
-import eu.cessda.cvs.security.SecurityUtils;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+
+import static eu.cessda.cvs.security.AuthoritiesConstants.ADMIN_CONTENT;
 
 /**
  * REST controller for managing {@link eu.cessda.cvs.domain.Agency}.
@@ -85,6 +84,7 @@ public class AgencyResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/agencies")
+    @PreAuthorize( "hasRole('" + ADMIN_CONTENT + "')")
     public ResponseEntity<AgencyDTO> createAgency(@Valid @RequestBody AgencyDTO agencyDTO) throws URISyntaxException {
         log.debug("REST request to save Agency : {}", agencyDTO);
         if (agencyDTO.getId() != null) {
@@ -114,6 +114,7 @@ public class AgencyResource {
      * or with status {@code 500 (Internal Server Error)} if the agencyDTO couldn't be updated.
      */
     @PutMapping("/agencies")
+    @PreAuthorize( "hasRole('" + ADMIN_CONTENT + "')")
     public ResponseEntity<AgencyDTO> updateAgency(@Valid @RequestBody AgencyDTO agencyDTO) {
         log.debug("REST request to update Agency : {}", agencyDTO);
         if (agencyDTO.getId() == null) {
@@ -171,23 +172,26 @@ public class AgencyResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/agencies/{id}")
+    @PreAuthorize( "hasRole('" + ADMIN_CONTENT + "')")
+    // TODO: deleting an agency should delete all its vocabularies
     public ResponseEntity<Void> deleteAgency(@PathVariable Long id) {
         log.debug("REST request to delete Agency : {}", id);
-        
-        //notify the auditing mechanism
+
         Optional<AgencyDTO> agencyDTO = agencyService.findOne(id);
-        AgencyDTO agencyDTOTemp = null;
-        if (agencyDTO.isPresent()) {
-            agencyDTOTemp = agencyDTO.get();
+        if (agencyDTO.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
+
+        agencyService.delete(id);
+
+        //notify the auditing mechanism
         String auditUserString = "";
         Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
         if (auditUser.isPresent()) {
             auditUserString = auditUser.get();
         }
-        auditPublisher.publish(auditUserString, agencyDTOTemp, "AGENCY_DELETED");
+        auditPublisher.publish(auditUserString, agencyDTO.get(), "AGENCY_DELETED");
 
-        agencyService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 

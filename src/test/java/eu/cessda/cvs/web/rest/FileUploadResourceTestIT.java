@@ -17,6 +17,7 @@ package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.config.ApplicationProperties;
+import eu.cessda.cvs.security.AuthoritiesConstants;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.file.PathUtils;
@@ -47,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CvsApp.class)
 @ExtendWith( MockitoExtension.class)
 @AutoConfigureMockMvc
-@WithMockUser
+@WithMockUser(authorities = AuthoritiesConstants.ADMIN_CONTENT )
 class FileUploadResourceTestIT
 {
 

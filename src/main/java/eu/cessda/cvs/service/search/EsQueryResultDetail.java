@@ -83,7 +83,7 @@ public class EsQueryResultDetail implements Serializable {
     }
 
     public void clear() {
-		searchTerm = null;
+		searchTerm = "";
 		clearFilter();
 		page = PageRequest.of( 0, PAGE_SIZE);
 	}

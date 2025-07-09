@@ -15,7 +15,6 @@
  */
 package eu.cessda.cvs.security;
 
-import eu.cessda.cvs.domain.enumeration.AgencyRole;
 import eu.cessda.cvs.service.InsufficientVocabularyAuthorityException;
 import eu.cessda.cvs.service.dto.UserAgencyDTO;
 import eu.cessda.cvs.service.dto.UserDTO;
@@ -27,7 +26,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -122,9 +120,44 @@ public final class SecurityUtils {
         return currentUser == null ? null : currentUser.getId();
     }
 
+    // TODO: use Spring Security
     public static boolean isAdminContent() {
         // if user content admin
         return isCurrentUserInRole("ROLE_ADMIN") || isCurrentUserInRole("ROLE_ADMIN_CONTENT" );
+    }
+
+    /**
+     * Determine whether the current user has the authority to perform the
+     * specified action against a given agency.
+     *
+     * @param actionType the action to perform.
+     * @param agencyId the agency.
+     * @return {@code true} if the user has permission, {@code false} otherwise.
+     */
+    public static boolean hasAgencyAuthority(ActionType actionType, Long agencyId) {
+        Objects.requireNonNull(actionType, "actionType is null");
+
+        UserDTO currentUser = getCurrentUser();
+
+        if (currentUser == null)
+        {
+            return false;
+        }
+
+        if (isAdminContent())
+        {
+            return true;
+        }
+
+        for ( var userAgency : currentUser.getUserAgencies() )
+        {
+            if ( Objects.equals( userAgency.getAgencyId(), agencyId ) )
+            {
+                return hasAgencyRole( userAgency, actionType );
+            }
+        }
+
+        return false;
     }
 
     public static boolean hasAnyAgencyAuthority(ActionType actionType, Long agencyId, String language) {
@@ -143,32 +176,21 @@ public final class SecurityUtils {
         }
 
         // check based on UserAgencyRole
-        return hasAgencyRole(currentUser.getUserAgencies(), agencyId, actionType.getAgencyRoles(), language);
-    }
-
-    public static void checkResourceAuthorization(ActionType actionType, Long agencyId, String language) {
-        if (!SecurityUtils.hasAnyAgencyAuthority(actionType, agencyId, language)) {
-            throw new InsufficientVocabularyAuthorityException();
-        }
-    }
-
-    public static boolean hasAgencyRole( Set<UserAgencyDTO> userAgencies, Long agencyId, Set<AgencyRole> agencyRoles, String language )
-    {
-        for ( UserAgencyDTO userAgency : userAgencies )
+        if ( agencyId != null )
         {
-            if ( agencyId == null )
+            for ( var userAgency : currentUser.getUserAgencies() )
             {
-                // only check for agencyRoles
-                if ( agencyRoles.contains( userAgency.getAgencyRole() ) )
+                if (hasAgencyRole( userAgency, agencyId, actionType, language ))
                 {
                     return true;
                 }
             }
-            else
+        }
+        else
+        {
+            for ( var userAgency : currentUser.getUserAgencies() )
             {
-                if ( agencyId.equals( userAgency.getAgencyId() )
-                    && language.equals( userAgency.getLanguage() )
-                    && agencyRoles.contains( userAgency.getAgencyRole() ) )
+                if ( hasAgencyRole( userAgency, actionType ) )
                 {
                     return true;
                 }
@@ -176,5 +198,24 @@ public final class SecurityUtils {
         }
 
         return false;
+    }
+
+    public static void checkResourceAuthorization(ActionType actionType, Long agencyId, String language) {
+        if (!SecurityUtils.hasAnyAgencyAuthority(actionType, agencyId, language)) {
+            throw new InsufficientVocabularyAuthorityException(actionType);
+        }
+    }
+
+    public static boolean hasAgencyRole( UserAgencyDTO userAgency, Long agencyId, ActionType actionType, String language )
+    {
+        return Objects.equals( agencyId, userAgency.getAgencyId() )
+            && language.equals( userAgency.getLanguage() )
+            && actionType.hasPermission( userAgency.getAgencyRole() );
+    }
+
+    public static boolean hasAgencyRole( UserAgencyDTO userAgency, ActionType actionType )
+    {
+        // only check for agencyRoles
+        return actionType.hasPermission( userAgency.getAgencyRole() );
     }
 }

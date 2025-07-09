@@ -20,7 +20,6 @@ import eu.cessda.cvs.config.audit.AuditEventPublisher;
 import eu.cessda.cvs.domain.User;
 import eu.cessda.cvs.repository.UserAgencyRepository;
 import eu.cessda.cvs.repository.UserRepository;
-import eu.cessda.cvs.security.AuthoritiesConstants;
 import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.MailService;
 import eu.cessda.cvs.service.UserAgencyService;
@@ -30,17 +29,13 @@ import eu.cessda.cvs.service.dto.UserDTO;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import eu.cessda.cvs.web.rest.errors.EmailAlreadyUsedException;
 import eu.cessda.cvs.web.rest.errors.LoginAlreadyUsedException;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -55,6 +50,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+
+import static eu.cessda.cvs.security.AuthoritiesConstants.ADMIN;
 
 /**
  * REST controller for managing users.
@@ -124,7 +121,7 @@ public class UserResource {
      * @throws MessagingException if the email cannot be sent.
      */
     @PostMapping("/users")
-    @PreAuthorize("hasAnyRole(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.ADMIN_CONTENT + "\")")
+    @PreAuthorize( "hasRole('" + ADMIN + "')")
     public ResponseEntity<User> createUser(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException, MessagingException
     {
         log.debug("REST request to save User : {}", userDTO);
@@ -163,9 +160,13 @@ public class UserResource {
      * @throws LoginAlreadyUsedException {@code 400 (Bad Request)} if the login is already in use.
      */
     @PutMapping("/users")
-    @PreAuthorize("hasAnyRole(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.ADMIN_CONTENT + "\")")
+    @PreAuthorize( "hasRole('" + ADMIN + "')")
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO userDTO) {
         log.debug("REST request to update User : {}", userDTO);
+
+        // Get current user
+        var currentUser = SecurityUtils.getCurrentUser();
+
         Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
             throw new EmailAlreadyUsedException();
@@ -189,6 +190,13 @@ public class UserResource {
 
             if( !newUserAgencies.isEmpty() )
                 userDTO.getUserAgencies().addAll( newUserAgencies );
+        }
+
+        // Check if the user's own roles have changed
+        if (userDTO.equals( currentUser ) && !userDTO.getAuthorities().equals( currentUser.getAuthorities() ) )
+        {
+            // A user is not allowed to change its own roles
+            throw new BadRequestAlertException("A user cannot change its own roles", "userManagement", "user_changed_own_roles");
         }
 
         Optional<UserDTO> updatedUser = userService.updateUser(userDTO);
@@ -223,7 +231,7 @@ public class UserResource {
      * @return a string list of all roles.
      */
     @GetMapping("/users/authorities")
-    @PreAuthorize("hasAnyRole(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.ADMIN_CONTENT + "\")")
+    @PreAuthorize( "hasRole('" + ADMIN + "')")
     public List<String> getAuthorities() {
         return userService.getAuthorities();
     }
@@ -254,7 +262,7 @@ public class UserResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
-    @PreAuthorize("hasAnyRole(\"" + AuthoritiesConstants.ADMIN + "\", \"" + AuthoritiesConstants.ADMIN_CONTENT + "\")")
+    @PreAuthorize( "hasRole('" + ADMIN + "')")
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
 
@@ -270,7 +278,7 @@ public class UserResource {
             auditUserString = auditUser.get();
         }
         auditPublisher.publish(auditUserString, null, userTemp, "USER_DELETED");
-        
+
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "userManagement.deleted", login)).build();
     }

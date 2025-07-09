@@ -20,83 +20,26 @@ import { map } from 'rxjs/operators';
 import moment from 'moment';
 
 import { SERVER_API_URL } from 'app/app.constants';
-import { createRequestOption, SearchWithPagination } from 'app/shared/util/request-util';
 import { Comment } from 'app/shared/model/comment.model';
 
-type EntityResponseType = HttpResponse<Comment>;
 type EntityArrayResponseType = HttpResponse<Comment[]>;
 
 @Injectable({ providedIn: 'root' })
 export class CommentService {
   public resourceUrl = SERVER_API_URL + 'api/comments';
-  public resourceSearchUrl = SERVER_API_URL + 'api/_search/comments';
 
-  constructor(protected http: HttpClient) {}
-
-  create(comment: Comment): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(comment);
-    return this.http
-      .post<Comment>(this.resourceUrl, copy, { observe: 'response' })
-      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
-  }
-
-  update(comment: Comment): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(comment);
-    return this.http
-      .put<Comment>(this.resourceUrl, copy, { observe: 'response' })
-      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
-  }
-
-  find(id: number): Observable<EntityResponseType> {
-    return this.http
-      .get<Comment>(`${this.resourceUrl}/${id}`, { observe: 'response' })
-      .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
-  }
-
-  query(req?: any): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http
-      .get<Comment[]>(this.resourceUrl, { params: options, observe: 'response' })
-      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
-  }
-
-  delete(id: number): Observable<HttpResponse<object>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
-  }
+  constructor(private http: HttpClient) {}
 
   findAllByVersion(versionId: number): Observable<EntityArrayResponseType> {
-    return this.http
-      .get<Comment[]>(`${this.resourceUrl}/version/${versionId}`, { observe: 'response' })
-      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
-  }
-
-  search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http
-      .get<Comment[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
-  }
-
-  protected convertDateFromClient(comment: Comment): Comment {
-    const copy: Comment = Object.assign({}, comment, {
-      dateTime: comment.dateTime && comment.dateTime.isValid() ? comment.dateTime.toJSON() : undefined,
-    });
-    return copy;
-  }
-
-  protected convertDateFromServer(res: EntityResponseType): EntityResponseType {
-    if (res.body) {
-      res.body.dateTime = res.body.dateTime ? moment(res.body.dateTime) : undefined;
-    }
-    return res;
-  }
-
-  protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {
-    if (res.body) {
-      res.body.forEach((comment: Comment) => {
-        comment.dateTime = comment.dateTime ? moment(comment.dateTime) : undefined;
-      });
-    }
-    return res;
+    return this.http.get<Comment[]>(`${this.resourceUrl}/version/${versionId}`, { observe: 'response' }).pipe(
+      map((res: EntityArrayResponseType) => {
+        if (res.body) {
+          res.body.forEach((comment: Comment) => {
+            comment.dateTime = comment.dateTime ? moment(comment.dateTime) : undefined;
+          });
+        }
+        return res;
+      }),
+    );
   }
 }

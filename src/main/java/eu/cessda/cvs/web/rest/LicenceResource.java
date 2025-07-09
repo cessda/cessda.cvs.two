@@ -31,6 +31,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -39,6 +40,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+
+import static eu.cessda.cvs.security.AuthoritiesConstants.ADMIN_CONTENT;
 
 /**
  * REST controller for managing {@link eu.cessda.cvs.domain.Licence}.
@@ -71,6 +74,7 @@ public class LicenceResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/licences")
+    @PreAuthorize( "hasRole('" + ADMIN_CONTENT + "')")
     public ResponseEntity<LicenceDTO> createLicence(@Valid @RequestBody LicenceDTO licenceDTO) throws URISyntaxException {
         log.debug("REST request to save Licence : {}", licenceDTO);
         if (licenceDTO.getId() != null) {
@@ -99,6 +103,7 @@ public class LicenceResource {
      * or with status {@code 500 (Internal Server Error)} if the licenceDTO couldn't be updated.
      */
     @PutMapping("/licences")
+    @PreAuthorize( "hasRole('" + ADMIN_CONTENT + "')")
     public ResponseEntity<LicenceDTO> updateLicence(@Valid @RequestBody LicenceDTO licenceDTO)
     {
         log.debug("REST request to update Licence : {}", licenceDTO);
@@ -153,21 +158,26 @@ public class LicenceResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/licences/{id}")
+    @PreAuthorize( "hasRole('" + ADMIN_CONTENT + "')")
     public ResponseEntity<Void> deleteLicence(@PathVariable Long id) {
         log.debug("REST request to delete Licence : {}", id);
 
         //notify the auditing mechanism
-        Optional<LicenceDTO> licenceyDTO = licenceService.findOne(id);
-        LicenceDTO licenceDTOTemp = null;
-        if (licenceyDTO.isPresent()) {
-            licenceDTOTemp = licenceyDTO.get();
+        Optional<LicenceDTO> licenceDTOOpt = licenceService.findOne(id);
+
+        if ( licenceDTOOpt.isEmpty() )
+        {
+            return ResponseEntity.notFound().build();
         }
+
+        LicenceDTO licenceDTO = licenceDTOOpt.get();
+
         String auditUserString = "";
         Optional<String> auditUser = SecurityUtils.getCurrentUserLogin();
         if (auditUser.isPresent()) {
             auditUserString = auditUser.get();
         }
-        auditPublisher.publish(auditUserString, licenceDTOTemp, null, "DELETE_LICENCE");
+        auditPublisher.publish(auditUserString, licenceDTO, null, "DELETE_LICENCE");
 
         licenceService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();

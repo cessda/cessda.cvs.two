@@ -43,7 +43,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser(authorities = AuthoritiesConstants.ADMIN)
 @SpringBootTest(classes = CvsApp.class)
 @Transactional
-public class AuditResourceIT {
+class AuditResourceIT {
 
     private static final String SAMPLE_PRINCIPAL = "SAMPLE_PRINCIPAL";
     private static final String SAMPLE_TYPE = "SAMPLE_TYPE";
@@ -68,7 +68,7 @@ public class AuditResourceIT {
     }
 
     @Test
-    public void getAllAudits() throws Exception {
+    void getAllAudits() throws Exception {
         // Initialize the database
         auditEventRepository.save(auditEvent);
 
@@ -80,7 +80,7 @@ public class AuditResourceIT {
     }
 
     @Test
-    public void getAudit() throws Exception {
+    void getAudit() throws Exception {
         // Initialize the database
         auditEventRepository.save(auditEvent);
 
@@ -92,7 +92,7 @@ public class AuditResourceIT {
     }
 
     @Test
-    public void getAuditsByDate() throws Exception {
+    void getAuditsByDate() throws Exception {
         // Initialize the database
         auditEventRepository.save(auditEvent);
 
@@ -108,7 +108,7 @@ public class AuditResourceIT {
     }
 
     @Test
-    public void getNonExistingAuditsByDate() throws Exception {
+    void getNonExistingAuditsByDate() throws Exception {
         // Initialize the database
         auditEventRepository.save(auditEvent);
 
@@ -124,7 +124,7 @@ public class AuditResourceIT {
     }
 
     @Test
-    public void getNonExistingAudit() throws Exception {
+    void getNonExistingAudit() throws Exception {
         // Get the audit
         restAuditMockMvc.perform(get("/management/audits/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -132,7 +132,7 @@ public class AuditResourceIT {
 
     @Test
     @Transactional
-    public void testPersistentAuditEventEquals() throws Exception {
+    void testPersistentAuditEventEquals() throws Exception {
         TestUtil.equalsVerifier(PersistentAuditEvent.class);
         PersistentAuditEvent auditEvent1 = new PersistentAuditEvent();
         auditEvent1.setId(1L);

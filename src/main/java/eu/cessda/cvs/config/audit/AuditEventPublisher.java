@@ -176,10 +176,13 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             case "ADD_TL_CODE":
             case "EDIT_TL_CODE":
             case "DELETE_TL_CODE":
-                map.put(CV_TITLE, version.getTitle());
-                map.put(CV_LANGUAGE, version.getLanguage());
-                map.put(CV_TYPE, version.getItemType());
-                map.put(CV_VERSION, VersionNumber.toString(version.getNumber()));
+                if (version != null)
+                {
+                    map.put( CV_TITLE, version.getTitle() );
+                    map.put( CV_LANGUAGE, version.getLanguage() );
+                    map.put( CV_TYPE, version.getItemType() );
+                    map.put( CV_VERSION, VersionNumber.toString( version.getNumber() ) );
+                }
                 if (codeSnippet.getChangeType() != null && codeSnippet.getChangeDesc() != null) {
                     map.put("code_change_type", codeSnippet.getChangeType());
                     map.put("code_change_description", codeSnippet.getChangeDesc());
@@ -213,7 +216,6 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                 map.put(CV_TITLE, version.getTitle());
                 map.put(CV_LANGUAGE, version.getLanguage());
                 map.put(CV_VERSION, VersionNumber.toString(version.getNumber()));
-                map.put(CODE_TITLE, concept.getTitle());
                 break;
             default:
         }

@@ -23,8 +23,8 @@ public class MissingIdentifierException extends RuntimeException
 {
     private static final long serialVersionUID = -5278158330435765412L;
 
-    public MissingIdentifierException( String message)
+    public MissingIdentifierException( String component )
     {
-        super( message );
+        super( component + " ID must not be null" );
     }
 }
