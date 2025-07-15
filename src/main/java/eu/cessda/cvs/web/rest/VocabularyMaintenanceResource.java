@@ -25,8 +25,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-
 /**
  * REST controller for managing {@link eu.cessda.cvs.domain.Agency}.
  */
@@ -45,7 +43,8 @@ public class VocabularyMaintenanceResource {
     }
 
     @PostMapping("/publication/generate-json")
-    public ResponseEntity<Maintenance> getGenerateJson() throws IOException {
+    public ResponseEntity<Maintenance> getGenerateJson()
+    {
         log.debug("REST request to get a page of Vocabularies");
         final String output = vocabularyService.generateJsonAllVocabularyPublish();
         Maintenance maintenanceOut = new Maintenance(output, "GENERATE_JSON");
