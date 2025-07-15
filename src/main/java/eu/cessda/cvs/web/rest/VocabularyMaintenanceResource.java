@@ -20,13 +20,10 @@ import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.web.rest.domain.Maintenance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
 
 /**
  * REST controller for managing {@link eu.cessda.cvs.domain.Agency}.
@@ -37,11 +34,7 @@ public class VocabularyMaintenanceResource {
 
     private final Logger log = LoggerFactory.getLogger(VocabularyMaintenanceResource.class);
 
-    @Value("${jhipster.clientApp.name}")
-    private String applicationName;
-
     private final AgencyService agencyService;
-
     private final VocabularyService vocabularyService;
 
     public VocabularyMaintenanceResource(AgencyService agencyService, VocabularyService vocabularyService) {
@@ -50,7 +43,8 @@ public class VocabularyMaintenanceResource {
     }
 
     @PostMapping("/publication/generate-json")
-    public ResponseEntity<Maintenance> getGenerateJson() throws IOException {
+    public ResponseEntity<Maintenance> getGenerateJson()
+    {
         log.debug("REST request to get a page of Vocabularies");
         final String output = vocabularyService.generateJsonAllVocabularyPublish();
         Maintenance maintenanceOut = new Maintenance(output, "GENERATE_JSON");

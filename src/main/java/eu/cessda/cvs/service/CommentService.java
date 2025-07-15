@@ -16,8 +16,6 @@
 package eu.cessda.cvs.service;
 
 import eu.cessda.cvs.service.dto.CommentDTO;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,23 +24,6 @@ import java.util.Optional;
  * Service Interface for managing {@link eu.cessda.cvs.domain.Comment}.
  */
 public interface CommentService {
-
-    /**
-     * Save a comment.
-     *
-     * @param commentDTO the entity to save.
-     * @return the persisted entity.
-     */
-    CommentDTO save(CommentDTO commentDTO);
-
-    /**
-     * Get all the comments.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
-    Page<CommentDTO> findAll(Pageable pageable);
-
     /**
      * Get the "id" comment.
      *
@@ -51,22 +32,6 @@ public interface CommentService {
      */
     Optional<CommentDTO> findOne(Long id);
 
-    /**
-     * Delete the "id" comment.
-     *
-     * @param id the id of the entity.
-     */
-    void delete(Long id);
-
-    /**
-     * Search for the comment corresponding to the query.
-     *
-     * @param query the query of the search.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
-    Page<CommentDTO> search(String query, Pageable pageable);
 
     /**
      * Get all the comments in version

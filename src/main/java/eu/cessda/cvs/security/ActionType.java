@@ -18,7 +18,6 @@ package eu.cessda.cvs.security;
 import eu.cessda.cvs.domain.enumeration.AgencyRole;
 
 import java.util.EnumSet;
-import java.util.Set;
 
 /**
  * The ActionType enumeration.
@@ -56,9 +55,13 @@ public enum ActionType {
     }
 
     /**
-     * Returns a {@link Set} of agency roles allowed to perform the action.
+     * Checks if the role has permission to perform the given action.
+     *
+     * @param agencyRole the role to check.
+     * @return true if the role has permission, false otherwise.
      */
-    public Set<AgencyRole> getAgencyRoles() {
-        return agencyRoles;
+    public boolean hasPermission( AgencyRole agencyRole )
+    {
+        return agencyRoles.contains( agencyRole );
     }
 }

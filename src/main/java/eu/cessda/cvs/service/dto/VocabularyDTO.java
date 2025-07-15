@@ -2125,24 +2125,32 @@ public class VocabularyDTO implements Serializable {
         return Optional.empty();
     }
 
+    public static void fillVocabularyByVersions( VocabularyDTO vocab ) {
+        fillVocabularyByVersions( vocab, vocab.getVersions() );
+    }
+
     public static void fillVocabularyByVersions( VocabularyDTO vocab, Set<VersionDTO> versions ) {
         // use to ignore version with same lang, eg. FRv2.0.2 and FRv2.0.1 only FRv.2.0.2 will be chosen
         var versionLangs = new HashSet<String>();
         for (VersionDTO version : versions) {
             if( versionLangs.contains( version.getLanguage()) )
+            {
                 continue;
-            versionLangs.add( version.getLanguage());
+            }
+            versionLangs.add( version.getLanguage() );
             // fill vocabulary
             vocab.setTitleDefinition(version.getTitle(), version.getDefinition(), version.getLanguage(), false);
-            if( version.getStatus() == Status.PUBLISHED ) {
+            if( version.getStatus() == Status.PUBLISHED )
+            {
                 vocab.addLanguagePublished(version.getLanguage());
                 vocab.setVersionByLanguage(version.getLanguage(), version.getNumber().toString());
-            } else {
+            }
+            else
+            {
                 vocab.setVersionByLanguage(version.getLanguage(), version.getNumber() + "_" + version.getStatus());
             }
             vocab.addLanguage( version.getLanguage() );
             vocab.addStatuses( version.getStatus().toString() );
         }
-
     }
 }

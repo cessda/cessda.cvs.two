@@ -18,7 +18,10 @@ package eu.cessda.cvs.web.rest;
 import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.domain.Agency;
 import eu.cessda.cvs.repository.AgencyRepository;
-import eu.cessda.cvs.service.AgencyService;
+import eu.cessda.cvs.repository.AuthorityRepository;
+import eu.cessda.cvs.repository.UserRepository;
+import eu.cessda.cvs.security.AuthoritiesConstants;
+import eu.cessda.cvs.security.jwt.TokenProvider;
 import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.service.mapper.AgencyMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,6 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +53,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
-public class AgencyResourceIT {
+public class AgencyResourceIT extends TestUtil {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -77,22 +82,31 @@ public class AgencyResourceIT {
     private static final String DEFAULT_CANONICAL_URI = "AAAAAAAAAA";
     private static final String UPDATED_CANONICAL_URI = "BBBBBBBBBB";
 
-    @Autowired
-    private AgencyRepository agencyRepository;
-
-    @Autowired
-    private AgencyMapper agencyMapper;
-
-    @Autowired
-    private AgencyService agencyService;
-
-    @Autowired
-    private EntityManager em;
-
-    @Autowired
-    private MockMvc restAgencyMockMvc;
+    private final AgencyRepository agencyRepository;
+    private final AgencyMapper agencyMapper;
+    private final EntityManager em;
+    private final MockMvc restAgencyMockMvc;
 
     private Agency agency;
+
+    @Autowired
+    public AgencyResourceIT(
+        AuthenticationManagerBuilder authenticationManagerBuilder,
+        AuthorityRepository authorityRepository,
+        UserRepository userRepository,
+        TokenProvider tokenProvider,
+        PasswordEncoder passwordEncoder,
+        AgencyRepository agencyRepository,
+        AgencyMapper agencyMapper,
+        EntityManager em,
+        MockMvc restAgencyMockMvc
+    ) {
+        super( authenticationManagerBuilder, authorityRepository, userRepository, tokenProvider, passwordEncoder );
+        this.agencyRepository = agencyRepository;
+        this.agencyMapper = agencyMapper;
+        this.em = em;
+        this.restAgencyMockMvc = restAgencyMockMvc;
+    }
 
     /**
      * Create an entity for this test.
@@ -100,7 +114,7 @@ public class AgencyResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Agency createEntity(EntityManager em) {
+    public static Agency createEntity() {
         return new Agency()
             .name(DEFAULT_NAME)
             .link(DEFAULT_LINK)
@@ -118,7 +132,7 @@ public class AgencyResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Agency createUpdatedEntity(EntityManager em) {
+    public static Agency createUpdatedEntity() {
         return new Agency()
             .name(UPDATED_NAME)
             .link(UPDATED_LINK)
@@ -131,9 +145,14 @@ public class AgencyResourceIT {
             .canonicalUri(UPDATED_CANONICAL_URI);
     }
 
+    public String login()
+    {
+        return login( AuthoritiesConstants.ADMIN_CONTENT );
+    }
+
     @BeforeEach
     public void initTest() {
-        agency = createEntity(em);
+        agency = createEntity();
     }
 
     @Test
@@ -141,9 +160,13 @@ public class AgencyResourceIT {
     void createAgency() throws Exception {
         int databaseSizeBeforeCreate = agencyRepository.findAll().size();
 
+        // Mock user login
+        var jwt = login();
+
         // Create the Agency
         AgencyDTO agencyDTO = agencyMapper.toDto(agency);
         restAgencyMockMvc.perform(post("/api/agencies")
+            .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(agencyDTO)))
             .andExpect(status().isCreated());
@@ -168,12 +191,16 @@ public class AgencyResourceIT {
     void createAgencyWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = agencyRepository.findAll().size();
 
+        // Mock user login
+        var jwt = login();
+
         // Create the Agency with an existing ID
         agency.setId(1L);
         AgencyDTO agencyDTO = agencyMapper.toDto(agency);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restAgencyMockMvc.perform(post("/api/agencies")
+            .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(agencyDTO)))
             .andExpect(status().isBadRequest());
@@ -260,7 +287,11 @@ public class AgencyResourceIT {
             .canonicalUri(UPDATED_CANONICAL_URI);
         AgencyDTO agencyDTO = agencyMapper.toDto(updatedAgency);
 
+        // Mock user login
+        var jwt = login();
+
         restAgencyMockMvc.perform(put("/api/agencies")
+            .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(agencyDTO)))
             .andExpect(status().isOk());
@@ -288,8 +319,12 @@ public class AgencyResourceIT {
         // Create the Agency
         AgencyDTO agencyDTO = agencyMapper.toDto(agency);
 
+        // Mock user login
+        var jwt = login();
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restAgencyMockMvc.perform(put("/api/agencies")
+            .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(agencyDTO)))
             .andExpect(status().isBadRequest());
@@ -307,8 +342,12 @@ public class AgencyResourceIT {
 
         int databaseSizeBeforeDelete = agencyRepository.findAll().size();
 
+        // Mock user login
+        var jwt = login();
+
         // Delete the agency
         restAgencyMockMvc.perform(delete("/api/agencies/{id}", agency.getId())
+            .header("Authorization", jwt)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 

@@ -60,99 +60,11 @@ describe('Service Tests', () => {
           elemDefault,
         );
 
-        service.find(123).subscribe(resp => (expectedResult = resp.body));
+        service.getByVersionId(123).subscribe(resp => (expectedResult = resp.body));
 
         const req = httpMock.expectOne({ method: 'GET' });
         req.flush(returnedFromService);
         expect(expectedResult).toMatchObject(elemDefault);
-      });
-
-      it('should create a VocabularyChange', () => {
-        const returnedFromService = Object.assign(
-          {
-            id: 0,
-            date: currentDate.format(DATE_FORMAT),
-          },
-          elemDefault,
-        );
-
-        const expected = Object.assign(
-          {
-            date: currentDate,
-          },
-          returnedFromService,
-        );
-
-        service.create({ changeType: '' }).subscribe(resp => (expectedResult = resp.body));
-
-        const req = httpMock.expectOne({ method: 'POST' });
-        req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject(expected);
-      });
-
-      it('should update a VocabularyChange', () => {
-        const returnedFromService = Object.assign(
-          {
-            vocabularyId: 1,
-            versionId: 1,
-            changeType: 'BBBBBB',
-            description: 'BBBBBB',
-            userId: 1,
-            userName: 'BBBBBB',
-            date: currentDate.format(DATE_FORMAT),
-          },
-          elemDefault,
-        );
-
-        const expected = Object.assign(
-          {
-            date: currentDate,
-          },
-          returnedFromService,
-        );
-
-        service.update(expected).subscribe(resp => (expectedResult = resp.body));
-
-        const req = httpMock.expectOne({ method: 'PUT' });
-        req.flush(returnedFromService);
-        expect(expectedResult).toMatchObject(expected);
-      });
-
-      it('should return a list of VocabularyChange', () => {
-        const returnedFromService = Object.assign(
-          {
-            vocabularyId: 1,
-            versionId: 1,
-            changeType: 'BBBBBB',
-            description: 'BBBBBB',
-            userId: 1,
-            userName: 'BBBBBB',
-            date: currentDate.format(DATE_FORMAT),
-          },
-          elemDefault,
-        );
-
-        const expected = Object.assign(
-          {
-            date: currentDate,
-          },
-          returnedFromService,
-        );
-
-        service.query().subscribe(resp => (expectedResult = resp.body));
-
-        const req = httpMock.expectOne({ method: 'GET' });
-        req.flush([returnedFromService]);
-        httpMock.verify();
-        expect(expectedResult).toContainEqual(expected);
-      });
-
-      it('should delete a VocabularyChange', () => {
-        service.delete(123).subscribe(resp => (expectedResult = resp.ok));
-
-        const req = httpMock.expectOne({ method: 'DELETE' });
-        req.flush({ status: 200 });
-        expect(expectedResult);
       });
     });
 

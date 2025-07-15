@@ -126,9 +126,4 @@ public class MetadataFieldServiceImpl implements MetadataFieldService {
         log.debug("Request to delete MetadataField : {}", id);
         metadataFieldRepository.deleteById(id);
     }
-
-    @Override
-    public Page<MetadataFieldDTO> search(String query, Pageable pageable) {
-        return null;
-    }
 }

@@ -21,6 +21,7 @@ import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.repository.VocabularyRepository;
 import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.security.UserDetails;
+import eu.cessda.cvs.service.IllegalActionTypeException;
 import eu.cessda.cvs.service.VocabularyChangeService;
 import eu.cessda.cvs.service.dto.UserDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
@@ -52,7 +53,7 @@ class VocabularyServiceImplTest
     private final Random random = new Random();
 
     @Test
-    void shouldStoreChangeTypeFromSnippet()
+    void shouldStoreChangeTypeFromSnippet() throws IllegalActionTypeException
     {
         // Generate positive random numbers for the vocabulary and the version
         long vocabularyId = abs( random.nextLong() );

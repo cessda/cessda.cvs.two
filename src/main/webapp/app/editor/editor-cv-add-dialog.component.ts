@@ -23,7 +23,6 @@ import { AgencyService } from 'app/agency/agency.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Agency } from 'app/shared/model/agency.model';
 import { AccountService } from 'app/core/auth/account.service';
-import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
@@ -61,7 +60,6 @@ export class EditorCvAddDialogComponent implements OnInit {
     protected agencyService: AgencyService,
     private accountService: AccountService,
     protected editorService: EditorService,
-    protected vocabularyService: VocabularyService,
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
     private fb: FormBuilder,

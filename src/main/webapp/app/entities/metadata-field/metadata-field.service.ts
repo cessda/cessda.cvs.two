@@ -18,44 +18,15 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
-import { createRequestOption, SearchWithPagination } from 'app/shared/util/request-util';
 import { MetadataField } from 'app/shared/model/metadata-field.model';
 
 type EntityResponseType = HttpResponse<MetadataField>;
-type EntityArrayResponseType = HttpResponse<MetadataField[]>;
-
 @Injectable({ providedIn: 'root' })
 export class MetadataFieldService {
   public resourceUrl = SERVER_API_URL + 'api/metadata-fields';
   public resourceSearchUrl = SERVER_API_URL + 'api/_search/metadata-fields';
 
   constructor(protected http: HttpClient) {}
-
-  create(metadataField: MetadataField): Observable<EntityResponseType> {
-    return this.http.post<MetadataField>(this.resourceUrl, metadataField, { observe: 'response' });
-  }
-
-  update(metadataField: MetadataField): Observable<EntityResponseType> {
-    return this.http.put<MetadataField>(this.resourceUrl, metadataField, { observe: 'response' });
-  }
-
-  find(id: number): Observable<EntityResponseType> {
-    return this.http.get<MetadataField>(`${this.resourceUrl}/${id}`, { observe: 'response' });
-  }
-
-  query(req?: any): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http.get<MetadataField[]>(this.resourceUrl, { params: options, observe: 'response' });
-  }
-
-  delete(id: number): Observable<HttpResponse<object>> {
-    return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
-  }
-
-  search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
-    const options = createRequestOption(req);
-    return this.http.get<MetadataField[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
-  }
 
   findByKey(metadataKey: string): Observable<EntityResponseType> {
     return this.http.get<MetadataField>(`${this.resourceUrl}/metadata-key/${metadataKey}`, { observe: 'response' });

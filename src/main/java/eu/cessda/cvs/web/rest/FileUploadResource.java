@@ -31,6 +31,7 @@ import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,6 +45,8 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+
+import static eu.cessda.cvs.security.AuthoritiesConstants.ADMIN_CONTENT;
 
 /**
  * REST controller for managing File Upload
@@ -76,6 +79,7 @@ public class FileUploadResource
      * @return the UUID of uploaded file name
      */
     @PostMapping( "/agency-image" )
+    @PreAuthorize( "hasRole('" + ADMIN_CONTENT + "')")
     public ResponseEntity<String> uploadAgencyImage( @RequestParam( "file" ) MultipartFile file ) throws IOException, URISyntaxException
     {
         log.debug( "Uploading agency-image file {}", file.getName() );
@@ -91,6 +95,7 @@ public class FileUploadResource
      * @return the UUID of uploaded file name
      */
     @PostMapping( "/license-image" )
+    @PreAuthorize( "hasRole('" + ADMIN_CONTENT + "')")
     public ResponseEntity<String> uploadLicenseImage( @RequestParam( "file" ) MultipartFile file ) throws URISyntaxException, IOException
     {
         log.debug( "Uploading license-image file {}", file.getName() );
@@ -106,6 +111,7 @@ public class FileUploadResource
      * @return the UUID of uploaded file name
      */
     @PostMapping( "/file" )
+    @PreAuthorize( "hasRole('" + ADMIN_CONTENT + "')")
     public ResponseEntity<String> uploadFile( @RequestParam( "file" ) MultipartFile file ) throws URISyntaxException, IOException
     {
         log.debug( "Uploading docx file {}", file.getName() );
@@ -117,6 +123,7 @@ public class FileUploadResource
 
     @SuppressWarnings( "DataFlowIssue" )
     @PostMapping( "/docx2html/{fileName}" )
+    @PreAuthorize( "hasRole('" + ADMIN_CONTENT + "')")
     public ResponseEntity<Void> docx2html( @PathVariable String fileName ) throws IOException, Docx4JException, URISyntaxException
     {
         // Strip out potential path parameters
@@ -189,6 +196,7 @@ public class FileUploadResource
     }
 
     @PostMapping( "/html2section/{fileName}/{metadataKey}" )
+    @PreAuthorize( "hasRole('" + ADMIN_CONTENT + "')")
     public ResponseEntity<Void> html2section( @PathVariable String fileName, @PathVariable String metadataKey ) throws IOException
     {
         // Strip out potential path parameters
