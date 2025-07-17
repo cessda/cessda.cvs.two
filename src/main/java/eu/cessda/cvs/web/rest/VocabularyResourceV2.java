@@ -57,15 +57,14 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/v2")
 public class VocabularyResourceV2 {
+    private static final Logger log = LoggerFactory.getLogger(VocabularyResourceV2.class);
 
     public static final String ATTACHMENT_FILENAME = "attachment; filename=";
     public static final String LANGUAGE = "@language";
     public static final String ID = "@id";
     public static final String JSONLD_TYPE = "application/ld+json";
-    public static final String DOCX_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
     private static final String VERSION = "version";
-    public static final String VERSION_WITH_INCLUDED_VERSIONS = "REST request to get a JSON file of vocabulary {} with version {} with included versions {}";
-    private final Logger log = LoggerFactory.getLogger(VocabularyResourceV2.class);
+    private static final String VERSION_WITH_INCLUDED_VERSIONS = "REST request to get a JSON file of vocabulary {} with version {} with included versions {}";
 
     private final VocabularyService vocabularyService;
 
