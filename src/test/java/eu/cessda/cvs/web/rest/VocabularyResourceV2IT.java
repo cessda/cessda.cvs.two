@@ -221,27 +221,15 @@ class VocabularyResourceV2IT {
             .andExpect(status().isOk());
     }
 
-    @Test
-    @Transactional
-    void getVocabulariesRedirectTest() throws Exception
-    {
-        restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
-                "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
-                EditorResourceIT.INIT_VERSION_NUMBER_SL)
-                .accept(MediaType.TEXT_HTML_VALUE))
-                .andExpect(status().isTemporaryRedirect())
-                .andExpect( header().string( "Location", "/vocabulary/" +  EditorResourceIT.INIT_TITLE_EN + "?v=" + EditorResourceIT.INIT_VERSION_NUMBER_SL ) );
-    }
-
     @ParameterizedTest
     @Transactional
     @ValueSource( strings = {
         MediaType.APPLICATION_JSON_VALUE,
         MediaType.APPLICATION_PDF_VALUE,
-        MediaType.APPLICATION_XHTML_XML_VALUE,
-        VocabularyResourceV2.DOCX_TYPE,
+        MediaType.TEXT_HTML_VALUE,
         VocabularyResourceV2.JSONLD_TYPE,
         ExportService.MEDIATYPE_RDF_VALUE,
+        ExportService.MEDIATYPE_WORD_VALUE
     } )
     void getVocabulariesTest(String mediaType) throws Exception {
         restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
@@ -292,46 +280,6 @@ class VocabularyResourceV2IT {
             .accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
-    }
-
-    @Test
-    @Transactional
-    void exportVocabulariesPublishedTest() throws Exception {
-        // Retireve the SKOS output
-        restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept( ExportService.MEDIATYPE_RDF_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType( ExportService.MEDIATYPE_RDF_VALUE));
-
-        // Retireve the HTML output
-        restMockMvc.perform(get("/v2/vocabularies/html/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(MediaType.TEXT_HTML_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.TEXT_HTML_VALUE));
-
-        // Retireve the JSON output
-        restMockMvc.perform(get("/v2/vocabularies/json/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(MediaType.APPLICATION_JSON_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
-
-        // Retireve the JSONDL output
-        restMockMvc.perform(get("/v2/vocabularies/jsonld/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(VocabularyResourceV2.JSONLD_TYPE))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(VocabularyResourceV2.JSONLD_TYPE));
-
-        // Retireve the PDF output
-        restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(MediaType.APPLICATION_PDF_VALUE))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_PDF_VALUE));
-
-        // Retireve the DOCX output
-        restMockMvc.perform(get("/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN + "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL)
-            .accept(ExportService.MEDIATYPE_WORD))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(ExportService.MEDIATYPE_WORD));
     }
 
     @Test
