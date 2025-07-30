@@ -73,7 +73,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-jasmine2": "^29.7.0",
     "jest-junit": "^16.0.0",
-    "jest-preset-angular": "^15.0.0",
+    "jest-preset-angular": "^14.6.0",
     "jest-sonar-reporter": "^2.0.0",
     "lint-staged": "^16.1.2",
     "mocha": "^11.7.1",
