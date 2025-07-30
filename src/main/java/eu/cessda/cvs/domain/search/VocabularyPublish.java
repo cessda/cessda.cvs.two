@@ -27,13 +27,13 @@ import java.util.Set;
 
 @Document(indexName = "vocabularypublish")
 public class VocabularyPublish extends VocabularyBase {
-    private static final long serialVersionUID = 1315418060181340404L;
+    private static final long serialVersionUID = -348825785681404926L;
 
     @Field( type = FieldType.Nested, store = true )
     private Set<Code> codes = new HashSet<>();
 
     @Field( type = FieldType.Keyword )
-    private Set<String> languagesPublished;
+    private Set<String> languagesPublished = new HashSet<>();
 
     public Set<Code> getCodes()
     {
@@ -84,6 +84,12 @@ public class VocabularyPublish extends VocabularyBase {
             return false;
         }
         return Objects.equals( getId(), vocabularyPublish.getId() );
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash( super.hashCode() );
     }
 
     @Override
