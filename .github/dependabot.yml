@@ -24,6 +24,8 @@ updates:
         versions: [">=30.0.0"]
       - dependency-name: "jest-jasmine2"
         versions: [">=30.0.0"]
+      - dependency-name: "jest-preset-angular"
+        versions: [">=15.0.0"]
       - dependency-name: "typescript"
         update-types: ["version-update:semver-major"]
       - dependency-name: "@typescript-eslint*"
