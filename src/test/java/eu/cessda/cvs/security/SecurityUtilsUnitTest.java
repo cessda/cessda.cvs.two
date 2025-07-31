@@ -145,22 +145,30 @@ class SecurityUtilsUnitTest {
         UserAgencyDTO viewUserAgency = new UserAgencyDTO();
         viewUserAgency.setAgencyRole( AgencyRole.VIEW );
 
+        UserAgencyDTO adminTLUserAgency = new UserAgencyDTO();
+        adminTLUserAgency.setAgencyRole( AgencyRole.ADMIN_TL );
+        adminTLUserAgency.setAgencyId( agencyId );
+        adminTLUserAgency.setLanguage( agencyLang );
+
         UserAgencyDTO adminUserAgency = new UserAgencyDTO();
         adminUserAgency.setAgencyRole( AgencyRole.ADMIN );
         adminUserAgency.setAgencyId( agencyId );
         adminUserAgency.setLanguage( agencyLang );
 
         // should pass as adminUserAgency has the ADMIN role
-        assertThat( SecurityUtils.hasAgencyRole( Set.of( viewUserAgency, adminUserAgency ), null, Set.of( AgencyRole.ADMIN ), null ) ).isTrue();
+        assertThat( SecurityUtils.hasAgencyRole( viewUserAgency, ActionType.CREATE_CV ) ).isFalse();
+        assertThat( SecurityUtils.hasAgencyRole( adminUserAgency, ActionType.CREATE_CV ) ).isTrue();
 
         // should fail as the role is different
-        assertThat( SecurityUtils.hasAgencyRole( Set.of( viewUserAgency, adminUserAgency ), null, Set.of( AgencyRole.ADMIN_SL ), null ) ).isFalse();
+        assertThat( SecurityUtils.hasAgencyRole( viewUserAgency, ActionType.CREATE_CV ) ).isFalse();
+        assertThat( SecurityUtils.hasAgencyRole( adminTLUserAgency, ActionType.CREATE_CV ) ).isFalse();
 
         // should fail as the user agency id and language are different event though the role is correct
-        assertThat( SecurityUtils.hasAgencyRole( Set.of( viewUserAgency ), agencyId, Set.of( AgencyRole.VIEW ), agencyLang ) ).isFalse();
+        assertThat( SecurityUtils.hasAgencyRole(adminUserAgency, agencyId + 1, ActionType.CREATE_CV, "de" ) ).isFalse();
 
         // should pass as adminUserAgency has the correct agency id, agency language and role
-        assertThat( SecurityUtils.hasAgencyRole( Set.of( viewUserAgency, adminUserAgency ), agencyId, Set.of( AgencyRole.ADMIN ), agencyLang ) ).isTrue();
+        assertThat( SecurityUtils.hasAgencyRole( viewUserAgency, agencyId, ActionType.CREATE_CV, agencyLang ) ).isFalse();
+        assertThat( SecurityUtils.hasAgencyRole( adminUserAgency, agencyId, ActionType.CREATE_CV, agencyLang ) ).isTrue();
     }
 
 }

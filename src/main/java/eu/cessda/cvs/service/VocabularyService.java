@@ -17,6 +17,7 @@ package eu.cessda.cvs.service;
 
 import eu.cessda.cvs.domain.CodeSnippet;
 import eu.cessda.cvs.domain.VocabularySnippet;
+import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.service.dto.ConceptDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
@@ -47,8 +48,11 @@ public interface VocabularyService {
      *
      * @param vocabularySnippet the snippet of Vocabulary to save.
      * @return the persisted entity.
+     * @throws IllegalActionTypeException if {@link VocabularySnippet#getActionType()} is not supported.
+     * @throws InsufficientVocabularyAuthorityException if the user does not have permission to perform the action.
+     * @throws MissingIdentifierException if the {@link ActionType} edits an existing vocabulary and the vocabulary ID is not provided.
      */
-    VocabularyDTO saveVocabulary(VocabularySnippet vocabularySnippet);
+    VocabularyDTO saveVocabulary(VocabularySnippet vocabularySnippet) throws IllegalActionTypeException;
 
     /**
      * Create new Version either SL or TL
@@ -64,7 +68,7 @@ public interface VocabularyService {
      * @param codeSnippet
      * @return
      */
-    ConceptDTO saveCode(CodeSnippet codeSnippet);
+    ConceptDTO saveCode(CodeSnippet codeSnippet) throws IllegalActionTypeException;
 
     /**
      * save any vocabularyChange from codeSNippet if any
@@ -209,10 +213,11 @@ public interface VocabularyService {
     String generateJsonVocabularyPublish( VocabularyDTO... vocabularies );
 
     /**
-     * Filter-out vocabularyDTO.versions based on versionList e.g. (en-1.0, fr-1.0.1). Includes all if versionList is null
-     * @param versionList
-     * @param vocabularyDTO
-     * @return
+     * Filter-out vocabularyDTO.versions based on versionList e.g. (en-1.0, fr-1.0.1). Includes all if versionList is null.
+     *
+     * @param versionList the list of versions to filter
+     * @param vocabularyDTO the vocabulary to filter
+     * @return a set of filtered versions.
      */
     Set<VersionDTO> filterOutVocabularyVersions(String versionList, VocabularyDTO vocabularyDTO);
 

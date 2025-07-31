@@ -25,6 +25,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -210,6 +211,20 @@ public class UserDTO implements Serializable {
 
     public String getName() {
         return (this.firstName != null ? this.firstName : "") + (this.lastName != null ? " " +this.lastName : "");
+    }
+
+    @Override
+    public boolean equals( Object o )
+    {
+        if ( !( o instanceof UserDTO ) ) return false;
+        UserDTO userDTO = (UserDTO) o;
+        return Objects.equals( id, userDTO.id );
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hashCode( id );
     }
 
     @Override

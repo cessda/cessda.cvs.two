@@ -19,8 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import eu.cessda.cvs.security.jwt.JWTFilter;
 import eu.cessda.cvs.security.jwt.TokenProvider;
 import eu.cessda.cvs.web.rest.vm.LoginVM;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -59,9 +57,9 @@ public class UserJWTController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         boolean rememberMe = loginVM.isRememberMe() != null && loginVM.isRememberMe();
         String jwt = tokenProvider.createToken(authentication, rememberMe);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
-        return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
+        return ResponseEntity.ok()
+            .header(JWTFilter.AUTHORIZATION_HEADER, "Bearer " + jwt)
+            .body( new JWTToken(jwt) );
     }
     /**
      * Object to return as body in JWT Authentication.

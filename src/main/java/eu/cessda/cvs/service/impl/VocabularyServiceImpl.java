@@ -287,11 +287,13 @@ public class VocabularyServiceImpl implements VocabularyService
         log.debug( "Request to save Vocabulary : {}", vocabularyDTO );
         Vocabulary vocabulary;
         // for new vocabulary
-        if ( !vocabularyDTO.isPersisted() ) {
+        if ( !vocabularyDTO.isPersisted() )
+        {
             vocabulary = createNewVocabulary( vocabularyDTO );
         }
         // if updated vocabulary
-        else {
+        else
+        {
             vocabulary = updateVocabulary( vocabularyDTO );
         }
         vocabularyDTO = vocabularyMapper.toDto( vocabulary );
@@ -305,25 +307,60 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     @Override
-    public VocabularyDTO saveVocabulary( VocabularySnippet vocabularySnippet ) {
-        if ( vocabularySnippet.getActionType() == ActionType.CREATE_CV ) {
-            return save( new VocabularyDTO( vocabularySnippet ) );
-        } else if ( vocabularySnippet.getActionType() == ActionType.ADD_TL_CV ) {
-            return saveTlVocabulary( vocabularySnippet );
-        } else {
-            // get Vocabulary from database
-            VocabularyDTO vocabularyDTO = findOne( vocabularySnippet.getVocabularyId() )
-                .orElseThrow( () -> new EntityNotFoundException( UNABLE_FIND_VERSION + vocabularySnippet.getVocabularyId() ) );
+    public VocabularyDTO saveVocabulary( VocabularySnippet vocabularySnippet ) throws IllegalActionTypeException
+    {
+        // Check for authorization
+        SecurityUtils.checkResourceAuthorization( vocabularySnippet.getActionType(), vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
 
-            // find version on vocabulary
-            VersionDTO versionDTO = vocabularyDTO.getVersions().stream()
-                .filter( v -> v.getId().equals( vocabularySnippet.getVersionId() ) ).findFirst()
-                .orElseThrow( () -> new EntityNotFoundException( UNABLE_FIND_VERSION + vocabularySnippet.getVersionId() ) );
+        switch ( vocabularySnippet.getActionType() )
+        {
+            case CREATE_CV:
+                if (vocabularySnippet.getVocabularyId() != null)
+                {
+                    throw new UnexpectedIdentifierException("New vocabularies must not have an ID");
+                }
+                return save( new VocabularyDTO( vocabularySnippet ) );
+            case ADD_TL_CV:
+                return saveTlVocabulary( vocabularySnippet );
+            case EDIT_CV:
+            case EDIT_DDI_CV:
+            case EDIT_IDENTITY_CV:
+            case EDIT_VERSION_INFO_CV:
+            case EDIT_NOTE_CV:
+                if ( vocabularySnippet.getVocabularyId() == null )
+                {
+                    throw new MissingIdentifierException( "Vocabulary" );
+                }
+                if ( vocabularySnippet.getVersionId() == null )
+                {
+                    throw new MissingIdentifierException( "Version" );
+                }
 
-            if ( vocabularySnippet.getActionType() == ActionType.EDIT_CV ) {
-                // check if user authorized to edit VocabularyResource
-                SecurityUtils.checkResourceAuthorization( ActionType.EDIT_CV,
-                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
+                // get Vocabulary from database
+                VocabularyDTO vocabularyDTO = findOne( vocabularySnippet.getVocabularyId() )
+                    .orElseThrow( () -> new EntityNotFoundException( UNABLE_FIND_VERSION + vocabularySnippet.getVocabularyId() ) );
+
+                // find version on vocabulary
+                for ( VersionDTO versionDTO : vocabularyDTO.getVersions() )
+                {
+                    if ( Objects.equals( versionDTO.getId(), vocabularySnippet.getVersionId() ) )
+                    {
+                        return editVocabulary( vocabularySnippet, versionDTO, vocabularyDTO );
+                    }
+                }
+
+                throw new EntityNotFoundException( UNABLE_FIND_VERSION + vocabularySnippet.getVersionId() );
+            default:
+                // Unsupported action type
+                throw new IllegalActionTypeException( vocabularySnippet.getActionType() );
+        }
+    }
+
+    private VocabularyDTO editVocabulary( VocabularySnippet vocabularySnippet, VersionDTO versionDTO, VocabularyDTO vocabularyDTO ) throws IllegalActionTypeException
+    {
+        switch ( vocabularySnippet.getActionType() )
+        {
+            case EDIT_CV:
                 // set non-editable (via edit-cv-form) versionNumber and language on
                 // vocabularySnippet with versionDTO
                 vocabularySnippet.setLanguage( versionDTO.getLanguage() );
@@ -334,37 +371,34 @@ public class VocabularyServiceImpl implements VocabularyService
 
                 // check if codeSnippet contains changeType
                 storeChangeType( vocabularySnippet, versionDTO );
-            } else if ( vocabularySnippet.getActionType() == ActionType.EDIT_DDI_CV ) {
-                SecurityUtils.checkResourceAuthorization( ActionType.EDIT_DDI_CV,
-                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
-
+                break;
+            case EDIT_DDI_CV:
                 versionDTO.setDdiUsage( vocabularySnippet.getDdiUsage() );
-            } else if ( vocabularySnippet.getActionType() == ActionType.EDIT_IDENTITY_CV ) {
-                SecurityUtils.checkResourceAuthorization( ActionType.EDIT_IDENTITY_CV,
-                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
-
+                break;
+            case EDIT_IDENTITY_CV:
                 versionDTO.setTranslateAgency( vocabularySnippet.getTranslateAgency() );
                 versionDTO.setTranslateAgencyLink( vocabularySnippet.getTranslateAgencyLink() );
-            } else if ( vocabularySnippet.getActionType() == ActionType.EDIT_VERSION_INFO_CV ) {
-                SecurityUtils.checkResourceAuthorization( ActionType.EDIT_VERSION_INFO_CV,
-                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
-
+                break;
+            case EDIT_VERSION_INFO_CV:
                 updateCvVersionInfo( vocabularySnippet, versionDTO );
-            } else {
-                SecurityUtils.checkResourceAuthorization( ActionType.EDIT_NOTE_CV,
-                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
-
+                break;
+            case EDIT_NOTE_CV:
                 versionDTO.setNotes( vocabularySnippet.getNotes() );
-            }
-
-            vocabularyDTO = save( vocabularyDTO );
-
-            // regenerate json file is version already published
-            if ( versionDTO.getStatus() == Status.PUBLISHED ) {
-                generateJsonVocabularyPublish( vocabularyDTO );
-            }
-            return vocabularyDTO;
+                break;
+            default:
+                // Unsupported action type
+                throw new IllegalActionTypeException( vocabularySnippet.getActionType() );
         }
+
+        vocabularyDTO = save( vocabularyDTO );
+
+        // regenerate json file is version already published
+        if ( versionDTO.getStatus() == Status.PUBLISHED )
+        {
+            generateJsonVocabularyPublish( vocabularyDTO );
+        }
+
+        return vocabularyDTO;
     }
 
     private void updateCvVersionInfo( VocabularySnippet vocabularySnippet, VersionDTO versionDTO ) {
@@ -559,21 +593,26 @@ public class VocabularyServiceImpl implements VocabularyService
      * @return saved conceptDTO
      */
     @Override
-    public ConceptDTO saveCode( CodeSnippet codeSnippet ) {
+    public ConceptDTO saveCode( CodeSnippet codeSnippet ) throws IllegalActionTypeException
+    {
         // if we add code we need to ensure that it will be cloned to every TL probably as the workflow had been changed!!!
         log.debug( "Request to save Concept and Version from CodeSnippet : {}", codeSnippet.getConceptId() );
-        ConceptDTO conceptDTO = null;
+        ConceptDTO conceptDTO;
         // get version
         VersionDTO versionDTO = versionService.findOne( codeSnippet.getVersionId() )
             .orElseThrow( () -> new EntityNotFoundException( UNABLE_FIND_VERSION + codeSnippet.getVersionId() ) );
 
-        // reject if version status is published
-        if ( versionDTO.getStatus() == Status.PUBLISHED ) {
-            throw new IllegalArgumentException( "Unable to add Code " + codeSnippet.getNotation() + ", Version is already PUBLISHED" );
-        }
-
         VocabularyDTO vocabularyDTO = findOne( versionDTO.getVocabularyId() )
             .orElseThrow( () -> new EntityNotFoundException( UNABLE_FIND_VOCABULARY + versionDTO.getVocabularyId() ) );
+
+        // check for authorization
+        SecurityUtils.checkResourceAuthorization( codeSnippet.getActionType(), vocabularyDTO.getAgencyId(), versionDTO.getLanguage() );
+
+        // reject if version status is published
+        if ( versionDTO.getStatus() == Status.PUBLISHED )
+        {
+            throw new IllegalArgumentException( "Unable to add Code " + codeSnippet.getNotation() + ", Version is already PUBLISHED" );
+        }
 
         switch ( codeSnippet.getActionType() )
         {
@@ -587,7 +626,7 @@ public class VocabularyServiceImpl implements VocabularyService
                 conceptDTO = editCode( codeSnippet, versionDTO, vocabularyDTO );
                 break;
             default:
-                break;
+                throw new IllegalActionTypeException(codeSnippet.getActionType());
         }
 
         return conceptDTO;
@@ -595,8 +634,6 @@ public class VocabularyServiceImpl implements VocabularyService
 
     private ConceptDTO editCode( CodeSnippet codeSnippet, VersionDTO versionDTO, VocabularyDTO vocabularyDTO ) {
         ConceptDTO conceptDTO;
-        // check for authorization
-        SecurityUtils.checkResourceAuthorization( codeSnippet.getActionType(), vocabularyDTO.getAgencyId(), versionDTO.getLanguage() );
         // get concept from versionDTO
         conceptDTO = versionDTO.getConcepts().stream().filter( c -> c.getId().equals( codeSnippet.getConceptId() ) ).findFirst()
             .orElseThrow( () -> new EntityNotFoundException( "Unable to find concept with Id " + codeSnippet.getConceptId() ) );
@@ -678,10 +715,8 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     private ConceptDTO createCode( CodeSnippet codeSnippet, VersionDTO versionDTO, VocabularyDTO vocabularyDTO ) {
-        ConceptDTO conceptDTO;
         // check for authorization
-        SecurityUtils.checkResourceAuthorization( ActionType.CREATE_CODE,
-            vocabularyDTO.getAgencyId(), versionDTO.getLanguage() );
+        SecurityUtils.checkResourceAuthorization( ActionType.CREATE_CODE, vocabularyDTO.getAgencyId(), versionDTO.getLanguage() );
 
         // check if concept already exist for new concept
         if ( versionDTO.getConcepts().stream().anyMatch( c -> c.getNotation().equals( codeSnippet.getNotation() ) ) ) {
@@ -708,7 +743,7 @@ public class VocabularyServiceImpl implements VocabularyService
         storeChangeType( codeSnippet, versionDTO );
 
         // find the newly created code from version
-        conceptDTO = versionDTO.findConceptByNotation( newConceptDTO.getNotation() );
+        ConceptDTO conceptDTO = versionDTO.findConceptByNotation( newConceptDTO.getNotation() );
 
         // index editor
         indexEditor( vocabularyDTO );
@@ -1054,16 +1089,21 @@ public class VocabularyServiceImpl implements VocabularyService
         log.info( "Indexing editor vocabulary with id {} and notation {}", vocabulary.getId(), vocabulary.getNotation() );
         // filter only include latest vocabulary
         // get latest version
-        final VersionDTO maxSlVersion = vocabulary.getVersions().stream()
+        var maxSlVersionOpt = vocabulary.getVersions().stream()
             .filter( v -> v.getItemType() == ItemType.SL )
-            .max(Comparator.comparing(VersionDTO::getNumber))
-            .orElse( null );
+            .max(Comparator.comparing(VersionDTO::getNumber));
 
-        if ( maxSlVersion == null )
+        // Skip indexing if no SL versions are present
+        if ( maxSlVersionOpt.isEmpty() )
+        {
             return;
+        }
+
+        var maxSlVersion = maxSlVersionOpt.get();
 
         // on editor set Version to be latest SL of any version
-        if ( !vocabulary.getVersionNumber().equals( maxSlVersion.getNumber() ) ) {
+        if ( !vocabulary.getVersionNumber().equals( maxSlVersion.getNumber() ) )
+        {
             vocabulary.setVersionNumber( maxSlVersion.getNumber() );
         }
 
@@ -1077,7 +1117,7 @@ public class VocabularyServiceImpl implements VocabularyService
         } );
 
         // fill vocabulary with versions
-        VocabularyDTO.fillVocabularyByVersions( vocabulary, vocabulary.getVersions() );
+        VocabularyDTO.fillVocabularyByVersions( vocabulary );
         // fill CodeDTO object from versions
         vocabulary.setCodes( CodeDTO.generateCodesFromVersion( vocabulary.getVersions(), true ) );
 
@@ -1143,7 +1183,7 @@ public class VocabularyServiceImpl implements VocabularyService
         setVocabularyWithLatestPublishedVersions( vocabulary );
 
         // fill vocabulary with versions
-        VocabularyDTO.fillVocabularyByVersions( vocabulary, vocabulary.getVersions() );
+        VocabularyDTO.fillVocabularyByVersions( vocabulary );
         // fill CodeDTO object from versions
         vocabulary.setCodes( CodeDTO.generateCodesFromVersion( vocabulary.getVersions(), false ) );
 
@@ -1866,18 +1906,24 @@ public class VocabularyServiceImpl implements VocabularyService
     @Transactional
     public VersionDTO forwardStatus( VocabularySnippet vocabularySnippet ) throws IllegalActionTypeException
     {
-        if ( vocabularySnippet.getVersionId() == null ) {
-            throw new MissingIdentifierException( "Missing version id" );
+        // Security check
+        SecurityUtils.checkResourceAuthorization( vocabularySnippet.getActionType(), vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
+
+        if (vocabularySnippet.getVocabularyId() == null)
+        {
+            throw new MissingIdentifierException( "Vocabulary" );
         }
-        if ( vocabularySnippet.getActionType() == null ) {
-            throw new IllegalActionTypeException();
+        if ( vocabularySnippet.getVersionId() == null )
+        {
+            throw new MissingIdentifierException( "Version" );
         }
+
         VocabularyDTO vocabularyDTO = findOne( vocabularySnippet.getVocabularyId() )
-            .orElseThrow( () -> new EntityNotFoundException( UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVocabularyId() ) );
+            .orElseThrow( () -> new NotFoundException( VocabularyDTO.class, vocabularySnippet.getVocabularyId() ) );
         // pick version from vocabularyDTO
         VersionDTO versionDTO = vocabularyDTO.getVersions().stream().filter( v -> v.getId().equals( vocabularySnippet.getVersionId() ) )
             .findFirst()
-            .orElseThrow( () -> new EntityNotFoundException( UNABLE_TO_FIND_VERSION + vocabularySnippet.getVersionId() ) );
+            .orElseThrow( () -> new NotFoundException( VersionDTO.class, vocabularySnippet.getVersionId() ) );
 
         Licence licence = null;
         Agency agency = null;
@@ -1890,15 +1936,11 @@ public class VocabularyServiceImpl implements VocabularyService
         // check authorization
         switch (vocabularySnippet.getActionType()) {
             case FORWARD_CV_SL_STATUS_REVIEW:
-                SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_SL_STATUS_REVIEW,
-                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
                 versionDTO.setStatus( Status.REVIEW );
                 versionDTO.setLastStatusChangeDate( LocalDate.now() );
                 vocabularyDTO.setStatus( Status.REVIEW );
                 break;
             case FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE:
-                SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE,
-                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
                 versionDTO.setStatus( Status.READY_TO_TRANSLATE );
                 versionDTO.setLastStatusChangeDate( LocalDate.now() );
                 vocabularyDTO.setVersionNumberByVocabularySnippet(vocabularySnippet);
@@ -1907,8 +1949,6 @@ public class VocabularyServiceImpl implements VocabularyService
                 versionDTO.prepareSlPublishing( vocabularySnippet, licence, agency );
                 break;
             case FORWARD_CV_SL_STATUS_PUBLISH:
-                SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_SL_STATUS_PUBLISH,
-                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
 
                 // If SL is already published, we need to:
                 // 1) clone published SL to the new bundle in order to keep track between consecutive bundles
@@ -1995,14 +2035,10 @@ public class VocabularyServiceImpl implements VocabularyService
                 vocabularyDTO.setStatus(Status.PUBLISHED);
                 break;
             case FORWARD_CV_TL_STATUS_REVIEW:
-                SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_TL_STATUS_REVIEW,
-                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
                 versionDTO.setStatus( Status.REVIEW );
                 versionDTO.setLastStatusChangeDate( LocalDate.now() );
                 break;
             case FORWARD_CV_TL_STATUS_READY_TO_PUBLISH:
-                SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_TL_STATUS_READY_TO_PUBLISH,
-                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
                 versionDTO.setStatus( Status.READY_TO_PUBLISH );
                 versionDTO.setLastStatusChangeDate( LocalDate.now() );
                 versionDTO.prepareTlPublishing( vocabularySnippet, licence, agency );
@@ -2080,16 +2116,19 @@ public class VocabularyServiceImpl implements VocabularyService
             for ( String vs : versionSplits ) {
                 String[] s = vs.split( "-" );
                 if ( s.length != 2 )
+                {
                     continue;
+                }
                 VersionNumber versionNumberInList = VersionNumber.fromString(s[1]);
-                Optional<VersionDTO> versionDTOOpt = vocabularyDTO
-                    .getVersions()
-                    .stream()
-                    .filter(
-                        v -> v.getLanguage().equals(s[0])
-                            && v.getNumber().compareTo(versionNumberInList) == 0
-                    ).findFirst();
-                versionDTOOpt.ifPresent( includedVersions::add );
+                for ( VersionDTO v : vocabularyDTO.getVersions() )
+                {
+                    if ( v.getLanguage().equals( s[0] )
+                        && v.getNumber().compareTo( versionNumberInList ) == 0 )
+                    {
+                        includedVersions.add( v );
+                        break;
+                    }
+                }
             }
             return includedVersions;
         } else {

@@ -33,12 +33,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Optional;
+
+import static eu.cessda.cvs.security.AuthoritiesConstants.USER;
 
 /**
  * REST controller for managing the current user's account.
@@ -152,6 +155,7 @@ public class AccountResource {
      * @throws RuntimeException {@code 500 (Internal Server Error)} if the user login wasn't found.
      */
     @PostMapping("/account")
+    @PreAuthorize( "hasRole('" + USER + "')")
     public void saveAccount(@Valid @RequestBody UserDTO userDTO) throws AccountNotFoundException, AccountResourceException
     {
         String userLogin = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new AccountResourceException("Current user login not found"));

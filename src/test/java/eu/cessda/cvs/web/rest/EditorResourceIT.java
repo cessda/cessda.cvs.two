@@ -431,7 +431,7 @@ class EditorResourceIT {
     }
 
     private void getVocabularyByNotationAndVersion(Version version) throws Exception {
-        restMockMvc.perform(get("/api/vocabularies/" + version.getNotation()+ "/"+ version.getNumber()))
+        restMockMvc.perform(get("/v2/vocabularies/" + version.getNotation() + "/"+ version.getNumber()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.versions.[*].notation").value(hasItem(version.getNotation())))
@@ -479,7 +479,7 @@ class EditorResourceIT {
     @Test
     @Transactional
     void editorMetadataValuesTest() throws Exception {
-        MetadataValue metadataValue = MetadataValueResourceIT.createEntity();
+        MetadataValue metadataValue = MetadataValueResourceUtil.createEntity();
         MetadataValueDTO metadataValueDTO = metadataValueMapper.toDto(metadataValue);
         metadataValueDTO.setMetadataKey( "AAAAA" );
 
@@ -488,32 +488,32 @@ class EditorResourceIT {
             .content(TestUtil.convertObjectToJsonBytes(metadataValueDTO)))
             .andExpect(status().isCreated());
         MetadataValue savedMetadataValue = metadataValueRepository.findAll().stream()
-            .filter( m -> m.getIdentifier().equals(MetadataValueResourceIT.DEFAULT_IDENTIFIER ))
+            .filter( m -> m.getIdentifier().equals( MetadataValueResourceUtil.DEFAULT_IDENTIFIER ))
             .findFirst().orElse(null);
         assertThat(savedMetadataValue).isNotNull();
-        assertThat(savedMetadataValue.getValue()).isEqualTo(MetadataValueResourceIT.DEFAULT_VALUE);
+        assertThat(savedMetadataValue.getValue()).isEqualTo( MetadataValueResourceUtil.DEFAULT_VALUE);
 
         // update
         metadataValueDTO.setId( savedMetadataValue.getId() );
         metadataValueDTO.setMetadataFieldId( savedMetadataValue.getMetadataField().getId() );
-        metadataValueDTO.setIdentifier(MetadataValueResourceIT.UPDATED_IDENTIFIER);
-        metadataValueDTO.setValue(MetadataValueResourceIT.UPDATED_VALUE);
+        metadataValueDTO.setIdentifier( MetadataValueResourceUtil.UPDATED_IDENTIFIER);
+        metadataValueDTO.setValue( MetadataValueResourceUtil.UPDATED_VALUE);
         restMockMvc.perform(put("/api/editors/metadatas")
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(metadataValueDTO)))
             .andExpect(status().isOk());
         savedMetadataValue = metadataValueRepository.findAll().stream()
-            .filter( m -> m.getIdentifier().equals(MetadataValueResourceIT.UPDATED_IDENTIFIER ))
+            .filter( m -> m.getIdentifier().equals( MetadataValueResourceUtil.UPDATED_IDENTIFIER ))
             .findFirst().orElse(null);
         assertThat(savedMetadataValue).isNotNull();
-        assertThat(savedMetadataValue.getValue()).isEqualTo(MetadataValueResourceIT.UPDATED_VALUE);
+        assertThat(savedMetadataValue.getValue()).isEqualTo( MetadataValueResourceUtil.UPDATED_VALUE);
 
         // delete
         restMockMvc.perform(delete("/api/editors/metadatas/{id}", savedMetadataValue.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
         savedMetadataValue = metadataValueRepository.findAll().stream()
-            .filter( m -> m.getIdentifier().equals(MetadataValueResourceIT.UPDATED_IDENTIFIER ))
+            .filter( m -> m.getIdentifier().equals( MetadataValueResourceUtil.UPDATED_IDENTIFIER ))
             .findFirst().orElse(null);
         assertThat(savedMetadataValue).isNull();
     }
@@ -1406,7 +1406,7 @@ class EditorResourceIT {
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
-            .andExpect(status().is5xxServerError());
+            .andExpect(status().isBadRequest());
     }
 
     @Test

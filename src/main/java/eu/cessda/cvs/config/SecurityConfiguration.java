@@ -21,6 +21,8 @@ import eu.cessda.cvs.security.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -109,7 +111,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/info").permitAll()
             .antMatchers("/management/prometheus").permitAll()
-            .antMatchers("/management/**").hasAnyAuthority(AuthoritiesConstants.ADMIN, AuthoritiesConstants.ADMIN_TECHNICAL)
+            .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN_TECHNICAL)
         .and()
             .apply(securityConfigurerAdapter());
         // @formatter:on
@@ -117,5 +119,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private JWTConfigurer securityConfigurerAdapter() {
         return new JWTConfigurer(tokenProvider);
+    }
+
+    /**
+     * Configures the role hierarchy.
+     */
+    @Bean
+    static RoleHierarchy roleHierarchy() {
+         var roleHierarchy = new RoleHierarchyImpl();
+         roleHierarchy.setHierarchy(
+             "ROLE_ADMIN > ROLE_ADMIN_CONTENT\n" +
+             "ROLE_ADMIN > ROLE_ADMIN_TECHNICAL\n" +
+             "ROLE_ADMIN_CONTENT > ROLE_USER \n" +
+             "ROLE_ADMIN_TECHNICAL > ROLE_USER\n" +
+             "ROLE_ADMIN > ROLE_USER\n" +
+             "ROLE_USER > ROLE_ANONYMOUS"
+         );
+         return roleHierarchy;
     }
 }
