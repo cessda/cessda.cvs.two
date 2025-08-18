@@ -155,9 +155,9 @@ public class AgencyStat implements Serializable {
                 languages.add(v.getLanguage());
                 VersionStatusStat versionStatusStat = new VersionStatusStat(
                     v.getLanguage(),
-                    v.getItemType().toString(),
+                    v.getItemType(),
                     v.getNumber(),
-                    v.getStatus().toString(),
+                    v.getStatus(),
                     v.getCreationDate(),
                     v.getLastChangeDate()
                 );

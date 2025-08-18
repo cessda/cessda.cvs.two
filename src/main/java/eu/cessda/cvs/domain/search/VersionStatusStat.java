@@ -15,6 +15,8 @@
  */
 package eu.cessda.cvs.domain.search;
 
+import eu.cessda.cvs.domain.enumeration.ItemType;
+import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.utils.VersionNumber;
 import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
@@ -31,14 +33,14 @@ public class VersionStatusStat implements Serializable {
     private String language;
 
     @Field( type = FieldType.Keyword, store = true  )
-    private String type;
+    private ItemType type;
 
     @Field( type = FieldType.Keyword, store = true  )
     @Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
     private VersionNumber versionNumber;
 
     @Field( type = FieldType.Keyword, store = true  )
-    private String status;
+    private Status status;
 
     @Field( type = FieldType.Date, format = DateFormat.date, store = true  )
     private LocalDate creationDate;
@@ -48,7 +50,7 @@ public class VersionStatusStat implements Serializable {
 
     public VersionStatusStat(){}
 
-    public VersionStatusStat(String language, String type, VersionNumber versionNumber, String status, LocalDate creationDate, LocalDate date) {
+    public VersionStatusStat(String language, ItemType type, VersionNumber versionNumber, Status status, LocalDate creationDate, LocalDate date) {
         this.language = language;
         this.type = type;
         this.versionNumber = versionNumber;
@@ -65,11 +67,11 @@ public class VersionStatusStat implements Serializable {
         this.language = language;
     }
 
-    public String getType() {
+    public ItemType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(ItemType type) {
         this.type = type;
     }
 
@@ -81,11 +83,11 @@ public class VersionStatusStat implements Serializable {
         this.versionNumber = versionNumber;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
