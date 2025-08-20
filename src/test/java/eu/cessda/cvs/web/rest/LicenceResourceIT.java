@@ -17,7 +17,11 @@ package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.domain.Licence;
+import eu.cessda.cvs.repository.AuthorityRepository;
 import eu.cessda.cvs.repository.LicenceRepository;
+import eu.cessda.cvs.repository.UserRepository;
+import eu.cessda.cvs.security.AuthoritiesConstants;
+import eu.cessda.cvs.security.jwt.TokenProvider;
 import eu.cessda.cvs.service.LicenceService;
 import eu.cessda.cvs.service.dto.LicenceDTO;
 import eu.cessda.cvs.service.mapper.LicenceMapper;
@@ -29,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,7 +54,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
-public class LicenceResourceIT {
+public class LicenceResourceIT extends TestUtil {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -62,22 +68,33 @@ public class LicenceResourceIT {
     private static final String DEFAULT_ABBR = "AAAAAAAAAA";
     private static final String UPDATED_ABBR = "BBBBBBBBBB";
 
-    @Autowired
-    private LicenceRepository licenceRepository;
-
-    @Autowired
-    private LicenceMapper licenceMapper;
-
-    @Autowired
-    private LicenceService licenceService;
-
-    @Autowired
-    private EntityManager em;
-
-    @Autowired
-    private MockMvc restLicenceMockMvc;
+    private final LicenceRepository licenceRepository;
+    private final LicenceMapper licenceMapper;
+    private final EntityManager em;
+    private final MockMvc restLicenceMockMvc;
 
     private Licence licence;
+
+    @Autowired
+    public LicenceResourceIT(
+        AuthenticationManagerBuilder authenticationManagerBuilder,
+        AuthorityRepository authorityRepository,
+        UserRepository userRepository,
+        TokenProvider tokenProvider,
+        PasswordEncoder passwordEncoder,
+        LicenceRepository licenceRepository,
+        EntityManager entityManager,
+        LicenceMapper licenceMapper,
+        LicenceService licenceService,
+        MockMvc restLicenceMockMvc
+    )
+    {
+        super( authenticationManagerBuilder, authorityRepository, userRepository, tokenProvider, passwordEncoder );
+        this.licenceRepository = licenceRepository;
+        this.em = entityManager;
+        this.licenceMapper = licenceMapper;
+        this.restLicenceMockMvc = restLicenceMockMvc;
+    }
 
     /**
      * Create an entity for this test.
@@ -106,6 +123,10 @@ public class LicenceResourceIT {
             .abbr(UPDATED_ABBR);
     }
 
+    private String login() {
+        return login(AuthoritiesConstants.ADMIN_CONTENT);
+    }
+
     @BeforeEach
     public void initTest() {
         licence = createEntity(em);
@@ -114,11 +135,15 @@ public class LicenceResourceIT {
     @Test
     @Transactional
     void createLicence() throws Exception {
+        // Login
+        var jwt = login();
+
         int databaseSizeBeforeCreate = licenceRepository.findAll().size();
 
         // Create the Licence
         LicenceDTO licenceDTO = licenceMapper.toDto(licence);
         restLicenceMockMvc.perform(post("/api/licences")
+            .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(licenceDTO)))
             .andExpect(status().isCreated());
@@ -136,6 +161,9 @@ public class LicenceResourceIT {
     @Test
     @Transactional
     void createLicenceWithExistingId() throws Exception {
+        // Login
+        var jwt = login();
+
         int databaseSizeBeforeCreate = licenceRepository.findAll().size();
 
         // Create the Licence with an existing ID
@@ -144,6 +172,7 @@ public class LicenceResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restLicenceMockMvc.perform(post("/api/licences")
+            .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(licenceDTO)))
             .andExpect(status().isBadRequest());
@@ -157,6 +186,9 @@ public class LicenceResourceIT {
     @Test
     @Transactional
     void checkNameIsRequired() throws Exception {
+        // Login
+        var jwt = login();
+
         int databaseSizeBeforeTest = licenceRepository.findAll().size();
         // set the field null
         licence.setName(null);
@@ -165,6 +197,7 @@ public class LicenceResourceIT {
         LicenceDTO licenceDTO = licenceMapper.toDto(licence);
 
         restLicenceMockMvc.perform(post("/api/licences")
+            .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(licenceDTO)))
             .andExpect(status().isBadRequest());
@@ -218,6 +251,9 @@ public class LicenceResourceIT {
     @Test
     @Transactional
     void updateLicence() throws Exception {
+        // Login
+        var jwt = login();
+
         // Initialize the database
         licenceRepository.saveAndFlush(licence);
 
@@ -235,6 +271,7 @@ public class LicenceResourceIT {
         LicenceDTO licenceDTO = licenceMapper.toDto(updatedLicence);
 
         restLicenceMockMvc.perform(put("/api/licences")
+            .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(licenceDTO)))
             .andExpect(status().isOk());
@@ -252,6 +289,9 @@ public class LicenceResourceIT {
     @Test
     @Transactional
     void updateNonExistingLicence() throws Exception {
+        // Login
+        var jwt = login();
+
         int databaseSizeBeforeUpdate = licenceRepository.findAll().size();
 
         // Create the Licence
@@ -259,6 +299,7 @@ public class LicenceResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restLicenceMockMvc.perform(put("/api/licences")
+            .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(licenceDTO)))
             .andExpect(status().isBadRequest());
@@ -271,6 +312,9 @@ public class LicenceResourceIT {
     @Test
     @Transactional
     void deleteLicence() throws Exception {
+        // Login
+        var jwt = login();
+
         // Initialize the database
         licenceRepository.saveAndFlush(licence);
 
@@ -278,11 +322,31 @@ public class LicenceResourceIT {
 
         // Delete the licence
         restLicenceMockMvc.perform(delete("/api/licences/{id}", licence.getId())
+            .header("Authorization", jwt)
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
         List<Licence> licenceList = licenceRepository.findAll();
         assertThat(licenceList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    void deleteNonExistentLicence() throws Exception {
+        // Login
+        var jwt = login();
+
+        int databaseSizeBeforeDelete = licenceRepository.findAll().size();
+
+        // Delete the licence
+        restLicenceMockMvc.perform(delete("/api/licences/{id}", 42)
+                .header("Authorization", jwt)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+
+        // Validate the database contains one less item
+        List<Licence> licenceList = licenceRepository.findAll();
+        assertThat(licenceList).hasSize(databaseSizeBeforeDelete);
     }
 }

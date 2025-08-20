@@ -215,9 +215,9 @@ public class VersionResource {
                 status.add( Status.valueOf(split.trim()) );
             }
         }
-        List<String> languagesIsos = versionService.findAllLanguagesByStatus(status);
+        List<String> languagesISOs = versionService.findAllLanguagesByStatus(status);
 
-        return ResponseEntity.ok().body( languagesIsos );
+        return ResponseEntity.ok().body( languagesISOs );
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

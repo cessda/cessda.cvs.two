@@ -84,11 +84,12 @@ public final class VocabularyUtils
 
 	public static EsQueryResultDetail prepareEsQuerySearching( String q, String f, Pageable pageable, SearchScope searchScope )
 	{
-		if ( q == null )
-			q = "";
-
 		EsQueryResultDetail esq = new EsQueryResultDetail( searchScope );
-		esq.setSearchTerm( q );
+
+        if ( q != null )
+        {
+            esq.setSearchTerm( q );
+        }
 
 		// prepare filter
 		if ( f == null || f.isEmpty() ) {

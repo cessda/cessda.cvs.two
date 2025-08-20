@@ -20,7 +20,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import { HttpResponse } from '@angular/common/http';
 import { AccountService } from 'app/core/auth/account.service';
-import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
@@ -94,7 +93,6 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   constructor(
     private licenceService: LicenceService,
     private accountService: AccountService,
-    protected vocabularyService: VocabularyService,
     protected vocabularyChangeService: VocabularyChangeService,
     protected editorService: EditorService,
     public activeModal: NgbActiveModal,
