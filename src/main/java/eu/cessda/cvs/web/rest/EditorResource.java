@@ -33,6 +33,7 @@ import eu.cessda.cvs.web.rest.domain.CvResult;
 import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -122,6 +123,21 @@ public class EditorResource {
         this.metadataValueService = metadataValueService;
         this.applicationProperties = applicationProperties;
         this.vocabularyChangeService = vocabularyChangeService;
+    }
+
+    /**
+     * {@code GET  /vocabularies/:notation/:versionNumber}
+     *
+     * @param notation the notation of the vocabularyDTO to retrieve.
+     * @param versionNumber the versionNumber of the vocabularyDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the vocabularyDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/editors/vocabularies/{notation}/{versionNumber}")
+    @PreAuthorize( "hasRole('" + USER + "')" )
+    public ResponseEntity<VocabularyDTO> getVocabularyByNotationAndVersion(@PathVariable String notation, @PathVariable String versionNumber) {
+        log.debug("REST request to get Vocabulary by notation {} and by version {}", notation, versionNumber);
+        VocabularyDTO vocabularyDTO = vocabularyService.getVocabularyByNotationAndVersion(notation, versionNumber, false);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable( vocabularyDTO ));
     }
 
     /**

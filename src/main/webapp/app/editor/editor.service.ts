@@ -33,7 +33,6 @@ import { MetadataValue } from 'app/shared/model/metadata-value.model';
 
 @Injectable({ providedIn: 'root' })
 export class EditorService {
-  public resourceVocabularyUrl = SERVER_API_URL + 'api/vocabularies';
   public resourceEditorSearchUrl = SERVER_API_URL + 'api/editors/search';
   public resourceEditorVocabularyUrl = SERVER_API_URL + 'api/editors/vocabularies';
   public resourceEditorCodeUrl = SERVER_API_URL + 'api/editors/codes';
@@ -108,7 +107,7 @@ export class EditorService {
   }
 
   getVocabulary(notation: string): Observable<HttpResponse<Vocabulary>> {
-    return this.http.get<Vocabulary>(`${this.resourceVocabularyUrl}/${notation}/latest`, { observe: 'response' });
+    return this.http.get<Vocabulary>(`${this.resourceEditorVocabularyUrl}/${notation}/latest`, { observe: 'response' });
   }
 
   getVocabularyCompare(id: number): Observable<HttpResponse<string[]>> {
