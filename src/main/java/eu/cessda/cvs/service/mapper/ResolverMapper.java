@@ -22,12 +22,12 @@ import org.mapstruct.Mapper;
 /**
  * Mapper for the entity {@link Resolver} and its DTO {@link ResolverDTO}.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring" )
 public interface ResolverMapper extends EntityMapper<ResolverDTO, Resolver> {
 
 
 
-    default Resolver fromId(Long id) {
+    static Resolver fromId(Long id) {
         if (id == null) {
             return null;
         }
