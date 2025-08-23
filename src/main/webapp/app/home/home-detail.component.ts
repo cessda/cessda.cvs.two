@@ -284,8 +284,8 @@ export class HomeDetailComponent implements OnInit {
           this.vocabulary.selectedLang = this.initialLangSelect;
         }
       }
-      if (this.vocabulary.selectedVersion === null) {
-        if (this.vocabulary.selectedLang !== null) {
+      if (!this.vocabulary.selectedVersion) {
+        if (this.vocabulary.selectedLang) {
           this.vocabulary.selectedVersion = VocabularyUtil.getVersionByLang(this.vocabulary).number;
         }
       }
