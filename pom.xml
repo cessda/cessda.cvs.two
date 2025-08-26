@@ -121,7 +121,7 @@
         <!-- Exclude Web app content, where static CVs in JSON files stored -->
         <sonar.exclusions>src/main/resources/**/*,src/main/webapp/content/**/*</sonar.exclusions>
         <springfox.version>2.9.2</springfox.version>
-        <jjwt.version>0.12.2</jjwt.version>
+        <jjwt.version>0.13.0</jjwt.version>
     </properties>
 
     <dependencyManagement>
