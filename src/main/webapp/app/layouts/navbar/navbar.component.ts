@@ -75,12 +75,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.isSearching = false;
     this.currentLang = 'en';
     this.lastSearch = this.sessionStorage.retrieve('lastSearch');
+    if (this.lastSearch === undefined || this.lastSearch === null) {
+      this.lastSearch = '';
+    }
 
     this.loadLanguages();
 
     this.activatedRoute.queryParams.subscribe(params => {
       this.currentSearch = params['q'];
-
+      if (this.lastSearch === undefined || this.lastSearch === null) {
+        this.lastSearch = params['q'];
+      }
       if (params['f']) {
         const activeFilters: string[] = params['f'].split(';', 2);
         activeFilters.forEach(af => {
