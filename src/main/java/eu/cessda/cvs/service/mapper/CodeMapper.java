@@ -23,7 +23,7 @@ import org.mapstruct.Mapping;
 /**
  * Mapper for the entity {@link Code} and its DTO {@link CodeDTO}.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring" )
 public interface CodeMapper extends EntityMapper<CodeDTO, Code> {
 
     @Mapping( target = "replacedByUri", ignore = true )
@@ -37,7 +37,7 @@ public interface CodeMapper extends EntityMapper<CodeDTO, Code> {
     @Mapping(source = "deprecated", target = "deprecated")
     Code toEntity(CodeDTO codeDTO);
 
-    default Code fromId(Long id) {
+    static Code fromId(Long id) {
         if (id == null) {
             return null;
         }
