@@ -23,7 +23,7 @@ import org.mapstruct.Mapping;
 /**
  * Mapper for the entity {@link Agency} and its DTO {@link AgencyDTO}.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring" )
 public interface AgencyMapper extends EntityMapper<AgencyDTO, Agency> {
 
 
@@ -36,7 +36,7 @@ public interface AgencyMapper extends EntityMapper<AgencyDTO, Agency> {
     @Mapping( target = "copyright", ignore = true )
     AgencyDTO toDto( Agency entity );
 
-    default Agency fromId( Long id) {
+    static Agency fromId( Long id) {
         if (id == null) {
             return null;
         }
