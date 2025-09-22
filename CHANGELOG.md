@@ -14,6 +14,32 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
+## [3.5.2] - 2025-09-24
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17177020.svg)](https://doi.org/10.5281/zenodo.17177020)
+
+### Added
+
+- [PR-1094](https://github.com/cessda/cessda.cvs.two/pull/1094) Added server-side authentication enforcement to REST API endpoints
+
+### Changed
+
+- [#1022](https://github.com/cessda/cessda.cvs.two/issues/1022) Replaced the use of string representations of enums in `VersionStatusStat` with direct use of the enums
+- [#1063](https://github.com/cessda/cessda.cvs.two/issues/1063) Added additional checks to reduce unnecessary search refreshes
+
+### Removed
+
+- [#989](https://github.com/cessda/cessda.cvs.two/issues/989) Removed unused entity edit interfaces which could be used to bypass input validation
+- [#1095](https://github.com/cessda/cessda.cvs.two/issues/1095) Removed `application/xhtml+xml` support from the `/v2/vocabularies/{vocabulary}/{versionNumberSl}` endpoint
+- [PR-1094](https://github.com/cessda/cessda.cvs.two/pull/1094) Removed unused REST endpoints
+
+### Fixed
+
+- [#1090](https://github.com/cessda/cessda.cvs.two/issues/1090) Fixed users with the `ROLE_ADMIN` role not being considered to have the `ROLE_USER` role
+- [#1095](https://github.com/cessda/cessda.cvs.two/issues/1095) Fixed `/v2/vocabularies/{vocabulary}/{versionNumberSl}` redirecting to the web application when `text/html` is requested
+- [#1107](https://github.com/cessda/cessda.cvs.two/issues/1107) Fixed bundle view de-emphasizing the language version in the home screen
+- [PR-1113](https://github.com/cessda/cessda.cvs.two/pull/1113) Fixed the editor not working properly due to a missing API to get unpublished versions of vocabularies
+
 ## [3.5.1] - 2025-06-25
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15736290.svg)](https://doi.org/10.5281/zenodo.15736290)
@@ -440,6 +466,7 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Swagger UI for the APIs.
 - New set of /v2 REST APIs for searching and exporting CVs to several formats (PDF, HTML, DOCX)
 
+[3.5.2]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.5.2
 [3.5.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.5.1
 [3.5.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.5.0
 [3.4.2]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.4.2

@@ -1,6 +1,6 @@
 {
   "name": "cvs",
-  "version": "3.4.2",
+  "version": "3.5.2",
   "private": true,
   "license": "Apache-2.0",
   "cacheDirectories": [
