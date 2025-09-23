@@ -43,7 +43,7 @@ public interface VersionMapper extends EntityMapper<VersionDTO, Version> {
     @Mapping(source = "vocabularyId", target = "vocabulary")
     Version toEntity(VersionDTO versionDTO);
 
-    default Version fromId(Long id) {
+    static Version fromId(Long id) {
         if (id == null) {
             return null;
         }
