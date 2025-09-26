@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, IsActiveMatchOptions, Params, Router } from '@angular/router';
 import { JhiEventManager, JhiEventWithContent, JhiLanguageService } from 'ng-jhipster';
 import { SessionStorageService } from 'ngx-webstorage';
 
@@ -38,21 +38,21 @@ import { Authority } from 'app/shared/constants/authority.constants';
   templateUrl: './navbar.component.html',
   styleUrls: ['navbar.scss'],
 })
-export class NavbarComponent implements OnInit, OnDestroy {
+export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   readonly authorities = [Authority.ADMIN, Authority.ADMIN_TECHNICAL];
 
-  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
-  @ViewChild('searchLang', { static: true }) searchLang!: ElementRef;
-  inProduction?: boolean;
-  eventSubscriber?: Subscription;
+  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('searchLang', { static: true }) searchLang!: ElementRef<HTMLSelectElement>;
+  inProduction = false;
+  eventSubscriber: Subscription | undefined;
   isNavbarCollapsed = true;
   languages = LANGUAGES;
-  swaggerEnabled?: boolean;
+  swaggerEnabled = false;
   version: string;
-  currentSearch?: string;
-  currentLang?: string;
+  currentSearch: string | undefined;
+  currentLang: string;
   isSearching: boolean;
-  lastSearch?: string;
+  lastSearch: string | undefined;
 
   isEditorSearch = false;
   searchLangs: string[] = ['en', 'da', 'nl', 'fi', 'fr', 'de', 'it', 'ja', 'no', 'pt', 'sr', 'sl', 'sv', '_all'];
@@ -75,9 +75,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
     this.isSearching = false;
     this.currentLang = 'en';
     this.lastSearch = this.sessionStorage.retrieve('lastSearch');
-    if (this.lastSearch === undefined || this.lastSearch === null) {
-      this.lastSearch = '';
-    }
 
     this.loadLanguages();
 
@@ -104,9 +101,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
 
     this.router.events.subscribe(() => {
-      const newValue = this.location.path().startsWith('/editor');
-      if (newValue !== this.isEditorSearch) {
-        this.isEditorSearch = newValue;
+      const isEditor = this.location.path().startsWith('/editor');
+      if (isEditor !== this.isEditorSearch) {
+        this.isEditorSearch = isEditor;
         this.loadLanguages();
       }
     });
@@ -118,7 +115,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.isEditorSearch ? { s: 'DRAFT;REVIEW;READY_TO_TRANSLATE;READY_TO_PUBLISH;PUBLISHED;' } : { s: 'PUBLISHED' },
       )
       .subscribe((res: HttpResponse<string[]>) => {
-        this.searchLangs = res.body!;
+        this.searchLangs = res.body || [];
         this.searchLangs = VocabularyUtil.sortLangByName(this.searchLangs, 'en');
         this.searchLangs.push('_all');
       });
@@ -126,7 +123,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.profileService.getProfileInfo().subscribe(profileInfo => {
-      this.inProduction = profileInfo.inProduction;
+      this.inProduction = profileInfo.inProduction || false;
       this.swaggerEnabled = profileInfo.swaggerEnabled;
     });
 
@@ -191,17 +188,22 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   search(query: string | undefined): void {
-    if (query) {
-      if (this.isEditorSearch) {
-        this.router.navigate(['/editor'], { queryParams: { q: query, f: 'language:' + this.currentLang, sort: 'relevance' } });
-      } else {
-        this.router.navigate([''], { queryParams: { q: query, f: 'language:' + this.currentLang, sort: 'relevance' } });
-      }
+    const matchOptions: IsActiveMatchOptions = { paths: 'exact', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored' };
+    if (this.router.isActive('', matchOptions) || this.router.isActive('/editor', matchOptions)) {
+      // Keep current query params
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: { q: query, sort: query ? 'relevance' : 'code,asc' },
+        queryParamsHandling: 'merge',
+      });
     } else {
+      // Set sort to relevance if query is present
+      const queryParams: Params = { q: query, f: 'language:' + this.currentLang, sort: query ? 'relevance' : 'code,asc' };
+
       if (this.isEditorSearch) {
-        this.router.navigate(['/editor'], { queryParams: { f: 'language:' + this.currentLang, sort: 'code,asc' } });
+        this.router.navigate(['/editor'], { queryParams: queryParams });
       } else {
-        this.router.navigate([''], { queryParams: { f: 'language:' + this.currentLang, sort: 'code,asc' } });
+        this.router.navigate([''], { queryParams: queryParams });
       }
     }
     this.lastSearch = query;
