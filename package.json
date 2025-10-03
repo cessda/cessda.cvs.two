@@ -30,7 +30,7 @@
     "jquery": "^3.7.1",
     "masonry-layout": "^4.2.2",
     "moment": "^2.30.1",
-    "ng-jhipster": "file:vendor/ng-jhipster-0.16.0.tgz",
+    "ng-jhipster": "file:vendor/ng-jhipster-0.16.0-ivy.tgz",
     "ngx-chips": "^3.0.0",
     "ngx-cookie-service": "^15.0.0",
     "ngx-infinite-scroll": "^15.0.0",
@@ -93,14 +93,6 @@
     "prepare": "husky"
   },
   "overrides": {
-    "ng-jhipster": {
-      "@angular/forms": ">=10.0.0",
-      "@fortawesome/angular-fontawesome": ">=0.6.1",
-      "@ng-bootstrap/ng-bootstrap": ">=6.1.0",
-      "@ngx-translate/http-loader": ">=5.0.0",
-      "@ngx-translate/core": ">=12.1.2",
-      "rxjs": ">=6.5.2"
-    },
     "ngx-text-diff": {
       "rxjs": ">=6.3.3",
       "tslib": ">=1.10.0"
