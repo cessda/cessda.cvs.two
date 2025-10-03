@@ -15,7 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, Routes } from '@angular/router';
 
 import { EMPTY, Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
@@ -29,7 +29,7 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access-service'
 import { EditorCvAddPopupComponent } from 'app/editor/editor-cv-add-dialog.component';
 
 @Injectable({ providedIn: 'root' })
-export class VocabularyResolve implements Resolve<Vocabulary> {
+export class VocabularyResolve  {
   constructor(
     private service: EditorService,
     private router: Router,

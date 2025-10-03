@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Injectable, isDevMode } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -24,7 +24,7 @@ import { StateStorageService } from './state-storage.service';
 import { Authority } from 'app/shared/constants/authority.constants';
 
 @Injectable({ providedIn: 'root' })
-export class UserRouteAccessService implements CanActivate {
+export class UserRouteAccessService  {
   constructor(
     private router: Router,
     private loginModalService: LoginModalService,

@@ -15,7 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, Routes } from '@angular/router';
 
 import { EMPTY, Observable, of } from 'rxjs';
 import { HomeComponent } from './home.component';
@@ -26,7 +26,7 @@ import { HomeDetailComponent } from 'app/home/home-detail.component';
 import { mergeMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class VocabularyResolve implements Resolve<Vocabulary> {
+export class VocabularyResolve  {
   constructor(
     private service: HomeService,
     private router: Router,

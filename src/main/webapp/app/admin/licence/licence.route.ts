@@ -15,7 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, Routes } from '@angular/router';
 import { JhiResolvePagingParams } from 'ng-jhipster';
 import { EMPTY, Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
@@ -27,7 +27,7 @@ import { LicenceDetailComponent } from './licence-detail.component';
 import { LicenceUpdateComponent } from './licence-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class LicenceResolve implements Resolve<Licence> {
+export class LicenceResolve  {
   constructor(
     private service: LicenceService,
     private router: Router,
