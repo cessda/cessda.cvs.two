@@ -25,4 +25,8 @@ export class MockAlertService extends SpyObject {
   addAlert(alertOptions: JhiAlert): JhiAlert {
     return alertOptions;
   }
+
+  isToast(): boolean {
+    return false;
+  }
 }
