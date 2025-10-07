@@ -32,7 +32,8 @@
           "options": {
             "allowedCommonJsDependencies": ["moment", "quill", "quill-better-table", "quill-blot-formatter"],
             "outputPath": {
-              "base": "target/classes/static"
+              "base": "target/classes/static",
+              "browser": ""
             },
             "index": "src/main/webapp/index.html",
             "tsConfig": "tsconfig.app.json",
@@ -72,9 +73,7 @@
             "scripts": [],
             "browser": "src/main/webapp/app/app.main.ts",
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "."
-              ]
+              "includePaths": ["."]
             }
           },
           "configurations": {
