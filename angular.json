@@ -92,10 +92,10 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "cvs:build:production"
+              "buildTarget": "cvs:build:production"
             },
             "development": {
-              "browserTarget": "cvs:build:development"
+              "buildTarget": "cvs:build:development"
             }
           },
           "defaultConfiguration": "development"
