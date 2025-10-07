@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 import {createRequestOption, Pagination} from 'app/shared/util/request-util';
