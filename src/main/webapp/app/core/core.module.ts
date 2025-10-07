@@ -20,7 +20,7 @@ import { Title } from '@angular/platform-browser';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { CookieService } from 'ngx-cookie-service';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { NgxWebstorageModule } from 'ngx-webstorage';
+import { provideNgxWebstorage, withNgxWebstorageConfig } from 'ngx-webstorage';
 import { JhiConfigService, JhiLanguageService, missingTranslationHandler, NgJhipsterModule, translatePartialLoader } from 'ng-jhipster';
 import locale from '@angular/common/locales/en';
 
@@ -35,56 +35,61 @@ import { NotificationInterceptor } from 'app/blocks/interceptor/notification.int
 
 import { fontAwesomeIcons } from './icons/font-awesome-icons';
 
-@NgModule({ imports: [NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-' }),
-        NgJhipsterModule.forRoot({
-            // set below to true to make alerts look like toast
-            alertAsToast: false,
-            alertTimeout: 5000,
-            i18nEnabled: true,
-            defaultI18nLang: 'en',
-        }),
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: translatePartialLoader,
-                deps: [HttpClient],
-            },
-            missingTranslationHandler: {
-                provide: MissingTranslationHandler,
-                useFactory: missingTranslationHandler,
-                deps: [JhiConfigService],
-            },
-        })], providers: [
-        Title,
-        CookieService,
-        {
-            provide: LOCALE_ID,
-            useValue: 'en',
-        },
-        { provide: NgbDateAdapter, useClass: NgbDateMomentAdapter },
-        DatePipe,
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: AuthInterceptor,
-            multi: true,
-        },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: AuthExpiredInterceptor,
-            multi: true,
-        },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: ErrorHandlerInterceptor,
-            multi: true,
-        },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: NotificationInterceptor,
-            multi: true,
-        },
-        provideHttpClient(withInterceptorsFromDi()),
-    ] })
+@NgModule({
+  imports: [
+    NgJhipsterModule.forRoot({
+      // set below to true to make alerts look like toast
+      alertAsToast: false,
+      alertTimeout: 5000,
+      i18nEnabled: true,
+      defaultI18nLang: 'en',
+    }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: translatePartialLoader,
+        deps: [HttpClient],
+      },
+      missingTranslationHandler: {
+        provide: MissingTranslationHandler,
+        useFactory: missingTranslationHandler,
+        deps: [JhiConfigService],
+      },
+    }),
+  ],
+  providers: [
+    Title,
+    CookieService,
+    {
+      provide: LOCALE_ID,
+      useValue: 'en',
+    },
+    { provide: NgbDateAdapter, useClass: NgbDateMomentAdapter },
+    DatePipe,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthExpiredInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorHandlerInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: NotificationInterceptor,
+      multi: true,
+    },
+    provideHttpClient(withInterceptorsFromDi()),
+    provideNgxWebstorage(withNgxWebstorageConfig({ prefix: 'jhi', separator: '-' })),
+  ],
+})
 export class CvsCoreModule {
   constructor(iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig, languageService: JhiLanguageService) {
     registerLocaleData(locale);
