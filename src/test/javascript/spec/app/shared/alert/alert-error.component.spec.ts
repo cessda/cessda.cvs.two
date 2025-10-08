@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { TranslateModule } from '@ngx-translate/core';
@@ -28,7 +28,7 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<AlertErrorComponent>;
     let eventManager: JhiEventManager;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule, TranslateModule.forRoot()],
         declarations: [AlertErrorComponent],
@@ -36,9 +36,9 @@ describe('Component Tests', () => {
           JhiEventManager,
           {
             provide: JhiAlertService,
-            useClass: MockAlertService
-          }
-        ]
+            useClass: MockAlertService,
+          },
+        ],
       })
         .overrideTemplate(AlertErrorComponent, '')
         .compileComponents();
@@ -89,8 +89,8 @@ describe('Component Tests', () => {
             title: 'Bad Request',
             status: 400,
             path: '/api/foos',
-            message: 'error.validation'
-          }
+            message: 'error.validation',
+          },
         });
         eventManager.broadcast({ name: 'cvsApp.httpError', content: response });
         // THEN
@@ -104,7 +104,7 @@ describe('Component Tests', () => {
           url: 'http://localhost:8080/api/foos',
           headers: new HttpHeaders(),
           status: 400,
-          error: 'Bad Request'
+          error: 'Bad Request',
         });
         eventManager.broadcast({ name: 'cvsApp.httpError', content: response });
         // THEN
@@ -125,8 +125,8 @@ describe('Component Tests', () => {
             status: 400,
             path: '/api/foos',
             message: 'error.validation',
-            fieldErrors: [{ objectName: 'foo', field: 'minField', message: 'Min' }]
-          }
+            fieldErrors: [{ objectName: 'foo', field: 'minField', message: 'Min' }],
+          },
         });
         eventManager.broadcast({ name: 'cvsApp.httpError', content: response });
         // THEN
@@ -143,8 +143,8 @@ describe('Component Tests', () => {
           statusText: 'Bad Request',
           error: {
             status: 400,
-            message: 'error.validation'
-          }
+            message: 'error.validation',
+          },
         });
         eventManager.broadcast({ name: 'cvsApp.httpError', content: response });
         // THEN
