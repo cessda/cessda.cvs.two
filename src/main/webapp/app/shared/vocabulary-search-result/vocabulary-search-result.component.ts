@@ -40,8 +40,9 @@ const INITIAL_PAGE = 1;
 const DEFAULT_PREDICATE = 'code';
 
 @Component({
-  selector: 'jhi-vocabulary-search-result',
-  templateUrl: './vocabulary-search-result.component.html',
+    selector: 'jhi-vocabulary-search-result',
+    templateUrl: './vocabulary-search-result.component.html',
+    standalone: false
 })
 export class VocabularySearchResultComponent implements OnInit {
   @Input() appScope!: AppScope;

@@ -35,8 +35,9 @@ interface UnpublishedVersions {
 }
 
 @Component({
-  selector: 'jhi-agency-detail-dialog',
-  templateUrl: './agency-detail-dialog.component.html',
+    selector: 'jhi-agency-detail-dialog',
+    templateUrl: './agency-detail-dialog.component.html',
+    standalone: false
 })
 export class AgencyDetailDialogComponent implements OnInit {
   agency: Agency = createNewAgency();
@@ -141,8 +142,9 @@ export class AgencyDetailDialogComponent implements OnInit {
 }
 
 @Component({
-  selector: 'jhi-agency-detail-popup',
-  template: '',
+    selector: 'jhi-agency-detail-popup',
+    template: '',
+    standalone: false
 })
 export class AgencyDetailPopupComponent implements OnInit, OnDestroy {
   protected ngbModalRef?: NgbModalRef | null;

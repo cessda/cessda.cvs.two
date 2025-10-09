@@ -25,7 +25,8 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 
 @Component({
-  templateUrl: './editor-detail-cv-new-version-dialog.component.html',
+    templateUrl: './editor-detail-cv-new-version-dialog.component.html',
+    standalone: false
 })
 export class EditorDetailCvNewVersionDialogComponent implements OnInit {
   vocabularyParam!: Vocabulary;

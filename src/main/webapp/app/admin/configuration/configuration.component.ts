@@ -18,8 +18,9 @@ import { Component, OnInit } from '@angular/core';
 import { ConfigurationService, Bean, PropertySource } from './configuration.service';
 
 @Component({
-  selector: 'jhi-configuration',
-  templateUrl: './configuration.component.html'
+    selector: 'jhi-configuration',
+    templateUrl: './configuration.component.html',
+    standalone: false
 })
 export class ConfigurationComponent implements OnInit {
   allBeans!: Bean[];

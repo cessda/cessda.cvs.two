@@ -26,7 +26,8 @@ import { HttpResponse } from '@angular/common/http';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
-  templateUrl: './editor-detail-code-delete-dialog.component.html',
+    templateUrl: './editor-detail-code-delete-dialog.component.html',
+    standalone: false
 })
 export class EditorDetailCodeDeleteDialogComponent {
   versionParam!: Version;

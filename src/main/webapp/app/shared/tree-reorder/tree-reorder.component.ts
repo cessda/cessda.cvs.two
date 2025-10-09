@@ -20,9 +20,10 @@ import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'jhi-tree-reorder',
-  templateUrl: './tree-reorder.component.html',
-  styleUrls: ['./tree-reorder.component.scss'],
+    selector: 'jhi-tree-reorder',
+    templateUrl: './tree-reorder.component.html',
+    styleUrls: ['./tree-reorder.component.scss'],
+    standalone: false
 })
 export class TreeReorderComponent implements OnInit, OnDestroy {
   @Input() parentNotation?: string;

@@ -28,8 +28,9 @@ import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from 'app/admin/licence/licence.service';
 
 @Component({
-  selector: 'jhi-agency-update',
-  templateUrl: './agency-update.component.html',
+    selector: 'jhi-agency-update',
+    templateUrl: './agency-update.component.html',
+    standalone: false
 })
 export class AgencyUpdateComponent implements OnInit {
   isSaving = false;

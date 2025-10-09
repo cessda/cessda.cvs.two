@@ -21,7 +21,8 @@ import { Resolver } from 'app/shared/model/resolver.model';
 import { ResolverService } from './resolver.service';
 
 @Component({
-  templateUrl: './resolver-delete-dialog.component.html',
+    templateUrl: './resolver-delete-dialog.component.html',
+    standalone: false
 })
 export class ResolverDeleteDialogComponent {
   resolver?: Resolver;

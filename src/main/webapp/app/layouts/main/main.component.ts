@@ -22,8 +22,9 @@ import { AccountService } from 'app/core/auth/account.service';
 import { zip } from 'rxjs';
 
 @Component({
-  selector: 'jhi-main',
-  templateUrl: './main.component.html',
+    selector: 'jhi-main',
+    templateUrl: './main.component.html',
+    standalone: false
 })
 export class MainComponent implements OnInit {
   private renderer: Renderer2;

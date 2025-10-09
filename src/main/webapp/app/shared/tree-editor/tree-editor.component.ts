@@ -20,9 +20,10 @@ import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'jhi-tree-editor',
-  templateUrl: './tree-editor.component.html',
-  styleUrls: ['./tree-editor.component.scss'],
+    selector: 'jhi-tree-editor',
+    templateUrl: './tree-editor.component.html',
+    styleUrls: ['./tree-editor.component.scss'],
+    standalone: false
 })
 export class TreeEditorComponent implements OnInit, OnDestroy {
   @Input() parentNotation?: string;

@@ -33,8 +33,9 @@ import { EditorDetailCvAddEditConfirmModalComponent } from 'app/editor/editor-de
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
-  selector: 'jhi-editor-detail-code-add-edit-dialog',
-  templateUrl: './editor-detail-code-add-edit-dialog.component.html',
+    selector: 'jhi-editor-detail-code-add-edit-dialog',
+    templateUrl: './editor-detail-code-add-edit-dialog.component.html',
+    standalone: false
 })
 export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   isSaving: boolean;

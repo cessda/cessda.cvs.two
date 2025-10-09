@@ -23,8 +23,9 @@ import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 import { Concept } from 'app/shared/model/concept.model';
 
 @Component({
-  selector: 'jhi-version-compare',
-  templateUrl: './version-compare.component.html',
+    selector: 'jhi-version-compare',
+    templateUrl: './version-compare.component.html',
+    standalone: false
 })
 export class VersionCompareComponent implements OnInit, OnDestroy {
   @Input() notation!: string;

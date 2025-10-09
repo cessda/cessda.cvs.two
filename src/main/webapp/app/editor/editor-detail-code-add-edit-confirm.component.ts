@@ -17,8 +17,9 @@ import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'jhi-confirm-modal',
-  templateUrl: './editor-detail-code-add-edit-confirm.component.html',
+    selector: 'jhi-confirm-modal',
+    templateUrl: './editor-detail-code-add-edit-confirm.component.html',
+    standalone: false
 })
 export class EditorDetailCvAddEditConfirmModalComponent {
   constructor(public activeModal: NgbActiveModal) {}

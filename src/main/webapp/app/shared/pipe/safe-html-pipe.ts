@@ -19,7 +19,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 /**
  * See https://stackoverflow.com/questions/39628007/angular2-innerhtml-binding-remove-style-attribute
  */
-@Pipe({ name: 'safeHtml', pure: true })
+@Pipe({
+    name: 'safeHtml', pure: true,
+    standalone: false
+})
 export class SafeHtmlPipe implements PipeTransform {
   constructor(private sanitized: DomSanitizer) {}
   transform(value: string): SafeHtml {

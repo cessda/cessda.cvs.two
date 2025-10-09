@@ -21,8 +21,9 @@ import { LoginModalService } from 'app/core/login/login-modal.service';
 import { ActivateService } from './activate.service';
 
 @Component({
-  selector: 'jhi-activate',
-  templateUrl: './activate.component.html',
+    selector: 'jhi-activate',
+    templateUrl: './activate.component.html',
+    standalone: false
 })
 export class ActivateComponent implements OnInit {
   error = false;

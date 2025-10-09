@@ -19,8 +19,9 @@ import { HttpResponse } from '@angular/common/http';
 import { Maintenance } from 'app/admin/maintenance/maintenance.model';
 
 @Component({
-  selector: 'jhi-maintenance',
-  templateUrl: './maintenance.component.html',
+    selector: 'jhi-maintenance',
+    templateUrl: './maintenance.component.html',
+    standalone: false
 })
 export class MaintenanceComponent {
   isGeneratingJson: boolean;

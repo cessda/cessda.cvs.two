@@ -26,8 +26,9 @@ import { Agency } from 'app/shared/model/agency.model';
 import { AgencyService } from 'app/agency/agency.service';
 
 @Component({
-  selector: 'jhi-user-mgmt-update',
-  templateUrl: './user-management-update.component.html',
+    selector: 'jhi-user-mgmt-update',
+    templateUrl: './user-management-update.component.html',
+    standalone: false
 })
 export class UserManagementUpdateComponent implements OnInit {
   user!: User;

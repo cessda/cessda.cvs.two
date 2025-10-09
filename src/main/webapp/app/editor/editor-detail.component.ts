@@ -51,8 +51,9 @@ import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 import { Authority } from 'app/shared/constants/authority.constants';
 
 @Component({
-  selector: 'jhi-editor-detail',
-  templateUrl: './editor-detail.component.html',
+    selector: 'jhi-editor-detail',
+    templateUrl: './editor-detail.component.html',
+    standalone: false
 })
 export class EditorDetailComponent implements OnInit, OnDestroy {
   @ViewChild('detailEPanel', { static: true }) detailEPanel!: ElementRef;

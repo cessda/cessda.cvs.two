@@ -24,8 +24,9 @@ import { LicenceService } from './licence.service';
 import { FileUploadService } from 'app/shared/upload/file-upload.service';
 
 @Component({
-  selector: 'jhi-licence-update',
-  templateUrl: './licence-update.component.html',
+    selector: 'jhi-licence-update',
+    templateUrl: './licence-update.component.html',
+    standalone: false
 })
 export class LicenceUpdateComponent implements OnInit {
   isSaving = false;

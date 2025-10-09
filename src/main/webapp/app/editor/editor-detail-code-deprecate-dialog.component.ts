@@ -28,8 +28,9 @@ import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
-  selector: 'jhi-editor-detail-code-deprecate-dialog',
-  templateUrl: './editor-detail-code-deprecate-dialog.component.html',
+    selector: 'jhi-editor-detail-code-deprecate-dialog',
+    templateUrl: './editor-detail-code-deprecate-dialog.component.html',
+    standalone: false
 })
 export class EditorDetailCodeDeprecateDialogComponent {
   versionParam!: Version;

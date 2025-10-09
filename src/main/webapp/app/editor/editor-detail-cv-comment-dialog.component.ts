@@ -31,7 +31,8 @@ import { Moment } from 'moment';
 import { QuillModules } from 'ngx-quill';
 
 @Component({
-  templateUrl: './editor-detail-cv-comment-dialog.component.html',
+    templateUrl: './editor-detail-cv-comment-dialog.component.html',
+    standalone: false
 })
 export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
   isSaving: boolean;

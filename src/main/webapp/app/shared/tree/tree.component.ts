@@ -18,9 +18,10 @@ import { Concept } from 'app/shared/model/concept.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 
 @Component({
-  selector: 'jhi-tree',
-  templateUrl: './tree.component.html',
-  styleUrls: ['./tree.component.scss'],
+    selector: 'jhi-tree',
+    templateUrl: './tree.component.html',
+    styleUrls: ['./tree.component.scss'],
+    standalone: false
 })
 export class TreeComponent {
   @Input() parentNotation?: string;

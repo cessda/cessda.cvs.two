@@ -27,7 +27,8 @@ import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
-  templateUrl: './editor-detail-code-csv-import-dialog.component.html',
+    templateUrl: './editor-detail-code-csv-import-dialog.component.html',
+    standalone: false
 })
 export class EditorDetailCodeCsvImportDialogComponent {
   @ViewChild('csvInput', { static: true }) csvInput!: ElementRef;

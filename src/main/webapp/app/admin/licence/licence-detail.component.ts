@@ -19,8 +19,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Licence } from 'app/shared/model/licence.model';
 
 @Component({
-  selector: 'jhi-licence-detail',
-  templateUrl: './licence-detail.component.html',
+    selector: 'jhi-licence-detail',
+    templateUrl: './licence-detail.component.html',
+    standalone: false
 })
 export class LicenceDetailComponent implements OnInit {
   licence: Licence | null = null;

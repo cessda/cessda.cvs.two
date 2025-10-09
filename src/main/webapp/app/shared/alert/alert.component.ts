@@ -17,8 +17,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { JhiAlertService, JhiAlert } from 'ng-jhipster';
 
 @Component({
-  selector: 'jhi-alert',
-  template: `
+    selector: 'jhi-alert',
+    template: `
     <div class="alerts" role="alert">
       <div *ngFor="let alert of alerts" [ngClass]="setClasses(alert)">
         <ngb-alert *ngIf="alert && alert.type && alert.msg" [type]="alert.type" (close)="alert.close && alert.close(alerts)">
@@ -27,6 +27,7 @@ import { JhiAlertService, JhiAlert } from 'ng-jhipster';
       </div>
     </div>
   `,
+    standalone: false
 })
 export class AlertComponent implements OnInit, OnDestroy {
   alerts: JhiAlert[] = [];

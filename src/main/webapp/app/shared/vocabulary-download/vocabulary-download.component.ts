@@ -25,8 +25,9 @@ import { Router } from '@angular/router';
 import { FileFormat } from 'app/shared/vocabulary-download/FileFormat';
 
 @Component({
-  selector: 'jhi-vocabulary-download',
-  templateUrl: './vocabulary-download.component.html',
+    selector: 'jhi-vocabulary-download',
+    templateUrl: './vocabulary-download.component.html',
+    standalone: false
 })
 export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
   @Input() appScope!: AppScope;

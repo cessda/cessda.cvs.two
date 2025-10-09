@@ -40,7 +40,8 @@ export interface AgencyAuthority {
  *     - any is equal with
  */
 @Directive({
-  selector: '[jhiHasAnyAgencyAuthority]',
+    selector: '[jhiHasAnyAgencyAuthority]',
+    standalone: false
 })
 export class HasAnyAgencyAuthorityDirective implements OnDestroy {
   private agencyAuthority: AgencyAuthority | undefined = undefined;

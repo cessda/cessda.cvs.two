@@ -25,7 +25,8 @@ import { CodeSnippet } from 'app/shared/model/code-snippet.model';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
-  templateUrl: './editor-detail-code-reorder-dialog.component.html',
+    templateUrl: './editor-detail-code-reorder-dialog.component.html',
+    standalone: false
 })
 export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy {
   isSaving: boolean;

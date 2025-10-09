@@ -19,8 +19,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Resolver } from 'app/shared/model/resolver.model';
 
 @Component({
-  selector: 'jhi-resolver-detail',
-  templateUrl: './resolver-detail.component.html',
+    selector: 'jhi-resolver-detail',
+    templateUrl: './resolver-detail.component.html',
+    standalone: false
 })
 export class ResolverDetailComponent implements OnInit {
   resolver: Resolver | null = null;

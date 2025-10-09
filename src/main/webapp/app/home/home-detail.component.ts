@@ -31,8 +31,9 @@ import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { Authority } from 'app/shared/constants/authority.constants';
 
 @Component({
-  selector: 'jhi-home-detail',
-  templateUrl: './home-detail.component.html',
+    selector: 'jhi-home-detail',
+    templateUrl: './home-detail.component.html',
+    standalone: false
 })
 export class HomeDetailComponent implements OnInit {
   @ViewChild('detailPanel', { static: true }) detailPanel!: ElementRef;

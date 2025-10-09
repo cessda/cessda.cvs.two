@@ -27,9 +27,10 @@ import { Authority } from '../constants/authority.constants';
 import Quill from 'quill';
 
 @Component({
-  selector: 'jhi-metadata-item',
-  templateUrl: './metadata-item.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'jhi-metadata-item',
+    templateUrl: './metadata-item.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MetadataItemComponent implements OnInit {
   @Input() metadataField?: MetadataField;

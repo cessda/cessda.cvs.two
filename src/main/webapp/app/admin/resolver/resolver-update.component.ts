@@ -23,8 +23,9 @@ import { Resolver } from 'app/shared/model/resolver.model';
 import { ResolverService } from './resolver.service';
 
 @Component({
-  selector: 'jhi-resolver-update',
-  templateUrl: './resolver-update.component.html',
+    selector: 'jhi-resolver-update',
+    templateUrl: './resolver-update.component.html',
+    standalone: false
 })
 export class ResolverUpdateComponent implements OnInit {
   isSaving = false;

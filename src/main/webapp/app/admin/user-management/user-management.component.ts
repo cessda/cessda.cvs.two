@@ -30,8 +30,9 @@ import { AgencyService } from 'app/agency/agency.service';
 import { UserAgency } from 'app/shared/model/user-agency.model';
 
 @Component({
-  selector: 'jhi-user-mgmt',
-  templateUrl: './user-management.component.html',
+    selector: 'jhi-user-mgmt',
+    templateUrl: './user-management.component.html',
+    standalone: false
 })
 export class UserManagementComponent implements OnInit, OnDestroy {
   currentAccount: Account | null = null;

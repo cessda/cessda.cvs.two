@@ -23,8 +23,9 @@ import { Audit } from './audit.model';
 import { AuditsService } from './audits.service';
 
 @Component({
-  selector: 'jhi-audit',
-  templateUrl: './audits.component.html',
+    selector: 'jhi-audit',
+    templateUrl: './audits.component.html',
+    standalone: false
 })
 export class AuditsComponent implements OnInit {
   audits: Audit[] = [];

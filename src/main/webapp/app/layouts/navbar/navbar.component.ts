@@ -34,9 +34,10 @@ import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Authority } from 'app/shared/constants/authority.constants';
 
 @Component({
-  selector: 'jhi-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['navbar.scss'],
+    selector: 'jhi-navbar',
+    templateUrl: './navbar.component.html',
+    styleUrls: ['navbar.scss'],
+    standalone: false
 })
 export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   readonly authorities = [Authority.ADMIN, Authority.ADMIN_TECHNICAL];

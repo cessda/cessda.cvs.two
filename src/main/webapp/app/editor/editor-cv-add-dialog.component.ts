@@ -34,8 +34,9 @@ import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
-  selector: 'jhi-editor-cv-add-dialog',
-  templateUrl: './editor-cv-add-dialog.component.html',
+    selector: 'jhi-editor-cv-add-dialog',
+    templateUrl: './editor-cv-add-dialog.component.html',
+    standalone: false
 })
 export class EditorCvAddDialogComponent implements OnInit {
   isSaving: boolean;
@@ -183,8 +184,9 @@ export class EditorCvAddDialogComponent implements OnInit {
 }
 
 @Component({
-  selector: 'jhi-editor-cv-add-popup',
-  template: '',
+    selector: 'jhi-editor-cv-add-popup',
+    template: '',
+    standalone: false
 })
 export class EditorCvAddPopupComponent implements OnInit, OnDestroy {
   protected ngbModalRef: NgbModalRef | undefined;

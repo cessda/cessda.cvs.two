@@ -19,9 +19,10 @@ import {flatMap} from 'rxjs/operators';
 import {Metrics, MetricsKey, MetricsService, Thread, ThreadDump} from './metrics.service';
 
 @Component({
-  selector: 'jhi-metrics',
-  templateUrl: './metrics.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'jhi-metrics',
+    templateUrl: './metrics.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class MetricsComponent implements OnInit {
   metrics?: Metrics;

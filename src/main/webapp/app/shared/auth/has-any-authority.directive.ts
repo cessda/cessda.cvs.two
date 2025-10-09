@@ -31,7 +31,8 @@ import { Authority } from '../constants/authority.constants';
  * ```
  */
 @Directive({
-  selector: '[jhiHasAnyAuthority]',
+    selector: '[jhiHasAnyAuthority]',
+    standalone: false
 })
 export class HasAnyAuthorityDirective implements OnDestroy {
   private authorities: Authority[] = [];

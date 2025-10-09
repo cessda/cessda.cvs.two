@@ -28,8 +28,9 @@ import { HttpResponse } from '@angular/common/http';
 import { QuillModules } from 'ngx-quill';
 
 @Component({
-  selector: 'jhi-comment-item',
-  templateUrl: './editor-detail-cv-comment-item.component.html',
+    selector: 'jhi-comment-item',
+    templateUrl: './editor-detail-cv-comment-item.component.html',
+    standalone: false
 })
 export class EditorDetailCvCommentItemComponent {
   @Input() account?: Account;

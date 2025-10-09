@@ -21,7 +21,8 @@ import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from './licence.service';
 
 @Component({
-  templateUrl: './licence-delete-dialog.component.html',
+    templateUrl: './licence-delete-dialog.component.html',
+    standalone: false
 })
 export class LicenceDeleteDialogComponent {
   licence?: Licence;

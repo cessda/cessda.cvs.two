@@ -27,8 +27,9 @@ import { LicenceService } from './licence.service';
 import { LicenceDeleteDialogComponent } from './licence-delete-dialog.component';
 
 @Component({
-  selector: 'jhi-licence',
-  templateUrl: './licence.component.html',
+    selector: 'jhi-licence',
+    templateUrl: './licence.component.html',
+    standalone: false
 })
 export class LicenceComponent implements OnInit, OnDestroy {
   licences: Licence[] = [];

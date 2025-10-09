@@ -22,8 +22,9 @@ import { Account } from 'app/core/user/account.model';
 import { PasswordService } from './password.service';
 
 @Component({
-  selector: 'jhi-password',
-  templateUrl: './password.component.html',
+    selector: 'jhi-password',
+    templateUrl: './password.component.html',
+    standalone: false
 })
 export class PasswordComponent implements OnInit {
   doNotMatch = false;

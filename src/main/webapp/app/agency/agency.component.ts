@@ -28,8 +28,9 @@ import { AgencyDeleteDialogComponent } from './agency-delete-dialog.component';
 import { Authority } from 'app/shared/constants/authority.constants';
 
 @Component({
-  selector: 'jhi-agency',
-  templateUrl: './agency.component.html',
+    selector: 'jhi-agency',
+    templateUrl: './agency.component.html',
+    standalone: false
 })
 export class AgencyComponent implements OnInit, OnDestroy {
   authorities = [Authority.ADMIN, Authority.ADMIN_CONTENT];

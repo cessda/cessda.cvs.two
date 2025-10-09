@@ -21,7 +21,8 @@ import { Agency } from 'app/shared/model/agency.model';
 import { AgencyService } from './agency.service';
 
 @Component({
-  templateUrl: './agency-delete-dialog.component.html',
+    templateUrl: './agency-delete-dialog.component.html',
+    standalone: false
 })
 export class AgencyDeleteDialogComponent {
   agency?: Agency;

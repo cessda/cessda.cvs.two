@@ -28,8 +28,9 @@ import { FileFormat } from 'app/shared/vocabulary-download/FileFormat';
 import { Authority } from '../constants/authority.constants';
 
 @Component({
-  selector: 'jhi-custom-page',
-  templateUrl: './custom-page.component.html',
+    selector: 'jhi-custom-page',
+    templateUrl: './custom-page.component.html',
+    standalone: false
 })
 export class CustomPageComponent implements OnInit, OnDestroy {
   @Input() pageType!: string;

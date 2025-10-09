@@ -23,7 +23,8 @@ import { Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
 
 @Component({
-  templateUrl: './editor-detail-cv-delete-dialog.component.html',
+    templateUrl: './editor-detail-cv-delete-dialog.component.html',
+    standalone: false
 })
 export class EditorDetailCvDeleteDialogComponent implements OnInit {
   vocabularyParam!: Vocabulary;

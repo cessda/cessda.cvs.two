@@ -16,7 +16,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'linkHttp',
+    name: 'linkHttp',
+    standalone: false
 })
 export class LinkHttpPipe implements PipeTransform {
   transform(href: string): string {

@@ -27,8 +27,9 @@ import { ResolverService } from './resolver.service';
 import { ResolverDeleteDialogComponent } from './resolver-delete-dialog.component';
 
 @Component({
-  selector: 'jhi-resolver',
-  templateUrl: './resolver.component.html',
+    selector: 'jhi-resolver',
+    templateUrl: './resolver.component.html',
+    standalone: false
 })
 export class ResolverComponent implements OnInit, OnDestroy {
   resolvers: Resolver[] = [];

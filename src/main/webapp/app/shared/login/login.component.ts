@@ -21,8 +21,9 @@ import { Router } from '@angular/router';
 import { LoginService } from 'app/core/login/login.service';
 
 @Component({
-  selector: 'jhi-login-modal',
-  templateUrl: './login.component.html',
+    selector: 'jhi-login-modal',
+    templateUrl: './login.component.html',
+    standalone: false
 })
 export class LoginModalComponent implements AfterViewInit {
   @ViewChild('username', { static: false })

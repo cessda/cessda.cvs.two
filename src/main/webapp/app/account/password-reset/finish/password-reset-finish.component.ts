@@ -21,8 +21,9 @@ import { LoginModalService } from 'app/core/login/login-modal.service';
 import { PasswordResetFinishService } from './password-reset-finish.service';
 
 @Component({
-  selector: 'jhi-password-reset-finish',
-  templateUrl: './password-reset-finish.component.html',
+    selector: 'jhi-password-reset-finish',
+    templateUrl: './password-reset-finish.component.html',
+    standalone: false
 })
 export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
   @ViewChild('newPassword', { static: false })

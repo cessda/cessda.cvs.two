@@ -22,8 +22,9 @@ import { Account } from 'app/core/user/account.model';
 import { LANGUAGES } from 'app/core/language/language.constants';
 
 @Component({
-  selector: 'jhi-settings',
-  templateUrl: './settings.component.html',
+    selector: 'jhi-settings',
+    templateUrl: './settings.component.html',
+    standalone: false
 })
 export class SettingsComponent implements OnInit {
   account!: Account;

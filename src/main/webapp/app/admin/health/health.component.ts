@@ -21,8 +21,9 @@ import { Health, HealthDetails, HealthKey, HealthService, HealthStatus } from '.
 import { HealthModalComponent } from './health-modal.component';
 
 @Component({
-  selector: 'jhi-health',
-  templateUrl: './health.component.html',
+    selector: 'jhi-health',
+    templateUrl: './health.component.html',
+    standalone: false
 })
 export class HealthComponent implements OnInit {
   health?: Health;

@@ -39,8 +39,9 @@ import Quill from 'quill';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
-  selector: 'jhi-editor-detail-cv-forward-status-dialog',
-  templateUrl: './editor-detail-cv-forward-status-dialog.component.html',
+    selector: 'jhi-editor-detail-cv-forward-status-dialog',
+    templateUrl: './editor-detail-cv-forward-status-dialog.component.html',
+    standalone: false
 })
 export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   licences: Licence[] = [];

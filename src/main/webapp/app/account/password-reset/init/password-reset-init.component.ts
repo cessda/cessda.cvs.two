@@ -19,8 +19,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { PasswordResetInitService } from './password-reset-init.service';
 
 @Component({
-  selector: 'jhi-password-reset-init',
-  templateUrl: './password-reset-init.component.html',
+    selector: 'jhi-password-reset-init',
+    templateUrl: './password-reset-init.component.html',
+    standalone: false
 })
 export class PasswordResetInitComponent implements AfterViewInit {
   @ViewChild('email', { static: false })

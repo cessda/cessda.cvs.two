@@ -20,9 +20,10 @@ import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'jhi-tree-editor-deprecated',
-  templateUrl: './tree-editor-deprecated.component.html',
-  styleUrls: ['./tree-editor.component.scss'],
+    selector: 'jhi-tree-editor-deprecated',
+    templateUrl: './tree-editor-deprecated.component.html',
+    styleUrls: ['./tree-editor.component.scss'],
+    standalone: false
 })
 export class TreeEditorDeprecatedComponent implements OnInit, OnDestroy {
   @Input() parentNotation?: string;
