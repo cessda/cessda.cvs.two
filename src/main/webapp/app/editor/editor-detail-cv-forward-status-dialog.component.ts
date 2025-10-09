@@ -35,7 +35,7 @@ import { Comment } from 'app/shared/model/comment.model';
 import { VocabularyChangeService } from 'app/entities/vocabulary-change/vocabulary-change.service';
 import { VocabularyChange } from 'app/shared/model/vocabulary-change.model';
 import { QuillModule } from 'ngx-quill';
-import { Quill } from 'quill';
+import Quill from 'quill';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({

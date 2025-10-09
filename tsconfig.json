@@ -13,7 +13,8 @@
     "lib": ["es2018", "dom"],
     "baseUrl": "./",
     "paths": {
-      "app/*": ["src/main/webapp/app/*"]
+      "app/*": ["src/main/webapp/app/*"],
+      "environments/*": ["src/main/webapp/environments/*"]
     },
     "importHelpers": true,
     "useDefineForClassFields": false

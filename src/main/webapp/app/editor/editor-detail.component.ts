@@ -44,7 +44,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
-import { Quill } from 'quill';
+import Quill from 'quill';
 import { QuillModules } from 'ngx-quill';
 import { AgencyRole } from 'app/shared/model/enumerations/agency-role.model';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';

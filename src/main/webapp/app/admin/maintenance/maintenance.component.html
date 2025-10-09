@@ -26,12 +26,12 @@
         </div>
         <div class="card-body" class="card-acc-stat">
             <div class="col-sm-12 p-0">
-                <ngb-accordion>
-                    <ngb-panel>
-                        <ng-template ngbPanelTitle>
+                <div ngbAccordion>
+                    <div ngbAccordionItem>
+                        <div ngbAccordionHeader>
                             <span>Generate JSON files</span>
-                        </ng-template>
-                        <ng-template ngbPanelContent>
+                        </div>
+                        <div ngbAccordionBody>
                             <div class="row-content">
                                 <div class="w-100">
                                     <span>Generate JSON files for published CVs:</span>
@@ -44,9 +44,9 @@
                                     <textarea class="form-control" rows="10" class="w-100" [(ngModel)]="generatingJsonOutput"></textarea>
                                 </div>
                             </div>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -57,12 +57,12 @@
         </div>
         <div class="card-body" class="card-acc-stat">
             <div class="col-sm-12 p-0">
-                <ngb-accordion>
-                    <ngb-panel>
-                        <ng-template ngbPanelTitle>
+                <div ngbAccordion>
+                    <div ngbAccordionItem>
+                        <div ngbAccordionHeader>
                             <span>Indexing Agency</span>
-                        </ng-template>
-                        <ng-template ngbPanelContent>
+                        </div>
+                        <div ngbAccordionBody>
                             <div class="row-content">
                                 <div class="w-100">
                                     <span>Perform indexing all agencies:</span>
@@ -75,15 +75,15 @@
                                     <textarea class="form-control" rows="10" class="w-100" [(ngModel)]="indexingAgencyOutput"></textarea>
                                 </div>
                             </div>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion>
-                <ngb-accordion>
-                    <ngb-panel>
-                        <ng-template ngbPanelTitle>
+                        </div>
+                    </div>
+                </div>
+                <div ngbAccordion>
+                    <div ngbAccordionItem>
+                        <div ngbAccordionHeader>
                             <span>Indexing Agency Stat</span>
-                        </ng-template>
-                        <ng-template ngbPanelContent>
+                        </div>
+                        <div ngbAccordionBody>
                             <div class="row-content">
                                 <div class="w-100">
                                     <span>Generate agency statistics by indexing voabularies in the agencies:</span>
@@ -96,15 +96,15 @@
                                     <textarea class="form-control" rows="10" class="w-100" [(ngModel)]="indexingAgencyStatOutput"></textarea>
                                 </div>
                             </div>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion>
-                <ngb-accordion>
-                    <ngb-panel>
-                        <ng-template ngbPanelTitle>
+                        </div>
+                    </div>
+                </div>
+                <div ngbAccordion>
+                    <div ngbAccordionItem>
+                        <div ngbAccordionHeader>
                             <span>Indexing Vocabulary Publish</span>
-                        </ng-template>
-                        <ng-template ngbPanelContent>
+                        </div>
+                        <div ngbAccordionBody>
                             <div class="row-content">
                                 <div class="w-100">
                                     <span>Perform indexing all published CVs:</span>
@@ -117,15 +117,15 @@
                                     <textarea class="form-control" rows="10" class="w-100" [(ngModel)]="indexingVocabularyPublishOutput"></textarea>
                                 </div>
                             </div>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion>
-                <ngb-accordion>
-                    <ngb-panel>
-                        <ng-template ngbPanelTitle>
+                        </div>
+                    </div>
+                </div>
+                <div ngbAccordion>
+                    <div ngbAccordionItem>
+                        <div ngbAccordionHeader>
                             <span>Indexing Vocabulary Editor</span>
-                        </ng-template>
-                        <ng-template ngbPanelContent>
+                        </div>
+                        <div ngbAccordionBody>
                             <div class="row-content">
                                 <div class="w-100">
                                     <span>Perform indexing all CVs in the Editor:</span>
@@ -138,9 +138,9 @@
                                     <textarea class="form-control" rows="10" class="w-100" [(ngModel)]="indexingVocabularyEditorOutput"></textarea>
                                 </div>
                             </div>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

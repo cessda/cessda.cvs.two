@@ -88,19 +88,19 @@
         <div class="card-body" class="card-acc-stat">
             <div class="row">
                 <div class="col-sm-12 p-0">
-                    <ngb-accordion>
+                    <div ngbAccordion>
                         <ng-container *ngFor="let vocab of sortVocabStat(vocabStats); let i = index">
-                            <ngb-panel *ngIf="vocab.versionCodeStats.length > 0">
-                                <ng-template ngbPanelTitle>
+                            <div ngbAccordionItem *ngIf="vocab.versionCodeStats.length > 0">
+                                <div ngbAccordionHeader>
                                     <span>{{vocab.notation}} <small>({{vocab.versionCodeStats.length}} {{vocab.versionCodeStats.length === 1 ? 'version': 'versions'}}) (SL: {{vocab.sourceLanguage | vocabularyLanguageFromKey}})</small></span>
-                                </ng-template>
-                                <ng-template ngbPanelContent>
-                                    <ngb-accordion class="version-acc">
-                                        <ngb-panel *ngFor="let vcode of vocab.versionCodeStats; let j = index">
-                                            <ng-template ngbPanelTitle>
+                                </div>
+                                <div ngbAccordionBody>
+                                    <div ngbAccordion class="version-acc">
+                                        <div ngbAccordionItem *ngFor="let vcode of vocab.versionCodeStats; let j = index">
+                                            <div ngbAccordionHeader>
                                                 <span>- Version {{vcode.versionNumber}} <small>({{vcode.codes.length}} codes)</small></span>
-                                            </ng-template>
-                                            <ng-template ngbPanelContent>
+                                            </div>
+                                            <div ngbAccordionBody>
                                                 <div class="row-content">
                                                     <div class="fw-bold small">
                                                         <span>Languages:</span>
@@ -115,13 +115,13 @@
                                                         <ng-container *ngFor="let code of vcode.codes; let k = index">{{ k > 0 ? ', ' : ''}}<a href="javascript:void(0)" (click)="closeAndNavigate( vocab.notation, vocab.sourceLanguage, vcode.versionNumber, code)"><span>{{code}}</span></a></ng-container>
                                                     </div>
                                                 </div>
-                                            </ng-template>
-                                        </ngb-panel>
-                                    </ngb-accordion>
-                                </ng-template>
-                            </ngb-panel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </ng-container>
-                    </ngb-accordion>
+                    </div>
 
                 </div>
             </div>

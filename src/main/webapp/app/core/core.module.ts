@@ -20,7 +20,7 @@ import { Title } from '@angular/platform-browser';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { CookieService } from 'ngx-cookie-service';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { provideNgxWebstorage, withNgxWebstorageConfig } from 'ngx-webstorage';
+import { provideNgxWebstorage, withLocalStorage, withNgxWebstorageConfig, withSessionStorage } from 'ngx-webstorage';
 import { JhiConfigService, JhiLanguageService, missingTranslationHandler, NgJhipsterModule, translatePartialLoader } from 'ng-jhipster';
 import locale from '@angular/common/locales/en';
 
@@ -87,7 +87,7 @@ import { fontAwesomeIcons } from './icons/font-awesome-icons';
       multi: true,
     },
     provideHttpClient(withInterceptorsFromDi()),
-    provideNgxWebstorage(withNgxWebstorageConfig({ prefix: 'jhi', separator: '-' })),
+    provideNgxWebstorage(withNgxWebstorageConfig({ prefix: 'jhi', separator: '-' }), withLocalStorage(), withSessionStorage()),
   ],
 })
 export class CvsCoreModule {

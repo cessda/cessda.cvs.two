@@ -24,7 +24,7 @@ eg $input-color: red;
 // Import Bootstrap source files from node_modules
 @import '/node_modules/bootstrap/scss/bootstrap';
 // Import Quill richtext
-@import '/node_modules/quill/dist/quill.core.css';
-@import '/node_modules/quill/dist/quill.snow.css';
+@import '/node_modules/quill/dist/quill.core';
+@import '/node_modules/quill/dist/quill.snow';
 
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */

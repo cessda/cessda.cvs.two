@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2025 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { enableProdMode } from '@angular/core';
-import { environment } from 'environments/environment';
+import { Environment } from './environment.types';
 
-export function ProdConfig(): void {
-  // disable debug data on prod profile to improve performance
-  if (!environment.debugInfoEnabled) {
-    enableProdMode();
-  }
-}
+export const environment: Environment = {
+  version: 'string',
+  debugInfoEnabled: false,
+};

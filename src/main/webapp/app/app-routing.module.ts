@@ -17,7 +17,7 @@ import { NgModule } from '@angular/core';
 import { ExtraOptions, RouterModule } from '@angular/router';
 import { errorRoute } from './layouts/error/error.route';
 import { navbarRoute } from './layouts/navbar/navbar.route';
-import { DEBUG_INFO_ENABLED } from 'app/app.constants';
+import { environment } from 'environments/environment';
 import { Authority } from 'app/shared/constants/authority.constants';
 
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
@@ -27,8 +27,8 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 const routerOptions: ExtraOptions = {
   useHash: false,
   anchorScrolling: 'enabled',
-  // scrollPositionRestoration: 'enabled',
-  enableTracing: DEBUG_INFO_ENABLED,
+  scrollPositionRestoration: 'enabled',
+  enableTracing: environment.debugInfoEnabled,
   onSameUrlNavigation: 'reload',
 };
 
@@ -74,7 +74,7 @@ const routerOptions: ExtraOptions = {
         },
         ...LAYOUT_ROUTES,
       ],
-      routerOptions
+      routerOptions,
     ),
   ],
   exports: [RouterModule],

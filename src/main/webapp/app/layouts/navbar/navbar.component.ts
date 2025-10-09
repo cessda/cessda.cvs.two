@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JhiEventManager, JhiEventWithContent, JhiLanguageService } from 'ng-jhipster';
 import { SessionStorageService } from 'ngx-webstorage';
 
-import { VERSION } from 'app/app.constants';
+import { environment } from 'environments/environment';
 import { LANGUAGES } from 'app/core/language/language.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginModalService } from 'app/core/login/login-modal.service';
@@ -38,7 +38,7 @@ import { Authority } from 'app/shared/constants/authority.constants';
   templateUrl: './navbar.component.html',
   styleUrls: ['navbar.scss'],
 })
-export class NavbarComponent implements OnInit, OnDestroy {
+export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   readonly authorities = [Authority.ADMIN, Authority.ADMIN_TECHNICAL];
 
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
@@ -71,7 +71,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
     private homeService: HomeService,
   ) {
-    this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
+    this.version = environment.version
+      ? environment.version.toLowerCase().startsWith('v')
+        ? environment.version
+        : 'v' + environment.version
+      : '';
     this.isSearching = false;
     this.currentLang = 'en';
     this.lastSearch = this.sessionStorage.retrieve('lastSearch');

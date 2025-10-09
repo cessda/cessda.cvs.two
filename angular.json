@@ -30,7 +30,7 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "allowedCommonJsDependencies": ["moment", "quill", "quill-better-table", "quill-blot-formatter"],
+            "allowedCommonJsDependencies": ["diff-match-patch", "moment", "quill", "quill-better-table", "quill-delta"],
             "outputPath": {
               "base": "target/classes/static",
               "browser": ""
@@ -84,7 +84,13 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/main/webapp/environments/environment.ts",
+                  "with": "src/main/webapp/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
