@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "es2020",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "sourceMap": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
@@ -10,11 +10,18 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
-    "lib": ["es2018", "dom"],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
     "baseUrl": "./",
     "paths": {
-      "app/*": ["src/main/webapp/app/*"],
-      "environments/*": ["src/main/webapp/environments/*"]
+      "app/*": [
+        "src/main/webapp/app/*"
+      ],
+      "environments/*": [
+        "src/main/webapp/environments/*"
+      ]
     },
     "importHelpers": true,
     "useDefineForClassFields": false
