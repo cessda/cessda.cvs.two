@@ -65,7 +65,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(UserManagementUpdateComponent);
       comp = fixture.componentInstance;
-      service = fixture.debugElement.injector.get(UserService);
+      service = fixture.debugElement.injector.inject(UserService);
     });
 
     describe('OnInit', () => {

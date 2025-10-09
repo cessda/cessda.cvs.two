@@ -38,7 +38,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(MetricsComponent);
       comp = fixture.componentInstance;
-      service = fixture.debugElement.injector.get(MetricsService);
+      service = fixture.debugElement.injector.inject(MetricsService);
     });
 
     describe('refresh', () => {

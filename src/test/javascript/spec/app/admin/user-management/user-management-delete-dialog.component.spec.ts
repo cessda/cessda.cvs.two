@@ -44,9 +44,9 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(UserManagementDeleteDialogComponent);
       comp = fixture.componentInstance;
-      service = fixture.debugElement.injector.get(UserService);
-      mockEventManager = TestBed.get(JhiEventManager);
-      mockActiveModal = TestBed.get(NgbActiveModal);
+      service = fixture.debugElement.injector.inject(UserService);
+      mockEventManager = TestBed.inject(JhiEventManager);
+      mockActiveModal = TestBed.inject(NgbActiveModal);
     });
 
     describe('confirmDelete', () => {

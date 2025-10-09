@@ -35,8 +35,8 @@ describe('Service Tests', () => {
       });
       expectedResult = null;
       injector = getTestBed();
-      service = injector.get(VocabularyChangeService);
-      httpMock = injector.get(HttpTestingController);
+      service = injector.inject(VocabularyChangeService);
+      httpMock = injector.inject(HttpTestingController);
       currentDate = moment();
 
       elemDefault = {

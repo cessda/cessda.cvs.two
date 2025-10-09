@@ -54,7 +54,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(SettingsComponent);
       comp = fixture.componentInstance;
-      mockAuth = TestBed.get(AccountService);
+      mockAuth = TestBed.inject(AccountService);
       mockAuth.setIdentityResponse(accountValues);
     });
 

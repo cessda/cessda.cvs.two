@@ -45,10 +45,10 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(MainComponent);
       comp = fixture.componentInstance;
-      router = TestBed.get(Router);
+      router = TestBed.inject(Router);
       router.setEvents(routerEventsSubject.asObservable());
-      titleService = TestBed.get(Title);
-      translateService = TestBed.get(TranslateService);
+      titleService = TestBed.inject(Title);
+      translateService = TestBed.inject(TranslateService);
     });
 
     describe('page title', () => {

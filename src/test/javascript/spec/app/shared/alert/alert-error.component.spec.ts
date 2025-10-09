@@ -47,7 +47,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(AlertErrorComponent);
       comp = fixture.componentInstance;
-      eventManager = fixture.debugElement.injector.get(JhiEventManager);
+      eventManager = fixture.debugElement.injector.inject(JhiEventManager);
     });
 
     describe('Error Handling', () => {

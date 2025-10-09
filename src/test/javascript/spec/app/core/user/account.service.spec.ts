@@ -72,10 +72,10 @@ describe('Service Tests', () => {
         ],
       });
 
-      service = TestBed.get(AccountService);
-      httpMock = TestBed.get(HttpTestingController);
-      storageService = TestBed.get(StateStorageService);
-      router = TestBed.get(Router);
+      service = TestBed.inject(AccountService);
+      httpMock = TestBed.inject(HttpTestingController);
+      storageService = TestBed.inject(StateStorageService);
+      router = TestBed.inject(Router);
     });
 
     afterEach(() => {

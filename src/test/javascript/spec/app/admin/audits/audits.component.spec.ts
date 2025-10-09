@@ -66,7 +66,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(AuditsComponent);
       comp = fixture.componentInstance;
-      service = fixture.debugElement.injector.get(AuditsService);
+      service = fixture.debugElement.injector.inject(AuditsService);
     });
 
     describe('today function', () => {
