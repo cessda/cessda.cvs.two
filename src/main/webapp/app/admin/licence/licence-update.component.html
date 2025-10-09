@@ -1,111 +1,133 @@
 <!--
 
-    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 -->
 <div class="row justify-content-center">
-    <div class="col-8">
-        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-licence-heading" jhiTranslate="cvsApp.licence.home.createOrEditLabel">Create or edit a Licence</h2>
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-licence-heading" jhiTranslate="cvsApp.licence.home.createOrEditLabel">Create or edit a Licence</h2>
 
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="!editForm.controls.id.value">
+          <label for="id" jhiTranslate="global.field.id">ID</label>
+          <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="cvsApp.licence.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name"
+            formControlName="name" placeholder="e.g. Creative Commons Attribution 4.0 International"/>
+          @if (editForm.controls.name.invalid && (editForm.controls.name.dirty || editForm.controls.name.touched)) {
             <div>
-                <jhi-alert-error></jhi-alert-error>
-
-                <div class="form-group" [hidden]="!editForm.controls.id.value">
-                    <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="cvsApp.licence.name" for="field_name">Name</label>
-                    <input type="text" class="form-control" name="name" id="field_name"
-                           formControlName="name" placeholder="e.g. Creative Commons Attribution 4.0 International"/>
-                    <div *ngIf="editForm.controls.name.invalid && (editForm.controls.name.dirty || editForm.controls.name.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.name.errors?.['required']" jhiTranslate="entity.validation.required">
-                        This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.name.errors?.['maxlength']" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
-                        This field cannot be longer than 255 characters.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="cvsApp.licence.abbr" for="field_abbr">Abbr</label>
-                    <input type="text" class="form-control" name="abbr" id="field_abbr"
-                           formControlName="abbr" placeholder="e.g. CC BY"/>
-                    <div *ngIf="editForm.controls.abbr.invalid && (editForm.controls.abbr.dirty || editForm.controls.abbr.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.abbr.errors?.['required']" jhiTranslate="entity.validation.required">
-                            This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.abbr.errors?.['maxlength']" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
-                            This field cannot be longer than 100 characters.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="cvsApp.licence.link" for="field_link">Link</label>
-                    <input type="text" class="form-control" name="link" id="field_link"
-                           formControlName="link" placeholder="e.g. http://creativecommons.org/licenses/by/4.0/"/>
-                    <div *ngIf="editForm.controls.link.invalid && (editForm.controls.link.dirty || editForm.controls.link.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.link.errors?.['pattern']">
-                            Not a valid URL.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label">License logo</label>
-                    <br/>
-                    <img *ngIf="currentImage" [src]="'/content/images/license/' + currentImage" alt="{{editForm.controls.name.value}}" class="mh-60px"/>
-                    <div *ngIf="currentFileUpload" class="progress" [hidden]="progress.percentage === 100">
-                        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
-                             attr.aria-valuenow="{{progress.percentage}}"
-                             aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progress.percentage+'%'}">
-                            {{progress.percentage}}%
-                        </div>
-                    </div>
-                    <br/>
-                    <small>JPG / GIF / PNG (maximal image size: 2 MB).</small>
-                    <br/>
-                    <label class="btn btn-default">
-                        <input type="file" (change)="selectFile($event)"
-                               accept="image/png,image/gif,image/jpeg"/>
-                    </label>
-                    <button *ngIf="currentImage" type="button"
-                            class="btn pull-right btn-secondary"
-                            (click)="removePicture()">
-                        <fa-icon [icon]="'trash-alt'"></fa-icon>&nbsp;<span>Remove license image</span></button>
-                </div>
+              @if (editForm.controls.name.errors?.['required']) {
+                <small class="form-text text-danger"
+                  jhiTranslate="entity.validation.required">
+                  This field is required.
+                </small>
+              }
+              @if (editForm.controls.name.errors?.['maxlength']) {
+                <small class="form-text text-danger"
+                  jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                  This field cannot be longer than 255 characters.
+                </small>
+              }
             </div>
+          }
+        </div>
 
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="cvsApp.licence.abbr" for="field_abbr">Abbr</label>
+          <input type="text" class="form-control" name="abbr" id="field_abbr"
+            formControlName="abbr" placeholder="e.g. CC BY"/>
+          @if (editForm.controls.abbr.invalid && (editForm.controls.abbr.dirty || editForm.controls.abbr.touched)) {
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
-                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-                </button>
-
-                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-                </button>
+              @if (editForm.controls.abbr.errors?.['required']) {
+                <small class="form-text text-danger"
+                  jhiTranslate="entity.validation.required">
+                  This field is required.
+                </small>
+              }
+              @if (editForm.controls.abbr.errors?.['maxlength']) {
+                <small class="form-text text-danger"
+                  jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                  This field cannot be longer than 100 characters.
+                </small>
+              }
             </div>
-        </form>
+          }
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="cvsApp.licence.link" for="field_link">Link</label>
+          <input type="text" class="form-control" name="link" id="field_link"
+            formControlName="link" placeholder="e.g. http://creativecommons.org/licenses/by/4.0/"/>
+          @if (editForm.controls.link.invalid && (editForm.controls.link.dirty || editForm.controls.link.touched)) {
+            <div>
+              @if (editForm.controls.link.errors?.['pattern']) {
+                <small class="form-text text-danger"
+                  >
+                  Not a valid URL.
+                </small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label">License logo</label>
+          <br/>
+          @if (currentImage) {
+            <img [src]="'/content/images/license/' + currentImage" alt="{{editForm.controls.name.value}}" class="mh-60px"/>
+          }
+          @if (currentFileUpload) {
+            <div class="progress" [hidden]="progress.percentage === 100">
+              <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                attr.aria-valuenow="{{progress.percentage}}"
+                aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progress.percentage+'%'}">
+                {{progress.percentage}}%
+              </div>
+            </div>
+          }
+          <br/>
+          <small>JPG / GIF / PNG (maximal image size: 2 MB).</small>
+          <br/>
+          <label class="btn btn-default">
+            <input type="file" (change)="selectFile($event)"
+              accept="image/png,image/gif,image/jpeg"/>
+          </label>
+          @if (currentImage) {
+            <button type="button"
+              class="btn pull-right btn-secondary"
+              (click)="removePicture()">
+              <fa-icon [icon]="'trash-alt'"></fa-icon>&nbsp;<span>Remove license image</span></button>
+            }
+          </div>
+        </div>
+
+        <div>
+          <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+          </button>
+
+          <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+            <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+          </button>
+        </div>
+      </form>
     </div>
-</div>
+  </div>

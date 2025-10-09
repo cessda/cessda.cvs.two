@@ -1,80 +1,96 @@
 <!--
 
-    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 -->
-    <!--
-  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License").
-  ~ You may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and limitations under the License.
-  -->
+<!--
+~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+~
+~ Licensed under the Apache License, Version 2.0 (the "License").
+~ You may not use this file except in compliance with the License.
+~ You may obtain a copy of the License at
+~
+~  http://www.apache.org/licenses/LICENSE-2.0
+~
+~ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~ See the License for the specific language governing permissions and limitations under the License.
+-->
 
 <div class="modal-header">
-        <h4 class="modal-title">
-            <span>Comments Cv <strong>{{versionParam.notation}}</strong> {{versionParam.itemType}} ({{versionParam.language}}) v.{{versionParam.number}}{{versionParam.status === 'PUBLISHED' ? '':'-'+ versionParam.status}}</span>
-        </h4>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="clear()"></button>
-    </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
+  <h4 class="modal-title">
+    <span>Comments Cv <strong>{{versionParam.notation}}</strong> {{versionParam.itemType}} ({{versionParam.language}}) v.{{versionParam.number}}{{versionParam.status === 'PUBLISHED' ? '':'-'+ versionParam.status}}</span>
+  </h4>
+  <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="clear()"></button>
+</div>
+<div class="modal-body">
+  <jhi-alert-error></jhi-alert-error>
 
-        <div class="list-group">
-            <div *ngIf="!comments || comments.length === 0" class="list-group-item">
-                <p>There is no comments.</p>
-            </div>
-            <div *ngFor="let c of comments; let i = index" class="list-group-item">
-                <jhi-comment-item [account]="account" [comment]="c" [versionParam]="versionParam"></jhi-comment-item>
-            </div>
-        </div>
+  <div class="list-group">
+    @if (!comments || comments.length === 0) {
+      <div class="list-group-item">
+        <p>There is no comments.</p>
+      </div>
+    }
+    @for (c of comments; track c; let i = $index) {
+      <div class="list-group-item">
+        <jhi-comment-item [account]="account" [comment]="c" [versionParam]="versionParam"></jhi-comment-item>
+      </div>
+    }
+  </div>
 
-        <div class="row-detail form-group" id="commentInput" #commentInput>
-            <div *ngIf="!isWriteComment" class="detail-column">
-                <input type="text" placeholder="what you want to say?" class="form-control" id="field_translateAgency" (focus)="isWriteComment = true"/>
-            </div>
-            <form *ngIf="versionParam"  novalidate [formGroup]="commentForm">
-                <div *ngIf="isWriteComment">
-                    <quill-editor class="small-quill"[placeholder]="'what you want to say?'" [modules]="quillModules" name="content" formControlName="content"></quill-editor>
-                    <div *ngIf="commentForm.controls.content.invalid && (commentForm.controls.content.dirty || commentForm.controls.content.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="commentForm.controls.content.errors?.required" jhiTranslate="entity.validation.required">
-                            Comment is empty!
-                        </small>
-                    </div>
-                </div>
-                <div *ngIf="isWriteComment" class="ql-editor-buttons">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="isWriteComment = !isWriteComment">
-                        <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
-                    </button>
-                    <button type="button" id="save-ddi-usage" [disabled]="commentForm.invalid || isSaving" (click)="saveComment()" class="btn btn-primary">
-                        <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-                    </button>
-                </div>
-            </form>
-        </div>
+  <div class="row-detail form-group" id="commentInput" #commentInput>
+    @if (!isWriteComment) {
+      <div class="detail-column">
+        <input type="text" placeholder="what you want to say?" class="form-control" id="field_translateAgency" (focus)="isWriteComment = true"/>
+      </div>
+    }
+    @if (versionParam) {
+      <form  novalidate [formGroup]="commentForm">
+        @if (isWriteComment) {
+          <div>
+            <quill-editor class="small-quill"[placeholder]="'what you want to say?'" [modules]="quillModules" name="content" formControlName="content"></quill-editor>
+            @if (commentForm.controls.content.invalid && (commentForm.controls.content.dirty || commentForm.controls.content.touched)) {
+              <div>
+                @if (commentForm.controls.content.errors?.required) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="entity.validation.required">
+                    Comment is empty!
+                  </small>
+                }
+              </div>
+            }
+          </div>
+        }
+        @if (isWriteComment) {
+          <div class="ql-editor-buttons">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="isWriteComment = !isWriteComment">
+              <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+            </button>
+            <button type="button" id="save-ddi-usage" [disabled]="commentForm.invalid || isSaving" (click)="saveComment()" class="btn btn-primary">
+              <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+            </button>
+          </div>
+        }
+      </form>
+    }
+  </div>
 
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
-            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
-        </button>
-    </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
+  </button>
+</div>
 

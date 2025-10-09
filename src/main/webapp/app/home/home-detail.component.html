@@ -1,375 +1,443 @@
 <!--
 
-    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 -->
 <div class="row">
-    <form name="detailForm" class="detail-form" role="form" (keydown.enter)="$event.preventDefault()" novalidate [formGroup]="detailForm">
-        <jhi-alert-error></jhi-alert-error>
-        <jhi-alert></jhi-alert>
-        <div class="bc">
-            <div class="bc-inner">
-                <a href="javascript:void(0);" (click)="goToCvSearch()">
-                    CVs search
-                </a>
-                <span class="">
-                    ›
-                </span>
-                <span class="">
-                    {{vocabulary.notation}} v.{{vocabulary.selectedVersion!}}
-                </span>
+  <form name="detailForm" class="detail-form" role="form" (keydown.enter)="$event.preventDefault()" novalidate [formGroup]="detailForm">
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <div class="bc">
+      <div class="bc-inner">
+        <a href="javascript:void(0);" (click)="goToCvSearch()">
+          CVs search
+        </a>
+        <span class="">
+          ›
+        </span>
+        <span class="">
+          {{vocabulary.notation}} v.{{vocabulary.selectedVersion!}}
+        </span>
 
-                <span class="cmt-scn" *jhiHasAnyAuthority="authorities">
-                    <a type="button" class="btn btn-primary btn-sm" ngbTooltip="Go to editor" [routerLink]="['/editor/vocabulary', vocabulary.notation ]" [queryParams]="{lang: vocabulary.selectedLang}">
-                        <fa-icon icon="eye"></fa-icon>
-                        <span class="d-none d-sm-inline-block"> Editor</span>
-                    </a>
-                </span>
+        <span class="cmt-scn" *jhiHasAnyAuthority="authorities">
+          <a type="button" class="btn btn-primary btn-sm" ngbTooltip="Go to editor" [routerLink]="['/editor/vocabulary', vocabulary.notation ]" [queryParams]="{lang: vocabulary.selectedLang}">
+            <fa-icon icon="eye"></fa-icon>
+            <span class="d-none d-sm-inline-block"> Editor</span>
+          </a>
+        </span>
+      </div>
+    </div>
+    <div class="row-content">
+      @if (newerVersionNumber !== null) {
+        <ngb-alert class="text-center" [dismissible]="false">
+          <strong>Newer version is available <a [routerLink]="['/vocabulary', vocabulary.notation ]">
+            {{vocabulary.notation}} v.{{newerVersionNumber}}
+          </a></strong>
+        </ngb-alert>
+      }
+
+      <div class="row-detail">
+        <div class="label-column">
+          @if (vocabulary && vocabulary.agencyLogo) {
+            <div class="vocab-logo">
+              <img [src]="'/content/images/agency/' + vocabulary.agencyLogo" width="120px" alt="logo {{vocabulary.agencyName}}"/>
             </div>
+          }
         </div>
-        <div class="row-content">
-            <ngb-alert class="text-center" [dismissible]="false" *ngIf="newerVersionNumber !== null">
-                <strong>Newer version is available <a [routerLink]="['/vocabulary', vocabulary.notation ]">
-                    {{vocabulary.notation}} v.{{newerVersionNumber}}
-                </a></strong>
-            </ngb-alert>
+        <div class="detail-column vocab-title">
+          <span> {{vocabulary.agencyName}} Controlled Vocabulary for {{getVersionByLangNumber().title}}</span>
+        </div>
+      </div>
 
-            <div class="row-detail">
-                <div class="label-column">
-                    <div class="vocab-logo" *ngIf="vocabulary && vocabulary.agencyLogo">
-                        <img [src]="'/content/images/agency/' + vocabulary.agencyLogo" width="120px" alt="logo {{vocabulary.agencyName}}"/>
-                    </div>
-                </div>
-                <div class="detail-column vocab-title">
-                    <span> {{vocabulary.agencyName}} Controlled Vocabulary for {{getVersionByLangNumber().title}}</span>
-                </div>
-            </div>
+      <div class="row-detail">
+        <div class="label-column">
+          <span>CV name</span>
+        </div>
+        <div class="detail-column">
+          <span>{{getSlVersion().title}}</span>
+        </div>
+      </div>
 
-            <div class="row-detail">
-                <div class="label-column">
-                    <span>CV name</span>
-                </div>
-                <div class="detail-column">
-                    <span>{{getSlVersion().title}}</span>
-                </div>
-            </div>
+      <div class="row-detail">
+        <div class="label-column">
+          <span>CV short name</span>
+        </div>
+        <div class="detail-column">
+          <span>{{vocabulary.notation}}</span>
+        </div>
+      </div>
 
-            <div class="row-detail">
-                <div class="label-column">
-                    <span>CV short name</span>
-                </div>
-                <div class="detail-column">
-                    <span>{{vocabulary.notation}}</span>
-                </div>
-            </div>
+      <div class="row-detail">
+        <div class="label-column">
+          <span>CV definition</span>
+        </div>
+        <div class="detail-column">
+          <span>{{getSlVersion().definition}}</span>
+        </div>
+      </div>
 
-            <div class="row-detail">
-                <div class="label-column">
-                    <span>CV definition</span>
-                </div>
-                <div class="detail-column">
-                    <span>{{getSlVersion().definition}}</span>
-                </div>
-            </div>
+      @if (getSlVersion().notes && getSlVersion().notes !== '') {
+        <div class="row-detail">
+          <div class="label-column">
+            <span>CV notes</span>
+          </div>
+          <div class="detail-column">
+            <span>{{getSlVersion()!.notes}}</span>
+          </div>
+        </div>
+      }
 
-            <div *ngIf="getSlVersion().notes && getSlVersion().notes !== ''" class="row-detail">
-                <div class="label-column">
-                    <span>CV notes</span>
-                </div>
-                <div class="detail-column">
-                    <span>{{getSlVersion()!.notes}}</span>
-                </div>
-            </div>
+      @if (vocabulary.selectedLang !== vocabulary.sourceLanguage) {
+        <div class="row-detail">
+          <div class="label-column">
+            <span>CV name ({{vocabulary.selectedLang}})</span>
+          </div>
+          <div class="detail-column">
+            <span>{{getVersionByLangNumber().title}}</span>
+          </div>
+        </div>
+      }
 
-            <div class="row-detail" *ngIf="vocabulary.selectedLang !== vocabulary.sourceLanguage">
-                <div class="label-column">
-                    <span>CV name ({{vocabulary.selectedLang}})</span>
-                </div>
-                <div class="detail-column">
-                    <span>{{getVersionByLangNumber().title}}</span>
-                </div>
-            </div>
+      @if (vocabulary.selectedLang !== vocabulary.sourceLanguage) {
+        <div class="row-detail">
+          <div class="label-column">
+            <span>CV definition ({{vocabulary.selectedLang}})</span>
+          </div>
+          <div class="detail-column">
+            <span>{{getVersionByLangNumber().definition}}</span>
+          </div>
+        </div>
+      }
 
-            <div class="row-detail" *ngIf="vocabulary.selectedLang !== vocabulary.sourceLanguage">
-                <div class="label-column">
-                    <span>CV definition ({{vocabulary.selectedLang}})</span>
-                </div>
-                <div class="detail-column">
-                    <span>{{getVersionByLangNumber().definition}}</span>
-                </div>
-            </div>
+      @if (vocabulary.selectedLang !== vocabulary.sourceLanguage && getVersionByLangNumber().notes && getVersionByLangNumber().notes !== '') {
+        <div class="row-detail">
+          <div class="label-column">
+            <span>CV notes ({{vocabulary.selectedLang}})</span>
+          </div>
+          <div class="detail-column">
+            <span>{{getVersionByLangNumber().notes}}</span>
+          </div>
+        </div>
+      }
 
-            <div class="row-detail" *ngIf="vocabulary.selectedLang !== vocabulary.sourceLanguage && getVersionByLangNumber().notes && getVersionByLangNumber().notes !== ''">
-                <div class="label-column">
-                    <span>CV notes ({{vocabulary.selectedLang}})</span>
-                </div>
-                <div class="detail-column">
-                    <span>{{getVersionByLangNumber().notes}}</span>
-                </div>
-            </div>
+      <div class="row-details">
+        <div class="row-detail">
+          <div class="label-column">
+            <span>Language</span>
+          </div>
+          <div class="detail-column">
+            <span>{{ vocabulary.selectedLang! | vocabularyLanguageFromKey}}</span>
+          </div>
+        </div>
+        <div class="row-detail">
+          <div class="label-column label-right">
+            <span>Version&nbsp; </span>
+          </div>
+          <div class="detail-column">
+            <span>{{getVersionByLangNumber().number}}</span>
+          </div>
+        </div>
+        <div class="row-detail">
+          <div class="label-column label-right">
+            <span>Date of publication&nbsp; </span>
+          </div>
+          <div class="detail-column">
+            <span>{{getVersionByLangNumber().publicationDate}}</span>
+          </div>
+        </div>
+      </div>
 
-            <div class="row-details">
-                <div class="row-detail">
-                    <div class="label-column">
-                        <span>Language</span>
-                    </div>
-                    <div class="detail-column">
-                        <span>{{ vocabulary.selectedLang! | vocabularyLanguageFromKey}}</span>
-                    </div>
-                </div>
-                <div class="row-detail">
-                    <div class="label-column label-right">
-                        <span>Version&nbsp; </span>
-                    </div>
-                    <div class="detail-column">
-                        <span>{{getVersionByLangNumber().number}}</span>
-                    </div>
-                </div>
-                <div class="row-detail">
-                    <div class="label-column label-right">
-                        <span>Date of publication&nbsp; </span>
-                    </div>
-                    <div class="detail-column">
-                        <span>{{getVersionByLangNumber().publicationDate}}</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="vocab-lang" style="float: right">
-                <ng-container *ngFor="let lang of getUniqueVersionLang()">
-                    <!-- determine multiple version with same lang -->
-                    <span *ngIf="getVersionsByLanguage(lang).length === 1; else buttonDropDown">
-                        <button *ngFor="let version of getVersionsByLanguage(lang)!"
-                                (click)="setVocabularyLangVersion(version.language!, version.number!);"
-                                class="vocab-lang-button"
+      <div class="vocab-lang" style="float: right">
+        @for (lang of getUniqueVersionLang(); track lang) {
+          <!-- determine multiple version with same lang -->
+          @if (getVersionsByLanguage(lang).length === 1) {
+            <span>
+              @for (version of getVersionsByLanguage(lang)!; track version) {
+                <button
+                  (click)="setVocabularyLangVersion(version.language!, version.number!);"
+                  class="vocab-lang-button"
                                 [ngClass]="{
                                     'active': lang === vocabulary.selectedLang, 'source-lang': lang === vocabulary.sourceLanguage,
                                     'de-emphasize': version.number !== vocabulary.selectedVersion
                                 }"
-                                ngbTooltip="{{getFormattedVersionTooltip(version, vocabulary.sourceLanguage)}}">
-                            {{lang}}
-                        </button>
-                    </span>
-                    <ng-template #buttonDropDown>
-                        <div ngbDropdown class="d-inline-block">
-                            <button class="vocab-lang-button" id="dropdownBasic{{lang}}" ngbDropdownToggle
+                  ngbTooltip="{{getFormattedVersionTooltip(version, vocabulary.sourceLanguage)}}">
+                  {{lang}}
+                </button>
+              }
+            </span>
+          } @else {
+            <div ngbDropdown class="d-inline-block">
+              <button class="vocab-lang-button" id="dropdownBasic{{lang}}" ngbDropdownToggle
                             [ngClass]="{
                                 'active': lang === vocabulary.selectedLang,
                                 'de-emphasize': !isAnyLangVersionInBundle( vocabulary, lang, vocabulary.selectedVersion )
                             }"
-                            ngbTooltip="{{lang | vocabularyLanguageFromKey}}">
-                                {{lang}}</button>
-                            <div ngbDropdownMenu [attr.aria-labelledby]="'dropdownBasic'+lang">
-                                <button ngbDropdownItem *ngFor="let version of getVersionsByLanguage(lang)!"
-                                        (click)="setVocabularyLangVersion( version.language!, version.number!);"
+                ngbTooltip="{{lang | vocabularyLanguageFromKey}}">
+              {{lang}}</button>
+              <div ngbDropdownMenu [attr.aria-labelledby]="'dropdownBasic'+lang">
+                @for (version of getVersionsByLanguage(lang)!; track version) {
+                  <button ngbDropdownItem
+                    (click)="setVocabularyLangVersion( version.language!, version.number!);"
                                         [ngClass]="{
                                             'active': lang === vocabulary.selectedLang && version.number === vocabulary.selectedVersion,
                                             'de-emphasize': version!.number !== vocabulary.selectedVersion
                                         }"
-                                        ngbTooltip="{{getFormattedVersionTooltip(version, vocabulary.sourceLanguage)}}">
-                                    v.{{version.number}}
-                                </button>
-                            </div>
-                        </div>
-                    </ng-template>
-                </ng-container>
+                    ngbTooltip="{{getFormattedVersionTooltip(version, vocabulary.sourceLanguage)}}">
+                    v.{{version.number}}
+                  </button>
+                }
+              </div>
             </div>
+          }
+        }
+      </div>
 
 
-            <!-- Details  -->
-            <div class="content-details">
-                <!--tabs-->
-                <div class="btn-group btn-group-toggle" role="group" formControlName="tabSelected" #detailTab id="detailTab">
-                    <input type="radio" formControlName="tabSelected" value="detail" class="btn-check" id="detailTabButton">
-                    <label class="btn btn-outline-primary" for="detailTabButton">Details</label>
+      <!-- Details  -->
+      <div class="content-details">
+        <!--tabs-->
+        <div class="btn-group btn-group-toggle" role="group" formControlName="tabSelected" #detailTab id="detailTab">
+          <input type="radio" formControlName="tabSelected" value="detail" class="btn-check" id="detailTabButton">
+          <label class="btn btn-outline-primary" for="detailTabButton">Details</label>
 
-                    <input type="radio" formControlName="tabSelected" value="version" class="btn-check" id="versionTabButton">
-                    <label class="btn btn-outline-primary" for="versionTabButton">Versions</label>
+          <input type="radio" formControlName="tabSelected" value="version" class="btn-check" id="versionTabButton">
+          <label class="btn btn-outline-primary" for="versionTabButton">Versions</label>
 
-                    <input type="radio" formControlName="tabSelected" value="identity" class="btn-check" id="identityTabButton">
-                    <label class="btn btn-outline-primary" for="identityTabButton">Identity and general</label>
+          <input type="radio" formControlName="tabSelected" value="identity" class="btn-check" id="identityTabButton">
+          <label class="btn btn-outline-primary" for="identityTabButton">Identity and general</label>
 
-                    <input type="radio" formControlName="tabSelected" value="usage" class="btn-check" id="usageTabButton">
-                    <label class="btn btn-outline-primary" for="usageTabButton">Usage</label>
+          <input type="radio" formControlName="tabSelected" value="usage" class="btn-check" id="usageTabButton">
+          <label class="btn btn-outline-primary" for="usageTabButton">Usage</label>
 
-                    <input type="radio" formControlName="tabSelected" value="license" class="btn-check" id="licenseTabButton">
-                    <label class="btn btn-outline-primary" for="licenseTabButton">Licence and citation</label>
+          <input type="radio" formControlName="tabSelected" value="license" class="btn-check" id="licenseTabButton">
+          <label class="btn btn-outline-primary" for="licenseTabButton">Licence and citation</label>
 
-                    <input type="radio" formControlName="tabSelected" value="export" class="btn-check" id="exportTabButton">
-                    <label class="btn btn-outline-primary" for="exportTabButton">Export/Download</label>
-                </div>
+          <input type="radio" formControlName="tabSelected" value="export" class="btn-check" id="exportTabButton">
+          <label class="btn btn-outline-primary" for="exportTabButton">Export/Download</label>
+        </div>
 
-                <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleDetailPanel()">&nbsp;
-                    <fa-icon *ngIf="!isDetailCollapse" icon="caret-down"></fa-icon>
-                    <fa-icon *ngIf="isDetailCollapse" icon="caret-right"></fa-icon>
-                    <span>Details</span>
-                </a>
-                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'detail', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'detail'}" #detailPanel id="detailPanel" >
-                    <div class="concept-row row-header">
-                        <span class="column1">
-                            Code value
-                        </span>
-                        <span class="column2">
-                            Code descriptive term ({{vocabulary.selectedLang}})
-                        </span>
-                        <span class="column3">
-                            Code definition({{vocabulary.selectedLang}})
-                        </span>
-                    </div>
-                    <jhi-tree [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree>
+        <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleDetailPanel()">&nbsp;
+          @if (!isDetailCollapse) {
+            <fa-icon icon="caret-down"></fa-icon>
+          }
+          @if (isDetailCollapse) {
+            <fa-icon icon="caret-right"></fa-icon>
+          }
+          <span>Details</span>
+        </a>
+        <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'detail', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'detail'}" #detailPanel id="detailPanel" >
+          <div class="concept-row row-header">
+            <span class="column1">
+              Code value
+            </span>
+            <span class="column2">
+              Code descriptive term ({{vocabulary.selectedLang}})
+            </span>
+            <span class="column3">
+              Code definition({{vocabulary.selectedLang}})
+            </span>
+          </div>
+          <jhi-tree [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree>
 
-                    <br>
-                    <div *ngIf="hasDeprecatedConcepts(getVersionByLangNumber().concepts)">
-                        <span class="cmt-scn">
-                            <a type="button" class="btn btn-primary btn-sm" ngbTooltip="See deprecated codes" (click)="toggleDeprecatedCodesDisplay()">
-                                <fa-icon *ngIf="!isShowingDeprecatedCodes" icon="eye"></fa-icon>
-                                <fa-icon *ngIf="isShowingDeprecatedCodes" icon="eye-slash"></fa-icon>
-                                <span class="d-none d-sm-inline-block">{{ isShowingDeprecatedCodes ? 'Hide' : 'See' }} deprecated codes</span>
-                            </a>
-                        </span><br>
-                        <br>
-                        <div *ngIf="isShowingDeprecatedCodes">
-                            <div class="concept-row row-header">
-                                <span>
-                                    Deprecated codes
-                                    <br>
-                                    <i>These codes have been deprecated and should no longer be used in the metadata:</i>
-                                </span>
-                            </div>
-                            <div class="concept-row row-header">
-                                <span class="column1">Code URI</span>
-                                <span class="column1">Code value</span>
-                                <span class="column2">Code descriptive term ({{getVersionByLangNumber().language}})</span>
-                                <span class="column2">Valid from</span>
-                                <span class="column2">Valid to</span>
-                            </div>
-                            <jhi-tree-deprecated [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree-deprecated>
+          <br>
+            @if (hasDeprecatedConcepts(getVersionByLangNumber().concepts)) {
+              <div>
+                <span class="cmt-scn">
+                  <a type="button" class="btn btn-primary btn-sm" ngbTooltip="See deprecated codes" (click)="toggleDeprecatedCodesDisplay()">
+                    @if (!isShowingDeprecatedCodes) {
+                      <fa-icon icon="eye"></fa-icon>
+                    }
+                    @if (isShowingDeprecatedCodes) {
+                      <fa-icon icon="eye-slash"></fa-icon>
+                    }
+                    <span class="d-none d-sm-inline-block">{{ isShowingDeprecatedCodes ? 'Hide' : 'See' }} deprecated codes</span>
+                  </a>
+                </span><br>
+                <br>
+                  @if (isShowingDeprecatedCodes) {
+                    <div>
+                      <div class="concept-row row-header">
+                        <span>
+                          Deprecated codes
+                          <br>
+                            <i>These codes have been deprecated and should no longer be used in the metadata:</i>
+                          </span>
                         </div>
-                    </div>
-                </div>
-
-                <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleVersionPanel()">&nbsp;
-                    <fa-icon *ngIf="!isVersionCollapse" icon="caret-down"></fa-icon>
-                    <fa-icon *ngIf="isVersionCollapse" icon="caret-right"></fa-icon>
-                    <span>Versions</span>
-                </a>
-                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'version', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'version'}" #versionPanel id="versionPanel">
-                    <!-- self version -->
-                    <div class="item-panel">
-                        <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="isCurrentVersionHistoryOpen = !isCurrentVersionHistoryOpen"
-                           [attr.aria-expanded]="isCurrentVersionHistoryOpen" aria-controls="self-history">&nbsp;
-                            <fa-icon *ngIf="isCurrentVersionHistoryOpen" icon="caret-down"></fa-icon>
-                            <fa-icon *ngIf="!isCurrentVersionHistoryOpen" icon="caret-right"></fa-icon>
-                            <span>{{getVersionByLangNumber().language}}: {{getVersionByLangNumber().number}}</span>
-                            <span>&nbsp;&nbsp;&nbsp; Published: {{getVersionByLangNumber().publicationDate}}</span>
-                        </a>
-                        <div id="self-history" [ngbCollapse]="!isCurrentVersionHistoryOpen">
-                            <div class="row-detail small-block-info" *ngIf="getVersionByLangNumber().versionNotes">
-                                <div class="label-column">
-                                    <span>Version notes</span>
-                                </div>
-                                <div class="detail-column">
-                                    <span class="ta-mode" [innerHTML]="getVersionByLangNumber().versionNotes"></span>
-                                </div>
-                            </div>
-                            <div class="row-detail small-block-info" *ngIf="getVersionByLangNumber().versionChanges">
-                                <div class="label-column">
-                                    <span>Version changes</span>
-                                </div>
-                                <div class="detail-column">
-                                    <span class="ta-mode" [innerHTML]="getVersionByLangNumber().versionChanges"></span>
-                                </div>
-                            </div>
-
-                            <div class="row-detail" *ngIf="!getVersionByLangNumber().versionNotes && !getVersionByLangNumber().versionChanges">
-                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
-                            </div>
-
-                            <div *ngIf="getVersionByLangNumber().previousVersion">
-                                <jhi-version-compare [notation]="vocabulary.notation!" [langVersion1]="getVersionByLangNumber().language + '-' + getVersionByLangNumber().number"
-                                                     [langVersion2]="getVersionByLangNumber().language + '-' + getVersionByLangNumber().versionHistories![0].version"
-                                                     [dataSource]="'JSON'">
-                                </jhi-version-compare>
-                            </div>
-                            <div *ngIf="!getVersionByLangNumber().previousVersion && getVersionByLangNumber().versionHistories!.length > 0" class="acc-header option-label col-12 mtop10">
-                                Prev-next comparison not available, due to {{getVersionByLangNumber().language}}-{{getMissingTlVersion(getVersionByLangNumber().number!)}} missing!
-                            </div>
-
+                        <div class="concept-row row-header">
+                          <span class="column1">Code URI</span>
+                          <span class="column1">Code value</span>
+                          <span class="column2">Code descriptive term ({{getVersionByLangNumber().language}})</span>
+                          <span class="column2">Valid from</span>
+                          <span class="column2">Valid to</span>
                         </div>
+                        <jhi-tree-deprecated [conceptList]="getVersionByLangNumber().concepts" [level]="0"></jhi-tree-deprecated>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
 
-                    </div>
-                    <!-- other older versions -->
-                    <div class="item-panel" *ngFor="let vh of getVersionByLangNumber().versionHistories; index as i;">
-                        <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="vh.visible = !vh.visible"
-                           [attr.aria-expanded]="vh.visible" [attr.aria-controls]="'history_' + vh.version">&nbsp;
-                            <fa-icon *ngIf="vh.visible" icon="caret-down"></fa-icon>
-                            <fa-icon *ngIf="!vh.visible" icon="caret-right"></fa-icon>
-                            <span>{{getVersionByLangNumber().language}}: {{vh.version}} </span>
-                            <span>&nbsp;&nbsp;&nbsp; Published: {{vh.date}}</span>
-                            <a *ngIf="!vh.version.startsWith(getSlVersionNumber())" [routerLink]="['/vocabulary', vocabulary.notation ]" [queryParams]="{v:getSlVersionNumber(vh.version), lang:vocabulary.selectedLang}">
-                                <fa-icon icon="external-link-alt"></fa-icon>
-                            </a>
-                        </a>
-                        <div id="history_{{vh.version}}" [ngbCollapse]="!vh.visible">
-                            <div class="row-detail small-block-info" *ngIf="vh.note">
-                                <div class="label-column">
-                                    <span>Version notes</span>
-                                </div>
-                                <div class="detail-column">
-                                    <span [innerHTML]="vh.note"></span>
-                                </div>
-                            </div>
-                            <div class="row-detail small-block-info" *ngIf="vh.changes">
-                                <div class="label-column">
-                                    <span>Version changes</span>
-                                </div>
-                                <div class="detail-column">
-                                    <span class="ta-mode" [innerHTML]="vh.changes"></span>
-                                </div>
-                            </div>
-                            <div class="row-detail" *ngIf="!vh.changes && !vh.note">
-                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
-                            </div>
-
-                            <div *ngIf="i < getVersionByLangNumber().versionHistories!.length - 1">
-                                <ng-container *ngIf="vh.prevVersion">
-                                    <jhi-version-compare [notation]="vocabulary.notation!" [langVersion1]="getVersionByLangNumber().language + '-' + vh.version"
-                                             [langVersion2]="getVersionByLangNumber().language + '-' + getVersionByLangNumber().versionHistories![i + 1].version"
-                                                [dataSource]="'JSON'">
-                                    </jhi-version-compare>
-                                </ng-container>
-                                <div *ngIf="!vh.prevVersion && i !== getVersionByLangNumber().versionHistories!.length" class="acc-header option-label col-12 mtop10">
-                                    Prev-next comparison not available, due to {{getVersionByLangNumber().language}}-{{getMissingTlVersion(vh.version!)}} missing!
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleIdentityPanel()">&nbsp;
-                    <fa-icon *ngIf="!isIdentityCollapse" icon="caret-down"></fa-icon>
-                    <fa-icon *ngIf="isIdentityCollapse" icon="caret-right"></fa-icon>
-                    <span>Identity</span>
-                </a>
-                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'identity', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'identity'}" #identityPanel id="identityPanel">
-                    <div class="row-detail small-block-n">
+              <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleVersionPanel()">&nbsp;
+                @if (!isVersionCollapse) {
+                  <fa-icon icon="caret-down"></fa-icon>
+                }
+                @if (isVersionCollapse) {
+                  <fa-icon icon="caret-right"></fa-icon>
+                }
+                <span>Versions</span>
+              </a>
+              <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'version', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'version'}" #versionPanel id="versionPanel">
+                <!-- self version -->
+                <div class="item-panel">
+                  <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="isCurrentVersionHistoryOpen = !isCurrentVersionHistoryOpen"
+                    [attr.aria-expanded]="isCurrentVersionHistoryOpen" aria-controls="self-history">&nbsp;
+                    @if (isCurrentVersionHistoryOpen) {
+                      <fa-icon icon="caret-down"></fa-icon>
+                    }
+                    @if (!isCurrentVersionHistoryOpen) {
+                      <fa-icon icon="caret-right"></fa-icon>
+                    }
+                    <span>{{getVersionByLangNumber().language}}: {{getVersionByLangNumber().number}}</span>
+                    <span>&nbsp;&nbsp;&nbsp; Published: {{getVersionByLangNumber().publicationDate}}</span>
+                  </a>
+                  <div id="self-history" [ngbCollapse]="!isCurrentVersionHistoryOpen">
+                    @if (getVersionByLangNumber().versionNotes) {
+                      <div class="row-detail small-block-info">
                         <div class="label-column">
-                            <span>Canonical URI</span>
+                          <span>Version notes</span>
                         </div>
-                        <div class="detail-column-row">
-                            <span>{{getVersionByLangNumber().canonicalUri}} </span>
+                        <div class="detail-column">
+                          <span class="ta-mode" [innerHTML]="getVersionByLangNumber().versionNotes"></span>
+                        </div>
+                      </div>
+                    }
+                    @if (getVersionByLangNumber().versionChanges) {
+                      <div class="row-detail small-block-info">
+                        <div class="label-column">
+                          <span>Version changes</span>
+                        </div>
+                        <div class="detail-column">
+                          <span class="ta-mode" [innerHTML]="getVersionByLangNumber().versionChanges"></span>
+                        </div>
+                      </div>
+                    }
+
+                    @if (!getVersionByLangNumber().versionNotes && !getVersionByLangNumber().versionChanges) {
+                      <div class="row-detail">
+                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
+                      </div>
+                    }
+
+                    @if (getVersionByLangNumber().previousVersion) {
+                      <div>
+                        <jhi-version-compare [notation]="vocabulary.notation!" [langVersion1]="getVersionByLangNumber().language + '-' + getVersionByLangNumber().number"
+                          [langVersion2]="getVersionByLangNumber().language + '-' + getVersionByLangNumber().versionHistories![0].version"
+                          [dataSource]="'JSON'">
+                        </jhi-version-compare>
+                      </div>
+                    }
+                    @if (!getVersionByLangNumber().previousVersion && getVersionByLangNumber().versionHistories!.length > 0) {
+                      <div class="acc-header option-label col-12 mtop10">
+                        Prev-next comparison not available, due to {{getVersionByLangNumber().language}}-{{getMissingTlVersion(getVersionByLangNumber().number!)}} missing!
+                      </div>
+                    }
+
+                  </div>
+
+                </div>
+                <!-- other older versions -->
+                @for (vh of getVersionByLangNumber().versionHistories; track vh; let i = $index) {
+                  <div class="item-panel">
+                    <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="vh.visible = !vh.visible"
+                      [attr.aria-expanded]="vh.visible" [attr.aria-controls]="'history_' + vh.version">&nbsp;
+                      @if (vh.visible) {
+                        <fa-icon icon="caret-down"></fa-icon>
+                      }
+                      @if (!vh.visible) {
+                        <fa-icon icon="caret-right"></fa-icon>
+                      }
+                      <span>{{getVersionByLangNumber().language}}: {{vh.version}} </span>
+                      <span>&nbsp;&nbsp;&nbsp; Published: {{vh.date}}</span>
+                      @if (!vh.version.startsWith(getSlVersionNumber())) {
+                        <a [routerLink]="['/vocabulary', vocabulary.notation ]" [queryParams]="{v:getSlVersionNumber(vh.version), lang:vocabulary.selectedLang}">
+                          <fa-icon icon="external-link-alt"></fa-icon>
+                        </a>
+                      }
+                    </a>
+                    <div id="history_{{vh.version}}" [ngbCollapse]="!vh.visible">
+                      @if (vh.note) {
+                        <div class="row-detail small-block-info">
+                          <div class="label-column">
+                            <span>Version notes</span>
+                          </div>
+                          <div class="detail-column">
+                            <span [innerHTML]="vh.note"></span>
+                          </div>
+                        </div>
+                      }
+                      @if (vh.changes) {
+                        <div class="row-detail small-block-info">
+                          <div class="label-column">
+                            <span>Version changes</span>
+                          </div>
+                          <div class="detail-column">
+                            <span class="ta-mode" [innerHTML]="vh.changes"></span>
+                          </div>
+                        </div>
+                      }
+                      @if (!vh.changes && !vh.note) {
+                        <div class="row-detail">
+                          <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
+                        </div>
+                      }
+                      @if (i < getVersionByLangNumber().versionHistories!.length - 1) {
+                        <div>
+                          @if (vh.prevVersion) {
+                            <jhi-version-compare [notation]="vocabulary.notation!" [langVersion1]="getVersionByLangNumber().language + '-' + vh.version"
+                              [langVersion2]="getVersionByLangNumber().language + '-' + getVersionByLangNumber().versionHistories![i + 1].version"
+                              [dataSource]="'JSON'">
+                            </jhi-version-compare>
+                          }
+                          @if (!vh.prevVersion && i !== getVersionByLangNumber().versionHistories!.length) {
+                            <div class="acc-header option-label col-12 mtop10">
+                              Prev-next comparison not available, due to {{getVersionByLangNumber().language}}-{{getMissingTlVersion(vh.version!)}} missing!
+                            </div>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+
+              <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleIdentityPanel()">&nbsp;
+                @if (!isIdentityCollapse) {
+                  <fa-icon icon="caret-down"></fa-icon>
+                }
+                @if (isIdentityCollapse) {
+                  <fa-icon icon="caret-right"></fa-icon>
+                }
+                <span>Identity</span>
+              </a>
+              <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'identity', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'identity'}" #identityPanel id="identityPanel">
+                <div class="row-detail small-block-n">
+                  <div class="label-column">
+                    <span>Canonical URI</span>
+                  </div>
+                  <div class="detail-column-row">
+                    <span>{{getVersionByLangNumber().canonicalUri}} </span>
                             <a [href]="'/urn/' + getVersionByLangNumber().canonicalUri + '?lang=' + getVersionByLangNumber().language" target="_blank">
                                 <fa-icon icon="external-link-alt"></fa-icon>
                             </a>
@@ -387,91 +455,109 @@
                             </a>
                         </div>
                     </div>
-                    <div *ngIf="getVersionByLangNumber().itemType === 'TL' && getVersionByLangNumber().translateAgency" class="row-detail small-block-n">
-                        <div class="label-column">
-                            <span>Translating agency</span>
-                        </div>
-                        <div class="detail-column-row">
-                            <span>{{getVersionByLangNumber().translateAgency}} </span>
-                            &nbsp;
-                            <a *ngIf="getVersionByLangNumber().translateAgencyLink" [href]="getVersionByLangNumber().translateAgencyLink! | linkHttp" target="_blank">
-                                <fa-icon icon="external-link-alt"></fa-icon>
-                            </a>
-                        </div>
+                    @if (getVersionByLangNumber().itemType === 'TL' && getVersionByLangNumber().translateAgency) {
+                  <div class="row-detail small-block-n">
+                    <div class="label-column">
+                      <span>Translating agency</span>
                     </div>
-                </div>
+                    <div class="detail-column-row">
+                      <span>{{getVersionByLangNumber().translateAgency}} </span>
+                      &nbsp;
+                      @if (getVersionByLangNumber().translateAgencyLink) {
+                        <a [href]="getVersionByLangNumber().translateAgencyLink! | linkHttp" target="_blank">
+                          <fa-icon icon="external-link-alt"></fa-icon>
+                        </a>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
 
-                <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleUsagePanel()">&nbsp;
-                    <fa-icon *ngIf="!isUsageCollapse" icon="caret-down"></fa-icon>
-                    <fa-icon *ngIf="isUsageCollapse" icon="caret-right"></fa-icon>
-                    <span>Usages</span>
-                </a>
-                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'usage', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'usage'}" #usagePanel id="usagePanel">
-                    <div class="small-block-n" [innerHTML]="getVersionByLangNumber().ddiUsage"></div>
-                </div>
+              <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleUsagePanel()">&nbsp;
+                @if (!isUsageCollapse) {
+                  <fa-icon icon="caret-down"></fa-icon>
+                }
+                @if (isUsageCollapse) {
+                  <fa-icon icon="caret-right"></fa-icon>
+                }
+                <span>Usages</span>
+              </a>
+              <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'usage', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'usage'}" #usagePanel id="usagePanel">
+                <div class="small-block-n" [innerHTML]="getVersionByLangNumber().ddiUsage"></div>
+              </div>
 
-                <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleLicensePanel()">&nbsp;
-                    <fa-icon *ngIf="!isLicenseCollapse" icon="caret-down"></fa-icon>
-                    <fa-icon *ngIf="isLicenseCollapse" icon="caret-right"></fa-icon>
-                    <span>Licenses</span>
-                </a>
-                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'license', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'license'}" #licensePanel id="licensePanel">
-                    <div class="small-block-n">
-                        <p style="width: 100%">Copyright ©
-                            <a [href]="vocabulary.agencyLink" target="_blank">
-                                {{vocabulary.agencyName}}
-                            </a>
-                            {{getVersionByLangNumber().publicationDate?.toString()?.substr(0,4)}}
-                        </p>
-                    </div>
-                    <div class="row-detail small-block-n">
-                        <div class="label-column">
-                            <span *ngIf="getVersionByLangNumber().licenseLogo">
-                                <img style="max-width:120px" alt="license logo" src="/content/images/license/{{getVersionByLangNumber().licenseLogo}}">
-                            </span>
-                        </div>
-                        <div class="detail-column">
-                            <span>This work is licensed under a <a rel="license" href="{{getVersionByLangNumber().licenseLink}}">{{getVersionByLangNumber().licenseName}} - {{getVersionByLangNumber().license}}</a>.</span>
-                        </div>
-                    </div>
-                    <div class="row-detail small-block-n">
-                        <div class="label-column">
-                            <span>Citation</span>
-                        </div>
-                        <div class="detail-column">
-                            <span>{{getVersionByLangNumber().citation}} </span>
-                        </div>
-                    </div>
-                    <div class="row-detail small-block-n">
-                        <div class="label-column">
-                            <span>Available from</span>
-                        </div>
-                        <div class="detail-column">
-                            <span style="word-break: break-word;">
-                                <a [routerLink]="['/vocabulary', vocabulary.notation ]">
-                                    {{getServerUrl() + '/urn/' + getVersionByLangNumber().canonicalUri}}
-                                </a>
-                            </span>
-                        </div>
-                    </div>
+              <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleLicensePanel()">&nbsp;
+                @if (!isLicenseCollapse) {
+                  <fa-icon icon="caret-down"></fa-icon>
+                }
+                @if (isLicenseCollapse) {
+                  <fa-icon icon="caret-right"></fa-icon>
+                }
+                <span>Licenses</span>
+              </a>
+              <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'license', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'license'}" #licensePanel id="licensePanel">
+                <div class="small-block-n">
+                  <p style="width: 100%">Copyright ©
+                    <a [href]="vocabulary.agencyLink" target="_blank">
+                      {{vocabulary.agencyName}}
+                    </a>
+                    {{getVersionByLangNumber().publicationDate?.toString()?.substr(0,4)}}
+                  </p>
                 </div>
+                <div class="row-detail small-block-n">
+                  <div class="label-column">
+                    @if (getVersionByLangNumber().licenseLogo) {
+                      <span>
+                        <img style="max-width:120px" alt="license logo" src="/content/images/license/{{getVersionByLangNumber().licenseLogo}}">
+                      </span>
+                    }
+                  </div>
+                  <div class="detail-column">
+                    <span>This work is licensed under a <a rel="license" href="{{getVersionByLangNumber().licenseLink}}">{{getVersionByLangNumber().licenseName}} - {{getVersionByLangNumber().license}}</a>.</span>
+                  </div>
+                </div>
+                <div class="row-detail small-block-n">
+                  <div class="label-column">
+                    <span>Citation</span>
+                  </div>
+                  <div class="detail-column">
+                    <span>{{getVersionByLangNumber().citation}} </span>
+                  </div>
+                </div>
+                <div class="row-detail small-block-n">
+                  <div class="label-column">
+                    <span>Available from</span>
+                  </div>
+                  <div class="detail-column">
+                    <span style="word-break: break-word;">
+                      <a [routerLink]="['/vocabulary', vocabulary.notation ]">
+                        {{getServerUrl() + '/urn/' + getVersionByLangNumber().canonicalUri}}
+                      </a>
+                    </span>
+                  </div>
+                </div>
+              </div>
 
-                <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleExportPanel()">&nbsp;
-                    <fa-icon *ngIf="!isExportCollapse" icon="caret-down"></fa-icon>
-                    <fa-icon *ngIf="isExportCollapse" icon="caret-right"></fa-icon>
-                    <span>Exports</span>
-                </a>
-                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'export', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'export'}" #exportPanel id="exportPanel">
-                    <jhi-vocabulary-download
-                        [appScope]="appScope"
-                        [enableDocxExport]="enableDocxExport"
-                        [versions]="vocabulary.versions || []"
-                        [slVersionNumber]="getSlVersionNumber()"
-                        [downloadFormGroup]="downloadFormGroup"
-                        [notation]="vocabulary.notation!"
-                    ></jhi-vocabulary-download>
-                </div>
+              <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleExportPanel()">&nbsp;
+                @if (!isExportCollapse) {
+                  <fa-icon icon="caret-down"></fa-icon>
+                }
+                @if (isExportCollapse) {
+                  <fa-icon icon="caret-right"></fa-icon>
+                }
+                <span>Exports</span>
+              </a>
+              <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.controls.tabSelected.value === 'export', 'not-select-by-tab': detailForm.controls.tabSelected.value !== 'export'}" #exportPanel id="exportPanel">
+                <jhi-vocabulary-download
+                  [appScope]="appScope"
+                  [enableDocxExport]="enableDocxExport"
+                  [versions]="vocabulary.versions || []"
+                  [slVersionNumber]="getSlVersionNumber()"
+                  [downloadFormGroup]="downloadFormGroup"
+                  [notation]="vocabulary.notation!"
+                ></jhi-vocabulary-download>
+              </div>
             </div>
-        </div>
-    </form>
-</div>
+          </div>
+        </form>
+      </div>

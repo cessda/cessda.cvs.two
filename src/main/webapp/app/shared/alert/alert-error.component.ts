@@ -25,13 +25,17 @@ import { AlertError } from './alert-error.model';
     selector: 'jhi-alert-error',
     template: `
     <div class="alerts" role="alert">
-      <div *ngFor="let alert of alerts" [ngClass]="setClasses(alert)">
-        <ngb-alert *ngIf="alert && alert.type && alert.msg" [type]="alert.type" (close)="alert.close && alert.close(alerts)">
-          <pre [innerHTML]="alert.msg"></pre>
-        </ngb-alert>
-      </div>
+      @for (alert of alerts; track alert) {
+        <div [ngClass]="setClasses(alert)">
+          @if (alert && alert.type && alert.msg) {
+            <ngb-alert [type]="alert.type" (close)="alert.close && alert.close(alerts)">
+              <pre [innerHTML]="alert.msg"></pre>
+            </ngb-alert>
+          }
+        </div>
+      }
     </div>
-  `,
+    `,
     standalone: false
 })
 export class AlertErrorComponent implements OnDestroy {

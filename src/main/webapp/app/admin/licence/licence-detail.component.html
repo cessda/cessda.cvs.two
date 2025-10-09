@@ -1,59 +1,58 @@
 <!--
 
-    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 -->
 <div class="row justify-content-center">
-    <div class="col-8">
-        <div *ngIf="licence">
-            <h2><span jhiTranslate="cvsApp.licence.detail.title">Licence</span> {{ licence.id }}</h2>
-
-            <hr>
-
-            <jhi-alert-error></jhi-alert-error>
-
-            <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="cvsApp.licence.name">Name</span></dt>
-                <dd>
-                    <span>{{ licence.name }}</span>
-                </dd>
-                <dt><span jhiTranslate="cvsApp.licence.abbr">Abbr</span></dt>
-                <dd>
-                    <span>{{ licence.abbr }}</span>
-                </dd>
-                <dt><span jhiTranslate="cvsApp.licence.link">Link</span></dt>
-                <dd>
-                    <span>{{ licence.link }}</span>
-                </dd>
-                <dt><span jhiTranslate="cvsApp.licence.logoLink">Logo Link</span></dt>
-                <dd>
-                    <span><img *ngIf="licence.logoLink" [src]="'/content/images/license/' + licence.logoLink" class="mh-60px" alt="logo of {{ licence.name }}"/></span>
-                </dd>
-            </dl>
-
-            <button type="submit"
-                    (click)="previousState()"
-                    class="btn btn-info">
-                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-            </button>
-
-            <button type="button"
-                    [routerLink]="['/admin/licence', licence.id, 'edit']"
-                    class="btn btn-primary">
-                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
-            </button>
+  <div class="col-8">
+    @if (licence) {
+      <div>
+        <h2><span jhiTranslate="cvsApp.licence.detail.title">Licence</span> {{ licence.id }}</h2>
+        <hr>
+          <jhi-alert-error></jhi-alert-error>
+          <dl class="row-md jh-entity-details">
+            <dt><span jhiTranslate="cvsApp.licence.name">Name</span></dt>
+            <dd>
+              <span>{{ licence.name }}</span>
+            </dd>
+            <dt><span jhiTranslate="cvsApp.licence.abbr">Abbr</span></dt>
+            <dd>
+              <span>{{ licence.abbr }}</span>
+            </dd>
+            <dt><span jhiTranslate="cvsApp.licence.link">Link</span></dt>
+            <dd>
+              <span>{{ licence.link }}</span>
+            </dd>
+            <dt><span jhiTranslate="cvsApp.licence.logoLink">Logo Link</span></dt>
+            <dd>
+              <span>@if (licence.logoLink) {
+                <img [src]="'/content/images/license/' + licence.logoLink" class="mh-60px" alt="logo of {{ licence.name }}"/>
+              }</span>
+            </dd>
+          </dl>
+          <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+            <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+          </button>
+          <button type="button"
+            [routerLink]="['/admin/licence', licence.id, 'edit']"
+            class="btn btn-primary">
+            <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+          </button>
         </div>
+      }
     </div>
-</div>
+  </div>

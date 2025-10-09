@@ -1,63 +1,69 @@
 <!--
 
-    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 -->
 <form name="newVersionForm" (ngSubmit)="confirmCreateNewVersion(versionParam.id!)" novalidate [formGroup]="newVersionForm">
-    <div class="modal-header">
-        <h4 class="modal-title">
-            <span>Confirm create new version from {{versionParam.itemType}} {{versionParam.language! | vocabularyLanguageFromKey}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}</span>
-        </h4>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="clear()"></button>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <span>Confirm create new version from {{versionParam.itemType}} {{versionParam.language! | vocabularyLanguageFromKey}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}</span>
+    </h4>
+    <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="clear()"></button>
+  </div>
+  <div class="modal-body">
+    <jhi-alert-error></jhi-alert-error>
+    <span>Are you sure you want to create a new version of SL {{versionParam.itemType}} {{versionParam.language! | vocabularyLanguageFromKey}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}?</span>
+    <br/>
+    @if (unPublishedTls && unPublishedTls !== '') {
+      <div class="alert alert-danger" role="alert">
+        <fa-icon style="font-size:200%" [icon]="'exclamation-triangle'"></fa-icon>
+        <span><strong>NOTE:</strong> Before creating the new SL version, it is recommended to first:
+        <ol>
+          <li>Advise the translating agencies that have TL content in DRAFT or REVIEW status to finalise the translation and move it to READY TO BE PUBLISHED status.</li>
+          <li>Then publish the current SL again to include all TL content in the status READY TO BE PUBLISHED. First publish that, then create a new SL version. This allows the system to maintain proper version history for the TLs that have finalised their translation.</li>
+          <li>If the translating agencies cannot finalise their translation before you publish the new SL, their TL content in the Editor for the vocabulary will still be cloned as DRAFT for the new SL version. The system does not produce any version history for them.</li>
+        </ol>
+      </span>
+      <span>Current TL content for the SL:</span><br/>
+      <span [innerHTML]="allTls"></span><br/><br/>
+      <span>If you are unsure how to proceed, please contact the CVS Service Owner.</span><br/><br/>
+      <div class="form-check">
+        <label class="form-check-label" for="agreeNewVersion">
+          <input class="form-check-input checkbox-2x" type="checkbox" name="agreeNewVersion" id="agreeNewVersion" formControlName="agreeNewVersion" required />
+          <span>I have read the warning and want to create the new SL version.</span>
+        </label>
+        @if (newVersionForm.controls.agreeNewVersion && newVersionForm.controls.agreeNewVersion.invalid && (newVersionForm.controls.agreeNewVersion.dirty || newVersionForm.controls.agreeNewVersion.touched)) {
+          <div>
+            @if (newVersionForm.controls.agreeNewVersion.errors?.required) {
+              <small class="form-text"
+                >
+                Please checks the checkbox to continue.
+              </small>
+            }
+          </div>
+        }
+      </div>
     </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <span>Are you sure you want to create a new version of SL {{versionParam.itemType}} {{versionParam.language! | vocabularyLanguageFromKey}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}?</span>
-        <br/>
-        <div *ngIf="unPublishedTls && unPublishedTls !== ''" class="alert alert-danger" role="alert">
-            <fa-icon style="font-size:200%" [icon]="'exclamation-triangle'"></fa-icon>
-            <span><strong>NOTE:</strong> Before creating the new SL version, it is recommended to first:
-                <ol>
-                    <li>Advise the translating agencies that have TL content in DRAFT or REVIEW status to finalise the translation and move it to READY TO BE PUBLISHED status.</li>
-                    <li>Then publish the current SL again to include all TL content in the status READY TO BE PUBLISHED. First publish that, then create a new SL version. This allows the system to maintain proper version history for the TLs that have finalised their translation.</li>
-                    <li>If the translating agencies cannot finalise their translation before you publish the new SL, their TL content in the Editor for the vocabulary will still be cloned as DRAFT for the new SL version. The system does not produce any version history for them.</li>
-                </ol>
-            </span>
-            <span>Current TL content for the SL:</span><br/>
-            <span [innerHTML]="allTls"></span><br/><br/>
-            <span>If you are unsure how to proceed, please contact the CVS Service Owner.</span><br/><br/>
-            <div class="form-check">
-                <label class="form-check-label" for="agreeNewVersion">
-                    <input class="form-check-input checkbox-2x" type="checkbox" name="agreeNewVersion" id="agreeNewVersion" formControlName="agreeNewVersion" required />
-                    <span>I have read the warning and want to create the new SL version.</span>
-                </label>
-                <div *ngIf="newVersionForm.controls.agreeNewVersion && newVersionForm.controls.agreeNewVersion.invalid && (newVersionForm.controls.agreeNewVersion.dirty || newVersionForm.controls.agreeNewVersion.touched)">
-                    <small class="form-text"
-                           *ngIf="newVersionForm.controls.agreeNewVersion.errors?.required">
-                        Please checks the checkbox to continue.
-                    </small>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
-            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-        </button>
-        <button id="jhi-confirm-delete-vocabulary" [disabled]="newVersionForm.invalid || isSaving" type="submit" class="btn btn-primary">
-            <fa-icon [icon]="'folder-plus'"></fa-icon>&nbsp;<span>Create new version</span>
-        </button>
-    </div>
+  }
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+  </button>
+  <button id="jhi-confirm-delete-vocabulary" [disabled]="newVersionForm.invalid || isSaving" type="submit" class="btn btn-primary">
+    <fa-icon [icon]="'folder-plus'"></fa-icon>&nbsp;<span>Create new version</span>
+  </button>
+</div>
 </form>

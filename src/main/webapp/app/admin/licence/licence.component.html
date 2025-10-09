@@ -1,94 +1,101 @@
 <!--
 
-    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 -->
 <div>
-    <h2 id="page-heading">
-        <span jhiTranslate="cvsApp.licence.home.title">Licences</span>
+  <h2 id="page-heading">
+    <span jhiTranslate="cvsApp.licence.home.title">Licences</span>
 
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-licence" [routerLink]="['/admin/licence/new']">
-            <fa-icon icon="plus"></fa-icon>
-            <span class="hidden-sm-down"  jhiTranslate="cvsApp.licence.home.createLabel">
-            Create a new Licence
-            </span>
-        </button>
-    </h2>
+    <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-licence" [routerLink]="['/admin/licence/new']">
+      <fa-icon icon="plus"></fa-icon>
+      <span class="hidden-sm-down"  jhiTranslate="cvsApp.licence.home.createLabel">
+        Create a new Licence
+      </span>
+    </button>
+  </h2>
 
-    <jhi-alert-error></jhi-alert-error>
+  <jhi-alert-error></jhi-alert-error>
 
-    <jhi-alert></jhi-alert>
+  <jhi-alert></jhi-alert>
 
-    <div class="alert alert-warning" id="no-result" *ngIf="licences?.length === 0">
-        <span jhiTranslate="cvsApp.licence.home.notFound">No licences found</span>
+  @if (licences?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="cvsApp.licence.home.notFound">No licences found</span>
     </div>
+  }
 
-    <div class="table-responsive" id="entities" *ngIf="licences.length > 0">
-        <table class="table table-striped" aria-describedby="page-heading">
-            <thead>
-                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="name"><span jhiTranslate="cvsApp.licence.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="abbr"><span jhiTranslate="cvsApp.licence.abbr">Abbr</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="link"><span jhiTranslate="cvsApp.licence.link">Link</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="logoLink"><span jhiTranslate="cvsApp.licence.logoLink">Logo</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let licence of licences ;trackBy: trackId">
-                    <td><a [routerLink]="['/admin/licence', licence.id, 'view']">{{ licence.id }}</a></td>
-                    <td>{{ licence.name }}</td>
-                    <td>{{ licence.abbr }}</td>
-                    <td>{{ licence.link }}</td>
-                    <td><img *ngIf="licence.logoLink" [src]="'/content/images/license/' + licence.logoLink" class="mh-60px" alt="logo of {{ licence.name }}"/></td>
-                    <td class="text-right">
-                        <div class="btn-group">
-                            <button type="submit"
-                                    [routerLink]="['/admin/licence', licence.id, 'view']"
-                                    class="btn btn-info btn-sm">
-                                <fa-icon icon="eye"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                            </button>
-
-                            <button type="submit"
-                                    [routerLink]="['/admin/licence', licence.id, 'edit']"
-                                    class="btn btn-primary btn-sm">
-                                <fa-icon icon="pencil-alt"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                            </button>
-
-                            <button type="submit" (click)="delete(licence)"
-                                    class="btn btn-danger btn-sm">
-                                <fa-icon icon="times"></fa-icon>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+  @if (licences.length > 0) {
+    <div class="table-responsive" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col"  jhiSortBy="name"><span jhiTranslate="cvsApp.licence.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col"  jhiSortBy="abbr"><span jhiTranslate="cvsApp.licence.abbr">Abbr</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col"  jhiSortBy="link"><span jhiTranslate="cvsApp.licence.link">Link</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col"  jhiSortBy="logoLink"><span jhiTranslate="cvsApp.licence.logoLink">Logo</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (licence of licences ; track trackId($index, licence)) {
+            <tr>
+              <td><a [routerLink]="['/admin/licence', licence.id, 'view']">{{ licence.id }}</a></td>
+              <td>{{ licence.name }}</td>
+              <td>{{ licence.abbr }}</td>
+              <td>{{ licence.link }}</td>
+              <td>@if (licence.logoLink) {
+                <img [src]="'/content/images/license/' + licence.logoLink" class="mh-60px" alt="logo of {{ licence.name }}"/>
+              }</td>
+              <td class="text-right">
+                <div class="btn-group">
+                  <button type="submit"
+                    [routerLink]="['/admin/licence', licence.id, 'view']"
+                    class="btn btn-info btn-sm">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </button>
+                  <button type="submit"
+                    [routerLink]="['/admin/licence', licence.id, 'edit']"
+                    class="btn btn-primary btn-sm">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </button>
+                  <button type="submit" (click)="delete(licence)"
+                    class="btn btn-danger btn-sm">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
     </div>
+  }
 
-    <div *ngIf="licences.length > 0">
-        <div class="row justify-content-center">
-            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
-        </div>
-
-        <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
-        </div>
+  @if (licences.length > 0) {
+    <div>
+      <div class="row justify-content-center">
+        <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+      </div>
+      <div class="row justify-content-center">
+        <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+      </div>
     </div>
+  }
 </div>

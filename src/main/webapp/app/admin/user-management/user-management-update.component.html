@@ -1,233 +1,239 @@
 <!--
 
-    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 -->
 <div class="row justify-content-center">
-    <div class="col-8">
-        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="myUserLabel" jhiTranslate="userManagement.home.createOrEditLabel">
-                Create or edit a User
-            </h2>
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="myUserLabel" jhiTranslate="userManagement.home.createOrEditLabel">
+        Create or edit a User
+      </h2>
 
-            <div *ngIf="user">
-                <jhi-alert-error></jhi-alert-error>
-
-                <div class="form-group" [hidden]="!user.id">
-                    <label jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" name="id" formControlName="id" readonly>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="userManagement.login">Login</label>
-                    <input type="text" class="form-control" name="login"
-                           formControlName="login">
-
-                    <div *ngIf="editForm.controls.login.invalid && (editForm.controls.login.dirty || editForm.controls.login.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.login.errors?.required"
-                               jhiTranslate="entity.validation.required">
-                            This field is required.
-                        </small>
-
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.login.errors?.maxlength"
-                               jhiTranslate="entity.validation.maxlength"
-                               [translateValues]="{ max: 50 }">
-                            This field cannot be longer than 50 characters.
-                        </small>
-
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.login.errors?.pattern"
-                               jhiTranslate="entity.validation.patternLogin">
-                            This field can only contain letters, digits and e-mail addresses.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="userManagement.firstName">First Name</label>
-                    <input type="text" class="form-control" name="firstName"
-                           formControlName="firstName">
-
-                    <div *ngIf="editForm.controls.firstName.invalid && (editForm.controls.firstName.dirty || editForm.controls.firstName.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.firstName.errors?.maxlength"
-                               jhiTranslate="entity.validation.maxlength"
-                               [translateValues]="{ max: 50 }">
-                            This field cannot be longer than 50 characters.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label jhiTranslate="userManagement.lastName">Last Name</label>
-                    <input type="text" class="form-control" name="lastName"
-                           formControlName="lastName">
-
-                    <div *ngIf="editForm.controls.lastName.invalid && (editForm.controls.lastName.dirty || editForm.controls.lastName.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.lastName.errors?.maxlength"
-                               jhiTranslate="entity.validation.maxlength"
-                               [translateValues]="{ max: 50 }">
-                            This field cannot be longer than 50 characters.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="userManagement.email">Email</label>
-                    <input type="email" class="form-control" name="email" formControlName="email">
-
-                    <div *ngIf="editForm.controls.email.invalid && (editForm.controls.email.dirty || editForm.controls.email.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.email.errors?.['required']"
-                               jhiTranslate="entity.validation.required">
-                            This field is required.
-                        </small>
-
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.email.errors?.['maxlength']"
-                               jhiTranslate="entity.validation.maxlength"
-                               [translateValues]="{ max: 100 }">
-                            This field cannot be longer than 100 characters.
-                        </small>
-
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.email.errors?.['minlength']"
-                               jhiTranslate="entity.validation.minlength"
-                               [translateValues]="{ min: 5 }">
-                            This field is required to be at least 5 characters.
-                        </small>
-
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.email.errors?.['email']"
-                               jhiTranslate="global.messages.validate.email.invalid">
-                            Your email is invalid.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-check">
-                    <label class="form-check-label" for="activated">
-                        <input class="form-check-input" [attr.disabled]="user.id === undefined ? 'disabled' : null"
-                               type="checkbox" id="activated" name="activated" formControlName="activated">
-                        <span jhiTranslate="userManagement.activated">Activated</span>
-                    </label>
-                </div>
-
-                <div class="form-group">
-                    <label jhiTranslate="userManagement.profiles">System roles</label>
-                    <select class="form-control" multiple name="authority" formControlName="authorities">
-                        <option *ngFor="let authority of authorities" [value]="authority">{{ authority }}</option>
-                    </select>
-                </div>
-
-                <div *ngIf="user.userAgencies !== undefined" class="form-group">
-                    <label>Agency roles</label>
-                    <table class="table table-bordered" aria-describedby="page-heading">
-                        <thead>
-                            <tr>
-                                <th scope="col">Agency</th>
-                                <th scope="col">Role</th>
-                                <th scope="col">Language</th>
-                                <th scope="col">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let userAgency of user.userAgencies">
-                                <td>{{userAgency.agencyId ? getAgencyName(userAgency.agencyId) : "Unknown Agency" }}</td>
-                                <td>{{userAgency.agencyRole}}</td>
-                                <td>{{userAgency.language && (userAgency.language | vocabularyLanguageFromKey)}}</td>
-                                <td>
-                                    <button type="button" ngbTooltip="Delete agency role" class="btn btn-sm btn-primary-outline" data-dismiss="modal" (click)="deleteAgencyRole( userAgency )">
-                                        <fa-icon class="text-danger" [icon]="'trash'"></fa-icon>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <select class="form-control" (change)="selectedAgencyId = +getValue($event)" [value]="selectedAgencyId">
-                                        <option *ngFor="let ag of agencies" value="{{ag.id}}" [selected]="selectedAgencyId === ag.id">{{ag.name}}</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-control" (change)="selectedAgencyRole = getValue($event)" [value]="selectedAgencyRole">
-                                        <option value="ADMIN_SL">{{ 'cvsApp.AgencyRole.ADMIN_SL' | translate }}</option>
-                                        <option value="ADMIN_TL" selected>{{ 'cvsApp.AgencyRole.ADMIN_TL' | translate }}</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <select class="form-control" (change)="selectedLanguage = getValue($event)">
-                                        <option value=""></option>
-                                        <option value="en">{{ 'cvsApp.Language.ENGLISH' | translate }}</option>
-                                        <option value="sq">{{ 'cvsApp.Language.ALBANIAN' | translate }}</option>
-                                        <option value="bs">{{ 'cvsApp.Language.BOSNIAN' | translate }}</option>
-                                        <option value="bg">{{ 'cvsApp.Language.BULGARIAN' | translate }}</option>
-                                        <option value="hr">{{ 'cvsApp.Language.CROATIAN' | translate }}</option>
-                                        <option value="cs">{{ 'cvsApp.Language.CZECH' | translate }}</option>
-                                        <option value="da">{{ 'cvsApp.Language.DANISH' | translate }}</option>
-                                        <option value="nl">{{ 'cvsApp.Language.DUTCH' | translate }}</option>
-                                        <option value="et">{{ 'cvsApp.Language.ESTONIAN' | translate }}</option>
-                                        <option value="fi">{{ 'cvsApp.Language.FINNISH' | translate }}</option>
-                                        <option value="fr">{{ 'cvsApp.Language.FRENCH' | translate }}</option>
-                                        <option value="de">{{ 'cvsApp.Language.GERMAN' | translate }}</option>
-                                        <option value="el">{{ 'cvsApp.Language.GREEK' | translate }}</option>
-                                        <option value="hu">{{ 'cvsApp.Language.HUNGARIAN' | translate }}</option>
-                                        <option value="it">{{ 'cvsApp.Language.ITALIAN' | translate }}</option>
-                                        <option value="ja">{{ 'cvsApp.Language.JAPANESE' | translate }}</option>
-                                        <option value="lt">{{ 'cvsApp.Language.LITHUANIAN' | translate }}</option>
-                                        <option value="mk">{{ 'cvsApp.Language.MACEDONIAN' | translate }}</option>
-                                        <option value="no">{{ 'cvsApp.Language.NORWEGIAN' | translate }}</option>
-                                        <option value="pl">{{ 'cvsApp.Language.POLISH' | translate }}</option>
-                                        <option value="pt">{{ 'cvsApp.Language.PORTUGUESE' | translate }}</option>
-                                        <option value="ro">{{ 'cvsApp.Language.ROMANIAN' | translate }}</option>
-                                        <option value="ru">{{ 'cvsApp.Language.RUSSIAN' | translate }}</option>
-                                        <option value="sr">{{ 'cvsApp.Language.SERBIAN' | translate }}</option>
-                                        <option value="sk">{{ 'cvsApp.Language.SLOVAK' | translate }}</option>
-                                        <option value="sl">{{ 'cvsApp.Language.SLOVENIAN' | translate }}</option>
-                                        <option value="es">{{ 'cvsApp.Language.SPANISH' | translate }}</option>
-                                        <option value="sv">{{ 'cvsApp.Language.SWEDISH' | translate }}</option>
-                                    </select>
-                                </td>
-                                <td>
-                                    <button type="button" ngbTooltip="Add agency role" class="btn btn-sm btn-primary" (click)="saveAgencyRole()"
-                                        [disabled]="selectedAgencyRole !== 'ADMIN' && selectedAgencyRole !== 'VIEW' && ( selectedLanguage === undefined || selectedLanguage === '')">
-                                        <fa-icon [icon]="'plus'"></fa-icon><span> Add Agency Role</span>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-
-
-
-                </div>
-
+      @if (user) {
+        <div>
+          <jhi-alert-error></jhi-alert-error>
+          <div class="form-group" [hidden]="!user.id">
+            <label jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" name="id" formControlName="id" readonly>
+          </div>
+          <div class="form-group">
+            <label class="form-control-label" jhiTranslate="userManagement.login">Login</label>
+            <input type="text" class="form-control" name="login"
+              formControlName="login">
+            @if (editForm.controls.login.invalid && (editForm.controls.login.dirty || editForm.controls.login.touched)) {
+              <div>
+                @if (editForm.controls.login.errors?.required) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="entity.validation.required">
+                    This field is required.
+                  </small>
+                }
+                @if (editForm.controls.login.errors?.maxlength) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="entity.validation.maxlength"
+                    [translateValues]="{ max: 50 }">
+                    This field cannot be longer than 50 characters.
+                  </small>
+                }
+                @if (editForm.controls.login.errors?.pattern) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="entity.validation.patternLogin">
+                    This field can only contain letters, digits and e-mail addresses.
+                  </small>
+                }
+              </div>
+            }
+          </div>
+          <div class="form-group">
+            <label class="form-control-label" jhiTranslate="userManagement.firstName">First Name</label>
+            <input type="text" class="form-control" name="firstName"
+              formControlName="firstName">
+            @if (editForm.controls.firstName.invalid && (editForm.controls.firstName.dirty || editForm.controls.firstName.touched)) {
+              <div>
+                @if (editForm.controls.firstName.errors?.maxlength) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="entity.validation.maxlength"
+                    [translateValues]="{ max: 50 }">
+                    This field cannot be longer than 50 characters.
+                  </small>
+                }
+              </div>
+            }
+          </div>
+          <div class="form-group">
+            <label jhiTranslate="userManagement.lastName">Last Name</label>
+            <input type="text" class="form-control" name="lastName"
+              formControlName="lastName">
+            @if (editForm.controls.lastName.invalid && (editForm.controls.lastName.dirty || editForm.controls.lastName.touched)) {
+              <div>
+                @if (editForm.controls.lastName.errors?.maxlength) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="entity.validation.maxlength"
+                    [translateValues]="{ max: 50 }">
+                    This field cannot be longer than 50 characters.
+                  </small>
+                }
+              </div>
+            }
+          </div>
+          <div class="form-group">
+            <label class="form-control-label" jhiTranslate="userManagement.email">Email</label>
+            <input type="email" class="form-control" name="email" formControlName="email">
+            @if (editForm.controls.email.invalid && (editForm.controls.email.dirty || editForm.controls.email.touched)) {
+              <div>
+                @if (editForm.controls.email.errors?.['required']) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="entity.validation.required">
+                    This field is required.
+                  </small>
+                }
+                @if (editForm.controls.email.errors?.['maxlength']) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="entity.validation.maxlength"
+                    [translateValues]="{ max: 100 }">
+                    This field cannot be longer than 100 characters.
+                  </small>
+                }
+                @if (editForm.controls.email.errors?.['minlength']) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="entity.validation.minlength"
+                    [translateValues]="{ min: 5 }">
+                    This field is required to be at least 5 characters.
+                  </small>
+                }
+                @if (editForm.controls.email.errors?.['email']) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="global.messages.validate.email.invalid">
+                    Your email is invalid.
+                  </small>
+                }
+              </div>
+            }
+          </div>
+          <div class="form-check">
+            <label class="form-check-label" for="activated">
+              <input class="form-check-input" [attr.disabled]="user.id === undefined ? 'disabled' : null"
+                type="checkbox" id="activated" name="activated" formControlName="activated">
+              <span jhiTranslate="userManagement.activated">Activated</span>
+            </label>
+          </div>
+          <div class="form-group">
+            <label jhiTranslate="userManagement.profiles">System roles</label>
+            <select class="form-control" multiple name="authority" formControlName="authorities">
+              @for (authority of authorities; track authority) {
+                <option [value]="authority">{{ authority }}</option>
+              }
+            </select>
+          </div>
+          @if (user.userAgencies !== undefined) {
+            <div class="form-group">
+              <label>Agency roles</label>
+              <table class="table table-bordered" aria-describedby="page-heading">
+                <thead>
+                  <tr>
+                    <th scope="col">Agency</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Language</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (userAgency of user.userAgencies; track userAgency) {
+                    <tr>
+                      <td>{{userAgency.agencyId ? getAgencyName(userAgency.agencyId) : "Unknown Agency" }}</td>
+                      <td>{{userAgency.agencyRole}}</td>
+                      <td>{{userAgency.language && (userAgency.language | vocabularyLanguageFromKey)}}</td>
+                      <td>
+                        <button type="button" ngbTooltip="Delete agency role" class="btn btn-sm btn-primary-outline" data-dismiss="modal" (click)="deleteAgencyRole( userAgency )">
+                          <fa-icon class="text-danger" [icon]="'trash'"></fa-icon>
+                        </button>
+                      </td>
+                    </tr>
+                  }
+                  <tr>
+                    <td>
+                      <select class="form-control" (change)="selectedAgencyId = +getValue($event)" [value]="selectedAgencyId">
+                        @for (ag of agencies; track ag) {
+                          <option value="{{ag.id}}" [selected]="selectedAgencyId === ag.id">{{ag.name}}</option>
+                        }
+                      </select>
+                    </td>
+                    <td>
+                      <select class="form-control" (change)="selectedAgencyRole = getValue($event)" [value]="selectedAgencyRole">
+                        <option value="ADMIN_SL">{{ 'cvsApp.AgencyRole.ADMIN_SL' | translate }}</option>
+                        <option value="ADMIN_TL" selected>{{ 'cvsApp.AgencyRole.ADMIN_TL' | translate }}</option>
+                      </select>
+                    </td>
+                    <td>
+                      <select class="form-control" (change)="selectedLanguage = getValue($event)">
+                        <option value=""></option>
+                        <option value="en">{{ 'cvsApp.Language.ENGLISH' | translate }}</option>
+                        <option value="sq">{{ 'cvsApp.Language.ALBANIAN' | translate }}</option>
+                        <option value="bs">{{ 'cvsApp.Language.BOSNIAN' | translate }}</option>
+                        <option value="bg">{{ 'cvsApp.Language.BULGARIAN' | translate }}</option>
+                        <option value="hr">{{ 'cvsApp.Language.CROATIAN' | translate }}</option>
+                        <option value="cs">{{ 'cvsApp.Language.CZECH' | translate }}</option>
+                        <option value="da">{{ 'cvsApp.Language.DANISH' | translate }}</option>
+                        <option value="nl">{{ 'cvsApp.Language.DUTCH' | translate }}</option>
+                        <option value="et">{{ 'cvsApp.Language.ESTONIAN' | translate }}</option>
+                        <option value="fi">{{ 'cvsApp.Language.FINNISH' | translate }}</option>
+                        <option value="fr">{{ 'cvsApp.Language.FRENCH' | translate }}</option>
+                        <option value="de">{{ 'cvsApp.Language.GERMAN' | translate }}</option>
+                        <option value="el">{{ 'cvsApp.Language.GREEK' | translate }}</option>
+                        <option value="hu">{{ 'cvsApp.Language.HUNGARIAN' | translate }}</option>
+                        <option value="it">{{ 'cvsApp.Language.ITALIAN' | translate }}</option>
+                        <option value="ja">{{ 'cvsApp.Language.JAPANESE' | translate }}</option>
+                        <option value="lt">{{ 'cvsApp.Language.LITHUANIAN' | translate }}</option>
+                        <option value="mk">{{ 'cvsApp.Language.MACEDONIAN' | translate }}</option>
+                        <option value="no">{{ 'cvsApp.Language.NORWEGIAN' | translate }}</option>
+                        <option value="pl">{{ 'cvsApp.Language.POLISH' | translate }}</option>
+                        <option value="pt">{{ 'cvsApp.Language.PORTUGUESE' | translate }}</option>
+                        <option value="ro">{{ 'cvsApp.Language.ROMANIAN' | translate }}</option>
+                        <option value="ru">{{ 'cvsApp.Language.RUSSIAN' | translate }}</option>
+                        <option value="sr">{{ 'cvsApp.Language.SERBIAN' | translate }}</option>
+                        <option value="sk">{{ 'cvsApp.Language.SLOVAK' | translate }}</option>
+                        <option value="sl">{{ 'cvsApp.Language.SLOVENIAN' | translate }}</option>
+                        <option value="es">{{ 'cvsApp.Language.SPANISH' | translate }}</option>
+                        <option value="sv">{{ 'cvsApp.Language.SWEDISH' | translate }}</option>
+                      </select>
+                    </td>
+                    <td>
+                      <button type="button" ngbTooltip="Add agency role" class="btn btn-sm btn-primary" (click)="saveAgencyRole()"
+                        [disabled]="selectedAgencyRole !== 'ADMIN' && selectedAgencyRole !== 'VIEW' && ( selectedLanguage === undefined || selectedLanguage === '')">
+                        <fa-icon [icon]="'plus'"></fa-icon><span> Add Agency Role</span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
+          }
+        </div>
+      }
 
-            <div *ngIf="user">
-                <button type="button" class="btn btn-secondary" (click)="previousState()">
-                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-                </button>
-
-                <button type="submit" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-                </button>
-            </div>
-        </form>
-    </div>
+      @if (user) {
+        <div>
+          <button type="button" class="btn btn-secondary" (click)="previousState()">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+          </button>
+          <button type="submit" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+            <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+          </button>
+        </div>
+      }
+    </form>
+  </div>
 </div>

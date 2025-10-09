@@ -1,217 +1,270 @@
 <!--
 
-    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 -->
 <form name="cvAddForm" role="form" (ngSubmit)="confirmChange()" novalidate [formGroup]="codeAddEditForm">
-    <div class="modal-header">
-        <div class="modal-title" style="display: flex;">
-            <span *ngIf="isNew">Add code for {{versionParam.notation}}</span>
-            <span *ngIf="!isNew && isSlForm">Edit {{versionParam.language! | vocabularyLanguageFromKey}} code from <strong>{{conceptParam.notation}}</strong></span>
-            <span *ngIf="!isNew && !isSlForm && !conceptParam.title">Add {{versionParam.language! | vocabularyLanguageFromKey}} code translation for <strong>{{conceptParam.notation}}</strong></span>
-            <span *ngIf="!isNew && !isSlForm && conceptParam.title">Edit {{versionParam.language! | vocabularyLanguageFromKey}} code translation for <strong>{{conceptParam.notation}}</strong></span>
-        </div>
-
-        <button aria-label="Close" class="btn-close" data-dismiss="modal" type="button" (click)="clear()"></button>
+  <div class="modal-header">
+    <div class="modal-title" style="display: flex;">
+      @if (isNew) {
+        <span>Add code for {{versionParam.notation}}</span>
+      }
+      @if (!isNew && isSlForm) {
+        <span>Edit {{versionParam.language! | vocabularyLanguageFromKey}} code from <strong>{{conceptParam.notation}}</strong></span>
+      }
+      @if (!isNew && !isSlForm && !conceptParam.title) {
+        <span>Add {{versionParam.language! | vocabularyLanguageFromKey}} code translation for <strong>{{conceptParam.notation}}</strong></span>
+      }
+      @if (!isNew && !isSlForm && conceptParam.title) {
+        <span>Edit {{versionParam.language! | vocabularyLanguageFromKey}} code translation for <strong>{{conceptParam.notation}}</strong></span>
+      }
     </div>
-    <div class="modal-body">
-        <div class="row-content">
-            <div class="col-md-12 justify-content-center">
-                <div class="alert alert-danger" *ngIf="errorCodeExists">
-                    <strong>Code already exist!</strong>.
-                </div>
+
+    <button aria-label="Close" class="btn-close" data-dismiss="modal" type="button" (click)="clear()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row-content">
+      <div class="col-md-12 justify-content-center">
+        @if (errorCodeExists) {
+          <div class="alert alert-danger">
+            <strong>Code already exist!</strong>.
+          </div>
+        }
+      </div>
+      @if (isSubmitting) {
+        <div class="col-md-12 justify-content-center">
+          @if (codeAddEditForm.controls.changeType?.errors?.required) {
+            <div class="alert alert-danger">
+              <strong>You need to select 'Change type' before saving.</strong> Make only one change at a time.
             </div>
-            <div class="col-md-12 justify-content-center" *ngIf="isSubmitting">
-                <div class="alert alert-danger" *ngIf="codeAddEditForm.controls.changeType?.errors?.required">
-                    <strong>You need to select 'Change type' before saving.</strong> Make only one change at a time.
-                </div>
+          }
+        </div>
+      }
+      <div class="row-details">
+        @if (isSlForm) {
+          <div class="row-detail form-group">
+            <div class="label-column-input">
+              <span ngbTooltip="required field" class="label-required">Code</span>
             </div>
-            <div class="row-details">
-                <div *ngIf="isSlForm" class="row-detail form-group">
-                    <div class="label-column-input">
-                        <span ngbTooltip="required field" class="label-required">Code</span>
-                    </div>
-                    <div *ngIf="isSlForm" class="detail-column">
-                        <div *ngIf="isNew && isEnablePreview">
-                            <span *ngIf="codeAddEditForm.controls.codeInsertMode?.value === 'INSERT_AS_CHILD'">{{conceptParam.notation}}.</span>
-                            <span *ngIf="conceptParam && conceptParam.parent  && (codeAddEditForm.controls.codeInsertMode?.value === 'INSERT_AFTER' ||
-                                codeAddEditForm.controls.codeInsertMode?.value === 'INSERT_BEFORE')">{{conceptParam.parent}}.</span>
-                        </div>
-                        <span *ngIf="!isNew && conceptParam.parent">{{conceptParam.parent}}.</span>
-                        <input type="text" class="form-control" id="field_notation" name="notation" formControlName="notation" (input)="updateTreePreview()"/>
-                        <div *ngIf="codeAddEditForm.controls.notation!.invalid && (codeAddEditForm.controls.notation!.dirty || codeAddEditForm.controls.notation!.touched) || isSubmitting">
-                            <small class="form-text text-danger"
-                                   *ngIf="codeAddEditForm.controls.notation?.errors?.required" jhiTranslate="entity.validation.required">
-                                This field is required.
-                            </small>
-
-                            <small class="form-text text-danger"
-                                   *ngIf="codeAddEditForm.controls.notation?.errors?.maxlength" jhiTranslate="entity.validation.maxlength"
-                                   [translateValues]="{max: 240}">
-                                This field cannot be longer than 240 characters.
-                            </small>
-
-                            <small class="form-text text-danger"
-                                   *ngIf="codeAddEditForm.controls.notation?.errors?.minlength" jhiTranslate="entity.validation.minlength"
-                                   [translateValues]="{min: 2}">
-                                This field is required to be at least 2 characters.
-                            </small>
-
-                            <small class="form-text text-danger"
-                                   *ngIf="codeAddEditForm.controls.notation?.errors?.pattern">
-                                Code can only contain letters (a-z A-Z), digits (0-9) and limited symbols ( +-_).
-                            </small>
-                        </div>
-                    </div>
-                </div>
-                <div *ngIf="!isSlForm" class="row-detail form-group">
-                    <div class="label-column-input">
-                        <span>Code ({{versionParam.languageSl}})</span>
-                    </div>
-                    <div class="detail-column label-column-value">
-                        <span>{{conceptParam.notation}}</span>
-                    </div>
-                </div>
-                <div class="row-detail form-group">
-                    <div class="label-column-input label-right">
-                        <span>Language</span>
-                    </div>
-                    <div class="detail-column  label-column-value">
-                        <span>{{versionParam.language! | vocabularyLanguageFromKey}}</span>
-                    </div>
-                </div>
+            @if (isSlForm) {
+              <div class="detail-column">
+                @if (isNew && isEnablePreview) {
+                  <div>
+                    @if (codeAddEditForm.controls.codeInsertMode?.value === 'INSERT_AS_CHILD') {
+                      <span>{{conceptParam.notation}}.</span>
+                    }
+                    @if (conceptParam && conceptParam.parent  && (codeAddEditForm.controls.codeInsertMode?.value === 'INSERT_AFTER' ||
+                      codeAddEditForm.controls.codeInsertMode?.value === 'INSERT_BEFORE')) {
+                      <span>{{conceptParam.parent}}.</span>
+                    }
+                  </div>
+                }
+                @if (!isNew && conceptParam.parent) {
+                  <span>{{conceptParam.parent}}.</span>
+                }
+                <input type="text" class="form-control" id="field_notation" name="notation" formControlName="notation" (input)="updateTreePreview()"/>
+                @if (codeAddEditForm.controls.notation!.invalid && (codeAddEditForm.controls.notation!.dirty || codeAddEditForm.controls.notation!.touched) || isSubmitting) {
+                  <div>
+                    @if (codeAddEditForm.controls.notation?.errors?.required) {
+                      <small class="form-text text-danger"
+                        jhiTranslate="entity.validation.required">
+                        This field is required.
+                      </small>
+                    }
+                    @if (codeAddEditForm.controls.notation?.errors?.maxlength) {
+                      <small class="form-text text-danger"
+                        jhiTranslate="entity.validation.maxlength"
+                        [translateValues]="{max: 240}">
+                        This field cannot be longer than 240 characters.
+                      </small>
+                    }
+                    @if (codeAddEditForm.controls.notation?.errors?.minlength) {
+                      <small class="form-text text-danger"
+                        jhiTranslate="entity.validation.minlength"
+                        [translateValues]="{min: 2}">
+                        This field is required to be at least 2 characters.
+                      </small>
+                    }
+                    @if (codeAddEditForm.controls.notation?.errors?.pattern) {
+                      <small class="form-text text-danger"
+                        >
+                        Code can only contain letters (a-z A-Z), digits (0-9) and limited symbols ( +-_).
+                      </small>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+        @if (!isSlForm) {
+          <div class="row-detail form-group">
+            <div class="label-column-input">
+              <span>Code ({{versionParam.languageSl}})</span>
             </div>
-
-            <div *ngIf="!isSlForm" class="row-detail form-group">
-                <div class="label-column-input">
-                    <span>Descriptive term ({{versionParam.languageSl}})</span>
-                </div>
-                <div class="detail-column  label-column-value">
-                    <span>{{conceptParam.titleSl}}</span>
-                </div>
+            <div class="detail-column label-column-value">
+              <span>{{conceptParam.notation}}</span>
             </div>
+          </div>
+        }
+        <div class="row-detail form-group">
+          <div class="label-column-input label-right">
+            <span>Language</span>
+          </div>
+          <div class="detail-column  label-column-value">
+            <span>{{versionParam.language! | vocabularyLanguageFromKey}}</span>
+          </div>
+        </div>
+      </div>
 
+      @if (!isSlForm) {
+        <div class="row-detail form-group">
+          <div class="label-column-input">
+            <span>Descriptive term ({{versionParam.languageSl}})</span>
+          </div>
+          <div class="detail-column  label-column-value">
+            <span>{{conceptParam.titleSl}}</span>
+          </div>
+        </div>
+      }
+
+      <div class="row-detail form-group">
+        <div class="label-column-input">
+          <span ngbTooltip="required field" class="label-required">Descriptive term ({{versionParam.language}})</span>
+        </div>
+        <div class="detail-column">
+          <input type="text" class="form-control" id="field_title" name="title" formControlName="title"/>
+          @if (codeAddEditForm.controls.title.invalid && (codeAddEditForm.controls.title.dirty || codeAddEditForm.controls.title.touched) || isSubmitting) {
+            <div>
+              @if (codeAddEditForm.controls.title.errors?.required) {
+                <small class="form-text text-danger"
+                  jhiTranslate="entity.validation.required">
+                  This field is required.
+                </small>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      @if (!isSlForm) {
+        <div class="row-detail form-group">
+          <div class="label-column-input">
+            <span>Definition ({{versionParam.languageSl}})</span>
+          </div>
+          <div class="detail-column  label-column-value">
+            <span>{{conceptParam.definitionSl}}</span>
+          </div>
+        </div>
+      }
+
+      <div class="row-detail form-group">
+        <div class="label-column-input">
+          <span>Definition ({{versionParam.language}})</span>
+        </div>
+        <div class="detail-column">
+          <textarea class="form-control"  id="field_definition" name="definition" formControlName="definition" rows="10"></textarea>
+        </div>
+      </div>
+    </div>
+
+    @if (isEnablePreview && conceptParam) {
+      <div class="row-content">
+        <div class="row-details">
+          <div class="row-detail form-group">
+            <div class="btn-group btn-group-toggle" role="group" name="insert-choice">
+              <input type="radio" formControlName="codeInsertMode" (ngModelChange)="updateTreePreview()" value="INSERT_AFTER" class="btn-check" id="insertAfterButton">
+              <label class="btn btn-outline-primary" for="insertAfterButton">Insert after</label>
+              <input type="radio" formControlName="codeInsertMode" (ngModelChange)="updateTreePreview()" value="INSERT_BEFORE" class="btn-check" id="insertBeforeButton">
+              <label class="btn btn-outline-primary" for="insertBeforeButton">Insert before</label>
+              <input type="radio" formControlName="codeInsertMode" (ngModelChange)="updateTreePreview()" value="INSERT_AS_CHILD" class="btn-check" id="insertChildButton">
+              <label class="btn btn-outline-primary" for="insertChildButton">Insert as child</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (isEnablePreview) {
+      <div class="row-content">
+        <div class="row-details">
+          <div class="row-detail form-group">
+            <div class="tree-box h-300">
+              <div class="head">Preview</div>
+              <jhi-tree-reorder [parentNotation]="" [conceptList]="conceptsToPlace" [level]="0" [deprecated]="false"></jhi-tree-reorder>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (codeAddEditForm.controls.changeType) {
+      <div class="row-content">
+        <div class="card bg-light w-100">
+          <div class="card-header">
+            Change notes
+          </div>
+          <div class="card-body">
             <div class="row-detail form-group">
-                <div class="label-column-input">
-                    <span ngbTooltip="required field" class="label-required">Descriptive term ({{versionParam.language}})</span>
-                </div>
-                <div class="detail-column">
-                    <input type="text" class="form-control" id="field_title" name="title" formControlName="title"/>
-                    <div *ngIf="codeAddEditForm.controls.title.invalid && (codeAddEditForm.controls.title.dirty || codeAddEditForm.controls.title.touched) || isSubmitting">
-                        <small class="form-text text-danger"
-                               *ngIf="codeAddEditForm.controls.title.errors?.required" jhiTranslate="entity.validation.required">
-                            This field is required.
-                        </small>
-                    </div>
-                </div>
+              <div class="label-column-input">
+                <span class="label-required">Type</span>
+              </div>
+              <div class="detail-column">
+                <select class="form-control w-100 sk-select" id="field_changeType" name="changeType" formControlName="changeType">
+                  <option></option>
+                  @if (versionParam.itemType === 'SL') {
+                    <option value="Code value changed">Code value changed</option>
+                  }
+                  <option value="Code descriptive term rephrased">Code descriptive term rephrased</option>
+                  <option value="Code definition amended with meaning change">Code definition amended with meaning change</option>
+                  <option value="Code definition rephrased">Code definition rephrased</option>
+                  <option value="Code definition added">Code definition added</option>
+                </select>
+                @if (codeAddEditForm.controls.changeType.invalid && (codeAddEditForm.controls.changeType.dirty || codeAddEditForm.controls.changeType.touched) || isSubmitting) {
+                  <div>
+                    @if (codeAddEditForm.controls.changeType.errors?.required) {
+                      <small class="form-text text-danger"
+                        jhiTranslate="entity.validation.required">
+                        This field is required.
+                      </small>
+                    }
+                  </div>
+                }
+              </div>
             </div>
-
-            <div *ngIf="!isSlForm" class="row-detail form-group">
-                <div class="label-column-input">
-                    <span>Definition ({{versionParam.languageSl}})</span>
-                </div>
-                <div class="detail-column  label-column-value">
-                    <span>{{conceptParam.definitionSl}}</span>
-                </div>
-            </div>
-
             <div class="row-detail form-group">
-                <div class="label-column-input">
-                    <span>Definition ({{versionParam.language}})</span>
-                </div>
-                <div class="detail-column">
-                    <textarea class="form-control"  id="field_definition" name="definition" formControlName="definition" rows="10"></textarea>
-                </div>
+              <div class="label-column-input">
+                <span>Description</span>
+              </div>
+              <div class="detail-column">
+                <input type="text" class="form-control" id="field_changeDesc" name="changeDesc" formControlName="changeDesc"/>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
+    }
 
-        <div *ngIf="isEnablePreview && conceptParam" class="row-content">
-            <div class="row-details">
-                <div class="row-detail form-group">
-                    <div class="btn-group btn-group-toggle" role="group" name="insert-choice">
-                        <input type="radio" formControlName="codeInsertMode" (ngModelChange)="updateTreePreview()" value="INSERT_AFTER" class="btn-check" id="insertAfterButton">
-                        <label class="btn btn-outline-primary" for="insertAfterButton">Insert after</label>
-
-                        <input type="radio" formControlName="codeInsertMode" (ngModelChange)="updateTreePreview()" value="INSERT_BEFORE" class="btn-check" id="insertBeforeButton">
-                        <label class="btn btn-outline-primary" for="insertBeforeButton">Insert before</label>
-
-                        <input type="radio" formControlName="codeInsertMode" (ngModelChange)="updateTreePreview()" value="INSERT_AS_CHILD" class="btn-check" id="insertChildButton">
-                        <label class="btn btn-outline-primary" for="insertChildButton">Insert as child</label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div *ngIf="isEnablePreview" class="row-content">
-            <div class="row-details">
-                <div class="row-detail form-group">
-                    <div class="tree-box h-300">
-                        <div class="head">Preview</div>
-                        <jhi-tree-reorder [parentNotation]="" [conceptList]="conceptsToPlace" [level]="0" [deprecated]="false"></jhi-tree-reorder>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div *ngIf="codeAddEditForm.controls.changeType" class="row-content">
-            <div class="card bg-light w-100">
-                <div class="card-header">
-                    Change notes
-                </div>
-                <div class="card-body">
-                    <div class="row-detail form-group">
-                        <div class="label-column-input">
-                            <span class="label-required">Type</span>
-                        </div>
-                        <div class="detail-column">
-                            <select class="form-control w-100 sk-select" id="field_changeType" name="changeType" formControlName="changeType">
-                                <option></option>
-                                <option *ngIf="versionParam.itemType === 'SL'" value="Code value changed">Code value changed</option>
-                                <option value="Code descriptive term rephrased">Code descriptive term rephrased</option>
-                                <option value="Code definition amended with meaning change">Code definition amended with meaning change</option>
-                                <option value="Code definition rephrased">Code definition rephrased</option>
-                                <option value="Code definition added">Code definition added</option>
-                            </select>
-                            <div *ngIf="codeAddEditForm.controls.changeType.invalid && (codeAddEditForm.controls.changeType.dirty || codeAddEditForm.controls.changeType.touched) || isSubmitting">
-                                <small class="form-text text-danger"
-                                       *ngIf="codeAddEditForm.controls.changeType.errors?.required" jhiTranslate="entity.validation.required">
-                                    This field is required.
-                                </small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row-detail form-group">
-                        <div class="label-column-input">
-                            <span>Description</span>
-                        </div>
-                        <div class="detail-column">
-                            <input type="text" class="form-control" id="field_changeDesc" name="changeDesc" formControlName="changeDesc"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
-            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
-        </button>
-        <button type="submit" id="save-new-cv" [disabled]="isSaving" class="btn btn-primary">
-            <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-        </button>
-    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+      <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
+    </button>
+    <button type="submit" id="save-new-cv" [disabled]="isSaving" class="btn btn-primary">
+      <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+    </button>
+  </div>
 </form>
 

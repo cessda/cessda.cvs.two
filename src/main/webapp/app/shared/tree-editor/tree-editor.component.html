@@ -1,38 +1,56 @@
 <!--
 
-    Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-        http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
 -->
-<div *ngFor="let concept of conceptList">
-    <ul *ngIf="concept.parent === parentNotation" class="concept-tree ul-level-{{level!}}">
+@for (concept of conceptList; track concept) {
+  <div>
+    @if (concept.parent === parentNotation) {
+      <ul class="concept-tree ul-level-{{level!}}">
         <li [attr.id]="!concept.deprecated ? 'code_' + concept.notation.split('.').join('') : null" [ngClass]="{'y-bgr': !concept.title}">
-            <div *ngIf="!concept.deprecated" class="concept-row" (click)="selectConcept(concept)" [ngClass]="{ 'active': concept.notation === activeConceptNotation}">
-                <!-- Column 1 -->
-                <span class="column1 coll-mar-{{level!}}"><button *ngIf="isConceptHasChildren(concept.notation,conceptList)" (click)="concept.visible = !concept.visible" class="invisible-button"><fa-icon *ngIf="!concept.visible" icon="caret-down"></fa-icon><fa-icon *ngIf="concept.visible" icon="caret-right"></fa-icon></button><span class="e-note">{{concept.position}}</span> {{concept.notation}}</span>
+          @if (!concept.deprecated) {
+            <div class="concept-row" (click)="selectConcept(concept)" [ngClass]="{ 'active': concept.notation === activeConceptNotation}">
+              <!-- Column 1 -->
+              <span class="column1 coll-mar-{{level!}}">@if (isConceptHasChildren(concept.notation,conceptList)) {
+                <button (click)="concept.visible = !concept.visible" class="invisible-button">@if (!concept.visible) {
+                  <fa-icon icon="caret-down"></fa-icon>
+                  }@if (concept.visible) {
+                  <fa-icon icon="caret-right"></fa-icon>
+                }</button>
+                }<span class="e-note">{{concept.position}}</span> {{concept.notation}}</span>
                 <!-- Column 2 -->
-                <span *ngIf="concept.titleSl" class="columnSl2">{{concept.titleSl}}</span>
+                @if (concept.titleSl) {
+                  <span class="columnSl2">{{concept.titleSl}}</span>
+                }
                 <!-- Column 3 -->
                 <span class="column2">{{concept.title ? concept.title : ''}}</span>
                 <!-- Column 4 -->
-                <span *ngIf="concept.definitionSl" class="columnSl3">{{concept.definitionSl ? concept.definitionSl : ''}}</span>
+                @if (concept.definitionSl) {
+                  <span class="columnSl3">{{concept.definitionSl ? concept.definitionSl : ''}}</span>
+                }
                 <!-- Column 5 -->
                 <span class="column3">{{concept.definition ? concept.definition : ''}}</span>
-            </div>
-            <jhi-tree-editor *ngIf="isConceptHasChildren(concept.notation,conceptList)"
-                      [ngClass]="{'display-none': concept.visible}"
-                      [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems(conceptList , parentNotation)" [level]="level! + 1"></jhi-tree-editor>
-        </li>
-    </ul>
-</div>
+              </div>
+            }
+            @if (isConceptHasChildren(concept.notation,conceptList)) {
+              <jhi-tree-editor
+                [ngClass]="{'display-none': concept.visible}"
+              [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems(conceptList , parentNotation)" [level]="level! + 1"></jhi-tree-editor>
+            }
+          </li>
+        </ul>
+      }
+    </div>
+  }
