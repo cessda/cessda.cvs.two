@@ -727,6 +727,7 @@
                         <exclude>src/main/webapp/manifest.webapp</exclude>
                         <exclude>.config/**</exclude>
                         <exclude>.angular/**</exclude>
+                        <exclude>**/*.tgz</exclude>
                     </excludes>
                     <mapping>
                         <cff>SCRIPT_STYLE</cff>
