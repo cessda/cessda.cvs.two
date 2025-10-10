@@ -15,7 +15,7 @@
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { DiffContent } from 'ngx-text-diff/lib/ngx-text-diff.model';
+import { DiffContent } from 'node_modules/ngx-text-diff/lib/ngx-text-diff.model';
 import { HomeService } from 'app/home/home.service';
 import { HttpResponse } from '@angular/common/http';
 import { EditorService } from 'app/editor/editor.service';
@@ -23,9 +23,9 @@ import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 import { Concept } from 'app/shared/model/concept.model';
 
 @Component({
-    selector: 'jhi-version-compare',
-    templateUrl: './version-compare.component.html',
-    standalone: false
+  selector: 'jhi-version-compare',
+  templateUrl: './version-compare.component.html',
+  standalone: false,
 })
 export class VersionCompareComponent implements OnInit, OnDestroy {
   @Input() notation!: string;

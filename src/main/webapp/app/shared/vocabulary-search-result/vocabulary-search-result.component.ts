@@ -34,15 +34,15 @@ import { CvResult } from 'app/shared/model/cv-result.model';
 import { Aggr } from 'app/shared/model/aggr';
 import { HomeService } from 'app/home/home.service';
 import { VocabularyLanguageFromKeyPipe } from '../language/vocabulary-language-from-key.pipe';
-import { TagModel, TagModelClass } from 'ngx-chips/core/tag-model';
+import { TagModel, TagModelClass } from 'node_modules/ngx-chips/core/tag-model';
 
 const INITIAL_PAGE = 1;
 const DEFAULT_PREDICATE = 'code';
 
 @Component({
-    selector: 'jhi-vocabulary-search-result',
-    templateUrl: './vocabulary-search-result.component.html',
-    standalone: false
+  selector: 'jhi-vocabulary-search-result',
+  templateUrl: './vocabulary-search-result.component.html',
+  standalone: false,
 })
 export class VocabularySearchResultComponent implements OnInit {
   @Input() appScope!: AppScope;

@@ -39,7 +39,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(HealthComponent);
       comp = fixture.componentInstance;
-      service = fixture.debugElement.injector.inject(HealthService);
+      service = fixture.debugElement.injector.get(HealthService);
     });
 
     describe('getBadgeClass', () => {

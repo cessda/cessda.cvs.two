@@ -25,15 +25,15 @@ import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { HomeService } from 'app/home/home.service';
 import { RouteEventsService, VocabularyLanguageFromKeyPipe } from 'app/shared';
-import { DiffContent } from 'ngx-text-diff/lib/ngx-text-diff.model';
+import { DiffContent } from 'node_modules/ngx-text-diff/lib/ngx-text-diff.model';
 import { Observable, Subject } from 'rxjs';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { Authority } from 'app/shared/constants/authority.constants';
 
 @Component({
-    selector: 'jhi-home-detail',
-    templateUrl: './home-detail.component.html',
-    standalone: false
+  selector: 'jhi-home-detail',
+  templateUrl: './home-detail.component.html',
+  standalone: false,
 })
 export class HomeDetailComponent implements OnInit {
   @ViewChild('detailPanel', { static: true }) detailPanel!: ElementRef;

@@ -52,9 +52,9 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(LoginModalComponent);
       comp = fixture.componentInstance;
-      mockLoginService = TestBed.inject(LoginService);
-      mockRouter = TestBed.inject(Router);
-      mockActiveModal = TestBed.inject(NgbActiveModal);
+      mockLoginService = TestBed.inject(LoginService) as any;
+      mockRouter = TestBed.inject(Router) as any;
+      mockActiveModal = TestBed.inject(NgbActiveModal) as any;
     });
 
     it('should authenticate the user', inject(

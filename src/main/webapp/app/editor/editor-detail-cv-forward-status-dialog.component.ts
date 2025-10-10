@@ -30,7 +30,7 @@ import { createNewVersion } from 'app/shared/model/version.model';
 import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from 'app/admin/licence/licence.service';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { DiffContent, DiffResults } from 'ngx-text-diff/lib/ngx-text-diff.model';
+import { DiffContent, DiffResults } from 'node_modules/ngx-text-diff/lib/ngx-text-diff.model';
 import { Comment } from 'app/shared/model/comment.model';
 import { VocabularyChangeService } from 'app/entities/vocabulary-change/vocabulary-change.service';
 import { VocabularyChange } from 'app/shared/model/vocabulary-change.model';
@@ -39,9 +39,9 @@ import Quill from 'quill';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
-    selector: 'jhi-editor-detail-cv-forward-status-dialog',
-    templateUrl: './editor-detail-cv-forward-status-dialog.component.html',
-    standalone: false
+  selector: 'jhi-editor-detail-cv-forward-status-dialog',
+  templateUrl: './editor-detail-cv-forward-status-dialog.component.html',
+  standalone: false,
 })
 export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   licences: Licence[] = [];

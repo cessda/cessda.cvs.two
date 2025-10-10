@@ -41,7 +41,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(PasswordComponent);
       comp = fixture.componentInstance;
-      service = fixture.debugElement.injector.inject(PasswordService);
+      service = fixture.debugElement.injector.get(PasswordService);
     });
 
     it('should show error if passwords do not match', () => {

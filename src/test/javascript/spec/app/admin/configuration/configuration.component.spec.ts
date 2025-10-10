@@ -39,7 +39,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(ConfigurationComponent);
       comp = fixture.componentInstance;
-      service = fixture.debugElement.injector.inject(ConfigurationService);
+      service = fixture.debugElement.injector.get(ConfigurationService);
     });
 
     describe('OnInit', () => {
