@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpEvent, HttpEventType, HttpRequest, HttpResponse } from '@angular/common/http';
 import { filter, map, Observable, pipe } from 'rxjs';
 
@@ -22,9 +22,9 @@ import { SimpleResponse } from 'app/shared/model/simple-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class FileUploadService {
-  public resourceUrl = SERVER_API_URL + 'api/upload';
+  protected http = inject(HttpClient);
 
-  constructor(protected http: HttpClient) {}
+  public resourceUrl = SERVER_API_URL + 'api/upload';
 
   /**
    * return the  uploaded filename

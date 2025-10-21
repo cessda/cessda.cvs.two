@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
@@ -24,10 +24,8 @@ import { Login } from './login.model';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
-  constructor(
-    private accountService: AccountService,
-    private authServerProvider: AuthServerProvider,
-  ) {}
+  private accountService = inject(AccountService);
+  private authServerProvider = inject(AuthServerProvider);
 
   login(credentials: Login): Observable<Account | null> {
     return this.authServerProvider.login(credentials).pipe(mergeMap(() => this.accountService.identity(true)));

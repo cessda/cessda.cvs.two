@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -34,11 +34,19 @@ import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
-    selector: 'jhi-editor-cv-add-dialog',
-    templateUrl: './editor-cv-add-dialog.component.html',
-    standalone: false
+  selector: 'jhi-editor-cv-add-dialog',
+  templateUrl: './editor-cv-add-dialog.component.html',
+  standalone: false,
 })
 export class EditorCvAddDialogComponent implements OnInit {
+  protected agencyService = inject(AgencyService);
+  private accountService = inject(AccountService);
+  protected editorService = inject(EditorService);
+  activeModal = inject(NgbActiveModal);
+  protected eventManager = inject(JhiEventManager);
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+
   isSaving: boolean;
   account!: Account;
   agencies: Agency[] = [];
@@ -57,15 +65,7 @@ export class EditorCvAddDialogComponent implements OnInit {
     notes: new FormControl<string | null>(null),
   });
 
-  constructor(
-    protected agencyService: AgencyService,
-    private accountService: AccountService,
-    protected editorService: EditorService,
-    public activeModal: NgbActiveModal,
-    protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
-    private router: Router,
-  ) {
+  constructor() {
     this.isSaving = false;
   }
 
@@ -184,18 +184,16 @@ export class EditorCvAddDialogComponent implements OnInit {
 }
 
 @Component({
-    selector: 'jhi-editor-cv-add-popup',
-    template: '',
-    standalone: false
+  selector: 'jhi-editor-cv-add-popup',
+  template: '',
+  standalone: false,
 })
 export class EditorCvAddPopupComponent implements OnInit, OnDestroy {
-  protected ngbModalRef: NgbModalRef | undefined;
+  protected activatedRoute = inject(ActivatedRoute);
+  protected router = inject(Router);
+  protected modalService = inject(NgbModal);
 
-  constructor(
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
-    protected modalService: NgbModal,
-  ) {}
+  protected ngbModalRef: NgbModalRef | undefined;
 
   ngOnInit(): void {
     this.ngbModalRef = this.modalService.open(EditorCvAddDialogComponent, { size: 'xl', backdrop: 'static' });

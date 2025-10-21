@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -24,10 +24,10 @@ type EntityArrayResponseType = HttpResponse<VocabularyChange[]>;
 
 @Injectable({ providedIn: 'root' })
 export class VocabularyChangeService {
+  protected http = inject(HttpClient);
+
   public resourceUrl = SERVER_API_URL + 'api/vocabulary-changes';
   public resourceSearchUrl = SERVER_API_URL + 'api/_search/vocabulary-changes';
-
-  constructor(protected http: HttpClient) {}
 
   getByVersionId(versionId: number): Observable<EntityArrayResponseType> {
     return this.http.get<VocabularyChange[]>(`${this.resourceUrl}/version-id/${versionId}`, { observe: 'response' });

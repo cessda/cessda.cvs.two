@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { Licence } from 'app/shared/model/licence.model';
 
 @Component({
-    selector: 'jhi-licence-detail',
-    templateUrl: './licence-detail.component.html',
-    standalone: false
+  selector: 'jhi-licence-detail',
+  templateUrl: './licence-detail.component.html',
+  standalone: false,
 })
 export class LicenceDetailComponent implements OnInit {
-  licence: Licence | null = null;
+  protected activatedRoute = inject(ActivatedRoute);
 
-  constructor(protected activatedRoute: ActivatedRoute) {}
+  licence: Licence | null = null;
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ licence }) => (this.licence = licence));

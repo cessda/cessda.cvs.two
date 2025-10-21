@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
 import { JhiEventManager, JhiAlert, JhiAlertService, JhiEventWithContent } from 'ng-jhipster';
@@ -22,8 +22,8 @@ import { Subscription } from 'rxjs';
 import { AlertError } from './alert-error.model';
 
 @Component({
-    selector: 'jhi-alert-error',
-    template: `
+  selector: 'jhi-alert-error',
+  template: `
     <div class="alerts" role="alert">
       @for (alert of alerts; track alert) {
         <div [ngClass]="setClasses(alert)">
@@ -35,19 +35,21 @@ import { AlertError } from './alert-error.model';
         </div>
       }
     </div>
-    `,
-    standalone: false
+  `,
+  standalone: false,
 })
 export class AlertErrorComponent implements OnDestroy {
+  private alertService = inject(JhiAlertService);
+  private eventManager = inject(JhiEventManager);
+
   alerts: JhiAlert[] = [];
   errorListener: Subscription;
   httpErrorListener: Subscription;
 
-  constructor(
-    private alertService: JhiAlertService,
-    private eventManager: JhiEventManager,
-    translateService: TranslateService,
-  ) {
+  constructor() {
+    const eventManager = this.eventManager;
+    const translateService = inject(TranslateService);
+
     this.errorListener = eventManager.subscribe('cvsApp.error', (response: JhiEventWithContent<AlertError>) => {
       const errorResponse = response.content;
       this.addErrorAlert(errorResponse.message, errorResponse.key, errorResponse.params);

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -27,11 +27,17 @@ import { LicenceService } from './licence.service';
 import { LicenceDeleteDialogComponent } from './licence-delete-dialog.component';
 
 @Component({
-    selector: 'jhi-licence',
-    templateUrl: './licence.component.html',
-    standalone: false
+  selector: 'jhi-licence',
+  templateUrl: './licence.component.html',
+  standalone: false,
 })
 export class LicenceComponent implements OnInit, OnDestroy {
+  protected licenceService = inject(LicenceService);
+  protected activatedRoute = inject(ActivatedRoute);
+  protected router = inject(Router);
+  protected eventManager = inject(JhiEventManager);
+  protected modalService = inject(NgbModal);
+
   licences: Licence[] = [];
   eventSubscriber?: Subscription;
   currentSearch: string;
@@ -42,13 +48,7 @@ export class LicenceComponent implements OnInit, OnDestroy {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
-  constructor(
-    protected licenceService: LicenceService,
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
-    protected eventManager: JhiEventManager,
-    protected modalService: NgbModal,
-  ) {
+  constructor() {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
         ? this.activatedRoute.snapshot.queryParams['search']

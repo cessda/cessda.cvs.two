@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnInit} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
-import {Level, Log, Logger, LoggersResponse} from './log.model';
-import {LogsService} from './logs.service';
+import { Level, Log, Logger, LoggersResponse } from './log.model';
+import { LogsService } from './logs.service';
 
 @Component({
-    selector: 'jhi-logs',
-    templateUrl: './logs.component.html',
-    standalone: false
+  selector: 'jhi-logs',
+  templateUrl: './logs.component.html',
+  standalone: false,
 })
 export class LogsComponent implements OnInit {
+  private logsService = inject(LogsService);
+
   loggers?: Log[];
   filter = '';
   orderProp = 'name';
   reverse = false;
-
-  constructor(private logsService: LogsService) {}
 
   ngOnInit(): void {
     this.findAndExtractLoggers();
@@ -44,7 +44,7 @@ export class LogsComponent implements OnInit {
       .findAll()
       .subscribe(
         (response: LoggersResponse) =>
-          (this.loggers = Object.entries(response.loggers).map((logger: [string, Logger]) => new Log(logger[0], logger[1].effectiveLevel)))
+          (this.loggers = Object.entries(response.loggers).map((logger: [string, Logger]) => new Log(logger[0], logger[1].effectiveLevel))),
       );
   }
 }

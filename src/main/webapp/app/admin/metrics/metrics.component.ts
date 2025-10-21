@@ -13,23 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {flatMap} from 'rxjs/operators';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
+import { flatMap } from 'rxjs/operators';
 
-import {Metrics, MetricsKey, MetricsService, Thread, ThreadDump} from './metrics.service';
+import { Metrics, MetricsKey, MetricsService, Thread, ThreadDump } from './metrics.service';
 
 @Component({
-    selector: 'jhi-metrics',
-    templateUrl: './metrics.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'jhi-metrics',
+  templateUrl: './metrics.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class MetricsComponent implements OnInit {
+  private metricsService = inject(MetricsService);
+  private changeDetector = inject(ChangeDetectorRef);
+
   metrics?: Metrics;
   threads?: Thread[];
   updatingMetrics = true;
-
-  constructor(private metricsService: MetricsService, private changeDetector: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.refresh();
@@ -47,8 +48,8 @@ export class MetricsComponent implements OnInit {
             this.threads = threadDump.threads;
             this.updatingMetrics = false;
             this.changeDetector.detectChanges();
-          }
-        )
+          },
+        ),
       )
       .subscribe();
   }

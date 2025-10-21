@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -23,10 +23,10 @@ import { MetadataField } from 'app/shared/model/metadata-field.model';
 type EntityResponseType = HttpResponse<MetadataField>;
 @Injectable({ providedIn: 'root' })
 export class MetadataFieldService {
+  protected http = inject(HttpClient);
+
   public resourceUrl = SERVER_API_URL + 'api/metadata-fields';
   public resourceSearchUrl = SERVER_API_URL + 'api/_search/metadata-fields';
-
-  constructor(protected http: HttpClient) {}
 
   findByKey(metadataKey: string): Observable<EntityResponseType> {
     return this.http.get<MetadataField>(`${this.resourceUrl}/metadata-key/${metadataKey}`, { observe: 'response' });

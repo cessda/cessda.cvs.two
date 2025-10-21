@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
@@ -23,20 +23,18 @@ import { Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
 
 @Component({
-    templateUrl: './editor-detail-cv-delete-dialog.component.html',
-    standalone: false
+  templateUrl: './editor-detail-cv-delete-dialog.component.html',
+  standalone: false,
 })
 export class EditorDetailCvDeleteDialogComponent implements OnInit {
+  protected editorService = inject(EditorService);
+  activeModal = inject(NgbActiveModal);
+  private router = inject(Router);
+  protected eventManager = inject(JhiEventManager);
+
   vocabularyParam!: Vocabulary;
   versionParam!: Version;
   deleteType = 'versionTl';
-
-  constructor(
-    protected editorService: EditorService,
-    public activeModal: NgbActiveModal,
-    private router: Router,
-    protected eventManager: JhiEventManager,
-  ) {}
 
   clear(): void {
     this.activeModal.dismiss();

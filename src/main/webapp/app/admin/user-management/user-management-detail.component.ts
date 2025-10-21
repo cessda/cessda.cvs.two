@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { User } from 'app/core/user/user.model';
 
 @Component({
-    selector: 'jhi-user-mgmt-detail',
-    templateUrl: './user-management-detail.component.html',
-    standalone: false
+  selector: 'jhi-user-mgmt-detail',
+  templateUrl: './user-management-detail.component.html',
+  standalone: false,
 })
 export class UserManagementDetailComponent implements OnInit {
-  user: User | null = null;
+  private route = inject(ActivatedRoute);
 
-  constructor(private route: ActivatedRoute) {}
+  user: User | null = null;
 
   ngOnInit(): void {
     this.route.data.subscribe(({ user }) => (this.user = user));

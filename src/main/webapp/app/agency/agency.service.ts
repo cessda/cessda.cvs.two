@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 
 import { SERVER_API_URL } from 'app/app.constants';
@@ -24,11 +24,11 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AgencyService {
+  protected http = inject(HttpClient);
+
   public resourceUrl = SERVER_API_URL + 'api/agencies';
   public resourceSearchUrl = SERVER_API_URL + 'api/_search/agencies';
   public resourceStatUrl = SERVER_API_URL + 'api/agencies-stat';
-
-  constructor(protected http: HttpClient) {}
 
   create(agency: Agency): Observable<HttpResponse<Agency>> {
     return this.http.post<Agency>(this.resourceUrl, agency, { observe: 'response' });

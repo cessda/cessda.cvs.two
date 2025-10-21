@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
@@ -22,11 +22,15 @@ import { Account } from 'app/core/user/account.model';
 import { PasswordService } from './password.service';
 
 @Component({
-    selector: 'jhi-password',
-    templateUrl: './password.component.html',
-    standalone: false
+  selector: 'jhi-password',
+  templateUrl: './password.component.html',
+  standalone: false,
 })
 export class PasswordComponent implements OnInit {
+  private passwordService = inject(PasswordService);
+  private accountService = inject(AccountService);
+  private fb = inject(FormBuilder);
+
   doNotMatch = false;
   error = false;
   success = false;
@@ -36,12 +40,6 @@ export class PasswordComponent implements OnInit {
     newPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
   });
-
-  constructor(
-    private passwordService: PasswordService,
-    private accountService: AccountService,
-    private fb: FormBuilder,
-  ) {}
 
   ngOnInit(): void {
     this.account$ = this.accountService.identity();

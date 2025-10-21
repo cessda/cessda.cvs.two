@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -26,9 +26,9 @@ type EntityArrayResponseType = HttpResponse<Comment[]>;
 
 @Injectable({ providedIn: 'root' })
 export class CommentService {
-  public resourceUrl = SERVER_API_URL + 'api/comments';
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  public resourceUrl = SERVER_API_URL + 'api/comments';
 
   findAllByVersion(versionId: number): Observable<EntityArrayResponseType> {
     return this.http.get<Comment[]>(`${this.resourceUrl}/version/${versionId}`, { observe: 'response' }).pipe(

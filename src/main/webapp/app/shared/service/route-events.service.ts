@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router, RoutesRecognized } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { filter, pairwise } from 'rxjs/operators';
@@ -21,13 +21,13 @@ import { Location } from '@angular/common';
 
 @Injectable()
 export class RouteEventsService {
+  private router = inject(Router);
+  private location = inject(Location);
+
   // save the previous route
   public previousRoutePath = new BehaviorSubject<string>('');
 
-  constructor(
-    private router: Router,
-    private location: Location,
-  ) {
+  constructor() {
     // ..initial prvious route will be the current path for now
     this.previousRoutePath.next(this.location.path());
 

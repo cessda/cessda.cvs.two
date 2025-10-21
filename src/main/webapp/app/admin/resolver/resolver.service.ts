@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -26,10 +26,10 @@ type EntityArrayResponseType = HttpResponse<Resolver[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ResolverService {
+  protected http = inject(HttpClient);
+
   public resourceUrl = SERVER_API_URL + 'api/resolvers';
   public resourceSearchUrl = SERVER_API_URL + 'api/_search/resolvers';
-
-  constructor(protected http: HttpClient) {}
 
   create(resolver: Resolver): Observable<EntityResponseType> {
     return this.http.post<Resolver>(this.resourceUrl, resolver, { observe: 'response' });

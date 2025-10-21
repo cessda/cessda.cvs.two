@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -25,12 +25,10 @@ import { StateStorageService } from 'app/core/auth/state-storage.service';
 
 @Injectable()
 export class AuthExpiredInterceptor implements HttpInterceptor {
-  constructor(
-    private loginService: LoginService,
-    private loginModalService: LoginModalService,
-    private stateStorageService: StateStorageService,
-    private router: Router
-  ) {}
+  private loginService = inject(LoginService);
+  private loginModalService = inject(LoginModalService);
+  private stateStorageService = inject(StateStorageService);
+  private router = inject(Router);
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
@@ -41,7 +39,7 @@ export class AuthExpiredInterceptor implements HttpInterceptor {
           this.router.navigate(['']);
           this.loginModalService.open();
         }
-      })
+      }),
     );
   }
 }

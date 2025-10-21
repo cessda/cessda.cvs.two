@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { MetadataField } from 'app/shared/model/metadata-field.model';
 import { EditorService } from 'app/editor/editor.service';
 import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field.service';
@@ -28,11 +28,17 @@ import { FileFormat } from 'app/shared/vocabulary-download/FileFormat';
 import { Authority } from '../constants/authority.constants';
 
 @Component({
-    selector: 'jhi-custom-page',
-    templateUrl: './custom-page.component.html',
-    standalone: false
+  selector: 'jhi-custom-page',
+  templateUrl: './custom-page.component.html',
+  standalone: false,
 })
 export class CustomPageComponent implements OnInit, OnDestroy {
+  protected editorService = inject(EditorService);
+  private metadataFieldService = inject(MetadataFieldService);
+  protected eventManager = inject(JhiEventManager);
+  protected activatedRoute = inject(ActivatedRoute);
+  protected fileUploadService = inject(FileUploadService);
+
   @Input() pageType!: string;
 
   public readonly authorities = [Authority.ADMIN, Authority.ADMIN_CONTENT];
@@ -55,13 +61,7 @@ export class CustomPageComponent implements OnInit, OnDestroy {
   inDocxProgress = false;
   uploadFileName = '';
 
-  constructor(
-    protected editorService: EditorService,
-    private metadataFieldService: MetadataFieldService,
-    protected eventManager: JhiEventManager,
-    protected activatedRoute: ActivatedRoute,
-    protected fileUploadService: FileUploadService,
-  ) {
+  constructor() {
     this.activatedRoute.queryParams.subscribe(params => {
       if (params['docx-export'] && params['docx-export'] === 'true') {
         this.enableDocxExport = true;

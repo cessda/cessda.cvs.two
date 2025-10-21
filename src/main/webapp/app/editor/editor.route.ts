@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, Routes } from '@angular/router';
 
 import { EMPTY, Observable, of } from 'rxjs';
@@ -29,11 +29,9 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access-service'
 import { EditorCvAddPopupComponent } from 'app/editor/editor-cv-add-dialog.component';
 
 @Injectable({ providedIn: 'root' })
-export class VocabularyResolve  {
-  constructor(
-    private service: EditorService,
-    private router: Router,
-  ) {}
+export class VocabularyResolve {
+  private service = inject(EditorService);
+  private router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Vocabulary> | Observable<never> {
     const notation = route.params['notation'];

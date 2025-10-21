@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
@@ -21,17 +21,15 @@ import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from './licence.service';
 
 @Component({
-    templateUrl: './licence-delete-dialog.component.html',
-    standalone: false
+  templateUrl: './licence-delete-dialog.component.html',
+  standalone: false,
 })
 export class LicenceDeleteDialogComponent {
-  licence?: Licence;
+  protected licenceService = inject(LicenceService);
+  activeModal = inject(NgbActiveModal);
+  protected eventManager = inject(JhiEventManager);
 
-  constructor(
-    protected licenceService: LicenceService,
-    public activeModal: NgbActiveModal,
-    protected eventManager: JhiEventManager,
-  ) {}
+  licence?: Licence;
 
   cancel(): void {
     this.activeModal.dismiss();

@@ -13,19 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { Concept } from 'app/shared/model/concept.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 import { Subscription } from 'rxjs';
 
 @Component({
-    selector: 'jhi-tree-editor-deprecated',
-    templateUrl: './tree-editor-deprecated.component.html',
-    styleUrls: ['./tree-editor.component.scss'],
-    standalone: false
+  selector: 'jhi-tree-editor-deprecated',
+  templateUrl: './tree-editor-deprecated.component.html',
+  styleUrls: ['./tree-editor.component.scss'],
+  standalone: false,
 })
 export class TreeEditorDeprecatedComponent implements OnInit, OnDestroy {
+  protected eventManager = inject(JhiEventManager);
+
   @Input() parentNotation?: string;
   @Input() conceptList?: Concept[];
   @Input() level?: number;
@@ -33,8 +35,6 @@ export class TreeEditorDeprecatedComponent implements OnInit, OnDestroy {
   eventSubscriber?: Subscription;
   eventSubscriber2?: Subscription;
   activeConceptNotation?: string;
-
-  constructor(protected eventManager: JhiEventManager) {}
 
   removeCurrentLevelItems: any = (conceptList?: Concept[], parentNotation?: string, level?: number) => {
     return conceptList!.filter(c => c.parent !== parentNotation);

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router, Routes } from '@angular/router';
 import { JhiResolvePagingParams } from 'ng-jhipster';
@@ -27,11 +27,9 @@ import { LicenceDetailComponent } from './licence-detail.component';
 import { LicenceUpdateComponent } from './licence-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class LicenceResolve  {
-  constructor(
-    private service: LicenceService,
-    private router: Router,
-  ) {}
+export class LicenceResolve {
+  private service = inject(LicenceService);
+  private router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Licence> | Observable<never> {
     const id = route.params['id'];

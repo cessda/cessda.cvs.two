@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MaintenanceService } from 'app/admin/maintenance/maintenance.service';
 import { HttpResponse } from '@angular/common/http';
 import { Maintenance } from 'app/admin/maintenance/maintenance.model';
 
 @Component({
-    selector: 'jhi-maintenance',
-    templateUrl: './maintenance.component.html',
-    standalone: false
+  selector: 'jhi-maintenance',
+  templateUrl: './maintenance.component.html',
+  standalone: false,
 })
 export class MaintenanceComponent {
+  protected maintenanceService = inject(MaintenanceService);
+
   isGeneratingJson: boolean;
   isIndexingAgency: boolean;
   isIndexingAgencyStat: boolean;
@@ -36,7 +38,7 @@ export class MaintenanceComponent {
   indexingVocabularyPublishOutput: string | null;
   indexingVocabularyEditorOutput: string | null;
 
-  constructor(protected maintenanceService: MaintenanceService) {
+  constructor() {
     this.isGeneratingJson = false;
     this.isIndexingAgency = false;
     this.isIndexingAgencyStat = false;

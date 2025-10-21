@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {SessionStorageService} from 'ngx-webstorage';
+import { Injectable, inject } from '@angular/core';
+import { SessionStorageService } from 'ngx-webstorage';
 
 @Injectable({ providedIn: 'root' })
 export class StateStorageService {
-  private previousUrlKey = 'previousUrl';
+  private $sessionStorage = inject(SessionStorageService);
 
-  constructor(private $sessionStorage: SessionStorageService) {}
+  private previousUrlKey = 'previousUrl';
 
   storeUrl(url: string): void {
     this.$sessionStorage.store(this.previousUrlKey, url);

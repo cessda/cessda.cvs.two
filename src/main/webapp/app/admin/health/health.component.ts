@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -21,17 +21,15 @@ import { Health, HealthDetails, HealthKey, HealthService, HealthStatus } from '.
 import { HealthModalComponent } from './health-modal.component';
 
 @Component({
-    selector: 'jhi-health',
-    templateUrl: './health.component.html',
-    standalone: false
+  selector: 'jhi-health',
+  templateUrl: './health.component.html',
+  standalone: false,
 })
 export class HealthComponent implements OnInit {
-  health?: Health;
+  private modalService = inject(NgbModal);
+  private healthService = inject(HealthService);
 
-  constructor(
-    private modalService: NgbModal,
-    private healthService: HealthService,
-  ) {}
+  health?: Health;
 
   ngOnInit(): void {
     this.refresh();

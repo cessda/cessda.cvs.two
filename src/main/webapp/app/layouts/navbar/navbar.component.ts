@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JhiEventManager, JhiEventWithContent, JhiLanguageService } from 'ng-jhipster';
 import { SessionStorageService } from 'ngx-webstorage';
@@ -34,12 +34,25 @@ import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Authority } from 'app/shared/constants/authority.constants';
 
 @Component({
-    selector: 'jhi-navbar',
-    templateUrl: './navbar.component.html',
-    styleUrls: ['navbar.scss'],
-    standalone: false
+  selector: 'jhi-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['navbar.scss'],
+  standalone: false,
 })
 export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
+  private loginService = inject(LoginService);
+  private languageService = inject(JhiLanguageService);
+  private sessionStorage = inject(SessionStorageService);
+  private accountService = inject(AccountService);
+  protected activatedRoute = inject(ActivatedRoute);
+  private loginModalService = inject(LoginModalService);
+  private profileService = inject(ProfileService);
+  protected eventManager = inject(JhiEventManager);
+  private router = inject(Router);
+  private location = inject(Location);
+  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+  private homeService = inject(HomeService);
+
   readonly authorities = [Authority.ADMIN, Authority.ADMIN_TECHNICAL];
 
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
@@ -58,20 +71,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   isEditorSearch = false;
   searchLangs: string[] = ['en', 'da', 'nl', 'fi', 'fr', 'de', 'it', 'ja', 'no', 'pt', 'sr', 'sl', 'sv', '_all'];
 
-  constructor(
-    private loginService: LoginService,
-    private languageService: JhiLanguageService,
-    private sessionStorage: SessionStorageService,
-    private accountService: AccountService,
-    protected activatedRoute: ActivatedRoute,
-    private loginModalService: LoginModalService,
-    private profileService: ProfileService,
-    protected eventManager: JhiEventManager,
-    private router: Router,
-    private location: Location,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
-    private homeService: HomeService,
-  ) {
+  constructor() {
     this.version = environment.version
       ? environment.version.toLowerCase().startsWith('v')
         ? environment.version

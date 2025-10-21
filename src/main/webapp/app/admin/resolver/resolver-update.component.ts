@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -23,11 +23,15 @@ import { Resolver } from 'app/shared/model/resolver.model';
 import { ResolverService } from './resolver.service';
 
 @Component({
-    selector: 'jhi-resolver-update',
-    templateUrl: './resolver-update.component.html',
-    standalone: false
+  selector: 'jhi-resolver-update',
+  templateUrl: './resolver-update.component.html',
+  standalone: false,
 })
 export class ResolverUpdateComponent implements OnInit {
+  protected resolverService = inject(ResolverService);
+  protected activatedRoute = inject(ActivatedRoute);
+  private fb = inject(FormBuilder);
+
   isSaving = false;
 
   editForm = this.fb.group({
@@ -38,12 +42,6 @@ export class ResolverUpdateComponent implements OnInit {
     resolverType: new FormControl(''),
     resolverURI: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
-
-  constructor(
-    protected resolverService: ResolverService,
-    protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder,
-  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ resolver }) => {

@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-    selector: 'jhi-confirm-modal',
-    templateUrl: './editor-detail-code-add-edit-confirm.component.html',
-    standalone: false
+  selector: 'jhi-confirm-modal',
+  templateUrl: './editor-detail-code-add-edit-confirm.component.html',
+  standalone: false,
 })
 export class EditorDetailCvAddEditConfirmModalComponent {
-  constructor(public activeModal: NgbActiveModal) {}
+  activeModal = inject(NgbActiveModal);
 
   clear(): void {
     this.activeModal.dismiss();

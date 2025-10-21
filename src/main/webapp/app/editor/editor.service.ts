@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -33,14 +33,14 @@ import { MetadataValue } from 'app/shared/model/metadata-value.model';
 
 @Injectable({ providedIn: 'root' })
 export class EditorService {
+  protected http = inject(HttpClient);
+
   public resourceEditorSearchUrl = SERVER_API_URL + 'api/editors/search';
   public resourceEditorVocabularyUrl = SERVER_API_URL + 'api/editors/vocabularies';
   public resourceEditorCodeUrl = SERVER_API_URL + 'api/editors/codes';
   public resourceEditorCommentUrl = SERVER_API_URL + 'api/editors/comments';
   public resourceEditorMetadataUrl = SERVER_API_URL + 'api/editors/metadatas';
   public resourceDownloadUrl = SERVER_API_URL + 'api/editors/download';
-
-  constructor(protected http: HttpClient) {}
 
   createVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<Vocabulary>> {
     return this.http

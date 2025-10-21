@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -26,10 +26,10 @@ type EntityArrayResponseType = HttpResponse<Licence[]>;
 
 @Injectable({ providedIn: 'root' })
 export class LicenceService {
+  protected http = inject(HttpClient);
+
   public resourceUrl = SERVER_API_URL + 'api/licences';
   public resourceSearchUrl = SERVER_API_URL + 'api/_search/licences';
-
-  constructor(protected http: HttpClient) {}
 
   create(licence: Licence): Observable<EntityResponseType> {
     return this.http.post<Licence>(this.resourceUrl, licence, { observe: 'response' });

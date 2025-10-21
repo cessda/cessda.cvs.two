@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -30,11 +30,20 @@ import { AgencyService } from 'app/agency/agency.service';
 import { UserAgency } from 'app/shared/model/user-agency.model';
 
 @Component({
-    selector: 'jhi-user-mgmt',
-    templateUrl: './user-management.component.html',
-    standalone: false
+  selector: 'jhi-user-mgmt',
+  templateUrl: './user-management.component.html',
+  standalone: false,
 })
 export class UserManagementComponent implements OnInit, OnDestroy {
+  private userService = inject(UserService);
+  private accountService = inject(AccountService);
+  private activatedRoute = inject(ActivatedRoute);
+  private router = inject(Router);
+  private eventManager = inject(JhiEventManager);
+  private modalService = inject(NgbModal);
+  private agencyService = inject(AgencyService);
+  private paginationUtil = inject(JhiPaginationUtil);
+
   currentAccount: Account | null = null;
   users: User[] = [];
   userListSubscription: Subscription | undefined;
@@ -45,17 +54,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   ascending = true;
 
   agencies: Agency[] = [];
-
-  constructor(
-    private userService: UserService,
-    private accountService: AccountService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private eventManager: JhiEventManager,
-    private modalService: NgbModal,
-    private agencyService: AgencyService,
-    private paginationUtil: JhiPaginationUtil,
-  ) {}
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => (this.currentAccount = account));

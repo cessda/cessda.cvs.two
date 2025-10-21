@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 
 import { ConfigurationService, Bean, PropertySource } from './configuration.service';
 
 @Component({
-    selector: 'jhi-configuration',
-    templateUrl: './configuration.component.html',
-    standalone: false
+  selector: 'jhi-configuration',
+  templateUrl: './configuration.component.html',
+  standalone: false,
 })
 export class ConfigurationComponent implements OnInit {
+  private configurationService = inject(ConfigurationService);
+
   allBeans!: Bean[];
   beans: Bean[] = [];
   beansFilter = '';
   beansAscending = true;
   propertySources: PropertySource[] = [];
-
-  constructor(private configurationService: ConfigurationService) {}
 
   ngOnInit(): void {
     this.configurationService.getBeans().subscribe(beans => {

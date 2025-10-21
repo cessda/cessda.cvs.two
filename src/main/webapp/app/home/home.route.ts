@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router, Routes } from '@angular/router';
 
@@ -26,11 +26,9 @@ import { HomeDetailComponent } from 'app/home/home-detail.component';
 import { mergeMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class VocabularyResolve  {
-  constructor(
-    private service: HomeService,
-    private router: Router,
-  ) {}
+export class VocabularyResolve {
+  private service = inject(HomeService);
+  private router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Vocabulary> {
     let notation = route.params['notation'];

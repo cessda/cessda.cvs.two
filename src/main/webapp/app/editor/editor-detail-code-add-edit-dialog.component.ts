@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -33,11 +33,20 @@ import { EditorDetailCvAddEditConfirmModalComponent } from 'app/editor/editor-de
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
-    selector: 'jhi-editor-detail-code-add-edit-dialog',
-    templateUrl: './editor-detail-code-add-edit-dialog.component.html',
-    standalone: false
+  selector: 'jhi-editor-detail-code-add-edit-dialog',
+  templateUrl: './editor-detail-code-add-edit-dialog.component.html',
+  standalone: false,
 })
 export class EditorDetailCodeAddEditDialogComponent implements OnInit {
+  private accountService = inject(AccountService);
+  protected editorService = inject(EditorService);
+  activeModal = inject(NgbActiveModal);
+  protected eventManager = inject(JhiEventManager);
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+  private modalService = inject(NgbModal);
+  private _ngZone = inject(NgZone);
+
   isSaving: boolean;
   isSubmitting: boolean;
   account!: Account;
@@ -76,16 +85,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     }
   >(this.formControls);
 
-  constructor(
-    private accountService: AccountService,
-    protected editorService: EditorService,
-    public activeModal: NgbActiveModal,
-    protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
-    private router: Router,
-    private modalService: NgbModal,
-    private _ngZone: NgZone,
-  ) {
+  constructor() {
     this.isSaving = false;
     this.isSubmitting = false;
     this.isEnablePreview = false;

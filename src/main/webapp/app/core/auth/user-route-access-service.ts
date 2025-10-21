@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable, isDevMode } from '@angular/core';
+import { Injectable, isDevMode, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -24,13 +24,11 @@ import { StateStorageService } from './state-storage.service';
 import { Authority } from 'app/shared/constants/authority.constants';
 
 @Injectable({ providedIn: 'root' })
-export class UserRouteAccessService  {
-  constructor(
-    private router: Router,
-    private loginModalService: LoginModalService,
-    private accountService: AccountService,
-    private stateStorageService: StateStorageService,
-  ) {}
+export class UserRouteAccessService {
+  private router = inject(Router);
+  private loginModalService = inject(LoginModalService);
+  private accountService = inject(AccountService);
+  private stateStorageService = inject(StateStorageService);
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     const authorities = route.data['authorities'];

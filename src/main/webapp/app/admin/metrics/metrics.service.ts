@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
 
-import {SERVER_API_URL} from 'app/app.constants';
+import { SERVER_API_URL } from 'app/app.constants';
 
 export type MetricsKey = 'jvm' | 'http.server.requests' | 'cache' | 'services' | 'databases' | 'garbageCollector' | 'processMetrics';
 export type Metrics = { [key in MetricsKey]: any };
@@ -26,7 +26,7 @@ export type ThreadDump = { threads: Thread[] };
 
 @Injectable({ providedIn: 'root' })
 export class MetricsService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getMetrics(): Observable<Metrics> {
     return this.http.get<Metrics>(SERVER_API_URL + 'management/jhimetrics');

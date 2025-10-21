@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -32,11 +32,18 @@ import { Version } from 'app/shared/model/version.model';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
-    selector: 'jhi-editor-detail-cv-add-edit-dialog',
-    templateUrl: './editor-detail-cv-add-edit-dialog.component.html',
-    standalone: false
+  selector: 'jhi-editor-detail-cv-add-edit-dialog',
+  templateUrl: './editor-detail-cv-add-edit-dialog.component.html',
+  standalone: false,
 })
 export class EditorDetailCvAddEditDialogComponent implements OnInit {
+  private accountService = inject(AccountService);
+  protected editorService = inject(EditorService);
+  activeModal = inject(NgbActiveModal);
+  protected eventManager = inject(JhiEventManager);
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+
   isSaving = false;
   isSubmitting = false;
   account!: Account;
@@ -80,15 +87,6 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
       changeDesc?: FormControl<string | null>;
     }
   >(this.formControls);
-
-  constructor(
-    private accountService: AccountService,
-    protected editorService: EditorService,
-    public activeModal: NgbActiveModal,
-    protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
-    private router: Router,
-  ) {}
 
   updateLanguageCheckbox(agencyId: number): void {
     // for Add new CV set taken language with []

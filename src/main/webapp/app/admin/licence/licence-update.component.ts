@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -24,11 +24,16 @@ import { LicenceService } from './licence.service';
 import { FileUploadService } from 'app/shared/upload/file-upload.service';
 
 @Component({
-    selector: 'jhi-licence-update',
-    templateUrl: './licence-update.component.html',
-    standalone: false
+  selector: 'jhi-licence-update',
+  templateUrl: './licence-update.component.html',
+  standalone: false,
 })
 export class LicenceUpdateComponent implements OnInit {
+  protected licenceService = inject(LicenceService);
+  protected activatedRoute = inject(ActivatedRoute);
+  private fb = inject(FormBuilder);
+  protected fileUploadService = inject(FileUploadService);
+
   isSaving = false;
 
   selectedFiles: FileList | null = null;
@@ -48,13 +53,6 @@ export class LicenceUpdateComponent implements OnInit {
     ]),
     abbr: new FormControl<string>('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(100)] }),
   });
-
-  constructor(
-    protected licenceService: LicenceService,
-    protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder,
-    protected fileUploadService: FileUploadService,
-  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ licence }) => {

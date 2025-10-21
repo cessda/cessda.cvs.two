@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild, inject } from '@angular/core';
 import { EditorService } from 'app/editor/editor.service';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
@@ -45,6 +45,17 @@ const DEFAULT_PREDICATE = 'code';
   standalone: false,
 })
 export class VocabularySearchResultComponent implements OnInit {
+  private accountService = inject(AccountService);
+  private loginModalService = inject(LoginModalService);
+  private languageService = inject(JhiLanguageService);
+  private homeService = inject(HomeService);
+  private editorService = inject(EditorService);
+  private activatedRoute = inject(ActivatedRoute);
+  private router = inject(Router);
+  private eventManager = inject(JhiEventManager);
+  private fb = inject(UntypedFormBuilder);
+  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+
   @Input() appScope!: AppScope;
   @ViewChild('filterPanels', { static: true }) filterPanels!: ElementRef;
 
@@ -76,18 +87,7 @@ export class VocabularySearchResultComponent implements OnInit {
 
   searchForm: UntypedFormGroup;
 
-  constructor(
-    private accountService: AccountService,
-    private loginModalService: LoginModalService,
-    private languageService: JhiLanguageService,
-    private homeService: HomeService,
-    private editorService: EditorService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router,
-    private eventManager: JhiEventManager,
-    private fb: UntypedFormBuilder,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
-  ) {
+  constructor() {
     this.searchForm = this.fb.group({
       aggAgency: [],
       aggStatus: [],

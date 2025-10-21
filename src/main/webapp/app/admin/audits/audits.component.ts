@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,11 +23,16 @@ import { Audit } from './audit.model';
 import { AuditsService } from './audits.service';
 
 @Component({
-    selector: 'jhi-audit',
-    templateUrl: './audits.component.html',
-    standalone: false
+  selector: 'jhi-audit',
+  templateUrl: './audits.component.html',
+  standalone: false,
 })
 export class AuditsComponent implements OnInit {
+  private auditsService = inject(AuditsService);
+  private activatedRoute = inject(ActivatedRoute);
+  private datePipe = inject(DatePipe);
+  private router = inject(Router);
+
   audits: Audit[] = [];
   fromDate = '';
   itemsPerPage = ITEMS_PER_PAGE;
@@ -39,13 +44,6 @@ export class AuditsComponent implements OnInit {
   totalItems = 0;
 
   private dateFormat = 'yyyy-MM-dd';
-
-  constructor(
-    private auditsService: AuditsService,
-    private activatedRoute: ActivatedRoute,
-    private datePipe: DatePipe,
-    private router: Router,
-  ) {}
 
   ngOnInit(): void {
     this.toDate = this.today();

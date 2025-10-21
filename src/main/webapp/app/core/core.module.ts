@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule, inject } from '@angular/core';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
@@ -91,7 +91,11 @@ import { fontAwesomeIcons } from './icons/font-awesome-icons';
   ],
 })
 export class CvsCoreModule {
-  constructor(iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig, languageService: JhiLanguageService) {
+  constructor() {
+    const iconLibrary = inject(FaIconLibrary);
+    const dpConfig = inject(NgbDatepickerConfig);
+    const languageService = inject(JhiLanguageService);
+
     registerLocaleData(locale);
     iconLibrary.addIcons(...fontAwesomeIcons);
     dpConfig.minDate = { year: moment().year() - 100, month: 1, day: 1 };

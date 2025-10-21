@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-    selector: 'jhi-error',
-    templateUrl: './error.component.html',
-    standalone: false
+  selector: 'jhi-error',
+  templateUrl: './error.component.html',
+  standalone: false,
 })
 export class ErrorComponent implements OnInit, OnDestroy {
+  private translateService = inject(TranslateService);
+  private route = inject(ActivatedRoute);
+
   errorMessage?: string;
   errorKey?: string;
   langChangeSubscription?: Subscription;
-
-  constructor(private translateService: TranslateService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.data.subscribe(routeData => {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
 import { DiffContent } from 'node_modules/ngx-text-diff/lib/ngx-text-diff.model';
 import { HomeService } from 'app/home/home.service';
@@ -28,6 +28,10 @@ import { Concept } from 'app/shared/model/concept.model';
   standalone: false,
 })
 export class VersionCompareComponent implements OnInit, OnDestroy {
+  private homeService = inject(HomeService);
+  private editorService = inject(EditorService);
+  protected eventManager = inject(JhiEventManager);
+
   @Input() notation!: string;
   @Input() langVersion1!: string; // language-version for JSON-based or simply versionID for DB based comparison
   @Input() langVersion2!: string;
@@ -39,12 +43,6 @@ export class VersionCompareComponent implements OnInit, OnDestroy {
 
   contentSubject: Subject<DiffContent> = new Subject<DiffContent>();
   contentObservable$: Observable<DiffContent> = this.contentSubject.asObservable();
-
-  constructor(
-    private homeService: HomeService,
-    private editorService: EditorService,
-    protected eventManager: JhiEventManager,
-  ) {}
 
   doCvCompare(): void {
     if (this.dataSource === 'json' || this.dataSource === 'JSON') {

@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, inject } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {HealthDetails, HealthKey} from './health.service';
+import { HealthDetails, HealthKey } from './health.service';
 
 @Component({
-    selector: 'jhi-health-modal',
-    templateUrl: './health-modal.component.html',
-    standalone: false
+  selector: 'jhi-health-modal',
+  templateUrl: './health-modal.component.html',
+  standalone: false,
 })
 export class HealthModalComponent {
-  health?: { key: HealthKey; value: HealthDetails };
+  activeModal = inject(NgbActiveModal);
 
-  constructor(public activeModal: NgbActiveModal) {}
+  health?: { key: HealthKey; value: HealthDetails };
 
   readableValue(value: any): string {
     if (this.health && this.health.key === 'diskSpace') {
