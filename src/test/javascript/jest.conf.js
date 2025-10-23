@@ -1,3 +1,4 @@
+// @ts-check
 /*
  * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
@@ -15,6 +16,7 @@
  */
 const tsconfig = require('../../../tsconfig.json');
 
+/** @type {import('jest').Config} */
 module.exports = {
     preset: 'jest-preset-angular',
     setupFiles: ['jest-date-mock'],
@@ -40,6 +42,7 @@ module.exports = {
     }
 };
 
+/** @param {Record<string, string>} alias */
 function mapTypescriptAliasToJestAlias(alias = {}) {
     const jestAliases = { ...alias };
     if (!tsconfig.compilerOptions.paths) {

@@ -160,7 +160,7 @@ describe('Component Tests', () => {
         comp.transition();
 
         // THEN
-        expect(service.query).toBeCalledWith(
+        expect(service.query).toHaveBeenCalledWith(
           expect.objectContaining({
             sort: ['id,desc'],
           }),
@@ -176,7 +176,7 @@ describe('Component Tests', () => {
         comp.transition();
 
         // THEN
-        expect(service.query).toBeCalledWith(
+        expect(service.query).toHaveBeenCalledWith(
           expect.objectContaining({
             sort: ['timestamp,asc', 'id'],
           }),
@@ -197,7 +197,7 @@ describe('Component Tests', () => {
         comp.loadPage(1);
 
         // THEN
-        expect(comp.transition).not.toBeCalled();
+        expect(comp.transition).not.toHaveBeenCalled();
       });
 
       it('Should load new page', () => {
@@ -206,7 +206,7 @@ describe('Component Tests', () => {
 
         // THEN
         expect(comp.previousPage).toBe(2);
-        expect(comp.transition).toBeCalled();
+        expect(comp.transition).toHaveBeenCalled();
       });
     });
 
@@ -221,7 +221,7 @@ describe('Component Tests', () => {
 
         // THEN
         expect(comp.canLoad()).toBe(false);
-        expect(service.query).not.toBeCalled();
+        expect(service.query).not.toHaveBeenCalled();
       });
 
       it('Should query data if fromDate and toDate are not empty', () => {
@@ -234,7 +234,7 @@ describe('Component Tests', () => {
 
         // THEN
         expect(comp.canLoad()).toBe(true);
-        expect(service.query).toBeCalled();
+        expect(service.query).toHaveBeenCalled();
       });
     });
   });
