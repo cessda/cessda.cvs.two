@@ -23,7 +23,6 @@ import { Authority } from 'app/shared/constants/authority.constants';
 import { CvsTestModule } from '../../../test.module';
 import { UserManagementUpdateComponent } from 'app/admin/user-management/user-management-update.component';
 import { UserService } from 'app/core/user/user.service';
-import { User } from 'app/core/user/user.model';
 
 describe('Component Tests', () => {
   describe('User Management Update Component', () => {

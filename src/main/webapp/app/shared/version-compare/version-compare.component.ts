@@ -19,8 +19,7 @@ import { DiffContent } from 'node_modules/ngx-text-diff/lib/ngx-text-diff.model'
 import { HomeService } from 'app/home/home.service';
 import { HttpResponse } from '@angular/common/http';
 import { EditorService } from 'app/editor/editor.service';
-import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
-import { Concept } from 'app/shared/model/concept.model';
+import { JhiEventManager } from 'ng-jhipster';
 
 @Component({
   selector: 'jhi-version-compare',
@@ -32,10 +31,10 @@ export class VersionCompareComponent implements OnInit, OnDestroy {
   private editorService = inject(EditorService);
   protected eventManager = inject(JhiEventManager);
 
-  @Input() notation!: string;
-  @Input() langVersion1!: string; // language-version for JSON-based or simply versionID for DB based comparison
-  @Input() langVersion2!: string;
-  @Input() dataSource!: string;
+  @Input({ required: true }) notation!: string;
+  @Input({ required: true }) langVersion1!: string; // language-version for JSON-based or simply versionID for DB based comparison
+  @Input({ required: true }) langVersion2!: string;
+  @Input({ required: true }) dataSource!: string;
 
   eventSubscriber?: Subscription;
 
@@ -62,7 +61,7 @@ export class VersionCompareComponent implements OnInit, OnDestroy {
     return {
       leftContent: left,
       rightContent: right,
-    } as DiffContent;
+    };
   }
 
   toggleCompareShow(): void {
@@ -73,7 +72,7 @@ export class VersionCompareComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.eventSubscriber = this.eventManager.subscribe('closeComparison', (response: JhiEventWithContent<Concept>) => {
+    this.eventSubscriber = this.eventManager.subscribe('closeComparison', () => {
       this.isOpen = false;
     });
   }

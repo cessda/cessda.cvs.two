@@ -17,7 +17,7 @@
 -->
 @for (concept of conceptList; track concept) {
   <div>
-    @if (concept.parent === parentNotation) {
+    @if (parentNotation && concept.parent === parentNotation) {
       <ul class="concept-tree ul-level-{{level!}}">
         <li [attr.id]="!concept.deprecated ? 'code_' + concept.notation.split('.').join('') : null" [ngClass]="{'y-bgr': !concept.title}">
           @if (!concept.deprecated) {
@@ -47,7 +47,7 @@
             @if (isConceptHasChildren(concept.notation,conceptList)) {
               <jhi-tree-editor
                 [ngClass]="{'display-none': concept.visible}"
-              [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems(conceptList , parentNotation)" [level]="level! + 1"></jhi-tree-editor>
+              [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems(conceptList, parentNotation)" [level]="level + 1"></jhi-tree-editor>
             }
           </li>
         </ul>

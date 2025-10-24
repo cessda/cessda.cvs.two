@@ -540,7 +540,7 @@
                   Code definition({{version!.language}})
                 </span>
               </div>
-              <jhi-tree-editor [parentNotation]="" [conceptList]="version!.concepts" [level]="0"></jhi-tree-editor>
+              <jhi-tree-editor [conceptList]="version!.concepts"></jhi-tree-editor>
 
 
               <br>
@@ -713,7 +713,7 @@
                         }
                         <span>{{version!.language}}: {{vh.version}} </span>
                         <span>&nbsp;&nbsp;&nbsp; Published: {{vh.date}}</span>
-                        @if (!vh.version?.startsWith(getSlMajorMinorVersionNumber())) {
+                        @if (!vh.version.startsWith(getSlMajorMinorVersionNumber())) {
                           <a [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionNumber(vh.version), lang:vocabulary!.selectedLang}">
                             <fa-icon icon="external-link-alt"></fa-icon>
                           </a>

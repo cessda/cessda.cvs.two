@@ -23,9 +23,9 @@ import { tap } from 'rxjs/operators';
 export class NotificationInterceptor implements HttpInterceptor {
   private alertService = inject(JhiAlertService);
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
-      tap((event: HttpEvent<any>) => {
+      tap((event: HttpEvent<unknown>) => {
         if (event instanceof HttpResponse) {
           let alert: string | null = null;
           let alertParams: string | null = null;

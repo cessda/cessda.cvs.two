@@ -25,7 +25,7 @@ export class AuthInterceptor implements HttpInterceptor {
   private localStorage = inject(LocalStorageService);
   private sessionStorage = inject(SessionStorageService);
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!request || !request.url || (request.url.startsWith('http') && !(SERVER_API_URL && request.url.startsWith(SERVER_API_URL)))) {
       return next.handle(request);
     }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Router } from '@angular/router';
-import { HttpClientTestingModule, HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { JhiDateUtils, JhiLanguageService } from 'ng-jhipster';
 import { SessionStorageService, provideNgxWebstorage } from 'ngx-webstorage';

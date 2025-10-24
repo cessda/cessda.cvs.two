@@ -17,20 +17,20 @@
 -->
 @for (concept of conceptList; track concept) {
   <div>
-    @if (concept.deprecated === deprecated && concept.parent === parentNotation) {
-      <ul class="concept-tree ul-level-{{level!}}">
-        <li id="code_{{concept.notation!.split('.').join('')}}">
+    @if (concept.deprecated === deprecated && parentNotation && concept.parent === parentNotation) {
+      <ul class="concept-tree ul-level-{{level}}">
+        <li id="code_{{concept.notation.split('.').join('')}}">
             <div class="concept-row" (click)="selectConcept(concept)" [ngClass]="{ 'active': concept.notation === activeConceptNotation,
             'reorder': concept.status === 'REORDER', 'text-muted': concept.status === 'UNSELECTABLE', 'pivot': concept.status === 'PIVOT',
             'to-be-inserted': concept.status === 'TO_BE_INSERTED'}">
-            <span class="column1 coll-mar-{{level!}}">@if (isConceptHasChildren(concept.notation,conceptList)) {
+            <span class="column1 coll-mar-{{level}}">@if (isConceptHasChildren(concept.notation,conceptList)) {
               <span class="invisible-button"><fa-icon icon="caret-down"></fa-icon></span>
             }{{concept.notation}}</span>
           </div>
           @if (isConceptHasChildren(concept.notation,conceptList)) {
             <jhi-tree-reorder
               [ngClass]="{'display-none': concept.visible}"
-            [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems(conceptList , parentNotation)" [level]="level! + 1" [deprecated]=deprecated></jhi-tree-reorder>
+            [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems(conceptList , parentNotation)" [level]="level + 1" [deprecated]=deprecated></jhi-tree-reorder>
           }
         </li>
       </ul>
