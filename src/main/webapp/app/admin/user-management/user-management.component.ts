@@ -82,6 +82,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
       .query({
         page: 0,
         size: 1000,
+        sort: [],
       })
       .subscribe(res => (this.agencies = res.body || []));
 
@@ -108,7 +109,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     this.userService.update({ ...user, activated: isActivated }).subscribe(() => this.loadUsers());
   }
 
-  trackIdentity(_index: number, item: User): any {
+  trackIdentity(_index: number, item: User): number | undefined {
     return item.id;
   }
 

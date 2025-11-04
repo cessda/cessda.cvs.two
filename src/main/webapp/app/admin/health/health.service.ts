@@ -32,7 +32,9 @@ export interface Health {
 
 export interface HealthDetails {
   status: HealthStatus;
-  details: any;
+  details: {
+    [key: string]: unknown;
+  };
 }
 
 @Injectable({ providedIn: 'root' })

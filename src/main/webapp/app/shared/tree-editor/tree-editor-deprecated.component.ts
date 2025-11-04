@@ -29,16 +29,16 @@ export class TreeEditorDeprecatedComponent implements OnInit, OnDestroy {
   protected eventManager = inject(JhiEventManager);
 
   @Input() parentNotation?: string;
-  @Input() conceptList?: Concept[];
-  @Input() level?: number;
+  @Input({ required: true }) conceptList!: Concept[];
+  @Input() level: number = 0;
 
   eventSubscriber?: Subscription;
   eventSubscriber2?: Subscription;
   activeConceptNotation?: string;
 
-  removeCurrentLevelItems: any = (conceptList?: Concept[], parentNotation?: string, level?: number) => {
-    return conceptList!.filter(c => c.parent !== parentNotation);
-  };
+  removeCurrentLevelItems(parentNotation?: string) {
+    return this.conceptList.filter(c => c.parent !== parentNotation);
+  }
 
   isConceptHasChildren(notation?: string, conceptList?: Concept[]): boolean {
     return VocabularyUtil.isConceptHasChildren(notation!, conceptList!);

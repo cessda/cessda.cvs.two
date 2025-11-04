@@ -30,7 +30,7 @@ export interface Contexts {
 
 export interface Context {
   beans: Beans;
-  parentId?: any;
+  parentId?: string;
 }
 
 export interface Beans {
@@ -39,7 +39,12 @@ export interface Beans {
 
 export interface Bean {
   prefix: string;
-  properties: any;
+  properties: {
+    [key: string]: unknown;
+  };
+  inputs?: {
+    [key: string]: unknown;
+  };
 }
 
 export interface Env {

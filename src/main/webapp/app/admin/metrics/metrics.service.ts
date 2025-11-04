@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *

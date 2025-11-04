@@ -28,8 +28,8 @@ export class HealthModalComponent {
 
   health?: { key: HealthKey; value: HealthDetails };
 
-  readableValue(value: any): string {
-    if (this.health && this.health.key === 'diskSpace') {
+  readableValue(value: unknown): string {
+    if (this.health && this.health.key === 'diskSpace' && typeof value === 'number') {
       // Should display storage space in an human readable unit
       const val = value / 1073741824;
       if (val > 1) {
@@ -43,7 +43,7 @@ export class HealthModalComponent {
     if (typeof value === 'object') {
       return JSON.stringify(value);
     } else {
-      return value.toString();
+      return String(value);
     }
   }
 

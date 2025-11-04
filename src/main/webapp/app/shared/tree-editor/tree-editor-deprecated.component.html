@@ -47,7 +47,7 @@
             @if (isConceptHasChildren(concept.notation,conceptList)) {
               <jhi-tree-editor-deprecated
                 [ngClass]="{'display-none': concept.visible}"
-              [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems(conceptList , parentNotation)" [level]="level! + 1"></jhi-tree-editor-deprecated>
+              [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems(parentNotation)" [level]="level + 1"></jhi-tree-editor-deprecated>
             }
           </li>
         </ul>

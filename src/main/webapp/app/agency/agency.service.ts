@@ -17,7 +17,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 
 import { SERVER_API_URL } from 'app/app.constants';
-import { createRequestOption, SearchWithPagination } from 'app/shared/util/request-util';
+import { createRequestOption, Pagination, SearchWithPagination } from 'app/shared/util/request-util';
 import { Agency } from 'app/shared/model/agency.model';
 import { AgencyStat } from 'app/shared/model/agencystat.model';
 import { Observable } from 'rxjs';
@@ -42,7 +42,7 @@ export class AgencyService {
     return this.http.get<Agency>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<HttpResponse<Agency[]>> {
+  query(req?: Pagination): Observable<HttpResponse<Agency[]>> {
     const options = createRequestOption(req);
     return this.http.get<Agency[]>(this.resourceUrl, { params: options, observe: 'response' });
   }

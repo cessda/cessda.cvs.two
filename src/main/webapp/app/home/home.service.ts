@@ -18,7 +18,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
-import { createRequestOption } from 'app/shared/util/request-util';
+import { createRequestOption, Pagination } from 'app/shared/util/request-util';
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { CvResult } from 'app/shared/model/cv-result.model';
 
@@ -38,7 +38,7 @@ export class HomeService {
     return this.http.get<Vocabulary>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  search(req?: any): Observable<HttpResponse<CvResult>> {
+  search(req?: Pagination): Observable<HttpResponse<CvResult>> {
     const options = createRequestOption(req);
     return this.http.get<CvResult>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }

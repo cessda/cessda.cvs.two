@@ -55,8 +55,8 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
 
   readonly authorities = [Authority.ADMIN, Authority.ADMIN_TECHNICAL];
 
-  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
-  @ViewChild('searchLang', { static: true }) searchLang!: ElementRef;
+  @ViewChild('searchInput', { static: true }) searchInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('searchLang', { static: true }) searchLang!: ElementRef<HTMLSelectElement>;
   inProduction?: boolean;
   eventSubscriber?: Subscription;
   isNavbarCollapsed = true;
@@ -135,13 +135,12 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
       this.swaggerEnabled = profileInfo.swaggerEnabled;
     });
 
-    fromEvent(this.searchInput.nativeElement, 'keyup')
+    fromEvent<KeyboardEvent>(this.searchInput.nativeElement, 'keyup')
       .pipe(
-        map((event: any) => {
-          return [event.target.value, event.key] as [string, string];
+        map((event: KeyboardEvent) => {
+          return [(event.target as HTMLInputElement).value, event.key] as [string, string];
         }),
         debounceTime(500),
-        // distinctUntilChanged()
       )
       .subscribe(([text, key]) => {
         if (key == 'Enter' || text != this.lastSearch) {
@@ -152,8 +151,8 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
 
     fromEvent(this.searchInput.nativeElement, 'paste')
       .pipe(
-        map((event: any) => {
-          return event.target.value;
+        map(event => {
+          return (event.target as HTMLInputElement).value;
         }),
       )
       .subscribe((text: string) => {
@@ -163,8 +162,8 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
 
     fromEvent(this.searchLang.nativeElement, 'change')
       .pipe(
-        map((event: any) => {
-          return event.target.value;
+        map(event => {
+          return (event.target as HTMLSelectElement).value;
         }),
       )
       .subscribe(() => {

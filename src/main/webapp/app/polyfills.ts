@@ -17,6 +17,6 @@ import 'zone.js';
 import '@angular/localize/init';
 
 // Define window.process for conponents trying to use process.env
-(window as any).process = {
+window.process = {
   env: {},
-};
+} as unknown as NodeJS.Process;

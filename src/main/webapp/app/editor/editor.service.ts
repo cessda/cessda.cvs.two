@@ -31,6 +31,14 @@ import { Version } from 'app/shared/model/version.model';
 import { Comment } from 'app/shared/model/comment.model';
 import { MetadataValue } from 'app/shared/model/metadata-value.model';
 
+export interface SearchRequest {
+  q: string;
+  size: number;
+  page: number;
+  sort: string[];
+  f?: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class EditorService {
   protected http = inject(HttpClient);
@@ -101,7 +109,7 @@ export class EditorService {
     return copy;
   }
 
-  search(req?: any): Observable<HttpResponse<CvResult>> {
+  search(req?: SearchRequest): Observable<HttpResponse<CvResult>> {
     const options = createRequestOption(req);
     return this.http.get<CvResult>(this.resourceEditorSearchUrl, { params: options, observe: 'response' });
   }
@@ -114,7 +122,7 @@ export class EditorService {
     return this.http.get<string[]>(`${this.resourceEditorVocabularyUrl}/compare-prev/${id}`, { observe: 'response' });
   }
 
-  downloadVocabularyFile(notation: string, slNumber: string, mimeType: string, req?: any): Observable<Blob> {
+  downloadVocabularyFile(notation: string, slNumber: string, mimeType: string, req?: { lv: string }): Observable<Blob> {
     const options = createRequestOption(req);
     return this.http.get(`${this.resourceDownloadUrl}/${notation}/${slNumber}`, {
       params: options,

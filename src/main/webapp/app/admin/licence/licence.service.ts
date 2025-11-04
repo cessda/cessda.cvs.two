@@ -21,8 +21,11 @@ import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption, SearchWithPagination } from 'app/shared/util/request-util';
 import { Licence } from 'app/shared/model/licence.model';
 
-type EntityResponseType = HttpResponse<Licence>;
-type EntityArrayResponseType = HttpResponse<Licence[]>;
+interface LicenceQuery {
+  page: number;
+  size: number;
+  sort: string[];
+}
 
 @Injectable({ providedIn: 'root' })
 export class LicenceService {
@@ -31,19 +34,19 @@ export class LicenceService {
   public resourceUrl = SERVER_API_URL + 'api/licences';
   public resourceSearchUrl = SERVER_API_URL + 'api/_search/licences';
 
-  create(licence: Licence): Observable<EntityResponseType> {
+  create(licence: Licence): Observable<HttpResponse<Licence>> {
     return this.http.post<Licence>(this.resourceUrl, licence, { observe: 'response' });
   }
 
-  update(licence: Licence): Observable<EntityResponseType> {
+  update(licence: Licence): Observable<HttpResponse<Licence>> {
     return this.http.put<Licence>(this.resourceUrl, licence, { observe: 'response' });
   }
 
-  find(id: number): Observable<EntityResponseType> {
+  find(id: number): Observable<HttpResponse<Licence>> {
     return this.http.get<Licence>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req?: LicenceQuery): Observable<HttpResponse<Licence[]>> {
     const options = createRequestOption(req);
     return this.http.get<Licence[]>(this.resourceUrl, { params: options, observe: 'response' });
   }
@@ -52,7 +55,7 @@ export class LicenceService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
+  search(req: SearchWithPagination): Observable<HttpResponse<Licence[]>> {
     const options = createRequestOption(req);
     return this.http.get<Licence[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }
