@@ -16,7 +16,7 @@
 
 # This Dockerfile must be run after both the Java and Angular
 # components of the application have been compiled
-FROM openjdk:11
+FROM eclipse-temurin:11
 
 # Container Information
 LABEL maintainer='CESSDA-ERIC "support@cessda.eu"'
