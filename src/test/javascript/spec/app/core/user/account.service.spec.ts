@@ -74,8 +74,8 @@ describe('Service Tests', () => {
 
       service = TestBed.inject(AccountService);
       httpMock = TestBed.inject(HttpTestingController);
-      storageService = TestBed.inject(StateStorageService) as any;
-      router = TestBed.inject(Router) as any;
+      storageService = TestBed.inject(StateStorageService) as unknown as MockStateStorageService;
+      router = TestBed.inject(Router) as unknown as MockRouter;
     });
 
     afterEach(() => {

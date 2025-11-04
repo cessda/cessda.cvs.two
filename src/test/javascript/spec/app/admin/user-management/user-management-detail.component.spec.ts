@@ -39,7 +39,7 @@ describe('Component Tests', () => {
           createdBy: 'admin',
         },
       }),
-    } as any as ActivatedRoute;
+    } as unknown as ActivatedRoute;
 
     beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({

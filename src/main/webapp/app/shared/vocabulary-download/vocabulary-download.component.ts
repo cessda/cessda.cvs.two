@@ -191,7 +191,9 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
 
   private generateDownloadFile(res: Blob, checkedItems: string, fileFormat: FileFormat): void {
     const newBlob = new Blob([res], { type: fileFormat.mimeType });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window.navigator as any).msSaveOrOpenBlob(newBlob);
       return;
     }

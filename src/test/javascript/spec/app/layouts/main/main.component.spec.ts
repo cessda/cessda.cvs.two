@@ -45,7 +45,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(MainComponent);
       comp = fixture.componentInstance;
-      router = TestBed.inject(Router) as any;
+      router = TestBed.inject(Router) as unknown as MockRouter;
       router.setEvents(routerEventsSubject.asObservable());
       titleService = TestBed.inject(Title);
       translateService = TestBed.inject(TranslateService);
