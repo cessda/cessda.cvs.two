@@ -21,12 +21,9 @@ FROM eclipse-temurin:11
 # Container Information
 LABEL maintainer='CESSDA-ERIC "support@cessda.eu"'
 
-# User configuration
-RUN addgroup --system --gid=1000 cvs && adduser --system --uid=1000 --ingroup=cvs cvs
-
 # Copy JAR
 COPY target/cvs*.jar /opt/cessda/cvs/cvs.jar
 
 # Entrypoint - Start CVS
-USER cvs
+USER 1000
 ENTRYPOINT ["java", "-jar", "/opt/cessda/cvs/cvs.jar"]
