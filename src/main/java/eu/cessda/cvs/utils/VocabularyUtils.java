@@ -303,13 +303,14 @@ public final class VocabularyUtils
 		{
 			// generate version or code URI
 			generatedUri = generatedUri.replace( "[VERSION]", version.toString() );
-			if ( !Boolean.TRUE.equals( isVersionUri ) )
-			{
-				// generate code uri
-				if ( code != null )
-					generatedUri = generatedUri.replace( "[CODE]", code );
-				if ( conceptID != null )
-					generatedUri = generatedUri.replace( "[CONCEPTID]", conceptID.toString() );
+
+			// generate code uri
+			if ( code != null ) {
+				String hash;
+				hash = HashFunction.MD5.hash(code);
+				// truncate
+				hash = hash.substring(0, 7);
+				generatedUri = generatedUri.replace( "[CODE]", hash);
 			}
 		}
 		else
