@@ -247,7 +247,7 @@ public interface VocabularyService {
      * @param agencyUri
      * @param agencyUriCode
      */
-    void updateVocabularyUri( Long agencyId, String agencyUri, String agencyUriCode );
+    //void updateVocabularyUri( Long agencyId, String agencyUri, String agencyUriCode );
 
     /**
      *
@@ -263,4 +263,13 @@ public interface VocabularyService {
      * @return
      */
     VersionDTO forwardStatus(VocabularySnippet vocabularySnippet) throws IllegalActionTypeException;
+
+    /**
+     *
+     * @param agencyId
+     * @param agencyUri
+     * @param agencyUriCode
+     * @param agencyName
+     */
+    void updateVocabularyUri(Long agencyId, String agencyUri, String agencyUriCode, String agencyName);
 }
