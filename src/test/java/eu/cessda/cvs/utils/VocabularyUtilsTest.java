@@ -29,28 +29,25 @@ class VocabularyUtilsTest
 		final String codeUri = "https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]_[CODE]/[VERSION]/[LANGUAGE]";
 		final String versionUri2 = "https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]/[VERSION]";
 		final String codeUri2 = "https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]_[CODE]/[VERSION]";
-		final String codeUri3 = "https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]_[CONCEPTID]/[VERSION]";
 		final String notation = "TopicClassification";
+		final String agency = "CESSDA";
 		final String language = "en";
 		final VersionNumber version = new VersionNumber(1, 0);
 		final String code = "Demography";
-		final Long conceptId = (long) 250;
 		// vocabulary
-		final String uri1 = VocabularyUtils.generateUri( versionUri, null, notation, null, language, null, null );
+		final String uri1 = VocabularyUtils.generateUri( versionUri, null, notation, null, language, null, null, agency );
 		assertThat( uri1 ).isEqualTo( "https://vocabularies.cessda.eu/vocabulary/%s", notation );
-		final String uri2 = VocabularyUtils.generateUri( versionUri2, null, notation, null, null, null, null );
+		final String uri2 = VocabularyUtils.generateUri( versionUri2, null, notation, null, null, null, null, agency );
 		assertThat( uri2 ).isEqualTo( "https://vocabularies.cessda.eu/vocabulary/%s", notation );
 		// version
-		final String uri3 = VocabularyUtils.generateUri( versionUri, true, notation, version, language, null, null );
+		final String uri3 = VocabularyUtils.generateUri( versionUri, true, notation, version, language, null, null, agency );
 		assertThat( uri3 ).isEqualTo( "https://vocabularies.cessda.eu/vocabulary/%s/%s/%s", notation, version, language );
-		final String uri4 = VocabularyUtils.generateUri( versionUri2, true, notation, version, null, null, null );
+		final String uri4 = VocabularyUtils.generateUri( versionUri2, true, notation, version, null, null, null, agency );
 		assertThat( uri4 ).isEqualTo( "https://vocabularies.cessda.eu/vocabulary/%s/%s", notation, version );
 		// version
-		final String uri5 = VocabularyUtils.generateUri( codeUri, false, notation, version, language, code, null );
+		final String uri5 = VocabularyUtils.generateUri( codeUri, false, notation, version, language, code, null, agency );
 		assertThat( uri5 ).isEqualTo( "https://vocabularies.cessda.eu/vocabulary/%s_%s/%s/%s", notation, code, version, language );
-		final String uri6 = VocabularyUtils.generateUri( codeUri2, false, notation, version, null, code, null );
+		final String uri6 = VocabularyUtils.generateUri( codeUri2, false, notation, version, null, code, null, agency );
 		assertThat( uri6 ).isEqualTo( "https://vocabularies.cessda.eu/vocabulary/%s_%s/%s", notation, code, version );
-		final String uri7 = VocabularyUtils.generateUri( codeUri3, false, notation, version, null, code, conceptId );
-		assertThat( uri7 ).isEqualTo( "https://vocabularies.cessda.eu/vocabulary/%s_%s/%s", notation, conceptId, version );
 	}
 }
