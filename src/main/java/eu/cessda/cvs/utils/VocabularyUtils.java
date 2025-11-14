@@ -304,7 +304,7 @@ public final class VocabularyUtils
 			// generate version or code URI
 			generatedUri = generatedUri.replace( "[VERSION]", version.toString() );
 
-			// generate code uri
+			// it there is code generate the code uri
 			if ( code != null ) {
 				String hash;
 				hash = HashFunction.MD5.hash(code);
