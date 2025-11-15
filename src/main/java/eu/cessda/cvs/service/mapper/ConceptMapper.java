@@ -42,7 +42,7 @@ public interface ConceptMapper extends EntityMapper<ConceptDTO, Concept> {
     @Mapping(source = "replacedById", target = "replacedBy")
     Concept toEntity(ConceptDTO conceptDTO);
 
-    default Concept fromId(Long id) {
+    static Concept fromId(Long id) {
         if (id == null) {
             return null;
         }

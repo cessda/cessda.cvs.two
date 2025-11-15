@@ -33,7 +33,7 @@ public interface CommentMapper extends EntityMapper<CommentDTO, Comment> {
     @Mapping(source = "versionId", target = "version")
     Comment toEntity(CommentDTO commentDTO);
 
-    default Comment fromId(Long id) {
+    static Comment fromId(Long id) {
         if (id == null) {
             return null;
         }

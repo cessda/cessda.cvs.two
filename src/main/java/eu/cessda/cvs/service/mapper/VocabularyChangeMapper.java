@@ -22,12 +22,12 @@ import org.mapstruct.Mapper;
 /**
  * Mapper for the entity {@link VocabularyChange} and its DTO {@link VocabularyChangeDTO}.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring" )
 public interface VocabularyChangeMapper extends EntityMapper<VocabularyChangeDTO, VocabularyChange> {
 
 
 
-    default VocabularyChange fromId(Long id) {
+    static VocabularyChange fromId(Long id) {
         if (id == null) {
             return null;
         }
