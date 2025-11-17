@@ -1845,7 +1845,7 @@ public class VocabularyServiceImpl implements VocabularyService
 
     @Override
     @Transactional
-    public void updateVocabularyUri( Long agencyId, String agencyUri, String agencyUriCode ) {
+    public void updateVocabularyUri( Long agencyId, String agencyUri, String agencyUriCode, String agencyName ) {
         final List<Vocabulary> vocabularies = vocabularyRepository.findAllByAgencyId( agencyId );
         for ( Vocabulary vocabulary : vocabularies ) {
             vocabulary.setUri( VocabularyUtils.generateUri( agencyUri, vocabulary ) );
@@ -1853,9 +1853,9 @@ public class VocabularyServiceImpl implements VocabularyService
                     .sorted( VocabularyUtils.VERSION_COMPARATOR )
                     .collect( Collectors.toList() );
             for ( Version version : versions ) {
-                updateUriForVersionAndConcept( agencyUri, agencyUriCode, vocabulary, version );
+                updateUriForVersionAndConcept( agencyUri, agencyUriCode, vocabulary, version, agencyName );
                 if ( version.getUriSl() != null ) {
-                    version.setUriSl( VocabularyUtils.generateUri( agencyUri, vocabulary, version, null ) );
+                    version.setUriSl( VocabularyUtils.generateUri( agencyUri, vocabulary, version, null, agencyName ) );
                 }
             }
             vocabularyRepository.save( vocabulary );
@@ -1993,7 +1993,7 @@ public class VocabularyServiceImpl implements VocabularyService
                             v.updateUri(agencyFinal);
                             v.updateCanonicalUri(agencyFinal);
                             // update concept URIs
-                            v.getConcepts().forEach(c -> c.setUri(VocabularyUtils.generateUri(agencyFinal.getUriCode(), finalVersionDTO, c ) ));
+                            v.getConcepts().forEach(c -> c.setUri(VocabularyUtils.generateUri(agencyFinal.getUriCode(), finalVersionDTO, c, agencyFinal.getName() ) ));
                             v.setLastStatusChangeDate(LocalDate.now());
                             finalVocabularyDTO.setVersionByLanguage(
                                 v.getLanguage(),
@@ -2089,11 +2089,11 @@ public class VocabularyServiceImpl implements VocabularyService
         }
     }
 
-    private void updateUriForVersionAndConcept( String agencyUri, String agencyUriCode, Vocabulary vocabulary, Version version ) {
+    private void updateUriForVersionAndConcept( String agencyUri, String agencyUriCode, Vocabulary vocabulary, Version version, String agencyName ) {
         if ( version.getStatus() == Status.PUBLISHED ) {
-            version.setUri( VocabularyUtils.generateUri( agencyUri, vocabulary, version, null ) );
+            version.setUri( VocabularyUtils.generateUri( agencyUri, vocabulary, version, null, agencyName ) );
             for ( Concept concept : version.getConcepts() ) {
-                concept.setUri( VocabularyUtils.generateUri( agencyUriCode, vocabulary, version, concept ) );
+                concept.setUri( VocabularyUtils.generateUri( agencyUriCode, vocabulary, version, concept, agencyName ) );
             }
         } else {
             version.setUri( null );
@@ -2258,7 +2258,8 @@ public class VocabularyServiceImpl implements VocabularyService
                 VocabularyUtils.generateUri(
                     agency != null ? agency.getUriCode() : "",
                     finalVersionCloned,
-                    conceptCloned
+                    conceptCloned,
+                    agency != null ? agency.getName() : ""
                 )
             );
             finalVersionCloned.addConcept(conceptCloned);
