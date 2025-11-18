@@ -64,7 +64,7 @@ spring:
     # Profile can be overridden by setting `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
     active: dev
     # Always include the Swagger profile
-    #include: swagger
+    include: swagger
   jmx:
     enabled: false
   data:
