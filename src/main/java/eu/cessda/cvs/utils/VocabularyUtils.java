@@ -254,26 +254,25 @@ public final class VocabularyUtils
 
     public static String generateUri(String uri, Vocabulary vocabulary )
 	{
-		return generateUri( uri, null, vocabulary.getNotation(), null, vocabulary.getSourceLanguage(), null, null );
+		return generateUri( uri, null, vocabulary.getNotation(), null, vocabulary.getSourceLanguage(), null, null, null );
 	}
 
-	public static String generateUri(String uri, Vocabulary vocabulary, Version version, Concept concept )
+	public static String generateUri(String uri, Vocabulary vocabulary, Version version, Concept concept, String agency)
 	{
 		if ( concept == null )
 			return generateUri( uri, true, vocabulary.getNotation(), version.getNumber(),
-					vocabulary.getSourceLanguage(), null, null );
+					vocabulary.getSourceLanguage(), null, null, agency );
 		else
 			return generateUri( uri, true, vocabulary.getNotation(), version.getNumber(),
-					vocabulary.getSourceLanguage(), concept.getNotation(), concept.getId() );
+					vocabulary.getSourceLanguage(), concept.getNotation(), concept.getId(), agency );
 	}
 
-	public static String generateUri(String uri, VersionDTO version, ConceptDTO concept )
+	public static String generateUri(String uri, VersionDTO version, ConceptDTO concept, String agency )
 	{
 		if ( concept == null )
-			return generateUri( uri, true, version.getNotation(), version.getNumber(), version.getLanguage(), null, null );
+			return generateUri( uri, true, version.getNotation(), version.getNumber(), version.getLanguage(), null, null, agency );
 		else
-			return generateUri( uri, true, version.getNotation(), version.getNumber(), version.getLanguage(), concept.getNotation(),
-					concept.getId() );
+			return generateUri( uri, true, version.getNotation(), version.getNumber(), version.getLanguage(), concept.getNotation(), concept.getId(), agency );
 	}
 
 	/**
@@ -290,7 +289,8 @@ public final class VocabularyUtils
 			VersionNumber version,
 			String language,
 			String code,
-			Long conceptID )
+			Long conceptID,
+			String agencyName )
 	{
 		if ( !uri.contains( "[VOCABULARY]" ) )
 			throw new IllegalArgumentException( "Uri does not contains \"[VOCABULARY]\". Please check agency configuration" );
@@ -303,13 +303,17 @@ public final class VocabularyUtils
 		{
 			// generate version or code URI
 			generatedUri = generatedUri.replace( "[VERSION]", version.toString() );
-			if ( !Boolean.TRUE.equals( isVersionUri ) )
-			{
-				// generate code uri
-				if ( code != null )
-					generatedUri = generatedUri.replace( "[CODE]", code );
-				if ( conceptID != null )
-					generatedUri = generatedUri.replace( "[CONCEPTID]", conceptID.toString() );
+
+			// it there is code generate the code uri based on the agency we work with - DDI is special
+			if ( code != null ) {
+				if (agencyName.equals("DDI Alliance")) {
+					String hash;
+					hash = HashFunction.MD5.hash(code);
+					// truncate
+					hash = hash.substring(0, 7);
+					generatedUri = generatedUri.replace( "[CODE]", hash);
+				}
+				else generatedUri = generatedUri.replace( "[CODE]", code);
 			}
 		}
 		else

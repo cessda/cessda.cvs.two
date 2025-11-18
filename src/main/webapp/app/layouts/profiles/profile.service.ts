@@ -35,17 +35,15 @@ export class ProfileService {
 
     this.profileInfo$ = this.http.get<InfoResponse>(this.infoUrl).pipe(
       map((response: InfoResponse) => {
-        const profileInfo = new ProfileInfo(
-          response.activeProfiles,
-          undefined,
-          response.activeProfiles && response.activeProfiles.includes('prod'),
-          response.activeProfiles && response.activeProfiles.includes('swagger'),
-        );
+        const activeProfiles = response.activeProfiles || [];
+        const profileInfo: ProfileInfo = {
+          activeProfiles: activeProfiles,
+          inProduction: activeProfiles.includes('prod'),
+          swaggerEnabled: activeProfiles.includes('swagger'),
+        };
         if (response.activeProfiles && response['display-ribbon-on-profiles']) {
           const displayRibbonOnProfiles = response['display-ribbon-on-profiles'].split(',');
-          const ribbonProfiles = displayRibbonOnProfiles.filter(
-            profile => response.activeProfiles && response.activeProfiles.includes(profile),
-          );
+          const ribbonProfiles = displayRibbonOnProfiles.filter(profile => activeProfiles.includes(profile));
           if (ribbonProfiles.length > 0) {
             profileInfo.ribbonEnv = ribbonProfiles[0];
           }

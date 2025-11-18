@@ -47,7 +47,7 @@ public interface VocabularyMapper extends EntityMapper<VocabularyDTO, Vocabulary
         vocabularyDTO.setTitleAll();
     }
 
-    default Vocabulary fromId(Long id) {
+    static Vocabulary fromId(Long id) {
         if (id == null) {
             return null;
         }

@@ -42,10 +42,10 @@ spring:
       hibernate.cache.use_second_level_cache: false
       hibernate.cache.use_query_cache: false
       hibernate.generate_statistics: false
+      hibernate.globally_quoted_identifiers: true
       hibernate.jdbc.time_zone: UTC
   elasticsearch:
-    rest:
-      uris: http://localhost:9225
+    uris: http://localhost:9225
   mail:
     host: localhost
   main:
@@ -53,8 +53,8 @@ spring:
   messages:
     basename: i18n/messages
   mvc:
-    favicon:
-      enabled: false
+    pathmatch:
+      matching-strategy: ant_path_matcher
   task:
     execution:
       thread-name-prefix: cvs-task-

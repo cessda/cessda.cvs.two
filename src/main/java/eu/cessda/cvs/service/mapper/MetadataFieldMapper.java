@@ -32,7 +32,7 @@ public interface MetadataFieldMapper extends EntityMapper<MetadataFieldDTO, Meta
     @Mapping( target = "removeMetadataValue", ignore = true )
     MetadataFieldDTO toDto( MetadataField entity );
 
-    default MetadataField fromId( Long id) {
+    static MetadataField fromId( Long id) {
         if (id == null) {
             return null;
         }

@@ -33,7 +33,7 @@ public interface MetadataValueMapper extends EntityMapper<MetadataValueDTO, Meta
     @Mapping(source = "metadataFieldId", target = "metadataField")
     MetadataValue toEntity(MetadataValueDTO metadataValueDTO);
 
-    default MetadataValue fromId(Long id) {
+    static MetadataValue fromId(Long id) {
         if (id == null) {
             return null;
         }
