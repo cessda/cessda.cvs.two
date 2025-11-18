@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
 import { PasswordResetInitService } from './password-reset-init.service';
@@ -21,8 +21,12 @@ import { PasswordResetInitService } from './password-reset-init.service';
 @Component({
   selector: 'jhi-password-reset-init',
   templateUrl: './password-reset-init.component.html',
+  standalone: false,
 })
 export class PasswordResetInitComponent implements AfterViewInit {
+  private passwordResetInitService = inject(PasswordResetInitService);
+  private fb = inject(FormBuilder);
+
   @ViewChild('email', { static: false })
   email?: ElementRef;
 
@@ -30,11 +34,6 @@ export class PasswordResetInitComponent implements AfterViewInit {
   resetRequestForm = this.fb.group({
     email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
   });
-
-  constructor(
-    private passwordResetInitService: PasswordResetInitService,
-    private fb: FormBuilder,
-  ) {}
 
   ngAfterViewInit(): void {
     if (this.email) {

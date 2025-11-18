@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AfterViewInit, Component, Input, NgZone, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, NgZone, OnInit, inject } from '@angular/core';
 import { HomeService } from 'app/home/home.service';
 import { EditorService } from 'app/editor/editor.service';
 import { JhiEventManager } from 'ng-jhipster';
@@ -27,8 +27,15 @@ import { FileFormat } from 'app/shared/vocabulary-download/FileFormat';
 @Component({
   selector: 'jhi-vocabulary-download',
   templateUrl: './vocabulary-download.component.html',
+  standalone: false,
 })
 export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
+  private router = inject(Router);
+  private homeService = inject(HomeService);
+  private editorService = inject(EditorService);
+  protected eventManager = inject(JhiEventManager);
+  private _ngZone = inject(NgZone);
+
   @Input() appScope!: AppScope;
   @Input() versions!: Version[];
   @Input() slVersionNumber!: string;
@@ -42,13 +49,7 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
   htmlSelected: boolean[];
   docxSelected: boolean[];
 
-  constructor(
-    private router: Router,
-    private homeService: HomeService,
-    private editorService: EditorService,
-    protected eventManager: JhiEventManager,
-    private _ngZone: NgZone,
-  ) {
+  constructor() {
     this.downloadCheckboxes = [];
     this.skosSelected = [];
     this.pdfSelected = [];
@@ -190,7 +191,9 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
 
   private generateDownloadFile(res: Blob, checkedItems: string, fileFormat: FileFormat): void {
     const newBlob = new Blob([res], { type: fileFormat.mimeType });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window.navigator as any).msSaveOrOpenBlob(newBlob);
       return;
     }

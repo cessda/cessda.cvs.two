@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -28,8 +28,14 @@ import { AgencyService } from 'app/agency/agency.service';
 @Component({
   selector: 'jhi-user-mgmt-update',
   templateUrl: './user-management-update.component.html',
+  standalone: false,
 })
 export class UserManagementUpdateComponent implements OnInit {
+  private userService = inject(UserService);
+  private route = inject(ActivatedRoute);
+  private agencyService = inject(AgencyService);
+  private fb = inject(FormBuilder);
+
   user!: User;
   languages = LANGUAGES;
   authorities: string[] = [];
@@ -52,12 +58,7 @@ export class UserManagementUpdateComponent implements OnInit {
     authorities: [['']],
   });
 
-  constructor(
-    private userService: UserService,
-    private route: ActivatedRoute,
-    private agencyService: AgencyService,
-    private fb: FormBuilder,
-  ) {
+  constructor() {
     this.selectedAgencyId = 1;
     this.selectedAgencyRole = 'ADMIN_TL';
     this.selectedLanguage = '';

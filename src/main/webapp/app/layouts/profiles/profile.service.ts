@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, shareReplay } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -23,10 +23,10 @@ import { ProfileInfo, InfoResponse } from './profile-info.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
+  private http = inject(HttpClient);
+
   private infoUrl = SERVER_API_URL + 'management/info';
   private profileInfo$!: Observable<ProfileInfo>;
-
-  constructor(private http: HttpClient) {}
 
   getProfileInfo(): Observable<ProfileInfo> {
     if (this.profileInfo$) {

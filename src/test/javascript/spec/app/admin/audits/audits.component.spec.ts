@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { advanceTo } from 'jest-date-mock';
@@ -53,7 +53,7 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<AuditsComponent>;
     let service: AuditsService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [AuditsComponent],
@@ -160,7 +160,7 @@ describe('Component Tests', () => {
         comp.transition();
 
         // THEN
-        expect(service.query).toBeCalledWith(
+        expect(service.query).toHaveBeenCalledWith(
           expect.objectContaining({
             sort: ['id,desc'],
           }),
@@ -176,7 +176,7 @@ describe('Component Tests', () => {
         comp.transition();
 
         // THEN
-        expect(service.query).toBeCalledWith(
+        expect(service.query).toHaveBeenCalledWith(
           expect.objectContaining({
             sort: ['timestamp,asc', 'id'],
           }),
@@ -197,7 +197,7 @@ describe('Component Tests', () => {
         comp.loadPage(1);
 
         // THEN
-        expect(comp.transition).not.toBeCalled();
+        expect(comp.transition).not.toHaveBeenCalled();
       });
 
       it('Should load new page', () => {
@@ -206,7 +206,7 @@ describe('Component Tests', () => {
 
         // THEN
         expect(comp.previousPage).toBe(2);
-        expect(comp.transition).toBeCalled();
+        expect(comp.transition).toHaveBeenCalled();
       });
     });
 
@@ -221,7 +221,7 @@ describe('Component Tests', () => {
 
         // THEN
         expect(comp.canLoad()).toBe(false);
-        expect(service.query).not.toBeCalled();
+        expect(service.query).not.toHaveBeenCalled();
       });
 
       it('Should query data if fromDate and toDate are not empty', () => {
@@ -234,7 +234,7 @@ describe('Component Tests', () => {
 
         // THEN
         expect(comp.canLoad()).toBe(true);
-        expect(service.query).toBeCalled();
+        expect(service.query).toHaveBeenCalled();
       });
     });
   });

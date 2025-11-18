@@ -34,8 +34,8 @@ describe('Service Tests', () => {
       });
       expectedResult = null;
       injector = getTestBed();
-      service = injector.get(MetadataFieldService);
-      httpMock = injector.get(HttpTestingController);
+      service = injector.inject(MetadataFieldService);
+      httpMock = injector.inject(HttpTestingController);
 
       elemDefault = {
         id: 0,

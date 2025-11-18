@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ElementRef, ViewChild, inject } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
@@ -23,8 +23,14 @@ import { LoginService } from 'app/core/login/login.service';
 @Component({
   selector: 'jhi-login-modal',
   templateUrl: './login.component.html',
+  standalone: false,
 })
 export class LoginModalComponent implements AfterViewInit {
+  private loginService = inject(LoginService);
+  private router = inject(Router);
+  activeModal = inject(NgbActiveModal);
+  private fb = inject(FormBuilder);
+
   @ViewChild('username', { static: false })
   username?: ElementRef;
 
@@ -35,13 +41,6 @@ export class LoginModalComponent implements AfterViewInit {
     password: new FormControl<string>('', { nonNullable: true }),
     rememberMe: new FormControl(false, { nonNullable: true }),
   });
-
-  constructor(
-    private loginService: LoginService,
-    private router: Router,
-    public activeModal: NgbActiveModal,
-    private fb: FormBuilder,
-  ) {}
 
   ngAfterViewInit(): void {
     setTimeout(() => {

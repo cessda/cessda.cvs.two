@@ -16,23 +16,31 @@
 
 -->
 <a class="acc-header option-label col-12 mtop10" href="javascript:void(0);"
-   (click)="toggleCompareShow()"
-   [attr.aria-expanded]="isOpen">
-    &nbsp;
-    <fa-icon *ngIf="isOpen" icon="caret-down"></fa-icon>
-    <fa-icon *ngIf="!isOpen" icon="caret-right"></fa-icon>
-    <span *ngIf="dataSource === 'JSON' || dataSource === 'json'">&nbsp;<fa-icon icon="compress"></fa-icon> Compare previous version {{langVersion2}} with version {{langVersion1}}</span>
-    <span *ngIf="dataSource !== 'JSON' && dataSource !== 'json'">&nbsp;<fa-icon icon="compress"></fa-icon> Compare previous version with current unpublished version</span>
+  (click)="toggleCompareShow()"
+  [attr.aria-expanded]="isOpen">
+  &nbsp;
+  @if (isOpen) {
+    <fa-icon icon="caret-down"></fa-icon>
+  }
+  @if (!isOpen) {
+    <fa-icon icon="caret-right"></fa-icon>
+  }
+  @if (dataSource === 'JSON' || dataSource === 'json') {
+    <span>&nbsp;<fa-icon icon="compress"></fa-icon> Compare previous version {{langVersion2}} with version {{langVersion1}}</span>
+  }
+  @if (dataSource !== 'JSON' && dataSource !== 'json') {
+    <span>&nbsp;<fa-icon icon="compress"></fa-icon> Compare previous version with current unpublished version</span>
+  }
 </a>
 <div class="acc-body" [ngbCollapse]="!isOpen">
-    <div>
-        <td-ngx-text-diff
-            [left]="''"
-            [right]="''"
-            [loading]="true"
-            [showToolbar]="true"
-            [diffContent]="contentObservable$"
-        >
-        </td-ngx-text-diff>
-    </div>
+  <div>
+    <td-ngx-text-diff
+      [left]="''"
+      [right]="''"
+      [loading]="true"
+      [showToolbar]="true"
+      [diffContent]="contentObservable$"
+      >
+    </td-ngx-text-diff>
+  </div>
 </div>

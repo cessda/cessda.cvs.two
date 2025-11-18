@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -31,16 +31,24 @@ import { Version } from 'app/shared/model/version.model';
 import { Comment } from 'app/shared/model/comment.model';
 import { MetadataValue } from 'app/shared/model/metadata-value.model';
 
+export interface SearchRequest {
+  q: string;
+  size: number;
+  page: number;
+  sort: string[];
+  f?: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class EditorService {
+  protected http = inject(HttpClient);
+
   public resourceEditorSearchUrl = SERVER_API_URL + 'api/editors/search';
   public resourceEditorVocabularyUrl = SERVER_API_URL + 'api/editors/vocabularies';
   public resourceEditorCodeUrl = SERVER_API_URL + 'api/editors/codes';
   public resourceEditorCommentUrl = SERVER_API_URL + 'api/editors/comments';
   public resourceEditorMetadataUrl = SERVER_API_URL + 'api/editors/metadatas';
   public resourceDownloadUrl = SERVER_API_URL + 'api/editors/download';
-
-  constructor(protected http: HttpClient) {}
 
   createVocabulary(vocabularySnippet: VocabularySnippet): Observable<HttpResponse<Vocabulary>> {
     return this.http
@@ -101,7 +109,7 @@ export class EditorService {
     return copy;
   }
 
-  search(req?: any): Observable<HttpResponse<CvResult>> {
+  search(req?: SearchRequest): Observable<HttpResponse<CvResult>> {
     const options = createRequestOption(req);
     return this.http.get<CvResult>(this.resourceEditorSearchUrl, { params: options, observe: 'response' });
   }
@@ -114,7 +122,7 @@ export class EditorService {
     return this.http.get<string[]>(`${this.resourceEditorVocabularyUrl}/compare-prev/${id}`, { observe: 'response' });
   }
 
-  downloadVocabularyFile(notation: string, slNumber: string, mimeType: string, req?: any): Observable<Blob> {
+  downloadVocabularyFile(notation: string, slNumber: string, mimeType: string, req?: { lv: string }): Observable<Blob> {
     const options = createRequestOption(req);
     return this.http.get(`${this.resourceDownloadUrl}/${notation}/${slNumber}`, {
       params: options,

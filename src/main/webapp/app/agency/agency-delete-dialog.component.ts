@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
@@ -22,15 +22,14 @@ import { AgencyService } from './agency.service';
 
 @Component({
   templateUrl: './agency-delete-dialog.component.html',
+  standalone: false,
 })
 export class AgencyDeleteDialogComponent {
-  agency?: Agency;
+  protected agencyService = inject(AgencyService);
+  activeModal = inject(NgbActiveModal);
+  protected eventManager = inject(JhiEventManager);
 
-  constructor(
-    protected agencyService: AgencyService,
-    public activeModal: NgbActiveModal,
-    protected eventManager: JhiEventManager,
-  ) {}
+  agency?: Agency;
 
   cancel(): void {
     this.activeModal.dismiss();

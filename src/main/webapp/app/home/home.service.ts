@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
-import { createRequestOption } from 'app/shared/util/request-util';
+import { createRequestOption, Pagination } from 'app/shared/util/request-util';
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { CvResult } from 'app/shared/model/cv-result.model';
 
@@ -26,19 +26,19 @@ type EntityResponseType = HttpResponse<Vocabulary>;
 
 @Injectable({ providedIn: 'root' })
 export class HomeService {
+  protected http = inject(HttpClient);
+
   public resourceUrl = SERVER_API_URL + 'api/vocabulary';
   public vocabularyStaticUrl = SERVER_API_URL + 'content/vocabularies';
   public resourceSearchUrl = SERVER_API_URL + 'v2/search';
   public resourceDownloadUrl = SERVER_API_URL + 'v2/vocabularies';
   public resourceCvCompareUrl = SERVER_API_URL + 'v2/compare-vocabulary';
 
-  constructor(protected http: HttpClient) {}
-
   find(id: number): Observable<EntityResponseType> {
     return this.http.get<Vocabulary>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  search(req?: any): Observable<HttpResponse<CvResult>> {
+  search(req?: Pagination): Observable<HttpResponse<CvResult>> {
     const options = createRequestOption(req);
     return this.http.get<CvResult>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }

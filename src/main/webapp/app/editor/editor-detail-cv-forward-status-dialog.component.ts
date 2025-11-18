@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -30,19 +30,29 @@ import { createNewVersion } from 'app/shared/model/version.model';
 import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from 'app/admin/licence/licence.service';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { DiffContent, DiffResults } from 'ngx-text-diff/lib/ngx-text-diff.model';
+import { DiffContent, DiffResults } from 'node_modules/ngx-text-diff/lib/ngx-text-diff.model';
 import { Comment } from 'app/shared/model/comment.model';
 import { VocabularyChangeService } from 'app/entities/vocabulary-change/vocabulary-change.service';
 import { VocabularyChange } from 'app/shared/model/vocabulary-change.model';
 import { QuillModule } from 'ngx-quill';
-import { Quill } from 'quill';
+import Quill from 'quill';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
   selector: 'jhi-editor-detail-cv-forward-status-dialog',
   templateUrl: './editor-detail-cv-forward-status-dialog.component.html',
+  standalone: false,
 })
 export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
+  private licenceService = inject(LicenceService);
+  private accountService = inject(AccountService);
+  protected vocabularyChangeService = inject(VocabularyChangeService);
+  protected editorService = inject(EditorService);
+  activeModal = inject(NgbActiveModal);
+  protected eventManager = inject(JhiEventManager);
+  private fb = inject(FormBuilder);
+  private router = inject(Router);
+
   licences: Licence[] = [];
   isSaving: boolean;
   isVersionInvalid: boolean;
@@ -90,16 +100,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
 
   cvForwardStatusForm = this.fb.group<Partial<typeof this.formControls>>(this.formControls);
 
-  constructor(
-    private licenceService: LicenceService,
-    private accountService: AccountService,
-    protected vocabularyChangeService: VocabularyChangeService,
-    protected editorService: EditorService,
-    public activeModal: NgbActiveModal,
-    protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
-    private router: Router,
-  ) {
+  constructor() {
     this.isSaving = false;
     this.isVersionInvalid = false;
   }

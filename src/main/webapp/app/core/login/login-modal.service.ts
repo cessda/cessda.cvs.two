@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import { Injectable, inject } from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
-import {LoginModalComponent} from 'app/shared/login/login.component';
+import { LoginModalComponent } from 'app/shared/login/login.component';
 
 @Injectable({ providedIn: 'root' })
 export class LoginModalService {
-  private isOpen = false;
+  private modalService = inject(NgbModal);
 
-  constructor(private modalService: NgbModal) {}
+  private isOpen = false;
 
   open(): void {
     if (this.isOpen) {

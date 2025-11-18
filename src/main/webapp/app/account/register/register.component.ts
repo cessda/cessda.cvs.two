@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { JhiLanguageService } from 'ng-jhipster';
@@ -25,8 +25,14 @@ import { RegisterService } from './register.service';
 @Component({
   selector: 'jhi-register',
   templateUrl: './register.component.html',
+  standalone: false,
 })
 export class RegisterComponent implements AfterViewInit {
+  private languageService = inject(JhiLanguageService);
+  private loginModalService = inject(LoginModalService);
+  private registerService = inject(RegisterService);
+  private fb = inject(FormBuilder);
+
   @ViewChild('login', { static: false })
   login?: ElementRef;
 
@@ -42,13 +48,6 @@ export class RegisterComponent implements AfterViewInit {
     password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
   });
-
-  constructor(
-    private languageService: JhiLanguageService,
-    private loginModalService: LoginModalService,
-    private registerService: RegisterService,
-    private fb: FormBuilder,
-  ) {}
 
   ngAfterViewInit(): void {
     if (this.login) {

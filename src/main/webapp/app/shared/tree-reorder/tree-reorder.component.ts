@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { Concept } from 'app/shared/model/concept.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
@@ -23,24 +23,25 @@ import { Subscription } from 'rxjs';
   selector: 'jhi-tree-reorder',
   templateUrl: './tree-reorder.component.html',
   styleUrls: ['./tree-reorder.component.scss'],
+  standalone: false,
 })
 export class TreeReorderComponent implements OnInit, OnDestroy {
+  protected eventManager = inject(JhiEventManager);
+
   @Input() parentNotation?: string;
-  @Input() conceptList?: Concept[];
-  @Input() level?: number;
-  @Input() deprecated?: boolean;
+  @Input({ required: true }) conceptList!: Concept[];
+  @Input() level: number = 0;
+  @Input() deprecated: boolean = false;
 
   eventSubscriber?: Subscription;
   activeConceptNotation?: string;
 
-  constructor(protected eventManager: JhiEventManager) {}
+  removeCurrentLevelItems(conceptList: Concept[], parentNotation?: string) {
+    return conceptList.filter(c => c.parent !== parentNotation);
+  }
 
-  removeCurrentLevelItems: any = (conceptList?: Concept[], parentNotation?: string, level?: number) => {
-    return conceptList!.filter(c => c.parent !== parentNotation);
-  };
-
-  isConceptHasChildren(notation?: string, conceptList?: Concept[]): boolean {
-    return VocabularyUtil.isConceptHasChildren(notation!, conceptList!);
+  isConceptHasChildren(notation: string, conceptList: Concept[]): boolean {
+    return VocabularyUtil.isConceptHasChildren(notation, conceptList);
   }
 
   selectConcept(concept: Concept): void {

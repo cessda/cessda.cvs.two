@@ -15,42 +15,64 @@
     limitations under the License.
 
 -->
-<form *ngIf="vocabularyParam" name="deleteForm" (ngSubmit)="confirmDelete()">
+@if (vocabularyParam) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete()">
     <div class="modal-header">
-        <h4 class="modal-title">
-            <span *ngIf="deleteType === 'vocabulary'">Confirm delete Vocabulary <strong>{{vocabularyParam.notation}}</strong></span>
-            <span *ngIf="deleteType === 'versionSl'">Confirm delete
-                {{ (versionParam.initialVersion === undefined || versionParam.initialVersion === versionParam.id) ? 'Vocabulary or ': '' }} SL & TLs versions <strong>{{versionParam.notation}}</strong> v.{{versionParam.number}}</span>
-            <span *ngIf="deleteType === 'versionTl'">Confirm delete TL version <strong>{{versionParam.notation}}-{{versionParam.language}}</strong> v.{{versionParam.number}}</span>
+      <h4 class="modal-title">
+        @if (deleteType === 'vocabulary') {
+          <span>Confirm delete Vocabulary <strong>{{vocabularyParam.notation}}</strong></span>
+        }
+        @if (deleteType === 'versionSl') {
+          <span>Confirm delete
+            {{ (versionParam.initialVersion === undefined || versionParam.initialVersion === versionParam.id) ? 'Vocabulary or ': '' }} SL & TLs versions <strong>{{versionParam.notation}}</strong> v.{{versionParam.number}}</span>
+          }
+          @if (deleteType === 'versionTl') {
+            <span>Confirm delete TL version <strong>{{versionParam.notation}}-{{versionParam.language}}</strong> v.{{versionParam.number}}</span>
+          }
         </h4>
         <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="clear()"></button>
-    </div>
-    <div class="modal-body">
+      </div>
+      <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <p *ngIf="deleteType === 'vocabulary'">Are you sure you want to delete Vocabulary <strong>{{vocabularyParam.notation}}</strong>?</p>
-        <p *ngIf="deleteType === 'versionSl' && (versionParam.initialVersion && versionParam.initialVersion !== versionParam.id)">
+        @if (deleteType === 'vocabulary') {
+          <p>Are you sure you want to delete Vocabulary <strong>{{vocabularyParam.notation}}</strong>?</p>
+        }
+        @if (deleteType === 'versionSl' && (versionParam.initialVersion && versionParam.initialVersion !== versionParam.id)) {
+          <p>
             Are you sure you want to delete the vocabulary ,or SL and related TLs in vocabulary <strong>{{versionParam.notation}} </strong> v.{{versionParam.number}}?
             <br/>If you choose to only delete vocabulary in this version {{versionParam.number}}, the current SL and TLs versions will be replaced with previous versions.
-        </p>
-        <p *ngIf="deleteType === 'versionSl' && !(versionParam.initialVersion && versionParam.initialVersion !== versionParam.id)">
+          </p>
+        }
+        @if (deleteType === 'versionSl' && !(versionParam.initialVersion && versionParam.initialVersion !== versionParam.id)) {
+          <p>
             Are you sure you want to delete Vocabulary <strong>{{vocabularyParam.notation}}</strong>?
-        </p>
-        <p *ngIf="deleteType === 'versionTl'">Are you sure you want to delete TL version <strong>{{versionParam.notation}}-{{versionParam.language}}</strong> v.{{versionParam.number}}?</p>
-    </div>
-    <div class="modal-footer">
+          </p>
+        }
+        @if (deleteType === 'versionTl') {
+          <p>Are you sure you want to delete TL version <strong>{{versionParam.notation}}-{{versionParam.language}}</strong> v.{{versionParam.number}}?</p>
+        }
+      </div>
+      <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
-            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+          <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
-        <button *ngIf="deleteType === 'versionTl'" id="jhi-confirm-delete-version-tl" type="submit" class="btn btn-danger">
+        @if (deleteType === 'versionTl') {
+          <button id="jhi-confirm-delete-version-tl" type="submit" class="btn btn-danger">
             <fa-icon [icon]="'times'"></fa-icon>&nbsp;<span>Delete CV TL</span>
-        </button>
-        <button *ngIf="deleteType === 'versionSl' && (versionParam.initialVersion && versionParam.initialVersion !== versionParam.id)"
-                id="jhi-confirm-delete-version-sl" type="submit" class="btn btn-danger">
+          </button>
+        }
+        @if (deleteType === 'versionSl' && (versionParam.initialVersion && versionParam.initialVersion !== versionParam.id)) {
+          <button
+            id="jhi-confirm-delete-version-sl" type="submit" class="btn btn-danger">
             <fa-icon [icon]="'times'"></fa-icon>&nbsp;<span>Delete CV SL & TLs v.{{versionParam.number}}</span>
-        </button>
-        <button *ngIf="deleteType === 'vocabulary' || deleteType === 'versionSl'" id="jhi-confirm-delete-vocabulary"
-                type="submit" class="btn btn-danger" (click)="deleteType='vocabulary'">
+          </button>
+        }
+        @if (deleteType === 'vocabulary' || deleteType === 'versionSl') {
+          <button id="jhi-confirm-delete-vocabulary"
+            type="submit" class="btn btn-danger" (click)="deleteType='vocabulary'">
             <fa-icon [icon]="'times'"></fa-icon>&nbsp;<span>Delete CV</span>
-        </button>
-    </div>
-</form>
+          </button>
+        }
+      </div>
+    </form>
+  }

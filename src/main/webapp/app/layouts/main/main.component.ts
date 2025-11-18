@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit, RendererFactory2, Renderer2 } from '@angular/core';
+import { Component, OnInit, RendererFactory2, Renderer2, inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, ActivatedRouteSnapshot, NavigationEnd, NavigationError } from '@angular/router';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
@@ -24,17 +24,19 @@ import { zip } from 'rxjs';
 @Component({
   selector: 'jhi-main',
   templateUrl: './main.component.html',
+  standalone: false,
 })
 export class MainComponent implements OnInit {
+  private accountService = inject(AccountService);
+  private titleService = inject(Title);
+  private router = inject(Router);
+  private translateService = inject(TranslateService);
+
   private renderer: Renderer2;
 
-  constructor(
-    private accountService: AccountService,
-    private titleService: Title,
-    private router: Router,
-    private translateService: TranslateService,
-    rootRenderer: RendererFactory2,
-  ) {
+  constructor() {
+    const rootRenderer = inject(RendererFactory2);
+
     this.renderer = rootRenderer.createRenderer(document.querySelector('html'), null);
   }
 

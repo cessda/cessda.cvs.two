@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 
@@ -25,7 +25,7 @@ import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { HomeService } from 'app/home/home.service';
 import { RouteEventsService, VocabularyLanguageFromKeyPipe } from 'app/shared';
-import { DiffContent } from 'ngx-text-diff/lib/ngx-text-diff.model';
+import { DiffContent } from 'node_modules/ngx-text-diff/lib/ngx-text-diff.model';
 import { Observable, Subject } from 'rxjs';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { Authority } from 'app/shared/constants/authority.constants';
@@ -33,8 +33,19 @@ import { Authority } from 'app/shared/constants/authority.constants';
 @Component({
   selector: 'jhi-home-detail',
   templateUrl: './home-detail.component.html',
+  standalone: false,
 })
 export class HomeDetailComponent implements OnInit {
+  protected dataUtils = inject(JhiDataUtils);
+  protected activatedRoute = inject(ActivatedRoute);
+  protected router = inject(Router);
+  protected homeService = inject(HomeService);
+  private fb = inject(FormBuilder);
+  private routeEventsService = inject(RouteEventsService);
+  private _ngZone = inject(NgZone);
+  protected eventManager = inject(JhiEventManager);
+  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+
   @ViewChild('detailPanel', { static: true }) detailPanel!: ElementRef;
   @ViewChild('versionPanel', { static: true }) versionPanel!: ElementRef;
   @ViewChild('identityPanel', { static: true }) identityPanel!: ElementRef;
@@ -82,17 +93,7 @@ export class HomeDetailComponent implements OnInit {
     downloadFormGroup: this.downloadFormGroup,
   });
 
-  constructor(
-    protected dataUtils: JhiDataUtils,
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
-    protected homeService: HomeService,
-    private fb: FormBuilder,
-    private routeEventsService: RouteEventsService,
-    private _ngZone: NgZone,
-    protected eventManager: JhiEventManager,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
-  ) {
+  constructor() {
     this.initialTabSelected = 'detail';
     this.currentSelectedCode = '';
     this.activatedRoute.queryParams.subscribe(params => {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, inject } from '@angular/core';
 
 import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
@@ -30,8 +30,13 @@ import { QuillModules } from 'ngx-quill';
 @Component({
   selector: 'jhi-comment-item',
   templateUrl: './editor-detail-cv-comment-item.component.html',
+  standalone: false,
 })
 export class EditorDetailCvCommentItemComponent {
+  protected editorService = inject(EditorService);
+  protected eventManager = inject(JhiEventManager);
+  private fb = inject(FormBuilder);
+
   @Input() account?: Account;
   @Input() comment!: Comment;
   @Input() versionParam!: Version;
@@ -46,11 +51,7 @@ export class EditorDetailCvCommentItemComponent {
     content: ['', [Validators.required]],
   });
 
-  constructor(
-    protected editorService: EditorService,
-    protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
-  ) {
+  constructor() {
     this.isSaving = false;
   }
 

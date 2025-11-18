@@ -13,24 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { Observable, Subject, Subscription } from 'rxjs';
-import { DiffContent } from 'ngx-text-diff/lib/ngx-text-diff.model';
+import { DiffContent } from 'node_modules/ngx-text-diff/lib/ngx-text-diff.model';
 import { HomeService } from 'app/home/home.service';
 import { HttpResponse } from '@angular/common/http';
 import { EditorService } from 'app/editor/editor.service';
-import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
-import { Concept } from 'app/shared/model/concept.model';
+import { JhiEventManager } from 'ng-jhipster';
 
 @Component({
   selector: 'jhi-version-compare',
   templateUrl: './version-compare.component.html',
+  standalone: false,
 })
 export class VersionCompareComponent implements OnInit, OnDestroy {
-  @Input() notation!: string;
-  @Input() langVersion1!: string; // language-version for JSON-based or simply versionID for DB based comparison
-  @Input() langVersion2!: string;
-  @Input() dataSource!: string;
+  private homeService = inject(HomeService);
+  private editorService = inject(EditorService);
+  protected eventManager = inject(JhiEventManager);
+
+  @Input({ required: true }) notation!: string;
+  @Input({ required: true }) langVersion1!: string; // language-version for JSON-based or simply versionID for DB based comparison
+  @Input({ required: true }) langVersion2!: string;
+  @Input({ required: true }) dataSource!: string;
 
   eventSubscriber?: Subscription;
 
@@ -38,12 +42,6 @@ export class VersionCompareComponent implements OnInit, OnDestroy {
 
   contentSubject: Subject<DiffContent> = new Subject<DiffContent>();
   contentObservable$: Observable<DiffContent> = this.contentSubject.asObservable();
-
-  constructor(
-    private homeService: HomeService,
-    private editorService: EditorService,
-    protected eventManager: JhiEventManager,
-  ) {}
 
   doCvCompare(): void {
     if (this.dataSource === 'json' || this.dataSource === 'JSON') {
@@ -63,7 +61,7 @@ export class VersionCompareComponent implements OnInit, OnDestroy {
     return {
       leftContent: left,
       rightContent: right,
-    } as DiffContent;
+    };
   }
 
   toggleCompareShow(): void {
@@ -74,7 +72,7 @@ export class VersionCompareComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.eventSubscriber = this.eventManager.subscribe('closeComparison', (response: JhiEventWithContent<Concept>) => {
+    this.eventSubscriber = this.eventManager.subscribe('closeComparison', () => {
       this.isOpen = false;
     });
   }

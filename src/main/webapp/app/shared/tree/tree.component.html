@@ -15,17 +15,31 @@
     limitations under the License.
 
 -->
-<div *ngFor="let concept of conceptList">
-    <ul *ngIf="concept.parent === parentNotation" class="concept-tree ul-level-{{level}}">
+@for (concept of conceptList; track concept) {
+  <div>
+    @if (concept.parent === parentNotation) {
+      <ul class="concept-tree ul-level-{{level}}">
         <li [attr.id]="!concept.deprecated ? 'code_' + concept.notation.split('.').join('') : null">
-            <div *ngIf="!concept.deprecated" class="concept-row">
-                <span class="column1 coll-mar-{{level}}"><button *ngIf="isConceptHasChildren(concept.notation)" (click)="concept.visible = !concept.visible" class="invisible-button"><fa-icon *ngIf="!concept.visible" icon="caret-down"></fa-icon><fa-icon *ngIf="concept.visible" icon="caret-right"></fa-icon></button>{{concept.notation}}</span>
-                <span class="column2">{{concept.title}}</span>
-                <span class="column3 break-long-word">{{concept.definition}}</span>
+          @if (!concept.deprecated) {
+            <div class="concept-row">
+              <span class="column1 coll-mar-{{level}}">@if (isConceptHasChildren(concept.notation)) {
+                <button (click)="concept.visible = !concept.visible" class="invisible-button">@if (!concept.visible) {
+                  <fa-icon icon="caret-down"></fa-icon>
+                  }@if (concept.visible) {
+                  <fa-icon icon="caret-right"></fa-icon>
+                }</button>
+              }{{concept.notation}}</span>
+              <span class="column2">{{concept.title}}</span>
+              <span class="column3 break-long-word">{{concept.definition}}</span>
             </div>
-            <jhi-tree *ngIf="isConceptHasChildren(concept.notation)"
-                      [ngClass]="{'display-none': concept.visible}"
-                      [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems()" [level]="level! + 1"></jhi-tree>
+          }
+          @if (isConceptHasChildren(concept.notation)) {
+            <jhi-tree
+              [ngClass]="{'display-none': concept.visible}"
+            [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems()" [level]="level! + 1"></jhi-tree>
+          }
         </li>
-    </ul>
-</div>
+      </ul>
+    }
+  </div>
+}

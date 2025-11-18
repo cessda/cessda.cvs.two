@@ -15,24 +15,38 @@
     limitations under the License.
 
 -->
-<div *ngFor="let concept of conceptList">
-    <ul *ngIf="concept.parent === parentNotation" class="concept-tree ul-level-{{level!}}">
+@for (concept of conceptList; track concept) {
+  <div>
+    @if (concept.parent === parentNotation) {
+      <ul class="concept-tree ul-level-{{level!}}">
         <li [attr.id]="concept.deprecated ? 'code_' + concept.notation!.split('.').join('') : null">
-            <div *ngIf="concept.deprecated" class="concept-row">
-                <!-- Column 1 -->
-                <span class="column1"><a href="{{concept.uri}}" target="_blank" rel="noopener noreferrer">{{concept.uri}}</a></span>
-                <!-- Column 2 -->
-                <span class="column1 coll-mar-{{level!}}"><button *ngIf="isConceptHasChildren(concept.notation)" (click)="concept.visible = !concept.visible" class="invisible-button"><fa-icon *ngIf="!concept.visible" icon="caret-down"></fa-icon><fa-icon *ngIf="concept.visible" icon="caret-right"></fa-icon></button><span class="e-note">{{concept.position}}</span> {{concept.notation}}</span>
+          @if (concept.deprecated) {
+            <div class="concept-row">
+              <!-- Column 1 -->
+              <span class="column1"><a href="{{concept.uri}}" target="_blank" rel="noopener noreferrer">{{concept.uri}}</a></span>
+              <!-- Column 2 -->
+              <span class="column1 coll-mar-{{level!}}">@if (isConceptHasChildren(concept.notation)) {
+                <button (click)="concept.visible = !concept.visible" class="invisible-button">@if (!concept.visible) {
+                  <fa-icon icon="caret-down"></fa-icon>
+                  }@if (concept.visible) {
+                  <fa-icon icon="caret-right"></fa-icon>
+                }</button>
+                }<span class="e-note">{{concept.position}}</span> {{concept.notation}}</span>
                 <!-- Column 3 -->
                 <span class="column2">{{concept.title ? concept.title : ''}}</span>
                 <!-- Column 4 -->
                 <span class="column2">{{concept.validFrom}}</span>
                 <!-- Column 5 -->
                 <span class="column2">{{concept.validUntil}}</span>
-            </div>
-            <jhi-tree-deprecated *ngIf="isConceptHasChildren(concept.notation)"
-                      [ngClass]="{'display-none': concept.visible}"
-                      [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems()" [level]="level + 1"></jhi-tree-deprecated>
-        </li>
-    </ul>
-</div>
+              </div>
+            }
+            @if (isConceptHasChildren(concept.notation)) {
+              <jhi-tree-deprecated
+                [ngClass]="{'display-none': concept.visible}"
+              [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems()" [level]="level + 1"></jhi-tree-deprecated>
+            }
+          </li>
+        </ul>
+      }
+    </div>
+  }

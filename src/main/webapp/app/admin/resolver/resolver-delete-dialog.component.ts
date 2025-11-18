@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
@@ -22,15 +22,14 @@ import { ResolverService } from './resolver.service';
 
 @Component({
   templateUrl: './resolver-delete-dialog.component.html',
+  standalone: false,
 })
 export class ResolverDeleteDialogComponent {
-  resolver?: Resolver;
+  protected resolverService = inject(ResolverService);
+  activeModal = inject(NgbActiveModal);
+  protected eventManager = inject(JhiEventManager);
 
-  constructor(
-    protected resolverService: ResolverService,
-    public activeModal: NgbActiveModal,
-    protected eventManager: JhiEventManager,
-  ) {}
+  resolver?: Resolver;
 
   cancel(): void {
     this.activeModal.dismiss();

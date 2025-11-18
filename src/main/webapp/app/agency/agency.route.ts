@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import { Injectable, inject } from '@angular/core';
+import { ActivatedRouteSnapshot, Router, Routes } from '@angular/router';
 import { JhiResolvePagingParams } from 'ng-jhipster';
 import { EMPTY, Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
@@ -28,11 +28,9 @@ import { AgencyDetailPopupComponent } from './agency-detail-dialog.component';
 import { AgencyUpdateComponent } from './agency-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class AgencyResolve implements Resolve<Agency> {
-  constructor(
-    private service: AgencyService,
-    private router: Router,
-  ) {}
+export class AgencyResolve {
+  private service = inject(AgencyService);
+  private router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Agency> | Observable<never> {
     const id = route.params['id'];

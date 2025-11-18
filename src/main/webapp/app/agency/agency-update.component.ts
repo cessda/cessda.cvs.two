@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -30,8 +30,17 @@ import { LicenceService } from 'app/admin/licence/licence.service';
 @Component({
   selector: 'jhi-agency-update',
   templateUrl: './agency-update.component.html',
+  standalone: false,
 })
 export class AgencyUpdateComponent implements OnInit {
+  private licenceService = inject(LicenceService);
+  protected dataUtils = inject(JhiDataUtils);
+  protected eventManager = inject(JhiEventManager);
+  protected agencyService = inject(AgencyService);
+  protected activatedRoute = inject(ActivatedRoute);
+  protected fileUploadService = inject(FileUploadService);
+  private fb = inject(FormBuilder);
+
   isSaving = false;
   currentFileUpload: File | null = null;
   currentImage?: string;
@@ -60,16 +69,6 @@ export class AgencyUpdateComponent implements OnInit {
     uriCode: new FormControl<string | null>(null, [Validators.maxLength(255)]),
     canonicalUri: new FormControl<string | null>(null, [Validators.maxLength(255)]),
   });
-
-  constructor(
-    private licenceService: LicenceService,
-    protected dataUtils: JhiDataUtils,
-    protected eventManager: JhiEventManager,
-    protected agencyService: AgencyService,
-    protected activatedRoute: ActivatedRoute,
-    protected fileUploadService: FileUploadService,
-    private fb: FormBuilder,
-  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ agency }) => {

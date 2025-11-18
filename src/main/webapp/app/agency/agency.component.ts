@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -30,8 +30,16 @@ import { Authority } from 'app/shared/constants/authority.constants';
 @Component({
   selector: 'jhi-agency',
   templateUrl: './agency.component.html',
+  standalone: false,
 })
 export class AgencyComponent implements OnInit, OnDestroy {
+  protected agencyService = inject(AgencyService);
+  protected activatedRoute = inject(ActivatedRoute);
+  protected dataUtils = inject(JhiDataUtils);
+  protected router = inject(Router);
+  protected eventManager = inject(JhiEventManager);
+  protected modalService = inject(NgbModal);
+
   authorities = [Authority.ADMIN, Authority.ADMIN_CONTENT];
 
   agencies: Agency[] = [];
@@ -44,14 +52,7 @@ export class AgencyComponent implements OnInit, OnDestroy {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
-  constructor(
-    protected agencyService: AgencyService,
-    protected activatedRoute: ActivatedRoute,
-    protected dataUtils: JhiDataUtils,
-    protected router: Router,
-    protected eventManager: JhiEventManager,
-    protected modalService: NgbModal,
-  ) {
+  constructor() {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
         ? this.activatedRoute.snapshot.queryParams['search']

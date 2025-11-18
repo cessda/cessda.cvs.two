@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Subject, of } from 'rxjs';
@@ -32,7 +32,7 @@ describe('Component Tests', () => {
     let titleService: Title;
     let translateService: TranslateService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule, TranslateModule.forRoot()],
         declarations: [MainComponent],
@@ -45,10 +45,10 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(MainComponent);
       comp = fixture.componentInstance;
-      router = TestBed.get(Router);
+      router = TestBed.inject(Router) as unknown as MockRouter;
       router.setEvents(routerEventsSubject.asObservable());
-      titleService = TestBed.get(Title);
-      translateService = TestBed.get(TranslateService);
+      titleService = TestBed.inject(Title);
+      translateService = TestBed.inject(TranslateService);
     });
 
     describe('page title', () => {

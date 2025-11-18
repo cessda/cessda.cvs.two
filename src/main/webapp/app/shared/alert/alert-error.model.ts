@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /*
  * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
@@ -14,5 +15,9 @@
  * limitations under the License.
  */
 export class AlertError {
-  constructor(public message: string, public key?: string, public params?: any) {}
+  constructor(
+    public message: string,
+    public key?: string,
+    public params?: any,
+  ) {}
 }

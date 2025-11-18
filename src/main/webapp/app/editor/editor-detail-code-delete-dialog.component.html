@@ -16,30 +16,46 @@
 
 -->
 <form name="deleteForm" (ngSubmit)="confirmDelete(conceptParam.id!)">
-    <div class="modal-header">
-        <h4 class="modal-title">
-            <span *ngIf="isSlForm">Confirm delete code <strong>{{conceptParam.notation}}</strong></span>
-            <span *ngIf="!isSlForm">Confirm remove code translation {{versionParam!.language! | vocabularyLanguageFromKey}} from <strong>{{conceptParam.notation}}</strong></span>
-        </h4>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="clear()"></button>
-    </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div *ngIf="isSlForm">
-            <p>Are you sure you want to delete code <strong>{{conceptParam.notation}}</strong>? Any children codes under <strong>{{conceptParam.notation}}</strong> will also be deleted!</p>
-            <p>If there are children codes and you want to keep them, move them first not to be children to <strong>{{conceptParam.notation}}</strong>.</p>
-        </div>
-        <div *ngIf="!isSlForm">
-            Are you sure you want to remove code translation {{versionParam!.language! | vocabularyLanguageFromKey}} from <strong>{{conceptParam.notation}}?</strong>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
-            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-        </button>
-        <button id="jhi-confirm-delete-vocabulary" type="submit" class="btn btn-danger">
-            <fa-icon *ngIf="isSlForm" [icon]="'trash'"></fa-icon>&nbsp;<span *ngIf="isSlForm" jhiTranslate="entity.action.delete">Delete</span>
-            <fa-icon *ngIf="!isSlForm" [icon]="'times'"></fa-icon>&nbsp;<span *ngIf="!isSlForm">Remove</span>
-        </button>
-    </div>
+  <div class="modal-header">
+    <h4 class="modal-title">
+      @if (isSlForm) {
+        <span>Confirm delete code <strong>{{conceptParam.notation}}</strong></span>
+      }
+      @if (!isSlForm) {
+        <span>Confirm remove code translation {{versionParam!.language! | vocabularyLanguageFromKey}} from <strong>{{conceptParam.notation}}</strong></span>
+      }
+    </h4>
+    <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="clear()"></button>
+  </div>
+  <div class="modal-body">
+    <jhi-alert-error></jhi-alert-error>
+    @if (isSlForm) {
+      <div>
+        <p>Are you sure you want to delete code <strong>{{conceptParam.notation}}</strong>? Any children codes under <strong>{{conceptParam.notation}}</strong> will also be deleted!</p>
+        <p>If there are children codes and you want to keep them, move them first not to be children to <strong>{{conceptParam.notation}}</strong>.</p>
+      </div>
+    }
+    @if (!isSlForm) {
+      <div>
+        Are you sure you want to remove code translation {{versionParam!.language! | vocabularyLanguageFromKey}} from <strong>{{conceptParam.notation}}?</strong>
+      </div>
+    }
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+      <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+    </button>
+    <button id="jhi-confirm-delete-vocabulary" type="submit" class="btn btn-danger">
+      @if (isSlForm) {
+        <fa-icon [icon]="'trash'"></fa-icon>
+        }&nbsp;@if (isSlForm) {
+        <span jhiTranslate="entity.action.delete">Delete</span>
+      }
+      @if (!isSlForm) {
+        <fa-icon [icon]="'times'"></fa-icon>
+        }&nbsp;@if (!isSlForm) {
+        <span>Remove</span>
+      }
+    </button>
+  </div>
 </form>

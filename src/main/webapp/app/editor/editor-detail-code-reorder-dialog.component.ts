@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
@@ -26,8 +26,14 @@ import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 @Component({
   templateUrl: './editor-detail-code-reorder-dialog.component.html',
+  standalone: false,
 })
 export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy {
+  protected editorService = inject(EditorService);
+  activeModal = inject(NgbActiveModal);
+  private router = inject(Router);
+  protected eventManager = inject(JhiEventManager);
+
   isSaving: boolean;
   versionParam!: Version;
   conceptParam!: Concept;
@@ -40,12 +46,7 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
   conceptsToPlace: Concept[] = [];
   conceptsToPlaceTemp: Concept[] = [];
 
-  constructor(
-    protected editorService: EditorService,
-    public activeModal: NgbActiveModal,
-    private router: Router,
-    protected eventManager: JhiEventManager,
-  ) {
+  constructor() {
     this.isSaving = false;
   }
 

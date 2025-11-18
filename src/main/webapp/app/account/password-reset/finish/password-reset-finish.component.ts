@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -23,8 +23,14 @@ import { PasswordResetFinishService } from './password-reset-finish.service';
 @Component({
   selector: 'jhi-password-reset-finish',
   templateUrl: './password-reset-finish.component.html',
+  standalone: false,
 })
 export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
+  private passwordResetFinishService = inject(PasswordResetFinishService);
+  private loginModalService = inject(LoginModalService);
+  private route = inject(ActivatedRoute);
+  private fb = inject(FormBuilder);
+
   @ViewChild('newPassword', { static: false })
   newPassword?: ElementRef;
 
@@ -38,13 +44,6 @@ export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
     newPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
     confirmPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(50)]],
   });
-
-  constructor(
-    private passwordResetFinishService: PasswordResetFinishService,
-    private loginModalService: LoginModalService,
-    private route: ActivatedRoute,
-    private fb: FormBuilder,
-  ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {

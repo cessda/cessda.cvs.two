@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, Routes } from '@angular/router';
 import { JhiResolvePagingParams } from 'ng-jhipster';
 import { EMPTY, Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
@@ -27,11 +27,9 @@ import { ResolverDetailComponent } from './resolver-detail.component';
 import { ResolverUpdateComponent } from './resolver-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class ResolverResolve implements Resolve<Resolver> {
-  constructor(
-    private service: ResolverService,
-    private router: Router,
-  ) {}
+export class ResolverResolve {
+  private service = inject(ResolverService);
+  private router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Resolver> | Observable<never> {
     const id = route.params['id'];

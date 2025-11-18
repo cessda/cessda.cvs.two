@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { JhiLanguageService } from 'ng-jhipster';
@@ -29,17 +29,15 @@ import { Authority } from 'app/shared/constants/authority.constants';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
+  private languageService = inject(JhiLanguageService);
+  private sessionStorage = inject(SessionStorageService);
+  private http = inject(HttpClient);
+  private stateStorageService = inject(StateStorageService);
+  private router = inject(Router);
+
   private userIdentity: Account | null = null;
   private authenticationState = new ReplaySubject<Account | null>(1);
   private accountCache$?: Observable<Account | null>;
-
-  constructor(
-    private languageService: JhiLanguageService,
-    private sessionStorage: SessionStorageService,
-    private http: HttpClient,
-    private stateStorageService: StateStorageService,
-    private router: Router,
-  ) {}
 
   save(account: Account) {
     return this.http.post(SERVER_API_URL + 'api/account', account);

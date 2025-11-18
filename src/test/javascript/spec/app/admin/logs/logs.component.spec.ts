@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
@@ -27,11 +27,11 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<LogsComponent>;
     let service: LogsService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [LogsComponent],
-        providers: [LogsService]
+        providers: [LogsService],
       })
         .overrideTemplate(LogsComponent, '')
         .compileComponents();
@@ -57,10 +57,10 @@ describe('Component Tests', () => {
           of({
             loggers: {
               main: {
-                effectiveLevel: 'WARN'
-              }
-            }
-          })
+                effectiveLevel: 'WARN',
+              },
+            },
+          }),
         );
 
         // WHEN
@@ -81,10 +81,10 @@ describe('Component Tests', () => {
           of({
             loggers: {
               main: {
-                effectiveLevel: 'ERROR'
-              }
-            }
-          })
+                effectiveLevel: 'ERROR',
+              },
+            },
+          }),
         );
 
         // WHEN

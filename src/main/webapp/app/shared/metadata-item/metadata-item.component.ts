@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 
 import { JhiEventManager } from 'ng-jhipster';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -30,8 +30,13 @@ import Quill from 'quill';
   selector: 'jhi-metadata-item',
   templateUrl: './metadata-item.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class MetadataItemComponent implements OnInit {
+  protected editorService = inject(EditorService);
+  protected eventManager = inject(JhiEventManager);
+  private fb = inject(FormBuilder);
+
   @Input() metadataField?: MetadataField;
   @Input() metadataValue!: MetadataValue;
   @Input() isWriting!: boolean;
@@ -53,12 +58,6 @@ export class MetadataItemComponent implements OnInit {
     tableRow: new FormControl<number | null>(null),
     tableColumn: new FormControl<number | null>(null),
   });
-
-  constructor(
-    protected editorService: EditorService,
-    protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
-  ) {}
 
   public editorCreated(event: Quill): void {
     this.quill = event;

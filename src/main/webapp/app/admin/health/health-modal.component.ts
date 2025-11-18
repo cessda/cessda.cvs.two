@@ -13,22 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Component, inject } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
-import {HealthDetails, HealthKey} from './health.service';
+import { HealthDetails, HealthKey } from './health.service';
 
 @Component({
   selector: 'jhi-health-modal',
-  templateUrl: './health-modal.component.html'
+  templateUrl: './health-modal.component.html',
+  standalone: false,
 })
 export class HealthModalComponent {
+  activeModal = inject(NgbActiveModal);
+
   health?: { key: HealthKey; value: HealthDetails };
 
-  constructor(public activeModal: NgbActiveModal) {}
-
-  readableValue(value: any): string {
-    if (this.health && this.health.key === 'diskSpace') {
+  readableValue(value: unknown): string {
+    if (this.health && this.health.key === 'diskSpace' && typeof value === 'number') {
       // Should display storage space in an human readable unit
       const val = value / 1073741824;
       if (val > 1) {
@@ -42,7 +43,7 @@ export class HealthModalComponent {
     if (typeof value === 'object') {
       return JSON.stringify(value);
     } else {
-      return value.toString();
+      return String(value);
     }
   }
 

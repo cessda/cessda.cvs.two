@@ -25,4 +25,9 @@ export class MockEventManager extends SpyObject {
     super(JhiEventManager);
     this.broadcastSpy = this.spy('broadcast').andReturn(this);
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+  subscribe(_fn: (...args: any) => any) {
+    // unused
+  }
 }

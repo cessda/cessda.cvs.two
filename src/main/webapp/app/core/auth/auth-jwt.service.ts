@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
 
-import {SERVER_API_URL} from 'app/app.constants';
-import {Login} from 'app/core/login/login.model';
+import { SERVER_API_URL } from 'app/app.constants';
+import { Login } from 'app/core/login/login.model';
 
 type JwtToken = {
   id_token: string;
@@ -28,7 +28,9 @@ type JwtToken = {
 
 @Injectable({ providedIn: 'root' })
 export class AuthServerProvider {
-  constructor(private http: HttpClient, private $localStorage: LocalStorageService, private $sessionStorage: SessionStorageService) {}
+  private http = inject(HttpClient);
+  private $localStorage = inject(LocalStorageService);
+  private $sessionStorage = inject(SessionStorageService);
 
   getToken(): string {
     return this.$localStorage.retrieve('authenticationToken') || this.$sessionStorage.retrieve('authenticationToken') || '';

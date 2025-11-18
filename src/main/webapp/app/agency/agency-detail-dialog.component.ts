@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JhiDataUtils } from 'ng-jhipster';
 
@@ -37,8 +37,15 @@ interface UnpublishedVersions {
 @Component({
   selector: 'jhi-agency-detail-dialog',
   templateUrl: './agency-detail-dialog.component.html',
+  standalone: false,
 })
 export class AgencyDetailDialogComponent implements OnInit {
+  protected dataUtils = inject(JhiDataUtils);
+  protected agencyService = inject(AgencyService);
+  activeModal = inject(NgbActiveModal);
+  private router = inject(Router);
+  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+
   agency: Agency = createNewAgency();
   vocabStats: VocabStat[] = [];
   unpublishedVersions: UnpublishedVersions[] = [];
@@ -49,13 +56,7 @@ export class AgencyDetailDialogComponent implements OnInit {
   numberCodePublished: number;
   numberCodeVersionPublished: number;
 
-  constructor(
-    protected dataUtils: JhiDataUtils,
-    protected agencyService: AgencyService,
-    public activeModal: NgbActiveModal,
-    private router: Router,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
-  ) {
+  constructor() {
     this.numberCvPublished = 0;
     this.numberCvVersionSlPublished = 0;
     this.numberCvVersionTlPublished = 0;
@@ -143,15 +144,14 @@ export class AgencyDetailDialogComponent implements OnInit {
 @Component({
   selector: 'jhi-agency-detail-popup',
   template: '',
+  standalone: false,
 })
 export class AgencyDetailPopupComponent implements OnInit, OnDestroy {
-  protected ngbModalRef?: NgbModalRef | null;
+  protected activatedRoute = inject(ActivatedRoute);
+  protected router = inject(Router);
+  protected modalService = inject(NgbModal);
 
-  constructor(
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
-    protected modalService: NgbModal,
-  ) {}
+  protected ngbModalRef?: NgbModalRef | null;
 
   ngOnInit(): void {
     this.ngbModalRef = this.modalService.open(AgencyDetailDialogComponent as Component, { size: 'xl', backdrop: 'static' });

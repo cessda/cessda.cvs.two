@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Directive, Input, TemplateRef, ViewContainerRef, OnDestroy } from '@angular/core';
+import { Directive, Input, TemplateRef, ViewContainerRef, OnDestroy, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { AccountService } from 'app/core/auth/account.service';
@@ -32,16 +32,15 @@ import { Authority } from '../constants/authority.constants';
  */
 @Directive({
   selector: '[jhiHasAnyAuthority]',
+  standalone: false,
 })
 export class HasAnyAuthorityDirective implements OnDestroy {
+  private accountService = inject(AccountService);
+  private templateRef = inject<TemplateRef<unknown>>(TemplateRef);
+  private viewContainerRef = inject(ViewContainerRef);
+
   private authorities: Authority[] = [];
   private authenticationSubscription: Subscription | undefined;
-
-  constructor(
-    private accountService: AccountService,
-    private templateRef: TemplateRef<unknown>,
-    private viewContainerRef: ViewContainerRef,
-  ) {}
 
   @Input()
   set jhiHasAnyAuthority(value: Authority | Authority[]) {

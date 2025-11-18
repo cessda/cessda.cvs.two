@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -25,23 +25,23 @@ import { StateStorageService } from 'app/core/auth/state-storage.service';
 
 @Injectable()
 export class AuthExpiredInterceptor implements HttpInterceptor {
-  constructor(
-    private loginService: LoginService,
-    private loginModalService: LoginModalService,
-    private stateStorageService: StateStorageService,
-    private router: Router
-  ) {}
+  private loginService = inject(LoginService);
+  private loginModalService = inject(LoginModalService);
+  private stateStorageService = inject(StateStorageService);
+  private router = inject(Router);
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
-      tap(null, (err: HttpErrorResponse) => {
-        if (err.status === 401 && err.url && !err.url.includes('api/account')) {
-          this.stateStorageService.storeUrl(this.router.routerState.snapshot.url);
-          this.loginService.logout();
-          this.router.navigate(['']);
-          this.loginModalService.open();
-        }
-      })
+      tap({
+        error: (err: HttpErrorResponse) => {
+          if (err.status === 401 && err.url && !err.url.includes('api/account')) {
+            this.stateStorageService.storeUrl(this.router.routerState.snapshot.url);
+            this.loginService.logout();
+            this.router.navigate(['']);
+            this.loginModalService.open();
+          }
+        },
+      }),
     );
   }
 }

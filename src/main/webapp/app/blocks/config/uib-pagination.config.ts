@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { NgbPaginationConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 
 @Injectable({ providedIn: 'root' })
 export class PaginationConfig {
-  constructor(config: NgbPaginationConfig) {
+  constructor() {
+    const config = inject(NgbPaginationConfig);
     config.boundaryLinks = true;
     config.maxSize = 5;
     config.pageSize = ITEMS_PER_PAGE;

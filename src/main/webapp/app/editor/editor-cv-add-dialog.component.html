@@ -16,122 +16,143 @@
 
 -->
 <form name="cvAddForm" role="form" (ngSubmit)="save()" novalidate [formGroup]="cvAddForm">
-    <div class="modal-header">
-        <div class="modal-title" style="display: flex;">Add Vocabulary</div>
-        <button aria-label="Close" class="btn-close" data-dismiss="modal" type="button" (click)="clear()"></button>
-    </div>
-    <div class="modal-body">
-        <div class="row-content">
-            <div class="col-md-12 justify-content-center">
-                <div class="alert alert-danger" *ngIf="errorNotationExists">
-                    <strong>Vocabulary already exist!</strong> Please use different CV Short Name.
-                </div>
-            </div>
-            <div class="row-details">
-                <div class="row-detail form-group">
-                    <div class="label-column-input">
-                        <span>Agency</span>
-                    </div>
-                    <div class="detail-column">
-                        <select class="form-control w-auto sk-select" id="agency" name="agency" formControlName="agency">
-                            <option *ngFor="let agency of agencies" [value]="agency.id">{{agency.name}}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="row-detail form-group">
-                    <div class="label-column-input label-right">
-                        <span>Language</span>
-                    </div>
-                    <div class="detail-column">
-                        <select class="form-control w-auto sk-select" id="sourceLanguage" name="sourceLanguage" formControlName="sourceLanguage">
-                            <option *ngFor="let language of languages; let i = index" [value]="language">{{language | vocabularyLanguageFromKey}}</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-detail form-group">
-                <div class="label-column-input">
-                    <span class="label-required">CV short name</span>
-                </div>
-                <div class="detail-column">
-                    <input type="text" class="form-control" id="field_notation" name="notation" formControlName="notation"/>
-                    <div *ngIf="cvAddForm.controls.notation.invalid && (cvAddForm.controls.notation.dirty || cvAddForm.controls.notation.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="cvAddForm.controls.notation.errors?.required" jhiTranslate="entity.validation.required">
-                            This field is required.
-                        </small>
-
-                        <small class="form-text text-danger"
-                               *ngIf="cvAddForm.controls.notation.errors?.maxlength" jhiTranslate="entity.validation.maxlength"
-                               [translateValues]="{max: 240}">
-                            This field cannot be longer than 240 characters.
-                        </small>
-
-                        <small class="form-text text-danger"
-                               *ngIf="cvAddForm.controls.notation.errors?.minlength" jhiTranslate="entity.validation.minlength"
-                               [translateValues]="{min: 2}">
-                            This field is required to be at least 2 characters.
-                        </small>
-
-                        <small class="form-text text-danger"
-                               *ngIf="cvAddForm.controls.notation.errors?.pattern">
-                            CV Short Name can only contain letters (a-z A-Z), digits (0-9) and limited symbols ( +-).
-                        </small>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-detail form-group">
-                <div class="label-column-input">
-                    <span class="label-required">CV name</span>
-                </div>
-                <div class="detail-column">
-                    <input type="text" class="form-control" id="field_title" name="title" formControlName="title"/>
-                    <div *ngIf="cvAddForm.controls.title.invalid && (cvAddForm.controls.title.dirty || cvAddForm.controls.title.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="cvAddForm.controls.title.errors?.required" jhiTranslate="entity.validation.required">
-                            This field is required.
-                        </small>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-detail form-group">
-                <div class="label-column-input">
-                    <span class="label-required">CV definition</span>
-                </div>
-                <div class="detail-column">
-                    <textarea class="form-control"  id="field_definition" name="definition" formControlName="definition" rows="10"></textarea>
-                    <div *ngIf="cvAddForm.controls.definition.invalid && (cvAddForm.controls.definition.dirty || cvAddForm.controls.definition.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="cvAddForm.controls.definition.errors?.required" jhiTranslate="entity.validation.required">
-                            This field is required.
-                        </small>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row-detail form-group">
-                <div class="label-column-input">
-                    <span>CV Notes</span>
-                </div>
-                <div class="detail-column">
-                    <textarea class="form-control" name="notes" id="field_notes" formControlName="notes" rows="5"></textarea>
-                </div>
-            </div>
-
+  <div class="modal-header">
+    <div class="modal-title" style="display: flex;">Add Vocabulary</div>
+    <button aria-label="Close" class="btn-close" data-dismiss="modal" type="button" (click)="clear()"></button>
+  </div>
+  <div class="modal-body">
+    <div class="row-content">
+      <div class="col-md-12 justify-content-center">
+        @if (errorNotationExists) {
+          <div class="alert alert-danger">
+            <strong>Vocabulary already exist!</strong> Please use different CV Short Name.
+          </div>
+        }
+      </div>
+      <div class="row-details">
+        <div class="row-detail form-group">
+          <div class="label-column-input">
+            <span>Agency</span>
+          </div>
+          <div class="detail-column">
+            <select class="form-control w-auto sk-select" id="agency" name="agency" formControlName="agency">
+              @for (agency of agencies; track agency) {
+                <option [value]="agency.id">{{agency.name}}</option>
+              }
+            </select>
+          </div>
         </div>
+        <div class="row-detail form-group">
+          <div class="label-column-input label-right">
+            <span>Language</span>
+          </div>
+          <div class="detail-column">
+            <select class="form-control w-auto sk-select" id="sourceLanguage" name="sourceLanguage" formControlName="sourceLanguage">
+              @for (language of languages; track language; let i = $index) {
+                <option [value]="language">{{language | vocabularyLanguageFromKey}}</option>
+              }
+            </select>
+          </div>
+        </div>
+      </div>
 
+      <div class="row-detail form-group">
+        <div class="label-column-input">
+          <span class="label-required">CV short name</span>
+        </div>
+        <div class="detail-column">
+          <input type="text" class="form-control" id="field_notation" name="notation" formControlName="notation"/>
+          @if (cvAddForm.controls.notation.invalid && (cvAddForm.controls.notation.dirty || cvAddForm.controls.notation.touched)) {
+            <div>
+              @if (cvAddForm.controls.notation.errors?.required) {
+                <small class="form-text text-danger"
+                  jhiTranslate="entity.validation.required">
+                  This field is required.
+                </small>
+              }
+              @if (cvAddForm.controls.notation.errors?.maxlength) {
+                <small class="form-text text-danger"
+                  jhiTranslate="entity.validation.maxlength"
+                  [translateValues]="{max: 240}">
+                  This field cannot be longer than 240 characters.
+                </small>
+              }
+              @if (cvAddForm.controls.notation.errors?.minlength) {
+                <small class="form-text text-danger"
+                  jhiTranslate="entity.validation.minlength"
+                  [translateValues]="{min: 2}">
+                  This field is required to be at least 2 characters.
+                </small>
+              }
+              @if (cvAddForm.controls.notation.errors?.pattern) {
+                <small class="form-text text-danger"
+                  >
+                  CV Short Name can only contain letters (a-z A-Z), digits (0-9) and limited symbols ( +-).
+                </small>
+              }
+            </div>
+          }
+        </div>
+      </div>
 
+      <div class="row-detail form-group">
+        <div class="label-column-input">
+          <span class="label-required">CV name</span>
+        </div>
+        <div class="detail-column">
+          <input type="text" class="form-control" id="field_title" name="title" formControlName="title"/>
+          @if (cvAddForm.controls.title.invalid && (cvAddForm.controls.title.dirty || cvAddForm.controls.title.touched)) {
+            <div>
+              @if (cvAddForm.controls.title.errors?.required) {
+                <small class="form-text text-danger"
+                  jhiTranslate="entity.validation.required">
+                  This field is required.
+                </small>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="row-detail form-group">
+        <div class="label-column-input">
+          <span class="label-required">CV definition</span>
+        </div>
+        <div class="detail-column">
+          <textarea class="form-control"  id="field_definition" name="definition" formControlName="definition" rows="10"></textarea>
+          @if (cvAddForm.controls.definition.invalid && (cvAddForm.controls.definition.dirty || cvAddForm.controls.definition.touched)) {
+            <div>
+              @if (cvAddForm.controls.definition.errors?.required) {
+                <small class="form-text text-danger"
+                  jhiTranslate="entity.validation.required">
+                  This field is required.
+                </small>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="row-detail form-group">
+        <div class="label-column-input">
+          <span>CV Notes</span>
+        </div>
+        <div class="detail-column">
+          <textarea class="form-control" name="notes" id="field_notes" formControlName="notes" rows="5"></textarea>
+        </div>
+      </div>
 
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
-            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
-        </button>
-        <button type="submit" id="save-new-cv" [disabled]="cvAddForm.invalid || isSaving" class="btn btn-primary">
-            <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-        </button>
-    </div>
+
+
+
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+      <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
+    </button>
+    <button type="submit" id="save-new-cv" [disabled]="cvAddForm.invalid || isSaving" class="btn btn-primary">
+      <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+    </button>
+  </div>
 </form>

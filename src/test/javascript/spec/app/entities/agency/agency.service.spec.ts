@@ -32,8 +32,8 @@ describe('Service Tests', () => {
       });
       expectedResult = null;
       injector = getTestBed();
-      service = injector.get(AgencyService);
-      httpMock = injector.get(HttpTestingController);
+      service = injector.inject(AgencyService);
+      httpMock = injector.inject(HttpTestingController);
 
       elemDefault = createNewAgency({
         id: 0,

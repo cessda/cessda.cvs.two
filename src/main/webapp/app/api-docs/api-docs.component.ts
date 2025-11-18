@@ -16,7 +16,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'jhi-api-docs',
-  template: '<jhi-custom-page [pageType]="\'api-docs\'"></jhi-custom-page>',
+    selector: 'jhi-api-docs',
+    template: '<jhi-custom-page [pageType]="\'api-docs\'"></jhi-custom-page>',
+    standalone: false
 })
 export class ApiDocsComponent {}

@@ -13,16 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Directive, OnInit, ElementRef, Renderer2, Input } from '@angular/core';
+import { Directive, OnInit, ElementRef, Renderer2, Input, inject } from '@angular/core';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 
 @Directive({
-  selector: '[jhiActiveMenu]'
+  selector: '[jhiActiveMenu]',
+  standalone: false,
 })
 export class ActiveMenuDirective implements OnInit {
-  @Input() jhiActiveMenu?: string;
+  private el = inject(ElementRef);
+  private renderer = inject(Renderer2);
+  private translateService = inject(TranslateService);
 
-  constructor(private el: ElementRef, private renderer: Renderer2, private translateService: TranslateService) {}
+  @Input() jhiActiveMenu?: string;
 
   ngOnInit(): void {
     this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {

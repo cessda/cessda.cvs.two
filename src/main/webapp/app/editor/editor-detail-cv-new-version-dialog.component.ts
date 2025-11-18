@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
@@ -26,8 +26,16 @@ import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 
 @Component({
   templateUrl: './editor-detail-cv-new-version-dialog.component.html',
+  standalone: false,
 })
 export class EditorDetailCvNewVersionDialogComponent implements OnInit {
+  protected editorService = inject(EditorService);
+  activeModal = inject(NgbActiveModal);
+  private router = inject(Router);
+  protected eventManager = inject(JhiEventManager);
+  private fb = inject(FormBuilder);
+  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+
   vocabularyParam!: Vocabulary;
   versionParam!: Version;
   isSaving: boolean;
@@ -39,14 +47,7 @@ export class EditorDetailCvNewVersionDialogComponent implements OnInit {
     agreeNewVersion: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
 
-  constructor(
-    protected editorService: EditorService,
-    public activeModal: NgbActiveModal,
-    private router: Router,
-    protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
-  ) {
+  constructor() {
     this.isSaving = false;
     this.unPublishedTls = '';
     this.allTls = '';

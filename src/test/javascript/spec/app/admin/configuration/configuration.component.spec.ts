@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { of } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
@@ -26,11 +26,11 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<ConfigurationComponent>;
     let service: ConfigurationService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [ConfigurationComponent],
-        providers: [ConfigurationService]
+        providers: [ConfigurationService],
       })
         .overrideTemplate(ConfigurationComponent, '')
         .compileComponents();
@@ -50,20 +50,20 @@ describe('Component Tests', () => {
             prefix: 'jhipster',
             properties: {
               clientApp: {
-                name: 'jhipsterApp'
-              }
-            }
-          }
+                name: 'jhipsterApp',
+              },
+            },
+          },
         ];
         const propertySources: PropertySource[] = [
           {
             name: 'server.ports',
             properties: {
               'local.server.port': {
-                value: '8080'
-              }
-            }
-          }
+                value: '8080',
+              },
+            },
+          },
         ];
         spyOn(service, 'getBeans').and.returnValue(of(beans));
         spyOn(service, 'getPropertySources').and.returnValue(of(propertySources));

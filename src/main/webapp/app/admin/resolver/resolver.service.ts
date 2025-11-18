@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
-import { createRequestOption, SearchWithPagination } from 'app/shared/util/request-util';
+import { createRequestOption, Pagination, SearchWithPagination } from 'app/shared/util/request-util';
 import { Resolver } from 'app/shared/model/resolver.model';
 
 type EntityResponseType = HttpResponse<Resolver>;
@@ -26,10 +26,10 @@ type EntityArrayResponseType = HttpResponse<Resolver[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ResolverService {
+  protected http = inject(HttpClient);
+
   public resourceUrl = SERVER_API_URL + 'api/resolvers';
   public resourceSearchUrl = SERVER_API_URL + 'api/_search/resolvers';
-
-  constructor(protected http: HttpClient) {}
 
   create(resolver: Resolver): Observable<EntityResponseType> {
     return this.http.post<Resolver>(this.resourceUrl, resolver, { observe: 'response' });
@@ -43,7 +43,7 @@ export class ResolverService {
     return this.http.get<Resolver>(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
-  query(req?: any): Observable<EntityArrayResponseType> {
+  query(req?: Pagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<Resolver[]>(this.resourceUrl, { params: options, observe: 'response' });
   }

@@ -16,44 +16,43 @@
 
 -->
 <div class="row justify-content-center">
-    <div class="col-8">
-        <div *ngIf="licence">
-            <h2><span jhiTranslate="cvsApp.licence.detail.title">Licence</span> {{ licence.id }}</h2>
-
-            <hr>
-
-            <jhi-alert-error></jhi-alert-error>
-
-            <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="cvsApp.licence.name">Name</span></dt>
-                <dd>
-                    <span>{{ licence.name }}</span>
-                </dd>
-                <dt><span jhiTranslate="cvsApp.licence.abbr">Abbr</span></dt>
-                <dd>
-                    <span>{{ licence.abbr }}</span>
-                </dd>
-                <dt><span jhiTranslate="cvsApp.licence.link">Link</span></dt>
-                <dd>
-                    <span>{{ licence.link }}</span>
-                </dd>
-                <dt><span jhiTranslate="cvsApp.licence.logoLink">Logo Link</span></dt>
-                <dd>
-                    <span><img *ngIf="licence.logoLink" [src]="'/content/images/license/' + licence.logoLink" class="mh-60px" alt="logo of {{ licence.name }}"/></span>
-                </dd>
-            </dl>
-
-            <button type="submit"
-                    (click)="previousState()"
-                    class="btn btn-info">
-                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-            </button>
-
-            <button type="button"
-                    [routerLink]="['/admin/licence', licence.id, 'edit']"
-                    class="btn btn-primary">
-                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
-            </button>
+  <div class="col-8">
+    @if (licence) {
+      <div>
+        <h2><span jhiTranslate="cvsApp.licence.detail.title">Licence</span> {{ licence.id }}</h2>
+        <hr>
+          <jhi-alert-error></jhi-alert-error>
+          <dl class="row-md jh-entity-details">
+            <dt><span jhiTranslate="cvsApp.licence.name">Name</span></dt>
+            <dd>
+              <span>{{ licence.name }}</span>
+            </dd>
+            <dt><span jhiTranslate="cvsApp.licence.abbr">Abbr</span></dt>
+            <dd>
+              <span>{{ licence.abbr }}</span>
+            </dd>
+            <dt><span jhiTranslate="cvsApp.licence.link">Link</span></dt>
+            <dd>
+              <span>{{ licence.link }}</span>
+            </dd>
+            <dt><span jhiTranslate="cvsApp.licence.logoLink">Logo Link</span></dt>
+            <dd>
+              <span>@if (licence.logoLink) {
+                <img [src]="'/content/images/license/' + licence.logoLink" class="mh-60px" alt="logo of {{ licence.name }}"/>
+              }</span>
+            </dd>
+          </dl>
+          <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+            <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+          </button>
+          <button type="button"
+            [routerLink]="['/admin/licence', licence.id, 'edit']"
+            class="btn btn-primary">
+            <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+          </button>
         </div>
+      }
     </div>
-</div>
+  </div>

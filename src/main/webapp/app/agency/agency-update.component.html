@@ -16,145 +16,177 @@
 
 -->
 <div class="row justify-content-center">
-    <div class="col-8">
-        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-agency-heading" jhiTranslate="cvsApp.agency.home.createOrEditLabel">Create or edit a Agency</h2>
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-agency-heading" jhiTranslate="cvsApp.agency.home.createOrEditLabel">Create or edit a Agency</h2>
 
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group" [hidden]="!editForm.controls.id.value">
+          <label for="id" jhiTranslate="global.field.id">ID</label>
+          <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label label-required" jhiTranslate="cvsApp.agency.name" for="field_name">Name</label>
+          <input type="text" class="form-control" name="name" id="field_name"
+            formControlName="name"/>
+          @if (editForm.controls.name.invalid && (editForm.controls.name.dirty || editForm.controls.name.touched)) {
             <div>
-                <jhi-alert-error></jhi-alert-error>
-
-                <div class="form-group" [hidden]="!editForm.controls.id.value">
-                    <label for="id" jhiTranslate="global.field.id">ID</label>
-                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label label-required" jhiTranslate="cvsApp.agency.name" for="field_name">Name</label>
-                    <input type="text" class="form-control" name="name" id="field_name"
-                           formControlName="name"/>
-                    <div *ngIf="editForm.controls.name.invalid && (editForm.controls.name.dirty || editForm.controls.name.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.name.errors?.required" jhiTranslate="entity.validation.required">
-                            This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.name.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
-                        This field cannot be longer than 240 characters.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label label-required" jhiTranslate="cvsApp.agency.link" for="field_link">Link</label>
-                    <input type="text" class="form-control" name="link" id="field_link"
-                           formControlName="link"/>
-                    <div *ngIf="editForm.controls.link.invalid && (editForm.controls.link.dirty || editForm.controls.link.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.link.errors?.required" jhiTranslate="entity.validation.required">
-                            This field is required.
-                        </small>
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.link.errors?.pattern">
-                            Not a valid URL.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="cvsApp.agency.description" for="field_description">Description</label>
-                    <textarea class="form-control" name="description" id="field_description"
-                              formControlName="description"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label">Agency logo</label>
-                    <br/>
-                    <img *ngIf="currentImage" [src]="'/content/images/agency/' + currentImage" alt="{{editForm.controls.name.value}}" class="mh-60px"/>
-                    <div *ngIf="currentFileUpload" class="progress" [hidden]="progress.percentage === 100">
-                        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
-                             attr.aria-valuenow="{{progress.percentage}}"
-                             aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progress.percentage+'%'}">
-                            {{progress.percentage}}%
-                        </div>
-                    </div>
-                    <br/>
-                    <small>JPG / GIF / PNG (maximal image size: 2 MB).</small>
-                    <br/>
-                    <label class="btn btn-default">
-                        <input type="file" (change)="selectFile($event)"
-                               accept="image/png,image/gif,image/jpeg"/>
-                    </label>
-                    <button *ngIf="currentImage" type="button"
-                            class="btn pull-right btn-secondary"
-                            (click)="removePicture()">
-                        <fa-icon [icon]="'trash-alt'"></fa-icon>&nbsp;<span>Remove agency image</span></button>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" for="field_licenseId">License</label>
-                    <select class="form-control w-auto sk-select" id="field_licenseId" name="licenseId" formControlName="licenseId">
-                        <option *ngFor="let licence of licences; let i = index" [value]="licence.id">{{licence.name}}</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="cvsApp.agency.uri" for="field_uri">Uri</label>
-                    <input type="text" class="form-control" name="uri" id="field_uri" formControlName="uri"/>
-                    <small>
-                        <span>Note: Please use the following patterns, to configure the URI</span><br/>
-                        <span>- [VOCABULARY] ~ This is required and it will be replaced by CV short-name e.g. TopicClassification</span><br/>
-                        <span>- [VERSION] ~ This is optional and it will be replaced by CV SL version e.g. 1.0</span><br/>
-                        <span>- [LANGUAGE] ~ This is optional and it will be replaced by CV SL/TL language e.g. en</span><br/>
-                        <span>For example this URI configuration https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]/[VERSION]/[LANGUAGE],</span><br/>
-                        <span>will generate URI https://vocabularies.cessda.eu/vocabulary/TopicClassification/1.0/en</span><br/>
-                    </small>
-                    <div *ngIf="editForm.controls.uri.invalid && (editForm.controls.uri.dirty || editForm.controls.uri.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.uri.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
-                        This field cannot be longer than 255 characters.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" for="field_uri_code">Uri Code</label>
-                    <input type="text" class="form-control" name="uri" id="field_uri_code" formControlName="uriCode"/>
-                    <small>
-                        <span>Note: Please use the similar patterns as URI, with one additional required pattern:</span><br/>
-                        <span>- [CODE] ~ This pattern is required and it will be replaced by code hash.</span><br/>
-                        <span>For example this URI configuration https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]_[CODE]/[VERSION]/[LANGUAGE],</span><br/>
-                        <span>will generate URI https://vocabularies.cessda.eu/vocabulary/TopicClassification_Demography/1.0/en</span><br/>
-                    </small>
-                    <div *ngIf="editForm.controls.uriCode.invalid && (editForm.controls.uriCode.dirty || editForm.controls.uriCode.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.uriCode.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
-                            This field cannot be longer than 255 characters.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="cvsApp.agency.canonicalUri" for="field_canonicalUri">Canonical Uri</label>
-                    <input type="text" class="form-control" name="canonicalUri" id="field_canonicalUri"
-                           formControlName="canonicalUri"/>
-                    <div *ngIf="editForm.controls.canonicalUri.invalid && (editForm.controls.canonicalUri.dirty || editForm.controls.canonicalUri.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.controls.canonicalUri.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
-                        This field cannot be longer than 255 characters.
-                        </small>
-                    </div>
-                </div>
+              @if (editForm.controls.name.errors?.required) {
+                <small class="form-text text-danger"
+                  jhiTranslate="entity.validation.required">
+                  This field is required.
+                </small>
+              }
+              @if (editForm.controls.name.errors?.maxlength) {
+                <small class="form-text text-danger"
+                  jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
+                  This field cannot be longer than 240 characters.
+                </small>
+              }
             </div>
+          }
+        </div>
 
+        <div class="form-group">
+          <label class="form-control-label label-required" jhiTranslate="cvsApp.agency.link" for="field_link">Link</label>
+          <input type="text" class="form-control" name="link" id="field_link"
+            formControlName="link"/>
+          @if (editForm.controls.link.invalid && (editForm.controls.link.dirty || editForm.controls.link.touched)) {
             <div>
-                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
-                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
-                </button>
-
-                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-                </button>
+              @if (editForm.controls.link.errors?.required) {
+                <small class="form-text text-danger"
+                  jhiTranslate="entity.validation.required">
+                  This field is required.
+                </small>
+              }
+              @if (editForm.controls.link.errors?.pattern) {
+                <small class="form-text text-danger"
+                  >
+                  Not a valid URL.
+                </small>
+              }
             </div>
-        </form>
+          }
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label" jhiTranslate="cvsApp.agency.description" for="field_description">Description</label>
+          <textarea class="form-control" name="description" id="field_description"
+          formControlName="description"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-control-label">Agency logo</label>
+          <br/>
+          @if (currentImage) {
+            <img [src]="'/content/images/agency/' + currentImage" alt="{{editForm.controls.name.value}}" class="mh-60px"/>
+          }
+          @if (currentFileUpload) {
+            <div class="progress" [hidden]="progress.percentage === 100">
+              <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                attr.aria-valuenow="{{progress.percentage}}"
+                aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progress.percentage+'%'}">
+                {{progress.percentage}}%
+              </div>
+            </div>
+          }
+          <br/>
+          <small>JPG / GIF / PNG (maximal image size: 2 MB).</small>
+          <br/>
+          <label class="btn btn-default">
+            <input type="file" (change)="selectFile($event)"
+              accept="image/png,image/gif,image/jpeg"/>
+          </label>
+          @if (currentImage) {
+            <button type="button"
+              class="btn pull-right btn-secondary"
+              (click)="removePicture()">
+              <fa-icon [icon]="'trash-alt'"></fa-icon>&nbsp;<span>Remove agency image</span></button>
+            }
+          </div>
+
+          <div class="form-group">
+            <label class="form-control-label" for="field_licenseId">License</label>
+            <select class="form-control w-auto sk-select" id="field_licenseId" name="licenseId" formControlName="licenseId">
+              @for (licence of licences; track licence; let i = $index) {
+                <option [value]="licence.id">{{licence.name}}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cvsApp.agency.uri" for="field_uri">Uri</label>
+            <input type="text" class="form-control" name="uri" id="field_uri" formControlName="uri"/>
+            <small>
+              <span>Note: Please use the following patterns, to configure the URI</span><br/>
+              <span>- [VOCABULARY] ~ This is required and it will be replaced by CV short-name e.g. TopicClassification</span><br/>
+              <span>- [VERSION] ~ This is optional and it will be replaced by CV SL version e.g. 1.0</span><br/>
+              <span>- [LANGUAGE] ~ This is optional and it will be replaced by CV SL/TL language e.g. en</span><br/>
+              <span>For example this URI configuration https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]/[VERSION]/[LANGUAGE],</span><br/>
+              <span>will generate URI https://vocabularies.cessda.eu/vocabulary/TopicClassification/1.0/en</span><br/>
+            </small>
+            @if (editForm.controls.uri.invalid && (editForm.controls.uri.dirty || editForm.controls.uri.touched)) {
+              <div>
+                @if (editForm.controls.uri.errors?.maxlength) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                    This field cannot be longer than 255 characters.
+                  </small>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label class="form-control-label" for="field_uri_code">Uri Code</label>
+            <input type="text" class="form-control" name="uri" id="field_uri_code" formControlName="uriCode"/>
+            <small>
+              <span>Note: Please use the similar patterns as URI, with one additional required pattern:</span><br/>
+              <span>- [CODE] ~ This pattern is required and it will be replaced by code hash.</span><br/>
+              <span>For example this URI configuration https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]_[CODE]/[VERSION]/[LANGUAGE],</span><br/>
+              <span>will generate URI https://vocabularies.cessda.eu/vocabulary/TopicClassification_Demography/1.0/en</span><br/>
+            </small>
+            @if (editForm.controls.uriCode.invalid && (editForm.controls.uriCode.dirty || editForm.controls.uriCode.touched)) {
+              <div>
+                @if (editForm.controls.uriCode.errors?.maxlength) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                    This field cannot be longer than 255 characters.
+                  </small>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="form-group">
+            <label class="form-control-label" jhiTranslate="cvsApp.agency.canonicalUri" for="field_canonicalUri">Canonical Uri</label>
+            <input type="text" class="form-control" name="canonicalUri" id="field_canonicalUri"
+              formControlName="canonicalUri"/>
+            @if (editForm.controls.canonicalUri.invalid && (editForm.controls.canonicalUri.dirty || editForm.controls.canonicalUri.touched)) {
+              <div>
+                @if (editForm.controls.canonicalUri.errors?.maxlength) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                    This field cannot be longer than 255 characters.
+                  </small>
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <div>
+          <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+            <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+          </button>
+
+          <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+            <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+          </button>
+        </div>
+      </form>
     </div>
-</div>
+  </div>

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync, inject, fakeAsync, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -23,7 +23,6 @@ import { Authority } from 'app/shared/constants/authority.constants';
 import { CvsTestModule } from '../../../test.module';
 import { UserManagementUpdateComponent } from 'app/admin/user-management/user-management-update.component';
 import { UserService } from 'app/core/user/user.service';
-import { User } from 'app/core/user/user.model';
 
 describe('Component Tests', () => {
   describe('User Management Update Component', () => {
@@ -44,9 +43,9 @@ describe('Component Tests', () => {
           createdBy: 'admin',
         },
       }),
-    } as any as ActivatedRoute;
+    } as unknown as ActivatedRoute;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [UserManagementUpdateComponent],

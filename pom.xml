@@ -58,8 +58,8 @@
         <!-- Build properties -->
         <maven.version>3.3.9</maven.version>
         <java.version>11</java.version>
-        <node.version>v18.20.5</node.version>
-        <npm.version>10.9.0</npm.version>
+        <node.version>v22.20.0</node.version>
+        <npm.version>10.9.3</npm.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
@@ -728,6 +728,7 @@
                         <exclude>src/main/java/springfox/**</exclude>
                         <exclude>.config/**</exclude>
                         <exclude>.angular/**</exclude>
+                        <exclude>**/*.tgz</exclude>
                     </excludes>
                     <mapping>
                         <cff>SCRIPT_STYLE</cff>

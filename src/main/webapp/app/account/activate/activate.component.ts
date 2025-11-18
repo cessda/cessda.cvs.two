@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { mergeMap } from 'rxjs/operators';
 
@@ -23,16 +23,15 @@ import { ActivateService } from './activate.service';
 @Component({
   selector: 'jhi-activate',
   templateUrl: './activate.component.html',
+  standalone: false,
 })
 export class ActivateComponent implements OnInit {
+  private activateService = inject(ActivateService);
+  private loginModalService = inject(LoginModalService);
+  private route = inject(ActivatedRoute);
+
   error = false;
   success = false;
-
-  constructor(
-    private activateService: ActivateService,
-    private loginModalService: LoginModalService,
-    private route: ActivatedRoute,
-  ) {}
 
   ngOnInit(): void {
     this.route.queryParams.pipe(mergeMap(params => this.activateService.get(params.key))).subscribe(

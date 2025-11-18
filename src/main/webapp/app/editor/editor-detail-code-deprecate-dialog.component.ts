@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
@@ -30,8 +30,15 @@ import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 @Component({
   selector: 'jhi-editor-detail-code-deprecate-dialog',
   templateUrl: './editor-detail-code-deprecate-dialog.component.html',
+  standalone: false,
 })
 export class EditorDetailCodeDeprecateDialogComponent {
+  protected editorService = inject(EditorService);
+  activeModal = inject(NgbActiveModal);
+  private router = inject(Router);
+  protected eventManager = inject(JhiEventManager);
+  private fb = inject(FormBuilder);
+
   versionParam!: Version;
   conceptParam!: Concept;
   eventSubscriber?: Subscription;
@@ -48,13 +55,7 @@ export class EditorDetailCodeDeprecateDialogComponent {
     replacingCodeId: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
 
-  constructor(
-    protected editorService: EditorService,
-    public activeModal: NgbActiveModal,
-    private router: Router,
-    protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
-  ) {
+  constructor() {
     this.isConfirmedDeprecation = false;
     this.isConfirmedReplacementYes = false;
     this.isConfirmedReplacementNo = false;

@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, IsActiveMatchOptions, Params, Router } from '@angular/router';
 import { JhiEventManager, JhiEventWithContent, JhiLanguageService } from 'ng-jhipster';
 import { SessionStorageService } from 'ngx-webstorage';
 
-import { VERSION } from 'app/app.constants';
+import { environment } from 'environments/environment';
 import { LANGUAGES } from 'app/core/language/language.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginModalService } from 'app/core/login/login-modal.service';
@@ -37,14 +37,28 @@ import { Authority } from 'app/shared/constants/authority.constants';
   selector: 'jhi-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['navbar.scss'],
+  standalone: false,
 })
-export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
+export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
+  private loginService = inject(LoginService);
+  private languageService = inject(JhiLanguageService);
+  private sessionStorage = inject(SessionStorageService);
+  private accountService = inject(AccountService);
+  protected activatedRoute = inject(ActivatedRoute);
+  private loginModalService = inject(LoginModalService);
+  private profileService = inject(ProfileService);
+  protected eventManager = inject(JhiEventManager);
+  private router = inject(Router);
+  private location = inject(Location);
+  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+  private homeService = inject(HomeService);
+
   readonly authorities = [Authority.ADMIN, Authority.ADMIN_TECHNICAL];
 
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef<HTMLInputElement>;
   @ViewChild('searchLang', { static: true }) searchLang!: ElementRef<HTMLSelectElement>;
-  inProduction = false;
-  eventSubscriber: Subscription | undefined;
+  inProduction: boolean = false;
+  eventSubscriber?: Subscription;
   isNavbarCollapsed = true;
   languages = LANGUAGES;
   swaggerEnabled = false;
@@ -57,21 +71,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   isEditorSearch = false;
   searchLangs: string[] = ['en', 'da', 'nl', 'fi', 'fr', 'de', 'it', 'ja', 'no', 'pt', 'sr', 'sl', 'sv', '_all'];
 
-  constructor(
-    private loginService: LoginService,
-    private languageService: JhiLanguageService,
-    private sessionStorage: SessionStorageService,
-    private accountService: AccountService,
-    protected activatedRoute: ActivatedRoute,
-    private loginModalService: LoginModalService,
-    private profileService: ProfileService,
-    protected eventManager: JhiEventManager,
-    private router: Router,
-    private location: Location,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
-    private homeService: HomeService,
-  ) {
-    this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
+  constructor() {
+    this.version = environment.version
+      ? environment.version.toLowerCase().startsWith('v')
+        ? environment.version
+        : 'v' + environment.version
+      : '';
     this.isSearching = false;
     this.currentLang = 'en';
     this.lastSearch = this.sessionStorage.retrieve('lastSearch');
@@ -127,13 +132,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.swaggerEnabled = profileInfo.swaggerEnabled;
     });
 
-    fromEvent(this.searchInput.nativeElement, 'keyup')
+    fromEvent<KeyboardEvent>(this.searchInput.nativeElement, 'keyup')
       .pipe(
-        map((event: any) => {
-          return [event.target.value, event.key] as [string, string];
+        map((event: KeyboardEvent) => {
+          return [(event.target as HTMLInputElement).value, event.key] as [string, string];
         }),
         debounceTime(500),
-        // distinctUntilChanged()
       )
       .subscribe(([text, key]) => {
         if (key == 'Enter' || text != this.lastSearch) {
@@ -144,8 +148,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     fromEvent(this.searchInput.nativeElement, 'paste')
       .pipe(
-        map((event: any) => {
-          return event.target.value;
+        map(event => {
+          return (event.target as HTMLInputElement).value;
         }),
       )
       .subscribe((text: string) => {
@@ -155,8 +159,8 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     fromEvent(this.searchLang.nativeElement, 'change')
       .pipe(
-        map((event: any) => {
-          return event.target.value;
+        map(event => {
+          return (event.target as HTMLSelectElement).value;
         }),
       )
       .subscribe(() => {

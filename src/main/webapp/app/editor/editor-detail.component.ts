@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
@@ -44,7 +44,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
-import { Quill } from 'quill';
+import Quill from 'quill';
 import { QuillModules } from 'ngx-quill';
 import { AgencyRole } from 'app/shared/model/enumerations/agency-role.model';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
@@ -53,8 +53,21 @@ import { Authority } from 'app/shared/constants/authority.constants';
 @Component({
   selector: 'jhi-editor-detail',
   templateUrl: './editor-detail.component.html',
+  standalone: false,
 })
 export class EditorDetailComponent implements OnInit, OnDestroy {
+  private accountService = inject(AccountService);
+  protected dataUtils = inject(JhiDataUtils);
+  protected activatedRoute = inject(ActivatedRoute);
+  protected router = inject(Router);
+  protected editorService = inject(EditorService);
+  private fb = inject(FormBuilder);
+  private routeEventsService = inject(RouteEventsService);
+  private _ngZone = inject(NgZone);
+  protected modalService = inject(NgbModal);
+  protected eventManager = inject(JhiEventManager);
+  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+
   @ViewChild('detailEPanel', { static: true }) detailEPanel!: ElementRef;
   @ViewChild('versionEPanel', { static: true }) versionEPanel!: ElementRef;
   @ViewChild('identityEPanel', { static: true }) identityEPanel!: ElementRef;
@@ -148,19 +161,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     versionChanges: new FormControl<string | null>(null),
   });
 
-  constructor(
-    private accountService: AccountService,
-    protected dataUtils: JhiDataUtils,
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
-    protected editorService: EditorService,
-    private fb: FormBuilder,
-    private routeEventsService: RouteEventsService,
-    private _ngZone: NgZone,
-    protected modalService: NgbModal,
-    protected eventManager: JhiEventManager,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
-  ) {
+  constructor() {
     this.initialTabSelected = 'detail';
     this.currentSelectedCode = '';
     this.activePopup = '';

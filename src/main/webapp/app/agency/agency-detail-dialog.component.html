@@ -16,155 +16,170 @@
 
 -->
 <div class="modal-header">
-    <div class="modal-title w-100">
-        <div class="row">
-            <div class="col-4">
-                <img *ngIf="agency.logopath" [src]="'/content/images/agency/' + agency.logopath" class="w-100 mh-60px" alt=""/>
-            </div>
-            <div class="col-8" class="card-title">
-                <h4>{{ agency.name }}</h4>
-                <a href="{{ agency.link }}" target="_blank">
-                    <span class="fst-italic fw-bold">{{urlCleaner(agency.link!)}} </span>
-                    <fa-icon icon="external-link-alt"></fa-icon>
-                </a>
-            </div>
-        </div>
+  <div class="modal-title w-100">
+    <div class="row">
+      <div class="col-4">
+        @if (agency.logopath) {
+          <img [src]="'/content/images/agency/' + agency.logopath" class="w-100 mh-60px" alt=""/>
+        }
+      </div>
+      <div class="col-8" class="card-title">
+        <h4>{{ agency.name }}</h4>
+        <a href="{{ agency.link }}" target="_blank">
+          <span class="fst-italic fw-bold">{{urlCleaner(agency.link!)}} </span>
+          <fa-icon icon="external-link-alt"></fa-icon>
+        </a>
+      </div>
     </div>
+  </div>
 
-    <button aria-label="Close" class="btn-close" data-dismiss="modal" type="button" (click)="clear()"></button>
+  <button aria-label="Close" class="btn-close" data-dismiss="modal" type="button" (click)="clear()"></button>
 </div>
 <div class="modal-body">
-    <p class="card-text">{{ agency.description }}</p>
-    <br/>
+  <p class="card-text">{{ agency.description }}</p>
+  <br/>
 
-    <jhi-alert-error></jhi-alert-error>
+  <jhi-alert-error></jhi-alert-error>
 
-    <dl class="row-md jh-entity-details">
-        <dt><span>Default CVs license</span></dt>
-        <dd>
-            <span>{{ agency.license }}</span>
-        </dd>
-    </dl>
+  <dl class="row-md jh-entity-details">
+    <dt><span>Default CVs license</span></dt>
+    <dd>
+      <span>{{ agency.license }}</span>
+    </dd>
+  </dl>
 
+  <div class="card">
+    <div class="card-header fw-bold">
+      Statistics
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <dl class="row-md jh-entity-details">
+            <dt><span>Number of CVs Published</span></dt>
+            <dd>
+              <span>{{numberCvPublished}} CVs</span>
+            </dd>
+            <dt><span>Number of CVs SL and TL versions published </span></dt>
+            <dd>
+              <span>{{numberCvVersionSlPublished + numberCvVersionTlPublished}} CVs from {{numberCvVersionSlPublished}} SL and {{numberCvVersionTlPublished}} TL versions</span>
+            </dd>
+            <dt><span>Number of Codes in latest published CVs</span></dt>
+            <dd>
+              <span>{{numberCodePublished}} CV Codes from {{numberCvPublished}} CVs</span>
+            </dd>
+            <dt><span>Number of Codes from All Published Versions</span></dt>
+            <dd>
+              <span>{{numberCodeVersionPublished}} CV Codes</span>
+            </dd>
+          </dl>
+        </div>
+        @if (languageComposition.length > 0) {
+          <div>
+            <strong class="text-center w-100 d-block">Published CVs versions by languages composition</strong>
+            <ngx-charts-pie-chart [results]="languageComposition" [labels]="true"></ngx-charts-pie-chart>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+  <br/>
+
+  @if (vocabStats!.length > 0) {
     <div class="card">
-        <div class="card-header fw-bold">
-            Statistics
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <dl class="row-md jh-entity-details">
-                        <dt><span>Number of CVs Published</span></dt>
-                        <dd>
-                            <span>{{numberCvPublished}} CVs</span>
-                        </dd>
-                        <dt><span>Number of CVs SL and TL versions published </span></dt>
-                        <dd>
-                            <span>{{numberCvVersionSlPublished + numberCvVersionTlPublished}} CVs from {{numberCvVersionSlPublished}} SL and {{numberCvVersionTlPublished}} TL versions</span>
-                        </dd>
-                        <dt><span>Number of Codes in latest published CVs</span></dt>
-                        <dd>
-                            <span>{{numberCodePublished}} CV Codes from {{numberCvPublished}} CVs</span>
-                        </dd>
-                        <dt><span>Number of Codes from All Published Versions</span></dt>
-                        <dd>
-                            <span>{{numberCodeVersionPublished}} CV Codes</span>
-                        </dd>
-                    </dl>
-                </div>
-                <div *ngIf="languageComposition.length > 0">
-                    <strong class="text-center w-100 d-block">Published CVs versions by languages composition</strong>
-                    <ngx-charts-pie-chart [results]="languageComposition" [labels]="true"></ngx-charts-pie-chart>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br/>
-
-    <div class="card" *ngIf="vocabStats!.length > 0">
-        <div class="card-header fw-bold">
-            Vocabularies ({{numberCvPublished}} CVs)
-        </div>
-        <div class="card-body" class="card-acc-stat">
-            <div class="row">
-                <div class="col-sm-12 p-0">
-                    <ngb-accordion>
-                        <ng-container *ngFor="let vocab of sortVocabStat(vocabStats); let i = index">
-                            <ngb-panel *ngIf="vocab.versionCodeStats.length > 0">
-                                <ng-template ngbPanelTitle>
-                                    <span>{{vocab.notation}} <small>({{vocab.versionCodeStats.length}} {{vocab.versionCodeStats.length === 1 ? 'version': 'versions'}}) (SL: {{vocab.sourceLanguage | vocabularyLanguageFromKey}})</small></span>
-                                </ng-template>
-                                <ng-template ngbPanelContent>
-                                    <ngb-accordion class="version-acc">
-                                        <ngb-panel *ngFor="let vcode of vocab.versionCodeStats; let j = index">
-                                            <ng-template ngbPanelTitle>
-                                                <span>- Version {{vcode.versionNumber}} <small>({{vcode.codes.length}} codes)</small></span>
-                                            </ng-template>
-                                            <ng-template ngbPanelContent>
-                                                <div class="row-content">
-                                                    <div class="fw-bold small">
-                                                        <span>Languages:</span>
-                                                    </div>
-                                                    <div>
-                                                        <ng-container *ngFor="let vStatus of getVersionStatus(vocab, vcode.versionNumber); let k = index">{{ k > 0 ? ', ' : ''}}<a href="javascript:void(0)" (click)="closeAndNavigate( vocab.notation, vStatus.language, vcode.versionNumber)"><span ngbTooltip="Published {{vStatus.date}}">{{vStatus.language | vocabularyLanguageFromKey}}-{{vStatus.versionNumber}}</span></a></ng-container>
-                                                    </div>
-                                                    <div class="fw-bold small">
-                                                        <span>Codes:</span>
-                                                    </div>
-                                                    <div>
-                                                        <ng-container *ngFor="let code of vcode.codes; let k = index">{{ k > 0 ? ', ' : ''}}<a href="javascript:void(0)" (click)="closeAndNavigate( vocab.notation, vocab.sourceLanguage, vcode.versionNumber, code)"><span>{{code}}</span></a></ng-container>
-                                                    </div>
-                                                </div>
-                                            </ng-template>
-                                        </ngb-panel>
-                                    </ngb-accordion>
-                                </ng-template>
-                            </ngb-panel>
-                        </ng-container>
-                    </ngb-accordion>
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <br/>
-
-    <ng-container *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:0, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT']}">
-        <div class="card" *ngIf="unpublishedVersions.length > 0">
-            <div class="card-header fw-bold">
-                Unpublished CVs
-            </div>
-            <div class="card-body p-0">
-                <div class="row">
-                    <div class="col-sm-12 p-0">
-
-                        <div class="table-responsive">
-                            <table class="table table-striped" aria-describedby="page-heading">
-                                <thead>
-                                <tr>
-                                    <th scope="col"><span>CV</span></th>
-                                    <th scope="col"><span>Version</span></th>
-                                    <th scope="col"><span>Date</span></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let unpublishedVersion of unpublishedVersions; let i = index">
-                                    <td>{{unpublishedVersion.cv}}</td>
-                                    <td>
-                                        <a href="javascript:void(0)" (click)="closeAndNavigate( unpublishedVersion.cv, unpublishedVersion.language)">
-                                            {{unpublishedVersion.type}} {{unpublishedVersion.language}} {{unpublishedVersion.versionNumber}}-{{unpublishedVersion.status}}
-                                        </a>
-                                    </td>
-                                    <td>{{unpublishedVersion.date}} ({{parseDateAgo(unpublishedVersion.date)}})</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
+      <div class="card-header fw-bold">
+        Vocabularies ({{numberCvPublished}} CVs)
+      </div>
+      <div class="card-body" class="card-acc-stat">
+        <div class="row">
+          <div class="col-sm-12 p-0">
+            <div ngbAccordion>
+              @for (vocab of sortVocabStat(vocabStats); track vocab; let i = $index) {
+                @if (vocab.versionCodeStats.length > 0) {
+                  <div ngbAccordionItem>
+                    <div ngbAccordionHeader>
+                      <span>{{vocab.notation}} <small>({{vocab.versionCodeStats.length}} {{vocab.versionCodeStats.length === 1 ? 'version': 'versions'}}) (SL: {{vocab.sourceLanguage | vocabularyLanguageFromKey}})</small></span>
                     </div>
-                </div>
+                    <div ngbAccordionBody>
+                      <div ngbAccordion class="version-acc">
+                        @for (vcode of vocab.versionCodeStats; track vcode; let j = $index) {
+                          <div ngbAccordionItem>
+                            <div ngbAccordionHeader>
+                              <span>- Version {{vcode.versionNumber}} <small>({{vcode.codes.length}} codes)</small></span>
+                            </div>
+                            <div ngbAccordionBody>
+                              <div class="row-content">
+                                <div class="fw-bold small">
+                                  <span>Languages:</span>
+                                </div>
+                                <div>
+                                  @for (vStatus of getVersionStatus(vocab, vcode.versionNumber); track vStatus; let k = $index) {
+                                    {{ k > 0 ? ', ' : ''}}<a href="javascript:void(0)" (click)="closeAndNavigate( vocab.notation, vStatus.language, vcode.versionNumber)"><span ngbTooltip="Published {{vStatus.date}}">{{vStatus.language | vocabularyLanguageFromKey}}-{{vStatus.versionNumber}}</span></a>
+                                  }
+                                </div>
+                                <div class="fw-bold small">
+                                  <span>Codes:</span>
+                                </div>
+                                <div>
+                                  @for (code of vcode.codes; track code; let k = $index) {
+                                    {{ k > 0 ? ', ' : ''}}<a href="javascript:void(0)" (click)="closeAndNavigate( vocab.notation, vocab.sourceLanguage, vcode.versionNumber, code)"><span>{{code}}</span></a>
+                                  }
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        }
+                      </div>
+                    </div>
+                  </div>
+                }
+              }
             </div>
+          </div>
         </div>
-        <br/>
-    </ng-container>
+      </div>
+    </div>
+  }
+  <br/>
+
+  <ng-container *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:0, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT']}">
+    @if (unpublishedVersions.length > 0) {
+      <div class="card">
+        <div class="card-header fw-bold">
+          Unpublished CVs
+        </div>
+        <div class="card-body p-0">
+          <div class="row">
+            <div class="col-sm-12 p-0">
+              <div class="table-responsive">
+                <table class="table table-striped" aria-describedby="page-heading">
+                  <thead>
+                    <tr>
+                      <th scope="col"><span>CV</span></th>
+                      <th scope="col"><span>Version</span></th>
+                      <th scope="col"><span>Date</span></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (unpublishedVersion of unpublishedVersions; track unpublishedVersion; let i = $index) {
+                      <tr>
+                        <td>{{unpublishedVersion.cv}}</td>
+                        <td>
+                          <a href="javascript:void(0)" (click)="closeAndNavigate( unpublishedVersion.cv, unpublishedVersion.language)">
+                            {{unpublishedVersion.type}} {{unpublishedVersion.language}} {{unpublishedVersion.versionNumber}}-{{unpublishedVersion.status}}
+                          </a>
+                        </td>
+                        <td>{{unpublishedVersion.date}} ({{parseDateAgo(unpublishedVersion.date)}})</td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+    <br/>
+  </ng-container>
 </div>

@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule, inject } from '@angular/core';
 import { DatePipe, registerLocaleData } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { CookieService } from 'ngx-cookie-service';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { NgxWebstorageModule } from 'ngx-webstorage';
+import { provideNgxWebstorage, withLocalStorage, withNgxWebstorageConfig, withSessionStorage } from 'ngx-webstorage';
 import { JhiConfigService, JhiLanguageService, missingTranslationHandler, NgJhipsterModule, translatePartialLoader } from 'ng-jhipster';
 import locale from '@angular/common/locales/en';
 
@@ -37,8 +37,6 @@ import { fontAwesomeIcons } from './icons/font-awesome-icons';
 
 @NgModule({
   imports: [
-    HttpClientModule,
-    NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-' }),
     NgJhipsterModule.forRoot({
       // set below to true to make alerts look like toast
       alertAsToast: false,
@@ -88,10 +86,16 @@ import { fontAwesomeIcons } from './icons/font-awesome-icons';
       useClass: NotificationInterceptor,
       multi: true,
     },
+    provideHttpClient(withInterceptorsFromDi()),
+    provideNgxWebstorage(withNgxWebstorageConfig({ prefix: 'jhi', separator: '-' }), withLocalStorage(), withSessionStorage()),
   ],
 })
 export class CvsCoreModule {
-  constructor(iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig, languageService: JhiLanguageService) {
+  constructor() {
+    const iconLibrary = inject(FaIconLibrary);
+    const dpConfig = inject(NgbDatepickerConfig);
+    const languageService = inject(JhiLanguageService);
+
     registerLocaleData(locale);
     iconLibrary.addIcons(...fontAwesomeIcons);
     dpConfig.minDate = { year: moment().year() - 100, month: 1, day: 1 };

@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import {createRequestOption, Pagination} from 'app/shared/util/request-util';
-import {SERVER_API_URL} from 'app/app.constants';
-import {Audit} from './audit.model';
+import { createRequestOption, Pagination } from 'app/shared/util/request-util';
+import { SERVER_API_URL } from 'app/app.constants';
+import { Audit } from './audit.model';
 
 export interface AuditsQuery extends Pagination {
   fromDate: string;
@@ -28,7 +28,7 @@ export interface AuditsQuery extends Pagination {
 
 @Injectable({ providedIn: 'root' })
 export class AuditsService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   query(req: AuditsQuery): Observable<HttpResponse<Audit[]>> {
     const params: HttpParams = createRequestOption(req);
@@ -37,7 +37,7 @@ export class AuditsService {
 
     return this.http.get<Audit[]>(requestURL, {
       params,
-      observe: 'response'
+      observe: 'response',
     });
   }
 }

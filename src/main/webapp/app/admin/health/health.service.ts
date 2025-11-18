@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import {SERVER_API_URL} from 'app/app.constants';
+import { SERVER_API_URL } from 'app/app.constants';
 
 export type HealthStatus = 'UP' | 'DOWN' | 'UNKNOWN' | 'OUT_OF_SERVICE';
 
@@ -32,12 +32,14 @@ export interface Health {
 
 export interface HealthDetails {
   status: HealthStatus;
-  details: any;
+  details: {
+    [key: string]: unknown;
+  };
 }
 
 @Injectable({ providedIn: 'root' })
 export class HealthService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   checkHealth(): Observable<Health> {
     return this.http.get<Health>(SERVER_API_URL + 'management/health');

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { EditorService } from 'app/editor/editor.service';
@@ -32,8 +32,17 @@ import { QuillModules } from 'ngx-quill';
 
 @Component({
   templateUrl: './editor-detail-cv-comment-dialog.component.html',
+  standalone: false,
 })
 export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
+  private accountService = inject(AccountService);
+  private commentService = inject(CommentService);
+  protected editorService = inject(EditorService);
+  activeModal = inject(NgbActiveModal);
+  protected eventManager = inject(JhiEventManager);
+  private fb = inject(FormBuilder);
+  private _ngZone = inject(NgZone);
+
   isSaving: boolean;
   account!: Account;
   versionParam!: Version;
@@ -50,15 +59,7 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
     content: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
 
-  constructor(
-    private accountService: AccountService,
-    private commentService: CommentService,
-    protected editorService: EditorService,
-    public activeModal: NgbActiveModal,
-    protected eventManager: JhiEventManager,
-    private fb: FormBuilder,
-    private _ngZone: NgZone,
-  ) {
+  constructor() {
     this.isSaving = false;
   }
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { TestBed, async, tick, fakeAsync, inject } from '@angular/core/testing';
+import { TestBed, waitForAsync, tick, fakeAsync, inject } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 
@@ -26,16 +26,16 @@ describe('Component Tests', () => {
   describe('ActivateComponent', () => {
     let comp: ActivateComponent;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [ActivateComponent],
         providers: [
           {
             provide: ActivatedRoute,
-            useValue: new MockActivatedRoute({ key: 'ABC123' })
-          }
-        ]
+            useValue: new MockActivatedRoute({ key: 'ABC123' }),
+          },
+        ],
       })
         .overrideTemplate(ActivateComponent, '')
         .compileComponents();
@@ -55,7 +55,7 @@ describe('Component Tests', () => {
         tick();
 
         expect(service.get).toHaveBeenCalledWith('ABC123');
-      })
+      }),
     ));
 
     it('should set set success to true upon successful activation', inject(
@@ -68,7 +68,7 @@ describe('Component Tests', () => {
 
         expect(comp.error).toBe(false);
         expect(comp.success).toBe(true);
-      })
+      }),
     ));
 
     it('should set set error to true upon activation failure', inject(
@@ -81,7 +81,7 @@ describe('Component Tests', () => {
 
         expect(comp.error).toBe(true);
         expect(comp.success).toBe(false);
-      })
+      }),
     ));
   });
 });

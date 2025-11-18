@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -23,9 +23,9 @@ import { User } from './user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  public resourceUrl = SERVER_API_URL + 'api/users';
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  public resourceUrl = SERVER_API_URL + 'api/users';
 
   create(user: User): Observable<User> {
     return this.http.post<User>(this.resourceUrl, user);

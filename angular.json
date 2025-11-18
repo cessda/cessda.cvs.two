@@ -28,12 +28,14 @@
       "prefix": "jhi",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular/build:application",
           "options": {
-            "allowedCommonJsDependencies": ["moment", "quill", "quill-better-table", "quill-blot-formatter"],
-            "outputPath": "target/classes/static",
+            "allowedCommonJsDependencies": ["diff-match-patch", "moment", "quill", "quill-better-table", "quill-delta"],
+            "outputPath": {
+              "base": "target/classes/static",
+              "browser": ""
+            },
             "index": "src/main/webapp/index.html",
-            "main": "src/main/webapp/app/app.main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
@@ -68,34 +70,43 @@
               "src/main/webapp/robots.txt"
             ],
             "styles": ["src/main/webapp/content/scss/global.scss"],
-            "scripts": []
+            "scripts": [],
+            "browser": "src/main/webapp/app/app.main.ts",
+            "stylePreprocessorOptions": {
+              "includePaths": ["."]
+            },
+            "polyfills": ["src/main/webapp/app/polyfills.ts"]
           },
           "configurations": {
             "production": {
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/main/webapp/environments/environment.ts",
+                  "with": "src/main/webapp/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular/build:dev-server",
           "options": {
             "proxyConfig": "proxy.conf.js"
           },
           "configurations": {
             "production": {
-              "browserTarget": "cvs:build:production"
+              "buildTarget": "cvs:build:production"
             },
             "development": {
-              "browserTarget": "cvs:build:development"
+              "buildTarget": "cvs:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -119,6 +130,30 @@
     },
     "@angular-eslint/schematics:library": {
       "setParserOptionsProject": true
+    },
+    "@schematics/angular:component": {
+      "type": "component"
+    },
+    "@schematics/angular:directive": {
+      "type": "directive"
+    },
+    "@schematics/angular:service": {
+      "type": "service"
+    },
+    "@schematics/angular:guard": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:interceptor": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:module": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:pipe": {
+      "typeSeparator": "."
+    },
+    "@schematics/angular:resolver": {
+      "typeSeparator": "."
     }
   }
 }

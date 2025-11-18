@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -29,8 +29,15 @@ import { ResolverDeleteDialogComponent } from './resolver-delete-dialog.componen
 @Component({
   selector: 'jhi-resolver',
   templateUrl: './resolver.component.html',
+  standalone: false,
 })
 export class ResolverComponent implements OnInit, OnDestroy {
+  protected resolverService = inject(ResolverService);
+  protected activatedRoute = inject(ActivatedRoute);
+  protected router = inject(Router);
+  protected eventManager = inject(JhiEventManager);
+  protected modalService = inject(NgbModal);
+
   resolvers: Resolver[] = [];
   eventSubscriber?: Subscription;
   currentSearch: string;
@@ -41,13 +48,7 @@ export class ResolverComponent implements OnInit, OnDestroy {
   ascending!: boolean;
   ngbPaginationPage = 1;
 
-  constructor(
-    protected resolverService: ResolverService,
-    protected activatedRoute: ActivatedRoute,
-    protected router: Router,
-    protected eventManager: JhiEventManager,
-    protected modalService: NgbModal,
-  ) {
+  constructor() {
     this.currentSearch =
       this.activatedRoute.snapshot && this.activatedRoute.snapshot.queryParams['search']
         ? this.activatedRoute.snapshot.queryParams['search']

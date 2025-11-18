@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, async } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of, throwError } from 'rxjs';
 
@@ -27,7 +27,7 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<HealthComponent>;
     let service: HealthService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [HealthComponent],
@@ -54,7 +54,7 @@ describe('Component Tests', () => {
     describe('refresh', () => {
       it('should call refresh on init', () => {
         // GIVEN
-        const health: Health = { status: 'UP', components: { mail: { status: 'UP', details: 'mailDetails' } } };
+        const health: Health = { status: 'UP', components: { mail: { status: 'UP', details: { mailDetails: 'mailDetails' } } } };
         spyOn(service, 'checkHealth').and.returnValue(of(health));
 
         // WHEN
@@ -67,8 +67,8 @@ describe('Component Tests', () => {
 
       it('should handle a 503 on refreshing health data', () => {
         // GIVEN
-        const health: Health = { status: 'DOWN', components: { mail: { status: 'DOWN', details: 'mailDetails' } } };
-        spyOn(service, 'checkHealth').and.returnValue(throwError(new HttpErrorResponse({ status: 503, error: health })));
+        const health: Health = { status: 'DOWN', components: { mail: { status: 'DOWN', details: { mailDetails: 'mailDetails' } } } };
+        spyOn(service, 'checkHealth').and.returnValue(throwError(() => new HttpErrorResponse({ status: 503, error: health })));
 
         // WHEN
         comp.refresh();

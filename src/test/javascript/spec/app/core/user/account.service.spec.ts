@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { JhiDateUtils, JhiLanguageService } from 'ng-jhipster';
-import { NgxWebstorageModule } from 'ngx-webstorage';
+import { SessionStorageService, provideNgxWebstorage } from 'ngx-webstorage';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { AccountService } from 'app/core/auth/account.service';
@@ -52,7 +52,7 @@ describe('Service Tests', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, NgxWebstorageModule.forRoot()],
+        imports: [HttpClientTestingModule],
         providers: [
           JhiDateUtils,
           {
@@ -67,13 +67,15 @@ describe('Service Tests', () => {
             provide: Router,
             useClass: MockRouter,
           },
+          SessionStorageService,
+          provideNgxWebstorage(),
         ],
       });
 
-      service = TestBed.get(AccountService);
-      httpMock = TestBed.get(HttpTestingController);
-      storageService = TestBed.get(StateStorageService);
-      router = TestBed.get(Router);
+      service = TestBed.inject(AccountService);
+      httpMock = TestBed.inject(HttpTestingController);
+      storageService = TestBed.inject(StateStorageService) as unknown as MockStateStorageService;
+      router = TestBed.inject(Router) as unknown as MockRouter;
     });
 
     afterEach(() => {

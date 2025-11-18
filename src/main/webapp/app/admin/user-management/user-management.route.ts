@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable } from '@angular/core';
-import { Resolve, ActivatedRouteSnapshot, Routes } from '@angular/router';
+import { Injectable, inject } from '@angular/core';
+import { ActivatedRouteSnapshot, Routes } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
 import { User } from 'app/core/user/user.model';
@@ -24,8 +24,8 @@ import { UserManagementDetailComponent } from './user-management-detail.componen
 import { UserManagementUpdateComponent } from './user-management-update.component';
 
 @Injectable({ providedIn: 'root' })
-export class UserManagementResolve implements Resolve<User> {
-  constructor(private service: UserService) {}
+export class UserManagementResolve {
+  private service = inject(UserService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<User> {
     const id = route.params['login'];

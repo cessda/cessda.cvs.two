@@ -27,6 +27,7 @@ export interface Search {
 
 export interface SearchWithPagination extends Search, Pagination {}
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createRequestOption(req?: any): HttpParams {
   let options: HttpParams = new HttpParams();
   if (req) {

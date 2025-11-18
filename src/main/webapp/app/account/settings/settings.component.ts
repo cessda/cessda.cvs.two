@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { JhiLanguageService } from 'ng-jhipster';
 
@@ -24,8 +24,13 @@ import { LANGUAGES } from 'app/core/language/language.constants';
 @Component({
   selector: 'jhi-settings',
   templateUrl: './settings.component.html',
+  standalone: false,
 })
 export class SettingsComponent implements OnInit {
+  private accountService = inject(AccountService);
+  private fb = inject(FormBuilder);
+  private languageService = inject(JhiLanguageService);
+
   account!: Account;
   success = false;
   languages = LANGUAGES;
@@ -35,12 +40,6 @@ export class SettingsComponent implements OnInit {
     email: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(254), Validators.email]],
     langKey: [''],
   });
-
-  constructor(
-    private accountService: AccountService,
-    private fb: FormBuilder,
-    private languageService: JhiLanguageService,
-  ) {}
 
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => {

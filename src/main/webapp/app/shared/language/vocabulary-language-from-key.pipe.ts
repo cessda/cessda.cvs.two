@@ -15,7 +15,10 @@
  */
 import { Pipe, PipeTransform } from '@angular/core';
 
-@Pipe({ name: 'vocabularyLanguageFromKey' })
+@Pipe({
+    name: 'vocabularyLanguageFromKey',
+    standalone: false
+})
 export class VocabularyLanguageFromKeyPipe implements PipeTransform {
   private vocabLanguages: Record<string, { name: string; rtl?: boolean }> = {
     sq: { name: 'Albanian (sq)' },

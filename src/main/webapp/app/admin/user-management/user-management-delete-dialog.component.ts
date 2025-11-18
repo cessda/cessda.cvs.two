@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
@@ -22,12 +22,15 @@ import { UserService } from 'app/core/user/user.service';
 
 @Component({
   selector: 'jhi-user-mgmt-delete-dialog',
-  templateUrl: './user-management-delete-dialog.component.html'
+  templateUrl: './user-management-delete-dialog.component.html',
+  standalone: false,
 })
 export class UserManagementDeleteDialogComponent {
-  user?: User;
+  private userService = inject(UserService);
+  activeModal = inject(NgbActiveModal);
+  private eventManager = inject(JhiEventManager);
 
-  constructor(private userService: UserService, public activeModal: NgbActiveModal, private eventManager: JhiEventManager) {}
+  user?: User;
 
   cancel(): void {
     this.activeModal.dismiss();
