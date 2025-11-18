@@ -147,7 +147,6 @@
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
@@ -726,6 +725,7 @@
                         <exclude>**/?/**</exclude>
                         <exclude>cvs.jh</exclude>
                         <exclude>src/main/webapp/manifest.webapp</exclude>
+                        <exclude>src/main/java/springfox</exclude>
                         <exclude>.config/**</exclude>
                         <exclude>.angular/**</exclude>
                     </excludes>
