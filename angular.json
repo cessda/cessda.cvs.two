@@ -74,7 +74,8 @@
             "browser": "src/main/webapp/app/app.main.ts",
             "stylePreprocessorOptions": {
               "includePaths": ["."]
-            }
+            },
+            "polyfills": ["src/main/webapp/app/polyfills.ts"]
           },
           "configurations": {
             "production": {

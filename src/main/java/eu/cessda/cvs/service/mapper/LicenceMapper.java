@@ -22,7 +22,7 @@ import org.mapstruct.Mapper;
 /**
  * Mapper for the entity {@link Licence} and its DTO {@link LicenceDTO}.
  */
-@Mapper(componentModel = "spring" )
+@Mapper(componentModel = "spring", uses = {})
 public interface LicenceMapper extends EntityMapper<LicenceDTO, Licence> {
 
 
