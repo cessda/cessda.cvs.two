@@ -725,7 +725,7 @@
                         <exclude>**/?/**</exclude>
                         <exclude>cvs.jh</exclude>
                         <exclude>src/main/webapp/manifest.webapp</exclude>
-                        <exclude>src/main/java/springfox</exclude>
+                        <exclude>src/main/java/springfox/**</exclude>
                         <exclude>.config/**</exclude>
                         <exclude>.angular/**</exclude>
                     </excludes>
