@@ -17,7 +17,7 @@ import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router, RouterEvent, NavigationEnd } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { Subject, of } from 'rxjs';
-import { TranslateModule, TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 import { MainComponent } from 'app/layouts/main/main.component';
 import { CvsTestModule } from '../../../test.module';
@@ -58,7 +58,6 @@ describe('Component Tests', () => {
       const parentRoutePageTitle = 'parentTitle';
       const childRoutePageTitle = 'childTitle';
       const navigationEnd = new NavigationEnd(1, '', '');
-      const langChangeEvent: LangChangeEvent = { lang: 'en', translations: null };
 
       beforeEach(() => {
         routerState = { snapshot: { root: {} } };
@@ -66,7 +65,7 @@ describe('Component Tests', () => {
         spyOn(translateService, 'get').and.callFake((key: string) => {
           return of(key + ' translated');
         });
-        translateService.currentLang = 'en';
+        translateService.use('en');
         spyOn(titleService, 'setTitle');
         comp.ngOnInit();
       });
@@ -136,7 +135,7 @@ describe('Component Tests', () => {
       describe('language change', () => {
         it('should set page title to default title if pageTitle is missing on routes', () => {
           // WHEN
-          translateService.onLangChange.emit(langChangeEvent);
+          translateService.use('en');
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(defaultPageTitle);
@@ -148,7 +147,7 @@ describe('Component Tests', () => {
           routerState.snapshot.root.data = { pageTitle: parentRoutePageTitle };
 
           // WHEN
-          translateService.onLangChange.emit(langChangeEvent);
+          translateService.use('en');
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(parentRoutePageTitle);
@@ -161,7 +160,7 @@ describe('Component Tests', () => {
           routerState.snapshot.root.firstChild = { data: { pageTitle: childRoutePageTitle } };
 
           // WHEN
-          translateService.onLangChange.emit(langChangeEvent);
+          translateService.use('en');
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(childRoutePageTitle);
@@ -174,7 +173,7 @@ describe('Component Tests', () => {
           routerState.snapshot.root.firstChild = { data: {} };
 
           // WHEN
-          translateService.onLangChange.emit(langChangeEvent);
+          translateService.use('en');
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(parentRoutePageTitle);
@@ -187,7 +186,7 @@ describe('Component Tests', () => {
           routerState.snapshot.root.firstChild = {};
 
           // WHEN
-          translateService.onLangChange.emit(langChangeEvent);
+          translateService.use('en');
 
           // THEN
           expect(translateService.get).toHaveBeenCalledWith(parentRoutePageTitle);
