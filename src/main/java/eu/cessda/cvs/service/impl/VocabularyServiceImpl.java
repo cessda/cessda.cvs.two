@@ -558,7 +558,7 @@ public class VocabularyServiceImpl implements VocabularyService
         }
 
         // query agency
-        final Agency agency = agencyRepository.getOne( vocabularyDTO.getAgencyId() );
+        final Agency agency = agencyRepository.getReferenceById( vocabularyDTO.getAgencyId() );
 
         // set Vocabulary attribute for initial version
         vocabularyDTO.setStatus( Status.DRAFT );
@@ -954,7 +954,7 @@ public class VocabularyServiceImpl implements VocabularyService
         }
 
         VocabularyDTO vocabulary = getByNotation( notation );
-        final Agency agency = agencyRepository.getOne( vocabulary.getAgencyId() );
+        final Agency agency = agencyRepository.getReferenceById( vocabulary.getAgencyId() );
         vocabulary.setAgencyLink( agency.getLink() );
         vocabulary.setAgencyLogo( agency.getLogopath() );
         vocabulary.setAgencyLink( agency.getLink() );
@@ -1926,8 +1926,8 @@ public class VocabularyServiceImpl implements VocabularyService
         // get license information only when we are publishing the vocabularies
         if ( vocabularySnippet.getActionType() == ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE ||
             vocabularySnippet.getActionType() == ActionType.FORWARD_CV_TL_STATUS_READY_TO_PUBLISH ) {
-            licence = licenceRepository.getOne( vocabularySnippet.getLicenseId() );
-            agency = agencyRepository.getOne( vocabularySnippet.getAgencyId() );
+            licence = licenceRepository.getReferenceById( vocabularySnippet.getLicenseId() );
+            agency = agencyRepository.getReferenceById( vocabularySnippet.getAgencyId() );
         }
         // check authorization
         switch (vocabularySnippet.getActionType()) {
@@ -1951,7 +1951,9 @@ public class VocabularyServiceImpl implements VocabularyService
                 // 2) clone published TLs to the new bundle
                 // 3) move unpublished TLs to the new bundle
 
-                final Agency agencyFinal = agencyRepository.getOne( vocabularySnippet.getAgencyId() );
+                final LocalDate publicationDate = LocalDate.now();
+
+                final Agency agencyFinal = agencyRepository.getReferenceById( vocabularySnippet.getAgencyId() );
                 VersionDTO newVersionDTO = null;
                 if ( versionDTO.getStatus() == Status.PUBLISHED ) {
                     newVersionDTO = cloneVersion(versionDTO, versionDTO.getNumber().increasePatchNumber(), agencyFinal);
@@ -1988,13 +1990,14 @@ public class VocabularyServiceImpl implements VocabularyService
                         if ( v.getStatus() == Status.READY_TO_PUBLISH ) {
                             // update the TL's version number
                             v.setNumber(finalPublishingVersionNumber);
+                            v.setPublicationDate(publicationDate);
                             v.setStatus(Status.PUBLISHED);
                             // update URIs
                             v.updateUri(agencyFinal);
                             v.updateCanonicalUri(agencyFinal);
                             // update concept URIs
                             v.getConcepts().forEach(c -> c.setUri(VocabularyUtils.generateUri(agencyFinal.getUriCode(), finalVersionDTO, c, agencyFinal.getName() ) ));
-                            v.setLastStatusChangeDate(LocalDate.now());
+                            v.setLastStatusChangeDate(publicationDate);
                             finalVocabularyDTO.setVersionByLanguage(
                                 v.getLanguage(),
                                 v.getNumber().toString()
@@ -2024,8 +2027,8 @@ public class VocabularyServiceImpl implements VocabularyService
 
                 // publish SL
                 versionDTO.setStatus(Status.PUBLISHED);
-                versionDTO.setLastStatusChangeDate(LocalDate.now());
-                versionDTO.setPublicationDate(LocalDate.now());
+                versionDTO.setLastStatusChangeDate(publicationDate);
+                versionDTO.setPublicationDate(publicationDate);
                 versionDTO.setDeprecatedConceptsValidUntilVersionId(versionDTO.getId());
                 vocabularyDTO.prepareSlPublishing(versionDTO);
                 vocabularyDTO.setStatus(Status.PUBLISHED);
