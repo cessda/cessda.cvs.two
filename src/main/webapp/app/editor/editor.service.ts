@@ -70,7 +70,7 @@ export class EditorService {
     return this.http.put<Vocabulary>(this.resourceEditorVocabularyUrl + '/forward-status', vocabularySnippet, { observe: 'response' });
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
   deleteVocabulary(versionId: number): Observable<HttpResponse<Object>> {
     return this.http.delete(`${this.resourceEditorVocabularyUrl}/${versionId}`, { observe: 'response' });
   }
@@ -95,7 +95,7 @@ export class EditorService {
     return this.http.post<Concept>(this.resourceEditorCodeUrl + '/deprecate', codeSnippet, { observe: 'response' });
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
   deleteCode(conceptId: number): Observable<HttpResponse<Object>> {
     return this.http.delete(`${this.resourceEditorCodeUrl}/${conceptId}`, { observe: 'response' });
   }
@@ -168,7 +168,7 @@ export class EditorService {
     return this.http.put<MetadataValue>(this.resourceEditorMetadataUrl, metadataValue, { observe: 'response' });
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
   deleteAppMetadata(metadataValueId: number): Observable<HttpResponse<Object>> {
     return this.http.delete(`${this.resourceEditorMetadataUrl}/${metadataValueId}`, { observe: 'response' });
   }
