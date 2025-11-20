@@ -15,7 +15,7 @@
     limitations under the License.
 
 -->
-@for (concept of conceptList; track concept) {
+@for (concept of conceptList; track concept.id) {
   <div>
     @if (parentNotation && concept.parent === parentNotation) {
       <ul class="concept-tree ul-level-{{level!}}">
