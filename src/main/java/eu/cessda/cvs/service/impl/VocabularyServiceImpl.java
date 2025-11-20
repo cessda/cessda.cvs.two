@@ -1987,7 +1987,7 @@ public class VocabularyServiceImpl implements VocabularyService
                     .flatMap(Optional::stream)
                     .forEach(v -> {
                         // publish TL, if it's ready
-                        if ( v.getStatus() == Status.READY_TO_PUBLISH ) {
+                        if (v.getStatus() == Status.READY_TO_PUBLISH) {
                             // update the TL's version number
                             v.setNumber(finalPublishingVersionNumber);
                             v.setPublicationDate(publicationDate);
@@ -1996,14 +1996,25 @@ public class VocabularyServiceImpl implements VocabularyService
                             v.updateUri(agencyFinal);
                             v.updateCanonicalUri(agencyFinal);
                             // update concept URIs
-                            v.getConcepts().forEach(c -> c.setUri(VocabularyUtils.generateUri(agencyFinal.getUriCode(), finalVersionDTO, c, agencyFinal.getName() ) ));
+                            v.getConcepts().forEach(c -> c.setUri(VocabularyUtils.generateUri(agencyFinal.getUriCode(), finalVersionDTO, c, agencyFinal.getName())));
                             v.setLastStatusChangeDate(publicationDate);
+                            // update the version number in the CV
                             finalVocabularyDTO.setVersionByLanguage(
                                 v.getLanguage(),
                                 v.getNumber().toString()
                             );
-                        } else if ( v.getStatus() == Status.PUBLISHED ) {
-                            clonedTls.add(cloneVersion(v, finalPublishingVersionNumber, agencyFinal));
+                        } else if (v.getStatus() == Status.PUBLISHED) {
+                            v = cloneVersion(v, finalPublishingVersionNumber, agencyFinal);
+                            // update the publication date of this TL version
+                            v.setPublicationDate(publicationDate);
+                            // set version notes
+                            v.setVersionNotes("This version was copied automatically from the previous bundle. There were no changes since the previous version.");
+                            // update the version number in the CV
+                            finalVocabularyDTO.setVersionByLanguage(
+                                v.getLanguage(),
+                                v.getNumber().toString()
+                            );
+                            clonedTls.add(v);
                         } else {
                             if (v.getNumber().compareTo(finalPublishingVersionNumber) <= 0) {
                                 // if this version is not yet published or ready to be published,
