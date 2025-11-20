@@ -14,6 +14,20 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
+## [3.6.0] - 2025-11-21
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17660802.svg)](https://doi.org/10.5281/zenodo.17660802)
+
+### Changed
+
+- [PR-1024](https://github.com/cessda/cessda.cvs.two/pull/1024) Updated Spring Boot to version 2.7
+- [PR-1141](https://github.com/cessda/cessda.cvs.two/pull/1141) Updated Angular to version 20
+
+### Fixed
+
+- [#972](https://github.com/cessda/cessda.cvs.two/issues/972) Fixed not preserving filters when changing the search query
+- [#1153](https://github.com/cessda/cessda.cvs.two/issues/1153) Fixed controlled Vocabulary Service 'externalURI' values not substituting `[CODE]` for a code
+
 ## [3.5.2] - 2025-09-24
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17177020.svg)](https://doi.org/10.5281/zenodo.17177020)
