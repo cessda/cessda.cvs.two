@@ -15,9 +15,9 @@
     limitations under the License.
 
 -->
-@for (concept of conceptList; track concept) {
+@for (concept of conceptList; track concept.id) {
   <div>
-    @if (concept.deprecated === deprecated && parentNotation && concept.parent === parentNotation) {
+    @if (concept.deprecated === deprecated && concept.parent === parentNotation) {
       <ul class="concept-tree ul-level-{{level}}">
         <li id="code_{{concept.notation.split('.').join('')}}">
             <div class="concept-row" (click)="selectConcept(concept)" [ngClass]="{ 'active': concept.notation === activeConceptNotation,

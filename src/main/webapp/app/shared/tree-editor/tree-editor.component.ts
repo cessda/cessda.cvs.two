@@ -36,7 +36,7 @@ export class TreeEditorComponent implements OnInit, OnDestroy {
   eventSubscriber2?: Subscription;
   activeConceptNotation?: string;
 
-  removeCurrentLevelItems(conceptList: Concept[], parentNotation: string) {
+  removeCurrentLevelItems(conceptList: Concept[], parentNotation: string | undefined) {
     return conceptList.filter(c => c.parent !== parentNotation);
   }
 
