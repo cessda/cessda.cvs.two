@@ -17,7 +17,7 @@
 -->
 @for (concept of conceptList; track concept.id) {
   <div>
-    @if (parentNotation && concept.parent === parentNotation) {
+    @if (concept.parent === parentNotation) {
       <ul class="concept-tree ul-level-{{level!}}">
         <li [attr.id]="!concept.deprecated ? 'code_' + concept.notation.split('.').join('') : null" [ngClass]="{'y-bgr': !concept.title}">
           @if (!concept.deprecated) {
