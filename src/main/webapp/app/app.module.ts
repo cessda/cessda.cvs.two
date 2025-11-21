@@ -46,10 +46,6 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader, TRANSLATE_HTTP_LOADER_CONFIG } from '@ngx-translate/http-loader';
 
-export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader();
-}
-
 @NgModule({
   imports: [
     BrowserModule,
@@ -72,7 +68,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
+        useFactory: TranslateHttpLoader,
         deps: [HttpClient, TRANSLATE_HTTP_LOADER_CONFIG],
       },
     }),
