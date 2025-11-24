@@ -701,7 +701,7 @@
                     </div>
                   </div>
                   <!-- other older versions -->
-                  @for (vh of version!.versionHistories; track vh; let i = $index) {
+                  @for (vh of version!.versionHistories; track vh.id; let i = $index) {
                     <div class="item-panel">
                       <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="vh.visible = !vh.visible"
                         [attr.aria-expanded]="vh.visible" [attr.aria-controls]="'history_' + vh.version">&nbsp;

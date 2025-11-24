@@ -208,7 +208,7 @@
       <!-- Details  -->
       <div class="content-details">
         <!--tabs-->
-        <div class="btn-group btn-group-toggle" role="group" formControlName="tabSelected" #detailTab id="detailTab">
+        <div class="btn-group btn-group-toggle" role="group" #detailTab id="detailTab">
           <input type="radio" formControlName="tabSelected" value="detail" class="btn-check" id="detailTabButton">
           <label class="btn btn-outline-primary" for="detailTabButton">Details</label>
 
@@ -358,7 +358,7 @@
 
                 </div>
                 <!-- other older versions -->
-                @for (vh of getVersionByLangNumber().versionHistories; track vh; let i = $index) {
+                @for (vh of getVersionByLangNumber().versionHistories; track vh.id; let i = $index) {
                   <div class="item-panel">
                     <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="vh.visible = !vh.visible"
                       [attr.aria-expanded]="vh.visible" [attr.aria-controls]="'history_' + vh.version">&nbsp;
