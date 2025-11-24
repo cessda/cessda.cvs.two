@@ -14,7 +14,7 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
-## [3.6.0] - 2025-11-21
+## [3.6.0] - 2025-11-24
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17660802.svg)](https://doi.org/10.5281/zenodo.17660802)
 
