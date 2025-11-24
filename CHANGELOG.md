@@ -480,6 +480,7 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Swagger UI for the APIs.
 - New set of /v2 REST APIs for searching and exporting CVs to several formats (PDF, HTML, DOCX)
 
+[3.6.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.6.0
 [3.5.2]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.5.2
 [3.5.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.5.1
 [3.5.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.5.0
