@@ -148,7 +148,7 @@ jhipster:
     default-include-pattern: /(v1|v2|urn)/.*
     title: CVS API
     description: CESSDA Vocabularies Service API Documentation
-    version: 3.5.2
+    version: 3.6.0
     terms-of-service-url: https://www.cessda.eu/Acceptable-Use-Policy
     contact-name: CESSDA Support
     contact-url:
