@@ -42,10 +42,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgxTextDiffModule } from 'ngx-text-diff';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 
-import { HttpClient } from '@angular/common/http';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
-import { TranslateHttpLoader, TRANSLATE_HTTP_LOADER_CONFIG } from '@ngx-translate/http-loader';
-
 @NgModule({
   imports: [
     BrowserModule,
@@ -65,22 +61,6 @@ import { TranslateHttpLoader, TRANSLATE_HTTP_LOADER_CONFIG } from '@ngx-translat
     ScrollingModule,
     NgxTextDiffModule,
     NgxChartsModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: TranslateHttpLoader,
-        deps: [HttpClient, TRANSLATE_HTTP_LOADER_CONFIG],
-      },
-    }),
-  ],
-  providers: [
-    {
-      provide: TRANSLATE_HTTP_LOADER_CONFIG,
-      useValue: {
-        prefix: '/i18n/',
-        suffix: '.json',
-      },
-    },
   ],
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
   exports: [],
