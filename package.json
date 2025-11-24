@@ -73,7 +73,7 @@
     "jest-sonar-reporter": "2.0.0",
     "lint-staged": "16.2.6",
     "prettier": "3.6.2",
-    "rimraf": "5.0.0",
+    "rimraf": "6.1.2",
     "ts-node": "10.9.2",
     "typescript": "5.9.3"
   },
