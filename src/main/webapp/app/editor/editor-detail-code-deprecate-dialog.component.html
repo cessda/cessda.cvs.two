@@ -86,10 +86,10 @@
     @if (!(isConfirmedReplacementYes || isConfirmedReplacementNo)) {
       <div>
         <button id="jhi-confirm-replace-concept-no" class="btn btn-primary" (click)="confirmReplacementNo()">
-          <fa-icon></fa-icon>&nbsp;<span jhiTranslate="entity.action.no">No</span>
+          <span jhiTranslate="entity.action.no">No</span>
         </button>
         <button id="jhi-confirm-replace-concept-yes" class="btn btn-primary" (click)="confirmReplacementYes()">
-          <fa-icon></fa-icon>&nbsp;<span jhiTranslate="entity.action.yes">Yes</span>
+          <span jhiTranslate="entity.action.yes">Yes</span>
         </button>
       </div>
     }
@@ -97,7 +97,7 @@
     @if (isConfirmedReplacementYes && !isSetReplacingCodeId()) {
       <div>
         <button id="jhi-confirm-replace-concept-yes" class="btn btn-primary" [disabled]="deprecateCodeForm.controls.replacingCodeId.invalid" (click)="setReplacingCode()">
-          <fa-icon></fa-icon>&nbsp;<span jhiTranslate="entity.action.ok">OK</span>
+          <span jhiTranslate="entity.action.ok">OK</span>
         </button>
       </div>
     }
