@@ -32,7 +32,7 @@
     <div class="table-responsive">
       <table class="table table-striped" aria-describedby="user-management-page-heading">
         <thead>
-          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="updateSort.bind(this)">
+          <tr>
             <th scope="col" (click)="predicate='id'; ascending = !ascending; updateSort()"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
             <th scope="col" (click)="predicate='login'; ascending = !ascending; updateSort()"><span jhiTranslate="userManagement.login">Login</span> <fa-icon icon="sort"></fa-icon></th>
             <th scope="col" (click)="predicate='email'; ascending = !ascending; updateSort()"><span jhiTranslate="userManagement.email">Email</span> <fa-icon icon="sort"></fa-icon></th>
