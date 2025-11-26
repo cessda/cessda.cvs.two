@@ -69,7 +69,7 @@
                   }
                 </td>
                 <td>
-                  @for (userAgency of user.userAgencies; track userAgency) {
+                  @for (userAgency of user.userAgencies; track userAgency.id) {
                     <div>
                       <span class="badge text-bg-info">{{ getAgencyName(userAgency.agencyId || 0)  + ': ' + userAgency.agencyRole + '-' + (userAgency.language! | vocabularyLanguageFromKey) }}</span>
                     </div>
