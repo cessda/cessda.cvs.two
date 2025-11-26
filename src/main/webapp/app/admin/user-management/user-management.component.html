@@ -32,15 +32,15 @@
     <div class="table-responsive">
       <table class="table table-striped" aria-describedby="user-management-page-heading">
         <thead>
-          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="updateSort.bind(this)">
-            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"  jhiSortBy="login"><span jhiTranslate="userManagement.login">Login</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"  jhiSortBy="email"><span jhiTranslate="userManagement.email">Email</span> <fa-icon icon="sort"></fa-icon></th>
+          <tr>
+            <th scope="col" (click)="predicate='id'; ascending = !ascending; updateSort()"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col" (click)="predicate='login'; ascending = !ascending; updateSort()"><span jhiTranslate="userManagement.login">Login</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col" (click)="predicate='email'; ascending = !ascending; updateSort()"><span jhiTranslate="userManagement.email">Email</span> <fa-icon icon="sort"></fa-icon></th>
             <th scope="col"></th>
             <th scope="col"><span jhiTranslate="userManagement.profiles">System roles</span></th>
             <th scope="col"><span>Agency roles</span></th>
-            <th scope="col" jhiSortBy="createdDate"><span jhiTranslate="userManagement.createdDate">Created Date</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col" jhiSortBy="lastModifiedBy" ngbTooltip="Last modified by and last modified date"><span>Modified</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col" (click)="predicate='createdDate'; ascending = !ascending; updateSort()"><span jhiTranslate="userManagement.createdDate">Created Date</span> <fa-icon icon="sort"></fa-icon></th>
+            <th scope="col" (click)="predicate='lastModifiedBy'; ascending = !ascending; updateSort()"><span>Modified</span> <fa-icon icon="sort"></fa-icon></th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -69,7 +69,7 @@
                   }
                 </td>
                 <td>
-                  @for (userAgency of user.userAgencies; track userAgency) {
+                  @for (userAgency of user.userAgencies; track userAgency.id) {
                     <div>
                       <span class="badge text-bg-info">{{ getAgencyName(userAgency.agencyId || 0)  + ': ' + userAgency.agencyRole + '-' + (userAgency.language! | vocabularyLanguageFromKey) }}</span>
                     </div>

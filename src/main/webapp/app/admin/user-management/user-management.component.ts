@@ -15,9 +15,8 @@
  */
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { JhiEventManager, JhiPaginationUtil } from 'ng-jhipster';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { AccountService } from 'app/core/auth/account.service';
@@ -39,14 +38,14 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   private accountService = inject(AccountService);
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
-  private eventManager = inject(JhiEventManager);
   private modalService = inject(NgbModal);
   private agencyService = inject(AgencyService);
-  private paginationUtil = inject(JhiPaginationUtil);
+
+  private userListModification = new Subject<void>();
+  private userListSubscription: Subscription | undefined;
 
   currentAccount: Account | null = null;
   users: User[] = [];
-  userListSubscription: Subscription | undefined;
   totalItems = 0;
   readonly itemsPerPage = ITEMS_PER_PAGE;
   page = 1;
@@ -58,18 +57,16 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => (this.currentAccount = account));
 
+    // Listen to query params for pagination and sorting
     this.activatedRoute.queryParamMap.subscribe(query => {
       const page = query.get('page');
-      if (page) {
-        this.page = Number.parseInt(page);
-      } else {
-        this.page = 1;
-      }
+      this.page = page ? Number.parseInt(page) : 1;
 
       const sort = query.get('sort');
       if (sort) {
-        this.predicate = this.paginationUtil.parsePredicate(sort);
-        this.ascending = this.paginationUtil.parseAscending(sort);
+        const [predicate, direction] = sort.split(',');
+        this.predicate = predicate;
+        this.ascending = direction === 'asc';
       } else {
         this.predicate = 'id';
         this.ascending = true;
@@ -78,31 +75,21 @@ export class UserManagementComponent implements OnInit, OnDestroy {
       this.loadUsers();
     });
 
-    this.agencyService
-      .query({
-        page: 0,
-        size: 1000,
-        sort: [],
-      })
-      .subscribe(res => (this.agencies = res.body || []));
+    // Load agencies
+    this.agencyService.query({ page: 0, size: 1000, sort: [] }).subscribe(res => {
+      this.agencies = res.body || [];
+    });
 
-    this.userListSubscription = this.eventManager.subscribe('userListModification', () => this.loadUsers());
+    this.userListSubscription = this.userListModification.subscribe(() => this.loadUsers());
   }
 
   ngOnDestroy(): void {
-    if (this.userListSubscription) {
-      this.eventManager.destroy(this.userListSubscription);
-    }
+    this.userListSubscription?.unsubscribe();
   }
 
   getAgencyName(agencyId: number): string {
-    for (let i = 0; i < this.agencies.length; i++) {
-      const agency = this.agencies[i];
-      if (agency.id === agencyId) {
-        return agency.name!;
-      }
-    }
-    return `Unknown agency (${agencyId})`;
+    const agency = this.agencies.find(a => a.id === agencyId);
+    return agency ? agency.name! : `Unknown agency (${agencyId})`;
   }
 
   setActive(user: User, isActivated: boolean): void {
@@ -127,7 +114,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: {
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc'),
+        sort: `${this.predicate},${this.ascending ? 'asc' : 'desc'}`,
       },
       queryParamsHandling: 'merge',
     });
@@ -135,45 +122,44 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   }
 
   deleteUser(user: User): void {
-    const modalRef = this.modalService.open(UserManagementDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    const modalRef = this.modalService.open(UserManagementDeleteDialogComponent, {
+      size: 'lg',
+      backdrop: 'static',
+    });
     modalRef.componentInstance.user = user;
   }
 
   private loadUsers(): void {
-    const userObservable = this.userService.query({
-      page: this.page - 1,
-      size: this.itemsPerPage,
-      sort: this.sort(),
-    });
+    this.userService
+      .query({
+        page: this.page - 1,
+        size: this.itemsPerPage,
+        sort: this.sort(),
+      })
+      .subscribe(res => {
+        const users = res.body || [];
 
-    userObservable.subscribe(res => {
-      const users = res.body || [];
+        // Sort user agencies
+        users.forEach(u => {
+          if (u.userAgencies?.length) {
+            u.userAgencies.sort((ua1, ua2) =>
+              this.userAgencyToCompare(ua1) < this.userAgencyToCompare(ua2)
+                ? -1
+                : this.userAgencyToCompare(ua1) > this.userAgencyToCompare(ua2)
+                  ? 1
+                  : 0,
+            );
+          }
+        });
 
-      // Sort user agencies
-      users.forEach(u => {
-        if (u.userAgencies && u.userAgencies.length > 0) {
-          u.userAgencies.sort((ua1, ua2) =>
-            this.userAgencyToCompare(ua1) < this.userAgencyToCompare(ua2)
-              ? -1
-              : this.userAgencyToCompare(ua1) > this.userAgencyToCompare(ua2)
-                ? 1
-                : 0,
-          );
-        }
+        const totalCount = res.headers.get('X-Total-Count');
+        this.totalItems = totalCount ? Number(totalCount) : users.length;
+        this.users = users;
       });
-
-      const totalCount = res.headers.get('X-Total-Count');
-      if (totalCount) {
-        this.totalItems = Number.parseInt(totalCount);
-      } else {
-        this.totalItems = users.length;
-      }
-      this.users = users;
-    });
   }
 
   private sort(): string[] {
-    const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
+    const result = [`${this.predicate},${this.ascending ? 'asc' : 'desc'}`];
     if (this.predicate !== 'id') {
       result.push('id');
     }
@@ -181,6 +167,10 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   }
 
   userAgencyToCompare(ua: UserAgency): string {
-    return ua.agencyId! + ua.agencyRole! + (ua.language ? ua.language : '');
+    return ua.agencyId! + ua.agencyRole! + (ua.language || '');
+  }
+
+  notifyUserListModification(): void {
+    this.userListModification.next();
   }
 }

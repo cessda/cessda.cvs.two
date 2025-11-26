@@ -197,7 +197,9 @@ export class AccountService {
 
   getUserAgencies(): string[] {
     const agencies: string[] = [];
-    this.userIdentity && this.userIdentity.userAgencies.forEach(agency => agency.agencyName && agencies.push(agency.agencyName));
+    if (this.userIdentity) {
+      this.userIdentity.userAgencies.forEach(agency => agency.agencyName && agencies.push(agency.agencyName));
+    }
     return agencies;
   }
 
