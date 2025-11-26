@@ -6,7 +6,10 @@ pipeline {
     environment {
         productName = "cvs"
         componentName = "frontend"
-        image_tag = "${DOCKER_ARTIFACT_REGISTRY}/${productName}-${componentName}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+
+        // Replace anything NOT allowed in Docker tags with '-'
+        BRANCH_NAME = "${env.BRANCH_NAME.replaceAll('[^a-zA-Z0-9_.-]', '-')}"
+        IMAGE_TAG = "${DOCKER_ARTIFACT_REGISTRY}/${productName}-${componentName}:${BRANCH_NAME}-${env.BUILD_NUMBER}"
 
         // Fixes NPM trying to use / as the home directory
         HOME = '.'
@@ -111,13 +114,13 @@ pipeline {
             steps {
                 sh "gcloud auth configure-docker ${ARTIFACT_REGISTRY_HOST}"
                 sh "docker push ${IMAGE_TAG}"
-                sh "gcloud artifacts docker tags add ${IMAGE_TAG} ${DOCKER_ARTIFACT_REGISTRY}/${productName}-${componentName}:${env.BRANCH_NAME}-latest"
+                sh "gcloud artifacts docker tags add ${IMAGE_TAG} ${DOCKER_ARTIFACT_REGISTRY}/${productName}-${componentName}:${BRANCH_NAME}-latest"
             }
             when { branch 'main' }
         }
         stage('Deploy CVS') {
             steps {
-                build job: 'cessda.cvs.deploy/main', parameters: [string(name: 'frontend_image_tag', value: "${env.BRANCH_NAME}-${env.BUILD_NUMBER}")], wait: false
+                build job: 'cessda.cvs.deploy/main', parameters: [string(name: 'frontend_image_tag', value: "${BRANCH_NAME}-${env.BUILD_NUMBER}")], wait: false
             }
             when { branch 'main' }
         }
