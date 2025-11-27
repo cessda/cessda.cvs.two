@@ -127,6 +127,13 @@ export class UserManagementComponent implements OnInit, OnDestroy {
       backdrop: 'static',
     });
     modalRef.componentInstance.user = user;
+
+    modalRef.closed.subscribe(reason => {
+    if (reason === 'deleted') {
+      // User was successfully deleted
+      this.loadUsers();
+    }
+  });
   }
 
   private loadUsers(): void {
