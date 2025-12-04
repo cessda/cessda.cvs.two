@@ -2005,10 +2005,6 @@ public class VocabularyServiceImpl implements VocabularyService
                             );
                         } else if (v.getStatus() == Status.PUBLISHED) {
                             v = cloneVersion(v, finalPublishingVersionNumber, agencyFinal);
-                            // update the publication date of this TL version
-                            v.setPublicationDate(publicationDate);
-                            // set version notes
-                            v.setVersionNotes("This version was copied automatically from the previous bundle. There were no changes since the previous version.");
                             // update the version number in the CV
                             finalVocabularyDTO.setVersionByLanguage(
                                 v.getLanguage(),
