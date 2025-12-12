@@ -20,7 +20,7 @@
         <h4 class="modal-title">
             <span>Reorder code</span>
         </h4>
-        <button type="button" class="btn-close" data-dismiss="modal" aria-hidden="true" (click)="clear()"></button>
+        <button type="button" class="btn-close" data-dismiss="modal" (click)="clear()"></button>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
@@ -49,13 +49,13 @@
             <div class="row-details">
                 <div class="row-detail form-group">
                     <div class="btn-group btn-group-toggle" role="group" name="insert-choice">
-                        <input type="radio" [(ngModel)]="insertMode" (ngModelChange)="updateTreePreview()" value="INSERT_AFTER" class="btn-check" id="insertAfterButton">
+                        <input type="radio" [(ngModel)]="insertMode" [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateTreePreview()" value="INSERT_AFTER" class="btn-check" id="insertAfterButton">
                         <label class="btn btn-outline-primary" for="insertAfterButton">Insert after</label>
 
-                        <input type="radio" [(ngModel)]="insertMode" (ngModelChange)="updateTreePreview()" value="INSERT_BEFORE" class="btn-check" id="insertBeforeButton">
+                        <input type="radio" [(ngModel)]="insertMode" [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateTreePreview()" value="INSERT_BEFORE" class="btn-check" id="insertBeforeButton">
                         <label class="btn btn-outline-primary" for="insertBeforeButton">Insert before</label>
 
-                        <input type="radio" [(ngModel)]="insertMode" (ngModelChange)="updateTreePreview()" value="INSERT_AS_CHILD" class="btn-check" id="insertChildButton">
+                        <input type="radio" [(ngModel)]="insertMode" [ngModelOptions]="{ standalone: true }" (ngModelChange)="updateTreePreview()" value="INSERT_AS_CHILD" class="btn-check" id="insertChildButton">
                         <label class="btn btn-outline-primary" for="insertChildButton">Insert as child</label>
                     </div>
                 </div>
