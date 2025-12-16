@@ -21,7 +21,7 @@
 
     <groupId>eu.cessda.cvs</groupId>
     <artifactId>cvs</artifactId>
-    <version>3.6.0</version>
+    <version>3.6.1</version>
     <packaging>jar</packaging>
     <name>CESSDA Vocabulary Service</name>
     <inceptionYear>2017</inceptionYear>

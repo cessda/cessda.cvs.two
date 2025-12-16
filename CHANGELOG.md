@@ -14,6 +14,16 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
+## [3.6.1] - 2025-12-16
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17949337.svg)](https://doi.org/10.5281/zenodo.17949337)
+
+### Fixed
+
+- [#1170](https://github.com/cessda/cessda.cvs.two/issues/1170) Fixed "Move code" and "Deprecate" functions not working in the editor
+- [#1174](https://github.com/cessda/cessda.cvs.two/issues/1174) Fixed pagination not working in the "User Management" and "Audit" components
+- [#1177](https://github.com/cessda/cessda.cvs.two/issues/1177) Sanitise the Git branch name to remove characters not suitable for use in a Docker tag
+
 ## [3.6.0] - 2025-11-24
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17660802.svg)](https://doi.org/10.5281/zenodo.17660802)
@@ -480,6 +490,7 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Swagger UI for the APIs.
 - New set of /v2 REST APIs for searching and exporting CVs to several formats (PDF, HTML, DOCX)
 
+[3.6.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.6.1
 [3.6.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.6.0
 [3.5.2]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.5.2
 [3.5.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.5.1
