@@ -46,10 +46,7 @@ spring:
         prepStmtCacheSqlLimit: 2048
         useServerPrepStmts: true
   jpa:
-    show-sql: false
-  elasticsearch:
-    rest:
-      uris: http://localhost:9200
+    show-sql: false#
   mail:
     host: smtp-relay.gmail.com
     port: 465
