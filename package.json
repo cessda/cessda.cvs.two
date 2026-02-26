@@ -50,7 +50,7 @@
     "@angular-eslint/eslint-plugin-template": "20.7.0",
     "@angular-eslint/schematics": "20.7.0",
     "@angular-eslint/template-parser": "20.7.0",
-    "@angular/build": "20.3.16",
+    "@angular/build": "21.2.0",
     "@angular/cli": "20.3.16",
     "@angular/compiler-cli": "20.3.16",
     "@types/babel__traverse": "7.18.1",
