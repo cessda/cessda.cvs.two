@@ -40,7 +40,6 @@ import { QuillModule } from 'ngx-quill';
 // ngx-text-diff
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { NgxTextDiffModule } from 'ngx-text-diff';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   imports: [
@@ -60,7 +59,6 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     QuillModule.forRoot(),
     ScrollingModule,
     NgxTextDiffModule,
-    NgxChartsModule,
   ],
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
   exports: [],

@@ -22,16 +22,15 @@ import { AgencyDetailDialogComponent, AgencyDetailPopupComponent } from './agenc
 import { AgencyUpdateComponent } from './agency-update.component';
 import { AgencyDeleteDialogComponent } from './agency-delete-dialog.component';
 import { agencyRoute } from './agency.route';
-import { PieChartModule } from '@swimlane/ngx-charts';
 
 @NgModule({
-    imports: [CvsSharedModule, RouterModule.forChild(agencyRoute), PieChartModule],
-    declarations: [
-        AgencyComponent,
-        AgencyDetailDialogComponent,
-        AgencyUpdateComponent,
-        AgencyDeleteDialogComponent,
-        AgencyDetailPopupComponent
-    ]
+  imports: [CvsSharedModule, RouterModule.forChild(agencyRoute)],
+  declarations: [
+    AgencyComponent,
+    AgencyDetailDialogComponent,
+    AgencyUpdateComponent,
+    AgencyDeleteDialogComponent,
+    AgencyDetailPopupComponent,
+  ],
 })
 export class CvsAgencyModule {}
