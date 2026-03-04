@@ -1,3 +1,4 @@
+import { provideZoneChangeDetection } from '@angular/core';
 /*
  * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
@@ -20,7 +21,7 @@ import { CvsAppModule } from './app.module';
 ProdConfig();
 
 platformBrowser()
-  .bootstrapModule(CvsAppModule, { preserveWhitespaces: true })
+  .bootstrapModule(CvsAppModule, { applicationProviders: [provideZoneChangeDetection()], preserveWhitespaces: true })
   // eslint-disable-next-line no-console
   .then(() => console.log('Application started'))
   .catch(err => console.error(err));
