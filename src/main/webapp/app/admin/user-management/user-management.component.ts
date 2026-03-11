@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
@@ -33,16 +32,13 @@ import { UserAgency } from 'app/shared/model/user-agency.model';
   templateUrl: './user-management.component.html',
   standalone: false,
 })
-export class UserManagementComponent implements OnInit, OnDestroy {
+export class UserManagementComponent implements OnInit {
   private userService = inject(UserService);
   private accountService = inject(AccountService);
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private modalService = inject(NgbModal);
   private agencyService = inject(AgencyService);
-
-  private userListModification = new Subject<void>();
-  private userListSubscription: Subscription | undefined;
 
   currentAccount: Account | null = null;
   users: User[] = [];
@@ -79,12 +75,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     this.agencyService.query({ page: 0, size: 1000, sort: [] }).subscribe(res => {
       this.agencies = res.body || [];
     });
-
-    this.userListSubscription = this.userListModification.subscribe(() => this.loadUsers());
-  }
-
-  ngOnDestroy(): void {
-    this.userListSubscription?.unsubscribe();
   }
 
   getAgencyName(agencyId: number): string {
@@ -118,7 +108,6 @@ export class UserManagementComponent implements OnInit, OnDestroy {
       },
       queryParamsHandling: 'merge',
     });
-    this.loadUsers();
   }
 
   deleteUser(user: User): void {
@@ -129,11 +118,11 @@ export class UserManagementComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.user = user;
 
     modalRef.closed.subscribe(reason => {
-    if (reason === 'deleted') {
-      // User was successfully deleted
-      this.loadUsers();
-    }
-  });
+      if (reason === 'deleted') {
+        // User was successfully deleted
+        this.loadUsers();
+      }
+    });
   }
 
   private loadUsers(): void {
@@ -175,9 +164,5 @@ export class UserManagementComponent implements OnInit, OnDestroy {
 
   userAgencyToCompare(ua: UserAgency): string {
     return ua.agencyId! + ua.agencyRole! + (ua.language || '');
-  }
-
-  notifyUserListModification(): void {
-    this.userListModification.next();
   }
 }
