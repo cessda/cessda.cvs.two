@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription, Subject } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
