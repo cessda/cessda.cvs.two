@@ -72,8 +72,7 @@ public class EditorResource {
 
     private static final String NOT_IN_DB = " \" not found in the database";
 
-    @Autowired
-    private AuditEventPublisher auditPublisher;
+    private final AuditEventPublisher auditPublisher;
 
     public static final String UNABLE_TO_FIND_VERSION = "Unable to find version with Id ";
     public static final String UNABLE_TO_FIND_CONCEPT = "Unable to find concept with Id ";
@@ -112,9 +111,10 @@ public class EditorResource {
     private final VocabularyChangeService vocabularyChangeService;
 
     @SuppressWarnings("squid:S107") // since constructor params are autowired
-    public EditorResource(VocabularyService vocabularyService, VersionService versionService, ConceptService conceptService,
-                          CommentService commentService, MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
-                          ApplicationProperties applicationProperties, VocabularyChangeService vocabularyChangeService) {
+    public EditorResource( AuditEventPublisher auditPublisher, VocabularyService vocabularyService, VersionService versionService, ConceptService conceptService,
+                           CommentService commentService, MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
+                           ApplicationProperties applicationProperties, VocabularyChangeService vocabularyChangeService) {
+        this.auditPublisher = auditPublisher;
         this.vocabularyService = vocabularyService;
         this.versionService = versionService;
         this.conceptService = conceptService;

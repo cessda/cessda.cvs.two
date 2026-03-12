@@ -105,7 +105,7 @@ export class EditorCvAddDialogComponent implements OnInit {
     this.languages = [];
     if (this.accountService.isAdmin()) {
       for (const langIso in LanguageIso) {
-        if (parseInt(langIso, 10) >= 0) {
+        if (Number.parseInt(langIso, 10) >= 0) {
           this.languages.push(LanguageIso[langIso]);
         }
       }

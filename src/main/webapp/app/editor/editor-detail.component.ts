@@ -772,7 +772,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   escapeCsvContent(content?: string): string {
     let escapedContent = content === null || content === undefined ? '' : content;
-    escapedContent = escapedContent.replace(/\n+$/, '').replace(/"/g, '""');
+    escapedContent = escapedContent.replace(/\n+$/, '').replaceAll('"', '""');
     if (escapedContent.search(/("|,|\n)/g) >= 0) {
       escapedContent = `"${escapedContent}"`;
     }

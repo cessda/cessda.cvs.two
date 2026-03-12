@@ -17,7 +17,7 @@
 -->
 <div class="row justify-content-center">
   <div class="col-8">
-    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
       <h2 id="myUserLabel" jhiTranslate="userManagement.home.createOrEditLabel">
         Create or edit a User
       </h2>
@@ -26,13 +26,11 @@
         <div>
           <jhi-alert-error></jhi-alert-error>
           <div class="form-group" [hidden]="!user.id">
-            <label jhiTranslate="global.field.id">ID</label>
-            <input type="text" class="form-control" name="id" formControlName="id" readonly>
+            <label jhiTranslate="global.field.id">ID<input type="text" class="form-control" name="id" formControlName="id" readonly></label>
           </div>
           <div class="form-group">
-            <label class="form-control-label" jhiTranslate="userManagement.login">Login</label>
-            <input type="text" class="form-control" name="login"
-              formControlName="login">
+            <label class="form-control-label" jhiTranslate="userManagement.login">Login<input type="text" class="form-control" name="login" formControlName="login"></label>
+
             @if (editForm.controls.login.invalid && (editForm.controls.login.dirty || editForm.controls.login.touched)) {
               <div>
                 @if (editForm.controls.login.errors?.required) {
@@ -58,9 +56,7 @@
             }
           </div>
           <div class="form-group">
-            <label class="form-control-label" jhiTranslate="userManagement.firstName">First Name</label>
-            <input type="text" class="form-control" name="firstName"
-              formControlName="firstName">
+            <label class="form-control-label" jhiTranslate="userManagement.firstName">First Name<input type="text" class="form-control" name="firstName" formControlName="firstName"></label>
             @if (editForm.controls.firstName.invalid && (editForm.controls.firstName.dirty || editForm.controls.firstName.touched)) {
               <div>
                 @if (editForm.controls.firstName.errors?.maxlength) {
@@ -74,9 +70,7 @@
             }
           </div>
           <div class="form-group">
-            <label jhiTranslate="userManagement.lastName">Last Name</label>
-            <input type="text" class="form-control" name="lastName"
-              formControlName="lastName">
+            <label jhiTranslate="userManagement.lastName">Last Name<input type="text" class="form-control" name="lastName" formControlName="lastName"></label>
             @if (editForm.controls.lastName.invalid && (editForm.controls.lastName.dirty || editForm.controls.lastName.touched)) {
               <div>
                 @if (editForm.controls.lastName.errors?.maxlength) {
@@ -90,8 +84,7 @@
             }
           </div>
           <div class="form-group">
-            <label class="form-control-label" jhiTranslate="userManagement.email">Email</label>
-            <input type="email" class="form-control" name="email" formControlName="email">
+            <label class="form-control-label" jhiTranslate="userManagement.email">Email<input type="email" class="form-control" name="email" formControlName="email"></label>
             @if (editForm.controls.email.invalid && (editForm.controls.email.dirty || editForm.controls.email.touched)) {
               <div>
                 @if (editForm.controls.email.errors?.['required']) {
@@ -131,12 +124,14 @@
             </label>
           </div>
           <div class="form-group">
-            <label jhiTranslate="userManagement.profiles">System roles</label>
-            <select class="form-control" multiple name="authority" formControlName="authorities">
-              @for (authority of authorities; track authority) {
-                <option [value]="authority">{{ authority }}</option>
-              }
-            </select>
+            <label jhiTranslate="userManagement.profiles">
+              <span>System roles</span>
+              <select class="form-control" multiple name="authority" formControlName="authorities">
+                @for (authority of authorities; track authority) {
+                  <option [value]="authority">{{ authority }}</option>
+                }
+              </select>
+            </label>
           </div>
           @if (user.userAgencies !== undefined) {
             <div class="form-group">

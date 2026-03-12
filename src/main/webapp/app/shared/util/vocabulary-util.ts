@@ -281,7 +281,7 @@ export default class VocabularyUtil {
     const availableLanguages = [];
     const takenLanguages = versions.map(v => v.language);
     for (const langIso in LanguageIso) {
-      if (parseInt(langIso, 10) >= 0) {
+      if (Number.parseInt(langIso, 10) >= 0) {
         if (!takenLanguages.includes(LanguageIso[langIso])) {
           availableLanguages.push(LanguageIso[langIso]);
         }

@@ -15,7 +15,7 @@
     limitations under the License.
 
 -->
-<form name="deprecateCodeForm" role="form" (ngSubmit)="save()" novalidate [formGroup]="deprecateCodeForm">
+<form name="deprecateCodeForm" (ngSubmit)="save()" novalidate [formGroup]="deprecateCodeForm">
   <div class="modal-header">
     <h4 class="modal-title">
       <span>Deprecation of the code <strong>{{conceptParam.notation}}</strong></span>

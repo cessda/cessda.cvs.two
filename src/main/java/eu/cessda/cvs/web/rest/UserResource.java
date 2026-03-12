@@ -81,8 +81,7 @@ import static eu.cessda.cvs.security.AuthoritiesConstants.ADMIN;
 @RequestMapping("/api")
 public class UserResource {
 
-    @Autowired
-    private AuditEventPublisher auditPublisher;
+    private final AuditEventPublisher auditPublisher;
 
     private final Logger log = LoggerFactory.getLogger(UserResource.class);
 
@@ -99,7 +98,8 @@ public class UserResource {
 
     private final MailService mailService;
 
-    public UserResource(UserService userService, UserRepository userRepository, UserAgencyRepository userAgencyRepository, UserAgencyService userAgencyService, MailService mailService) {
+    public UserResource( AuditEventPublisher auditPublisher, UserService userService, UserRepository userRepository, UserAgencyRepository userAgencyRepository, UserAgencyService userAgencyService, MailService mailService) {
+        this.auditPublisher = auditPublisher;
         this.userService = userService;
         this.userRepository = userRepository;
         this.userAgencyRepository = userAgencyRepository;

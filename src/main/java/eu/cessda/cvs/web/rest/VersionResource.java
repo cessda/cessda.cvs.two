@@ -52,8 +52,7 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class VersionResource {
 
-    @Autowired
-    private AuditEventPublisher auditPublisher;
+    private final AuditEventPublisher auditPublisher;
 
     private final Logger log = LoggerFactory.getLogger(VersionResource.class);
 
@@ -64,7 +63,8 @@ public class VersionResource {
 
     private final VersionService versionService;
 
-    public VersionResource(VersionService versionService) {
+    public VersionResource( AuditEventPublisher auditPublisher, VersionService versionService) {
+        this.auditPublisher = auditPublisher;
         this.versionService = versionService;
     }
 
