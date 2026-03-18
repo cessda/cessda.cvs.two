@@ -46,7 +46,6 @@ pipeline {
                     }
                     post {
                         always {
-                            recordCoverage(tools: [[parser: 'LCOV', pattern: 'target/test-results/lcov.info']])
                             recordIssues(tools: [esLint(pattern: 'target/eslint-reports/report.xml')])
                         }
                     }
@@ -63,6 +62,7 @@ pipeline {
                     post {
                         always {
                             junit 'target/test-results/TESTS-results-jest.xml'
+                            recordCoverage(tools: [[parser: 'LCOV', pattern: 'target/test-results/lcov.info']])
                         }
                     }
                 }
