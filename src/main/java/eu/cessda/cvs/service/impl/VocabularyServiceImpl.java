@@ -101,8 +101,6 @@ public class VocabularyServiceImpl implements VocabularyService
     public static final String ALL = "all";
     private static final Logger log = LoggerFactory.getLogger( VocabularyServiceImpl.class );
     private static final String VOCABULARYPUBLISH = "vocabularypublish";
-    private static final String UNABLE_TO_FIND_VERSION = "Unable to find version with Id ";
-    private static final String UNABLE_TO_FIND_VOCABULARY = "Unable to find vocabulary with Id ";
     private static final String CODE_PATH = "codes";
 
     private final AgencyRepository agencyRepository;
@@ -174,53 +172,19 @@ public class VocabularyServiceImpl implements VocabularyService
         }
     }
 
-    public static QueryBuilder generateMainQuery( String term, List<String> languageFields ) {
-        QueryBuilder query;
-        if ( languageFields.size() == 1 )
+    public static BoolQueryBuilder generateMainQuery( String term, List<String> languageFields ) {
+        BoolQueryBuilder query = QueryBuilders.boolQuery();
+        for ( String langIso : languageFields )
         {
-            query = QueryBuilders.boolQuery()
-                .should( QueryBuilders.matchQuery( TITLE + languageFields.get( 0 ), term ).fuzziness( 0.7 ).boost( 10.0f ) )
-                .should( QueryBuilders.matchQuery( DEFINITION + languageFields.get( 0 ), term ).fuzziness( 0.7 ).boost( 4.0f ) )
-                .should( QueryBuilders.wildcardQuery( NOTATION, term.toLowerCase().replace( " ", "" ) + "*" ).boost( 2.0f ) );
+            query.should( QueryBuilders.matchQuery( TITLE + langIso, term ).fuzziness( 0.7 ).boost( 10.0f ) );
+            query.should( QueryBuilders.matchQuery( DEFINITION + langIso, term ).fuzziness( 0.7 ).boost( 4.0f ) );
         }
-        else
-        {
-            List<String> fields = new ArrayList<>( ( languageFields.size() * 2 ) + 1 );
-            fields.add( NOTATION );
-            for ( String langIso : languageFields )
-            {
-                fields.add( TITLE + langIso );
-                fields.add( DEFINITION + langIso );
-            }
-           query = QueryBuilders.multiMatchQuery( term, fields.toArray( String[]::new ) );
-        }
-        return query;
+        return query.should( QueryBuilders.wildcardQuery( NOTATION, term.toLowerCase().replace( " ", "" ) + "*" ).boost( 2.0f ) );
     }
 
     public static NestedQueryBuilder generateNestedQuery( String term, List<String> languageFields, int innerHitSize ) {
         // query for all languages
-        QueryBuilder query;
-
-        if ( languageFields.size() == 1 )
-        {
-            query = QueryBuilders.boolQuery()
-                .should( QueryBuilders.matchQuery( CODE_PATH + "." + TITLE + languageFields.get( 0 ), term ).fuzziness( 0.7 )
-                    .boost( 3.0f ) )
-                .should( QueryBuilders.matchQuery( CODE_PATH + "." + DEFINITION + languageFields.get( 0 ), term ).fuzziness( 0.7 )
-                    .boost( 2.0f ) )
-                .should( QueryBuilders.wildcardQuery( CODE_PATH + "." + NOTATION, term.toLowerCase().replace( " ", "" ) + "*" )
-                    .boost( 1.0f ) );
-        }
-        else
-        {
-            List<String> fields = new ArrayList<>(( languageFields.size() * 2 ) + 1 );
-            fields.add( CODE_PATH + "." + NOTATION );
-            for ( String langIso : languageFields ) {
-                fields.add( CODE_PATH + "." + TITLE + langIso );
-                fields.add( CODE_PATH + "." + DEFINITION + langIso );
-            }
-            query = QueryBuilders.multiMatchQuery( term, fields.toArray( String[]::new ) );
-        }
+        BoolQueryBuilder query = generateMainQuery( term, languageFields );
 
         InnerHitBuilder innerHitBuilder = new InnerHitBuilder( CODE_PATH ).setSize( innerHitSize );
         if ( term.length() > 2 )
@@ -232,6 +196,7 @@ public class VocabularyServiceImpl implements VocabularyService
             );
             innerHitBuilder.setHighlightBuilder( nestedHighlightBuilder );
         }
+
         return QueryBuilders.nestedQuery( CODE_PATH, query, ScoreMode.Total ).innerHit( innerHitBuilder );
     }
 
@@ -252,20 +217,15 @@ public class VocabularyServiceImpl implements VocabularyService
         BoolQueryBuilder boolQueryFilter = QueryBuilders.boolQuery();
 
         for ( EsFilter esFilter : esFilters ) {
-            if ( esFilter.getValues() != null && !esFilter.getValues().isEmpty() ) {
-                if ( esFilter.getValues().size() == 1 ) { // use AND if an item in the filter is selected
-                    boolQueryFilter.must( QueryBuilders.termQuery( esFilter.getField(), esFilter.getValues().get( 0 ) ) );
-                } else {
-                    BoolQueryBuilder withinFilterBoolQueryFilter = QueryBuilders.boolQuery();
-                    // use OR for multiple values within a filter
-                    for ( String filterValue : esFilter.getValues() ) {
-                        withinFilterBoolQueryFilter.should( QueryBuilders.termQuery( esFilter.getField(), filterValue ) );
-                    }
-                    // use AND to combine filter with the rest
-                    boolQueryFilter.must( withinFilterBoolQueryFilter );
-                }
+            BoolQueryBuilder withinFilterBoolQueryFilter = QueryBuilders.boolQuery();
+            // use OR for multiple values within a filter
+            for ( String filterValue : esFilter.getValues() ) {
+                withinFilterBoolQueryFilter.should( QueryBuilders.termQuery( esFilter.getField(), filterValue ) );
             }
-
+            // must match at least one within filter
+            withinFilterBoolQueryFilter.minimumShouldMatch(1);
+            // use AND to combine filter with the rest
+            boolQueryFilter.must( withinFilterBoolQueryFilter );
         }
 
         return boolQueryFilter;

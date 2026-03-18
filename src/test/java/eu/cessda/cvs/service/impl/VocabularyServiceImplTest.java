@@ -29,12 +29,12 @@ import eu.cessda.cvs.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 import eu.cessda.cvs.service.mapper.VocabularyMapper;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mockito;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -42,8 +42,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 import static java.lang.Math.abs;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class VocabularyServiceImplTest
@@ -202,7 +201,7 @@ class VocabularyServiceImplTest
     }
 
     @Test
-    void shouldGetPublishedCVPaths() throws IOException, URISyntaxException
+    void shouldGetPublishedCVPaths() throws  URISyntaxException
     {
         // Setup
         URL content = Objects.requireNonNull( this.getClass().getResource( "/static/content" ) );
@@ -228,5 +227,33 @@ class VocabularyServiceImplTest
         assertThat(vocabularyService.getPublishedCvPaths()).isNotEmpty()
             // All results should be files
             .allMatch( Files::isRegularFile );
+    }
+
+    @Test
+    void shouldFailToDeleteDirectoryThatDoesNotExist(@TempDir Path temp)
+    {
+        // Setup
+        VocabularyServiceImpl vocabularyService = new VocabularyServiceImpl( null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        );
+
+        // Derive a subdirectory of the temp directory
+        Path nonExistent = temp.resolve( "non-existent-subdirectory" );
+
+        // Should not throw
+        assertThatCode( () -> vocabularyService.deleteCvJsonDirectoryAndContent( nonExistent ) ).doesNotThrowAnyException();
     }
 }
