@@ -50,8 +50,7 @@ import static eu.cessda.cvs.security.AuthoritiesConstants.ADMIN_CONTENT;
 @RequestMapping("/api")
 public class LicenceResource {
 
-    @Autowired
-    private AuditEventPublisher auditPublisher;
+    private final AuditEventPublisher auditPublisher;
 
     private final Logger log = LoggerFactory.getLogger(LicenceResource.class);
 
@@ -62,7 +61,8 @@ public class LicenceResource {
 
     private final LicenceService licenceService;
 
-    public LicenceResource(LicenceService licenceService) {
+    public LicenceResource( AuditEventPublisher auditPublisher, LicenceService licenceService) {
+        this.auditPublisher = auditPublisher;
         this.licenceService = licenceService;
     }
 

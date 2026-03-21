@@ -22,14 +22,15 @@ import { UserManagementDetailComponent } from './user-management-detail.componen
 import { UserManagementUpdateComponent } from './user-management-update.component';
 import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
 import { userManagementRoute } from './user-management.route';
+import { ChartCommonModule } from '@swimlane/ngx-charts';
 
 @NgModule({
-    imports: [CvsSharedModule, RouterModule.forChild(userManagementRoute)],
-    declarations: [
-        UserManagementComponent,
-        UserManagementDetailComponent,
-        UserManagementUpdateComponent,
-        UserManagementDeleteDialogComponent
-    ]
+  imports: [CvsSharedModule, RouterModule.forChild(userManagementRoute), ChartCommonModule],
+  declarations: [
+    UserManagementComponent,
+    UserManagementDetailComponent,
+    UserManagementUpdateComponent,
+    UserManagementDeleteDialogComponent,
+  ],
 })
 export class UserManagementModule {}

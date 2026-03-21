@@ -44,11 +44,6 @@ pipeline {
                             sh 'npm run lint -- --format checkstyle --output-file target/eslint-reports/report.xml'
                         }
                     }
-                    post {
-                        always {
-                            recordIssues(tools: [esLint(pattern: 'target/eslint-reports/report.xml')])
-                        }
-                    }
                 }
                 stage('Compile Angular') {
                     steps {
@@ -75,14 +70,15 @@ pipeline {
                 }
             }
             steps {
-                withMaven {
+                withMaven(publisherStrategy: 'EXPLICIT', options: [junitPublisher()]) {
                     sh "./mvnw verify -Pci"
                 }
             }
         }
-        stage('Record Issues') {
+        stage('Record Tests, Coverage and Issues') {
             steps {
-                recordIssues aggregatingResults: true, tools: [java()]
+                recordCoverage(tools: [[parser: 'JACOCO'], [parser: 'LCOV', pattern: 'target/test-results/lcov.info']])
+                recordIssues aggregatingResults: true, tools: [esLint(pattern: 'target/eslint-reports/report.xml'), java()]
             }
         }
         stage('Run Sonar Scan') {

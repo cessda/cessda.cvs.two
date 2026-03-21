@@ -276,15 +276,17 @@ public class VocabularyResourceV2 {
         vocabularyService.searchCode(esq);
         Page<VocabularyDTO> vocabulariesPage = esq.getVocabularies();
 
-        if ( !vocabulariesPage.getContent().isEmpty() ) {
-            for ( VocabularyDTO vocabularyDTO : vocabulariesPage.getContent() )
-            {
-                return ResourceUtils.convertVocabularyDtoToJsonLdSkosMos( vocabularyDTO, vocabularyDTO.getCodes(), lang );
-            }
+        var iterator =  vocabulariesPage.iterator();
+        if (iterator.hasNext())
+        {
+            var vocabularyDTO = iterator.next();
+            return ResourceUtils.convertVocabularyDtoToJsonLdSkosMos( vocabularyDTO, vocabularyDTO.getCodes(), lang );
         }
-
-        // empty response
-        return Collections.emptyMap();
+        else
+        {
+            // empty response
+            return Collections.emptyMap();
+        }
     }
 
     /**

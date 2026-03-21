@@ -16,7 +16,7 @@
 
 -->
 <div class="row">
-  <form name="editorDetailForm" class="detail-form" role="form" (keydown.enter)="$event.preventDefault()" novalidate [formGroup]="editorDetailForm">
+  <form name="editorDetailForm" class="detail-form" (keydown.enter)="$event.preventDefault()" novalidate [formGroup]="editorDetailForm">
     <div class="bc">
       <div class="bc-inner">
         <a href="javascript:void(0);" (click)="goToCvSearch()">
