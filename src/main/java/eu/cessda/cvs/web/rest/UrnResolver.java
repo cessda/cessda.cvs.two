@@ -17,19 +17,21 @@ package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Status;
+import eu.cessda.cvs.service.ExportService;
 import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+
+import static eu.cessda.cvs.web.rest.VocabularyResourceV2.JSONLD_TYPE;
 
 /**
  * REST controller for resolving URN
@@ -53,64 +55,142 @@ public class UrnResolver {
      * @return the ResponseEntity with status 200 (OK) and then redirect to resource URL,
      * or with status 404 (Not Found)
      */
-    @GetMapping("/{urn}")
-    public ResponseEntity<String> findUrnResolver(HttpServletRequest request,
-          @PathVariable String urn, @RequestParam(name = "lang", required = false) String lang) {
-        log.debug("REST request to get Resolver by URI: {}", urn);
-        Optional<ResponseEntity<String>> headers;
-        String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+    @GetMapping(value = "/{urn}", produces = { MediaType.APPLICATION_JSON_VALUE, JSONLD_TYPE, MediaType.APPLICATION_PDF_VALUE, ExportService.MEDIATYPE_WORD_VALUE, ExportService.MEDIATYPE_RDF_VALUE })
+    public ResponseEntity<Void> findUrnJsonResolver( @PathVariable String urn, @RequestParam(name = "lang", required = false) String lang )
+    {
+        Optional<ResponseEntity<Void>> responseEntity;
 
         if( Character.isDigit( urn.charAt( urn.length() - 1) ))
         {
-            headers = getVersionByUrn(baseUrl, urn, lang);
+            responseEntity = getVersionByUrn( urn, lang ).map( versionResult -> {
+                VersionDTO v = versionResult.versionDTO;
+                String uriString = "/v2/vocabularies/" + v.getNotation() + "/" + v.getNumber();
+                if (versionResult.languageFound)
+                {
+                    uriString += "?languageVersion=" + lang + "-" + v.getNumber();
+                }
+
+                return ResponseEntity.status( HttpStatus.FOUND ).location( URI.create( uriString ) ).build();
+            } );
         }
         else
         {
-            headers = getVersionByUrnStartWith(baseUrl, urn);
+            responseEntity = getVersionByUrnStartWith(urn).map( v ->
+                ResponseEntity.status( HttpStatus.FOUND )
+                    .location( URI.create( "/v2/vocabularies/" + v.getNotation() + "/" + v.getNumber() ) )
+                    .build()
+            );
         }
 
-        return headers.orElseGet( () -> ResponseEntity.notFound().build() );
+        return responseEntity.orElse( ResponseEntity.notFound().build() );
     }
 
-    private Optional<ResponseEntity<String>> getVersionByUrnStartWith(String baseUrl, String urn) {
-        return versionService.findByUrnStartingWith(urn).stream()
-            .filter(v -> v.getStatus() == Status.PUBLISHED ).findFirst()
-            .map(versionDTO -> {
-                HttpHeaders headers = new HttpHeaders();
-                headers.setLocation(URI.create( baseUrl + "/vocabulary/" + versionDTO.getNotation()));
-                return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+    /**
+     * GET  / : redirect to resourceURL by "resolverUri or URN" resolver.
+     *
+     * @param urn the URN of the versionDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and then redirect to resource URL,
+     * or with status 404 (Not Found)
+     */
+    @GetMapping("/{urn}")
+    public ResponseEntity<Void> findUrnResolver( @PathVariable String urn, @RequestParam(name = "lang", required = false) String lang) {
+        log.debug("REST request to get Resolver by URI: {}", urn);
+
+        Optional<ResponseEntity<Void>> responseEntity;
+
+        if( Character.isDigit( urn.charAt( urn.length() - 1) ))
+        {
+            responseEntity = getVersionByUrn(urn, lang).map(v ->
+            {
+                var versionDTO = v.versionDTO;
+                boolean languageFound = v.languageFound;
+
+                // Derive the version number
+                var versionNumber = getVersionNumber( versionDTO );
+
+                String uriString = "/vocabulary/" + versionDTO.getNotation() + "?v=" + versionNumber;
+                if (languageFound)
+                {
+                    uriString = uriString + "&lang=" + lang;
+                }
+
+                return ResponseEntity.status( HttpStatus.FOUND ).location( URI.create( uriString ) ).build();
             });
+        }
+        else
+        {
+            responseEntity = getVersionByUrnStartWith(urn).map( v ->
+                ResponseEntity.status( HttpStatus.FOUND )
+                    .location( URI.create( "/vocabulary/" + v.getNotation() ) )
+                    .build()
+            );
+        }
+
+        return responseEntity.orElse( ResponseEntity.notFound().build() );
     }
 
-    private Optional<ResponseEntity<String>> getVersionByUrn(String baseUrl, String urn, String lang) {
-        final List<VersionDTO> versions = versionService.findByUrn(urn);
-        Optional<VersionDTO> versionDTOOptional = Optional.empty();
-        if( lang != null ) {
-            versionDTOOptional = versions.stream().filter(v -> v.getLanguage().equals(lang)).findFirst();
+    private static String getVersionNumber( VersionDTO versionDTO )
+    {
+        String versionNumber;
+        if ( versionDTO.getItemType() == ItemType.SL )
+        {
+            versionNumber = versionDTO.getNumber().toString();
         }
-
-        String additionalQuery;
-        if (versionDTOOptional.isPresent()) {
-            // Got a language variant
-            additionalQuery = "&lang=" + lang;
-        } else {
-            versionDTOOptional = versions.stream().filter(v -> v.getItemType() == ItemType.SL ).findFirst();
-            additionalQuery = "";
+        else
+        {
+            versionNumber = versionDTO.getNumber().getMinorVersion();
         }
+        return versionNumber;
+    }
 
-        return versionDTOOptional.map(versionDTO -> {
-            HttpHeaders headers = new HttpHeaders();
-
-            // Derive the version number
-            String versionNumber;
-            if ( versionDTO.getItemType() == ItemType.SL ) {
-                versionNumber = versionDTO.getNumber().toString();
-            } else {
-                versionNumber = versionDTO.getNumber().getMinorVersion();
+    private Optional<VersionDTO> getVersionByUrnStartWith(String urn) {
+        for ( VersionDTO v : versionService.findByUrnStartingWith( urn ) )
+        {
+            if ( v.getStatus() == Status.PUBLISHED )
+            {
+                return Optional.of( v );
             }
+        }
+        return Optional.empty();
+    }
 
-            headers.setLocation(URI.create( baseUrl + "/vocabulary/" + versionDTO.getNotation() + "?v=" + versionNumber + additionalQuery));
-            return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
-        });
+    private Optional<VersionResult> getVersionByUrn(String urn, String lang) {
+        final List<VersionDTO> versions = versionService.findByUrn(urn);
+
+        // Attempt to find language version
+        if( lang != null )
+        {
+            for ( VersionDTO v : versions )
+            {
+                if ( v.getLanguage().equals( lang ) )
+                {
+                    return Optional.of( new VersionResult( v, true ) );
+                }
+            }
+        }
+
+        // No language specific variants found or language not specified, attempt to find SL version
+        // TODO: is this the right behaviour? Should 404 be returned if a language variant is not found?
+        for ( VersionDTO v : versions )
+        {
+            if ( v.getItemType() == ItemType.SL )
+            {
+                return Optional.of( new VersionResult( v, false ) );
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    private static final class VersionResult
+    {
+        private final VersionDTO versionDTO;
+        private final boolean languageFound;
+
+        private VersionResult( VersionDTO versionDTO, boolean languageFound )
+        {
+            this.versionDTO = versionDTO;
+            this.languageFound = languageFound;
+        }
     }
 }
