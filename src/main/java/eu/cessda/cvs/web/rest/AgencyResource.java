@@ -53,8 +53,7 @@ import static eu.cessda.cvs.security.AuthoritiesConstants.ADMIN_CONTENT;
 @RequestMapping("/api")
 public class AgencyResource {
 
-    @Autowired
-    private AuditEventPublisher auditPublisher;
+    private final AuditEventPublisher auditPublisher;
 
     private final Logger log = LoggerFactory.getLogger(AgencyResource.class);
 
@@ -69,8 +68,9 @@ public class AgencyResource {
 
     private final AgencyStatSearchRepository agencyStatSearchRepository;
 
-    public AgencyResource(AgencyService agencyService, VocabularyService vocabularyService,
-                          AgencyStatSearchRepository agencyStatSearchRepository) {
+    public AgencyResource( AuditEventPublisher auditPublisher, AgencyService agencyService, VocabularyService vocabularyService,
+                           AgencyStatSearchRepository agencyStatSearchRepository) {
+        this.auditPublisher = auditPublisher;
         this.agencyService = agencyService;
         this.vocabularyService = vocabularyService;
         this.agencyStatSearchRepository = agencyStatSearchRepository;

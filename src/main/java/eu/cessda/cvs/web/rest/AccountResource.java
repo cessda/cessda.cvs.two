@@ -31,7 +31,6 @@ import eu.cessda.cvs.web.rest.vm.ManagedUserVM;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -50,8 +49,7 @@ import static eu.cessda.cvs.security.AuthoritiesConstants.USER;
 @RequestMapping("/api")
 public class AccountResource {
 
-    @Autowired
-    private AuditEventPublisher auditPublisher;
+    private final AuditEventPublisher auditPublisher;
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public static class AccountResourceException extends Exception {
@@ -80,7 +78,9 @@ public class AccountResource {
 
     private final MailService mailService;
 
-    public AccountResource(UserRepository userRepository, UserService userService, MailService mailService) {
+    public AccountResource( AuditEventPublisher auditPublisher, MailService mailService, UserRepository userRepository, UserService userService )
+    {
+        this.auditPublisher = auditPublisher;
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;

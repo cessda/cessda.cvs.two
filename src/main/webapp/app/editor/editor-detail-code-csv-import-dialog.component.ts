@@ -165,7 +165,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
       // what kind of value was captured (quoted or unquoted):
       if (matches[2]) {
         // found quoted value. unescape any double quotes.
-        matchedValue = matches[2].replace(/""/g, '"');
+        matchedValue = matches[2].replaceAll('""', '"');
       } else {
         // found a non-quoted value
         matchedValue = matches[3];
@@ -204,7 +204,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
 
   getHeaderArray(csvRecordsArr: string[][]): string[] {
     const headers = csvRecordsArr[0];
-    const headerArray = Array<string>(3);
+    const headerArray = new Array<string>(3);
     for (let i = 0; i < headers.length; i++) {
       headerArray[i] = headers[i];
     }

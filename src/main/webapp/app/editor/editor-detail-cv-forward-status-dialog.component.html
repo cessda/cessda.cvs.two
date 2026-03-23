@@ -154,7 +154,7 @@
   </div>
 
 </div>
-<form name="cvForwardStatusForm" role="form" (ngSubmit)="forwardStatus()" novalidate [formGroup]="cvForwardStatusForm">
+<form name="cvForwardStatusForm" (ngSubmit)="forwardStatus()" novalidate [formGroup]="cvForwardStatusForm">
   <div class="row-content">
     <a class="acc-header option-label col-12 mtop10" href="javascript:void(0);">
       @if (versionParam.status === 'REVIEW') {
