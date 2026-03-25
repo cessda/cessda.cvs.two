@@ -22,8 +22,6 @@ import eu.cessda.cvs.service.dto.ConceptDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 import eu.cessda.cvs.service.search.EsQueryResultDetail;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -84,14 +82,6 @@ public interface VocabularyService {
      * @return the list of entities
      */
     List<VocabularyDTO> findAll();
-
-    /**
-     * Get all the vocabularies.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
-    Page<VocabularyDTO> findAll(Pageable pageable);
 
 
     /**

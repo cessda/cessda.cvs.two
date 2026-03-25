@@ -56,7 +56,7 @@ public class UrnResolver {
      * or with status 404 (Not Found)
      */
     @GetMapping(value = "/{urn}", produces = { MediaType.APPLICATION_JSON_VALUE, JSONLD_TYPE, MediaType.APPLICATION_PDF_VALUE, ExportService.MEDIATYPE_WORD_VALUE, ExportService.MEDIATYPE_RDF_VALUE })
-    public ResponseEntity<Void> findUrnJsonResolver( @PathVariable String urn, @RequestParam(name = "lang", required = false) String lang )
+    public ResponseEntity<Void> findUrnJsonResolver( @PathVariable(name = "urn") String urn, @RequestParam(name = "lang", required = false) String lang )
     {
         Optional<ResponseEntity<Void>> responseEntity;
 
@@ -93,7 +93,7 @@ public class UrnResolver {
      * or with status 404 (Not Found)
      */
     @GetMapping("/{urn}")
-    public ResponseEntity<Void> findUrnResolver( @PathVariable String urn, @RequestParam(name = "lang", required = false) String lang) {
+    public ResponseEntity<Void> findUrnResolver( @PathVariable(name = "urn") String urn, @RequestParam(name = "lang", required = false) String lang) {
         log.debug("REST request to get Resolver by URI: {}", urn);
 
         Optional<ResponseEntity<Void>> responseEntity;
