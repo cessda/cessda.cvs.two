@@ -36,7 +36,6 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -71,6 +70,7 @@ import static eu.cessda.cvs.security.AuthoritiesConstants.USER;
 public class EditorResource {
 
     private static final String NOT_IN_DB = " \" not found in the database";
+    private static final String REFERENCED_BY_VERSION = "\" referenced by version \"";
 
     private final AuditEventPublisher auditPublisher;
 
@@ -320,7 +320,7 @@ public class EditorResource {
         // Get the referenced vocabulary - this should always succeed
         Long vocabId = versionDTO.getVocabularyId();
         VocabularyDTO vocabularyDTO = vocabularyService.findOne( vocabId )
-            .orElseThrow( () -> new IllegalStateException("\"" + vocabId + "\" referenced by version \"" + id + NOT_IN_DB ));
+            .orElseThrow( () -> new IllegalStateException("\"" + vocabId + REFERENCED_BY_VERSION + id + NOT_IN_DB ));
 
         // replace the equal Version object with the one from VocabularyDTO - this should always succeed
         if ( vocabularyDTO.getVersions().stream().noneMatch( v -> v.equals( versionDTO )))
@@ -670,7 +670,7 @@ public class EditorResource {
         VersionDTO versionDTO = versionService.findOne(conceptDTO.getVersionId())
             .orElseThrow(() -> new IllegalStateException("\"" + conceptDTO.getVersionId() + "\" referenced by concept \"" + conceptDTO.getId() + NOT_IN_DB ));
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
-            .orElseThrow(() -> new IllegalStateException("\"" + versionDTO.getVocabularyId() + "\" referenced by version \"" + versionDTO.getId() + NOT_IN_DB ));
+            .orElseThrow(() -> new IllegalStateException("\"" + versionDTO.getVocabularyId() + REFERENCED_BY_VERSION + versionDTO.getId() + NOT_IN_DB ));
 
         // check if user authorized to delete VocabularyResource
         SecurityUtils.checkResourceAuthorization(codeSnippet.getActionType(), vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
@@ -736,7 +736,7 @@ public class EditorResource {
         VersionDTO versionDTO = versionService.findOne(conceptDTO.getVersionId())
             .orElseThrow(() -> new IllegalStateException("\"" + conceptDTO.getVersionId() + "\" referenced by concept \"" + conceptDTO.getId() + NOT_IN_DB ));
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
-            .orElseThrow(() -> new IllegalStateException("\"" + versionDTO.getVocabularyId() + "\" referenced by version \"" + versionDTO.getId() + NOT_IN_DB ));
+            .orElseThrow(() -> new IllegalStateException("\"" + versionDTO.getVocabularyId() + REFERENCED_BY_VERSION + versionDTO.getId() + NOT_IN_DB ));
 
         // check if user authorized to delete VocabularyResource
         SecurityUtils.checkResourceAuthorization(ActionType.DELETE_CODE, vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
@@ -798,7 +798,7 @@ public class EditorResource {
         VersionDTO versionDTO = versionService.findOne(codeSnippet.getVersionId())
             .orElseThrow(() -> new NotFoundException( VersionDTO.class, codeSnippet.getVersionId() ));
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
-            .orElseThrow(() -> new IllegalStateException("\"" + versionDTO.getVocabularyId() + "\" referenced by version \"" + versionDTO.getId() + NOT_IN_DB ));
+            .orElseThrow(() -> new IllegalStateException("\"" + versionDTO.getVocabularyId() + REFERENCED_BY_VERSION + versionDTO.getId() + NOT_IN_DB ));
 
         // check if user authorized to reorder VocabularyResource
         SecurityUtils.checkResourceAuthorization(ActionType.REORDER_CODE, vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
@@ -1118,7 +1118,7 @@ public class EditorResource {
      *
      * @param cv controlled vocabulary
      * @param v controlled vocabulary version
-     * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
+     * @param lv included version to be exported with format language_version e.g. en-1.0_de-1.0.1
      */
     @GetMapping(path = "/editors/download/{cv}/{v}", produces = { ExportService.MEDIATYPE_RDF_VALUE, MediaType.APPLICATION_PDF_VALUE, MediaType.TEXT_HTML_VALUE })
     public ResponseEntity<Resource> getVocabularyDownload(

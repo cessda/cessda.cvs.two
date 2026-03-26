@@ -52,6 +52,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -218,7 +219,29 @@ class VocabularyResourceV2IT {
             "&agency=" + EditorResourceIT.INIT_AGENCY_NAME + "&lang=" + EditorResourceIT.SOURCE_LANGUAGE +
             "&vocab=" + EditorResourceIT.INIT_NAME)
             .accept(VocabularyResourceV2.JSONLD_TYPE))
-            .andExpect(status().isOk());
+            .andExpect(status().isOk())
+            .andExpect( jsonPath( "$.results[0].vocab" ).value( EditorResourceIT.INIT_NAME ) );
+    }
+
+    @Test
+    @Transactional
+    void searchCodesAgencyNullTest() throws Exception {
+        restMockMvc.perform(get("/v2/search/codes?query=" + EditorResourceIT.INIT_CODE_NOTATION +
+                "&lang=" + EditorResourceIT.SOURCE_LANGUAGE + "&vocab=" + EditorResourceIT.INIT_NAME)
+                .accept(VocabularyResourceV2.JSONLD_TYPE))
+            .andExpect(status().isOk())
+            .andExpect( jsonPath( "$.results[0].vocab" ).value( EditorResourceIT.INIT_NAME ) );
+    }
+
+    @Test
+    @Transactional
+    void searchCodesEmptyTest() throws Exception {
+        restMockMvc.perform(get("/v2/search/codes?query=" + UUID.randomUUID() +
+                "&agency=" + EditorResourceIT.INIT_AGENCY_NAME + "&lang=" + EditorResourceIT.SOURCE_LANGUAGE +
+                "&vocab=" + EditorResourceIT.INIT_NAME)
+                .accept(VocabularyResourceV2.JSONLD_TYPE))
+            .andExpect(status().isOk())
+            .andExpect( content().json( "{}" ) );
     }
 
     @ParameterizedTest

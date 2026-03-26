@@ -228,18 +228,16 @@ public class VocabularyResourceV2 {
     @ApiOperation( value = "Searching the vocabularies codes that produces JSON-LD based on Skosmos format" )
     public Map<String, Object> getAllVocabulariesCode(
         @ApiParam(
-            name = "query",
-            type = "String",
             value = "The query, e.g. Economics or with wildcard eco*",
             example = "Economics",
             required = true
-        ) @RequestParam String query,
+        ) @RequestParam ( name = "query") String query,
         @ApiParam(
             name = "agency",
             type = "String",
             value = "The agency",
             example = "CESSDA"
-        ) @RequestParam (required = false) String agency,
+        ) @RequestParam (required = false, name = "agency") String agency,
         @ApiParam(
             name = "vocab",
             type = "String",
@@ -248,29 +246,23 @@ public class VocabularyResourceV2 {
             required = true
         ) @RequestParam String vocab,
         @ApiParam(
-            name = "lang",
-            type = "String",
             value = "The language",
             example = "en",
             required = true
-        ) @RequestParam String lang,
+        ) @RequestParam(name = "lang") String lang,
         @ApiParam(
-            name = "size",
-            type = "Integer",
             value = "The maximum size of codes returned, default 20 maximum 100",
             example = "20"
-        ) @RequestParam( required = false ) Integer size
+        ) @RequestParam( required = false, name = "size" ) Integer size
     ) {
         log.debug("REST request to get a page of Vocabularies");
-        if (query == null)
-            query = "";
-        String filter = "language:" +lang;
+        String filter = "language:" + lang + ";vocab:" + vocab ;
+
+        // Append agency if set
         if( agency != null ) {
             filter += ";agency:" + agency;
         }
-        if( vocab != null ) {
-            filter += ";vocab:" + vocab;
-        }
+
         EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(query, filter, null, SearchScope.PUBLICATIONSEARCH);
         esq.setCodeSize( size == null ? 20 : size );
         vocabularyService.searchCode(esq);
