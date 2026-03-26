@@ -17,6 +17,7 @@ package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.domain.Version;
+import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.mapper.VersionMapper;
@@ -59,7 +60,7 @@ class UrnResolverIT
     }
 
     @Transactional
-    void createAgencyAndVersion() throws Exception {
+    void createVersion() throws Exception {
         // Create the Version
         VersionDTO versionDTO = versionMapper.toDto(version);
         mockMvc.perform(post("/api/versions")
@@ -79,7 +80,7 @@ class UrnResolverIT
         version.setCanonicalUri( canonicalUri + ":" + version.getNumber() );
         version.setStatus( Status.PUBLISHED );
 
-        createAgencyAndVersion();
+        createVersion();
     }
 
     @Test
@@ -102,11 +103,51 @@ class UrnResolverIT
 
     @Test
     @Transactional
+    void resolveUrnWithLang() throws Exception
+    {
+        mockMvc.perform( get("/urn/" + version.getCanonicalUri() + "?lang=" + version.getLanguage() ) )
+            .andExpect( status().isFound() )
+            .andExpect( redirectedUrl( "/vocabulary/" + version.getNotation() + "?v=" + version.getNumber() + "&lang=" + version.getLanguage() ) );
+    }
+
+    @Test
+    @Transactional
     void returnNotFound() throws Exception
     {
         mockMvc.perform( get("/urn/" + UUID.randomUUID() ) )
             .andExpect( status().isNotFound() );
     }
+
+    @Test
+    @Transactional
+    void returnNotFoundIfUnpublished() throws Exception
+    {
+        var notation = "BBBBBBBB";
+
+        // Update version
+        version.setCanonicalUri( notation );
+        version.setStatus( Status.DRAFT );
+        createVersion();
+
+        mockMvc.perform( get("/urn/" + notation ) )
+            .andExpect( status().isNotFound() );
+    }
+
+    @Test
+    @Transactional
+    void returnNotFoundTLVersion() throws Exception
+    {
+        var notation = "BBBBBBBB:1";
+
+        // Update version
+        version.setCanonicalUri( notation );
+        version.setItemType( ItemType.TL );
+        createVersion();
+
+        mockMvc.perform( get("/urn/" + notation ) )
+            .andExpect( status().isNotFound() );
+    }
+
 
     @Test
     @Transactional
