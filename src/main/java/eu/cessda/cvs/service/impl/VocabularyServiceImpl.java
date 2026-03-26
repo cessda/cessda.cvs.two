@@ -58,7 +58,6 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.core.*;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
@@ -732,22 +731,6 @@ public class VocabularyServiceImpl implements VocabularyService
         }
     }
 
-    /**
-     * Get all the vocabularies.
-     *
-     * @param pageable
-     *            the pagination information.
-     * @return the list of entities.
-     */
-    @Override
-    @Transactional( readOnly = true )
-    public Page<VocabularyDTO> findAll( Pageable pageable ) {
-        log.debug( "Request to get all Vocabularies" );
-        final Page<VocabularyDTO> vocabPage = vocabularyRepository.findAll( pageable ).map( vocabularyMapper::toDto );
-        sortVocabularyVersions( vocabPage.getContent() );
-        return vocabPage;
-
-    }
 
     /**
      * Get one vocabulary by id.
@@ -2221,8 +2204,9 @@ public class VocabularyServiceImpl implements VocabularyService
         final VersionDTO finalVersionCloned = versionService.save(versionCloned);
 
         // migrate concepts
-        v.getConcepts().forEach(concept -> {
-            ConceptDTO conceptCloned = cloneConcept(concept, finalVersionCloned.getId());
+        for ( ConceptDTO concept : v.getConcepts() )
+        {
+            ConceptDTO conceptCloned = cloneConcept( concept, finalVersionCloned.getId() );
             // update concept URI
             conceptCloned.setUri(
                 VocabularyUtils.generateUri(
@@ -2232,19 +2216,20 @@ public class VocabularyServiceImpl implements VocabularyService
                     agency != null ? agency.getName() : ""
                 )
             );
-            finalVersionCloned.addConcept(conceptCloned);
-        });
+            finalVersionCloned.addConcept( conceptCloned );
+        }
 
-        v.getComments().forEach(comment -> {
+        for ( CommentDTO comment : v.getComments() )
+        {
             CommentDTO commentCloned = new CommentDTO();
-            commentCloned.setContent(comment.getContent());
-            commentCloned.setDateTime(comment.getDateTime());
-            commentCloned.setId(null);
-            commentCloned.setInfo(comment.getInfo());
-            commentCloned.setUserId(comment.getUserId());
-            commentCloned.setVersionId(finalVersionCloned.getId());
-            finalVersionCloned.addComment(commentCloned);
-        });
+            commentCloned.setContent( comment.getContent() );
+            commentCloned.setDateTime( comment.getDateTime() );
+            commentCloned.setId( null );
+            commentCloned.setInfo( comment.getInfo() );
+            commentCloned.setUserId( comment.getUserId() );
+            commentCloned.setVersionId( finalVersionCloned.getId() );
+            finalVersionCloned.addComment( commentCloned );
+        }
 
         return finalVersionCloned;
     }

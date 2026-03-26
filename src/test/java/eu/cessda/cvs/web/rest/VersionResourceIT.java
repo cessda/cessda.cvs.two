@@ -159,7 +159,7 @@ public class VersionResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Version createEntity(EntityManager em) {
+    public static Version createEntity() {
         return new Version()
             .status(DEFAULT_STATUS)
             .itemType(DEFAULT_ITEM_TYPE)
@@ -227,8 +227,8 @@ public class VersionResourceIT {
     }
 
     @BeforeEach
-    public void initTest() {
-        version = createEntity(em);
+    void initTest() {
+        version = createEntity();
     }
 
     @Test
