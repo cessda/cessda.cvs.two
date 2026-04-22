@@ -34,7 +34,7 @@
     "ngx-chips": "3.0.0",
     "ngx-cookie-service": "21.3.1",
     "ngx-infinite-scroll": "21.0.0",
-    "ngx-quill": "30.1.1",
+    "ngx-quill": "30.1.2",
     "ngx-text-diff": "file:vendor/ngx-text-diff-0.6.0-ivy.tgz",
     "ngx-webstorage": "21.0.1",
     "popper.js": "1.16.1",
