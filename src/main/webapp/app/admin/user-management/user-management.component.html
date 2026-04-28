@@ -117,7 +117,7 @@
         <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
       </div>
       <div class="row justify-content-center">
-        @if (itemsPerPage) {
+        @if (totalItems) {
           <ngb-pagination [collectionSize]="totalItems" [page]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         }
       </div>
