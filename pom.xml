@@ -122,6 +122,7 @@
         <sonar.exclusions>src/main/resources/**/*,src/main/webapp/content/**/*</sonar.exclusions>
         <springfox.version>2.9.2</springfox.version>
         <jjwt.version>0.13.0</jjwt.version>
+        <docx4j.version>8.3.15</docx4j.version>
     </properties>
 
     <dependencyManagement>
@@ -368,14 +369,24 @@
         <!-- word creator -->
         <dependency>
             <groupId>org.docx4j</groupId>
+            <artifactId>docx4j-JAXB-ReferenceImpl</artifactId>
+            <version>${docx4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.docx4j</groupId>
             <artifactId>docx4j-ImportXHTML</artifactId>
-            <version>8.3.15</version>
+            <version>${docx4j.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>ch.qos.logback</groupId>
                     <artifactId>logback-classic</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.28.0</version>
         </dependency>
         <dependency>
             <groupId>com.openhtmltopdf</groupId>
