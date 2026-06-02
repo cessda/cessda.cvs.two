@@ -382,8 +382,6 @@ export default class VocabularyUtil {
   /**
    * Returns true if there's at least one version among versions which belongs to the bundle. False otherwise.
    *
-   * @param vocab
-   * @param lang
    * @param versions
    * @param bundle
    * @returns

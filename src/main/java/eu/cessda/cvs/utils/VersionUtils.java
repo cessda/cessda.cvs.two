@@ -80,10 +80,10 @@ public class VersionUtils {
         return availableVersionUri.substring(0, availableVersionUri.indexOf( "/" + notation ));
     }
 
-    public static void appendVersionToSb(StringBuilder sb, VersionDTO versionDTO) {
-        sb.append(CV_NAME + " ").append(versionDTO.getTitle()).append("\n");
-        sb.append(CV_DEF + " ").append(versionDTO.getDefinition()).append("\n");
-        sb.append(CV_NOTES + " ").append(versionDTO.getNotes() == null ? "" : versionDTO.getNotes()).append("\n\n\n");
+    public static String appendVersionToSb(VersionDTO versionDTO) {
+        return CV_NAME + " " + versionDTO.getTitle() + "\n" +
+        CV_DEF + " " + versionDTO.getDefinition() + "\n" +
+        CV_NOTES + " " + ( versionDTO.getNotes() == null ? "" : versionDTO.getNotes() ) +"\n\n\n";
     }
 
     public static void appendConceptToSb(StringBuilder sb, ConceptDTO conceptDTO) {
@@ -98,16 +98,16 @@ public class VersionUtils {
         }
     }
 
-    public static List<String> compareCurPrevCV(VersionDTO versionDTO, VersionDTO prevVersionDTO) {
+    public static List<String> compareCurPrevCV(VersionDTO currentVersionDTO, VersionDTO prevVersionDTO) {
         // create comparison based on current version
         StringBuilder currentVersionCvSb = new StringBuilder();
         StringBuilder prevVersionCvSb = new StringBuilder();
 
-        appendVersionToSb(currentVersionCvSb, versionDTO);
-        appendVersionToSb(prevVersionCvSb, prevVersionDTO);
+        currentVersionCvSb.append( appendVersionToSb( currentVersionDTO ) );
+        prevVersionCvSb.append( appendVersionToSb( prevVersionDTO ) );
 
         // get concepts and sorted by position
-        List<ConceptDTO> currentConcepts = versionDTO.getConcepts().stream()
+        List<ConceptDTO> currentConcepts = currentVersionDTO.getConcepts().stream()
             .sorted(Comparator.comparing(ConceptDTO::getPosition)).collect(Collectors.toList());
         Set<ConceptDTO> existingConceptsInPrevAndCurrent = new HashSet<>();
         currentConcepts.forEach(currentConcept -> {

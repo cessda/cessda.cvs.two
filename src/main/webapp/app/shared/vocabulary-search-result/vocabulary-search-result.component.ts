@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, ElementRef, Input, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { EditorService, SearchRequest } from 'app/editor/editor.service';
 import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
@@ -202,8 +202,7 @@ export class VocabularySearchResultComponent implements OnInit {
   private filterAdminAgencies(): string {
     this.activeAggAgency = [];
 
-    let adminAgencies: string[] = [];
-    adminAgencies = this.accountService.getUserAgencies();
+    const adminAgencies = this.accountService.getUserAgencies();
     adminAgencies.forEach(agency => {
       this.activeAggAgency.push(agency);
     });

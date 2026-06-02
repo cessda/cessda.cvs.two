@@ -37,7 +37,6 @@ import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import javax.servlet.http.HttpServletRequest;
@@ -115,7 +114,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @Override
-    public ResponseEntity<Problem> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, @Nonnull NativeWebRequest request) {
+    public ResponseEntity<Problem> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, NativeWebRequest request) {
         BindingResult result = ex.getBindingResult();
         List<FieldErrorVM> fieldErrors = result.getFieldErrors().stream()
             .map(f -> new FieldErrorVM(f.getObjectName().replaceFirst("DTO$", ""), f.getField(), f.getCode()))

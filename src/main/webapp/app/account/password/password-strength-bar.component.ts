@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, ElementRef, Input, Renderer2, inject } from '@angular/core';
+import { Component, ElementRef, inject, Input, Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'jhi-password-strength-bar',
@@ -48,7 +48,7 @@ export class PasswordStrengthBarComponent {
 
     const flags = [lowerLetters, upperLetters, numbers, symbols];
     const passedMatches = flags.filter((isMatchedFlag: boolean) => {
-      return isMatchedFlag === true;
+      return isMatchedFlag;
     }).length;
 
     force += 2 * p.length + (p.length >= 10 ? 1 : 0);
@@ -66,7 +66,7 @@ export class PasswordStrengthBarComponent {
   }
 
   getColor(s: number): { idx: number; color: string } {
-    let idx = 0;
+    let idx;
     if (s <= 10) {
       idx = 0;
     } else if (s <= 20) {

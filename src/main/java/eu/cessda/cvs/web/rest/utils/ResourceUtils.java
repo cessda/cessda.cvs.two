@@ -24,12 +24,16 @@ import eu.cessda.cvs.utils.VersionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 public class ResourceUtils {
+    public static final String MEDIATYPE_JSONLD_VALUE = "application/ld+json";
+    public static final MediaType MEDIATYPE_JSONLD = MediaType.parseMediaType( MEDIATYPE_JSONLD_VALUE );
+
     public static final String LANGUAGE = "@language";
     public static final String VALUE = "@value";
     public static final String ID = "@id";
@@ -37,11 +41,11 @@ public class ResourceUtils {
 
     private ResourceUtils(){}
 
-    public static ResponseEntity<List<String>> getListResponseEntity(VersionDTO version1, VersionDTO version2) {
-        List<String> compareVersions = VersionUtils.compareCurPrevCV(version1, version2);
+    public static ResponseEntity<List<String>> getListResponseEntity(VersionDTO currentVersion, VersionDTO previousVersion) {
+        List<String> compareVersions = VersionUtils.compareCurPrevCV(currentVersion, previousVersion);
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Prev-Cv-Version", version2.getNotation() + " " +version2.getItemType() + " v." + version2.getNumber());
-        headers.add("X-Current-Cv-Version", version1.getNotation() + " " +version1.getItemType() + " v." + version1.getNumber());
+        headers.add("X-Prev-Cv-Version", previousVersion.getNotation() + " " + previousVersion.getItemType() + " v." + previousVersion.getNumber());
+        headers.add("X-Current-Cv-Version", currentVersion.getNotation() + " " + currentVersion.getItemType() + " v." + currentVersion.getNumber());
         return ResponseEntity.ok().headers(headers).body(compareVersions);
     }
 

@@ -226,7 +226,7 @@ public class VersionDTO implements Serializable
 
 	private Set<CommentDTO> comments = new LinkedHashSet<>();
 
-	private transient List<Map<String, Object>> versionHistories = new ArrayList<>();
+	private transient List<VersionHistoryDTO> versionHistories = new ArrayList<>();
 
 	public Long getId()
 	{
@@ -638,17 +638,17 @@ public class VersionDTO implements Serializable
 		return this;
 	}
 
-	public List<Map<String, Object>> getVersionHistories()
+	public List<VersionHistoryDTO> getVersionHistories()
 	{
 		return versionHistories;
 	}
 
-	public void setVersionHistories( List<Map<String, Object>> versionHistories )
+	public void setVersionHistories( List<VersionHistoryDTO> versionHistories )
 	{
 		this.versionHistories = versionHistories;
 	}
 
-	public VersionDTO addVersionHistory( Map<String, Object> vHistory )
+	public VersionDTO addVersionHistory( VersionHistoryDTO vHistory )
 	{
 		if ( this.versionHistories == null )
 			this.versionHistories = new ArrayList<>();
