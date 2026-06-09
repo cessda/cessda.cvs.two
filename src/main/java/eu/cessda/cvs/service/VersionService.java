@@ -106,16 +106,6 @@ public interface VersionService {
     Set<VersionDTO> findAllPublishedByVocabularyAndVersionSl(Long vocabularyId, VersionNumber versionNumberSl);
 
     /**
-     * Search for the version corresponding to the query.
-     *
-     * @param query the query of the search.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
-    Page<VersionDTO> search(String query, Pageable pageable);
-
-    /**
      * Get list of versions by URN
      * @param urn
      * @return

@@ -56,14 +56,4 @@ public interface UserAgencyService {
      * @param id the id of the entity.
      */
     void delete(Long id);
-
-    /**
-     * Search for the userAgency corresponding to the query.
-     *
-     * @param query the query of the search.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
-    Page<UserAgencyDTO> search(String query, Pageable pageable);
 }

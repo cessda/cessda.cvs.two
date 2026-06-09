@@ -38,6 +38,7 @@ import static eu.cessda.cvs.web.rest.utils.ResourceUtils.MEDIATYPE_JSONLD_VALUE;
 /**
  * REST controller for resolving URNs
  */
+@SuppressWarnings( "deprecation" )
 @Api( description = "URN Resolver")
 @RestController
 @RequestMapping(value = "/urn" )

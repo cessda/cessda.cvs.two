@@ -187,11 +187,6 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public Page<VersionDTO> search(String query, Pageable pageable) {
-        return null;
-    }
-
-    @Override
     public List<VersionDTO> findByUrn(String urn) {
         log.debug("Request to get versions with URN {}", urn);
         return versionRepository.findByCanonicalUri(urn ).stream()

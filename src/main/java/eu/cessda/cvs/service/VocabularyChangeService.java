@@ -59,16 +59,6 @@ public interface VocabularyChangeService {
     void delete(Long id);
 
     /**
-     * Search for the vocabularyChange corresponding to the query.
-     *
-     * @param query the query of the search.
-     *
-     * @param pageable the pagination information.
-     * @return the list of entities.
-     */
-    Page<VocabularyChangeDTO> search(String query, Pageable pageable);
-
-    /**
      * Get all vocabularyChange corresponding to the version ID.
      *
      * @param versionId the ID of version.

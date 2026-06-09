@@ -142,7 +142,7 @@ public class VersionDTO implements Comparable<VersionDTO>, Serializable
 	/**
 	 * create initial SL version with vocabularyDTO
 	 *
-	 * @param vocabularyDTO
+	 * @param vocabularyDTO the source vocabulary.
 	 */
 	public VersionDTO( VocabularyDTO vocabularyDTO )
 	{

@@ -16,21 +16,18 @@
 package eu.cessda.cvs.web.rest.domain;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 public class Maintenance implements Serializable {
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
-    private String output;
-    private LocalDateTime timestamp;
-    private String type;
+    private final String output;
+    private final OffsetDateTime timestamp;
+    private final Operation type;
 
-    public Maintenance() {
-    }
-
-    public Maintenance(String output, String type) {
+    public Maintenance(String output, Operation type) {
         this.output = output;
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = OffsetDateTime.now();
         this.type = type;
     }
 
@@ -38,23 +35,15 @@ public class Maintenance implements Serializable {
         return output;
     }
 
-    public void setOutput(String output) {
-        this.output = output;
-    }
-
-    public LocalDateTime getTimestamp() {
+    public OffsetDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public String getType() {
+    public Operation getType() {
         return type;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public enum Operation {
+        GENERATE_JSON, INDEX_AGENCY, INDEX_AGENCY_STAT, INDEX_VOCABULARY_PUBLISH, INDEX_VOCABULARY_EDITOR
     }
 }

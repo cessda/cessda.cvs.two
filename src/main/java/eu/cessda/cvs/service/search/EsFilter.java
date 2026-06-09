@@ -16,10 +16,7 @@
 package eu.cessda.cvs.service.search;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EsFilter implements Serializable {
     private static final long serialVersionUID = -3650519521378103904L;
@@ -34,9 +31,9 @@ public class EsFilter implements Serializable {
 
 	private FilterType filterType;
 	private String field;
-	// active filter
+	// active filters
 	private List<String> values = new ArrayList<>();
-	// aggregration active filter
+	// aggregation active filter
 	private Map<String, Long> filteredBucket = new LinkedHashMap<>();
 
 	// aggregation exclude active filter
@@ -61,12 +58,7 @@ public class EsFilter implements Serializable {
 		return values;
 	}
 	public void setValues(List<String> values) {
-		this.values = values;
-	}
-	public EsFilter addValue(String value) {
-		if( !this.values.contains(value) )
-			this.values.add(value);
-		return this;
+		this.values = Objects.requireNonNull(values, "values is null");
 	}
 	public Map<String, Long> getBucket() {
 		return bucket;
