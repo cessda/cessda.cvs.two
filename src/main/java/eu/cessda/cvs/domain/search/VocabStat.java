@@ -15,6 +15,7 @@
  */
 package eu.cessda.cvs.domain.search;
 
+import eu.cessda.cvs.utils.VersionNumber;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
@@ -40,10 +41,10 @@ public class VocabStat implements Serializable {
     private String sourceLanguage;
 
     @Field( type = FieldType.Keyword, store = true )
-    private String currentVersion;
+    private VersionNumber currentVersion;
 
     @Field( type = FieldType.Keyword, store = true )
-    private String latestPublishedVersion;
+    private VersionNumber latestPublishedVersion;
 
     // language published
     @Field( type = FieldType.Keyword, store = true )
@@ -73,19 +74,19 @@ public class VocabStat implements Serializable {
         this.sourceLanguage = sourceLanguage;
     }
 
-    public String getCurrentVersion() {
+    public VersionNumber getCurrentVersion() {
         return currentVersion;
     }
 
-    public void setCurrentVersion(String currentVersion) {
+    public void setCurrentVersion(VersionNumber currentVersion) {
         this.currentVersion = currentVersion;
     }
 
-    public String getLatestPublishedVersion() {
+    public VersionNumber getLatestPublishedVersion() {
         return latestPublishedVersion;
     }
 
-    public void setLatestPublishedVersion(String latestPublishedVersion) {
+    public void setLatestPublishedVersion(VersionNumber latestPublishedVersion) {
         this.latestPublishedVersion = latestPublishedVersion;
     }
 

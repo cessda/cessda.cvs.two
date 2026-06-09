@@ -255,7 +255,7 @@ public class Version implements Serializable {
 
     @JsonGetter("number")
     public String getNumberAsString() {
-        return VersionNumber.toString(number);
+        return String.valueOf( number );
     }
 
     public Version number(VersionNumber number) {

@@ -15,9 +15,9 @@
  */
 package eu.cessda.cvs.utils;
 
+import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.service.dto.ConceptDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -59,21 +59,32 @@ public class VersionUtils {
     }
 
     /**
-     * Split language version e.g. de-2.0.1 into several part
-     * @param languageVersion
+     * Split language version e.g. de-2.0.1 into several parts.
+     *
+     * @param languageVersion the language version to split.
      * @return array with 4 properties e.g. from example above "2.0", "2.0.2", "de", "TL"
      */
-    public static String[] splitLanguageVersion( String languageVersion ) {
+    public static LanguageVersion splitLanguageVersion( String languageVersion ) {
         final int lastIndexOfSpace = languageVersion.lastIndexOf('-');
-        final String language = languageVersion.substring(0, lastIndexOfSpace);
-        final String versionNumber = languageVersion.substring( lastIndexOfSpace + 1 );
-        String itemType = "SL";
-        String slNumber = versionNumber;
-        if( StringUtils.countMatches( versionNumber, ".") == 2){
-            itemType = "TL";
-            slNumber = versionNumber.substring( 0, versionNumber.lastIndexOf('.'));
+
+        if (lastIndexOfSpace == -1) {
+            throw new IllegalArgumentException("Invalid language version \"" + languageVersion + "\"");
         }
-	    return new String[]{slNumber, versionNumber, language, itemType};
+
+        // Extract language and version components
+        final String language = languageVersion.substring(0, lastIndexOfSpace);
+        var versionNumberString = languageVersion.substring( lastIndexOfSpace + 1 );
+        VersionNumber versionNumber = VersionNumber.fromString( versionNumberString );
+
+        // Determine item type - TLs will have a 3 part version number
+        ItemType itemType;
+        if( versionNumber.getPatchNumber() != 0 ){
+            itemType = ItemType.TL;
+        } else {
+            itemType = ItemType.SL;
+        }
+
+	    return new LanguageVersion(versionNumber, language, itemType);
     }
 
     public static String getBaseVersionUri( String availableVersionUri, String notation ) {

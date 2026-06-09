@@ -55,10 +55,10 @@ public final class VocabularyUtils
             .thenComparing( Version::getLanguage )
             .thenComparing( Version::getNumber, Comparator.reverseOrder() );
 
-	public static VersionDTO getVersionByLangVersion( VocabularyDTO vocabularyDTO, String language, String versionNumber )
+	public static VersionDTO getVersionByLangVersion( VocabularyDTO vocabularyDTO, String language, VersionNumber versionNumber )
 	{
 		return vocabularyDTO.getVersions().stream()
-				.filter( v -> v.getLanguage().equals( language ) && v.getNumber().equals( VersionNumber.fromString( versionNumber ) ) )
+				.filter( v -> v.getLanguage().equals( language ) && v.getNumber().equals( versionNumber ) )
 				.findFirst().orElse( null );
 	}
 

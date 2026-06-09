@@ -54,6 +54,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import static eu.cessda.cvs.web.rest.utils.ResourceUtils.MEDIATYPE_JSONLD_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -207,9 +208,9 @@ class VocabularyResourceV2IT {
 
         restMockMvc.perform(get("/v2/search/vocabularies?query=" + EditorResourceIT.INIT_TITLE_EN +
             "&agency=" + EditorResourceIT.INIT_AGENCY_NAME + "&lang=" + EditorResourceIT.SOURCE_LANGUAGE)
-            .accept(VocabularyResourceV2.JSONLD_TYPE))
+            .accept(MEDIATYPE_JSONLD_VALUE))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(VocabularyResourceV2.JSONLD_TYPE));
+            .andExpect(content().contentType(MEDIATYPE_JSONLD_VALUE));
     }
 
     @Test
@@ -218,7 +219,7 @@ class VocabularyResourceV2IT {
         restMockMvc.perform(get("/v2/search/codes?query=" + EditorResourceIT.INIT_CODE_NOTATION +
             "&agency=" + EditorResourceIT.INIT_AGENCY_NAME + "&lang=" + EditorResourceIT.SOURCE_LANGUAGE +
             "&vocab=" + EditorResourceIT.INIT_NAME)
-            .accept(VocabularyResourceV2.JSONLD_TYPE))
+            .accept(MEDIATYPE_JSONLD_VALUE))
             .andExpect(status().isOk())
             .andExpect( jsonPath( "$.results[0].vocab" ).value( EditorResourceIT.INIT_NAME ) );
     }
@@ -228,7 +229,7 @@ class VocabularyResourceV2IT {
     void searchCodesAgencyNullTest() throws Exception {
         restMockMvc.perform(get("/v2/search/codes?query=" + EditorResourceIT.INIT_CODE_NOTATION +
                 "&lang=" + EditorResourceIT.SOURCE_LANGUAGE + "&vocab=" + EditorResourceIT.INIT_NAME)
-                .accept(VocabularyResourceV2.JSONLD_TYPE))
+                .accept(MEDIATYPE_JSONLD_VALUE))
             .andExpect(status().isOk())
             .andExpect( jsonPath( "$.results[0].vocab" ).value( EditorResourceIT.INIT_NAME ) );
     }
@@ -239,7 +240,7 @@ class VocabularyResourceV2IT {
         restMockMvc.perform(get("/v2/search/codes?query=" + UUID.randomUUID() +
                 "&agency=" + EditorResourceIT.INIT_AGENCY_NAME + "&lang=" + EditorResourceIT.SOURCE_LANGUAGE +
                 "&vocab=" + EditorResourceIT.INIT_NAME)
-                .accept(VocabularyResourceV2.JSONLD_TYPE))
+                .accept(MEDIATYPE_JSONLD_VALUE))
             .andExpect(status().isOk())
             .andExpect( content().json( "{}" ) );
     }
@@ -250,7 +251,7 @@ class VocabularyResourceV2IT {
         MediaType.APPLICATION_JSON_VALUE,
         MediaType.APPLICATION_PDF_VALUE,
         MediaType.TEXT_HTML_VALUE,
-        VocabularyResourceV2.JSONLD_TYPE,
+        MEDIATYPE_JSONLD_VALUE,
         ExportService.MEDIATYPE_RDF_VALUE,
         ExportService.MEDIATYPE_WORD_VALUE
     } )

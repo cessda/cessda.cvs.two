@@ -25,8 +25,6 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @JsonSerialize(using = ToStringSerializer.class)
 @JsonDeserialize(using = VersionNumber.Deserializer.class)
@@ -34,56 +32,112 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     private static final Comparator<Integer> nullSafeIntegerComparator = Comparator.nullsFirst(Integer::compareTo);
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 2L;
 
-    private static final Pattern parsePattern = Pattern.compile("^\\D*+(\\d++)\\.(\\d++)(?:\\.(\\d++))?.*+$");
-
+    /**
+     * Parses a string into a version number. The string must either be a
+     * two or three part version number.
+     *
+     * @param str the string to parse.
+     * @return the version number represented by the string
+     * @throws IllegalArgumentException if the string is invalid.
+     */
     public static VersionNumber fromString(String str) {
-        if (str == null) {
-            return null;
-        }
-        Matcher m = parsePattern.matcher(str);
-        if (m.find()) {
-            int majorNumber = Integer.parseInt(m.group(1));
-            int minorNumber = Integer.parseInt(m.group(2));
-            int patchNumber = m.group(3) != null ? Integer.parseInt(m.group(3)) : 0;
-            return new VersionNumber(majorNumber, minorNumber, patchNumber);
-        } else {
+
+        // Find last dot, also implicitly checks presence of dots
+        int lastDot = str.lastIndexOf( '.' );
+
+        // There must be at least one dot, fail if missing
+        if (lastDot == -1) {
             throw new IllegalArgumentException("Illegal version number provided '" + str + "'");
         }
+
+        // Version number components
+        int[] versionArray = new int[]{-1 ,-1, -1};
+
+        // Current string index
+        int stringIndex = 0;
+
+        // Current version array index
+        int index = 0;
+
+        // While there is more of the string remaining
+        while ( stringIndex < str.length() )
+        {
+            // Find the next dot
+            int nextDotIndex = str.indexOf( '.', stringIndex );
+
+            // If nextDotIndex is -1, no more dots, read to the end of the string
+            if (nextDotIndex == -1) {
+                nextDotIndex = str.length();
+            }
+
+            try
+            {
+                // Store the component in the array
+                versionArray[index++] = Integer.parseInt( str, stringIndex, nextDotIndex, 10 );
+            }
+            catch ( NumberFormatException e )
+            {
+                throw new IllegalArgumentException("Illegal version number provided: '" + str + "': " + e.getMessage(), e);
+            }
+
+            // break on end of input
+            if (nextDotIndex == str.length() ) {
+                break;
+            }
+
+            // If next index is longer than 3, string has more than 3 components. This is not allowed.
+            if (index + 1 > 3) {
+                throw new IllegalArgumentException("Illegal version number provided '" + str + "': Unexpected part '" + str.substring( nextDotIndex ) + "'");
+            }
+
+            // Set the string to nextDotIndex index + 1 (avoid the dot)
+            stringIndex = nextDotIndex + 1;
+        }
+
+        // Check if the version number is valid
+        if (versionArray[0] == -1 || versionArray[1] == -1) {
+            throw new IllegalArgumentException("Illegal version number provided: '" + str + "'");
+        }
+
+        // Create a two or three part version number
+        if (versionArray[2] != -1) {
+            return new VersionNumber(versionArray[0], versionArray[1], versionArray[2]);
+        } else {
+            return new VersionNumber(versionArray[0], versionArray[1]);
+        }
     }
 
-    private final Integer majorNumber;
-    private final Integer minorNumber;
-    private final Integer patchNumber;
+    private final int majorNumber;
+    private final int minorNumber;
+    private final int patchNumber;
 
-    public VersionNumber() {
-        majorNumber = minorNumber = patchNumber = null;
-    }
-
-    public VersionNumber(Integer majorNumber, Integer minorNumber, Integer patchNumber) {
+    public VersionNumber(int majorNumber, int minorNumber, int patchNumber) {
         this.majorNumber = majorNumber;
         this.minorNumber = minorNumber;
         this.patchNumber = patchNumber;
     }
 
-    public VersionNumber(Integer majorNumber, Integer minorNumber) {
-        this(majorNumber, minorNumber, 0);
+    public VersionNumber(int majorNumber, int minorNumber) {
+        this.majorNumber = majorNumber;
+        this.minorNumber = minorNumber;
+        this.patchNumber = 0;
     }
 
-    public VersionNumber(VersionNumber versionNumber, Integer patchNumber) {
+    public VersionNumber(VersionNumber versionNumber, int patchNumber) {
         this(versionNumber.majorNumber, versionNumber.minorNumber, patchNumber);
     }
 
-    public Integer getMajorNumber() {
+    public int getMajorNumber() {
         return majorNumber;
     }
 
-    public Integer getMinorNumber() {
+    public int getMinorNumber() {
         return minorNumber;
     }
 
-    public Integer getPatchNumber() {
+    public int getPatchNumber() {
         return patchNumber;
     }
 
@@ -94,15 +148,11 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     @JsonIgnore
     public VersionNumber getBasePatchVersion() {
-        return new VersionNumber(majorNumber, minorNumber, 0);
+        return new VersionNumber(majorNumber, minorNumber);
     }
 
     public String toString() {
         return majorNumber + "." + minorNumber + "." + patchNumber;
-    }
-
-    public static String toString(VersionNumber versionNumber) {
-        return versionNumber != null ? versionNumber.toString() : null;
     }
 
     public static class Deserializer extends FromStringDeserializer<VersionNumber> {
@@ -123,14 +173,14 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     private static final Comparator<VersionNumber> minorVersionNumberComparator = Comparator
         .comparing(
-            VersionNumber::getMajorNumber, nullSafeIntegerComparator
+            VersionNumber::getMajorNumber, Integer::compareTo
         ).thenComparing(
-            VersionNumber::getMinorNumber, nullSafeIntegerComparator
+            VersionNumber::getMinorNumber, Integer::compareTo
         );
 
     private static final Comparator<VersionNumber> versionNumberComparator = minorVersionNumberComparator
         .thenComparing(
-            VersionNumber::getPatchNumber, nullSafeIntegerComparator
+            VersionNumber::getPatchNumber, Integer::compareTo
         );
 
     @Override
@@ -148,14 +198,10 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     /**
      * Returns a new VersionNumber with the minor version number incremented by 1,
-     * and the patch version number set to 0.
-     * @implNote if minorNumber is {@code null}, it is treated as if it is 0.
+     * and the patch version number set to {@code null}.
      */
     public VersionNumber increaseMinorNumber() {
-        return new VersionNumber(majorNumber,
-            Objects.requireNonNullElse(minorNumber, 0) + 1,
-            0
-        );
+        return new VersionNumber( majorNumber, minorNumber + 1 );
     }
 
     /**
@@ -163,9 +209,7 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
      * @implNote if patchNumber is {@code null}, it is treated as if it is 0.
      */
     public VersionNumber increasePatchNumber() {
-        return new VersionNumber(majorNumber, minorNumber,
-            Objects.requireNonNullElse(patchNumber, 0) + 1
-        );
+        return new VersionNumber(majorNumber, minorNumber, patchNumber + 1 );
     }
 
     public VersionNumber increasePatch(VersionNumber currentSlNumber) {

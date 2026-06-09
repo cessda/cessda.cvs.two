@@ -23,6 +23,7 @@ import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.*;
 import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.service.search.SearchScope;
+import eu.cessda.cvs.utils.LanguageVersion;
 import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
@@ -326,7 +327,15 @@ public class VocabularyResourceV2 {
     )
     {
         var accept = request.getHeader( "Accept" );
-        var mediaType = MediaType.parseMediaType( accept );
+        MediaType mediaType;
+        if (accept != null)
+        {
+            mediaType = MediaType.parseMediaType( accept );
+        }
+        else
+        {
+            mediaType = MediaType.ALL;
+        }
 
         // Switch based on compatible media type - default to application/json if unspecified
         if (mediaType.isCompatibleWith( MediaType.APPLICATION_JSON ))
@@ -334,7 +343,7 @@ public class VocabularyResourceV2 {
             var vocabularyDTO = getVocabularyJson( vocabulary, versionNumberSl, languageVersion );
             return ResponseEntity.ok( vocabularyDTO );
         }
-        if (mediaType.isCompatibleWith( MEDIATYPE_JSONLD ))
+        else if (mediaType.isCompatibleWith( MEDIATYPE_JSONLD ))
         {
             var jsonLd = getVocabularyJsonLd( vocabulary, versionNumberSl, languageVersion );
             return ResponseEntity.ok( jsonLd );
@@ -504,11 +513,14 @@ public class VocabularyResourceV2 {
         @ApiParam( value = "the second version e.g en-1.0" )@PathVariable String lv2
     ) {
         log.debug("REST request to get Vocabulary comparison text from JSON files of CV {}, between version {} and {}", cv, lv1, lv2);
-        final String[] splitLanguageVersion1 = VersionUtils.splitLanguageVersion(lv1);
-        final String[] splitLanguageVersion2 = VersionUtils.splitLanguageVersion(lv2);
+        LanguageVersion splitLanguageVersion1 = VersionUtils.splitLanguageVersion(lv1);
+        LanguageVersion splitLanguageVersion2 = VersionUtils.splitLanguageVersion(lv2);
 
-        VersionDTO version1 = VocabularyUtils.getVersionByLangVersion(vocabularyService.getVocabularyByNotationAndVersion(cv, splitLanguageVersion1[0], false), splitLanguageVersion1[2], splitLanguageVersion1[1]);
-        VersionDTO version2 = VocabularyUtils.getVersionByLangVersion(vocabularyService.getVocabularyByNotationAndVersion(cv, splitLanguageVersion2[0], false), splitLanguageVersion2[2], splitLanguageVersion2[1]);
+        VocabularyDTO vocabulary1 = vocabularyService.getVocabularyByNotationAndVersion( cv, splitLanguageVersion1.getVersionNumber().getBasePatchVersion().toString(), false );
+        VocabularyDTO vocabulary2 = vocabularyService.getVocabularyByNotationAndVersion( cv, splitLanguageVersion2.getVersionNumber().getBasePatchVersion().toString(), false );
+
+        VersionDTO version1 = VocabularyUtils.getVersionByLangVersion( vocabulary1, splitLanguageVersion1.getLanguage(), splitLanguageVersion1.getVersionNumber() );
+        VersionDTO version2 = VocabularyUtils.getVersionByLangVersion( vocabulary2, splitLanguageVersion2.getLanguage(), splitLanguageVersion2.getVersionNumber());
 
         return ResourceUtils.getListResponseEntity(version1, version2);
     }

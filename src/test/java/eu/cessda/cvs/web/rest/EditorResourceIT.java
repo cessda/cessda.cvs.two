@@ -49,6 +49,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static eu.cessda.cvs.web.rest.utils.ResourceUtils.MEDIATYPE_JSONLD_VALUE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -1052,7 +1053,7 @@ class EditorResourceIT {
             slVersion.getLanguage() + "&query=" + slConceptRoot1.getNotation()+ "&vocab=" +
             slVersion.getNotation()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(VocabularyResourceV2.JSONLD_TYPE))
+            .andExpect(content().contentType(MEDIATYPE_JSONLD_VALUE))
             .andExpect(jsonPath("$.results.[*].notation").value(hasItem(slConceptRoot1.getNotation())))
             .andExpect(jsonPath("$.results.[*].prefLabel").value(hasItem(slConceptRoot1.getTitle())))
             .andExpect(jsonPath("$.results.[*].definition").value(hasItem(slConceptRoot1.getDefinition())));
@@ -1061,7 +1062,7 @@ class EditorResourceIT {
             slVersion.getLanguage() + "&query=" + slConceptRoot1.getNotation().substring(3) + "*"+ "&vocab=" +
             slVersion.getNotation()))
             .andExpect(status().isOk())
-            .andExpect(content().contentType(VocabularyResourceV2.JSONLD_TYPE))
+            .andExpect(content().contentType(MEDIATYPE_JSONLD_VALUE))
             .andExpect(jsonPath("$.results.[*].notation").value(hasItem(slConceptRoot1.getNotation())))
             .andExpect(jsonPath("$.results.[*].prefLabel").value(hasItem(slConceptRoot1.getTitle())))
             .andExpect(jsonPath("$.results.[*].definition").value(hasItem(slConceptRoot1.getDefinition())));
