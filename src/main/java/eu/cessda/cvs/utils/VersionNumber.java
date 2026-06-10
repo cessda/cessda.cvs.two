@@ -30,8 +30,6 @@ import java.util.Objects;
 @JsonDeserialize(using = VersionNumber.Deserializer.class)
 public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
-    private static final Comparator<Integer> nullSafeIntegerComparator = Comparator.nullsFirst(Integer::compareTo);
-
     private static final long serialVersionUID = 2L;
 
     /**

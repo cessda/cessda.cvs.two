@@ -67,7 +67,6 @@ public class VocabularyResourceV2 {
     private static final Logger log = LoggerFactory.getLogger(VocabularyResourceV2.class);
 
     private static final String ATTACHMENT_FILENAME = "attachment; filename=";
-    private static final String VERSION = "version";
     private static final String VERSION_WITH_INCLUDED_VERSIONS = "REST request to get a JSON file of vocabulary {} with version {} with included versions {}";
 
     private final VocabularyService vocabularyService;
@@ -94,8 +93,8 @@ public class VocabularyResourceV2 {
     @GetMapping("/search")
     @ApiOperation( value = "Searching the vocabularies", hidden = true )
     public ResponseEntity<CvResult> searchVocabularies(
-        @ApiParam( value = "the query, e.g. Family" ) @RequestParam(name = "q", required = false) String q,
-        @ApiParam( value = "the filter, e.g agency:DDI Alliance;language:en" ) @RequestParam(name = "f", required = false) String f,
+        @ApiParam( value = "the query", example = "Family") @RequestParam(name = "q", required = false) String q,
+        @ApiParam( value = "the filter", example = "agency:DDI Alliance;language:en") @RequestParam(name = "f", required = false) String f,
         Pageable pageable) {
         log.debug("REST request search vocabulary by query");
         EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(q, f, pageable, SearchScope.PUBLICATIONSEARCH);
