@@ -28,7 +28,6 @@ import eu.cessda.cvs.service.dto.MetadataValueDTO;
 import eu.cessda.cvs.service.mapper.CommentMapper;
 import eu.cessda.cvs.service.mapper.MetadataValueMapper;
 import eu.cessda.cvs.utils.VersionNumber;
-import eu.cessda.cvs.utils.VocabularyUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -616,7 +615,7 @@ class EditorResourceIT {
         final Vocabulary vocabulary = vocabularyRepository.findAllByNotation(version.getNotation()).stream().findAny().orElseThrow();
         assertThat(vocabulary).isNotNull();
         // sort to make sure that the order is correct from latest to oldest
-        final List<Version> versions = vocabulary.getVersions().stream().sorted(VocabularyUtils.VERSION_COMPARATOR).collect(Collectors.toList());
+        final List<Version> versions = vocabulary.getVersions().stream().sorted().collect(Collectors.toList());
 
         final Version versionSl = versions.stream().filter(v -> v.getItemType() == ITEM_TYPE_SL ).findFirst().orElse(null);
         assertThat(versionSl).isNotNull();
@@ -1194,7 +1193,7 @@ class EditorResourceIT {
         assertThat(testVocabulary).isNotNull();
         // sort to make sure that the order is correct from latest to oldest
         final List<Version> versions = testVocabulary.getVersions().stream()
-            .sorted(VocabularyUtils.VERSION_COMPARATOR).collect(Collectors.toList());
+            .sorted().collect(Collectors.toList());
 
         version = versions.stream().filter( v -> v.getLanguage().equals( lang))
             .findFirst().orElse(null);

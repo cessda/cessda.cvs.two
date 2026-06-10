@@ -45,16 +45,6 @@ public final class VocabularyUtils
 	{
 	}
 
-    public static final Comparator<VersionDTO> VERSION_DTO_COMPARATOR =
-        Comparator.comparing( VersionDTO::getItemType )
-            .thenComparing( VersionDTO::getLanguage )
-            .thenComparing( VersionDTO::getNumber, Comparator.reverseOrder() );
-
-    public static final Comparator<Version> VERSION_COMPARATOR =
-        Comparator.comparing( Version::getItemType )
-            .thenComparing( Version::getLanguage )
-            .thenComparing( Version::getNumber, Comparator.reverseOrder() );
-
 	public static VersionDTO getVersionByLangVersion( VocabularyDTO vocabularyDTO, String language, VersionNumber versionNumber )
 	{
 		return vocabularyDTO.getVersions().stream()

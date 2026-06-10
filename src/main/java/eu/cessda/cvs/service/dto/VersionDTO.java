@@ -44,9 +44,13 @@ import java.util.stream.Collectors;
  * A DTO for the {@link Version} entity.
  */
 @JsonInclude( JsonInclude.Include.NON_NULL )
-public class VersionDTO implements Serializable
+public class VersionDTO implements Comparable<VersionDTO>, Serializable
 {
-    private static final long serialVersionUID = 6451702494637350395L;
+	private static final Comparator<VersionDTO> VERSION_DTO_COMPARATOR =
+		Comparator.comparing( VersionDTO::getItemType )
+			.thenComparing( VersionDTO::getLanguage )
+			.thenComparing( VersionDTO::getNumber, Comparator.reverseOrder() );
+	private static final long serialVersionUID = 6451702494637350395L;
 
     private Long id;
 
@@ -885,5 +889,10 @@ public class VersionDTO implements Serializable
 	@JsonIgnore
 	public LocalDate getLastChangeDate() {
 		return this.getStatus() == Status.PUBLISHED ? this.getPublicationDate() : this.getLastStatusChangeDate();
+	}
+
+	@Override
+	public int compareTo(VersionDTO other) {
+		return VERSION_DTO_COMPARATOR.compare(this, other);
 	}
 }

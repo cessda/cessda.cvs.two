@@ -32,6 +32,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,7 +42,12 @@ import java.util.Set;
 @Entity
 @Table(name = "version")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Version implements Serializable {
+public class Version implements Comparable<Version>, Serializable {
+
+    private static final Comparator<Version> VERSION_COMPARATOR =
+        Comparator.comparing( Version::getItemType )
+            .thenComparing( Version::getLanguage )
+            .thenComparing( Version::getNumber, Comparator.reverseOrder() );
 
     private static final long serialVersionUID = 1L;
 
@@ -649,5 +655,10 @@ public class Version implements Serializable {
             ", translateAgency='" + getTranslateAgency() + "'" +
             ", translateAgencyLink='" + getTranslateAgencyLink() + "'" +
             "}";
+    }
+
+    @Override
+    public int compareTo(Version o) {
+        return VERSION_COMPARATOR.compare(this, o);
     }
 }
