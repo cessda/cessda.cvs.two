@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, inject, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
@@ -23,7 +23,7 @@ import { Version } from 'app/shared/model/version.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { EditorService } from 'app/editor/editor.service';
-import { RouteEventsService } from 'app/shared';
+import { RouteEventsService, VocabularyLanguageFromKeyPipe } from 'app/shared';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { EditorDetailCvAddEditDialogComponent } from 'app/editor/editor-detail-cv-add-edit-dialog.component';
 import { EditorDetailCvCommentDialogComponent } from 'app/editor/editor-detail-cv-comment-dialog.component';
@@ -43,7 +43,6 @@ import moment from 'moment';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
-import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 import Quill from 'quill';
 import { QuillModules } from 'ngx-quill';
 import { AgencyRole } from 'app/shared/model/enumerations/agency-role.model';
@@ -269,11 +268,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
         }
       }
     } else {
-      if (this.version.status === 'READY_TO_TRANSLATE' || this.version.status === 'PUBLISHED') {
-        this.enableAddTl = true;
-      } else {
-        this.enableAddTl = false;
-      }
+      this.enableAddTl = this.version.status === 'READY_TO_TRANSLATE' || this.version.status === 'PUBLISHED';
       // check all versions if there is any READY_TO_PUBLISH state for TL
       for (const vocab of this.vocabulary?.versions || []) {
         if (vocab.status === 'READY_TO_PUBLISH') {

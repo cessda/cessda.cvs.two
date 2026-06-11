@@ -24,6 +24,7 @@ import org.springframework.boot.actuate.audit.listener.AuditApplicationEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.lang.NonNull;
 
 import java.util.HashMap;
 
@@ -43,8 +44,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
     public static final String CV_AGENCY_NAME = "cv_agency_name";
 
     @Override
-    public void setApplicationEventPublisher(
-            ApplicationEventPublisher publisher) {
+    public void setApplicationEventPublisher( @NonNull ApplicationEventPublisher publisher ) {
         this.publisher = publisher;
     }
 

@@ -376,15 +376,15 @@ class EditorResourceIT {
         // ActionType.ADD_TL_CV
         Version tlVersion = addVocabularyTranslationTest( slVersion );
         // Code translate for slConceptRoot1 ~ ActionType.ADD_TL_CV
-        Concept tlConcept1 = addTlConceptTest(tlVersion, slConceptRoot1, INIT_CODE_TL_TITLE, INIT_CODE_TL_DEFINITION);
+        Concept tlConcept1 = addTlConceptTest(tlVersion, slConceptRoot1 );
         // Code translate for slConceptRoot2 ~ ActionType.ADD_TL_CV
-        addTlConceptTest(tlVersion, slConceptRoot2, INIT_CODE_TL_TITLE, INIT_CODE_TL_DEFINITION);
+        addTlConceptTest(tlVersion, slConceptRoot2 );
         // ActionType.EDIT_TL_CODE
         editTlConceptTest(slConceptRoot1, tlVersion, tlConcept1);
         // ActionType.DELETE_TL_CODE
         deleteTlConceptTest(slConceptRoot1, tlVersion, tlConcept1);
         // Restore Code translate for slConceptRoot1 ~ ActionType.ADD_TL_CV
-        addTlConceptTest(tlVersion, slConceptRoot1, INIT_CODE_TL_TITLE, INIT_CODE_TL_DEFINITION);
+        addTlConceptTest(tlVersion, slConceptRoot1 );
         // ActionType.FORWARD_CV_TL_STATUS_REVIEW
         forwardTlStatusReviewTest( tlVersion );
         // ActionType.FORWARD_CV_TL_STATUS_READY_TO_PUBLISH
@@ -764,7 +764,7 @@ class EditorResourceIT {
         assertThat(tlConcept1.getDefinition()).isEqualTo(EDIT_CODE_TL_DEFINITION);
     }
 
-    private Concept addTlConceptTest(Version tlVersion, Concept slConcept, String title, String definition) throws Exception {
+    private Concept addTlConceptTest( Version tlVersion, Concept slConcept ) throws Exception {
         CodeSnippet codeSnippetForDeTl = new CodeSnippet();
         codeSnippetForDeTl.setActionType( ActionType.ADD_TL_CODE );
         Concept tlConcept = tlVersion.getConcepts().stream().filter(c -> c.getNotation().equals(slConcept.getNotation()))
@@ -772,8 +772,8 @@ class EditorResourceIT {
         assertThat(tlVersion).isNotNull();
         codeSnippetForDeTl.setVersionId( tlVersion.getId() );
         codeSnippetForDeTl.setConceptId( tlConcept.getId() );
-        codeSnippetForDeTl.setTitle(title);
-        codeSnippetForDeTl.setDefinition(definition);
+        codeSnippetForDeTl.setTitle( EditorResourceIT.INIT_CODE_TL_TITLE );
+        codeSnippetForDeTl.setDefinition( EditorResourceIT.INIT_CODE_TL_DEFINITION );
         restMockMvc.perform(put("/api/editors/codes")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
@@ -781,8 +781,8 @@ class EditorResourceIT {
             .andExpect(status().isOk());
         tlConcept = getConceptFromVocabulary(slConcept);
         assertThat(tlConcept).isNotNull();
-        assertThat(tlConcept.getTitle()).isEqualTo(title);
-        assertThat(tlConcept.getDefinition()).isEqualTo(definition);
+        assertThat(tlConcept.getTitle()).isEqualTo( EditorResourceIT.INIT_CODE_TL_TITLE );
+        assertThat(tlConcept.getDefinition()).isEqualTo( EditorResourceIT.INIT_CODE_TL_DEFINITION );
         return tlConcept;
     }
 
