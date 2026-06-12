@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -242,7 +242,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
           VocabularyUtil.getSlMajorMinorVersionNumber(this.slVersionNumber) + '.' + this.proposedPatchNumber;
         this.versionParam.concepts.forEach(c => {
           if (!c.deprecated) {
-            if (!c.title || c.title === null || c.title === '') {
+            if (!c.title || c.title === '') {
               this.missingTranslations.push(c.notation);
             }
           }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AfterViewInit, Component, Input, NgZone, OnInit, inject } from '@angular/core';
+import { AfterViewInit, Component, inject, Input, NgZone, OnInit } from '@angular/core';
 import { HomeService } from 'app/home/home.service';
 import { EditorService } from 'app/editor/editor.service';
 import { JhiEventManager } from 'ng-jhipster';
@@ -142,7 +142,7 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
   getCheckedItems(checkedArray: boolean[]): string {
     let selectedVersion = '';
     for (let i = 0; i < checkedArray.length; i++) {
-      if (checkedArray[i] === true) {
+      if (checkedArray[i]) {
         selectedVersion += this.downloadCheckboxes[i] + '_';
       }
     }
@@ -158,8 +158,7 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
   }
 
   updateSelection(array: boolean[], i: number, event: Event) {
-    const checked = (event.target as HTMLInputElement).checked;
-    array[i] = checked;
+    array[i] = (event.target as HTMLInputElement).checked;
   }
 
   downloadDocx(): void {

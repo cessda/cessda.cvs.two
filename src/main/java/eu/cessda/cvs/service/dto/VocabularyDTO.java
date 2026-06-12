@@ -23,7 +23,6 @@ import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.utils.VersionNumber;
-import eu.cessda.cvs.utils.VocabularyUtils;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Lob;
@@ -1394,7 +1393,7 @@ public class VocabularyDTO implements Serializable {
         List<VersionDTO> versionGroups = new ArrayList<>();
         List<VersionDTO> vGroups = this.versions.stream()
             .filter(v -> v.getNumber().equals(versionNumber))
-            .sorted(VocabularyUtils.VERSION_DTO_COMPARATOR)
+            .sorted()
             .collect(Collectors.toList());
 
         if( noSameLanguage ) {
@@ -1413,25 +1412,21 @@ public class VocabularyDTO implements Serializable {
     }
 
     public List<VersionDTO> getVersionsByMinorVersionNumber(VersionNumber minorVersionNumber, boolean noSameLanguage){
-        List<VersionDTO> versionGroups = new ArrayList<>();
+
         List<VersionDTO> vGroups = this.versions.stream()
             .filter(v -> v.getNumber().equalMinorVersionNumber(minorVersionNumber))
-            .sorted(VocabularyUtils.VERSION_DTO_COMPARATOR)
+            .sorted()
             .collect(Collectors.toList());
 
         if( noSameLanguage ) {
-            Set<String> langs = new HashSet<>();
+            HashMap<String, VersionDTO> versionGroups = new HashMap<>();
             for (VersionDTO vg : vGroups) {
-                if ( langs.contains( vg.getLanguage()))
-                    continue;
-                langs.add(vg.getLanguage());
-                versionGroups.add(vg);
+                versionGroups.putIfAbsent(vg.getLanguage(), vg);
             }
+            return new ArrayList<>(versionGroups.values());
         } else {
-            versionGroups = vGroups;
+            return vGroups;
         }
-
-        return versionGroups;
     }
 
     public String getSelectedLang() {
@@ -1451,8 +1446,9 @@ public class VocabularyDTO implements Serializable {
     }
 
     public VocabularyDTO addLanguage(String language) {
-        if(languages == null)
+        if (languages == null) {
             languages = new HashSet<>();
+        }
         this.languages.add(language);
         return this;
     }

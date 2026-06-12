@@ -44,9 +44,13 @@ import java.util.stream.Collectors;
  * A DTO for the {@link Version} entity.
  */
 @JsonInclude( JsonInclude.Include.NON_NULL )
-public class VersionDTO implements Serializable
+public class VersionDTO implements Comparable<VersionDTO>, Serializable
 {
-    private static final long serialVersionUID = 6451702494637350395L;
+	private static final Comparator<VersionDTO> VERSION_DTO_COMPARATOR =
+		Comparator.comparing( VersionDTO::getItemType )
+			.thenComparing( VersionDTO::getLanguage )
+			.thenComparing( VersionDTO::getNumber, Comparator.reverseOrder() );
+	private static final long serialVersionUID = 6451702494637350395L;
 
     private Long id;
 
@@ -138,7 +142,7 @@ public class VersionDTO implements Serializable
 	/**
 	 * create initial SL version with vocabularyDTO
 	 *
-	 * @param vocabularyDTO
+	 * @param vocabularyDTO the source vocabulary.
 	 */
 	public VersionDTO( VocabularyDTO vocabularyDTO )
 	{
@@ -226,7 +230,7 @@ public class VersionDTO implements Serializable
 
 	private Set<CommentDTO> comments = new LinkedHashSet<>();
 
-	private transient List<Map<String, Object>> versionHistories = new ArrayList<>();
+	private transient List<VersionHistoryDTO> versionHistories = new ArrayList<>();
 
 	public Long getId()
 	{
@@ -638,17 +642,17 @@ public class VersionDTO implements Serializable
 		return this;
 	}
 
-	public List<Map<String, Object>> getVersionHistories()
+	public List<VersionHistoryDTO> getVersionHistories()
 	{
 		return versionHistories;
 	}
 
-	public void setVersionHistories( List<Map<String, Object>> versionHistories )
+	public void setVersionHistories( List<VersionHistoryDTO> versionHistories )
 	{
 		this.versionHistories = versionHistories;
 	}
 
-	public VersionDTO addVersionHistory( Map<String, Object> vHistory )
+	public VersionDTO addVersionHistory( VersionHistoryDTO vHistory )
 	{
 		if ( this.versionHistories == null )
 			this.versionHistories = new ArrayList<>();
@@ -885,5 +889,10 @@ public class VersionDTO implements Serializable
 	@JsonIgnore
 	public LocalDate getLastChangeDate() {
 		return this.getStatus() == Status.PUBLISHED ? this.getPublicationDate() : this.getLastStatusChangeDate();
+	}
+
+	@Override
+	public int compareTo(VersionDTO other) {
+		return VERSION_DTO_COMPARATOR.compare(this, other);
 	}
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -101,12 +101,11 @@ export class EditorService {
   }
 
   protected convertDateFromClient(vocabulary: Vocabulary): Vocabulary {
-    const copy: Vocabulary = Object.assign({}, vocabulary, {
+    return Object.assign({}, vocabulary, {
       publicationDate:
         vocabulary.publicationDate && vocabulary.publicationDate.isValid() ? vocabulary.publicationDate.format(DATE_FORMAT) : undefined,
       lastModified: vocabulary.lastModified && vocabulary.lastModified.isValid() ? vocabulary.lastModified.toJSON() : undefined,
     });
-    return copy;
   }
 
   search(req?: SearchRequest): Observable<HttpResponse<CvResult>> {

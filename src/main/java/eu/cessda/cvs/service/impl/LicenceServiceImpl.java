@@ -100,9 +100,4 @@ public class LicenceServiceImpl implements LicenceService {
         log.debug("Request to delete Licence : {}", id);
         licenceRepository.deleteById(id);
     }
-
-    @Override
-    public Page<LicenceDTO> search(String query, Pageable pageable) {
-        return null;
-    }
 }

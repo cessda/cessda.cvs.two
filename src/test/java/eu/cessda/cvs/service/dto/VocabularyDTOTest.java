@@ -33,22 +33,21 @@ class VocabularyDTOTest {
     void switchGetterAndSetterVocabularyTest(){
         VocabularyDTO vocabularyDTO = new VocabularyDTO();
         for (Language lang : Language.values()) {
-            if (lang.equals(Language.UNKNOWN)) {
-                continue;
+            if ( lang != Language.UNKNOWN )
+            {
+                String uuid1 = UUID.randomUUID().toString();
+                String uuid2 = UUID.randomUUID().toString();
+                String uuid3 = UUID.randomUUID().toString().substring( 0, 5 );
+
+                vocabularyDTO.setTitleDefinition( uuid1, uuid2, lang.getIso(), false );
+                vocabularyDTO.setVersionByLanguage( lang.getIso(), uuid3 );
+                assertThat( vocabularyDTO.getTitleByLanguage( lang.getIso() ) ).isEqualTo( uuid1 );
+                assertThat( vocabularyDTO.getDefinitionByLanguage( lang.getIso() ) ).isEqualTo( uuid2 );
+                assertThat( vocabularyDTO.getVersionByLanguage( lang.getIso() ) ).isEqualTo( uuid3 );
+                vocabularyDTO.setTitleDefinition( uuid1, null, lang.getIso(), true );
+                assertThat( vocabularyDTO.getTitleByLanguage( lang.getIso() ) ).isEqualTo( uuid1 );
+                assertThat( vocabularyDTO.getDefinitionByLanguage( lang.getIso() ) ).isEqualTo( uuid2 );
             }
-
-            String uuid1 = UUID.randomUUID().toString();
-            String uuid2 = UUID.randomUUID().toString();
-            String uuid3 = UUID.randomUUID().toString().substring(0,5);
-
-            vocabularyDTO.setTitleDefinition(uuid1, uuid2, lang.getIso(), false);
-            vocabularyDTO.setVersionByLanguage(lang.getIso(), uuid3);
-            assertThat(vocabularyDTO.getTitleByLanguage(lang.getIso())).isEqualTo(uuid1);
-            assertThat(vocabularyDTO.getDefinitionByLanguage(lang.getIso())).isEqualTo(uuid2);
-            assertThat(vocabularyDTO.getVersionByLanguage(lang.getIso())).isEqualTo(uuid3);
-            vocabularyDTO.setTitleDefinition(uuid1, null, lang.getIso(), true);
-            assertThat(vocabularyDTO.getTitleByLanguage(lang.getIso())).isEqualTo(uuid1);
-            assertThat(vocabularyDTO.getDefinitionByLanguage(lang.getIso())).isEqualTo(uuid2);
         }
     }
 

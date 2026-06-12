@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnDestroy, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
-import { JhiEventManager, JhiAlert, JhiAlertService, JhiEventWithContent } from 'ng-jhipster';
+import { JhiAlert, JhiAlertService, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 import { Subscription } from 'rxjs';
 
 import { AlertError } from './alert-error.model';
@@ -129,7 +129,7 @@ export class AlertErrorComponent implements OnDestroy {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   addErrorAlert(message: string, key?: string, data?: any): void {
-    message = key && key !== null ? key : message;
+    message = key && true ? key : message;
 
     const newAlert: JhiAlert = {
       type: 'danger',
