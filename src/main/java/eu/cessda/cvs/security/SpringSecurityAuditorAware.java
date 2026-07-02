@@ -17,6 +17,7 @@ package eu.cessda.cvs.security;
 
 import eu.cessda.cvs.config.Constants;
 import org.springframework.data.domain.AuditorAware;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -28,6 +29,7 @@ import java.util.Optional;
 public class SpringSecurityAuditorAware implements AuditorAware<String> {
 
     @Override
+    @NonNull
     public Optional<String> getCurrentAuditor() {
         return Optional.of(SecurityUtils.getCurrentUserLogin().orElse(Constants.SYSTEM_ACCOUNT));
     }

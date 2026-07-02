@@ -100,9 +100,4 @@ public class ResolverServiceImpl implements ResolverService {
         log.debug("Request to delete Resolver : {}", id);
         resolverRepository.deleteById(id);
     }
-
-    @Override
-    public Page<ResolverDTO> search(String query, Pageable pageable) {
-        return null;
-    }
 }

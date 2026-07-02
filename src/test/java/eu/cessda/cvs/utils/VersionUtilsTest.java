@@ -15,6 +15,7 @@
  */
 package eu.cessda.cvs.utils;
 
+import eu.cessda.cvs.domain.enumeration.ItemType;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,7 +44,7 @@ public class VersionUtilsTest {
         assertThat( VersionUtils.compareVersion("2.10.0","10.10.0")).isNegative();
         assertThat( VersionUtils.compareVersion("10.10.0","2.10.0")).isPositive();
     }
-    
+
     @Test
     void compareVersionTestMixedDigits(){
         assertThat( VersionUtils.compareVersion("2.0.1","1.2")).isPositive();
@@ -102,10 +103,14 @@ public class VersionUtilsTest {
 
     @Test
     void splitLanguageVersionTest(){
-        String[] methodOutput1 = {"2.1", "2.1", "en", "SL"};
+        LanguageVersion methodOutput1 = new LanguageVersion(
+            VersionNumber.fromString("2.1"), "en", ItemType.SL
+        );
         assertThat( VersionUtils.splitLanguageVersion("en-2.1")).isEqualTo(methodOutput1);
 
-        String[] methodOutput2 = {"2.0", "2.0.1", "de", "TL"};
+        LanguageVersion methodOutput2 = new LanguageVersion(
+            VersionNumber.fromString("2.0.1"), "de", ItemType.TL
+        );
         assertThat( VersionUtils.splitLanguageVersion("de-2.0.1")).isEqualTo(methodOutput2);
     }
 }

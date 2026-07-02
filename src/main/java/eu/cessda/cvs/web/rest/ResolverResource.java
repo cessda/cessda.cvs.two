@@ -136,20 +136,4 @@ public class ResolverResource {
         resolverService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * {@code SEARCH  /_search/resolvers?query=:query} : search for the resolver corresponding
-     * to the query.
-     *
-     * @param query the query of the resolver search.
-     * @param pageable the pagination information.
-     * @return the result of the search.
-     */
-    @GetMapping("/_search/resolvers")
-    public ResponseEntity<List<ResolverDTO>> searchResolvers(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of Resolvers for query {}", query);
-        Page<ResolverDTO> page = resolverService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
 }

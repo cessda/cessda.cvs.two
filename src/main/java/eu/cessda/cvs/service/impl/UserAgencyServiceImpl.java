@@ -109,9 +109,4 @@ public class UserAgencyServiceImpl implements UserAgencyService {
         log.debug("Request to delete UserAgency : {}", id);
         userAgencyRepository.deleteById(id);
     }
-
-    @Override
-    public Page<UserAgencyDTO> search(String query, Pageable pageable) {
-        return null;
-    }
 }

@@ -30,7 +30,10 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Document(indexName = "agency")
@@ -138,9 +141,9 @@ public class AgencyStat implements Serializable {
         VersionNumber latestSlVersionNumber = null;
         VersionNumber latestPublishedSlVersionNumber = null;
 
-        Set<String> languages = new LinkedHashSet<>();
-        List<VersionStatusStat> versionStatusStats = new ArrayList<>();
-        List<VersionCodeStat> versionCodeStats = new ArrayList<>();
+        LinkedHashSet<String> languages = new LinkedHashSet<>();
+        ArrayList<VersionStatusStat> versionStatusStats = new ArrayList<>();
+        ArrayList<VersionCodeStat> versionCodeStats = new ArrayList<>();
 
         for (VersionDTO v : vocabularyDTO.getVersions()) {
             if( v.getItemType() == ItemType.SL ){
@@ -165,8 +168,8 @@ public class AgencyStat implements Serializable {
             }
         }
 
-        vocabStat.setCurrentVersion(VersionNumber.toString(latestSlVersionNumber));
-        vocabStat.setLatestPublishedVersion(VersionNumber.toString(latestPublishedSlVersionNumber));
+        vocabStat.setCurrentVersion(latestSlVersionNumber);
+        vocabStat.setLatestPublishedVersion(latestPublishedSlVersionNumber);
         vocabStat.setLanguages(new ArrayList<>(languages));
         vocabStat.setVersionCodeStats(versionCodeStats);
         vocabStat.setVersionStatusStats(versionStatusStats);

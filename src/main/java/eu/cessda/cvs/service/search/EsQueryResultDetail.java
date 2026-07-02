@@ -51,11 +51,11 @@ public class EsQueryResultDetail implements Serializable {
     }
 
 	public EsQueryResultDetail(SearchScope searchScope) {
-        init(searchScope);
         this.searchScope = searchScope;
+        init();
     }
 
-    private void init(SearchScope searchScope) {
+    private void init() {
         if( searchScope == SearchScope.EDITORSEARCH ) {
             aggFields = new ArrayList<>(Arrays.asList( EsFilter.AGENCY_AGG, EsFilter.LANGS_AGG, EsFilter.STATUS_AGG ));
         } else {
@@ -74,8 +74,8 @@ public class EsQueryResultDetail implements Serializable {
     }
 
     public void setSearchScope(SearchScope searchScope) {
-        init(searchScope);
         this.searchScope = searchScope;
+        init();
     }
 
     public boolean isUseCustomQuery(){
@@ -112,10 +112,6 @@ public class EsQueryResultDetail implements Serializable {
 		this.page = page;
 	}
 
-	public static int getPagesize() {
-		return PAGE_SIZE;
-	}
-
 	public List<String> getAggFields() {
 		return aggFields;
 	}
@@ -145,14 +141,16 @@ public class EsQueryResultDetail implements Serializable {
 		return this;
 	}
 
-	public Optional<EsFilter> getEsFilterByField( String field) {
+	public Optional<EsFilter> getEsFilterByField( String field ) {
 		return this.esFilters.stream().filter( e -> e.getField().equals( field )).findFirst();
 	}
 
 	public boolean isAnyFilterActive() {
 		for( EsFilter esFilter : this.esFilters){
-			if( esFilter.getValues() != null && !esFilter.getValues().isEmpty())
-				return true;
+			if(!esFilter.getValues().isEmpty())
+            {
+                return true;
+            }
 		}
 		return false;
 	}

@@ -181,22 +181,6 @@ public class VersionResource {
     }
 
     /**
-     * {@code SEARCH  /_search/versions?query=:query} : search for the version corresponding
-     * to the query.
-     *
-     * @param query the query of the version search.
-     * @param pageable the pagination information.
-     * @return the result of the search.
-     */
-    @GetMapping("/_search/versions")
-    public ResponseEntity<List<VersionDTO>> searchVersions(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of Versions for query {}", query);
-        Page<VersionDTO> page = versionService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
-
-    /**
      * {@code GET  /search/languages}
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of languages in body.

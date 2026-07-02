@@ -1137,7 +1137,7 @@ public class EditorResource {
     }
 
     /**
-     * {@code GET  /search} : get all the vocabularies from elasticsearch.
+     * {@code GET  /search} : get all the vocabularies from Elasticsearch.
      *
 
      * @param q the query term.
@@ -1146,9 +1146,11 @@ public class EditorResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vocabularies in body.
      */
     @GetMapping("/editors/search")
-    public ResponseEntity<CvResult> getAllVocabularies(@RequestParam(name = "q", required = false) String q,
-                                                       @RequestParam(name = "f", required = false) String f,
-                                                       Pageable pageable) {
+    public ResponseEntity<CvResult> getAllVocabularies(
+        @RequestParam(name = "q", required = false) String q,
+        @RequestParam(name = "f", required = false) String f,
+        Pageable pageable
+    ) {
         log.debug("REST request to get a page of Vocabularies");
 
         EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching( q, f, pageable, SearchScope.EDITORSEARCH);
