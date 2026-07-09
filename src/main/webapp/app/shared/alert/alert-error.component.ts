@@ -129,7 +129,7 @@ export class AlertErrorComponent implements OnDestroy {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   addErrorAlert(message: string, key?: string, data?: any): void {
-    message = key && true ? key : message;
+    message = key || message;
 
     const newAlert: JhiAlert = {
       type: 'danger',
