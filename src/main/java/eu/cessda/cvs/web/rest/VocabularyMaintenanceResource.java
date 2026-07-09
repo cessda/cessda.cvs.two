@@ -20,10 +20,11 @@ import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.web.rest.domain.Maintenance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import static eu.cessda.cvs.web.rest.domain.Maintenance.Operation.*;
 
 /**
  * REST controller for managing {@link eu.cessda.cvs.domain.Agency}.
@@ -32,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/maintenance")
 public class VocabularyMaintenanceResource {
 
-    private final Logger log = LoggerFactory.getLogger(VocabularyMaintenanceResource.class);
+    private static final Logger log = LoggerFactory.getLogger(VocabularyMaintenanceResource.class);
 
     private final AgencyService agencyService;
     private final VocabularyService vocabularyService;
@@ -43,43 +44,38 @@ public class VocabularyMaintenanceResource {
     }
 
     @PostMapping("/publication/generate-json")
-    public ResponseEntity<Maintenance> getGenerateJson()
+    public Maintenance getGenerateJson()
     {
         log.debug("REST request to get a page of Vocabularies");
         final String output = vocabularyService.generateJsonAllVocabularyPublish();
-        Maintenance maintenanceOut = new Maintenance(output, "GENERATE_JSON");
-        return ResponseEntity.ok().body(maintenanceOut);
+        return new Maintenance(output, GENERATE_JSON);
     }
 
     @PostMapping("/index/agency-stats")
-    public ResponseEntity<Maintenance> indexAgencyStats() {
+    public Maintenance indexAgencyStats() {
         log.debug("REST request to index Agencies Stats");
         vocabularyService.indexAllAgencyStats();
-        Maintenance maintenanceOut = new Maintenance("Done indexing Agency Stats", "INDEX_AGENCY_STAT");
-        return ResponseEntity.ok().body( maintenanceOut);
+        return new Maintenance("Done indexing Agency Stats", INDEX_AGENCY_STAT);
     }
 
     @PostMapping("/index/vocabulary")
-    public ResponseEntity<Maintenance> indexVocabulary() {
+    public Maintenance indexVocabulary() {
         log.debug("REST request to index published Vocabularies");
         vocabularyService.indexAllPublished();
-        Maintenance maintenanceOut = new Maintenance("Done indexing published Vocabularies", "INDEX_VOCABULARY_PUBLISH");
-        return ResponseEntity.ok().body( maintenanceOut);
+        return new Maintenance("Done indexing published Vocabularies", INDEX_VOCABULARY_PUBLISH);
     }
 
     @PostMapping("/index/vocabulary/editor")
-    public ResponseEntity<Maintenance> indexVocabularyEditor() {
+    public Maintenance indexVocabularyEditor() {
         log.debug("REST request to index Vocabularies in editor");
         vocabularyService.indexAllEditor();
-        Maintenance maintenanceOut = new Maintenance("Done indexing Vocabulary Editor", "INDEX_VOCABULARY_EDITOR");
-        return ResponseEntity.ok().body(maintenanceOut);
+        return new Maintenance("Done indexing Vocabulary Editor", INDEX_VOCABULARY_EDITOR);
     }
 
     @PostMapping("/index/agency")
-    public ResponseEntity<Maintenance> indexAgency() {
+    public Maintenance indexAgency() {
         log.debug("REST request to index Agencies");
         agencyService.indexAll();
-        Maintenance maintenanceOut = new Maintenance("Done indexing Agency", "INDEX_AGENCY");
-        return ResponseEntity.ok().body(maintenanceOut);
+        return new Maintenance("Done indexing Agency", INDEX_AGENCY);
     }
 }

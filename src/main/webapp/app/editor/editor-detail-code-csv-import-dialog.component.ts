@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, ElementRef, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
@@ -215,7 +215,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
     this.resetConceptsAndCodeSnippets();
 
     for (let i = 0; i < this.csvContents.length; i++) {
-      if (this.markedRows[i] === false) {
+      if (!this.markedRows[i]) {
         continue;
       }
       // check for existing concepts, overwrite if exist
@@ -242,11 +242,11 @@ export class EditorDetailCodeCsvImportDialogComponent {
           // calculate conceptPosition as last child of parent
           const conceptChildren = this.concepts.filter(c => c.parent === parentConcept.notation);
           if (conceptChildren.length === 0) {
-            conceptPosition = parentConcept.position || 0 + 1;
+            conceptPosition = parentConcept.position || 1;
           } else {
-            conceptPosition = this.findLastChildForPosition(parentConcept).position || 0 + 1;
+            conceptPosition = this.findLastChildForPosition(parentConcept).position || 1;
             // check for equal or larger position if exist and increment to normalize
-            this.concepts.filter(c => c.position || 0 >= conceptPosition).forEach(c => (c.position = c.position || 0 + 1));
+            this.concepts.filter(c => c.position || 0 >= conceptPosition).forEach(c => (c.position = c.position || 1));
           }
         }
         const newConcept: Concept = {

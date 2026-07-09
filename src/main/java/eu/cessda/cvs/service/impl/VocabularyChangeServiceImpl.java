@@ -104,11 +104,6 @@ public class VocabularyChangeServiceImpl implements VocabularyChangeService {
     }
 
     @Override
-    public Page<VocabularyChangeDTO> search(String query, Pageable pageable) {
-        return null;
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public List<VocabularyChangeDTO> findByVersionId( Long versionId ) {
         log.debug("Request to get all VocabularyChanges by versionId {}", versionId);

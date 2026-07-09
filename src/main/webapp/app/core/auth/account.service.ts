@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { JhiLanguageService } from 'ng-jhipster';
@@ -70,12 +70,12 @@ export class AccountService {
   /**
    * Check if user has authority to access certain DOM
    * @param actionType
-   * @param agencyId, the agency ID, ID = 0 means that any agency
+   * @param agencyId the agency ID, ID = 0 means that any agency
    * @param agencyRoles
    * @param language
    */
   hasAnyAgencyAuthority(actionType: string, agencyId: number, agencyRoles: string[], language?: string): boolean {
-    if (!this.userIdentity || !this.userIdentity.authorities) {
+    if (!this.userIdentity?.authorities) {
       return false;
     }
     // check if admin
@@ -83,7 +83,7 @@ export class AccountService {
       return true;
     }
 
-    // check by actionType, agencyId, agencyRoles, languages, aginst user.userAgency
+    // check by actionType, agencyId, agencyRoles, languages, against user.userAgency
     switch (actionType) {
       case 'CREATE_CV':
       case 'EDIT_CV':

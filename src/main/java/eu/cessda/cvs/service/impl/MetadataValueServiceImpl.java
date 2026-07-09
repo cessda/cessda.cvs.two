@@ -100,9 +100,4 @@ public class MetadataValueServiceImpl implements MetadataValueService {
         log.debug("Request to delete MetadataValue : {}", id);
         metadataValueRepository.deleteById(id);
     }
-
-    @Override
-    public Page<MetadataValueDTO> search(String query, Pageable pageable) {
-        return null;
-    }
 }

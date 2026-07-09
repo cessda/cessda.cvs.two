@@ -234,14 +234,6 @@ public interface VocabularyService {
     /**
      *
      * @param agencyId
-     * @param agencyUri
-     * @param agencyUriCode
-     */
-    //void updateVocabularyUri( Long agencyId, String agencyUri, String agencyUriCode );
-
-    /**
-     *
-     * @param agencyId
      * @param agencyLogoPath
      */
     void updateVocabularyLogo( Long agencyId, String agencyLogoPath );

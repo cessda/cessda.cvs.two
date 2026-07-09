@@ -134,20 +134,4 @@ public class UserAgencyResource {
         userAgencyService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * {@code SEARCH  /_search/user-agencies?query=:query} : search for the userAgency corresponding
-     * to the query.
-     *
-     * @param query the query of the userAgency search.
-     * @param pageable the pagination information.
-     * @return the result of the search.
-     */
-    @GetMapping("/_search/user-agencies")
-    public ResponseEntity<List<UserAgencyDTO>> searchUserAgencies(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of UserAgencies for query {}", query);
-        Page<UserAgencyDTO> page = userAgencyService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
 }

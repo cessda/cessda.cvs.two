@@ -724,8 +724,7 @@ public class VocabularyServiceImpl implements VocabularyService
 
     private void sortVocabularyVersions( List<VocabularyDTO> vocabulariesDTO ) {
         for ( VocabularyDTO vocabularyDTO : vocabulariesDTO ) {
-            LinkedHashSet<VersionDTO> sortedVersion = vocabularyDTO.getVersions().stream()
-                .sorted( VocabularyUtils.VERSION_DTO_COMPARATOR )
+            LinkedHashSet<VersionDTO> sortedVersion = vocabularyDTO.getVersions().stream().sorted()
                 .collect( Collectors.toCollection( LinkedHashSet::new ) );
             vocabularyDTO.setVersions( sortedVersion );
         }
@@ -903,10 +902,10 @@ public class VocabularyServiceImpl implements VocabularyService
         vocabulary.setAgencyLink( agency.getLink() );
 
         if ( !onlyPublished ) {
-            if ( slVersionNumber.equals( ALL ) )
+            if ( slVersionNumber.equals( ALL ) ) {
                 return vocabulary;
-            else if ( slVersionNumber.equals( LATEST ) ) {
-                final VersionDTO latestSlVersion = vocabulary.getVersions().stream().min(VocabularyUtils.VERSION_DTO_COMPARATOR).orElse( null );
+            } else if ( slVersionNumber.equals( LATEST ) ) {
+                final VersionDTO latestSlVersion = vocabulary.getVersions().stream().min(VersionDTO::compareTo).orElse( null );
                 if ( latestSlVersion != null ) {
                     slVersionNumber = latestSlVersion.getNumber().toString();
                 }
@@ -929,7 +928,7 @@ public class VocabularyServiceImpl implements VocabularyService
             findAllLatestVersion = true;
             slVersion = vocabulary.getVersions().stream()
                 .filter(v -> v.getStatus() == Status.PUBLISHED )
-                .min(VocabularyUtils.VERSION_DTO_COMPARATOR)
+                .min(VersionDTO::compareTo)
                 .map(VersionDTO::getNumber)
                 .orElseThrow();
         } else {
@@ -1620,23 +1619,26 @@ public class VocabularyServiceImpl implements VocabularyService
 
     private void addVersionHistories( VocabularyDTO vocabulary, VersionDTO version ) {
         var olderVersions = versionService.findOlderPublishedByVocabularyLanguageId( vocabulary.getId(), version.getLanguage(), version.getId() );
-        var olderVersionHistories = new ArrayList<Map<String, Object>>(olderVersions.size());
         for ( VersionDTO olderVersion : olderVersions )
         {
-            Map<String, Object> versionHistoryMap = new LinkedHashMap<>();
-            versionHistoryMap.put( "id", olderVersion.getId() );
-            versionHistoryMap.put( "version", olderVersion.getNumber() );
-            versionHistoryMap.put( "date", olderVersion.getPublicationDate().toString() );
-            versionHistoryMap.put( "note", olderVersion.getVersionNotes() );
-            versionHistoryMap.put( "changes", olderVersion.getVersionChanges() );
+            Long prevVersion = null;
             if ( olderVersion.getPreviousVersion() != null &&
                 !olderVersion.getPreviousVersion().equals( olderVersion.getId() ) )
             {
-                versionHistoryMap.put( "prevVersion", olderVersion.getPreviousVersion() );
+                prevVersion = olderVersion.getPreviousVersion();
             }
-            olderVersionHistories.add( versionHistoryMap );
+
+            var versionHistory = new VersionHistoryDTO(
+                olderVersion.getId(),
+                olderVersion.getNumber(),
+                olderVersion.getPublicationDate(),
+                olderVersion.getVersionNotes(),
+                olderVersion.getVersionChanges(),
+                prevVersion
+            );
+
+            version.addVersionHistory( versionHistory );
         }
-        version.setVersionHistories( olderVersionHistories );
     }
 
     private void generateJsonFile(ObjectMapper mapper, VocabularyDTO vocabulary, Map<String, List<VersionDTO>> slNumberVersionsMap ) {
@@ -1701,7 +1703,7 @@ public class VocabularyServiceImpl implements VocabularyService
             for (VersionDTO versionDTO : includedVersions) {
                 latestVersionsMap.merge(versionDTO.getLanguage(), versionDTO,
                     // Select the latest version (defined by the lower result from the comparator)
-                    (r, k) -> VocabularyUtils.VERSION_DTO_COMPARATOR.compare(r, k) < 0 ? r : k
+                    (r, k) -> r.compareTo(k) < 0 ? r : k
                 );
             }
             includedVersions = new LinkedHashSet<>(latestVersionsMap.values());
@@ -1793,7 +1795,7 @@ public class VocabularyServiceImpl implements VocabularyService
         for ( Vocabulary vocabulary : vocabularies ) {
             vocabulary.setUri( VocabularyUtils.generateUri( agencyUri, vocabulary ) );
             final List<Version> versions = vocabulary.getVersions().stream()
-                    .sorted( VocabularyUtils.VERSION_COMPARATOR )
+                    .sorted()
                     .collect( Collectors.toList() );
             for ( Version version : versions ) {
                 updateUriForVersionAndConcept( agencyUri, agencyUriCode, vocabulary, version, agencyName );

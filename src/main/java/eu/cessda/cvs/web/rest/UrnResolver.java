@@ -17,9 +17,9 @@ package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Status;
-import eu.cessda.cvs.service.ExportService;
 import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.dto.VersionDTO;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -31,13 +31,17 @@ import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
-import static eu.cessda.cvs.web.rest.VocabularyResourceV2.JSONLD_TYPE;
+import static eu.cessda.cvs.service.ExportService.MEDIATYPE_RDF_VALUE;
+import static eu.cessda.cvs.service.ExportService.MEDIATYPE_WORD_VALUE;
+import static eu.cessda.cvs.web.rest.utils.ResourceUtils.MEDIATYPE_JSONLD_VALUE;
 
 /**
- * REST controller for resolving URN
+ * REST controller for resolving URNs
  */
+@SuppressWarnings( "deprecation" )
+@Api( description = "URN Resolver")
 @RestController
-@RequestMapping("/urn")
+@RequestMapping(value = "/urn" )
 public class UrnResolver {
 
     private final Logger log = LoggerFactory.getLogger(UrnResolver.class);
@@ -52,10 +56,10 @@ public class UrnResolver {
      * GET  / : redirect to resourceURL by "resolverUri or URN" resolver.
      *
      * @param urn the URN of the versionDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and then redirect to resource URL,
-     * or with status 404 (Not Found)
+     * @return the ResponseEntity with status 302 (Found) with the location header set,
+     * or status 404 (Not Found)
      */
-    @GetMapping(value = "/{urn}", produces = { MediaType.APPLICATION_JSON_VALUE, JSONLD_TYPE, MediaType.APPLICATION_PDF_VALUE, ExportService.MEDIATYPE_WORD_VALUE, ExportService.MEDIATYPE_RDF_VALUE })
+    @GetMapping(value = "/{urn}", produces = { MediaType.APPLICATION_JSON_VALUE, MEDIATYPE_JSONLD_VALUE, MediaType.APPLICATION_PDF_VALUE, MEDIATYPE_WORD_VALUE, MEDIATYPE_RDF_VALUE })
     public ResponseEntity<Void> findUrnJsonResolver( @PathVariable(name = "urn") String urn, @RequestParam(name = "lang", required = false) String lang )
     {
         Optional<ResponseEntity<Void>> responseEntity;
@@ -89,11 +93,19 @@ public class UrnResolver {
      * GET  / : redirect to resourceURL by "resolverUri or URN" resolver.
      *
      * @param urn the URN of the versionDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and then redirect to resource URL,
-     * or with status 404 (Not Found)
+     * @return the ResponseEntity with status 302 (Found) with the location header set,
+     * or status 404 (Not Found)
      */
-    @GetMapping("/{urn}")
-    public ResponseEntity<Void> findUrnResolver( @PathVariable(name = "urn") String urn, @RequestParam(name = "lang", required = false) String lang) {
+    @ApiOperation( value = "Resolve a URN to a vocabulary", code = 302 )
+    @ApiResponses( {
+        @ApiResponse( code = 302, message = "The resolved vocabulary" ),
+        @ApiResponse( code = 404, message = "URN unable to be resolved" )
+    } )
+    @GetMapping(value = "/{urn}")
+    public ResponseEntity<Void> findUrnResolver(
+        @ApiParam(value = "The URN of the vocabulary") @PathVariable(name = "urn") String urn,
+        @ApiParam(value = "The language of the vocabulary") @RequestParam(name = "lang", required = false) String lang
+    ) {
         log.debug("REST request to get Resolver by URI: {}", urn);
 
         Optional<ResponseEntity<Void>> responseEntity;

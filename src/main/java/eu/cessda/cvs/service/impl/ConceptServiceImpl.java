@@ -111,9 +111,4 @@ public class ConceptServiceImpl implements ConceptService {
             .map(conceptMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
-
-    @Override
-    public Page<ConceptDTO> search(String query, Pageable pageable) {
-        return null;
-    }
 }
