@@ -24,7 +24,7 @@
     "@ngx-translate/core": "14.0.0",
     "@ngx-translate/http-loader": "7.0.0",
     "@popperjs/core": "2.11.8",
-    "@swimlane/ngx-charts": "23.1.0",
+    "@swimlane/ngx-charts": "24.0.0",
     "axios": "1.18.1",
     "bootstrap": "5.3.8",
     "diff-match-patch": "1.0.5",
