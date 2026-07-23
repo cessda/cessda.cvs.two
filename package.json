@@ -78,20 +78,6 @@
     "ts-node": "10.9.2",
     "typescript": "5.9.3"
   },
-  "overrides": {
-    "@swimlane/ngx-charts": {
-      "@angular/compiler": "$@angular/compiler",
-      "@angular/common": "$@angular/common",
-      "@angular/core": "$@angular/core",
-      "@angular/cdk": "$@angular/cdk",
-      "@angular/forms": "$@angular/forms",
-      "@angular/localize": "$@angular/localize",
-      "@angular/animations": "$@angular/animations",
-      "@angular/platform-browser": "$@angular/platform-browser",
-      "@angular/platform-browser-dynamic": "$@angular/platform-browser-dynamic",
-      "rxjs": "$rxjs"
-    }
-  },
   "scripts": {
     "prettier:format": "prettier --write \"{,src/**/}*.{md,json,ts,css,scss,yml}\"",
     "lint": "eslint . --ext .js,.ts",
