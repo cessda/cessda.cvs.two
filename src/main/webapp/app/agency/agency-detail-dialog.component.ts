@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JhiDataUtils } from 'ng-jhipster';
 
@@ -21,7 +21,7 @@ import { Agency, createNewAgency } from 'app/shared/model/agency.model';
 import { AgencyService } from 'app/agency/agency.service';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import moment, { Moment } from 'moment';
-import { VocabularyLanguageFromKeyPipe } from 'app/shared';
+import { VocabularyLanguageFromKeyPipe } from 'app/shared/language/vocabulary-language-from-key.pipe';
 import { VocabStat } from 'app/shared/model/vocab-stat.model';
 import { VersionStatusStat } from 'app/shared/model/version-status-stat.model';
 

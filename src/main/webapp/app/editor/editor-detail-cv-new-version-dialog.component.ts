@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
@@ -22,7 +22,7 @@ import { Version } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { VocabularyLanguageFromKeyPipe } from 'app/shared';
+import { VocabularyLanguageFromKeyPipe } from 'app/shared/language/vocabulary-language-from-key.pipe';
 
 @Component({
   templateUrl: './editor-detail-cv-new-version-dialog.component.html',

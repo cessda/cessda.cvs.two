@@ -16,7 +16,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { CvsSharedModule } from 'app/shared';
+import { CvsSharedModule } from 'app/shared/shared.module';
 import { EditorCvAddDialogComponent, EditorCvAddPopupComponent } from './editor-cv-add-dialog.component';
 import { EditorDetailCvAddEditConfirmModalComponent } from './editor-detail-code-add-edit-confirm.component';
 import { EditorDetailCodeAddEditDialogComponent } from './editor-detail-code-add-edit-dialog.component';

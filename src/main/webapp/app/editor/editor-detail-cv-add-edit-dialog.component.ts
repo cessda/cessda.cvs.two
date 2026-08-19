@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -25,7 +25,7 @@ import { Observable } from 'rxjs';
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Account } from 'app/core/user/account.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { VOCABULARY_ALREADY_EXIST_TYPE } from 'app/shared';
+import { VOCABULARY_ALREADY_EXIST_TYPE } from 'app/shared/constants/error.constants';
 import { EditorService } from 'app/editor/editor.service';
 import { VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
 import { Version } from 'app/shared/model/version.model';

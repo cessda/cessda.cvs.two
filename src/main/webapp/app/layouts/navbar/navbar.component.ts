@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, IsActiveMatchOptions, Params, Router } from '@angular/router';
 import { JhiEventManager, JhiEventWithContent, JhiLanguageService } from 'ng-jhipster';
 import { SessionStorageService } from 'ngx-webstorage';
@@ -29,7 +29,7 @@ import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
-import { VocabularyLanguageFromKeyPipe } from 'app/shared';
+import { VocabularyLanguageFromKeyPipe } from 'app/shared/language/vocabulary-language-from-key.pipe';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Authority } from 'app/shared/constants/authority.constants';
 

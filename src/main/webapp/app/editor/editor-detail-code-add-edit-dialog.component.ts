@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, NgZone, OnInit, inject } from '@angular/core';
+import { Component, inject, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -24,7 +24,7 @@ import { AccountService } from 'app/core/auth/account.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Account } from 'app/core/user/account.model';
-import { CODE_ALREADY_EXIST_TYPE } from 'app/shared';
+import { CODE_ALREADY_EXIST_TYPE } from 'app/shared/constants/error.constants';
 import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
 import { Concept } from 'app/shared/model/concept.model';

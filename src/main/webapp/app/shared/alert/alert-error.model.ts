@@ -14,10 +14,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-export class AlertError {
-  constructor(
-    public message: string,
-    public key?: string,
-    public params?: any,
-  ) {}
+export interface AlertError {
+  message: string;
+  key?: string;
+  params?: any;
 }

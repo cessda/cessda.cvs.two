@@ -16,7 +16,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { CvsSharedModule } from 'app/shared';
+import { CvsSharedModule } from 'app/shared/shared.module';
 import { HOME_ROUTE } from './home.route';
 import { HomeComponent } from './home.component';
 import { HomeDetailComponent } from './home-detail.component';

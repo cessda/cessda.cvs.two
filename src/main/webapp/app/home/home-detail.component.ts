@@ -13,18 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, ElementRef, NgZone, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, ElementRef, inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 
 import { Concept } from 'app/shared/model/concept.model';
-import { Vocabulary, createNewVocabulary } from 'app/shared/model/vocabulary.model';
+import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Version } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { HomeService } from 'app/home/home.service';
-import { RouteEventsService, VocabularyLanguageFromKeyPipe } from 'app/shared';
+import { RouteEventsService } from 'app/shared/service/route-events.service';
+import { VocabularyLanguageFromKeyPipe } from 'app/shared/language/vocabulary-language-from-key.pipe';
 import { DiffContent } from 'node_modules/ngx-text-diff/lib/ngx-text-diff.model';
 import { Observable, Subject } from 'rxjs';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';

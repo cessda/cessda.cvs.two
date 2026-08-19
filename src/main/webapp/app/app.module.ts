@@ -19,18 +19,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import './vendor';
 import { CvsSharedModule } from 'app/shared/shared.module';
 import { CvsCoreModule } from 'app/core/core.module';
-import { CvsAppRoutingModule } from './app-routing.module';
-import { CvsHomeModule } from './home/home.module';
-import { CvsEditorModule } from './editor/editor.module';
+import { CvsAppRoutingModule } from 'app/app-routing.module';
+import { CvsHomeModule } from 'app/home/home.module';
+import { CvsEditorModule } from 'app/editor/editor.module';
 import { CvsAboutModule } from 'app/about/about.module';
 import { CvsApiDocsModule } from 'app/api-docs/api-docs.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
-import { MainComponent } from './layouts/main/main.component';
-import { NavbarComponent } from './layouts/navbar/navbar.component';
-import { FooterComponent } from './layouts/footer/footer.component';
-import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
-import { ActiveMenuDirective } from './layouts/navbar/active-menu.directive';
-import { ErrorComponent } from './layouts/error/error.component';
+import { MainComponent } from 'app/layouts/main/main.component';
+import { NavbarComponent } from 'app/layouts/navbar/navbar.component';
+import { FooterComponent } from 'app/layouts/footer/footer.component';
+import { PageRibbonComponent } from 'app/layouts/profiles/page-ribbon.component';
+import { ActiveMenuDirective } from 'app/layouts/navbar/active-menu.directive';
+import { ErrorComponent } from 'app/layouts/error/error.component';
 // ngx-chips
 import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
