@@ -16,14 +16,25 @@
 
 # This Dockerfile must be run after both the Java and Angular
 # components of the application have been compiled
-FROM eclipse-temurin:11
+FROM eclipse-temurin:11 AS builder
+WORKDIR /cvs
+
+COPY target/cvs*.jar cvs.jar
+
+RUN java -Djarmode=layertools -jar cvs.jar extract
+
+FROM eclipse-temurin:11-jre AS final
+WORKDIR /opt/cessda/cvs/
 
 # Container Information
 LABEL maintainer='CESSDA-ERIC "support@cessda.eu"'
 
-# Copy JAR
-COPY target/cvs*.jar /opt/cessda/cvs/cvs.jar
+# Copy exploded JAR
+COPY --from=builder /cvs/dependencies/ ./
+COPY --from=builder /cvs/spring-boot-loader/ ./
+COPY --from=builder /cvs/snapshot-dependencies/ ./
+COPY --from=builder /cvs/application/ ./
 
 # Entrypoint - Start CVS
 USER 1000
-ENTRYPOINT ["java", "-jar", "/opt/cessda/cvs/cvs.jar"]
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher"]

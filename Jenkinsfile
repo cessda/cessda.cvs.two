@@ -103,7 +103,7 @@ pipeline {
         }
         stage('Build Docker image') {
             steps {
-                sh "./mvnw spring-boot:build-image -Pci -DskipTests -Dspring-boot.build-image.imageName=${IMAGE_TAG}"
+                sh "docker build -t ${IMAGE_TAG} ."
             }
         }
         stage('Build and Push Docker Image') {
