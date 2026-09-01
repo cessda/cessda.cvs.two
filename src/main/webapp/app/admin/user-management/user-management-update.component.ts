@@ -69,7 +69,10 @@ export class UserManagementUpdateComponent implements OnInit {
       if (user) {
         this.user = user;
 
-        this.user.userAgencies!.sort((ua1, ua2) =>
+        // the resolver hands a new user over as an empty object, so there is nothing to
+        // sort; it is deliberately left unset, because the template hides the agency roles
+        // table while it is, and roles cannot be assigned before the user exists anyway
+        this.user.userAgencies?.sort((ua1, ua2) =>
           this.userAgencyToCompare(ua1) < this.userAgencyToCompare(ua2)
             ? -1
             : this.userAgencyToCompare(ua1) > this.userAgencyToCompare(ua2)

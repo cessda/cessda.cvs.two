@@ -17,7 +17,7 @@ import { ComponentFixture, TestBed, waitForAsync, inject, fakeAsync, tick } from
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { of } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { CvsTestModule } from '../../../test.module';
@@ -29,21 +29,20 @@ describe('Component Tests', () => {
     let comp: UserManagementUpdateComponent;
     let fixture: ComponentFixture<UserManagementUpdateComponent>;
     let service: UserService;
-    const route: ActivatedRoute = {
-      data: of({
-        user: {
-          id: 1,
-          login: 'user',
-          firstName: 'first',
-          lastName: 'last',
-          email: 'first@last.com',
-          activated: true,
-          langKey: 'en',
-          authorities: [Authority.USER],
-          createdBy: 'admin',
-        },
-      }),
-    } as unknown as ActivatedRoute;
+    const existingUser = {
+      id: 1,
+      login: 'user',
+      firstName: 'first',
+      lastName: 'last',
+      email: 'first@last.com',
+      activated: true,
+      langKey: 'en',
+      authorities: [Authority.USER],
+      createdBy: 'admin',
+    };
+    // the tests push their own user through here, so each one can pick what the resolver returns
+    const routeData = new BehaviorSubject<{ user: unknown }>({ user: existingUser });
+    const route: ActivatedRoute = { data: routeData } as unknown as ActivatedRoute;
 
     beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({
@@ -68,21 +67,63 @@ describe('Component Tests', () => {
     });
 
     describe('OnInit', () => {
-      // Commented due to test failure ASYNC TIMEOUT
-      // it('Should load authorities and language on init', inject(
-      //   [],
-      //   fakeAsync(() => {
-      //     // GIVEN
-      //     spyOn(service, 'authorities').and.returnValue(of(['USER']));
-      //
-      //     // WHEN
-      //     comp.ngOnInit();
-      //
-      //     // THEN
-      //     expect(service.authorities).toHaveBeenCalled();
-      //     expect(comp.authorities).toEqual(['USER']);
-      //   })
-      // ));
+      beforeEach(() => {
+        routeData.next({ user: existingUser });
+      });
+
+      it('should load the authorities', () => {
+        spyOn(service, 'authorities').and.returnValue(of([Authority.ADMIN]));
+
+        comp.ngOnInit();
+
+        expect(comp.authorities).toEqual([Authority.ADMIN]);
+      });
+
+      it('should fill the form from the user it is given', () => {
+        comp.ngOnInit();
+
+        expect(comp.editForm.controls.login.value).toBe('user');
+        expect(comp.editForm.controls.langKey.value).toBe('en');
+      });
+
+      it('should sort the agencies by agency, then role, then language', () => {
+        routeData.next({
+          user: {
+            ...existingUser,
+            userAgencies: [
+              { agencyId: 2, agencyRole: 'ADMIN_TL', language: 'de' },
+              { agencyId: 1, agencyRole: 'ADMIN_TL', language: 'sk' },
+              { agencyId: 1, agencyRole: 'ADMIN_CONTENT', language: 'de' },
+            ],
+          },
+        });
+
+        comp.ngOnInit();
+
+        expect(comp.user.userAgencies).toEqual([
+          { agencyId: 1, agencyRole: 'ADMIN_CONTENT', language: 'de' },
+          { agencyId: 1, agencyRole: 'ADMIN_TL', language: 'sk' },
+          { agencyId: 2, agencyRole: 'ADMIN_TL', language: 'de' },
+        ]);
+      });
+
+      describe('a new user, whom the resolver hands over as an empty object', () => {
+        beforeEach(() => {
+          routeData.next({ user: {} });
+        });
+
+        it('should leave the agencies unset, which is what hides the agency roles table', () => {
+          comp.ngOnInit();
+
+          expect(comp.user.userAgencies).toBeUndefined();
+        });
+
+        it('should be activated from the start', () => {
+          comp.ngOnInit();
+
+          expect(comp.user.activated).toBe(true);
+        });
+      });
     });
 
     describe('save', () => {
