@@ -20,6 +20,7 @@ import eu.cessda.cvs.service.MetadataFieldService;
 import eu.cessda.cvs.service.dto.MetadataFieldDTO;
 import eu.cessda.cvs.service.dto.MetadataValueDTO;
 import eu.cessda.cvs.utils.VocabularyUtils;
+import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.slf4j.Logger;
@@ -82,8 +83,11 @@ public class MetadataFieldResource {
     @GetMapping( path = "/download/{metadataKey}", produces = { MediaType.APPLICATION_PDF_VALUE, ExportService.MEDIATYPE_WORD_VALUE })
     public ResponseEntity<StreamingResponseBody> getMetadataPdfFileByMetadataKey( @RequestHeader("Accept") String accept, @PathVariable String metadataKey)
     {
-        var mediaType = MediaType.parseMediaType( accept );
-        var downloadType = ExportService.DownloadType.fromMediaType( mediaType ).orElseThrow();
+        var downloadType = ResourceUtils.parseAcceptHeader( accept ).stream()
+            .map( ExportService.DownloadType::fromMediaType )
+            .flatMap( Optional::stream )
+            .findFirst()
+            .orElseThrow();
         Optional<MetadataFieldDTO> metadataFieldDTO = metadataFieldService.findOneByMetadataKey( metadataKey );
 
         Map<String, Object> map = new HashMap<>();

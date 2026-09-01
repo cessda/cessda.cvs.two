@@ -152,6 +152,22 @@ public class MetadataFieldResourceIT {
             .andExpect( header().string( HttpHeaders.CONTENT_DISPOSITION, equalTo( "attachment; filename=document.docx" ) ) );
     }
 
+    /**
+     * Clients send a list of media types rather than a single one. Guards against the Accept
+     * header being handed to {@code MediaType.parseMediaType}, which rejects a list.
+     */
+    @Test
+    @Transactional
+    void shouldAcceptAListOfMediaTypesWhenDownloading() throws Exception
+    {
+        metadataFieldRepository.saveAndFlush( metadataField );
+
+        restMetadataFieldMockMvc.perform( get( "/api/metadata-fields/download/{metadataKey}", metadataField.getMetadataKey() )
+                .header( HttpHeaders.ACCEPT, "application/pdf,application/xml;q=0.9,*/*;q=0.8" ) )
+            .andExpect( status().isOk() )
+            .andExpect( content().contentType( MediaType.APPLICATION_PDF ) );
+    }
+
     @Test
     @Transactional
     void getNonExistingMetadataKey() throws Exception {

@@ -40,7 +40,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -262,6 +264,68 @@ class VocabularyResourceV2IT {
             .accept(mediaType))
             .andExpect(status().isOk())
             .andExpect( content().contentTypeCompatibleWith( mediaType ) );
+    }
+
+    /**
+     * Real clients send a list of media types rather than a single one. Guards against the
+     * Accept header being handed to {@code MediaType.parseMediaType}, which rejects a list
+     * and turns every vocabulary request from a browser into a 500.
+     */
+    @Test
+    @Transactional
+    void shouldReturnJsonForTheAcceptHeaderSentByAngular() throws Exception {
+        restMockMvc.perform( getVocabularyRequest( "application/json, text/plain, */*" ) )
+            .andExpect( status().isOk() )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) );
+    }
+
+    @Test
+    @Transactional
+    void shouldReturnHtmlForTheAcceptHeaderSentByABrowser() throws Exception {
+        restMockMvc.perform( getVocabularyRequest( "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8" ) )
+            .andExpect( status().isOk() )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.TEXT_HTML ) );
+    }
+
+    @Test
+    @Transactional
+    void shouldPreferTheMediaTypeWithTheHigherQualityValue() throws Exception {
+        restMockMvc.perform( getVocabularyRequest( "text/html;q=0.8, application/json;q=0.9" ) )
+            .andExpect( status().isOk() )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_JSON ) );
+    }
+
+    @Test
+    @Transactional
+    void shouldReachTheExportPathThroughAListOfAcceptedMediaTypes() throws Exception {
+        restMockMvc.perform( getVocabularyRequest( "application/pdf,application/xml;q=0.9,*/*;q=0.8" ) )
+            .andExpect( status().isOk() )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_PDF ) );
+    }
+
+    /**
+     * Exercises {@link EditorResource#getVocabularyDownload}, which negotiates its Accept header
+     * the same way. It lives here rather than in EditorResourceIT because this test class already
+     * publishes a vocabulary and holds a token, whereas EditorResourceIT builds both inside a
+     * single workflow test.
+     */
+    @Test
+    @Transactional
+    void shouldAcceptAListOfMediaTypesWhenDownloadingFromTheEditor() throws Exception {
+        restMockMvc.perform( get( "/api/editors/download/" + EditorResourceIT.INIT_TITLE_EN +
+                "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL +
+                "?lv=" + EditorResourceIT.SOURCE_LANGUAGE + "-" + EditorResourceIT.INIT_VERSION_NUMBER_SL )
+                .header( "Authorization", jwt )
+                .header( HttpHeaders.ACCEPT, "application/pdf,application/xml;q=0.9,*/*;q=0.8" ) )
+            .andExpect( status().isOk() )
+            .andExpect( content().contentTypeCompatibleWith( MediaType.APPLICATION_PDF ) );
+    }
+
+    private MockHttpServletRequestBuilder getVocabularyRequest( String acceptHeader ) {
+        return get( "/v2/vocabularies/" + EditorResourceIT.INIT_TITLE_EN +
+            "/" + EditorResourceIT.INIT_VERSION_NUMBER_SL + "?languageVersion=" + EditorResourceIT.SOURCE_LANGUAGE + "-" +
+            EditorResourceIT.INIT_VERSION_NUMBER_SL )
+            .header( HttpHeaders.ACCEPT, acceptHeader );
     }
 
     @Test
