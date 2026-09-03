@@ -16,8 +16,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'findLanguageFromKey',
-    standalone: false
+  name: 'findLanguageFromKey',
+  standalone: false,
 })
 export class FindLanguageFromKeyPipe implements PipeTransform {
   private languages: Record<string, { name: string; rtl?: boolean }> = {
@@ -33,6 +33,7 @@ export class FindLanguageFromKeyPipe implements PipeTransform {
     hu: { name: 'Magyar' },
     it: { name: 'Italiano' },
     ja: { name: '日本語' },
+    lt: { name: 'Lietuvių' },
     pl: { name: 'Polski' },
     'pt-pt': { name: 'Português' },
     ro: { name: 'Română' },
@@ -45,6 +46,8 @@ export class FindLanguageFromKeyPipe implements PipeTransform {
   };
 
   transform(lang: string): string {
-    return this.languages[lang].name;
+    // the settings page pipes every entry of LANGUAGES through here, so a key this
+    // pipe does not know must degrade to the key itself instead of taking the form down
+    return this.languages[lang]?.name ?? lang;
   }
 }

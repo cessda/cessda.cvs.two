@@ -26,10 +26,12 @@
         <div>
           <jhi-alert-error></jhi-alert-error>
           <div class="form-group" [hidden]="!user.id">
-            <label jhiTranslate="global.field.id">ID<input type="text" class="form-control" name="id" formControlName="id" readonly></label>
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly>
           </div>
           <div class="form-group">
-            <label class="form-control-label" jhiTranslate="userManagement.login">Login<input type="text" class="form-control" name="login" formControlName="login"></label>
+            <label class="form-control-label" for="login" jhiTranslate="userManagement.login">Login</label>
+            <input type="text" class="form-control" id="login" name="login" formControlName="login">
 
             @if (editForm.controls.login.invalid && (editForm.controls.login.dirty || editForm.controls.login.touched)) {
               <div>
@@ -56,7 +58,8 @@
             }
           </div>
           <div class="form-group">
-            <label class="form-control-label" jhiTranslate="userManagement.firstName">First Name<input type="text" class="form-control" name="firstName" formControlName="firstName"></label>
+            <label class="form-control-label" for="firstName" jhiTranslate="userManagement.firstName">First Name</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" formControlName="firstName">
             @if (editForm.controls.firstName.invalid && (editForm.controls.firstName.dirty || editForm.controls.firstName.touched)) {
               <div>
                 @if (editForm.controls.firstName.errors?.maxlength) {
@@ -70,7 +73,8 @@
             }
           </div>
           <div class="form-group">
-            <label jhiTranslate="userManagement.lastName">Last Name<input type="text" class="form-control" name="lastName" formControlName="lastName"></label>
+            <label for="lastName" jhiTranslate="userManagement.lastName">Last Name</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" formControlName="lastName">
             @if (editForm.controls.lastName.invalid && (editForm.controls.lastName.dirty || editForm.controls.lastName.touched)) {
               <div>
                 @if (editForm.controls.lastName.errors?.maxlength) {
@@ -84,7 +88,8 @@
             }
           </div>
           <div class="form-group">
-            <label class="form-control-label" jhiTranslate="userManagement.email">Email<input type="email" class="form-control" name="email" formControlName="email"></label>
+            <label class="form-control-label" for="email" jhiTranslate="userManagement.email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" formControlName="email">
             @if (editForm.controls.email.invalid && (editForm.controls.email.dirty || editForm.controls.email.touched)) {
               <div>
                 @if (editForm.controls.email.errors?.['required']) {
@@ -124,14 +129,12 @@
             </label>
           </div>
           <div class="form-group">
-            <label jhiTranslate="userManagement.profiles">
-              <span>System roles</span>
-              <select class="form-control" multiple name="authority" formControlName="authorities">
-                @for (authority of authorities; track authority) {
-                  <option [value]="authority">{{ authority }}</option>
-                }
-              </select>
-            </label>
+            <label for="authority" jhiTranslate="userManagement.profiles">System roles</label>
+            <select class="form-control" multiple id="authority" name="authority" formControlName="authorities">
+              @for (authority of authorities; track authority) {
+                <option [value]="authority">{{ authority }}</option>
+              }
+            </select>
           </div>
           @if (user.userAgencies !== undefined) {
             <div class="form-group">
