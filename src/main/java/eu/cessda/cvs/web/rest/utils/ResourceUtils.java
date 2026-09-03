@@ -41,6 +41,44 @@ public class ResourceUtils {
 
     private ResourceUtils(){}
 
+    /**
+     * Parse an {@code Accept} header into the media types it lists, most preferred first.
+     * <p>
+     * Clients send a list, for example {@code application/json, text/plain, *&#47;*}, which
+     * {@link MediaType#parseMediaType(String)} cannot handle - it accepts a single media type
+     * and throws on the separating comma.
+     *
+     * @param accept the raw header value, may be {@code null}.
+     * @return the accepted media types sorted by specificity and quality, never empty.
+     */
+    public static List<MediaType> parseAcceptHeader( String accept ) {
+        if ( accept == null || accept.isBlank() ) {
+            return List.of( MediaType.ALL );
+        }
+        List<MediaType> mediaTypes = MediaType.parseMediaTypes( accept );
+        if ( mediaTypes.isEmpty() ) {
+            return List.of( MediaType.ALL );
+        }
+        MediaType.sortBySpecificityAndQuality( mediaTypes );
+        return mediaTypes;
+    }
+
+    /**
+     * Pick the media type the client prefers out of those the endpoint can produce.
+     *
+     * @param accept    the raw {@code Accept} header value, may be {@code null}.
+     * @param supported the media types the endpoint can produce.
+     * @return the best match, or the client's most preferred type when none is supported,
+     *         leaving the caller to reject it.
+     */
+    public static MediaType negotiate( String accept, List<MediaType> supported ) {
+        List<MediaType> accepted = parseAcceptHeader( accept );
+        return accepted.stream()
+            .filter( candidate -> supported.stream().anyMatch( candidate::isCompatibleWith ) )
+            .findFirst()
+            .orElse( accepted.get( 0 ) );
+    }
+
     public static ResponseEntity<List<String>> getListResponseEntity(VersionDTO currentVersion, VersionDTO previousVersion) {
         List<String> compareVersions = VersionUtils.compareCurPrevCV(currentVersion, previousVersion);
         HttpHeaders headers = new HttpHeaders();

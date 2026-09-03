@@ -1127,8 +1127,12 @@ public class EditorResource {
         log.debug("Editor REST request to get a PDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
 
         var requestURL = ResourceUtils.getURLWithContextPath( request );
-        var mediaType = MediaType.parseMediaType( request.getHeader( HttpHeaders.ACCEPT ) );
-        var type = ExportService.DownloadType.fromMediaType( mediaType ).orElseThrow(); // produces attribute should restrict to acceptable values
+        // produces attribute should restrict to acceptable values
+        var type = ResourceUtils.parseAcceptHeader( request.getHeader( HttpHeaders.ACCEPT ) ).stream()
+            .map( ExportService.DownloadType::fromMediaType )
+            .flatMap( Optional::stream )
+            .findFirst()
+            .orElseThrow();
         Path fileName = vocabularyService.generateVocabularyFileDownload( cv, v, lv, type , requestURL, false );
         return ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName.getFileName())

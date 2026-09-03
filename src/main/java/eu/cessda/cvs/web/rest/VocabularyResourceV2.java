@@ -69,6 +69,16 @@ public class VocabularyResourceV2 {
     private static final String ATTACHMENT_FILENAME = "attachment; filename=";
     private static final String VERSION_WITH_INCLUDED_VERSIONS = "REST request to get a JSON file of vocabulary {} with version {} with included versions {}";
 
+    /** The media types {@link #getVocabulary} can return, in the order it prefers them. */
+    private static final List<MediaType> PRODUCED_MEDIA_TYPES = List.of(
+        MediaType.APPLICATION_JSON,
+        MEDIATYPE_JSONLD,
+        MediaType.APPLICATION_PDF,
+        ExportService.MEDIATYPE_WORD,
+        ExportService.MEDIATYPE_RDF,
+        MediaType.TEXT_HTML
+    );
+
     private final VocabularyService vocabularyService;
 
     public VocabularyResourceV2( VocabularyService vocabularyService ) {
@@ -325,16 +335,8 @@ public class VocabularyResourceV2 {
         ) @RequestParam( required = false )  String languageVersion
     )
     {
-        var accept = request.getHeader( "Accept" );
-        MediaType mediaType;
-        if (accept != null)
-        {
-            mediaType = MediaType.parseMediaType( accept );
-        }
-        else
-        {
-            mediaType = MediaType.ALL;
-        }
+        // Clients send a list of media types, so negotiate rather than parsing a single one
+        var mediaType = ResourceUtils.negotiate( request.getHeader( HttpHeaders.ACCEPT ), PRODUCED_MEDIA_TYPES );
 
         // Switch based on compatible media type - default to application/json if unspecified
         if (mediaType.isCompatibleWith( MediaType.APPLICATION_JSON ))
@@ -436,8 +438,12 @@ public class VocabularyResourceV2 {
         log.debug("REST request to get a PDF file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
 
         var requestURL = ResourceUtils.getURLWithContextPath( request );
-        var mediaType = MediaType.parseMediaType( request.getHeader( "accept" ) );
-        var type = ExportService.DownloadType.fromMediaType( mediaType ).orElseThrow(); // produces attribute should restrict to acceptable values
+        // produces attribute should restrict to acceptable values
+        var type = ResourceUtils.parseAcceptHeader( request.getHeader( HttpHeaders.ACCEPT ) ).stream()
+            .map( ExportService.DownloadType::fromMediaType )
+            .flatMap( Optional::stream )
+            .findFirst()
+            .orElseThrow();
 
         Path fileName = vocabularyService.generateVocabularyFileDownload( vocabulary, versionNumberSl, languageVersion, type, requestURL, true );
 
