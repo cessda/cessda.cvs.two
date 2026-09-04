@@ -22,6 +22,7 @@ import { SessionStorageService, provideNgxWebstorage } from 'ngx-webstorage';
 import { SERVER_API_URL } from 'app/app.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
+import { UserAgency } from 'app/shared/model/user-agency.model';
 import { Authority } from 'app/shared/constants/authority.constants';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
 import { MockLanguageService } from '../../../helpers/mock-language.service';
@@ -227,6 +228,220 @@ describe('Service Tests', () => {
 
           expect(hasAuthority).toBe(true);
         });
+      });
+    });
+  });
+});
+
+describe('Service Tests', () => {
+  describe('Account Service agency authorisation', () => {
+    let service: AccountService;
+    let httpMock: HttpTestingController;
+
+    const EDIT = 'EDIT_CV';
+
+    function accountWith(authorities: Authority[], userAgencies: UserAgency[]): Account {
+      return {
+        id: 1,
+        activated: true,
+        authorities,
+        email: '',
+        firstName: '',
+        langKey: '',
+        lastName: '',
+        login: '',
+        imageUrl: '',
+        userAgencies,
+      };
+    }
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [HttpClientTestingModule],
+        providers: [
+          JhiDateUtils,
+          { provide: JhiLanguageService, useClass: MockLanguageService },
+          { provide: StateStorageService, useClass: MockStateStorageService },
+          { provide: Router, useClass: MockRouter },
+          SessionStorageService,
+          provideNgxWebstorage(),
+        ],
+      });
+
+      service = TestBed.inject(AccountService);
+      httpMock = TestBed.inject(HttpTestingController);
+    });
+
+    afterEach(() => {
+      httpMock.verify();
+    });
+
+    describe('isAdmin', () => {
+      it('should treat a full administrator as an admin', () => {
+        service.authenticate(accountWith([Authority.ADMIN], []));
+
+        expect(service.isAdmin()).toBe(true);
+      });
+
+      it('should treat a content administrator as an admin', () => {
+        service.authenticate(accountWith([Authority.ADMIN_CONTENT], []));
+
+        expect(service.isAdmin()).toBe(true);
+      });
+
+      it('should not treat a technical administrator as an admin', () => {
+        // technical administration is about the running system, not about vocabularies
+        service.authenticate(accountWith([Authority.ADMIN_TECHNICAL], []));
+
+        expect(service.isAdmin()).toBe(false);
+      });
+
+      it('should not treat an ordinary user as an admin', () => {
+        service.authenticate(accountWith([Authority.USER], []));
+
+        expect(service.isAdmin()).toBe(false);
+      });
+    });
+
+    describe('hasAnyAgencyAuthority', () => {
+      it('should refuse anyone who is not logged in', () => {
+        expect(service.hasAnyAgencyAuthority(EDIT, 1, ['ADMIN_SL'])).toBe(false);
+      });
+
+      it('should allow an admin regardless of agency or role', () => {
+        service.authenticate(accountWith([Authority.ADMIN], []));
+
+        expect(service.hasAnyAgencyAuthority(EDIT, 99, ['ADMIN_SL'], 'fr')).toBe(true);
+      });
+
+      it('should refuse an action it does not know', () => {
+        service.authenticate(accountWith([Authority.USER], [{ agencyId: 1, agencyRole: 'ADMIN_SL', language: 'en' }]));
+
+        expect(service.hasAnyAgencyAuthority('SOMETHING_ELSE', 1, ['ADMIN_SL'], 'en')).toBe(false);
+      });
+
+      describe('for a specific agency', () => {
+        beforeEach(() => {
+          service.authenticate(
+            accountWith(
+              [Authority.USER],
+              [
+                { agencyId: 1, agencyRole: 'ADMIN_SL', language: 'en' },
+                { agencyId: 2, agencyRole: 'ADMIN_TL', language: 'de' },
+              ],
+            ),
+          );
+        });
+
+        it('should allow the matching agency, role and language', () => {
+          expect(service.hasAnyAgencyAuthority(EDIT, 1, ['ADMIN_SL'], 'en')).toBe(true);
+        });
+
+        it('should refuse a different agency', () => {
+          expect(service.hasAnyAgencyAuthority(EDIT, 3, ['ADMIN_SL'], 'en')).toBe(false);
+        });
+
+        it('should refuse a role the user does not hold there', () => {
+          expect(service.hasAnyAgencyAuthority(EDIT, 1, ['ADMIN_TL'], 'en')).toBe(false);
+        });
+
+        it('should refuse a language the user is not granted', () => {
+          expect(service.hasAnyAgencyAuthority(EDIT, 1, ['ADMIN_SL'], 'de')).toBe(false);
+        });
+
+        it('should ignore the language when asked for any', () => {
+          expect(service.hasAnyAgencyAuthority(EDIT, 1, ['ADMIN_SL'], 'any')).toBe(true);
+        });
+
+        it('should ignore the language when none is given', () => {
+          expect(service.hasAnyAgencyAuthority(EDIT, 1, ['ADMIN_SL'])).toBe(true);
+        });
+
+        it('should refuse outright when the language is none', () => {
+          expect(service.hasAnyAgencyAuthority(EDIT, 1, ['ADMIN_SL'], 'none')).toBe(false);
+        });
+
+        it('should accept any of several acceptable roles', () => {
+          expect(service.hasAnyAgencyAuthority(EDIT, 2, ['ADMIN_SL', 'ADMIN_TL'], 'de')).toBe(true);
+        });
+      });
+
+      describe('for any agency', () => {
+        beforeEach(() => {
+          service.authenticate(accountWith([Authority.USER], [{ agencyId: 7, agencyRole: 'ADMIN_TL', language: 'de' }]));
+        });
+
+        it('should look only at the role when the agency is zero', () => {
+          expect(service.hasAnyAgencyAuthority(EDIT, 0, ['ADMIN_TL'])).toBe(true);
+        });
+
+        it('should still refuse a role the user holds nowhere', () => {
+          expect(service.hasAnyAgencyAuthority(EDIT, 0, ['ADMIN_SL'])).toBe(false);
+        });
+
+        it('should not care about the language when the agency is zero', () => {
+          expect(service.hasAnyAgencyAuthority(EDIT, 0, ['ADMIN_TL'], 'fr')).toBe(true);
+        });
+      });
+
+      it('should cover the code actions as well as the vocabulary ones', () => {
+        service.authenticate(accountWith([Authority.USER], [{ agencyId: 1, agencyRole: 'ADMIN_SL', language: 'en' }]));
+
+        expect(service.hasAnyAgencyAuthority('CREATE_CODE', 1, ['ADMIN_SL'], 'en')).toBe(true);
+        expect(service.hasAnyAgencyAuthority('DEPRECATE_CODE', 1, ['ADMIN_SL'], 'en')).toBe(true);
+        expect(service.hasAnyAgencyAuthority('FORWARD_CV_SL_STATUS_PUBLISH', 1, ['ADMIN_SL'], 'en')).toBe(true);
+      });
+    });
+
+    describe('reading the signed in user', () => {
+      it('should report nobody as not authenticated', () => {
+        expect(service.isAuthenticated()).toBe(false);
+        expect(service.geUserName()).toBe('');
+        expect(service.getImageUrl()).toBe('');
+        expect(service.getUserAgencies()).toEqual([]);
+      });
+
+      it('should prefer the first name', () => {
+        const account = accountWith([Authority.USER], []);
+        account.firstName = 'Ada';
+        account.lastName = 'Lovelace';
+        service.authenticate(account);
+
+        expect(service.geUserName()).toBe('Ada');
+        expect(service.isAuthenticated()).toBe(true);
+      });
+
+      it('should fall back to the surname', () => {
+        const account = accountWith([Authority.USER], []);
+        account.firstName = '';
+        account.lastName = 'Lovelace';
+        service.authenticate(account);
+
+        expect(service.geUserName()).toBe('Lovelace');
+      });
+
+      it('should list the names of the agencies the user belongs to', () => {
+        service.authenticate(
+          accountWith(
+            [Authority.USER],
+            [
+              { agencyId: 1, agencyName: 'CESSDA', agencyRole: 'ADMIN_SL' },
+              { agencyId: 2, agencyRole: 'ADMIN_TL' },
+              { agencyId: 3, agencyName: 'GESIS', agencyRole: 'ADMIN_TL' },
+            ],
+          ),
+        );
+
+        // an agency without a name is skipped
+        expect(service.getUserAgencies()).toEqual(['CESSDA', 'GESIS']);
+      });
+
+      it('should expose the image url', () => {
+        const account = accountWith([Authority.USER], []);
+        account.imageUrl = 'https://example.org/avatar.png';
+        service.authenticate(account);
+
+        expect(service.getImageUrl()).toBe('https://example.org/avatar.png');
       });
     });
   });
