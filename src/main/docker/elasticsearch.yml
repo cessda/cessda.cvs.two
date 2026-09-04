@@ -17,7 +17,9 @@
 version: '2'
 services:
   cvs-elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
+    # Keep this tag in sync with ${elasticsearch.version} managed by
+    # spring-boot-dependencies (pom.xml parent), which the integration tests use.
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.17.15
     volumes:
       - cvs-es:/usr/share/elasticsearch/data/
     ports:
