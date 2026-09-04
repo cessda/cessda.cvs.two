@@ -22,6 +22,9 @@ module.exports = {
     setupFiles: ['jest-date-mock'],
     setupFilesAfterEnv: ['<rootDir>/src/test/javascript/jest.ts'],
     cacheDirectory: '<rootDir>/target/jest-cache',
+    // Without this, coverage is only measured over files a spec imports, which reports the
+    // covered share of the tested subset rather than of the application
+    collectCoverageFrom: ['<rootDir>/src/main/webapp/app/**/*.ts'],
     coverageDirectory: '<rootDir>/target/test-results/',
     coverageProvider: 'v8',
     coveragePathIgnorePatterns: [
