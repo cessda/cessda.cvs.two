@@ -44,6 +44,7 @@ Several frameworks and languages are used in this application.
 | Java                 | Programming language and API          |
 | Spring Boot          | Web application framework (Back-End)  |
 | Angular              | Web application framework (Front-End) |
+| Elasticsearch        | Search engine (requires analysis-icu) |
 
 ## Development
 
@@ -51,6 +52,24 @@ Before you can build this project, you must install and configure the following 
 
 1. [Node.js](https://nodejs.org/): We use Node to run a development web server and build the project.
    Depending on your system, you can install Node either from source or as a pre-packaged bundle.
+
+2. [Elasticsearch](https://www.elastic.co/elasticsearch/) with the
+   [analysis-icu](https://www.elastic.co/guide/en/elasticsearch/plugins/7.9/analysis-icu.html) plugin.
+   CVS maps vocabulary titles with the `icu_collation_keyword` field type
+   (see [src/main/resources/mappings/](src/main/resources/mappings/)) so that titles can be sorted per language.
+   That field type is contributed by the `analysis-icu` plugin, so index creation fails on an Elasticsearch
+   node where the plugin is missing.
+
+   The Docker Compose file described in [Using Docker to simplify development](#using-docker-to-simplify-development)
+   installs the plugin for you. If you run Elasticsearch yourself, install it once and restart the node:
+
+   ```shell
+   ./bin/elasticsearch-plugin install analysis-icu
+   ```
+
+   The plugin version must match the version of Elasticsearch it is installed into.
+   Integration tests need no setup: the `elasticsearch-maven-plugin` configured in [pom.xml](pom.xml)
+   starts a throwaway Elasticsearch with `analysis-icu` already installed.
 
 After installing Node, you should be able to run the following command to install development tools.
 You will only need to run this command when dependencies change in [package.json](package.json).
@@ -215,6 +234,16 @@ To stop it and remove the container, run:
 ```shell
 docker-compose -f src/main/docker/mysql.yml down
 ```
+
+Elasticsearch is started the same way:
+
+```shell
+docker-compose -f src/main/docker/elasticsearch.yml up -d
+```
+
+[src/main/docker/elasticsearch.yml](src/main/docker/elasticsearch.yml) installs the `analysis-icu` plugin when the
+container starts, checking `elasticsearch-plugin list` first so that later restarts do not download it again.
+No manual plugin installation is needed when using this file.
 
 You can also fully dockerize your application and all the services that it depends on.
 To achieve this, first build a docker image of your app by running:
