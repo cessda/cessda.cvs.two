@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2026 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import {CvsSharedModule} from 'app/shared/shared.module';
-import {LicenceComponent} from './licence.component';
-import {LicenceDetailComponent} from './licence-detail.component';
-import {LicenceUpdateComponent} from './licence-update.component';
-import {LicenceDeleteDialogComponent} from './licence-delete-dialog.component';
-import {licenceRoute} from './licence.route';
+import { CvsSharedModule } from 'app/shared/shared.module';
+import { LicenceComponent } from './licence.component';
+import { LicenceDetailComponent } from './licence-detail.component';
+import { LicenceUpdateComponent } from './licence-update.component';
+import { LicenceDeleteDialogComponent } from './licence-delete-dialog.component';
+import { licenceRoute } from './licence.route';
 
 @NgModule({
-    imports: [CvsSharedModule, RouterModule.forChild(licenceRoute)],
-    declarations: [LicenceComponent, LicenceDetailComponent, LicenceUpdateComponent, LicenceDeleteDialogComponent]
+  imports: [CvsSharedModule, RouterModule.forChild(licenceRoute)],
+  declarations: [LicenceComponent, LicenceDetailComponent, LicenceUpdateComponent, LicenceDeleteDialogComponent],
 })
 export class CvsLicenceModule {}

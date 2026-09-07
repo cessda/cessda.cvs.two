@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2026 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,5 +14,9 @@
  * limitations under the License.
  */
 export class Login {
-  constructor(public username: string, public password: string, public rememberMe: boolean) {}
+  constructor(
+    public username: string,
+    public password: string,
+    public rememberMe: boolean,
+  ) {}
 }

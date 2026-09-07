@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2026 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@ import { Component } from '@angular/core';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 
 @Component({
-    selector: 'jhi-editor',
-    template: '<jhi-vocabulary-search-result [appScope]="appScope"></jhi-vocabulary-search-result>',
-    standalone: false
+  selector: 'jhi-editor',
+  template: '<jhi-vocabulary-search-result [appScope]="appScope"></jhi-vocabulary-search-result>',
+  standalone: false,
 })
 export class EditorComponent {
   appScope: AppScope = AppScope.EDITOR;
