@@ -17,6 +17,7 @@ package eu.cessda.cvs.web.rest.domain;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 public class Maintenance implements Serializable {
     private static final long serialVersionUID = 2L;
@@ -27,7 +28,7 @@ public class Maintenance implements Serializable {
 
     public Maintenance(String output, Operation type) {
         this.output = output;
-        this.timestamp = OffsetDateTime.now();
+        this.timestamp = OffsetDateTime.now(ZoneId.systemDefault());
         this.type = type;
     }
 

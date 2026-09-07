@@ -33,12 +33,12 @@ import { UserAgency } from 'app/shared/model/user-agency.model';
   standalone: false,
 })
 export class UserManagementComponent implements OnInit {
-  private userService = inject(UserService);
-  private accountService = inject(AccountService);
-  private activatedRoute = inject(ActivatedRoute);
-  private router = inject(Router);
-  private modalService = inject(NgbModal);
-  private agencyService = inject(AgencyService);
+  private readonly userService = inject(UserService);
+  private readonly accountService = inject(AccountService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly modalService = inject(NgbModal);
+  private readonly agencyService = inject(AgencyService);
 
   currentAccount: Account | null = null;
   users: User[] = [];

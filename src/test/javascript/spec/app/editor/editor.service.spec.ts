@@ -58,37 +58,54 @@ describe('Service Tests', () => {
       it('should put an updated vocabulary', () => {
         service.updateVocabulary(vocabularySnippet).subscribe();
 
-        httpMock.expectOne({ method: 'PUT', url: service.resourceEditorVocabularyUrl }).flush({});
+        const req = httpMock.expectOne({ method: 'PUT', url: service.resourceEditorVocabularyUrl });
+        expect(req.request.body).toEqual(vocabularySnippet);
+        req.flush({});
       });
 
       it('should post a new version for a vocabulary id', () => {
         service.createNewVersion(42).subscribe();
 
-        httpMock.expectOne({ method: 'POST', url: `${service.resourceEditorVocabularyUrl}/new-version/42` }).flush({});
+        const req = httpMock.expectOne({ method: 'POST', url: `${service.resourceEditorVocabularyUrl}/new-version/42` });
+        expect(req.request.body).toBeNull();
+        req.flush({});
       });
 
       it('should put a status change on its own endpoint', () => {
         service.forwardStatusVocabulary(vocabularySnippet).subscribe();
 
-        httpMock.expectOne({ method: 'PUT', url: `${service.resourceEditorVocabularyUrl}/forward-status` }).flush({});
+        const req = httpMock.expectOne({ method: 'PUT', url: `${service.resourceEditorVocabularyUrl}/forward-status` });
+        expect(req.request.body).toEqual(vocabularySnippet);
+        req.flush({});
       });
 
       it('should delete a vocabulary by version id', () => {
-        service.deleteVocabulary(9).subscribe();
+        let status;
+        service.deleteVocabulary(9).subscribe(res => (status = res.status));
 
         httpMock.expectOne({ method: 'DELETE', url: `${service.resourceEditorVocabularyUrl}/9` }).flush({});
+
+        expect(status).toBe(200);
       });
 
       it('should request the latest version by notation', () => {
-        service.getVocabulary('AnalysisUnit').subscribe();
+        let body;
+        service.getVocabulary('AnalysisUnit').subscribe(res => (body = res.body));
 
-        httpMock.expectOne({ method: 'GET', url: `${service.resourceEditorVocabularyUrl}/AnalysisUnit/latest` }).flush({});
+        httpMock
+          .expectOne({ method: 'GET', url: `${service.resourceEditorVocabularyUrl}/AnalysisUnit/latest` })
+          .flush({ notation: 'AnalysisUnit' });
+
+        expect(body).toEqual({ notation: 'AnalysisUnit' });
       });
 
       it('should request a comparison against the previous version', () => {
-        service.getVocabularyCompare(5).subscribe();
+        let body;
+        service.getVocabularyCompare(5).subscribe(res => (body = res.body));
 
-        httpMock.expectOne({ method: 'GET', url: `${service.resourceEditorVocabularyUrl}/compare-prev/5` }).flush([]);
+        httpMock.expectOne({ method: 'GET', url: `${service.resourceEditorVocabularyUrl}/compare-prev/5` }).flush(['a diff line']);
+
+        expect(body).toEqual(['a diff line']);
       });
 
       it('should convert vocabulary dates coming back from the server into moments', () => {
@@ -117,7 +134,9 @@ describe('Service Tests', () => {
       it('should post a single code', () => {
         service.createCode(codeSnippet).subscribe();
 
-        httpMock.expectOne({ method: 'POST', url: service.resourceEditorCodeUrl }).flush({});
+        const req = httpMock.expectOne({ method: 'POST', url: service.resourceEditorCodeUrl });
+        expect(req.request.body).toEqual(codeSnippet);
+        req.flush({});
       });
 
       it('should post a batch of codes to the batch endpoint', () => {
@@ -131,25 +150,34 @@ describe('Service Tests', () => {
       it('should put an updated code', () => {
         service.updateCode(codeSnippet).subscribe();
 
-        httpMock.expectOne({ method: 'PUT', url: service.resourceEditorCodeUrl }).flush({});
+        const req = httpMock.expectOne({ method: 'PUT', url: service.resourceEditorCodeUrl });
+        expect(req.request.body).toEqual(codeSnippet);
+        req.flush({});
       });
 
       it('should post a reorder to its own endpoint', () => {
         service.reorderCode(codeSnippet).subscribe();
 
-        httpMock.expectOne({ method: 'POST', url: `${service.resourceEditorCodeUrl}/reorder` }).flush({});
+        const req = httpMock.expectOne({ method: 'POST', url: `${service.resourceEditorCodeUrl}/reorder` });
+        expect(req.request.body).toEqual(codeSnippet);
+        req.flush({});
       });
 
       it('should post a deprecation to its own endpoint', () => {
         service.deprecateCode(codeSnippet).subscribe();
 
-        httpMock.expectOne({ method: 'POST', url: `${service.resourceEditorCodeUrl}/deprecate` }).flush({});
+        const req = httpMock.expectOne({ method: 'POST', url: `${service.resourceEditorCodeUrl}/deprecate` });
+        expect(req.request.body).toEqual(codeSnippet);
+        req.flush({});
       });
 
       it('should delete a code by concept id', () => {
-        service.deleteCode(3).subscribe();
+        let status;
+        service.deleteCode(3).subscribe(res => (status = res.status));
 
         httpMock.expectOne({ method: 'DELETE', url: `${service.resourceEditorCodeUrl}/3` }).flush({});
+
+        expect(status).toBe(200);
       });
     });
 
@@ -159,7 +187,9 @@ describe('Service Tests', () => {
       it('should post a comment', () => {
         service.createComment(comment).subscribe();
 
-        httpMock.expectOne({ method: 'POST', url: service.resourceEditorCommentUrl }).flush({});
+        const req = httpMock.expectOne({ method: 'POST', url: service.resourceEditorCommentUrl });
+        expect(req.request.body).toEqual(comment);
+        req.flush({});
       });
 
       it('should convert the comment timestamp coming back from the server into a moment', () => {
@@ -174,13 +204,18 @@ describe('Service Tests', () => {
       it('should put an updated comment', () => {
         service.updateComment(comment).subscribe();
 
-        httpMock.expectOne({ method: 'PUT', url: service.resourceEditorCommentUrl }).flush({});
+        const req = httpMock.expectOne({ method: 'PUT', url: service.resourceEditorCommentUrl });
+        expect(req.request.body).toEqual(comment);
+        req.flush({});
       });
 
       it('should delete a comment by id', () => {
-        service.deleteComment(11).subscribe();
+        let status;
+        service.deleteComment(11).subscribe(res => (status = res.status));
 
         httpMock.expectOne({ method: 'DELETE', url: `${service.resourceEditorCommentUrl}/11` }).flush({});
+
+        expect(status).toBe(200);
       });
     });
 
@@ -190,19 +225,26 @@ describe('Service Tests', () => {
       it('should post application metadata', () => {
         service.createAppMetadata(metadataValue).subscribe();
 
-        httpMock.expectOne({ method: 'POST', url: service.resourceEditorMetadataUrl }).flush({});
+        const req = httpMock.expectOne({ method: 'POST', url: service.resourceEditorMetadataUrl });
+        expect(req.request.body).toEqual(metadataValue);
+        req.flush({});
       });
 
       it('should put application metadata', () => {
         service.updateAppMetadata(metadataValue).subscribe();
 
-        httpMock.expectOne({ method: 'PUT', url: service.resourceEditorMetadataUrl }).flush({});
+        const req = httpMock.expectOne({ method: 'PUT', url: service.resourceEditorMetadataUrl });
+        expect(req.request.body).toEqual(metadataValue);
+        req.flush({});
       });
 
       it('should delete application metadata by id', () => {
-        service.deleteAppMetadata(4).subscribe();
+        let status;
+        service.deleteAppMetadata(4).subscribe(res => (status = res.status));
 
         httpMock.expectOne({ method: 'DELETE', url: `${service.resourceEditorMetadataUrl}/4` }).flush({});
+
+        expect(status).toBe(200);
       });
     });
 

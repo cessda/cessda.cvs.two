@@ -768,7 +768,12 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   escapeCsvContent(content?: string): string {
     let escapedContent = content === null || content === undefined ? '' : content;
-    escapedContent = escapedContent.replace(/\n+$/, '').replaceAll('"', '""');
+    // strip trailing newlines by index; /\n+$/ backtracks super-linearly (sonar typescript:S8786)
+    let end = escapedContent.length;
+    while (end > 0 && escapedContent.charAt(end - 1) === '\n') {
+      end--;
+    }
+    escapedContent = escapedContent.slice(0, end).replaceAll('"', '""');
     if (escapedContent.search(/("|,|\n)/g) >= 0) {
       escapedContent = `"${escapedContent}"`;
     }
