@@ -267,5 +267,31 @@ describe('Component Tests', () => {
         expect(comp.editorDetailForm.controls.notes.value).toBe('Stored note');
       });
     });
+
+    describe('escaping CSV content', () => {
+      it('should strip trailing newlines', () => {
+        expect(comp.escapeCsvContent('a\n\n\n')).toBe('a');
+      });
+
+      it('should keep an interior newline and quote the cell', () => {
+        expect(comp.escapeCsvContent('a\nb')).toBe('"a\nb"');
+      });
+
+      it('should double an embedded quote and quote the cell', () => {
+        expect(comp.escapeCsvContent('say "hi"')).toBe('"say ""hi"""');
+      });
+
+      it('should quote a cell containing a comma', () => {
+        expect(comp.escapeCsvContent('a,b')).toBe('"a,b"');
+      });
+
+      it('should return an empty string for undefined content', () => {
+        expect(comp.escapeCsvContent(undefined)).toBe('');
+      });
+
+      it('should leave the carriage return of a CRLF line ending', () => {
+        expect(comp.escapeCsvContent('a\r\n')).toBe('a\r');
+      });
+    });
   });
 });
