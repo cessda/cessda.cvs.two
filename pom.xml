@@ -682,7 +682,10 @@
                 <artifactId>elasticsearch-maven-plugin</artifactId>
                 <version>6.29</version>
                 <configuration>
-                    <!-- THE ELASTICSEARCH VERSION; REPLACE WITH THE VERSION YOU NEED -->
+                    <!-- Inherited from the Spring Boot BOM (spring-boot-dependencies), so the
+                         test server always matches the Elasticsearch client on the classpath.
+                         Do not override it locally, or the two will drift apart. Note that
+                         Spring Boot 3 renames this property to elasticsearch-client.version. -->
                     <version>${elasticsearch.version}</version>
                     <httpPort>9225</httpPort>
                     <transportPort>9350</transportPort>
