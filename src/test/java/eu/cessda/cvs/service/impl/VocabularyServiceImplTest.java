@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2026 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -203,8 +203,12 @@ class VocabularyServiceImplTest
     @Test
     void shouldGetPublishedCVPaths() throws  URISyntaxException
     {
-        // Setup
-        URL content = Objects.requireNonNull( this.getClass().getResource( "/static/content" ) );
+        // Setup - a fixture mirroring content/vocabularies, so that this test does not depend on
+        // the Angular build having populated target/classes/static beforehand
+        URL content = Objects.requireNonNull(
+            this.getClass().getResource( "/published-cv" ),
+            "Fixture /published-cv is missing from src/test/resources"
+        );
         ApplicationProperties applicationProperties = new ApplicationProperties( Path.of( content.toURI() ) );
         VocabularyServiceImpl vocabularyService = new VocabularyServiceImpl( null,
             null,
@@ -224,9 +228,12 @@ class VocabularyServiceImplTest
         );
 
         // Run
-        assertThat(vocabularyService.getPublishedCvPaths()).isNotEmpty()
+        assertThat( vocabularyService.getPublishedCvPaths() )
             // All results should be files
-            .allMatch( Files::isRegularFile );
+            .allMatch( Files::isRegularFile )
+            // The search is limited to a depth of 2, so versioned subdirectories are excluded
+            .extracting( path -> path.getFileName().toString() )
+            .containsExactlyInAnyOrder( "AnalysisUnit.json", "TimeMethod.json" );
     }
 
     @Test

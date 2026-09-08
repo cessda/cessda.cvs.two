@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2026 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,41 +36,41 @@ import { MockEventManager } from './helpers/mock-event-manager.service';
     JhiParseLinks,
     {
       provide: JhiLanguageService,
-      useClass: MockLanguageService
+      useClass: MockLanguageService,
     },
     {
       provide: JhiEventManager,
-      useClass: MockEventManager
+      useClass: MockEventManager,
     },
     {
       provide: NgbActiveModal,
-      useClass: MockActiveModal
+      useClass: MockActiveModal,
     },
     {
       provide: ActivatedRoute,
-      useValue: new MockActivatedRoute({ id: 123 })
+      useValue: new MockActivatedRoute({ id: 123 }),
     },
     {
       provide: Router,
-      useClass: MockRouter
+      useClass: MockRouter,
     },
     {
       provide: AccountService,
-      useClass: MockAccountService
+      useClass: MockAccountService,
     },
     {
       provide: LoginModalService,
-      useValue: null
+      useValue: null,
     },
     {
       provide: JhiAlertService,
-      useValue: null
+      useValue: null,
     },
     {
       provide: NgbModal,
-      useValue: null
-    }
+      useValue: null,
+    },
   ],
-  imports: [HttpClientTestingModule]
+  imports: [HttpClientTestingModule],
 })
 export class CvsTestModule {}

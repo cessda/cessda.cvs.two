@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2026 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Route} from '@angular/router';
+import { Route } from '@angular/router';
 
-import {UserRouteAccessService} from 'app/core/auth/user-route-access-service';
-import {SettingsComponent} from './settings.component';
-import {Authority} from 'app/shared/constants/authority.constants';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { SettingsComponent } from './settings.component';
+import { Authority } from 'app/shared/constants/authority.constants';
 
 export const settingsRoute: Route = {
   path: 'settings',
   component: SettingsComponent,
   data: {
     authorities: [Authority.USER],
-    pageTitle: 'global.menu.account.settings'
+    pageTitle: 'global.menu.account.settings',
   },
-  canActivate: [UserRouteAccessService]
+  canActivate: [UserRouteAccessService],
 };

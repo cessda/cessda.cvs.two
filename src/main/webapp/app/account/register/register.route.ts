@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2026 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Route} from '@angular/router';
+import { Route } from '@angular/router';
 
-import {RegisterComponent} from './register.component';
+import { RegisterComponent } from './register.component';
 
 export const registerRoute: Route = {
   path: 'register',
   component: RegisterComponent,
   data: {
     authorities: [],
-    pageTitle: 'register.title'
-  }
+    pageTitle: 'register.title',
+  },
 };

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2026 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { CvsSharedModule } from 'app/shared/shared.module';
@@ -23,6 +23,6 @@ import { apiDocsRoute } from './api-docs.route';
 @NgModule({
   imports: [CvsSharedModule, RouterModule.forChild(apiDocsRoute)],
   declarations: [ApiDocsComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CvsApiDocsModule {}

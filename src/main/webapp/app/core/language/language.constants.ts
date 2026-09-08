@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2026 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,6 @@ export const LANGUAGES: string[] = [
   'sk',
   'sr',
   'es',
-  'sv'
+  'sv',
   // jhipster-needle-i18n-language-constant - JHipster will add/remove languages in this array
 ];

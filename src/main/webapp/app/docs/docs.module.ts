@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2026 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
-import {CvsSharedModule} from 'app/shared/shared.module';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { CvsSharedModule } from 'app/shared/shared.module';
 
-import {DocsComponent} from './docs.component';
+import { DocsComponent } from './docs.component';
 
-import {docsRoute} from './docs.route';
+import { docsRoute } from './docs.route';
 
 @NgModule({
   imports: [CvsSharedModule, RouterModule.forChild([docsRoute])],
-  declarations: [DocsComponent]
+  declarations: [DocsComponent],
 })
 export class DocsModule {}
