@@ -19,7 +19,6 @@ import { Router } from '@angular/router';
 import { of } from 'rxjs';
 
 import { CvsTestModule } from '../../test.module';
-import { MockRouter } from '../../helpers/mock-route.service';
 import { VocabularyDownloadComponent } from 'app/shared/vocabulary-download/vocabulary-download.component';
 import { EditorService } from 'app/editor/editor.service';
 import { HomeService } from 'app/home/home.service';
