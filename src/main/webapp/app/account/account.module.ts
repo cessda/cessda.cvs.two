@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2026 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {NgModule} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import {CvsSharedModule} from 'app/shared/shared.module';
+import { CvsSharedModule } from 'app/shared/shared.module';
 
-import {PasswordStrengthBarComponent} from './password/password-strength-bar.component';
-import {RegisterComponent} from './register/register.component';
-import {ActivateComponent} from './activate/activate.component';
-import {PasswordComponent} from './password/password.component';
-import {PasswordResetInitComponent} from './password-reset/init/password-reset-init.component';
-import {PasswordResetFinishComponent} from './password-reset/finish/password-reset-finish.component';
-import {SettingsComponent} from './settings/settings.component';
-import {accountState} from './account.route';
+import { PasswordStrengthBarComponent } from './password/password-strength-bar.component';
+import { RegisterComponent } from './register/register.component';
+import { ActivateComponent } from './activate/activate.component';
+import { PasswordComponent } from './password/password.component';
+import { PasswordResetInitComponent } from './password-reset/init/password-reset-init.component';
+import { PasswordResetFinishComponent } from './password-reset/finish/password-reset-finish.component';
+import { SettingsComponent } from './settings/settings.component';
+import { accountState } from './account.route';
 
 @NgModule({
   imports: [CvsSharedModule, RouterModule.forChild(accountState)],
@@ -36,7 +36,7 @@ import {accountState} from './account.route';
     PasswordStrengthBarComponent,
     PasswordResetInitComponent,
     PasswordResetFinishComponent,
-    SettingsComponent
-  ]
+    SettingsComponent,
+  ],
 })
 export class AccountModule {}

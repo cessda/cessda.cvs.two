@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2026 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@ import { Component } from '@angular/core';
 import { TreeComponent } from './tree.component';
 
 @Component({
-    selector: 'jhi-tree-deprecated',
-    templateUrl: './tree-deprecated.component.html',
-    styleUrls: ['./tree.component.scss'],
-    standalone: false
+  selector: 'jhi-tree-deprecated',
+  templateUrl: './tree-deprecated.component.html',
+  styleUrls: ['./tree.component.scss'],
+  standalone: false,
 })
 export class TreeDeprecatedComponent extends TreeComponent {}

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2026 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Routes} from '@angular/router';
+import { Routes } from '@angular/router';
 
-import {activateRoute} from './activate/activate.route';
-import {passwordRoute} from './password/password.route';
-import {passwordResetFinishRoute} from './password-reset/finish/password-reset-finish.route';
-import {passwordResetInitRoute} from './password-reset/init/password-reset-init.route';
-import {registerRoute} from './register/register.route';
-import {settingsRoute} from './settings/settings.route';
+import { activateRoute } from './activate/activate.route';
+import { passwordRoute } from './password/password.route';
+import { passwordResetFinishRoute } from './password-reset/finish/password-reset-finish.route';
+import { passwordResetInitRoute } from './password-reset/init/password-reset-init.route';
+import { registerRoute } from './register/register.route';
+import { settingsRoute } from './settings/settings.route';
 
 const ACCOUNT_ROUTES = [activateRoute, passwordRoute, passwordResetFinishRoute, passwordResetInitRoute, registerRoute, settingsRoute];
 
 export const accountState: Routes = [
   {
     path: '',
-    children: ACCOUNT_ROUTES
-  }
+    children: ACCOUNT_ROUTES,
+  },
 ];

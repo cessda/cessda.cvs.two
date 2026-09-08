@@ -1,5 +1,5 @@
 #
-# Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+# Copyright © 2017-2026 CESSDA ERIC (support@cessda.eu)
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ services:
       - SPRING_PROFILES_ACTIVE=prod,swagger
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - SPRING_DATASOURCE_URL=jdbc:mysql://cvs-mysql:3306/cvs
-      - JHIPSTER_SLEEP=30   # gives time for other services to boot before the application
+      - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
       - SPRING_DATA_JEST_URI=http://cvs-elasticsearch:9200
       - SPRING_ELASTICSEARCH_REST_URIS=http://cvs-elasticsearch:9200
     ports:

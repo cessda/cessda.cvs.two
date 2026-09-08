@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2026 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,5 +16,5 @@
 export const enum ObjectType {
   AGENCY = 'AGENCY',
   GROUP = 'GROUP',
-  SYSTEM = 'SYSTEM'
+  SYSTEM = 'SYSTEM',
 }
