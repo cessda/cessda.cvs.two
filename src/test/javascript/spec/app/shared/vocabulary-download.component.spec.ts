@@ -52,10 +52,6 @@ describe('Component Tests', () => {
       // the constructor opts out of route reuse, which the mock router has no strategy for
       mockRouter.routeReuseStrategy = { shouldReuseRoute: (): boolean => true };
 
-      // jsdom has no object URLs, and the component builds one to hand the file to the browser
-      (window.URL as unknown as Record<string, unknown>).createObjectURL = (): string => 'blob:stub';
-      (window.URL as unknown as Record<string, unknown>).revokeObjectURL = (): void => undefined;
-
       fixture = TestBed.createComponent(VocabularyDownloadComponent);
       comp = fixture.componentInstance;
       editorService = fixture.debugElement.injector.get(EditorService);
