@@ -105,46 +105,25 @@ describe('Component Tests', () => {
         setUp({ id: 5, identifier: 'overview', value: longEnough });
       });
 
-      it('should require an identifier', () => {
-        comp.metadataForm.controls.identifier.setValue('');
+      it.each([
+        { name: 'require an identifier', value: '', valid: false },
+        { name: 'refuse an identifier of a single character', value: 'a', valid: false },
+        { name: 'refuse an identifier longer than forty characters', value: 'a'.repeat(41), valid: false },
+        { name: 'refuse an identifier that is not lowercase, digits or dashes', value: 'Overview Section', valid: false },
+        { name: 'accept a lowercase identifier with digits and dashes', value: 'about-us-2', valid: true },
+      ])('should $name', ({ value, valid }) => {
+        comp.metadataForm.controls.identifier.setValue(value);
 
-        expect(comp.metadataForm.controls.identifier.valid).toBe(false);
+        expect(comp.metadataForm.controls.identifier.valid).toBe(valid);
       });
 
-      it('should refuse an identifier of a single character', () => {
-        comp.metadataForm.controls.identifier.setValue('a');
+      it.each([
+        { name: 'refuse content shorter than thirty characters', value: 'too short to be a section', valid: false },
+        { name: 'accept content of thirty characters or more', value: 'a'.repeat(30), valid: true },
+      ])('should $name', ({ value, valid }) => {
+        comp.metadataForm.controls.content.setValue(value);
 
-        expect(comp.metadataForm.controls.identifier.valid).toBe(false);
-      });
-
-      it('should refuse an identifier longer than forty characters', () => {
-        comp.metadataForm.controls.identifier.setValue('a'.repeat(41));
-
-        expect(comp.metadataForm.controls.identifier.valid).toBe(false);
-      });
-
-      it('should refuse an identifier that is not lowercase, digits or dashes', () => {
-        comp.metadataForm.controls.identifier.setValue('Overview Section');
-
-        expect(comp.metadataForm.controls.identifier.valid).toBe(false);
-      });
-
-      it('should accept a lowercase identifier with digits and dashes', () => {
-        comp.metadataForm.controls.identifier.setValue('about-us-2');
-
-        expect(comp.metadataForm.controls.identifier.valid).toBe(true);
-      });
-
-      it('should refuse content shorter than thirty characters', () => {
-        comp.metadataForm.controls.content.setValue('too short to be a section');
-
-        expect(comp.metadataForm.controls.content.valid).toBe(false);
-      });
-
-      it('should accept content of thirty characters or more', () => {
-        comp.metadataForm.controls.content.setValue('a'.repeat(30));
-
-        expect(comp.metadataForm.controls.content.valid).toBe(true);
+        expect(comp.metadataForm.controls.content.valid).toBe(valid);
       });
     });
 
