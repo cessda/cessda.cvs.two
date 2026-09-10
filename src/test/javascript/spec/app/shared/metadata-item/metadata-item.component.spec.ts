@@ -105,34 +105,25 @@ describe('Component Tests', () => {
         setUp({ id: 5, identifier: 'overview', value: longEnough });
       });
 
-      // one identifier per validator on the control: required, the two length bounds and the
-      // pattern, then the shape that has to survive all four
-      const identifiers: { shape: string; value: string; accepted: boolean }[] = [
-        { shape: 'nothing at all', value: '', accepted: false },
-        { shape: 'a single character', value: 'a', accepted: false },
-        { shape: 'more than forty characters', value: 'a'.repeat(41), accepted: false },
-        { shape: 'capitals and spaces', value: 'Overview Section', accepted: false },
-        { shape: 'lowercase letters, digits and dashes', value: 'about-us-2', accepted: true },
-      ];
+      it.each([
+        { name: 'require an identifier', value: '', valid: false },
+        { name: 'refuse an identifier of a single character', value: 'a', valid: false },
+        { name: 'refuse an identifier longer than forty characters', value: 'a'.repeat(41), valid: false },
+        { name: 'refuse an identifier that is not lowercase, digits or dashes', value: 'Overview Section', valid: false },
+        { name: 'accept a lowercase identifier with digits and dashes', value: 'about-us-2', valid: true },
+      ])('should $name', ({ value, valid }) => {
+        comp.metadataForm.controls.identifier.setValue(value);
 
-      identifiers.forEach(identifier => {
-        it(`should ${identifier.accepted ? 'accept' : 'refuse'} an identifier of ${identifier.shape}`, () => {
-          comp.metadataForm.controls.identifier.setValue(identifier.value);
-
-          expect(comp.metadataForm.controls.identifier.valid).toBe(identifier.accepted);
-        });
+        expect(comp.metadataForm.controls.identifier.valid).toBe(valid);
       });
 
-      it('should refuse content shorter than thirty characters', () => {
-        comp.metadataForm.controls.content.setValue('too short to be a section');
+      it.each([
+        { name: 'refuse content shorter than thirty characters', value: 'too short to be a section', valid: false },
+        { name: 'accept content of thirty characters or more', value: 'a'.repeat(30), valid: true },
+      ])('should $name', ({ value, valid }) => {
+        comp.metadataForm.controls.content.setValue(value);
 
-        expect(comp.metadataForm.controls.content.valid).toBe(false);
-      });
-
-      it('should accept content of thirty characters or more', () => {
-        comp.metadataForm.controls.content.setValue('a'.repeat(30));
-
-        expect(comp.metadataForm.controls.content.valid).toBe(true);
+        expect(comp.metadataForm.controls.content.valid).toBe(valid);
       });
     });
 
