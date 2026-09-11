@@ -26,7 +26,9 @@ module.exports = {
     // covered share of the tested subset rather than of the application
     collectCoverageFrom: ['<rootDir>/src/main/webapp/app/**/*.ts'],
     coverageDirectory: '<rootDir>/target/test-results/',
-    coverageProvider: 'v8',
+    // istanbul builds its statement map from the AST, so comments and type-only declarations
+    // are never counted as coverable; the v8 provider maps whole files and counted both
+    coverageProvider: 'babel',
     coveragePathIgnorePatterns: [
         '/node_modules/',
         '<rootDir>/src/test/javascript'
