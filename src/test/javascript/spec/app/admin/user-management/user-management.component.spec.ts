@@ -15,11 +15,12 @@
  */
 import { ComponentFixture, TestBed, waitForAsync, inject, fakeAsync, tick } from '@angular/core/testing';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
 import { UserManagementComponent } from 'app/admin/user-management/user-management.component';
 import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.model';
 
 describe('Component Tests', () => {
   describe('User Management Component', () => {
@@ -66,6 +67,47 @@ describe('Component Tests', () => {
           expect(comp.users && comp.users[0]).toEqual(jasmine.objectContaining({ id: 123 }));
         }),
       ));
+    });
+
+    describe('deleteUser', () => {
+      let closed: Subject<string>;
+      let query: jasmine.Spy;
+      let open: jasmine.Spy;
+      let dialog: { componentInstance: { user?: User }; closed: Subject<string> };
+
+      beforeEach(() => {
+        closed = new Subject<string>();
+        dialog = { componentInstance: {}, closed };
+        open = jasmine.createSpy('open').and.returnValue(dialog);
+        // CvsTestModule provides NgbModal as null, so the component is given a stub of its own
+        (comp as unknown as { modalService: { open: jasmine.Spy } }).modalService = { open };
+        query = spyOn(service, 'query').and.returnValue(of(new HttpResponse({ body: [{ id: 123 }] })));
+      });
+
+      it('should hand the user to the dialog it opens', () => {
+        const user = { id: 7, login: 'jdoe' } as User;
+
+        comp.deleteUser(user);
+
+        expect(open).toHaveBeenCalled();
+        expect(dialog.componentInstance.user).toBe(user);
+      });
+
+      it('should reload the users once the dialog reports a deletion', () => {
+        comp.deleteUser({ id: 7, login: 'jdoe' } as User);
+
+        closed.next('deleted');
+
+        expect(query).toHaveBeenCalled();
+      });
+
+      it('should leave the list alone when the dialog closes for any other reason', () => {
+        comp.deleteUser({ id: 7, login: 'jdoe' } as User);
+
+        closed.next('cancel');
+
+        expect(query).not.toHaveBeenCalled();
+      });
     });
 
     describe('setActive', () => {

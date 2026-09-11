@@ -30,7 +30,9 @@ module.exports = {
     // those three groups out puts line coverage of new code at 80.9 % against the 61.4 %
     // measured with them in.
     coverageDirectory: '<rootDir>/target/test-results/',
-    coverageProvider: 'v8',
+    // istanbul builds its statement map from the AST, so comments and type-only declarations
+    // are never counted as coverable; the v8 provider maps whole files and counted both
+    coverageProvider: 'babel',
     coveragePathIgnorePatterns: [
         '/node_modules/',
         '<rootDir>/src/test/javascript'
