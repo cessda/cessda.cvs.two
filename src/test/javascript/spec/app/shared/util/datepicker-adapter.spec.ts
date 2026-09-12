@@ -13,60 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import moment, { Moment } from 'moment';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import moment from 'moment';
 
 import { NgbDateMomentAdapter } from 'app/shared/util/datepicker-adapter';
 
-describe('Util Tests', () => {
-  describe('Ngb Date Moment Adapter', () => {
-    const adapter = new NgbDateMomentAdapter();
+describe('NgbDateMomentAdapter', () => {
+  const adapter = new NgbDateMomentAdapter();
 
-    describe('from a moment to the datepicker', () => {
-      it('should hand over the year, the month and the day', () => {
-        expect(adapter.fromModel(moment('2026-09-11', 'YYYY-MM-DD'))).toEqual({ year: 2026, month: 9, day: 11 });
-      });
-
-      it('should count months from one rather than from zero', () => {
-        // moment numbers January as 0, the datepicker as 1
-        expect(adapter.fromModel(moment('2026-01-31', 'YYYY-MM-DD')).month).toBe(1);
-      });
-
-      it('should hand over nothing when there is no date', () => {
-        expect(adapter.fromModel(null as unknown as Moment)).toBeNull();
-      });
-
-      it('should hand over nothing for a date that is not valid', () => {
-        expect(adapter.fromModel(moment('not a date', 'YYYY-MM-DD'))).toBeNull();
-      });
-
-      it('should hand over nothing for something that is not a moment at all', () => {
-        expect(adapter.fromModel('2026-09-11' as unknown as Moment)).toBeNull();
-      });
+  describe('fromModel', () => {
+    it('should turn a moment into a one-based month date struct', () => {
+      expect(adapter.fromModel(moment('2026-03-04'))).toEqual({ year: 2026, month: 3, day: 4 });
     });
 
-    describe('from the datepicker to a moment', () => {
-      it('should take the year, the month and the day back', () => {
-        const date = adapter.toModel({ year: 2026, month: 9, day: 11 });
+    it.each([
+      { name: 'null', date: null },
+      { name: 'undefined', date: undefined },
+      { name: 'an invalid moment', date: moment.invalid() },
+      { name: 'something that is not a moment', date: new Date('2026-03-04') },
+    ])('should return null for $name', ({ date }) => {
+      expect(adapter.fromModel(date as never)).toBeNull();
+    });
+  });
 
-        expect(date.format('YYYY-MM-DD')).toBe('2026-09-11');
-      });
+  describe('toModel', () => {
+    it('should turn a date struct back into a moment', () => {
+      const date = adapter.toModel({ year: 2026, month: 3, day: 4 });
 
-      it('should give back a valid moment', () => {
-        expect(adapter.toModel({ year: 2026, month: 9, day: 11 }).isValid()).toBe(true);
-      });
-
-      it('should give back nothing when the datepicker holds no date', () => {
-        expect(adapter.toModel(null as unknown as NgbDateStruct)).toBeNull();
-      });
+      expect(date.format('YYYY-MM-DD')).toBe('2026-03-04');
     });
 
-    it('should survive a round trip through the datepicker', () => {
-      const original = moment('2026-02-28', 'YYYY-MM-DD');
+    it('should round trip a moment through both directions', () => {
+      const original = moment('2026-12-31');
 
-      const returned = adapter.toModel(adapter.fromModel(original));
+      expect(adapter.toModel(adapter.fromModel(original)).format('YYYY-MM-DD')).toBe('2026-12-31');
+    });
 
-      expect(returned.format('YYYY-MM-DD')).toBe('2026-02-28');
+    it('should return null when there is no date struct', () => {
+      expect(adapter.toModel(null as never)).toBeNull();
     });
   });
 });

@@ -16,3 +16,26 @@
 Object.defineProperty(window, 'getComputedStyle', {
   value: () => ['-webkit-appearance'],
 });
+
+/*
+ * jsdom implements neither of these, so any component that offers a file for download needs them
+ * put in place before it can be tested at all.
+ *
+ * The stub hands back a fragment rather than a blob URL on purpose. Such a component builds a link
+ * and clicks it, and jsdom follows every navigation but a fragment by logging a "Not implemented:
+ * navigation" error with a full stack trace, which buries the rest of the CI log. A fragment is
+ * the one target it will follow quietly.
+ *
+ * Both are configurable so that a spec wanting to assert on the blob it was handed can spy on them.
+ */
+Object.defineProperty(window.URL, 'createObjectURL', {
+  value: () => '#blob',
+  configurable: true,
+  writable: true,
+});
+
+Object.defineProperty(window.URL, 'revokeObjectURL', {
+  value: () => undefined,
+  configurable: true,
+  writable: true,
+});

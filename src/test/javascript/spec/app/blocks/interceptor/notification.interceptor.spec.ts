@@ -14,89 +14,77 @@
  * limitations under the License.
  */
 import { TestBed } from '@angular/core/testing';
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpHandler, HttpHeaders, HttpRequest, HttpResponse, HttpSentEvent } from '@angular/common/http';
 import { JhiAlertService } from 'ng-jhipster';
+import { of } from 'rxjs';
 
 import { NotificationInterceptor } from 'app/blocks/interceptor/notification.interceptor';
 
-describe('Interceptor Tests', () => {
-  describe('Notification Interceptor', () => {
-    let http: HttpClient;
-    let httpMock: HttpTestingController;
-    let success: jasmine.Spy;
+describe('NotificationInterceptor', () => {
+  let interceptor: NotificationInterceptor;
+  let success: jest.Mock;
 
-    const respondWith = (headers: Record<string, string>): void => {
-      http.get('api/vocabularies').subscribe();
-      httpMock.expectOne('api/vocabularies').flush({}, { headers });
-    };
+  // JHipster's HeaderUtil emits X-<clientApp>-alert and X-<clientApp>-params; the interceptor
+  // matches on the suffix, so the application name in front of it does not matter
+  const respondWith = (headers: Record<string, string>): HttpHandler =>
+    ({ handle: () => of(new HttpResponse({ headers: new HttpHeaders(headers) })) }) as unknown as HttpHandler;
 
-    beforeEach(() => {
-      success = jasmine.createSpy('success');
+  const request = new HttpRequest('GET', '/api/licences');
 
-      TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule],
-        providers: [
-          { provide: JhiAlertService, useValue: { success } },
-          { provide: HTTP_INTERCEPTORS, useClass: NotificationInterceptor, multi: true },
-        ],
-      });
-
-      http = TestBed.inject(HttpClient);
-      httpMock = TestBed.inject(HttpTestingController);
+  beforeEach(() => {
+    success = jest.fn();
+    TestBed.configureTestingModule({
+      providers: [NotificationInterceptor, { provide: JhiAlertService, useValue: { success } }],
     });
+    interceptor = TestBed.inject(NotificationInterceptor);
+  });
 
-    afterEach(() => {
-      httpMock.verify();
-    });
+  it('should raise the alert the server asked for', () => {
+    interceptor.intercept(request, respondWith({ 'X-cvsApp-alert': 'cvsApp.licence.created' })).subscribe();
 
-    it('should raise the alert the server asks for', () => {
-      respondWith({ 'X-cvsApp-alert': 'cvsApp.agency.created' });
+    expect(success).toHaveBeenCalledWith('cvsApp.licence.created', { param: null });
+  });
 
-      expect(success).toHaveBeenCalledWith('cvsApp.agency.created', { param: null });
-    });
+  it('should pass the alert parameters through, decoded', () => {
+    interceptor.intercept(request, respondWith({ 'X-cvsApp-alert': 'cvsApp.licence.created', 'X-cvsApp-params': 'CC+BY+4.0' })).subscribe();
 
-    it('should pass the parameter along with it', () => {
-      respondWith({ 'X-cvsApp-alert': 'cvsApp.agency.created', 'X-cvsApp-params': 'CESSDA' });
+    expect(success).toHaveBeenCalledWith('cvsApp.licence.created', { param: 'CC BY 4.0' });
+  });
 
-      expect(success).toHaveBeenCalledWith('cvsApp.agency.created', { param: 'CESSDA' });
-    });
+  it('should decode percent escapes in the parameters as well', () => {
+    interceptor.intercept(request, respondWith({ 'X-cvsApp-alert': 'a', 'X-cvsApp-params': 'Analysis%20Unit' })).subscribe();
 
-    it('should read a parameter whose spaces were sent as plus signs', () => {
-      respondWith({ 'X-cvsApp-alert': 'cvsApp.agency.created', 'X-cvsApp-params': 'Data+Archive' });
+    expect(success).toHaveBeenCalledWith('a', { param: 'Analysis Unit' });
+  });
 
-      expect(success).toHaveBeenCalledWith('cvsApp.agency.created', { param: 'Data Archive' });
-    });
+  it('should match the alert header whatever its case', () => {
+    interceptor.intercept(request, respondWith({ 'x-CVSAPP-ALERT': 'shouted' })).subscribe();
 
-    it('should decode a parameter that was percent encoded', () => {
-      respondWith({ 'X-cvsApp-alert': 'cvsApp.agency.created', 'X-cvsApp-params': 'Analysis%20Unit' });
+    expect(success).toHaveBeenCalledWith('shouted', { param: null });
+  });
 
-      expect(success).toHaveBeenCalledWith('cvsApp.agency.created', { param: 'Analysis Unit' });
-    });
+  it.each([
+    { name: 'the response carries no alert header', headers: {} },
+    { name: 'only parameters arrive, with no alert to raise', headers: { 'X-cvsApp-params': 'orphaned' } },
+  ])('should stay quiet when $name', ({ headers }) => {
+    interceptor.intercept(request, respondWith(headers)).subscribe();
 
-    it('should find the headers whatever their prefix', () => {
-      respondWith({ 'X-otherApp-app-alert': 'other.created', 'X-otherApp-app-params': 'GESIS' });
+    expect(success).not.toHaveBeenCalled();
+  });
 
-      expect(success).toHaveBeenCalledWith('other.created', { param: 'GESIS' });
-    });
+  it('should ignore events that are not responses', () => {
+    const sent = { type: 0 } as HttpSentEvent;
 
-    it('should stay quiet when the response carries no alert', () => {
-      respondWith({});
+    interceptor.intercept(request, { handle: () => of(sent) } as unknown as HttpHandler).subscribe();
 
-      expect(success).not.toHaveBeenCalled();
-    });
+    expect(success).not.toHaveBeenCalled();
+  });
 
-    it('should stay quiet when only a parameter is sent', () => {
-      respondWith({ 'X-cvsApp-params': 'CESSDA' });
+  it('should pass the response through untouched', () => {
+    let seen: HttpResponse<unknown> | undefined;
 
-      expect(success).not.toHaveBeenCalled();
-    });
+    interceptor.intercept(request, respondWith({ 'X-cvsApp-alert': 'kept' })).subscribe(event => (seen = event as HttpResponse<unknown>));
 
-    it('should stay quiet when the request fails', () => {
-      http.get('api/vocabularies').subscribe({ error: () => undefined });
-      httpMock.expectOne('api/vocabularies').error(new ProgressEvent('error'), { status: 500, statusText: 'Server Error' });
-
-      expect(success).not.toHaveBeenCalled();
-    });
+    expect(seen?.headers.get('X-cvsApp-alert')).toBe('kept');
   });
 });

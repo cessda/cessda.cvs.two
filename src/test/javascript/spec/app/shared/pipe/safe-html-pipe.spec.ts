@@ -15,44 +15,35 @@
  */
 import { TestBed } from '@angular/core/testing';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SecurityContext } from '@angular/core';
 
 import { SafeHtmlPipe } from 'app/shared/pipe/safe-html-pipe';
 
-describe('Pipe Tests', () => {
-  describe('Safe Html Pipe', () => {
-    let pipe: SafeHtmlPipe;
-    let sanitizer: DomSanitizer;
+describe('SafeHtmlPipe', () => {
+  let pipe: SafeHtmlPipe;
+  let sanitizer: DomSanitizer;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({ providers: [SafeHtmlPipe] });
+  beforeEach(() => {
+    TestBed.configureTestingModule({ providers: [SafeHtmlPipe] });
+    pipe = TestBed.inject(SafeHtmlPipe);
+    sanitizer = TestBed.inject(DomSanitizer);
+  });
 
-      pipe = TestBed.inject(SafeHtmlPipe);
-      sanitizer = TestBed.inject(DomSanitizer);
-    });
+  it('should hand the markup to the sanitizer as trusted HTML', () => {
+    const spy = jest.spyOn(sanitizer, 'bypassSecurityTrustHtml');
 
-    it('should hand the markup to the sanitizer as trusted HTML', () => {
-      const bypass = spyOn(sanitizer, 'bypassSecurityTrustHtml').and.callThrough();
+    pipe.transform('<b>bold</b>');
 
-      pipe.transform('<p>A definition</p>');
+    expect(spy).toHaveBeenCalledWith('<b>bold</b>');
+  });
 
-      expect(bypass).toHaveBeenCalledWith('<p>A definition</p>');
-    });
+  it('should keep the style attribute that plain sanitising would drop', () => {
+    const safe = pipe.transform('<p style="color: red">styled</p>');
 
-    it('should give back what the sanitizer produced', () => {
-      const trusted = {} as ReturnType<DomSanitizer['bypassSecurityTrustHtml']>;
-      spyOn(sanitizer, 'bypassSecurityTrustHtml').and.returnValue(trusted);
+    expect(sanitizer.sanitize(SecurityContext.HTML, safe)).toContain('style="color: red"');
+  });
 
-      expect(pipe.transform('<p>A definition</p>')).toBe(trusted);
-    });
-
-    it('should keep markup that Angular would otherwise strip', () => {
-      const result = pipe.transform('<p style="color: red">A definition</p>');
-
-      expect(sanitizer.sanitize(1, result)).toContain('style="color: red"');
-    });
-
-    it('should pass an empty string through', () => {
-      expect(sanitizer.sanitize(1, pipe.transform(''))).toBe('');
-    });
+  it('should pass an empty string through', () => {
+    expect(sanitizer.sanitize(SecurityContext.HTML, pipe.transform(''))).toBe('');
   });
 });

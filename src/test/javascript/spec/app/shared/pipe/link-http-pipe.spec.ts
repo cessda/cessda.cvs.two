@@ -15,26 +15,21 @@
  */
 import { LinkHttpPipe } from 'app/shared/pipe/link-http-pipe';
 
-describe('Pipe Tests', () => {
-  describe('Link Http Pipe', () => {
-    const pipe = new LinkHttpPipe();
+describe('LinkHttpPipe', () => {
+  const pipe = new LinkHttpPipe();
 
-    const links: { shape: string; href: string; expected: string }[] = [
-      { shape: 'an http link', href: 'http://cessda.eu', expected: 'http://cessda.eu' },
-      { shape: 'an https link', href: 'https://cessda.eu', expected: 'https://cessda.eu' },
-      { shape: 'a bare host', href: 'cessda.eu', expected: 'http://cessda.eu' },
-      { shape: 'a host with a path', href: 'cessda.eu/vocabularies', expected: 'http://cessda.eu/vocabularies' },
-      { shape: 'nothing at all', href: '', expected: 'http://' },
-    ];
+  it.each([
+    { name: 'leave an http link alone', href: 'http://cessda.eu', expected: 'http://cessda.eu' },
+    { name: 'leave an https link alone', href: 'https://cessda.eu', expected: 'https://cessda.eu' },
+    { name: 'prefix a bare host', href: 'cessda.eu', expected: 'http://cessda.eu' },
+    { name: 'prefix a host that merely starts with http', href: 'httpbin.org', expected: 'http://httpbin.org' },
+    { name: 'prefix a protocol it does not know', href: 'ftp://cessda.eu', expected: 'http://ftp://cessda.eu' },
+    { name: 'prefix an empty string', href: '', expected: 'http://' },
+  ])('should $name', ({ href, expected }) => {
+    expect(pipe.transform(href)).toBe(expected);
+  });
 
-    links.forEach(link => {
-      it(`should leave ${link.shape} alone or give it a scheme`, () => {
-        expect(pipe.transform(link.href)).toBe(link.expected);
-      });
-    });
-
-    it('should not mistake a host that merely starts with http for a scheme', () => {
-      expect(pipe.transform('httpbin.org')).toBe('http://httpbin.org');
-    });
+  it('should be case sensitive about the scheme, as startsWith is', () => {
+    expect(pipe.transform('HTTP://cessda.eu')).toBe('http://HTTP://cessda.eu');
   });
 });
