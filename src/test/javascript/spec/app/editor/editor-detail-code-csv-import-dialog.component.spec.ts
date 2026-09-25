@@ -21,6 +21,7 @@ import { MockActiveModal } from '../../helpers/mock-active-modal.service';
 import { EditorDetailCodeCsvImportDialogComponent } from 'app/editor/editor-detail-code-csv-import-dialog.component';
 import { createNewVocabulary } from 'app/shared/model/vocabulary.model';
 import { createNewVersion } from 'app/shared/model/version.model';
+import { Concept } from 'app/shared/model/concept.model';
 
 describe('Component Tests', () => {
   describe('Editor Detail Code CSV Import Dialog Component', () => {
@@ -194,6 +195,145 @@ describe('Component Tests', () => {
         comp.getDataRecordsArrayFromCSVFile(rows);
 
         expect(comp.ignoredRows).toBe(1);
+      });
+    });
+
+    describe('createCodePreview', () => {
+      // scrollIntoView is not implemented in jsdom, and the heading only exists in the template
+      const heading = (): HTMLHeadingElement => ({ scrollIntoView: jest.fn() }) as unknown as HTMLHeadingElement;
+
+      const withConcepts = (concepts: Concept[]): void => {
+        comp.versionParam = { ...createNewVersion(1), notation: 'AnalysisUnit', language: 'en', concepts };
+      };
+
+      it('should skip the rows that are not marked for import', () => {
+        withConcepts([]);
+        comp.csvContents = [
+          ['Individual', 'Individual', 'A person'],
+          ['Family', 'Family', 'A household'],
+        ];
+        comp.markedRows = [false, true];
+
+        comp.createCodePreview(heading());
+
+        expect(comp.codeSnippets).toHaveLength(1);
+        expect(comp.concepts.map(c => c.notation)).toEqual(['Family']);
+      });
+
+      it('should overwrite the title and definition of a concept that already exists', () => {
+        withConcepts([{ notation: 'Individual', title: 'Old title', definition: 'Old definition', position: 1 }]);
+        comp.csvContents = [['Individual', 'New title', 'New definition']];
+        comp.markedRows = [true];
+
+        comp.createCodePreview(heading());
+
+        expect(comp.concepts).toHaveLength(1);
+        expect(comp.concepts[0]).toEqual(expect.objectContaining({ title: 'New title', definition: 'New definition' }));
+      });
+
+      it('should leave the version it was given untouched when overwriting', () => {
+        const original: Concept = { notation: 'Individual', title: 'Old title', definition: 'Old definition', position: 1 };
+        withConcepts([original]);
+        comp.csvContents = [['Individual', 'New title', 'New definition']];
+        comp.markedRows = [true];
+
+        comp.createCodePreview(heading());
+
+        expect(original.title).toBe('Old title');
+      });
+
+      it('should add a top level concept at the end of the list', () => {
+        withConcepts([{ notation: 'Individual', position: 1 }]);
+        comp.csvContents = [['Family', 'Family', 'A household']];
+        comp.markedRows = [true];
+
+        comp.createCodePreview(heading());
+
+        expect(comp.concepts[1]).toEqual(expect.objectContaining({ notation: 'Family', parent: undefined, position: 1, visible: false }));
+      });
+
+      it('should hang a child off its parent, taking the parent position when it is the first child', () => {
+        withConcepts([{ notation: 'Individual', position: 4 }]);
+        comp.csvContents = [['Individual.Child', 'A child', 'The first child']];
+        comp.markedRows = [true];
+
+        comp.createCodePreview(heading());
+
+        expect(comp.concepts[1]).toEqual(expect.objectContaining({ notation: 'Individual.Child', parent: 'Individual', position: 4 }));
+      });
+
+      it('should place a further child after the last child of the parent', () => {
+        withConcepts([
+          { notation: 'Individual', position: 1 },
+          { notation: 'Individual.First', parent: 'Individual', position: 2 },
+          { notation: 'Individual.Second', parent: 'Individual', position: 7 },
+        ]);
+        comp.csvContents = [['Individual.Third', 'A third', 'Added last']];
+        comp.markedRows = [true];
+
+        comp.createCodePreview(heading());
+
+        const added = comp.concepts.find(c => c.notation === 'Individual.Third');
+        expect(added).toEqual(expect.objectContaining({ parent: 'Individual', position: 7 }));
+      });
+
+      it('should follow the tree down to the last descendant when the last child has children of its own', () => {
+        withConcepts([
+          { notation: 'Individual', position: 1 },
+          { notation: 'Individual.First', parent: 'Individual', position: 3 },
+          { notation: 'Individual.First.Deep', parent: 'Individual.First', position: 9 },
+        ]);
+        comp.csvContents = [['Individual.Second', 'A second', 'Added after the deep child']];
+        comp.markedRows = [true];
+
+        comp.createCodePreview(heading());
+
+        expect(comp.concepts.find(c => c.notation === 'Individual.Second')?.position).toBe(9);
+      });
+
+      it('should skip a child whose parent is not there', () => {
+        withConcepts([{ notation: 'Individual', position: 1 }]);
+        comp.csvContents = [['Missing.Child', 'Orphan', 'No parent in the version']];
+        comp.markedRows = [true];
+
+        comp.createCodePreview(heading());
+
+        expect(comp.concepts.map(c => c.notation)).toEqual(['Individual']);
+        expect(comp.codeSnippets).toHaveLength(0);
+      });
+
+      it('should treat a notation whose dot comes too early as a top level concept', () => {
+        withConcepts([]);
+        comp.csvContents = [['A.Child', 'Short prefix', 'The dot is at index 1']];
+        comp.markedRows = [true];
+
+        comp.createCodePreview(heading());
+
+        expect(comp.concepts[0]).toEqual(expect.objectContaining({ notation: 'A.Child', parent: undefined }));
+      });
+
+      it('should move on to the import stage and scroll the preview into view', () => {
+        withConcepts([]);
+        comp.csvContents = [['Individual', 'Individual', 'A person']];
+        comp.markedRows = [true];
+        const element = heading();
+
+        comp.createCodePreview(element);
+
+        expect(comp.csvImportWorkflow).toBe('IMPORT');
+        expect(element.scrollIntoView).toHaveBeenCalled();
+      });
+
+      it('should start the preview again from the version each time it runs', () => {
+        withConcepts([{ notation: 'Individual', position: 1 }]);
+        comp.csvContents = [['Family', 'Family', 'A household']];
+        comp.markedRows = [true];
+
+        comp.createCodePreview(heading());
+        comp.createCodePreview(heading());
+
+        expect(comp.concepts.filter(c => c.notation === 'Family')).toHaveLength(1);
+        expect(comp.codeSnippets).toHaveLength(1);
       });
     });
 

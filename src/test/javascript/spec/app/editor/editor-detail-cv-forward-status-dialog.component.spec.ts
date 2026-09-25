@@ -26,6 +26,8 @@ import { AccountService } from 'app/core/auth/account.service';
 import { LicenceService } from 'app/admin/licence/licence.service';
 import { Account } from 'app/core/user/account.model';
 import { createNewVersion } from 'app/shared/model/version.model';
+import { Concept } from 'app/shared/model/concept.model';
+import { EditorService } from 'app/editor/editor.service';
 
 describe('Component Tests', () => {
   describe('Editor Detail CV Forward Status Dialog Component', () => {
@@ -124,6 +126,82 @@ describe('Component Tests', () => {
 
       it('should propose the patch number taken from the translation version', () => {
         expect(comp.proposedPatchNumber).toBe(4);
+      });
+    });
+
+    describe('forwarding a translation under review', () => {
+      let forwardStatusVocabulary: jasmine.Spy;
+
+      const withConcepts = (concepts: Concept[]): void => {
+        comp.versionParam = { ...createNewVersion(1), status: 'REVIEW', number: '2.1.4', concepts };
+        comp.isSlForm = false;
+        comp.slVersionNumber = '2.1.0';
+        comp.ngOnInit();
+      };
+
+      beforeEach(() => {
+        forwardStatusVocabulary = spyOn(TestBed.inject(EditorService), 'forwardStatusVocabulary').and.returnValue(
+          of(new HttpResponse({ body: null })),
+        );
+      });
+
+      it('should forward the translation once every code is translated', () => {
+        withConcepts([{ notation: 'Individual', title: 'Jednotlivec' }]);
+
+        comp.forwardStatus();
+
+        expect(comp.missingTranslations).toEqual([]);
+        expect(forwardStatusVocabulary).toHaveBeenCalled();
+      });
+
+      it.each([
+        { name: 'has no title at all', concept: { notation: 'Family' } },
+        { name: 'has an empty title', concept: { notation: 'Family', title: '' } },
+      ])('should refuse to forward when a code $name', ({ concept }) => {
+        withConcepts([{ notation: 'Individual', title: 'Jednotlivec' }, concept]);
+
+        comp.forwardStatus();
+
+        expect(comp.missingTranslations).toEqual(['Family']);
+        expect(forwardStatusVocabulary).not.toHaveBeenCalled();
+        expect(comp.isSaving).toBe(false);
+      });
+
+      it('should ignore a deprecated code that was never translated', () => {
+        withConcepts([
+          { notation: 'Individual', title: 'Jednotlivec' },
+          { notation: 'Retired', deprecated: true },
+        ]);
+
+        comp.forwardStatus();
+
+        expect(comp.missingTranslations).toEqual([]);
+        expect(forwardStatusVocabulary).toHaveBeenCalled();
+      });
+
+      it('should list every untranslated code', () => {
+        withConcepts([{ notation: 'Individual' }, { notation: 'Family', title: '' }, { notation: 'Household', title: 'Domacnost' }]);
+
+        comp.forwardStatus();
+
+        expect(comp.missingTranslations).toEqual(['Individual', 'Family']);
+      });
+
+      it('should work out the version number from the source language version and the proposed patch', () => {
+        withConcepts([{ notation: 'Individual', title: 'Jednotlivec' }]);
+
+        comp.forwardStatus();
+
+        expect(forwardStatusVocabulary).toHaveBeenCalledWith(jasmine.objectContaining({ versionNumber: '2.1.4' }));
+      });
+
+      it('should start the list of missing translations afresh on every attempt', () => {
+        withConcepts([{ notation: 'Individual' }]);
+
+        comp.forwardStatus();
+        comp.forwardStatus();
+
+        expect(comp.missingTranslations).toEqual(['Individual']);
       });
     });
 

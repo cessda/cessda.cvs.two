@@ -19,7 +19,6 @@ import { Observable } from 'rxjs';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
-import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { CvResult } from 'app/shared/model/cv-result.model';
 import { map } from 'rxjs/operators';
@@ -98,14 +97,6 @@ export class EditorService {
   // eslint-disable-next-line @typescript-eslint/no-wrapper-object-types
   deleteCode(conceptId: number): Observable<HttpResponse<Object>> {
     return this.http.delete(`${this.resourceEditorCodeUrl}/${conceptId}`, { observe: 'response' });
-  }
-
-  protected convertDateFromClient(vocabulary: Vocabulary): Vocabulary {
-    return Object.assign({}, vocabulary, {
-      publicationDate:
-        vocabulary.publicationDate && vocabulary.publicationDate.isValid() ? vocabulary.publicationDate.format(DATE_FORMAT) : undefined,
-      lastModified: vocabulary.lastModified && vocabulary.lastModified.isValid() ? vocabulary.lastModified.toJSON() : undefined,
-    });
   }
 
   search(req?: SearchRequest): Observable<HttpResponse<CvResult>> {

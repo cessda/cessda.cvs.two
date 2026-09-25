@@ -56,7 +56,13 @@ pipeline {
                     }
                     post {
                         always {
-                            junit 'target/test-results/TESTS-results-jest.xml'
+                            // If the agent dies mid-stage this block still runs, but without a
+                            // Launcher for junit to use, and the MissingContextVariableException it
+                            // throws then buries the reason the agent went away. Keep the report
+                            // when there is one, and stay quiet when there is nothing to report.
+                            catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE', message: 'Could not publish the Jest report') {
+                                junit 'target/test-results/TESTS-results-jest.xml'
+                            }
                         }
                     }
                 }

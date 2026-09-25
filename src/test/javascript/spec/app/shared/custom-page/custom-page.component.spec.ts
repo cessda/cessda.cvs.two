@@ -17,7 +17,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpEventType, HttpHeaderResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { JhiEventManager } from 'ng-jhipster';
-import { BehaviorSubject, of, throwError } from 'rxjs';
+import { BehaviorSubject, EMPTY, of, throwError } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
 import { MockEventManager } from '../../../helpers/mock-event-manager.service';
@@ -39,7 +39,6 @@ describe('Component Tests', () => {
 
     let findByKey: jasmine.Spy;
     let createObjectURL: jasmine.Spy;
-    let revokeObjectURL: jasmine.Spy;
 
     const docx: FileFormat = { extension: 'docx', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' };
 
@@ -51,16 +50,6 @@ describe('Component Tests', () => {
         { id: 2, identifier: 'endpoints', value: 'The endpoints' },
       ],
     });
-
-    // jsdom implements neither of these, so the download path needs them put in place by hand. The
-    // stub hands back a fragment rather than a blob URL because the component clicks the link it
-    // builds, and a fragment is the one navigation jsdom will follow without complaining.
-    const stubObjectUrls = (): void => {
-      createObjectURL = jasmine.createSpy('createObjectURL').and.returnValue('#download');
-      revokeObjectURL = jasmine.createSpy('revokeObjectURL');
-      Object.defineProperty(window.URL, 'createObjectURL', { value: createObjectURL, configurable: true, writable: true });
-      Object.defineProperty(window.URL, 'revokeObjectURL', { value: revokeObjectURL, configurable: true, writable: true });
-    };
 
     /**
      * The component reads the query parameters in its constructor, so a test that cares about them
@@ -99,7 +88,8 @@ describe('Component Tests', () => {
       mockEventManager = TestBed.inject(JhiEventManager) as unknown as MockEventManager;
 
       findByKey = spyOn(metadataFieldService, 'findByKey').and.returnValue(of(new HttpResponse({ body: field() })));
-      stubObjectUrls();
+      // the global mocks stand these in for jsdom; the download tests need to see what was handed over
+      createObjectURL = spyOn(window.URL, 'createObjectURL').and.returnValue('#blob');
 
       createComponent();
     });
@@ -294,7 +284,9 @@ describe('Component Tests', () => {
 
     describe('filling the sections from the upload', () => {
       it('should hand the extracted file and the page key to the server', () => {
-        const fill = spyOn(uploadService, 'fillMetadataWithHtmlFile').and.returnValue(of(new HttpResponse<void>({ body: null })));
+        // EMPTY completes without emitting, so the reload the component performs on success is
+        // left out of a test that is only about what it asks the server for
+        const fill = spyOn(uploadService, 'fillMetadataWithHtmlFile').and.returnValue(EMPTY);
         comp.ngOnInit();
         comp.uploadFileName = 'extracted.html';
 
@@ -308,8 +300,9 @@ describe('Component Tests', () => {
         comp.ngOnInit();
         findByKey.calls.reset();
 
-        // the component also reloads the page here, which jsdom will not do; the content being
-        // asked for again is the part that belongs to the component
+        // the component also reloads the page here. location.reload cannot be stubbed out -- jsdom
+        // defines it as non-configurable -- so this test leaves jsdom to log that it will not
+        // navigate, and asserts the part that belongs to the component
         comp.fillSections();
 
         expect(findByKey).toHaveBeenCalledWith(METADATA_KEY_API);
