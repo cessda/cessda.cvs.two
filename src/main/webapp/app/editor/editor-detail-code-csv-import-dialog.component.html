@@ -163,11 +163,11 @@
       <button type="button" class="btn btn-secondary" (click)="backToUploadStage(modalhead)">
         <fa-icon [icon]="'caret-left'"></fa-icon>&nbsp;<span>Back</span>
       </button>
-    }
-    @case ("IMPORT") {
       <button type="button" [disabled]="markedRows.indexOf(true) === -1" class="btn btn-primary" (click)="createCodePreview(modalhead)">
         <span>Next</span>&nbsp;<fa-icon [icon]="'caret-right'"></fa-icon>
       </button>
+    }
+    @case ("IMPORT") {
       @if(!isSaving) {
         <button type="button" class="btn btn-secondary" (click)="backToSelectStage(modalhead)">
           <fa-icon [icon]="'caret-left'"></fa-icon>&nbsp;<span>Back</span>
