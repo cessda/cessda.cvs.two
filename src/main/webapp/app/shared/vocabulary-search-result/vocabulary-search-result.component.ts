@@ -293,7 +293,7 @@ export class VocabularySearchResultComponent implements OnInit {
 
       const filters = params.get('f');
       if (filters) {
-        const activeFilters = filters.split(';', 2);
+        const activeFilters = filters.split(';');
         activeFilters.forEach(af => {
           const activeFilter = af.split(':', 2);
           if (activeFilter.length === 2) {
@@ -410,7 +410,8 @@ export class VocabularySearchResultComponent implements OnInit {
     const s = (event.target as HTMLSelectElement).value;
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: { size: s },
+      // the page left on may not exist at the new size
+      queryParams: { size: s, page: null },
       queryParamsHandling: 'merge',
     });
   }
@@ -478,6 +479,8 @@ export class VocabularySearchResultComponent implements OnInit {
       relativeTo: this.activatedRoute,
       queryParams: {
         f: activeAgg === '' ? null : activeAgg,
+        // a narrower filter may leave fewer pages than the one left on
+        page: null,
       },
       queryParamsHandling: 'merge',
     });

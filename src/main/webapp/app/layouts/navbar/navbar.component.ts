@@ -67,6 +67,8 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   currentLang: string;
   isSearching: boolean;
   lastSearch: string | undefined;
+  /** The filters of the search page, as the f query parameter carries them */
+  private activeFilters: string | undefined;
 
   isEditorSearch = false;
   searchLangs: string[] = ['en', 'da', 'nl', 'fi', 'fr', 'de', 'it', 'ja', 'no', 'pt', 'sr', 'sl', 'sv', '_all'];
@@ -88,8 +90,9 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
       if (this.lastSearch === undefined || this.lastSearch === null) {
         this.lastSearch = params['q'];
       }
+      this.activeFilters = params['f'];
       if (params['f']) {
-        const activeFilters: string[] = params['f'].split(';', 2);
+        const activeFilters: string[] = params['f'].split(';');
         activeFilters.forEach(af => {
           const activeFilter: string[] = af.split(':', 2);
           if (activeFilter.length === 2) {
@@ -194,10 +197,11 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   search(query: string | undefined): void {
     const matchOptions: IsActiveMatchOptions = { paths: 'exact', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored' };
     if (this.router.isActive('', matchOptions) || this.router.isActive('/editor', matchOptions)) {
-      // Keep current query params
+      // Keep current query params and filters (#972), but apply the language picked (#786)
+      // and start the new search at the first page (#816)
       this.router.navigate([], {
         relativeTo: this.activatedRoute,
-        queryParams: { q: query, sort: query ? 'relevance' : 'code,asc' },
+        queryParams: { q: query, sort: query ? 'relevance' : 'code,asc', page: null, f: this.filtersWithCurrentLanguage() },
         queryParamsHandling: 'merge',
       });
     } else {
@@ -212,6 +216,18 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
     }
     this.lastSearch = query;
     this.sessionStorage.store('lastSearch', this.lastSearch);
+  }
+
+  /**
+   * The active filters with the language filter set to the language picked. The search page
+   * writes its filters in the order agency, language, status, so the language goes after any
+   * agency filter.
+   */
+  private filtersWithCurrentLanguage(): string {
+    const filters = (this.activeFilters ?? '').split(';').filter(f => f !== '' && !f.startsWith('language:'));
+    const agencyFilters = filters.filter(f => f.startsWith('agency:'));
+    const otherFilters = filters.filter(f => !f.startsWith('agency:'));
+    return [...agencyFilters, 'language:' + this.currentLang, ...otherFilters].join(';');
   }
 
   clear(): void {

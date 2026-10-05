@@ -14,18 +14,26 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { JhiLanguageService } from 'ng-jhipster';
+import { of, throwError } from 'rxjs';
 
 import { CvsTestModule } from '../../test.module';
+import { QueryParamsNavigation } from '../../helpers/query-params-navigation';
 import { VocabularySearchResultComponent } from 'app/shared/vocabulary-search-result/vocabulary-search-result.component';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared/language/vocabulary-language-from-key.pipe';
 import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Code, createNewCode } from 'app/shared/model/code.model';
+import { CvResult } from 'app/shared/model/cv-result.model';
+import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
+import { HomeService } from 'app/home/home.service';
+import { EditorService, SearchRequest } from 'app/editor/editor.service';
 
 describe('Component Tests', () => {
   describe('Vocabulary Search Result Component', () => {
     let comp: VocabularySearchResultComponent;
     let fixture: ComponentFixture<VocabularySearchResultComponent>;
+    let navigation: QueryParamsNavigation;
 
     const vocabulary = (): Vocabulary =>
       createNewVocabulary({
@@ -42,10 +50,11 @@ describe('Component Tests', () => {
       });
 
     beforeEach(waitForAsync(() => {
+      navigation = new QueryParamsNavigation();
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [VocabularySearchResultComponent],
-        providers: [VocabularyLanguageFromKeyPipe],
+        providers: [VocabularyLanguageFromKeyPipe, ...navigation.providers()],
       })
         .overrideTemplate(VocabularySearchResultComponent, '')
         .compileComponents();
@@ -154,6 +163,262 @@ describe('Component Tests', () => {
       (TestBed.inject(JhiLanguageService) as unknown as { currentLang: string }).currentLang = 'de';
 
       expect(comp.getCurrentLanguage()).toBe('de');
+    });
+
+    describe('searching from the URL', () => {
+      let search: jasmine.Spy;
+
+      const result = (overrides: Partial<CvResult> = {}): CvResult => ({
+        vocabularies: [],
+        totalElements: 0,
+        totalPage: 0,
+        numberOfElements: 0,
+        number: 0,
+        size: 30,
+        last: true,
+        first: true,
+        aggrs: [],
+        ...overrides,
+      });
+
+      const lastRequest = (): SearchRequest => search.calls.mostRecent().args[0];
+      const requestedPages = (): number[] => search.calls.allArgs().map(([request]: [SearchRequest]) => request.page);
+
+      beforeEach(() => {
+        comp.appScope = AppScope.PUBLICATION;
+        search = spyOn(TestBed.inject(HomeService), 'search').and.returnValue(
+          of(new HttpResponse({ body: result({ totalElements: 95 }) })),
+        );
+      });
+
+      it('should ask for the first page sorted by code when the URL carries nothing', () => {
+        comp.ngOnInit();
+
+        expect(lastRequest()).toEqual({ q: '', size: 30, page: 0, sort: ['code,asc'] });
+        expect(comp.page).toBe(1);
+      });
+
+      it('should ask the server for the page in the URL, counting pages from zero', () => {
+        navigation.open({ page: '2' });
+
+        comp.ngOnInit();
+
+        expect(lastRequest().page).toBe(1);
+        expect(comp.page).toBe(2);
+      });
+
+      it('should search again each time the URL changes, as when going to the second page and back', () => {
+        comp.ngOnInit();
+
+        navigation.open({ page: '2' });
+        navigation.open({});
+
+        expect(requestedPages()).toEqual([0, 1, 0]);
+        expect(comp.page).toBe(1);
+      });
+
+      it('should move to a clicked page through the URL alone', () => {
+        comp.ngOnInit();
+        search.calls.reset();
+
+        comp.loadPageClicked(3);
+
+        expect(navigation.current).toEqual({ page: 3 });
+        expect(requestedPages()).toEqual([2]);
+        expect(comp.page).toBe(3);
+      });
+
+      it('should keep the query, the filters, the size and the order when moving to another page', () => {
+        navigation.open({ q: 'unit', f: 'agency:CESSDA', size: '50', sort: 'relevance' });
+        comp.ngOnInit();
+
+        comp.loadPageClicked(2);
+
+        expect(lastRequest()).toEqual({ q: 'unit', size: 50, page: 1, sort: ['relevance'], f: 'agency:CESSDA' });
+      });
+
+      it('should not navigate by itself while loading, so coming back to the page cannot loop', () => {
+        navigation.open({ q: 'unit', page: '2' });
+
+        comp.ngOnInit();
+
+        expect(navigation.navigate).not.toHaveBeenCalled();
+        expect(search).toHaveBeenCalledTimes(1);
+      });
+
+      it('should ask for the number of results per page chosen', () => {
+        comp.ngOnInit();
+
+        comp.refreshSearchBySize({ target: { value: '50' } } as unknown as Event);
+
+        expect(lastRequest().size).toBe(50);
+        expect(comp.itemsPerPage).toBe(50);
+      });
+
+      it('should go back to the first page when the number of results per page changes', () => {
+        navigation.open({ q: 'unit', page: '4' });
+        comp.ngOnInit();
+
+        comp.refreshSearchBySize({ target: { value: '100' } } as unknown as Event);
+
+        expect(navigation.current).toEqual({ q: 'unit', size: '100' });
+        expect(lastRequest().page).toBe(0);
+        expect(comp.page).toBe(1);
+      });
+
+      it('should ask for the order chosen', () => {
+        comp.ngOnInit();
+
+        comp.refreshSearchBySort({ target: { value: 'title,desc' } } as unknown as Event);
+
+        expect(lastRequest().sort).toEqual(['title,desc']);
+        expect(comp.predicate).toBe('title');
+        expect(comp.ascending).toBe(false);
+      });
+
+      it('should list the most relevant results first when sorting by relevance', () => {
+        navigation.open({ q: 'unit', sort: 'relevance' });
+
+        comp.ngOnInit();
+
+        expect(comp.predicate).toBe('relevance');
+        expect(comp.ascending).toBe(false);
+      });
+
+      it('should take the active filters from the URL', () => {
+        navigation.open({ f: 'agency:CESSDA,UKDS;status:PUBLISHED' });
+
+        comp.ngOnInit();
+
+        expect(comp.activeAggAgency).toEqual(['CESSDA', 'UKDS']);
+        expect(comp.activeAggStatus).toEqual(['PUBLISHED']);
+        expect(lastRequest().f).toBe('agency:CESSDA,UKDS;status:PUBLISHED');
+      });
+
+      it('should take all three kinds of filter from the URL at once', () => {
+        navigation.open({ f: 'agency:CESSDA;language:de;status:PUBLISHED' });
+
+        comp.ngOnInit();
+
+        expect(comp.activeAggAgency).toEqual(['CESSDA']);
+        expect(comp.activeAggLanguage).toEqual(['de']);
+        expect(comp.activeAggStatus).toEqual(['PUBLISHED']);
+      });
+
+      it('should keep the status filter when another agency is added to all three kinds', () => {
+        navigation.open({ f: 'agency:CESSDA;language:de;status:PUBLISHED' });
+        comp.ngOnInit();
+
+        comp.onAddAgency({ k: 'UKDS' });
+
+        expect(navigation.current).toEqual({ f: 'agency:CESSDA,UKDS;language:de;status:PUBLISHED' });
+      });
+
+      it('should forget the filters once the URL no longer carries them', () => {
+        navigation.open({ f: 'language:de' });
+        comp.ngOnInit();
+
+        navigation.open({});
+
+        expect(comp.activeAggLanguage).toEqual([]);
+        expect(lastRequest().f).toBeUndefined();
+      });
+
+      it('should put a filter added in the panel into the URL', () => {
+        comp.ngOnInit();
+
+        comp.onAddStatus({ k: 'PUBLISHED' });
+
+        expect(navigation.current).toEqual({ f: 'status:PUBLISHED' });
+        expect(lastRequest().f).toBe('status:PUBLISHED');
+      });
+
+      it('should go back to the first page when a filter is added', () => {
+        navigation.open({ q: 'unit', page: '4' });
+        comp.ngOnInit();
+
+        comp.onAddAgency({ k: 'CESSDA' });
+
+        expect(navigation.current).toEqual({ q: 'unit', f: 'agency:CESSDA' });
+        expect(lastRequest().page).toBe(0);
+      });
+
+      it('should go back to the first page when a filter is removed', () => {
+        navigation.open({ f: 'agency:CESSDA;status:PUBLISHED', page: '3' });
+        comp.ngOnInit();
+
+        comp.onRemoveStatus({ k: 'PUBLISHED' });
+
+        expect(navigation.current).toEqual({ f: 'agency:CESSDA' });
+        expect(lastRequest().page).toBe(0);
+      });
+
+      it('should go back to the first page when the filters are cleared', () => {
+        navigation.open({ f: 'agency:CESSDA', page: '3' });
+        comp.ngOnInit();
+
+        comp.clearFilterAndReload();
+
+        expect(navigation.current).toEqual({});
+        expect(lastRequest().page).toBe(0);
+      });
+
+      it('should show the results and how many there are in all', () => {
+        const vocabulary = createNewVocabulary({ notation: 'AnalysisUnit', sourceLanguage: 'en' });
+        search.and.returnValue(of(new HttpResponse({ body: result({ totalElements: 95, vocabularies: [vocabulary] }) })));
+
+        comp.ngOnInit();
+
+        expect(comp.searching).toBe(false);
+        expect(comp.totalItems).toBe(95);
+        expect(comp.vocabularies).toEqual([{ ...vocabulary, selectedLang: 'en' }]);
+      });
+
+      it('should offer the agencies found as filters and mark the active ones', () => {
+        navigation.open({ f: 'agency:CESSDA' });
+        search.and.returnValue(
+          of(
+            new HttpResponse({
+              body: result({
+                aggrs: [
+                  {
+                    type: 'terms',
+                    field: 'agencyName',
+                    values: ['CESSDA'],
+                    buckets: [{ k: 'CESSDA', v: 12 }],
+                    filteredBuckets: [{ k: 'UKDS', v: 3 }],
+                  },
+                ],
+              }),
+            }),
+          ),
+        );
+
+        comp.ngOnInit();
+
+        expect(comp.aggAgencyBucket.map(b => b.display)).toEqual(['CESSDA (12)', 'UKDS (3)']);
+        expect(comp.searchForm.value.aggAgency.map((b: { k: string }) => b.k)).toEqual(['CESSDA']);
+      });
+
+      it('should stop searching when the request fails', () => {
+        spyOn(console, 'error');
+        search.and.returnValue(throwError(() => new HttpErrorResponse({ status: 500 })));
+
+        comp.ngOnInit();
+
+        expect(comp.searching).toBe(false);
+        expect(comp.vocabularies).toEqual([]);
+      });
+
+      it('should search the editor index when shown in the editor', () => {
+        comp.appScope = AppScope.EDITOR;
+        const editorSearch = spyOn(TestBed.inject(EditorService), 'search').and.returnValue(of(new HttpResponse({ body: result() })));
+
+        comp.ngOnInit();
+
+        expect(editorSearch).toHaveBeenCalled();
+        expect(search).not.toHaveBeenCalled();
+      });
     });
   });
 });

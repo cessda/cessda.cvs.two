@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
-// the ng-bootstrap components translate their labels with $localize, which the polyfills load in the app
-import '@angular/localize/init';
-import './jest-global-mocks';
-
-setupZoneTestEnv();
+/*
+ * Stands in for the chunk through which ngx-quill loads Quill lazily. jest-preset-angular hands
+ * .mjs files to esbuild in Node mode, which makes `export { default as Quill } from 'quill'` give
+ * back the whole module namespace rather than the Quill class, and every editor then fails with
+ * "Quill is not a constructor". A TypeScript file is compiled with esModuleInterop and gets the
+ * default export right.
+ */
+export { default as Quill } from 'quill';

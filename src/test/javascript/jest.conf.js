@@ -37,7 +37,16 @@ module.exports = {
         '/node_modules/',
         '<rootDir>/src/test/javascript'
     ],
-    moduleNameMapper: mapTypescriptAliasToJestAlias(),
+    // Quill 2 and the packages it is built on ship only as ES modules, so they have to be
+    // transformed like the .mjs files the preset already lets through before a spec can
+    // render a real editor
+    transformIgnorePatterns: [
+        'node_modules/(?!(.*\\.mjs$|@angular/common/locales/.*\\.js$|(quill|parchment|lodash-es)/))'
+    ],
+    moduleNameMapper: mapTypescriptAliasToJestAlias({
+        // see the file itself for why ngx-quill cannot load Quill through its own chunk
+        '^\\./ngx-quill-quill-[\\w-]+\\.mjs$': '<rootDir>/src/test/javascript/ngx-quill-quill.ts'
+    }),
     reporters: [
         'default',
         [ 'jest-junit', { outputDirectory: './target/test-results/', outputName: 'TESTS-results-jest.xml' } ]

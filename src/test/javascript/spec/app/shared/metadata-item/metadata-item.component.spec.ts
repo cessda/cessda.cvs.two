@@ -21,6 +21,7 @@ import Quill from 'quill';
 
 import { CvsTestModule } from '../../../test.module';
 import { MockEventManager } from '../../../helpers/mock-event-manager.service';
+import { renderQuillEditor } from '../../../helpers/quill-editor';
 import { MetadataItemComponent } from 'app/shared/metadata-item/metadata-item.component';
 import { EditorService } from 'app/editor/editor.service';
 import { MetadataValue } from 'app/shared/model/metadata-value.model';
@@ -289,6 +290,61 @@ describe('Component Tests', () => {
 
         expect(comp.quill).toBe(quill);
         expect(dangerouslyPasteHTML).toHaveBeenCalledWith(longEnough);
+      });
+
+      it('should show the saved section with its formatting in a real editor', async () => {
+        setUp({ id: 5, identifier: 'overview', value: '<h2>Overview</h2><p>See the <a href="https://cessda.eu">CESSDA</a> site.</p>' });
+
+        const editor = await renderQuillEditor({
+          control: comp.metadataForm.controls.content,
+          onCreated: quill => comp.editorCreated(quill),
+        });
+
+        expect(editor.toolbar).not.toBeNull();
+        expect(editor.quill.getText()).toBe('Overview\nSee the CESSDA site.\n');
+        expect(editor.content.querySelector('h2')?.textContent).toBe('Overview');
+        expect(editor.content.querySelector('a')?.getAttribute('href')).toBe('https://cessda.eu');
+      });
+
+      it('should save what was edited in the editor rather than the old text (#814)', async () => {
+        setUp({ id: 5, identifier: 'overview', value: '<p>Old</p>' });
+        const editor = await renderQuillEditor({
+          control: comp.metadataForm.controls.content,
+          onCreated: quill => comp.editorCreated(quill),
+        });
+
+        editor.quill.setText('', 'user');
+        editor.type('The controlled vocabularies of CESSDA');
+        comp.saveMetadata();
+
+        const req = httpMock.expectOne({ method: 'PUT' });
+        expect(req.request.body.value).toContain('CESSDA');
+        expect(req.request.body.value).not.toContain('Old');
+      });
+
+      it('should refuse a section shortened below a sentence in the editor', async () => {
+        setUp({ id: 5, identifier: 'overview', value: '' });
+        const editor = await renderQuillEditor({
+          control: comp.metadataForm.controls.content,
+          onCreated: quill => comp.editorCreated(quill),
+        });
+
+        editor.type('Brief');
+
+        expect(comp.metadataForm.controls.content.value).toBe('<p>Brief</p>');
+        expect(comp.metadataForm.controls.content.valid).toBe(false);
+      });
+
+      it('should accept what is written in the editor once it is long enough', async () => {
+        setUp({ id: 5, identifier: 'overview', value: '' });
+        const editor = await renderQuillEditor({
+          control: comp.metadataForm.controls.content,
+          onCreated: quill => comp.editorCreated(quill),
+        });
+
+        editor.type('The controlled vocabularies of CESSDA');
+
+        expect(comp.metadataForm.controls.content.valid).toBe(true);
       });
     });
   });
