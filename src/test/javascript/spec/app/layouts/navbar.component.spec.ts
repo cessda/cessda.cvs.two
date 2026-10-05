@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { JhiLanguageService } from 'ng-jhipster';
 import { SessionStorageService, provideNgxWebstorage, withNgxWebstorageConfig, withSessionStorage } from 'ngx-webstorage';
 
@@ -36,6 +36,7 @@ describe('Component Tests', () => {
     let mockRouter: MockRouter;
     let mockAccountService: MockAccountService;
     let sessionStorage: SessionStorageService;
+    let queryParams: BehaviorSubject<Params>;
 
     const loginModal = { open: jasmine.createSpy('open') };
     const loginService = { logout: jasmine.createSpy('logout') };
@@ -45,6 +46,7 @@ describe('Component Tests', () => {
     let isAuthenticatedSpy: jasmine.Spy;
 
     beforeEach(waitForAsync(() => {
+      queryParams = new BehaviorSubject<Params>({});
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [NavbarComponent],
@@ -53,6 +55,7 @@ describe('Component Tests', () => {
           { provide: LoginModalService, useValue: loginModal },
           { provide: LoginService, useValue: loginService },
           { provide: Location, useValue: { path: (): string => '' } },
+          { provide: ActivatedRoute, useValue: { queryParams } },
           provideNgxWebstorage(withNgxWebstorageConfig({ prefix: 'jhi', separator: '-' }), withSessionStorage()),
         ],
       })
@@ -116,8 +119,47 @@ describe('Component Tests', () => {
 
         expect(mockRouter.navigateSpy).toHaveBeenCalledWith(
           [],
-          jasmine.objectContaining({ queryParams: { q: undefined, sort: 'code,asc', page: null } }),
+          jasmine.objectContaining({ queryParams: jasmine.objectContaining({ q: undefined, sort: 'code,asc', page: null }) }),
         );
+      });
+
+      describe('picking a language on a search page', () => {
+        const filtersAfterSearch = (): string => mockRouter.navigateSpy.calls.mostRecent().args[1].queryParams.f;
+
+        beforeEach(() => isActiveSpy.and.returnValue(true));
+
+        it('should filter by the language picked (#786)', () => {
+          queryParams.next({ f: 'language:en' });
+
+          comp.currentLang = 'de';
+          comp.search(comp.currentSearch);
+
+          expect(filtersAfterSearch()).toBe('language:de');
+        });
+
+        it('should keep the other filters while changing the language (#972)', () => {
+          queryParams.next({ q: 'unit', f: 'agency:CESSDA;language:en;status:PUBLISHED' });
+
+          comp.currentLang = 'fi';
+          comp.search(comp.currentSearch);
+
+          expect(filtersAfterSearch()).toBe('agency:CESSDA;language:fi;status:PUBLISHED');
+        });
+
+        it('should add the language to filters that had none', () => {
+          queryParams.next({ f: 'agency:CESSDA;status:PUBLISHED' });
+
+          comp.currentLang = 'de';
+          comp.search(undefined);
+
+          expect(filtersAfterSearch()).toBe('agency:CESSDA;language:de;status:PUBLISHED');
+        });
+
+        it('should filter by the language shown when nothing was filtered yet', () => {
+          comp.search('unit');
+
+          expect(filtersAfterSearch()).toBe('language:en');
+        });
       });
 
       it('should go to the public search from elsewhere, filtered by the current language', () => {

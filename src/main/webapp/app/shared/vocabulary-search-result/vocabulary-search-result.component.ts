@@ -293,7 +293,7 @@ export class VocabularySearchResultComponent implements OnInit {
 
       const filters = params.get('f');
       if (filters) {
-        const activeFilters = filters.split(';', 2);
+        const activeFilters = filters.split(';');
         activeFilters.forEach(af => {
           const activeFilter = af.split(':', 2);
           if (activeFilter.length === 2) {

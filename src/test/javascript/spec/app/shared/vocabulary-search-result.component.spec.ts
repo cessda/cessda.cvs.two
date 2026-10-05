@@ -295,6 +295,25 @@ describe('Component Tests', () => {
         expect(lastRequest().f).toBe('agency:CESSDA,UKDS;status:PUBLISHED');
       });
 
+      it('should take all three kinds of filter from the URL at once', () => {
+        navigation.open({ f: 'agency:CESSDA;language:de;status:PUBLISHED' });
+
+        comp.ngOnInit();
+
+        expect(comp.activeAggAgency).toEqual(['CESSDA']);
+        expect(comp.activeAggLanguage).toEqual(['de']);
+        expect(comp.activeAggStatus).toEqual(['PUBLISHED']);
+      });
+
+      it('should keep the status filter when another agency is added to all three kinds', () => {
+        navigation.open({ f: 'agency:CESSDA;language:de;status:PUBLISHED' });
+        comp.ngOnInit();
+
+        comp.onAddAgency({ k: 'UKDS' });
+
+        expect(navigation.current).toEqual({ f: 'agency:CESSDA,UKDS;language:de;status:PUBLISHED' });
+      });
+
       it('should forget the filters once the URL no longer carries them', () => {
         navigation.open({ f: 'language:de' });
         comp.ngOnInit();

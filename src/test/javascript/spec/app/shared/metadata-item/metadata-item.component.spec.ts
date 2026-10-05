@@ -306,6 +306,22 @@ describe('Component Tests', () => {
         expect(editor.content.querySelector('a')?.getAttribute('href')).toBe('https://cessda.eu');
       });
 
+      it('should save what was edited in the editor rather than the old text (#814)', async () => {
+        setUp({ id: 5, identifier: 'overview', value: '<p>Old</p>' });
+        const editor = await renderQuillEditor({
+          control: comp.metadataForm.controls.content,
+          onCreated: quill => comp.editorCreated(quill),
+        });
+
+        editor.quill.setText('', 'user');
+        editor.type('The controlled vocabularies of CESSDA');
+        comp.saveMetadata();
+
+        const req = httpMock.expectOne({ method: 'PUT' });
+        expect(req.request.body.value).toContain('CESSDA');
+        expect(req.request.body.value).not.toContain('Old');
+      });
+
       it('should refuse a section shortened below a sentence in the editor', async () => {
         setUp({ id: 5, identifier: 'overview', value: '' });
         const editor = await renderQuillEditor({
