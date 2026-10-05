@@ -79,7 +79,7 @@
         https://mvnrepository.com/artifact/org.hibernate/hibernate-core/${hibernate.version} -->
         <javassist.version>3.24.0-GA</javassist.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
-        <archunit-junit5.version>1.5.0</archunit-junit5.version>
+        <archunit-junit5.version>1.5.1</archunit-junit5.version>
         <mapstruct.version>1.6.3</mapstruct.version>
         <!-- Plugin versions -->
         <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
@@ -92,7 +92,7 @@
         <jacoco-maven-plugin.version>0.8.15</jacoco-maven-plugin.version>
         <lifecycle-mapping.version>1.0.0</lifecycle-mapping.version>
         <properties-maven-plugin.version>1.0.0</properties-maven-plugin.version>
-        <sonar-maven-plugin.version>5.7.0.6970</sonar-maven-plugin.version>
+        <sonar-maven-plugin.version>5.8.0.7211</sonar-maven-plugin.version>
         <!-- jhipster-needle-maven-property -->
 
         <!-- SonarQube Properties -->
@@ -405,7 +405,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.23.1</version>
+            <version>1.23.2</version>
         </dependency>
         <!-- XNIO API for Undertow -->
         <dependency>
@@ -719,7 +719,7 @@
             <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
-                <version>5.1.1</version>
+                <version>5.1.2</version>
                 <configuration>
                     <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
                     <properties>
