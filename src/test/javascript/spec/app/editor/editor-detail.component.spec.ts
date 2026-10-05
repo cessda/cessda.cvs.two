@@ -17,6 +17,7 @@ import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angul
 import { BehaviorSubject, of } from 'rxjs';
 
 import { CvsTestModule } from '../../test.module';
+import { renderQuillEditor, toolbarControls } from '../../helpers/quill-editor';
 import { EditorDetailComponent } from 'app/editor/editor-detail.component';
 import { EditorService } from 'app/editor/editor.service';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared/language/vocabulary-language-from-key.pipe';
@@ -25,6 +26,7 @@ import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.mod
 import { createNewVersion, Version } from 'app/shared/model/version.model';
 import { Concept } from 'app/shared/model/concept.model';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
+import Quill from 'quill';
 
 describe('Component Tests', () => {
   describe('Editor Detail Component', () => {
@@ -291,6 +293,74 @@ describe('Component Tests', () => {
 
       it('should leave the carriage return of a CRLF line ending', () => {
         expect(comp.escapeCsvContent('a\r\n')).toBe('a\r');
+      });
+    });
+    describe('the rich text editors', () => {
+      const editors: {
+        field: 'versionNotes' | 'versionChanges' | 'ddiUsage';
+        onCreated: (c: EditorDetailComponent) => (q: Quill) => void;
+      }[] = [
+        { field: 'versionNotes', onCreated: c => q => c.onVersionNotesEditorCreated(q) },
+        { field: 'versionChanges', onCreated: c => q => c.onVersionChangesEditorCreated(q) },
+        { field: 'ddiUsage', onCreated: c => q => c.onDdiUsageEditorCreated(q) },
+      ];
+
+      editors.forEach(({ field, onCreated }) => {
+        describe(`for ${field}`, () => {
+          const render = (): ReturnType<typeof renderQuillEditor> =>
+            renderQuillEditor({ control: comp.editorDetailForm.controls[field], modules: comp.quillModules, onCreated: onCreated(comp) });
+
+          it('should come up with the full toolbar', async () => {
+            const editor = await render();
+
+            expect(toolbarControls(editor)).toEqual([
+              'bold',
+              'italic',
+              'underline',
+              'strike',
+              'blockquote',
+              'list:ordered',
+              'list:bullet',
+              'header',
+              'color',
+              'background',
+              'link',
+              'clean',
+            ]);
+          });
+
+          it('should show the saved text with its formatting rather than coming up blank', async () => {
+            comp.editorDetailForm.controls[field].setValue('<p>First <strong>release</strong></p>');
+
+            const editor = await render();
+
+            expect(editor.quill.getText()).toBe('First release\n');
+            expect(editor.content.querySelector('strong')?.textContent).toBe('release');
+          });
+
+          it('should start empty when nothing has been saved', async () => {
+            const editor = await render();
+
+            expect(editor.quill.getText()).toBe('\n');
+          });
+
+          it('should write what is typed back to the form', async () => {
+            const editor = await render();
+
+            editor.type('Revised');
+
+            expect(comp.editorDetailForm.controls[field].value).toBe('<p>Revised</p>');
+          });
+
+          it('should apply a header picked from the toolbar', async () => {
+            const editor = await render();
+            editor.type('Revised');
+
+            editor.pick('ql-header', '2', 0, 0);
+
+            expect(comp.editorDetailForm.controls[field].value).toBe('<h2>Revised</h2>');
+          });
+        });
       });
     });
   });
