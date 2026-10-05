@@ -93,8 +93,20 @@ describe('Component Tests', () => {
 
         expect(mockRouter.navigateSpy).toHaveBeenCalledWith(
           [],
-          jasmine.objectContaining({ queryParams: { q: 'unit', sort: 'relevance' }, queryParamsHandling: 'merge' }),
+          jasmine.objectContaining({
+            queryParams: jasmine.objectContaining({ q: 'unit', sort: 'relevance' }),
+            queryParamsHandling: 'merge',
+          }),
         );
+      });
+
+      it('should start a new search on a search page at the first page', () => {
+        // the results of the new query may not reach the page the previous one was left on (#816)
+        isActiveSpy.and.returnValue(true);
+
+        comp.search('unit');
+
+        expect(mockRouter.navigateSpy.calls.mostRecent().args[1].queryParams.page).toBeNull();
       });
 
       it('should sort by code when the query is cleared on a search page', () => {
@@ -104,7 +116,7 @@ describe('Component Tests', () => {
 
         expect(mockRouter.navigateSpy).toHaveBeenCalledWith(
           [],
-          jasmine.objectContaining({ queryParams: { q: undefined, sort: 'code,asc' } }),
+          jasmine.objectContaining({ queryParams: { q: undefined, sort: 'code,asc', page: null } }),
         );
       });
 

@@ -194,10 +194,10 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   search(query: string | undefined): void {
     const matchOptions: IsActiveMatchOptions = { paths: 'exact', queryParams: 'ignored', fragment: 'ignored', matrixParams: 'ignored' };
     if (this.router.isActive('', matchOptions) || this.router.isActive('/editor', matchOptions)) {
-      // Keep current query params
+      // Keep current query params, but start the new search at the first page (#816)
       this.router.navigate([], {
         relativeTo: this.activatedRoute,
-        queryParams: { q: query, sort: query ? 'relevance' : 'code,asc' },
+        queryParams: { q: query, sort: query ? 'relevance' : 'code,asc', page: null },
         queryParamsHandling: 'merge',
       });
     } else {

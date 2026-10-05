@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
+// the ng-bootstrap components translate their labels with $localize, which the polyfills load in the app
+import '@angular/localize/init';
 import './jest-global-mocks';
 
 setupZoneTestEnv();
