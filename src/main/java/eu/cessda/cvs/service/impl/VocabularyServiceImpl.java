@@ -172,18 +172,28 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     public static BoolQueryBuilder generateMainQuery( String term, List<String> languageFields ) {
+        return generateFieldsQuery( "", term, languageFields, 10.0f, 4.0f, 2.0f );
+    }
+
+    /**
+     * Generate a query over the title, definition and notation fields.
+     *
+     * @param fieldPrefix the prefix of the queried fields, e.g. {@code "codes."} when used inside a nested query.
+     */
+    private static BoolQueryBuilder generateFieldsQuery( String fieldPrefix, String term, List<String> languageFields,
+                                                         float titleBoost, float definitionBoost, float notationBoost ) {
         BoolQueryBuilder query = QueryBuilders.boolQuery();
         for ( String langIso : languageFields )
         {
-            query.should( QueryBuilders.matchQuery( TITLE + langIso, term ).fuzziness( 0.7 ).boost( 10.0f ) );
-            query.should( QueryBuilders.matchQuery( DEFINITION + langIso, term ).fuzziness( 0.7 ).boost( 4.0f ) );
+            query.should( QueryBuilders.matchQuery( fieldPrefix + TITLE + langIso, term ).fuzziness( 0.7 ).boost( titleBoost ) );
+            query.should( QueryBuilders.matchQuery( fieldPrefix + DEFINITION + langIso, term ).fuzziness( 0.7 ).boost( definitionBoost ) );
         }
-        return query.should( QueryBuilders.wildcardQuery( NOTATION, term.toLowerCase().replace( " ", "" ) + "*" ).boost( 2.0f ) );
+        return query.should( QueryBuilders.wildcardQuery( fieldPrefix + NOTATION, term.toLowerCase().replace( " ", "" ) + "*" ).boost( notationBoost ) );
     }
 
     public static NestedQueryBuilder generateNestedQuery( String term, List<String> languageFields, int innerHitSize ) {
-        // query for all languages
-        BoolQueryBuilder query = generateMainQuery( term, languageFields );
+        // query the code fields for all languages
+        BoolQueryBuilder query = generateFieldsQuery( CODE_PATH + ".", term, languageFields, 3.0f, 2.0f, 1.0f );
 
         InnerHitBuilder innerHitBuilder = new InnerHitBuilder( CODE_PATH ).setSize( innerHitSize );
         if ( term.length() > 2 )
