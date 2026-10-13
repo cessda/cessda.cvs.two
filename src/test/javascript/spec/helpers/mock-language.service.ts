@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import Spy = jasmine.Spy;
-import { JhiLanguageService } from 'ng-jhipster';
+import { LanguageService } from 'app/core/language/language.service';
 
 import { SpyObject } from './spyobject';
 
@@ -22,7 +22,7 @@ export class MockLanguageService extends SpyObject {
   getCurrentLanguageSpy: Spy;
 
   constructor() {
-    super(JhiLanguageService);
+    super(LanguageService);
 
     this.getCurrentLanguageSpy = this.spy('getCurrentLanguage').andReturn('en');
   }

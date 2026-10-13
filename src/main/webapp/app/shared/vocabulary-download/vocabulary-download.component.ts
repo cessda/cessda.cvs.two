@@ -16,7 +16,7 @@
 import { AfterViewInit, Component, inject, Input, NgZone, OnInit } from '@angular/core';
 import { HomeService } from 'app/home/home.service';
 import { EditorService } from 'app/editor/editor.service';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { Version } from 'app/shared/model/version.model';
 import { UntypedFormGroup } from '@angular/forms';
@@ -33,7 +33,7 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
   private router = inject(Router);
   private homeService = inject(HomeService);
   private editorService = inject(EditorService);
-  protected eventManager = inject(JhiEventManager);
+  protected eventManager = inject(EventManager);
   private _ngZone = inject(NgZone);
 
   @Input() appScope!: AppScope;

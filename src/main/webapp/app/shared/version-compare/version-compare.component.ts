@@ -19,7 +19,7 @@ import { DiffContent } from 'node_modules/ngx-text-diff/lib/ngx-text-diff.model'
 import { HomeService } from 'app/home/home.service';
 import { HttpResponse } from '@angular/common/http';
 import { EditorService } from 'app/editor/editor.service';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 
 @Component({
   selector: 'jhi-version-compare',
@@ -29,7 +29,7 @@ import { JhiEventManager } from 'ng-jhipster';
 export class VersionCompareComponent implements OnInit, OnDestroy {
   private homeService = inject(HomeService);
   private editorService = inject(EditorService);
-  protected eventManager = inject(JhiEventManager);
+  protected eventManager = inject(EventManager);
 
   @Input({ required: true }) notation!: string;
   @Input({ required: true }) langVersion1!: string; // language-version for JSON-based or simply versionID for DB based comparison

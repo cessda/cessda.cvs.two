@@ -16,7 +16,7 @@
 import { ComponentFixture, TestBed, waitForAsync, inject, tick, fakeAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { of, throwError } from 'rxjs';
-import { JhiLanguageService } from 'ng-jhipster';
+import { LanguageService } from 'app/core/language/language.service';
 
 import { MockLanguageService } from '../../../helpers/mock-language.service';
 import { CvsTestModule } from '../../../test.module';
@@ -56,7 +56,7 @@ describe('Component Tests', () => {
     });
 
     it('should update success to true after creating an account', inject(
-      [RegisterService, JhiLanguageService],
+      [RegisterService, LanguageService],
       fakeAsync((service: RegisterService, mockTranslate: MockLanguageService) => {
         spyOn(service, 'save').and.returnValue(of({}));
         comp.registerForm.patchValue({

@@ -17,7 +17,7 @@ import { Component, Input, inject } from '@angular/core';
 
 import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Account } from 'app/core/user/account.model';
 import { Comment } from 'app/shared/model/comment.model';
@@ -34,7 +34,7 @@ import { QuillModules } from 'ngx-quill';
 })
 export class EditorDetailCvCommentItemComponent {
   protected editorService = inject(EditorService);
-  protected eventManager = inject(JhiEventManager);
+  protected eventManager = inject(EventManager);
   private fb = inject(FormBuilder);
 
   @Input() account?: Account;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import Spy = jasmine.Spy;
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 
 import { SpyObject } from './spyobject';
 
@@ -22,7 +22,7 @@ export class MockEventManager extends SpyObject {
   broadcastSpy: Spy;
 
   constructor() {
-    super(JhiEventManager);
+    super(EventManager);
     this.broadcastSpy = this.spy('broadcast').andReturn(this);
   }
 

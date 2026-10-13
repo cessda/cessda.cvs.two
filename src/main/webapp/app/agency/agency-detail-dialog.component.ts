@@ -15,7 +15,6 @@
  */
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { JhiDataUtils } from 'ng-jhipster';
 
 import { Agency, createNewAgency } from 'app/shared/model/agency.model';
 import { AgencyService } from 'app/agency/agency.service';
@@ -40,7 +39,6 @@ interface UnpublishedVersions {
   standalone: false,
 })
 export class AgencyDetailDialogComponent implements OnInit {
-  protected dataUtils = inject(JhiDataUtils);
   protected agencyService = inject(AgencyService);
   activeModal = inject(NgbActiveModal);
   private router = inject(Router);

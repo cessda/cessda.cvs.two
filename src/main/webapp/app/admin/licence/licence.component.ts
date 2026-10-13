@@ -17,7 +17,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Licence } from 'app/shared/model/licence.model';
@@ -35,7 +35,7 @@ export class LicenceComponent implements OnInit, OnDestroy {
   protected licenceService = inject(LicenceService);
   protected activatedRoute = inject(ActivatedRoute);
   protected router = inject(Router);
-  protected eventManager = inject(JhiEventManager);
+  protected eventManager = inject(EventManager);
   protected modalService = inject(NgbModal);
 
   licences: Licence[] = [];

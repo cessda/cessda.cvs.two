@@ -15,7 +15,7 @@
  */
 import { Component, ElementRef, inject, NgZone, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 
 import { Concept } from 'app/shared/model/concept.model';
 import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
@@ -37,14 +37,13 @@ import { Authority } from 'app/shared/constants/authority.constants';
   standalone: false,
 })
 export class HomeDetailComponent implements OnInit {
-  protected dataUtils = inject(JhiDataUtils);
   protected activatedRoute = inject(ActivatedRoute);
   protected router = inject(Router);
   protected homeService = inject(HomeService);
   private fb = inject(FormBuilder);
   private routeEventsService = inject(RouteEventsService);
   private _ngZone = inject(NgZone);
-  protected eventManager = inject(JhiEventManager);
+  protected eventManager = inject(EventManager);
   private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
 
   @ViewChild('detailPanel', { static: true }) detailPanel!: ElementRef;

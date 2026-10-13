@@ -17,7 +17,7 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Resolver } from 'app/shared/model/resolver.model';
@@ -35,7 +35,7 @@ export class ResolverComponent implements OnInit, OnDestroy {
   protected resolverService = inject(ResolverService);
   protected activatedRoute = inject(ActivatedRoute);
   protected router = inject(Router);
-  protected eventManager = inject(JhiEventManager);
+  protected eventManager = inject(EventManager);
   protected modalService = inject(NgbModal);
 
   resolvers: Resolver[] = [];

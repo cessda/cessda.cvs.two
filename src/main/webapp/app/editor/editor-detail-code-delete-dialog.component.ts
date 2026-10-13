@@ -20,7 +20,7 @@ import { Version } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
 import { Concept } from 'app/shared/model/concept.model';
 import { Observable, Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { CodeSnippet } from 'app/shared/model/code-snippet.model';
 import { HttpResponse } from '@angular/common/http';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
@@ -33,7 +33,7 @@ export class EditorDetailCodeDeleteDialogComponent {
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
   private router = inject(Router);
-  protected eventManager = inject(JhiEventManager);
+  protected eventManager = inject(EventManager);
 
   versionParam!: Version;
   conceptParam!: Concept;

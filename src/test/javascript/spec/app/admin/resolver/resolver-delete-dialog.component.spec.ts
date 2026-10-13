@@ -16,7 +16,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { of, throwError } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
@@ -47,7 +47,7 @@ describe('Component Tests', () => {
       comp = fixture.componentInstance;
       service = fixture.debugElement.injector.get(ResolverService);
       mockActiveModal = TestBed.inject(NgbActiveModal) as unknown as MockActiveModal;
-      mockEventManager = TestBed.inject(JhiEventManager) as unknown as MockEventManager;
+      mockEventManager = TestBed.inject(EventManager) as unknown as MockEventManager;
     });
 
     it('should dismiss the dialog on cancel', () => {

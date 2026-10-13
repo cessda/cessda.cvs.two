@@ -1,0 +1,27 @@
+<h3>Endpoints requests (time in millisecond)</h3>
+@if (!updating) {
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Endpoint url</th>
+          <th class="text-right">Count</th>
+          <th class="text-right">Mean</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (entry of endpointsRequestsMetrics | keys; track entry.key) {
+          @for (method of entry.value | keys; track method.key) {
+            <tr>
+              <td>{{ method.key }}</td>
+              <td>{{ entry.key }}</td>
+              <td class="text-right">{{ method.value.count }}</td>
+              <td class="text-right">{{ method.value.mean | number: '1.0-3' }}</td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+}

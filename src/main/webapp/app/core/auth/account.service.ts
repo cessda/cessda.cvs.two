@@ -16,7 +16,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { JhiLanguageService } from 'ng-jhipster';
+import { LanguageService } from 'app/core/language/language.service';
 import { SessionStorageService } from 'ngx-webstorage';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, shareReplay, tap } from 'rxjs/operators';
@@ -29,7 +29,7 @@ import { Authority } from 'app/shared/constants/authority.constants';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
-  private languageService = inject(JhiLanguageService);
+  private languageService = inject(LanguageService);
   private sessionStorage = inject(SessionStorageService);
   private http = inject(HttpClient);
   private stateStorageService = inject(StateStorageService);

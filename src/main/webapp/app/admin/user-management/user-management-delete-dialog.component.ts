@@ -15,7 +15,7 @@
  */
 import { Component, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 
 import { User } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
@@ -28,7 +28,7 @@ import { UserService } from 'app/core/user/user.service';
 export class UserManagementDeleteDialogComponent {
   private userService = inject(UserService);
   activeModal = inject(NgbActiveModal);
-  private eventManager = inject(JhiEventManager);
+  private eventManager = inject(EventManager);
 
   user?: User;
 

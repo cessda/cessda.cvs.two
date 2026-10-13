@@ -15,7 +15,8 @@
  */
 import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, IsActiveMatchOptions, Params, Router } from '@angular/router';
-import { JhiEventManager, JhiEventWithContent, JhiLanguageService } from 'ng-jhipster';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
+import { LanguageService } from 'app/core/language/language.service';
 import { SessionStorageService } from 'ngx-webstorage';
 
 import { environment } from 'environments/environment';
@@ -41,13 +42,13 @@ import { Authority } from 'app/shared/constants/authority.constants';
 })
 export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   private loginService = inject(LoginService);
-  private languageService = inject(JhiLanguageService);
+  private languageService = inject(LanguageService);
   private sessionStorage = inject(SessionStorageService);
   private accountService = inject(AccountService);
   protected activatedRoute = inject(ActivatedRoute);
   private loginModalService = inject(LoginModalService);
   private profileService = inject(ProfileService);
-  protected eventManager = inject(JhiEventManager);
+  protected eventManager = inject(EventManager);
   private router = inject(Router);
   private location = inject(Location);
   private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
@@ -175,7 +176,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
   }
 
   private registerCvOnSearchEvent(): void {
-    this.eventSubscriber = this.eventManager.subscribe('onSearching', (response: JhiEventWithContent<boolean>) => {
+    this.eventSubscriber = this.eventManager.subscribe('onSearching', (response: EventWithContent<boolean>) => {
       this.isSearching = response.content;
     });
   }

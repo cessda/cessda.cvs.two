@@ -15,7 +15,8 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
+import { AlertService } from 'app/core/util/alert.service';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { CvsTestModule } from '../../../test.module';
@@ -26,16 +27,16 @@ describe('Component Tests', () => {
   describe('Alert Error Component', () => {
     let comp: AlertErrorComponent;
     let fixture: ComponentFixture<AlertErrorComponent>;
-    let eventManager: JhiEventManager;
+    let eventManager: EventManager;
 
     beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule, TranslateModule.forRoot()],
         declarations: [AlertErrorComponent],
         providers: [
-          JhiEventManager,
+          EventManager,
           {
-            provide: JhiAlertService,
+            provide: AlertService,
             useClass: MockAlertService,
           },
         ],
@@ -47,7 +48,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(AlertErrorComponent);
       comp = fixture.componentInstance;
-      eventManager = fixture.debugElement.injector.get(JhiEventManager);
+      eventManager = fixture.debugElement.injector.get(EventManager);
     });
 
     describe('Error Handling', () => {
