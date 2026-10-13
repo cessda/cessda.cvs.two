@@ -24,7 +24,10 @@ describe('Matomo tracking code', () => {
 
   const trackingScript = (): string => {
     const html = readFileSync(join(process.cwd(), 'src/main/webapp/index.html'), 'utf8');
-    const script = [...html.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)].map(match => match[1]).find(body => body.includes('_paq'));
+    const scripts = new DOMParser().parseFromString(html, 'text/html').querySelectorAll('script');
+    const script = Array.from(scripts)
+      .map(element => element.textContent ?? '')
+      .find(body => body.includes('_paq'));
     if (!script) {
       throw new Error('The Matomo tracking code was not found in index.html');
     }
