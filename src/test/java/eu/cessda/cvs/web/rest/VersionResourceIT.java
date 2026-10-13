@@ -36,7 +36,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.*;
 import java.util.List;
 
@@ -246,7 +246,7 @@ public class VersionResourceIT {
         // Validate the Version in the database
         List<Version> versionList = versionRepository.findAll();
         assertThat(versionList).hasSize(databaseSizeBeforeCreate + 1);
-        Version testVersion = versionList.get(versionList.size() - 1);
+        Version testVersion = versionList.getLast();
         assertThat(testVersion.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testVersion.getItemType()).isEqualTo(DEFAULT_ITEM_TYPE);
         assertThat(testVersion.getLanguage()).isEqualTo(DEFAULT_LANGUAGE);
@@ -434,7 +434,7 @@ public class VersionResourceIT {
         // Validate the Version in the database
         List<Version> versionList = versionRepository.findAll();
         assertThat(versionList).hasSize(databaseSizeBeforeUpdate);
-        Version testVersion = versionList.get(versionList.size() - 1);
+        Version testVersion = versionList.getLast();
         assertThat(testVersion.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testVersion.getItemType()).isEqualTo(UPDATED_ITEM_TYPE);
         assertThat(testVersion.getLanguage()).isEqualTo(UPDATED_LANGUAGE);

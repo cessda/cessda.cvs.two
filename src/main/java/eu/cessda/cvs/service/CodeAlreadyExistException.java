@@ -15,7 +15,10 @@
  */
 package eu.cessda.cvs.service;
 
+import java.io.Serial;
+
 public class CodeAlreadyExistException extends RuntimeException {
+    @Serial
     private static final long serialVersionUID = 3165391114846396394L;
 
     public CodeAlreadyExistException(String code) {

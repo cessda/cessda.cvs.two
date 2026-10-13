@@ -24,7 +24,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -44,7 +43,6 @@ public class FileUploadService {
     private final ApplicationProperties applicationProperties;
     private final MetadataFieldService metadataFieldService;
 
-    @Autowired
     public FileUploadService(ApplicationProperties applicationProperties, MetadataFieldService metadataFieldService) {
         this.applicationProperties = applicationProperties;
         this.metadataFieldService = metadataFieldService;

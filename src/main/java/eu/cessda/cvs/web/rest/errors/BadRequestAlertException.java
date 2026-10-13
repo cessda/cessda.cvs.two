@@ -18,6 +18,7 @@ package eu.cessda.cvs.web.rest.errors;
 import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Status;
 
+import java.io.Serial;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +26,7 @@ import java.util.Map;
 @SuppressWarnings("squid:S110") // since AbstractThrowableProblem already has 5 parents
 public class BadRequestAlertException extends AbstractThrowableProblem {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final String errorKey;

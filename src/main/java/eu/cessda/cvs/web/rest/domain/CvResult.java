@@ -17,10 +17,12 @@ package eu.cessda.cvs.web.rest.domain;
 
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
 public class CvResult implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1607897901898491262L;
 
     private final List<VocabularyDTO> vocabularies;

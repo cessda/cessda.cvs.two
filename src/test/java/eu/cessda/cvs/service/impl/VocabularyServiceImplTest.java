@@ -25,15 +25,13 @@ import eu.cessda.cvs.service.IllegalActionTypeException;
 import eu.cessda.cvs.service.VocabularyChangeService;
 import eu.cessda.cvs.service.dto.UserDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
+import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.NestedQuery;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.WildcardQuery;
 import eu.cessda.cvs.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 import eu.cessda.cvs.service.mapper.VocabularyMapper;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.MatchBoolPrefixQueryBuilder;
-import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.NestedQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.WildcardQueryBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mockito;
@@ -273,7 +271,7 @@ class VocabularyServiceImplTest
     @Test
     void shouldQueryVocabularyFieldsInMainQuery()
     {
-        BoolQueryBuilder query = VocabularyServiceImpl.generateMainQuery( "sampling", List.of( "En", "De" ) );
+        BoolQuery query = VocabularyServiceImpl.generateMainQuery( "sampling", List.of( "En", "De" ) );
 
         assertThat( getQueriedFields( query ) ).containsExactlyInAnyOrder(
             "match:titleEn", "match:definitionEn", "prefix:titleEn",
@@ -285,7 +283,7 @@ class VocabularyServiceImplTest
     @Test
     void shouldNotMatchTitlePrefixForSingleCharacterLastWord()
     {
-        BoolQueryBuilder query = VocabularyServiceImpl.generateMainQuery( "analysis u", List.of( "En" ) );
+        BoolQuery query = VocabularyServiceImpl.generateMainQuery( "analysis u", List.of( "En" ) );
 
         assertThat( getQueriedFields( query ) ).containsExactlyInAnyOrder(
             "match:titleEn", "match:definitionEn", "wildcard:notation"
@@ -295,10 +293,10 @@ class VocabularyServiceImplTest
     @Test
     void shouldQueryCodeFieldsInNestedQuery()
     {
-        NestedQueryBuilder nestedQuery = VocabularyServiceImpl.generateNestedQuery( "sampling", List.of( "En", "De" ), 100 );
+        NestedQuery nestedQuery = VocabularyServiceImpl.generateNestedQuery( "sampling", List.of( "En", "De" ), 100 );
 
-        assertThat( nestedQuery.query() ).isInstanceOf( BoolQueryBuilder.class );
-        assertThat( getQueriedFields( (BoolQueryBuilder) nestedQuery.query() ) ).containsExactlyInAnyOrder(
+        assertThat( nestedQuery.query().isBool() ).isTrue();
+        assertThat( getQueriedFields( nestedQuery.query().bool() ) ).containsExactlyInAnyOrder(
             "match:codes.titleEn", "match:codes.definitionEn",
             "match:codes.titleDe", "match:codes.definitionDe",
             "wildcard:codes.notation"
@@ -308,37 +306,27 @@ class VocabularyServiceImplTest
     @Test
     void shouldQueryNotationIgnoringCase()
     {
-        BoolQueryBuilder query = VocabularyServiceImpl.generateMainQuery( "Mode Of Collection", List.of( "En" ) );
+        BoolQuery query = VocabularyServiceImpl.generateMainQuery( "Mode Of Collection", List.of( "En" ) );
 
-        WildcardQueryBuilder notationQuery = query.should().stream()
-            .filter( WildcardQueryBuilder.class::isInstance )
-            .map( WildcardQueryBuilder.class::cast )
+        WildcardQuery notationQuery = query.should().stream()
+            .filter( Query::isWildcard )
+            .map( Query::wildcard )
             .findFirst()
             .orElseThrow();
         assertThat( notationQuery.value() ).isEqualTo( "ModeOfCollection*" );
         assertThat( notationQuery.caseInsensitive() ).isTrue();
     }
 
-    private static List<String> getQueriedFields( BoolQueryBuilder query )
+    private static List<String> getQueriedFields( BoolQuery query )
     {
         List<String> fields = new ArrayList<>();
-        for ( QueryBuilder clause : query.should() )
+        for ( Query clause : query.should() )
         {
-            if ( clause instanceof MatchQueryBuilder )
-            {
-                fields.add( "match:" + ( (MatchQueryBuilder) clause ).fieldName() );
-            }
-            else if ( clause instanceof MatchBoolPrefixQueryBuilder )
-            {
-                fields.add( "prefix:" + ( (MatchBoolPrefixQueryBuilder) clause ).fieldName() );
-            }
-            else if ( clause instanceof WildcardQueryBuilder )
-            {
-                fields.add( "wildcard:" + ( (WildcardQueryBuilder) clause ).fieldName() );
-            }
-            else
-            {
-                throw new AssertionError( "Unexpected query clause: " + clause );
+            switch ( clause._kind() ) {
+                case Match -> fields.add( "match:" + clause.match().field() );
+                case MatchBoolPrefix -> fields.add( "prefix:" + clause.matchBoolPrefix().field() );
+                case Wildcard -> fields.add( "wildcard:" + clause.wildcard().field() );
+                default -> throw new AssertionError( "Unexpected query clause: " + clause );
             }
         }
         return fields;

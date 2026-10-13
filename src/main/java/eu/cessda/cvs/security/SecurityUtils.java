@@ -47,14 +47,13 @@ public final class SecurityUtils {
             .map( Authentication::getPrincipal )
             .map( principal ->
             {
-                if ( principal instanceof UserDetails )
+                if ( principal instanceof UserDetails springSecurityUser )
                 {
-                    UserDetails springSecurityUser = (UserDetails) principal;
                     return springSecurityUser.getUsername();
                 }
-                else if ( principal instanceof String )
+                else if ( principal instanceof String string )
                 {
-                    return (String) principal;
+                    return string;
                 }
                 return null;
             } );

@@ -17,14 +17,17 @@ package eu.cessda.cvs.domain;
 
 import eu.cessda.cvs.security.ActionType;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CodeSnippet implements Serializable {
+    @Serial
     private static final long serialVersionUID = 2912851169400383645L;
 
     @NotNull

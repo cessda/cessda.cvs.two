@@ -71,7 +71,7 @@ pipeline {
         stage('Compile Java') {
             agent {
                 docker {
-                    image 'eclipse-temurin:11'
+                    image 'eclipse-temurin:21'
                     reuseNode true
                 }
             }

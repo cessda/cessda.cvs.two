@@ -15,8 +15,10 @@
  */
 package eu.cessda.cvs.service.dto;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -24,6 +26,7 @@ import java.util.Objects;
  * A DTO for the {@link eu.cessda.cvs.domain.Licence} entity.
  */
 public class LicenceDTO implements Serializable {
+    @Serial
     private static final long serialVersionUID = -6758468839650832552L;
 
     private Long id;

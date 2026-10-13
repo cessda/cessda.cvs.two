@@ -17,8 +17,11 @@ package eu.cessda.cvs.service;
 
 import eu.cessda.cvs.security.ActionType;
 
+import java.io.Serial;
+
 public class InsufficientVocabularyAuthorityException extends RuntimeException
 {
+    @Serial
     private static final long serialVersionUID = 5885509671807321027L;
 
     public InsufficientVocabularyAuthorityException( ActionType actionType )

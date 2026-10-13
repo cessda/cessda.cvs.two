@@ -209,13 +209,13 @@ public final class VocabularyUtils
 		// map contains either 1 or 2
 		filterMap.forEach( ( k, v ) ->
 		{
-            var buckets = transformToBuckets( v.get( 0 ).getBucket() );
-            var filteredBuckets = transformToBuckets( v.get( 0 ).getFilteredBucket() );
+            var buckets = transformToBuckets( v.getFirst().getBucket() );
+            var filteredBuckets = transformToBuckets( v.getFirst().getFilteredBucket() );
 
             Aggr agg = new Aggr(
-                v.get( 0 ).getFilterType().toString().toLowerCase(),
-                v.get( 0 ).getField(),
-                v.get( 0 ).getValues(),
+                v.getFirst().getFilterType().toString().toLowerCase(),
+                v.getFirst().getField(),
+                v.getFirst().getValues(),
                 buckets,
                 filteredBuckets
             );

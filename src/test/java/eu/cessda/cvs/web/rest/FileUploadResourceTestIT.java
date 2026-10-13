@@ -36,7 +36,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,7 +60,7 @@ class FileUploadResourceTestIT
     @Test
     void shouldUploadAgencyImage() throws Exception
     {
-        MockMultipartFile cessdaPNG = new MockMultipartFile( "file", Files.readAllBytes( Paths.get( "src/main/webapp/content/images/agency/cessda.png" ) ) );
+        MockMultipartFile cessdaPNG = new MockMultipartFile( "file", Files.readAllBytes( Path.of( "src/main/webapp/content/images/agency/cessda.png" ) ) );
         MvcResult result = fileUploadResourceMockMvc.perform( multipart( "/api/upload/agency-image" ).file( cessdaPNG ) )
             .andExpect( status().isCreated() )
             .andExpect( header().string( "location", containsString( ".png" ) ) )
@@ -78,7 +77,7 @@ class FileUploadResourceTestIT
     @Test
     void shouldUploadLicenseImage() throws Exception
     {
-        MockMultipartFile cessdaPNG = new MockMultipartFile( "file", Files.readAllBytes( Paths.get( "src/main/webapp/content/images/license/by.png" ) ) );
+        MockMultipartFile cessdaPNG = new MockMultipartFile( "file", Files.readAllBytes( Path.of( "src/main/webapp/content/images/license/by.png" ) ) );
         MvcResult result = fileUploadResourceMockMvc.perform( multipart( "/api/upload/license-image" ).file( cessdaPNG ) )
             .andExpect( status().isCreated() )
             .andExpect( header().string( "location", containsString( ".png" ) ) )
@@ -96,7 +95,7 @@ class FileUploadResourceTestIT
     void shouldUploadFile() throws Exception
     {
         // Read in the file in byte form
-        byte[] topicClassificationJson = Files.readAllBytes( Paths.get( "src/main/webapp/content/vocabularies/TopicClassification/TopicClassification.json" ) );
+        byte[] topicClassificationJson = Files.readAllBytes( Path.of( "src/main/webapp/content/vocabularies/TopicClassification/TopicClassification.json" ) );
         MockMultipartFile multipartFile = new MockMultipartFile( "file", "TopicClassification.json", "application/json", topicClassificationJson );
 
         MvcResult result = fileUploadResourceMockMvc.perform( multipart( "/api/upload/file" ).file( multipartFile ) )

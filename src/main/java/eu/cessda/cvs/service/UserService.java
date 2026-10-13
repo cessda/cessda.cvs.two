@@ -186,8 +186,7 @@ public class UserService {
         if (userDTO.getAuthorities() != null) {
             Set<Authority> authorities = userDTO.getAuthorities().stream()
                 .map(authorityRepository::findById)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .flatMap(Optional::stream)
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
         }
@@ -195,8 +194,7 @@ public class UserService {
         if( userDTO.getUserAgencies() != null) {
             Set<UserAgency> userAgencies = userDTO.getUserAgencies().stream()
                 .map(ua -> userAgencyRepository.findById(ua.getId()))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
+                .flatMap(Optional::stream)
                 .collect(Collectors.toSet());
             user.setUserAgencies( userAgencies );
         }
@@ -257,8 +255,7 @@ public class UserService {
                 managedAuthorities.clear();
                 userDTO.getAuthorities().stream()
                     .map(authorityRepository::findById)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
+                    .flatMap(Optional::stream)
                     .forEach(managedAuthorities::add);
 
                 if( userDTO.getUserAgencies() != null) {
@@ -266,8 +263,7 @@ public class UserService {
                     user.getUserAgencies().clear();
                     userDTO.getUserAgencies().stream()
                         .map(ua -> userAgencyRepository.findById(ua.getId()))
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
+                        .flatMap(Optional::stream)
                         .forEach(managedUserAgencies::add);
                 }
 

@@ -27,18 +27,17 @@ import eu.cessda.cvs.repository.UserRepository;
 import eu.cessda.cvs.security.jwt.TokenProvider;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.HashSet;
@@ -151,7 +150,6 @@ public class TestUtil {
         return allQuery.getResultList();
     }
 
-    @Autowired
     public TestUtil(
         AuthenticationManagerBuilder authenticationManagerBuilder,
         AuthorityRepository authorityRepository,

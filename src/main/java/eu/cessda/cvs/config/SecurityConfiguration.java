@@ -19,11 +19,12 @@ import eu.cessda.cvs.security.AuthoritiesConstants;
 import eu.cessda.cvs.security.jwt.JWTConfigurer;
 import eu.cessda.cvs.security.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -36,8 +37,12 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+import static org.springframework.security.web.util.matcher.RegexRequestMatcher.regexMatcher;
+
+@Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableMethodSecurity(securedEnabled = true)
 @Import(SecurityProblemSupport.class)
 public class SecurityConfiguration {
 
@@ -60,12 +65,12 @@ public class SecurityConfiguration {
     @Bean
     public WebSecurityCustomizer configure() {
         return web -> web.ignoring()
-            .antMatchers(HttpMethod.OPTIONS, "/**")
-            .antMatchers("/app/**/*.{js,html}")
-            .antMatchers("/i18n/**")
-            .antMatchers("/content/**")
-            .antMatchers("/swagger-ui/index.html")
-            .antMatchers("/test/**");
+            .requestMatchers(HttpMethod.OPTIONS, "/**")
+            .requestMatchers(regexMatcher("^/app/.*\\.(js|html)$"))
+            .requestMatchers("/i18n/**")
+            .requestMatchers("/content/**")
+            .requestMatchers("/swagger-ui/index.html")
+            .requestMatchers("/test/**");
     }
 
     @SuppressWarnings( "ProhibitedExceptionDeclared" )
@@ -73,49 +78,46 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain( HttpSecurity http ) throws Exception {
         // @formatter:off
         return http
-            .csrf()
-            .disable()
+            .csrf(csrf -> csrf
+                .disable())
             .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling()
+            .exceptionHandling(handling -> handling
                 .authenticationEntryPoint(problemSupport)
-                .accessDeniedHandler(problemSupport)
-        .and()
-            .headers()
-            .contentSecurityPolicy("default-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://analytics.cessda.eu http://cdn.matomo.cloud/cessda.matomo.cloud/matomo https://helpdesk.cessda.eu/api/v1/form_config https://helpdesk.cessda.eu/api/v1/form_submit; frame-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net http://cdn.matomo.cloud/cessda.matomo.cloud data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net https://analytics.cessda.eu https://storage.googleapis.com http://cdn.matomo.cloud/cessda.matomo.cloud/matomo.js https://code.jquery.com/jquery-3.6.0.min.js https://helpdesk.cessda.eu/assets/form/form.js; style-src 'self' https://fonts.googleapis.com https://helpdesk.cessda.eu/assets/form/form.css 'unsafe-inline'; img-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net https://analytics.cessda.eu http://cdn.matomo.cloud/cessda.matomo.cloud data:; font-src 'self' https://fonts.gstatic.com data:")
-        .and()
-            .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
-        .and()
-            .permissionsPolicy()
-            .policy( "geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'" )
-        .and()
-            .frameOptions()
-            .deny()
-        .and()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-            .authorizeRequests()
-            .antMatchers("/api/authenticate").permitAll()
-            .antMatchers("/api/register").permitAll()
-            .antMatchers("/api/activate").permitAll()
-            .antMatchers("/v1/**").permitAll()
-            .antMatchers("/v2/**").permitAll()
-            .antMatchers("/api/search").permitAll()
-            .antMatchers(HttpMethod.GET, "/api/agencies").permitAll()
-            .antMatchers(HttpMethod.GET, "/api/metadata-fields/**").permitAll()
-            .antMatchers("/api/search/**").permitAll()
-            .antMatchers("/api/download").permitAll()
-            .antMatchers("/api/download/**").permitAll()
-            .antMatchers("/api/account/reset-password/init").permitAll()
-            .antMatchers("/api/account/reset-password/finish").permitAll()
-            .antMatchers("/api/**").authenticated()
-            .antMatchers("/management/health").permitAll()
-            .antMatchers("/management/info").permitAll()
-            .antMatchers("/management/prometheus").permitAll()
-            .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN_TECHNICAL)
-        .and()
-            .apply(securityConfigurerAdapter())
-        .and()
+                .accessDeniedHandler(problemSupport))
+            .headers(headers -> headers
+                .contentSecurityPolicy(policy -> policy
+                    .policyDirectives("default-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://analytics.cessda.eu http://cdn.matomo.cloud/cessda.matomo.cloud/matomo https://helpdesk.cessda.eu/api/v1/form_config https://helpdesk.cessda.eu/api/v1/form_submit; frame-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net http://cdn.matomo.cloud/cessda.matomo.cloud data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net https://analytics.cessda.eu https://storage.googleapis.com http://cdn.matomo.cloud/cessda.matomo.cloud/matomo.js https://code.jquery.com/jquery-3.6.0.min.js https://helpdesk.cessda.eu/assets/form/form.js; style-src 'self' https://fonts.googleapis.com https://helpdesk.cessda.eu/assets/form/form.css 'unsafe-inline'; img-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net https://analytics.cessda.eu http://cdn.matomo.cloud/cessda.matomo.cloud data:; font-src 'self' https://fonts.gstatic.com data:"))
+                .referrerPolicy(policy -> policy
+                    .policy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN))
+                .permissionsPolicyHeader(policy -> policy
+                    .policy("geolocation 'none'; midi 'none'; sync-xhr 'none'; microphone 'none'; camera 'none'; magnetometer 'none'; gyroscope 'none'; speaker 'none'; fullscreen 'self'; payment 'none'"))
+                .frameOptions(options -> options
+                    .deny()))
+            .sessionManagement(management -> management
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(requests -> requests
+                .requestMatchers("/api/authenticate").permitAll()
+                .requestMatchers("/api/register").permitAll()
+                .requestMatchers("/api/activate").permitAll()
+                .requestMatchers("/v1/**").permitAll()
+                .requestMatchers("/v2/**").permitAll()
+                .requestMatchers("/api/search").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/agencies").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/metadata-fields/**").permitAll()
+                .requestMatchers("/api/search/**").permitAll()
+                .requestMatchers("/api/download").permitAll()
+                .requestMatchers("/api/download/**").permitAll()
+                .requestMatchers("/api/account/reset-password/init").permitAll()
+                .requestMatchers("/api/account/reset-password/finish").permitAll()
+                .requestMatchers("/api/**").authenticated()
+                .requestMatchers("/management/health").permitAll()
+                .requestMatchers("/management/info").permitAll()
+                .requestMatchers("/management/prometheus").permitAll()
+                .requestMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN_TECHNICAL)
+                // the client application, static resources, the API documentation and /urn; authorizeRequests
+                // allowed whatever no rule matched, authorizeHttpRequests denies it
+                .anyRequest().permitAll())
+            .with(securityConfigurerAdapter(), withDefaults())
             .build();
         // @formatter:on
     }
@@ -131,12 +133,13 @@ public class SecurityConfiguration {
     static RoleHierarchy roleHierarchy() {
          var roleHierarchy = new RoleHierarchyImpl();
          roleHierarchy.setHierarchy(
-             "ROLE_ADMIN > ROLE_ADMIN_CONTENT\n" +
-             "ROLE_ADMIN > ROLE_ADMIN_TECHNICAL\n" +
-             "ROLE_ADMIN_CONTENT > ROLE_USER \n" +
-             "ROLE_ADMIN_TECHNICAL > ROLE_USER\n" +
-             "ROLE_ADMIN > ROLE_USER\n" +
-             "ROLE_USER > ROLE_ANONYMOUS"
+             """
+             ROLE_ADMIN > ROLE_ADMIN_CONTENT
+             ROLE_ADMIN > ROLE_ADMIN_TECHNICAL
+             ROLE_ADMIN_CONTENT > ROLE_USER\s
+             ROLE_ADMIN_TECHNICAL > ROLE_USER
+             ROLE_ADMIN > ROLE_USER
+             ROLE_USER > ROLE_ANONYMOUS"""
          );
          return roleHierarchy;
     }

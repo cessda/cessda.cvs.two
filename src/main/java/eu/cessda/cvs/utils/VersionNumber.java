@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.std.FromStringDeserializer;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Objects;
@@ -30,6 +31,7 @@ import java.util.Objects;
 @JsonDeserialize(using = VersionNumber.Deserializer.class)
 public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
+    @Serial
     private static final long serialVersionUID = 2L;
 
     /**
@@ -155,6 +157,7 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     public static class Deserializer extends FromStringDeserializer<VersionNumber> {
 
+        @Serial
         private static final long serialVersionUID = -8397284193430713709L;
 
         public Deserializer()

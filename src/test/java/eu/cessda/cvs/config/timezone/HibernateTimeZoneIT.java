@@ -149,11 +149,15 @@ public class HibernateTimeZoneIT {
 
         String request = generateSqlRequest("offset_time", dateTimeWrapper.getId());
         SqlRowSet resultSet = jdbcTemplate.queryForRowSet(request);
+        // Hibernate 6 normalizes the time to UTC, then binds it as a JDBC time of 1 January 1970 in the JVM time zone,
+        // which hibernate.jdbc.time_zone shifts to UTC once more (Hibernate 5 dropped the offset instead)
         String expectedValue = dateTimeWrapper
             .getOffsetTime()
+            .withOffsetSameInstant(ZoneOffset.UTC)
             .toLocalTime()
             .atDate(LocalDate.of(1970, Month.JANUARY, 1))
             .atZone(ZoneId.systemDefault())
+            .withZoneSameInstant(ZoneOffset.UTC)
             .format(timeFormatter);
 
         assertThatDateStoredValueIsEqualToInsertDateValueOnGMTTimeZone(resultSet, expectedValue);

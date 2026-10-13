@@ -34,7 +34,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -116,7 +116,7 @@ public class UserAgencyResourceIT {
         // Validate the UserAgency in the database
         List<UserAgency> userAgencyList = userAgencyRepository.findAll();
         assertThat(userAgencyList).hasSize(databaseSizeBeforeCreate + 1);
-        UserAgency testUserAgency = userAgencyList.get(userAgencyList.size() - 1);
+        UserAgency testUserAgency = userAgencyList.getLast();
         assertThat(testUserAgency.getAgencyRole()).isEqualTo(DEFAULT_AGENCY_ROLE);
         assertThat(testUserAgency.getLanguage()).isEqualTo(DEFAULT_LANGUAGE);
     }
@@ -205,7 +205,7 @@ public class UserAgencyResourceIT {
         // Validate the UserAgency in the database
         List<UserAgency> userAgencyList = userAgencyRepository.findAll();
         assertThat(userAgencyList).hasSize(databaseSizeBeforeUpdate);
-        UserAgency testUserAgency = userAgencyList.get(userAgencyList.size() - 1);
+        UserAgency testUserAgency = userAgencyList.getLast();
         assertThat(testUserAgency.getAgencyRole()).isEqualTo(UPDATED_AGENCY_ROLE);
         assertThat(testUserAgency.getLanguage()).isEqualTo(UPDATED_LANGUAGE);
     }

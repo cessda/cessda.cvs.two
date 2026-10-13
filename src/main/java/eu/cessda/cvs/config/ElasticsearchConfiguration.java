@@ -24,7 +24,6 @@ import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.convert.WritingConverter;
 import org.springframework.data.elasticsearch.core.convert.ElasticsearchCustomConversions;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Arrays;
 
 @Configuration
@@ -46,7 +45,6 @@ public class ElasticsearchConfiguration
         }
     }
 
-    @ParametersAreNonnullByDefault
     @ReadingConverter
     static class StringToVersionNumber implements Converter<String, VersionNumber> {
         @Override

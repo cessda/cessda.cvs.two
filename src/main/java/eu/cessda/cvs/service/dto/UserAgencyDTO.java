@@ -18,6 +18,7 @@ package eu.cessda.cvs.service.dto;
 import eu.cessda.cvs.domain.UserAgency;
 import eu.cessda.cvs.domain.enumeration.AgencyRole;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -25,6 +26,7 @@ import java.util.Objects;
  * A DTO for the {@link eu.cessda.cvs.domain.UserAgency} entity.
  */
 public class UserAgencyDTO implements Serializable {
+    @Serial
     private static final long serialVersionUID = 6683764195118500502L;
 
     private Long id;

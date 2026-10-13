@@ -18,9 +18,11 @@ package eu.cessda.cvs.service.dto;
 import eu.cessda.cvs.domain.CodeSnippet;
 import eu.cessda.cvs.domain.VocabularySnippet;
 
-import javax.persistence.Lob;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.Lob;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -29,6 +31,7 @@ import java.util.Objects;
  * A DTO for the {@link eu.cessda.cvs.domain.VocabularyChange} entity.
  */
 public class VocabularyChangeDTO implements Serializable {
+    @Serial
     private static final long serialVersionUID = 3945898883897497903L;
 
     private Long id;

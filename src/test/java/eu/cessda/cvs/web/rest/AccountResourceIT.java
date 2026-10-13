@@ -567,7 +567,7 @@ class AccountResourceIT {
     @WithMockUser("change-password-wrong-existing-password")
     void testChangePasswordWrongExistingPassword() throws Exception {
         User user = new User();
-        String currentPassword = RandomStringUtils.random(60);
+        String currentPassword = RandomStringUtils.secure().nextAlphanumeric(60);
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-wrong-existing-password");
         user.setEmail("change-password-wrong-existing-password@example.com");
@@ -589,7 +589,7 @@ class AccountResourceIT {
     @WithMockUser("change-password")
     void testChangePassword() throws Exception {
         User user = new User();
-        String currentPassword = RandomStringUtils.random(60);
+        String currentPassword = RandomStringUtils.secure().nextAlphanumeric(60);
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password");
         user.setEmail("change-password@example.com");
@@ -609,7 +609,7 @@ class AccountResourceIT {
     @WithMockUser("change-password-too-small")
     void testChangePasswordTooSmall() throws Exception {
         User user = new User();
-        String currentPassword = RandomStringUtils.random(60);
+        String currentPassword = RandomStringUtils.secure().nextAlphanumeric(60);
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-too-small");
         user.setEmail("change-password-too-small@example.com");
@@ -632,7 +632,7 @@ class AccountResourceIT {
     @WithMockUser("change-password-too-long")
     void testChangePasswordTooLong() throws Exception {
         User user = new User();
-        String currentPassword = RandomStringUtils.random(60);
+        String currentPassword = RandomStringUtils.secure().nextAlphanumeric(60);
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-too-long");
         user.setEmail("change-password-too-long@example.com");
@@ -655,7 +655,7 @@ class AccountResourceIT {
     @WithMockUser("change-password-empty")
     void testChangePasswordEmpty() throws Exception {
         User user = new User();
-        String currentPassword = RandomStringUtils.random(60);
+        String currentPassword = RandomStringUtils.secure().nextAlphanumeric(60);
         user.setPassword(passwordEncoder.encode(currentPassword));
         user.setLogin("change-password-empty");
         user.setEmail("change-password-empty@example.com");

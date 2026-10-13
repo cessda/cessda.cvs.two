@@ -15,9 +15,12 @@
  */
 package eu.cessda.cvs.web.rest.errors;
 
+import java.io.Serial;
+
 @SuppressWarnings("squid:S110") // since ForbiddenAlertException already has 6 parents
 public class InsufficientVocabularyAuthorityException extends ForbiddenAlertException {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public InsufficientVocabularyAuthorityException() {

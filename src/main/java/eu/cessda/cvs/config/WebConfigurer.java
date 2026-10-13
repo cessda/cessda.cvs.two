@@ -30,11 +30,10 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.FilterRegistration;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletResponse;
 import java.time.Instant;
 import java.util.EnumSet;
 import java.util.List;
@@ -77,7 +76,6 @@ public class WebConfigurer implements ServletContextInitializer, WebMvcConfigure
      */
     @SuppressWarnings( "DataFlowIssue" )
     @Override
-    @ParametersAreNonnullByDefault
     public void addResourceHandlers( ResourceHandlerRegistry registry )
     {
         // Configure mapping for upload directories

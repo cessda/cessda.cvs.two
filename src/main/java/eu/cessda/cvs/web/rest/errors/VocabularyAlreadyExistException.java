@@ -15,9 +15,12 @@
  */
 package eu.cessda.cvs.web.rest.errors;
 
+import java.io.Serial;
+
 @SuppressWarnings("squid:S110") // since BadRequestAlertException already has 6 parents
 public class VocabularyAlreadyExistException extends BadRequestAlertException {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public VocabularyAlreadyExistException() {

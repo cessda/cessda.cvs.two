@@ -21,12 +21,14 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.io.Serial;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Document(indexName = "vocabularyeditor")
 public class VocabularyEditor extends VocabularyBase {
+    @Serial
     private static final long serialVersionUID = 3683266166169395311L;
 
     @Field( type = FieldType.Keyword )

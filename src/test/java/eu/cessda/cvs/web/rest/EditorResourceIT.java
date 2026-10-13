@@ -789,7 +789,7 @@ class EditorResourceIT {
     private Concept getConceptFromVocabulary(Concept slConcept) {
         Version tlVersion;
         Concept tlConcept;
-        Vocabulary vocabulary = vocabularyRepository.findAll().iterator().next();
+        Vocabulary vocabulary = vocabularyRepository.findAll().getFirst();
         tlVersion = vocabulary.getVersions().stream().filter(v -> v.getItemType() == ITEM_TYPE_TL )
             .findFirst().orElse(null);
         assertThat(tlVersion).isNotNull();
@@ -834,7 +834,7 @@ class EditorResourceIT {
             .andExpect(status().isCreated());
 
         // only contains 1 vocab
-        Vocabulary testVocabulary = vocabularyRepository.findAll().iterator().next();
+        Vocabulary testVocabulary = vocabularyRepository.findAll().getFirst();
         final Version tlVersion = testVocabulary.getVersions().stream()
             .filter( v -> v.getItemType() == ITEM_TYPE_TL ).findFirst().orElse(null);
         assertThat(tlVersion).isNotNull();
@@ -874,7 +874,7 @@ class EditorResourceIT {
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
             .andExpect(status().isOk());
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
-        Vocabulary testVocabulary = vocabularyList.get(vocabularyList.size() - 1);
+        Vocabulary testVocabulary = vocabularyList.getLast();
         final Version testVersion = testVocabulary.getVersions().iterator().next();
         assertThat(testVersion.getNotes()).isEqualTo(EDIT_NOTES);
         assertThat(testVersion.getDdiUsage()).isEqualTo(INIT_DDI_USAGE);
@@ -1204,7 +1204,7 @@ class EditorResourceIT {
     private void updateVocabularySlTest(Version slVersion) throws Exception {
         int databaseSize = vocabularyRepository.findAll().size();
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
-        Vocabulary vocabulary = vocabularyList.get(vocabularyList.size() - 1);
+        Vocabulary vocabulary = vocabularyList.getLast();
         // prepare to update
         final VocabularySnippet vocabularySnippet = updateVocabularySnippetForSlEn();
         vocabularySnippet.setActionType( ActionType.EDIT_CV );
@@ -1220,7 +1220,7 @@ class EditorResourceIT {
 
         vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSize);
-        Vocabulary testVocabulary = vocabularyList.get(vocabularyList.size() - 1);
+        Vocabulary testVocabulary = vocabularyList.getLast();
         assertThat(testVocabulary.getTitleEn()).isEqualTo(EDIT_TITLE_EN);
         assertThat(testVocabulary.getDefinitionEn()).isEqualTo(EDIT_DEFINITION_EN);
 
@@ -1256,7 +1256,7 @@ class EditorResourceIT {
 
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSizeBeforeCreate + 1);
-        Vocabulary testVocabulary = vocabularyList.get(vocabularyList.size() - 1);
+        Vocabulary testVocabulary = vocabularyList.getLast();
         assertThat(testVocabulary.getStatus()).isEqualTo(INIT_STATUS);
         assertThat(testVocabulary.getNotation()).isEqualTo(NOTATION);
         assertThat(testVocabulary.getVersionNumber()).isEqualTo(INIT_VERSION_NUMBER_SL);

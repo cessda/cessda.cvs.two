@@ -35,7 +35,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -132,7 +132,7 @@ public class ResolverResourceIT {
         // Validate the Resolver in the database
         List<Resolver> resolverList = resolverRepository.findAll();
         assertThat(resolverList).hasSize(databaseSizeBeforeCreate + 1);
-        Resolver testResolver = resolverList.get(resolverList.size() - 1);
+        Resolver testResolver = resolverList.getLast();
         assertThat(testResolver.getResourceId()).isEqualTo(DEFAULT_RESOURCE_ID);
         assertThat(testResolver.getResourceType()).isEqualTo(DEFAULT_RESOURCE_TYPE);
         assertThat(testResolver.getResourceUrl()).isEqualTo(DEFAULT_RESOURCE_URL);
@@ -271,7 +271,7 @@ public class ResolverResourceIT {
         // Validate the Resolver in the database
         List<Resolver> resolverList = resolverRepository.findAll();
         assertThat(resolverList).hasSize(databaseSizeBeforeUpdate);
-        Resolver testResolver = resolverList.get(resolverList.size() - 1);
+        Resolver testResolver = resolverList.getLast();
         assertThat(testResolver.getResourceId()).isEqualTo(UPDATED_RESOURCE_ID);
         assertThat(testResolver.getResourceType()).isEqualTo(UPDATED_RESOURCE_TYPE);
         assertThat(testResolver.getResourceUrl()).isEqualTo(UPDATED_RESOURCE_URL);

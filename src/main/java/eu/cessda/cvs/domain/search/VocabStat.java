@@ -19,11 +19,13 @@ import eu.cessda.cvs.utils.VersionNumber;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class VocabStat implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public VocabStat() {

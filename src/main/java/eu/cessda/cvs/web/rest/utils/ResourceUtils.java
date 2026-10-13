@@ -27,7 +27,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.*;
 
 public class ResourceUtils {
@@ -76,7 +76,7 @@ public class ResourceUtils {
         return accepted.stream()
             .filter( candidate -> supported.stream().anyMatch( candidate::isCompatibleWith ) )
             .findFirst()
-            .orElse( accepted.get( 0 ) );
+            .orElse( accepted.getFirst() );
     }
 
     public static ResponseEntity<List<String>> getListResponseEntity(VersionDTO currentVersion, VersionDTO previousVersion) {

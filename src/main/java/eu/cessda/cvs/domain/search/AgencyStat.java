@@ -27,8 +27,10 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Id;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Id;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -39,6 +41,7 @@ import java.util.stream.Collectors;
 @Document(indexName = "agency")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AgencyStat implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public AgencyStat() {

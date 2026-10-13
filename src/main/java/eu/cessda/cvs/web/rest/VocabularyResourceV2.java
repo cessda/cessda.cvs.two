@@ -50,8 +50,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Max;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.constraints.Max;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;

@@ -29,7 +29,7 @@ import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
@@ -87,7 +87,7 @@ public class CustomAuditEventRepositoryIT {
         customAuditEventRepository.add(event);
         List<PersistentAuditEvent> persistentAuditEvents = persistenceAuditEventRepository.findAll();
         assertThat(persistentAuditEvents).hasSize(1);
-        PersistentAuditEvent persistentAuditEvent = persistentAuditEvents.get(0);
+        PersistentAuditEvent persistentAuditEvent = persistentAuditEvents.getFirst();
         assertThat(persistentAuditEvent.getPrincipal()).isEqualTo(event.getPrincipal());
         assertThat(persistentAuditEvent.getAuditEventType()).isEqualTo(event.getType());
         assertThat(persistentAuditEvent.getData()).containsKey("test-key");
@@ -106,7 +106,7 @@ public class CustomAuditEventRepositoryIT {
         customAuditEventRepository.add(event);
         List<PersistentAuditEvent> persistentAuditEvents = persistenceAuditEventRepository.findAll();
         assertThat(persistentAuditEvents).hasSize(1);
-        PersistentAuditEvent persistentAuditEvent = persistentAuditEvents.get(0);
+        PersistentAuditEvent persistentAuditEvent = persistentAuditEvents.getFirst();
         assertThat(persistentAuditEvent.getPrincipal()).isEqualTo(event.getPrincipal());
         assertThat(persistentAuditEvent.getAuditEventType()).isEqualTo(event.getType());
         assertThat(persistentAuditEvent.getData()).containsKey("test-key");
@@ -130,7 +130,7 @@ public class CustomAuditEventRepositoryIT {
         customAuditEventRepository.add(event);
         List<PersistentAuditEvent> persistentAuditEvents = persistenceAuditEventRepository.findAll();
         assertThat(persistentAuditEvents).hasSize(1);
-        PersistentAuditEvent persistentAuditEvent = persistentAuditEvents.get(0);
+        PersistentAuditEvent persistentAuditEvent = persistentAuditEvents.getFirst();
         assertThat(persistentAuditEvent.getData().get("remoteAddress")).isEqualTo("1.2.3.4");
         assertThat(persistentAuditEvent.getData().get("sessionId")).isEqualTo("test-session-id");
     }
@@ -143,7 +143,7 @@ public class CustomAuditEventRepositoryIT {
         customAuditEventRepository.add(event);
         List<PersistentAuditEvent> persistentAuditEvents = persistenceAuditEventRepository.findAll();
         assertThat(persistentAuditEvents).hasSize(1);
-        PersistentAuditEvent persistentAuditEvent = persistentAuditEvents.get(0);
+        PersistentAuditEvent persistentAuditEvent = persistentAuditEvents.getFirst();
         assertThat(persistentAuditEvent.getData().get("test-key")).isEqualTo("null");
     }
 

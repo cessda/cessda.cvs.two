@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class EsQueryResultDetail implements Serializable {
+    @Serial
     private static final long serialVersionUID = -4522175739918034968L;
 
 	public static final int PAGE_SIZE = 30 ;

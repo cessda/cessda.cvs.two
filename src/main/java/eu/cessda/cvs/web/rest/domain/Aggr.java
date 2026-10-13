@@ -15,10 +15,12 @@
  */
 package eu.cessda.cvs.web.rest.domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
 public class Aggr implements Serializable {
+    @Serial
     private static final long serialVersionUID = -7907701690323224787L;
 
     private final String type;

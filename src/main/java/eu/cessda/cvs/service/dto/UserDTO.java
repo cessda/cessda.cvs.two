@@ -19,10 +19,12 @@ import eu.cessda.cvs.config.Constants;
 import eu.cessda.cvs.domain.Authority;
 import eu.cessda.cvs.domain.User;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
@@ -33,6 +35,7 @@ import java.util.stream.Collectors;
  * A DTO representing a user, with his authorities.
  */
 public class UserDTO implements Serializable {
+    @Serial
     private static final long serialVersionUID = -3508997745704450197L;
 
     private Long id;

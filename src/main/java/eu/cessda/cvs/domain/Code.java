@@ -20,6 +20,7 @@ import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
@@ -29,6 +30,7 @@ import java.util.Set;
  */
 public class Code implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private Long id;

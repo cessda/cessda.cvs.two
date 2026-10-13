@@ -15,10 +15,12 @@
  */
 package eu.cessda.cvs.service.search;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
 public class EsFilter implements Serializable {
+    @Serial
     private static final long serialVersionUID = -3650519521378103904L;
 
     public enum FilterType {KEYWORD, RANGE}

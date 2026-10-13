@@ -29,7 +29,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -39,7 +38,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -75,7 +74,6 @@ public class LicenceResourceIT extends TestUtil {
 
     private Licence licence;
 
-    @Autowired
     public LicenceResourceIT(
         AuthenticationManagerBuilder authenticationManagerBuilder,
         AuthorityRepository authorityRepository,
@@ -151,7 +149,7 @@ public class LicenceResourceIT extends TestUtil {
         // Validate the Licence in the database
         List<Licence> licenceList = licenceRepository.findAll();
         assertThat(licenceList).hasSize(databaseSizeBeforeCreate + 1);
-        Licence testLicence = licenceList.get(licenceList.size() - 1);
+        Licence testLicence = licenceList.getLast();
         assertThat(testLicence.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testLicence.getLink()).isEqualTo(DEFAULT_LINK);
         assertThat(testLicence.getLogoLink()).isEqualTo(DEFAULT_LOGO_LINK);
@@ -279,7 +277,7 @@ public class LicenceResourceIT extends TestUtil {
         // Validate the Licence in the database
         List<Licence> licenceList = licenceRepository.findAll();
         assertThat(licenceList).hasSize(databaseSizeBeforeUpdate);
-        Licence testLicence = licenceList.get(licenceList.size() - 1);
+        Licence testLicence = licenceList.getLast();
         assertThat(testLicence.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testLicence.getLink()).isEqualTo(UPDATED_LINK);
         assertThat(testLicence.getLogoLink()).isEqualTo(UPDATED_LOGO_LINK);

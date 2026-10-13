@@ -28,7 +28,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -38,7 +37,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -89,7 +88,6 @@ public class AgencyResourceIT extends TestUtil {
 
     private Agency agency;
 
-    @Autowired
     public AgencyResourceIT(
         AuthenticationManagerBuilder authenticationManagerBuilder,
         AuthorityRepository authorityRepository,
@@ -174,7 +172,7 @@ public class AgencyResourceIT extends TestUtil {
         // Validate the Agency in the database
         List<Agency> agencyList = agencyRepository.findAll();
         assertThat(agencyList).hasSize(databaseSizeBeforeCreate + 1);
-        Agency testAgency = agencyList.get(agencyList.size() - 1);
+        Agency testAgency = agencyList.getLast();
         assertThat(testAgency.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testAgency.getLink()).isEqualTo(DEFAULT_LINK);
         assertThat(testAgency.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
@@ -299,7 +297,7 @@ public class AgencyResourceIT extends TestUtil {
         // Validate the Agency in the database
         List<Agency> agencyList = agencyRepository.findAll();
         assertThat(agencyList).hasSize(databaseSizeBeforeUpdate);
-        Agency testAgency = agencyList.get(agencyList.size() - 1);
+        Agency testAgency = agencyList.getLast();
         assertThat(testAgency.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testAgency.getLink()).isEqualTo(UPDATED_LINK);
         assertThat(testAgency.getDescription()).isEqualTo(UPDATED_DESCRIPTION);

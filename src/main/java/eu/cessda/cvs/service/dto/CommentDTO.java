@@ -15,7 +15,9 @@
  */
 package eu.cessda.cvs.service.dto;
 
-import javax.persistence.Lob;
+import jakarta.persistence.Lob;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -24,6 +26,7 @@ import java.util.Objects;
  * A DTO for the {@link eu.cessda.cvs.domain.Comment} entity.
  */
 public class CommentDTO implements Serializable {
+    @Serial
     private static final long serialVersionUID = -3647910600758884671L;
 
     private Long id;

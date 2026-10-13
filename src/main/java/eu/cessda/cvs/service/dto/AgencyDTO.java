@@ -18,8 +18,10 @@ package eu.cessda.cvs.service.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.cessda.cvs.domain.Agency;
 
-import javax.persistence.Lob;
-import javax.validation.constraints.Size;
+import jakarta.persistence.Lob;
+import jakarta.validation.constraints.Size;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -28,6 +30,7 @@ import java.util.Objects;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AgencyDTO implements Serializable {
+    @Serial
     private static final long serialVersionUID = -1795172177534506127L;
 
     private Long id;

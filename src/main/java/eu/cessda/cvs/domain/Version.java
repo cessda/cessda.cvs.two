@@ -26,9 +26,11 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import eu.cessda.cvs.utils.VersionNumberConverter;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -49,6 +51,7 @@ public class Version implements Comparable<Version>, Serializable {
             .thenComparing( Version::getLanguage )
             .thenComparing( Version::getNumber, Comparator.reverseOrder() );
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id

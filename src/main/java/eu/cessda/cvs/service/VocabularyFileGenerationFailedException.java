@@ -15,8 +15,11 @@
  */
 package eu.cessda.cvs.service;
 
+import java.io.Serial;
+
 public class VocabularyFileGenerationFailedException extends RuntimeException
 {
+    @Serial
     private static final long serialVersionUID = -5766482081112035907L;
 
     public VocabularyFileGenerationFailedException( Throwable cause )

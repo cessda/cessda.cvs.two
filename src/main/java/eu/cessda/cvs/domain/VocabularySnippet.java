@@ -20,9 +20,11 @@ import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.utils.VersionNumber;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class VocabularySnippet implements Serializable {
+    @Serial
     private static final long serialVersionUID = -2321795469828997616L;
 
     private ActionType actionType;

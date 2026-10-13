@@ -15,9 +15,11 @@
  */
 package eu.cessda.cvs.web.rest.domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class Bucket implements Serializable {
+    @Serial
     private static final long serialVersionUID = -103627179503698977L;
 
     private final String k;

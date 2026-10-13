@@ -20,7 +20,9 @@ import eu.cessda.cvs.domain.enumeration.AgencyRole;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -31,6 +33,7 @@ import java.io.Serializable;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class UserAgency implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id

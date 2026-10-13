@@ -17,9 +17,11 @@ package eu.cessda.cvs.service.dto;
 
 import eu.cessda.cvs.domain.enumeration.ObjectType;
 
-import javax.persistence.Lob;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.Lob;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -29,6 +31,7 @@ import java.util.Set;
  * A DTO for the {@link eu.cessda.cvs.domain.MetadataField} entity.
  */
 public class MetadataFieldDTO implements Serializable {
+    @Serial
     private static final long serialVersionUID = -8913519673208047626L;
 
     private Long id;

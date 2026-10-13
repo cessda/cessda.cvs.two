@@ -19,7 +19,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -33,6 +35,7 @@ import java.util.Set;
 public class Vocabulary extends VocabularyBase
 {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     public Vocabulary() {

@@ -18,6 +18,7 @@ package eu.cessda.cvs.service;
 import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Status;
 
+import java.io.Serial;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +28,7 @@ public class ResourceNotFoundException extends AbstractThrowableProblem {
 
     public static final String PROBLEM_BASE_URL = "https://vocabularies.cessda.eu/problem";
     public static final URI RESOURCE_NOT_FOUND = URI.create(PROBLEM_BASE_URL + "/resource-not-found");
+    @Serial
     private static final long serialVersionUID = 1L;
     private final String errorKey;
     private final String entityName;

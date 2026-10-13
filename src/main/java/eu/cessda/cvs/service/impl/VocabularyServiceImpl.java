@@ -46,27 +46,31 @@ import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import org.apache.commons.io.file.PathUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.search.join.ScoreMode;
+import co.elastic.clients.elasticsearch._types.FieldValue;
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregate;
+import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
+import co.elastic.clients.elasticsearch._types.aggregations.FiltersBucket;
+import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
+import co.elastic.clients.elasticsearch._types.query_dsl.*;
+import co.elastic.clients.elasticsearch.core.search.Highlight;
+import co.elastic.clients.elasticsearch.core.search.HighlightField;
+import co.elastic.clients.elasticsearch.core.search.InnerHits;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.elasticsearch.action.search.SearchType;
-import org.elasticsearch.index.query.*;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.filter.Filters;
-import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.elasticsearch.client.elc.ElasticsearchAggregations;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
 import org.springframework.data.elasticsearch.core.*;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.HighlightQuery;
+import org.springframework.data.elasticsearch.core.query.highlight.HighlightParameters;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
-import javax.xml.bind.JAXBException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.xml.bind.JAXBException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -86,6 +90,7 @@ public class VocabularyServiceImpl implements VocabularyService
 {
 
     public static final String COUNT = "_count";
+    private static final String AGGREGATION_FILTER = "aggregration_filter";
     public static final String TITLE = "title";
     public static final String DEFINITION = "definition";
     public static final String NOTATION = "notation";
@@ -157,20 +162,22 @@ public class VocabularyServiceImpl implements VocabularyService
         this.agencyStatSearchRepository = agencyStatSearchRepository;
     }
 
-    public static QueryBuilder generateMainAndNestedQuery( String term, List<String> languageFields, int innerHitSize ) {
+    public static Query generateMainAndNestedQuery( String term, List<String> languageFields, int innerHitSize ) {
         if (term != null && term.length() > 1)
         {
-            return QueryBuilders.boolQuery().should( generateMainQuery( term, languageFields ) )
+            return BoolQuery.of( b -> b
+                .should( generateMainQuery( term, languageFields )._toQuery() )
                 // Append nested query
-                .should( generateNestedQuery( term, languageFields, innerHitSize ) );
+                .should( generateNestedQuery( term, languageFields, innerHitSize )._toQuery() )
+            )._toQuery();
         }
         else
         {
-            return QueryBuilders.matchAllQuery();
+            return MatchAllQuery.of( m -> m )._toQuery();
         }
     }
 
-    public static BoolQueryBuilder generateMainQuery( String term, List<String> languageFields ) {
+    public static BoolQuery generateMainQuery( String term, List<String> languageFields ) {
         // The search runs while the user types, so match the last, unfinished word of the vocabulary title as a prefix.
         // A single character prefix matches too many titles to be useful.
         String[] words = term.trim().split( "\\s+" );
@@ -184,77 +191,96 @@ public class VocabularyServiceImpl implements VocabularyService
      * @param fieldPrefix the prefix of the queried fields, e.g. {@code "codes."} when used inside a nested query.
      * @param matchTitlePrefix whether to also match the last word of the term as a prefix of the title.
      */
-    private static BoolQueryBuilder generateFieldsQuery( String fieldPrefix, String term, List<String> languageFields,
-                                                         float titleBoost, float definitionBoost, float notationBoost,
-                                                         boolean matchTitlePrefix ) {
-        BoolQueryBuilder query = QueryBuilders.boolQuery();
+    private static BoolQuery generateFieldsQuery( String fieldPrefix, String term, List<String> languageFields,
+                                                  float titleBoost, float definitionBoost, float notationBoost,
+                                                  boolean matchTitlePrefix ) {
+        BoolQuery.Builder query = new BoolQuery.Builder();
         for ( String langIso : languageFields )
         {
-            query.should( QueryBuilders.matchQuery( fieldPrefix + TITLE + langIso, term ).fuzziness( 0.7 ).boost( titleBoost ) );
-            query.should( QueryBuilders.matchQuery( fieldPrefix + DEFINITION + langIso, term ).fuzziness( 0.7 ).boost( definitionBoost ) );
+            query.should( generateMatchQuery( fieldPrefix + TITLE + langIso, term, titleBoost )._toQuery() );
+            query.should( generateMatchQuery( fieldPrefix + DEFINITION + langIso, term, definitionBoost )._toQuery() );
             if ( matchTitlePrefix )
             {
-                query.should( QueryBuilders.matchBoolPrefixQuery( fieldPrefix + TITLE + langIso, term ).boost( titleBoost / 2 ) );
+                query.should( MatchBoolPrefixQuery.of( m -> m.field( fieldPrefix + TITLE + langIso ).query( term ).boost( titleBoost / 2 ) )._toQuery() );
             }
         }
-        return query.should( generateNotationQuery( fieldPrefix + NOTATION, term.replace( " ", "" ) + "*" ).boost( notationBoost ) );
+        return query.should( generateNotationQuery( fieldPrefix + NOTATION, term.replace( " ", "" ) + "*", notationBoost )._toQuery() ).build();
+    }
+
+    private static MatchQuery generateMatchQuery( String field, String term, float boost ) {
+        // No fuzziness: the former fuzziness of 0.7 was truncated by Elasticsearch 7 to 0 edits, and Elasticsearch 8
+        // rejects fractional values.
+        return MatchQuery.of( m -> m.field( field ).query( term ).boost( boost ) );
     }
 
     /**
      * Generate a wildcard query over a notation field. Vocabulary notations are indexed as keywords,
      * which are case-sensitive, so the query must ignore case to find notations such as {@code AnalysisUnit}.
      */
-    private static WildcardQueryBuilder generateNotationQuery( String field, String pattern ) {
-        return QueryBuilders.wildcardQuery( field, pattern ).caseInsensitive( true );
+    private static WildcardQuery generateNotationQuery( String field, String pattern, float boost ) {
+        return WildcardQuery.of( w -> w.field( field ).value( pattern ).caseInsensitive( true ).boost( boost ) );
     }
 
-    public static NestedQueryBuilder generateNestedQuery( String term, List<String> languageFields, int innerHitSize ) {
+    public static NestedQuery generateNestedQuery( String term, List<String> languageFields, int innerHitSize ) {
         // query the code fields for all languages
-        BoolQueryBuilder query = generateFieldsQuery( CODE_PATH + ".", term, languageFields, 3.0f, 2.0f, 1.0f, false );
+        BoolQuery query = generateFieldsQuery( CODE_PATH + ".", term, languageFields, 3.0f, 2.0f, 1.0f, false );
 
-        InnerHitBuilder innerHitBuilder = new InnerHitBuilder( CODE_PATH ).setSize( innerHitSize );
+        InnerHits.Builder innerHits = new InnerHits.Builder().name( CODE_PATH ).size( innerHitSize );
         if ( term.length() > 2 )
         {
             // Configure inner hit highlighters
-            var nestedHighlightBuilder = generateHighlightBuilder(
+            innerHits.highlight( generateHighlight(
                 List.of( CODE_PATH + "." + TITLE, CODE_PATH + "." + DEFINITION ),
                 languageFields
-            );
-            innerHitBuilder.setHighlightBuilder( nestedHighlightBuilder );
+            ) );
         }
 
-        return QueryBuilders.nestedQuery( CODE_PATH, query, ScoreMode.Total ).innerHit( innerHitBuilder );
+        return NestedQuery.of( n -> n.path( CODE_PATH ).query( query._toQuery() ).scoreMode( ChildScoreMode.Sum ).innerHits( innerHits.build() ) );
     }
 
-    private static HighlightBuilder generateHighlightBuilder( List<String> highlightFields, List<String> languageFields )
+    private static Highlight generateHighlight( List<String> highlightFields, List<String> languageFields )
     {
-        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        Highlight.Builder highlight = new Highlight.Builder().preTags( HIGHLIGHT_START ).postTags( HIGHLIGHT_END );
         for ( String field : highlightFields )
         {
             for ( String langIso : languageFields )
             {
-                highlightBuilder.field( field + langIso ).preTags( HIGHLIGHT_START ).postTags( HIGHLIGHT_END );
+                highlight.fields( field + langIso, HighlightField.of( f -> f ) );
             }
         }
-        return highlightBuilder;
+        return highlight.build();
     }
 
-    public static QueryBuilder generateFilterQuery( List<EsFilter> esFilters ) {
-        BoolQueryBuilder boolQueryFilter = QueryBuilders.boolQuery();
+    private static HighlightQuery generateHighlightQuery( List<String> highlightFields, List<String> languageFields, Class<?> type )
+    {
+        List<org.springframework.data.elasticsearch.core.query.highlight.HighlightField> fields = new ArrayList<>();
+        for ( String field : highlightFields )
+        {
+            for ( String langIso : languageFields )
+            {
+                fields.add( new org.springframework.data.elasticsearch.core.query.highlight.HighlightField( field + langIso ) );
+            }
+        }
+        var parameters = HighlightParameters.builder().withPreTags( HIGHLIGHT_START ).withPostTags( HIGHLIGHT_END ).build();
+        return new HighlightQuery( new org.springframework.data.elasticsearch.core.query.highlight.Highlight( parameters, fields ), type );
+    }
+
+    public static Query generateFilterQuery( List<EsFilter> esFilters ) {
+        BoolQuery.Builder boolQueryFilter = new BoolQuery.Builder();
 
         for ( EsFilter esFilter : esFilters ) {
-            BoolQueryBuilder withinFilterBoolQueryFilter = QueryBuilders.boolQuery();
+            BoolQuery.Builder withinFilterBoolQueryFilter = new BoolQuery.Builder();
             // use OR for multiple values within a filter
             for ( String filterValue : esFilter.getValues() ) {
-                withinFilterBoolQueryFilter.should( QueryBuilders.termQuery( esFilter.getField(), filterValue ) );
+                withinFilterBoolQueryFilter.should( TermQuery.of( t -> t.field( esFilter.getField() ).value( FieldValue.of( filterValue ) ) )._toQuery() );
             }
             // must match at least one within filter
-            withinFilterBoolQueryFilter.minimumShouldMatch(1);
+            withinFilterBoolQueryFilter.minimumShouldMatch( "1" );
             // use AND to combine filter with the rest
-            boolQueryFilter.must( withinFilterBoolQueryFilter );
+            boolQueryFilter.must( withinFilterBoolQueryFilter.build()._toQuery() );
         }
 
-        return boolQueryFilter;
+        return boolQueryFilter.build()._toQuery();
     }
 
     /**
@@ -833,7 +859,7 @@ public class VocabularyServiceImpl implements VocabularyService
             log.error( "Error vocabulary with notation {} does not exist", notation );
             throw new ResourceNotFoundException( UNABLE_FIND_VOCABULARY + "or notation " + notation,  notation, "404" );
         }
-        return vocabularyMapper.toDto( vocabularies.get( 0 ) );
+        return vocabularyMapper.toDto( vocabularies.getFirst() );
     }
 
     @Override
@@ -1187,9 +1213,10 @@ public class VocabularyServiceImpl implements VocabularyService
             languageFields.addAll( Language.getCapitalizedIsos() );
         }
 
+        boolean isEditorSearch = esQueryResultDetail.getSearchScope() == SearchScope.EDITORSEARCH;
+
         // build query builder
-        NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
-            .withSearchType( SearchType.DEFAULT )
+        NativeQueryBuilder searchQueryBuilder = new NativeQueryBuilder()
             .withQuery( generateMainAndNestedQuery( searchTerm, languageFields, esQueryResultDetail.getCodeSize() ) )
             .withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters() ) )
             .withPageable( esQueryResultDetail.getPage() );
@@ -1198,18 +1225,18 @@ public class VocabularyServiceImpl implements VocabularyService
         boolean isSearchWithKeyword = searchTerm != null && searchTerm.length() > 2;
         if ( isSearchWithKeyword )
         {
-            var highlightBuilder = generateHighlightBuilder( List.of( TITLE, DEFINITION ), languageFields );
-            searchQueryBuilder.withHighlightBuilder( highlightBuilder );
+            searchQueryBuilder.withHighlightQuery( generateHighlightQuery( List.of( TITLE, DEFINITION ), languageFields,
+                isEditorSearch ? VocabularyEditor.class : VocabularyPublish.class ) );
         }
 
         // add aggregation
         setUpAggregations( searchQueryBuilder, esQueryResultDetail );
 
         // at the end build search query
-        NativeSearchQuery searchQuery = searchQueryBuilder.build();
+        NativeQuery searchQuery = searchQueryBuilder.build();
 
         // put the vocabulary results
-        if ( esQueryResultDetail.getSearchScope() == SearchScope.EDITORSEARCH )
+        if ( isEditorSearch )
         {
             var indexCoordinates = IndexCoordinates.of( "vocabularyeditor" );
             var searchResponse = elasticsearchOperations.search( searchQuery, VocabularyEditor.class, indexCoordinates );
@@ -1268,25 +1295,24 @@ public class VocabularyServiceImpl implements VocabularyService
         String language = StringUtils.capitalize( esQueryResultDetail.getSortLanguage() );
 
         // nested query for codes
-        BoolQueryBuilder boolQuery;
+        BoolQuery.Builder boolQuery = new BoolQuery.Builder();
 
         if ( term.contains( "*" ) ) {
-            boolQuery = QueryBuilders.boolQuery()
-                .should( generateNotationQuery( CODE_PATH + "." + NOTATION, term.replace( " ", "" ) )
-                    .boost( 2.0f ) );
+            boolQuery.should( generateNotationQuery( CODE_PATH + "." + NOTATION, term.replace( " ", "" ), 2.0f )._toQuery() );
         } else {
-            boolQuery = QueryBuilders.boolQuery()
-                .should( QueryBuilders.matchQuery( CODE_PATH + "." + TITLE + language, term ).fuzziness( 0.7 ).boost( 1.0f ) )
-                .should( generateNotationQuery( CODE_PATH + "." + NOTATION, term.replace( " ", "" ) + "*" )
-                    .boost( 2.0f ) );
+            boolQuery
+                .should( generateMatchQuery( CODE_PATH + "." + TITLE + language, term, 1.0f )._toQuery() )
+                .should( generateNotationQuery( CODE_PATH + "." + NOTATION, term.replace( " ", "" ) + "*", 2.0f )._toQuery() );
         }
-        final NestedQueryBuilder nestedQueryBuilder = QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.Total )
-            .innerHit( new InnerHitBuilder( CODE_PATH ).setSize( esQueryResultDetail.getCodeSize() ) );
+        final NestedQuery nestedQuery = NestedQuery.of( n -> n
+            .path( CODE_PATH )
+            .query( boolQuery.build()._toQuery() )
+            .scoreMode( ChildScoreMode.Sum )
+            .innerHits( i -> i.name( CODE_PATH ).size( esQueryResultDetail.getCodeSize() ) ) );
 
         // build query builder
-        NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
-            .withSearchType( SearchType.DEFAULT )
-            .withQuery( nestedQueryBuilder )
+        NativeQueryBuilder searchQueryBuilder = new NativeQueryBuilder()
+            .withQuery( nestedQuery._toQuery() )
             .withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters() ) )
             .withPageable( esQueryResultDetail.getPage() );
 
@@ -1294,7 +1320,7 @@ public class VocabularyServiceImpl implements VocabularyService
         setUpAggregations( searchQueryBuilder, esQueryResultDetail );
 
         // at the end build search query
-        NativeSearchQuery searchQuery = searchQueryBuilder.build();
+        NativeQuery searchQuery = searchQueryBuilder.build();
 
         IndexCoordinates indexCoordinates = IndexCoordinates.of( VOCABULARYPUBLISH );
         SearchHits<VocabularyPublish> searchHits = elasticsearchOperations.search( searchQuery, VocabularyPublish.class, indexCoordinates );
@@ -1333,14 +1359,8 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     private void buildNonFilteredAggregation( EsQueryResultDetail esQueryResultDetail, SearchHits<?> searchResponse, String field ) {
-        ElasticsearchAggregations aggregations = (ElasticsearchAggregations) searchResponse.getAggregations();
-        if ( aggregations == null )
-        {
-            return;
-        }
-
-        Terms aggregation = (Terms) aggregations.aggregations().asMap().get( field + COUNT );
-        if ( aggregation == null)
+        Aggregate aggregation = getAggregate( searchResponse, field + COUNT );
+        if ( aggregation == null )
         {
             return;
         }
@@ -1348,19 +1368,13 @@ public class VocabularyServiceImpl implements VocabularyService
         esQueryResultDetail.getEsFilterByField( field ).ifPresent( esFilter ->
         {
             esFilter.clearBucket();
-            for ( Terms.Bucket b : aggregation.getBuckets() )
-                esFilter.addBucket( b.getKeyAsString(), b.getDocCount() );
+            for ( StringTermsBucket b : termsBuckets( aggregation ) )
+                esFilter.addBucket( b.key().stringValue(), b.docCount() );
         } );
     }
 
     private void buildFilteredAggregation( EsQueryResultDetail esQueryResultDetail, SearchHits<?> searchResponse, String field ) {
-        ElasticsearchAggregations aggregations = (ElasticsearchAggregations) searchResponse.getAggregations();
-        if (aggregations == null)
-        {
-            return;
-        }
-
-        Filters aggFilters = (Filters) aggregations.aggregations().asMap().get( "aggregration_filter" );
+        Aggregate aggFilters = getAggregate( searchResponse, AGGREGATION_FILTER );
         if ( aggFilters == null )
         {
             return;
@@ -1369,34 +1383,51 @@ public class VocabularyServiceImpl implements VocabularyService
         esQueryResultDetail.getEsFilterByField( field ).ifPresent( esFilter ->
         {
             esFilter.clearBucket();
-            List<? extends Filters.Bucket> buckets = aggFilters.getBuckets();
-            for ( Filters.Bucket bucket : buckets ) {
-                if ( bucket.getDocCount() != 0 )
+            for ( FiltersBucket bucket : aggFilters.filters().buckets().array() ) {
+                Aggregate terms = bucket.aggregations().get( field + COUNT );
+                if ( bucket.docCount() != 0 && terms != null )
                 {
-                    fillFilterBucket( esFilter, bucket.getAggregations().get( field + COUNT ) );
+                    fillFilterBucket( esFilter, terms );
                 }
             }
         } );
     }
 
-    private void fillFilterBucket( EsFilter esFilter, Terms terms ) {
-        List<? extends Terms.Bucket> bkts = terms.getBuckets();
-        for ( Terms.Bucket b : bkts ) {
+    private void fillFilterBucket( EsFilter esFilter, Aggregate terms ) {
+        for ( StringTermsBucket b : termsBuckets( terms ) ) {
 
-            if ( b.getDocCount() == 0 )
+            if ( b.docCount() == 0 )
             {
                 continue;
             }
 
-            if ( !EsFilter.isActiveFilter( esFilter, b.getKeyAsString() ) )
+            String key = b.key().stringValue();
+            if ( !EsFilter.isActiveFilter( esFilter, key ) )
             {
-                esFilter.addBucket( b.getKeyAsString(), b.getDocCount() );
+                esFilter.addBucket( key, b.docCount() );
             }
             else
             {
-                esFilter.addFilteredBucket( b.getKeyAsString(), b.getDocCount() );
+                esFilter.addFilteredBucket( key, b.docCount() );
             }
         }
+    }
+
+    private static Aggregate getAggregate( SearchHits<?> searchResponse, String name ) {
+        var aggregations = (ElasticsearchAggregations) searchResponse.getAggregations();
+        if ( aggregations == null )
+        {
+            return null;
+        }
+        var aggregation = aggregations.get( name );
+        return aggregation == null ? null : aggregation.aggregation().getAggregate();
+    }
+
+    /**
+     * The buckets of a terms aggregation over a keyword field; other terms aggregations have no string buckets.
+     */
+    private static List<StringTermsBucket> termsBuckets( Aggregate aggregate ) {
+        return aggregate.isSterms() ? aggregate.sterms().buckets().array() : List.of();
     }
 
     private void applySearchHitAndHighlight( Page<VocabularyDTO> vocabularyPage, SearchHits<?> searchResponse ) {
@@ -1488,25 +1519,28 @@ public class VocabularyServiceImpl implements VocabularyService
         }
     }
 
-    private void setUpAggregations( NativeSearchQueryBuilder searchQueryBuilder, EsQueryResultDetail esQueryResultDetail ) {
+    private void setUpAggregations( NativeQueryBuilder searchQueryBuilder, EsQueryResultDetail esQueryResultDetail ) {
         if ( !esQueryResultDetail.isAnyFilterActive() ) {
             for ( String aggField : esQueryResultDetail.getAggFields() )
             {
-                searchQueryBuilder.withAggregations(
-                    AggregationBuilders.terms( aggField + COUNT ).field( aggField ).size( SIZE_OF_ITEMS_ON_AGGREGATION ) );
+                searchQueryBuilder.withAggregation( aggField + COUNT, termsAggregation( aggField ) );
             }
         } else {
-            FiltersAggregationBuilder filtersAggregation = AggregationBuilders.filters( "aggregration_filter",
-                generateFilterQuery( esQueryResultDetail.getEsFilters() ) );
-
+            Map<String, Aggregation> termsAggregations = new LinkedHashMap<>();
             for ( String aggField : esQueryResultDetail.getAggFields() )
             {
-                filtersAggregation.subAggregation(
-                    AggregationBuilders.terms( aggField + COUNT ).field( aggField ).size( SIZE_OF_ITEMS_ON_AGGREGATION ) );
+                termsAggregations.put( aggField + COUNT, termsAggregation( aggField ) );
             }
 
-            searchQueryBuilder.withAggregations( filtersAggregation );
+            Query filter = generateFilterQuery( esQueryResultDetail.getEsFilters() );
+            searchQueryBuilder.withAggregation( AGGREGATION_FILTER, Aggregation.of( a -> a
+                .filters( f -> f.filters( b -> b.array( List.of( filter ) ) ) )
+                .aggregations( termsAggregations ) ) );
         }
+    }
+
+    private static Aggregation termsAggregation( String field ) {
+        return Aggregation.of( a -> a.terms( t -> t.field( field ).size( SIZE_OF_ITEMS_ON_AGGREGATION ) ) );
     }
 
     @Override
@@ -2186,7 +2220,7 @@ public class VocabularyServiceImpl implements VocabularyService
             {
                 if ( langFilter.getValues().size() == 1 ) {
                     for ( VocabularyDTO vocab : vocabularyList ) {
-                        vocab.setSelectedLang( langFilter.getValues().get( 0 ) );
+                        vocab.setSelectedLang( langFilter.getValues().getFirst() );
                     }
                 }
             } );

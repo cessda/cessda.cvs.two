@@ -20,9 +20,9 @@ logging:
     com.itextpdf: ERROR
 
 management:
-  metrics:
-    export:
-      prometheus:
+  prometheus:
+    metrics:
+      export:
         enabled: false
 
 spring:

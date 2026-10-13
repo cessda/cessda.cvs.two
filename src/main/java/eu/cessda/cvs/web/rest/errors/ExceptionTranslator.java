@@ -37,9 +37,8 @@ import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 
-import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.annotation.Nullable;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,7 +48,6 @@ import java.util.stream.Collectors;
  * The error response follows <a href="https://tools.ietf.org/html/rfc7807">RFC7807 - Problem Details for HTTP APIs</a>.
  */
 @ControllerAdvice
-@ParametersAreNonnullByDefault
 public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait {
     private static final Logger log = LoggerFactory.getLogger( ExceptionTranslator.class );
 
@@ -96,9 +94,9 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             .withTitle(problem.getTitle())
             .with(PATH_KEY, nativeRequest != null ? nativeRequest.getRequestURI(): "");
 
-        if (problem instanceof ConstraintViolationProblem) {
+        if (problem instanceof ConstraintViolationProblem violationProblem) {
             builder
-                .with(VIOLATIONS_KEY, ((ConstraintViolationProblem) problem).getViolations())
+                .with(VIOLATIONS_KEY, violationProblem.getViolations())
                 .with(MESSAGE_KEY, ErrorConstants.ERR_VALIDATION);
         } else {
             builder

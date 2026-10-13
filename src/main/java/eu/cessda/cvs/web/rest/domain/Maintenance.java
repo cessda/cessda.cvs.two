@@ -15,11 +15,13 @@
  */
 package eu.cessda.cvs.web.rest.domain;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 
 public class Maintenance implements Serializable {
+    @Serial
     private static final long serialVersionUID = 2L;
 
     private final String output;

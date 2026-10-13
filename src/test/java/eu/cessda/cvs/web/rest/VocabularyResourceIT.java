@@ -35,7 +35,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -45,7 +44,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
@@ -305,7 +304,6 @@ public class VocabularyResourceIT extends TestUtil {
 
     private Agency agency;
 
-    @Autowired
     public VocabularyResourceIT(
         AuthenticationManagerBuilder authenticationManagerBuilder,
         AuthorityRepository authorityRepository,
@@ -498,7 +496,7 @@ public class VocabularyResourceIT extends TestUtil {
                 .andExpect(status().isOk());
 
         // Verify the vocabulary was updated.
-        Vocabulary vocabulary = vocabularyRepository.findAll().get(0);
+        Vocabulary vocabulary = vocabularyRepository.findAll().getFirst();
         assertThat( vocabulary.getAgencyLogo() ).isEqualTo( UPDATED_AGENCY_LOGO );
         // FIXME - the agency name doesn't appear to get updated, is this intentional?
         //assertThat( vocabulary.getAgencyName() ).isEqualTo( UPDATED_AGENCY_NAME );

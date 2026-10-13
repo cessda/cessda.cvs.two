@@ -32,11 +32,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.xhtmlrenderer.layout.SharedContext;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -301,12 +301,12 @@ public class ExportService
         List<SectionWrapper> sections =
             wordMLPackage.getDocumentModel().getSections();
 
-        SectPr sectPr = sections.get(sections.size() - 1).getSectPr();
+        SectPr sectPr = sections.getLast().getSectPr();
         // There is always a section wrapper, but it might not contain a sectPr
         if (sectPr==null ) {
             sectPr = factory.createSectPr();
             wordMLPackage.getMainDocumentPart().addObject(sectPr);
-            sections.get(sections.size() - 1).setSectPr(sectPr);
+            sections.getLast().setSectPr(sectPr);
         }
 
         FooterReference footerReference = factory.createFooterReference();

@@ -21,12 +21,14 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import java.io.Serial;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Document(indexName = "vocabularypublish")
 public class VocabularyPublish extends VocabularyBase {
+    @Serial
     private static final long serialVersionUID = -348825785681404926L;
 
     @Field( type = FieldType.Nested, store = true )

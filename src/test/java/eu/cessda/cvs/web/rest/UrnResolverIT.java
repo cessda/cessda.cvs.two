@@ -25,7 +25,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -52,7 +51,6 @@ class UrnResolverIT
     private Version version;
     private String canonicalUri;
 
-    @Autowired
     public UrnResolverIT( VersionMapper versionMapper, MockMvc mockMvc )
     {
         this.versionMapper = versionMapper;

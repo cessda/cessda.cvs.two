@@ -15,8 +15,8 @@
  */
 package eu.cessda.cvs.utils;
 
-import javax.persistence.AttributeConverter;
-import javax.persistence.Converter;
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
 
 /**
  * Stores a {@link VersionNumber} as its string form, e.g. {@code 1.0.1}.

@@ -15,8 +15,10 @@
  */
 package eu.cessda.cvs.domain;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.HashMap;
@@ -31,6 +33,7 @@ import java.util.Map;
 @Table(name = "jhi_persistent_audit_event")
 public class PersistentAuditEvent implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id

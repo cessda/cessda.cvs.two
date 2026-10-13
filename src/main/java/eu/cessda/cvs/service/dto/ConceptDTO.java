@@ -18,9 +18,11 @@ package eu.cessda.cvs.service.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.cessda.cvs.domain.CodeSnippet;
 
-import javax.persistence.Lob;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.Lob;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -30,6 +32,7 @@ import java.util.Objects;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ConceptDTO implements Serializable {
+    @Serial
     private static final long serialVersionUID = 6393391537097907915L;
 
     private Long id;

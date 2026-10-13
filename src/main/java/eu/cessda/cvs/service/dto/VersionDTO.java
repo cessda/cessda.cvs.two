@@ -28,9 +28,11 @@ import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.persistence.Lob;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import jakarta.persistence.Lob;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -49,7 +51,8 @@ public class VersionDTO implements Comparable<VersionDTO>, Serializable
 		Comparator.comparing( VersionDTO::getItemType )
 			.thenComparing( VersionDTO::getLanguage )
 			.thenComparing( VersionDTO::getNumber, Comparator.reverseOrder() );
-	private static final long serialVersionUID = 6451702494637350395L;
+    @Serial
+    private static final long serialVersionUID = 6451702494637350395L;
 
     private Long id;
 

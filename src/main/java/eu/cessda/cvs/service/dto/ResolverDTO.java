@@ -18,7 +18,9 @@ package eu.cessda.cvs.service.dto;
 import eu.cessda.cvs.domain.enumeration.ResolverType;
 import eu.cessda.cvs.domain.enumeration.ResourceType;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -26,6 +28,7 @@ import java.util.Objects;
  * A DTO for the {@link eu.cessda.cvs.domain.Resolver} entity.
  */
 public class ResolverDTO implements Serializable {
+    @Serial
     private static final long serialVersionUID = 2981181894274242634L;
 
     private Long id;
