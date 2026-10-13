@@ -17,6 +17,7 @@ package eu.cessda.cvs.repository;
 
 import eu.cessda.cvs.domain.Version;
 import eu.cessda.cvs.domain.enumeration.Status;
+import eu.cessda.cvs.utils.VersionNumber;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -38,7 +39,7 @@ public interface VersionRepository extends JpaRepository<Version, Long> {
     List<Version> findAllPublishedByVocabulary(@Param("vocabularyId") Long vocabularyId);
 
     @Query( "select v from Version v where v.notation = :notation and v.language = :languageIso and v.number = :versionNumber" )
-    Version findOneByNotationLangVersion(@Param("notation")String notation, @Param("languageIso")String languageIso, @Param("versionNumber")String versionNumber);
+    Version findOneByNotationLangVersion(@Param("notation")String notation, @Param("languageIso")String languageIso, @Param("versionNumber") VersionNumber versionNumber);
 
     @Query("select v from Version v where v.vocabulary.id =:vocabularyId and v.status = 'PUBLISHED' and v.language =:languageIso and v.id <:versionId order by v.itemType ASC, v.number DESC")
     List<Version> findOlderPublishedByVocabularyLanguageId(@Param("vocabularyId") Long vocabularyId, @Param("languageIso") String languageIso, @Param("versionId") Long versionId);

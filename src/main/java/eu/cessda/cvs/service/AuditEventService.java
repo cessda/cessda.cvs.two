@@ -17,7 +17,7 @@ package eu.cessda.cvs.service;
 
 import eu.cessda.cvs.config.audit.AuditEventConverter;
 import eu.cessda.cvs.repository.PersistenceAuditEventRepository;
-import io.github.jhipster.config.JHipsterProperties;
+import eu.cessda.cvs.config.JHipsterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.actuate.audit.AuditEvent;

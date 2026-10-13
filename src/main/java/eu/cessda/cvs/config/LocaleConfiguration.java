@@ -15,7 +15,6 @@
  */
 package eu.cessda.cvs.config;
 
-import io.github.jhipster.config.locale.AngularCookieLocaleResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.LocaleResolver;

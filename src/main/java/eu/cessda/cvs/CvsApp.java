@@ -16,8 +16,9 @@
 package eu.cessda.cvs;
 
 import eu.cessda.cvs.config.ApplicationProperties;
-import io.github.jhipster.config.DefaultProfileUtil;
-import io.github.jhipster.config.JHipsterConstants;
+import eu.cessda.cvs.config.DefaultProfileUtil;
+import eu.cessda.cvs.config.JHipsterConstants;
+import eu.cessda.cvs.config.JHipsterProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 @SpringBootApplication
-@EnableConfigurationProperties({ApplicationProperties.class})
+@EnableConfigurationProperties({ApplicationProperties.class, JHipsterProperties.class})
 public class CvsApp {
 
     private static final Logger log = LoggerFactory.getLogger(CvsApp.class);

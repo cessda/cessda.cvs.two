@@ -16,7 +16,7 @@
 package eu.cessda.cvs.service;
 
 import eu.cessda.cvs.domain.User;
-import io.github.jhipster.config.JHipsterProperties;
+import eu.cessda.cvs.config.JHipsterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;

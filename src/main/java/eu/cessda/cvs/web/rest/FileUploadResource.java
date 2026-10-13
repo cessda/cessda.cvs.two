@@ -36,7 +36,6 @@ import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.xml.bind.DatatypeConverter;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -45,6 +44,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
+import java.util.Base64;
 
 import static eu.cessda.cvs.security.AuthoritiesConstants.ADMIN_CONTENT;
 
@@ -174,7 +174,7 @@ public class FileUploadResource
                 try
                 {
                     // Attempt to load the image data from the file
-                    String imageBase64LogoData = DatatypeConverter.printBase64Binary( Files.readAllBytes( imageFile ) );
+                    String imageBase64LogoData = Base64.getEncoder().encodeToString( Files.readAllBytes( imageFile ) );
                     String type = Files.probeContentType( imageFile );
                     element.attr( "src", "data:" + type + ";base64," + imageBase64LogoData );
                 } catch ( IOException e ) {

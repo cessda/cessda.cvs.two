@@ -16,7 +16,6 @@
 package eu.cessda.cvs.domain;
 
 import eu.cessda.cvs.utils.VersionNumber;
-import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -49,7 +48,6 @@ public class Code implements Serializable {
 
     private Long versionId;
 
-    @Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
     private VersionNumber versionNumber;
 
     @Field( type = FieldType.Date, format = DateFormat.date )

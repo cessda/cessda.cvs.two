@@ -18,7 +18,7 @@ package eu.cessda.cvs.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.utils.VersionNumber;
-import org.hibernate.annotations.Type;
+import eu.cessda.cvs.utils.VersionNumberConverter;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -64,7 +64,7 @@ public class VocabularyBase implements Serializable {
     @NotNull
     @Column(name = "version_number", nullable = false)
     @Field( type = FieldType.Keyword )
-    @Type( type = "eu.cessda.cvs.utils.VersionNumberType")
+    @Convert(converter = VersionNumberConverter.class)
     private VersionNumber versionNumber;
 
     @Column(name = "initial_publication")

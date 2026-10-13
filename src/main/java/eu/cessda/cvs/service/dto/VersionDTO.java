@@ -27,7 +27,6 @@ import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
@@ -69,7 +68,6 @@ public class VersionDTO implements Comparable<VersionDTO>, Serializable
 
 	private ZonedDateTime lastModified;
 
-	@Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
 	private VersionNumber number;
 
 	private String uri;

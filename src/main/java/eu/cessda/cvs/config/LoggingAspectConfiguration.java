@@ -16,7 +16,6 @@
 package eu.cessda.cvs.config;
 
 import eu.cessda.cvs.aop.logging.LoggingAspect;
-import io.github.jhipster.config.JHipsterConstants;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;

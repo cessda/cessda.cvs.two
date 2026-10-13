@@ -25,7 +25,7 @@ import eu.cessda.cvs.repository.UserRepository;
 import eu.cessda.cvs.security.AuthoritiesConstants;
 import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.dto.UserDTO;
-import io.github.jhipster.security.RandomUtil;
+import eu.cessda.cvs.security.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;

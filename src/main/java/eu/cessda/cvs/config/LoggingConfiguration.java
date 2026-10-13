@@ -19,7 +19,6 @@ import ch.qos.logback.classic.LoggerContext;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.openhtmltopdf.slf4j.Slf4jLogger;
-import io.github.jhipster.config.JHipsterProperties;
 import org.docx4j.Docx4jProperties;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +27,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.github.jhipster.config.logging.LoggingUtils.*;
+import static eu.cessda.cvs.config.LoggingUtils.*;
 
 /*
  * Configures the console and Logstash log appenders from the app properties

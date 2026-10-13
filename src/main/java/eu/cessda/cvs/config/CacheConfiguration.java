@@ -15,7 +15,6 @@
  */
 package eu.cessda.cvs.config;
 
-import io.github.jhipster.config.JHipsterProperties;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.ExpiryPolicyBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;

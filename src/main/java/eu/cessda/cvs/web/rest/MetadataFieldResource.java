@@ -21,7 +21,7 @@ import eu.cessda.cvs.service.dto.MetadataFieldDTO;
 import eu.cessda.cvs.service.dto.MetadataValueDTO;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import eu.cessda.cvs.web.rest.utils.ResourceUtils;
-import io.github.jhipster.web.util.ResponseUtil;
+import eu.cessda.cvs.web.rest.utils.ResponseUtil;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

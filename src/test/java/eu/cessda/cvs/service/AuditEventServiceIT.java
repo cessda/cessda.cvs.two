@@ -18,7 +18,7 @@ package eu.cessda.cvs.service;
 import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.domain.PersistentAuditEvent;
 import eu.cessda.cvs.repository.PersistenceAuditEventRepository;
-import io.github.jhipster.config.JHipsterProperties;
+import eu.cessda.cvs.config.JHipsterProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -15,9 +15,6 @@
  */
 package eu.cessda.cvs.config;
 
-import io.github.jhipster.config.JHipsterConstants;
-import io.github.jhipster.config.JHipsterProperties;
-import io.github.jhipster.web.filter.CachingHttpHeadersFilter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.web.WebProperties;
@@ -87,7 +84,8 @@ public class WebConfigurerTest {
         env.setActiveProfiles(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT);
         webConfigurer.onStartup(servletContext);
 
-        verify(servletContext, never()).addFilter(eq("cachingHttpHeadersFilter"), any(CachingHttpHeadersFilter.class));
+        // registered in every profile; the dev configuration sets jhipster.http.cache.timeToLiveInDays to 0
+        verify(servletContext).addFilter(eq("cachingHttpHeadersFilter"), any(Filter.class));
     }
 
     @Test

@@ -19,7 +19,11 @@ import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.dto.VersionDTO;
-import io.swagger.annotations.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -39,7 +43,7 @@ import static eu.cessda.cvs.web.rest.utils.ResourceUtils.MEDIATYPE_JSONLD_VALUE;
  * REST controller for resolving URNs
  */
 @SuppressWarnings( "deprecation" )
-@Api( description = "URN Resolver")
+@Tag( name = "URN Resolver" )
 @RestController
 @RequestMapping(value = "/urn" )
 public class UrnResolver {
@@ -96,15 +100,15 @@ public class UrnResolver {
      * @return the ResponseEntity with status 302 (Found) with the location header set,
      * or status 404 (Not Found)
      */
-    @ApiOperation( value = "Resolve a URN to a vocabulary", code = 302 )
+    @Operation( summary = "Resolve a URN to a vocabulary" )
     @ApiResponses( {
-        @ApiResponse( code = 302, message = "The resolved vocabulary" ),
-        @ApiResponse( code = 404, message = "URN unable to be resolved" )
+        @ApiResponse( responseCode = "302", description = "The resolved vocabulary" ),
+        @ApiResponse( responseCode = "404", description = "URN unable to be resolved" )
     } )
     @GetMapping(value = "/{urn}")
     public ResponseEntity<Void> findUrnResolver(
-        @ApiParam(value = "The URN of the vocabulary") @PathVariable(name = "urn") String urn,
-        @ApiParam(value = "The language of the vocabulary") @RequestParam(name = "lang", required = false) String lang
+        @Parameter( description = "The URN of the vocabulary" ) @PathVariable(name = "urn") String urn,
+        @Parameter( description = "The language of the vocabulary" ) @RequestParam(name = "lang", required = false) String lang
     ) {
         log.debug("REST request to get Resolver by URI: {}", urn);
 

@@ -16,7 +16,7 @@
 package eu.cessda.cvs.security.jwt;
 
 import eu.cessda.cvs.security.AuthoritiesConstants;
-import io.github.jhipster.config.JHipsterProperties;
+import eu.cessda.cvs.config.JHipsterProperties;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

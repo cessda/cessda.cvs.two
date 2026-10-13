@@ -23,7 +23,6 @@ import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.utils.VersionNumber;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
@@ -102,7 +101,6 @@ public class VocabularyDTO implements Serializable {
     private String notation;
 
     @NotNull
-    @Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
     private VersionNumber versionNumber = new VersionNumber(1,0,0);
 
     private Long initialPublication;

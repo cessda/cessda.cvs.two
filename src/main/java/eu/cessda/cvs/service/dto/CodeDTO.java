@@ -20,7 +20,6 @@ import eu.cessda.cvs.domain.Code;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.utils.HashFunction;
 import eu.cessda.cvs.utils.VersionNumber;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.Size;
@@ -58,7 +57,6 @@ public class CodeDTO implements Serializable {
 
     private Long versionId;
 
-    @Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
     private VersionNumber versionNumber;
 
     private Boolean deprecated;

@@ -28,7 +28,7 @@ import java.nio.file.Path;
  * Properties specific to Cvs.
  * <p>
  * Properties are configured in the {@code application.yml} file.
- * See {@link io.github.jhipster.config.JHipsterProperties} for a good example.
+ * See {@link eu.cessda.cvs.config.JHipsterProperties} for a good example.
  */
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {

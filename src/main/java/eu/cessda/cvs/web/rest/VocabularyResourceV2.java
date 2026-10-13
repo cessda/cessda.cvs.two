@@ -29,8 +29,15 @@ import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import eu.cessda.cvs.web.rest.domain.CvResult;
 import eu.cessda.cvs.web.rest.utils.ResourceUtils;
-import io.github.jhipster.web.util.PaginationUtil;
-import io.swagger.annotations.*;
+import eu.cessda.cvs.web.rest.utils.PaginationUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springdoc.core.converters.models.PageableAsQueryParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
@@ -59,7 +66,7 @@ import static eu.cessda.cvs.web.rest.utils.ResourceUtils.MEDIATYPE_JSONLD_VALUE;
  * REST controller for managing {@link Vocabulary}.
  */
 @SuppressWarnings( "deprecation" )
-@Api( description = "Vocabulary Resource API (v2)" )
+@Tag( name = "Vocabulary Resource API (v2)" )
 @RestController
 @RequestMapping( value ="/v2", name = "Vocabulary Resource API (v2)" )
 @Validated
@@ -101,11 +108,12 @@ public class VocabularyResourceV2 {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vocabularies in body.
      */
     @GetMapping("/search")
-    @ApiOperation( value = "Searching the vocabularies", hidden = true )
+    @PageableAsQueryParam
+    @Operation( summary = "Searching the vocabularies", hidden = true )
     public ResponseEntity<CvResult> searchVocabularies(
-        @ApiParam( value = "the query", example = "Family") @RequestParam(name = "q", required = false) String q,
-        @ApiParam( value = "the filter", example = "agency:DDI Alliance;language:en") @RequestParam(name = "f", required = false) String f,
-        Pageable pageable) {
+        @Parameter( description = "the query", example = "Family" ) @RequestParam(name = "q", required = false) String q,
+        @Parameter( description = "the filter", example = "agency:DDI Alliance;language:en" ) @RequestParam(name = "f", required = false) String f,
+        @Parameter( hidden = true ) Pageable pageable) {
         log.debug("REST request search vocabulary by query");
         EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(q, f, pageable, SearchScope.PUBLICATIONSEARCH);
         vocabularyService.search(esq);
@@ -127,23 +135,25 @@ public class VocabularyResourceV2 {
     @GetMapping(
         value="/search/vocabularies",
         produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(
-        value = "Search vocabularies",
-        notes = "This method searches the vocabulary with the default size of 20")
+    @PageableAsQueryParam
+    @Operation(
+        summary = "Search vocabularies",
+        description = "This method searches the vocabulary with the default size of 20"
+    )
     public ResponseEntity<CvResult> searchVocabulariesJson(
-        @ApiParam(
-            value = "The search term",
+        @Parameter(
+            description = "The search term",
             example = "Economics"
         ) @RequestParam (required = false) String query,
-        @ApiParam(
-            value = "The agency",
+        @Parameter(
+            description = "The agency",
             example = "CESSDA"
         ) @RequestParam (required = false) String agency,
-        @ApiParam(
-            value = "The language",
+        @Parameter(
+            description = "The language",
             example = "en"
         ) @RequestParam (required = false) String lang,
-         Pageable pageable
+         @Parameter( hidden = true ) Pageable pageable
     ) {
         log.debug("REST request search vocabulary, produces JSON");
         EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(query, agency, lang, pageable, SearchScope.PUBLICATIONSEARCH);
@@ -187,23 +197,25 @@ public class VocabularyResourceV2 {
     @GetMapping(
         value="/search/vocabularies",
         produces = MEDIATYPE_JSONLD_VALUE)
-    @ApiOperation(
-        value = "Search vocabularies",
-        notes = "This method searches the vocabulary with the default size of 20")
+    @PageableAsQueryParam
+    @Operation(
+        summary = "Search vocabularies",
+        description = "This method searches the vocabulary with the default size of 20"
+    )
     public ResponseEntity<List<Object>> searchVocabulariesJsonLd(
-        @ApiParam(
-            value = "The search term",
+        @Parameter(
+            description = "The search term",
             example = "Economics"
         ) @RequestParam(required = false) String query,
-        @ApiParam(
-            value = "The agency",
+        @Parameter(
+            description = "The agency",
             example = "CESSDA"
         ) @RequestParam (required = false) String agency,
-        @ApiParam(
-            value = "The language",
+        @Parameter(
+            description = "The language",
             example = "en"
         ) @RequestParam (required = false) String lang,
-        Pageable pageable
+        @Parameter( hidden = true ) Pageable pageable
     ) {
         log.debug("REST request search vocabulary, produces JSON LD");
         EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(query, agency, lang, pageable, SearchScope.PUBLICATIONSEARCH);
@@ -229,31 +241,31 @@ public class VocabularyResourceV2 {
         value="/search/codes",
         produces = MEDIATYPE_JSONLD_VALUE
     )
-    @ApiOperation( value = "Search vocabulary codes, produces JSON-LD based on the Skosmos format" )
+    @Operation( summary = "Search vocabulary codes, produces JSON-LD based on the Skosmos format" )
     public Map<String, Object> getAllVocabulariesCode(
-        @ApiParam(
-            value = "The query, supports wildcards (e.g. eco*)",
+        @Parameter(
+            description = "The query, supports wildcards (e.g. eco*)",
             example = "Economics",
             required = true
         ) @RequestParam ( name = "query") String query,
-        @ApiParam(
-            value = "The agency",
+        @Parameter(
+            description = "The agency",
             example = "CESSDA"
         ) @RequestParam (required = false, name = "agency") String agency,
-        @ApiParam(
-            value = "The vocabulary",
+        @Parameter(
+            description = "The vocabulary",
             example = "TopicClassification",
             required = true
         ) @RequestParam String vocab,
-        @ApiParam(
-            value = "The language",
+        @Parameter(
+            description = "The language",
             example = "en",
             required = true
         ) @RequestParam(name = "lang") String lang,
-        @ApiParam(
-            value = "Amount of codes to return, maximum 100",
-            allowableValues = "range[1,100]",
-            example = "20"
+        @Parameter(
+            description = "Amount of codes to return, maximum 100",
+            example = "20",
+            schema = @Schema( minimum = "1", maximum = "100" )
         ) @RequestParam( defaultValue = "20", name = "size" ) @Max( value = 100 ) int size
     ) {
         log.debug("REST request to get a page of Vocabularies");
@@ -306,31 +318,29 @@ public class VocabularyResourceV2 {
             ExportService.MEDIATYPE_RDF_VALUE
         }
     )
-    @ApiOperation( value = "Get a Vocabulary", response = VocabularyDTO.class )
+    @Operation( summary = "Get a Vocabulary" )
     @ApiResponses( {
-        @ApiResponse( code = 200, message = "The vocabulary" ),
-        @ApiResponse( code = 404, message = "Vocabulary not found")
+        @ApiResponse( responseCode = "200", description = "The vocabulary",
+            content = @Content( schema = @Schema( implementation = VocabularyDTO.class ) ) ),
+        @ApiResponse( responseCode = "404", description = "Vocabulary not found" )
     } )
     public ResponseEntity<Object> getVocabulary(
         HttpServletRequest request,
-        @ApiParam(
+        @Parameter(
             name = "vocabulary",
-            type = "String",
-            value = "The vocabulary",
+            description = "The vocabulary",
             example = "TopicClassification",
             required = true
         ) @PathVariable String vocabulary,
-        @ApiParam(
+        @Parameter(
             name = "versionNumberSl",
-            type = "String",
-            value = "The version number of Source language",
+            description = "The version number of Source language",
             example = "4.0",
             required = true
         ) @PathVariable String versionNumberSl,
-        @ApiParam(
+        @Parameter(
             name = "languageVersion",
-            type = "String",
-            value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
+            description = "included language version, e.g. en-4.0_de-4.0.1, separated by _",
             example = "en-4.0"
         ) @RequestParam( required = false )  String languageVersion
     )
@@ -469,20 +479,20 @@ public class VocabularyResourceV2 {
         value="/codes/{vocabulary}/{versionNumber}/{language}",
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @ApiOperation( value = "Get a Code" )
+    @Operation( summary = "Get a Code" )
     public Set<ConceptDTO> getCodeJson(
-        @ApiParam(
-            value = "The vocabulary",
+        @Parameter(
+            description = "The vocabulary",
             example = "TopicClassification",
             required = true
         ) @PathVariable String vocabulary,
-        @ApiParam(
-            value = "The version number",
+        @Parameter(
+            description = "The version number",
             example = "4.0",
             required = true
         ) @PathVariable String versionNumber,
-        @ApiParam(
-            value = "The language" ,
+        @Parameter(
+            description = "The language",
             example = "en",
             required = true
         ) @PathVariable String language
@@ -510,12 +520,12 @@ public class VocabularyResourceV2 {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the vocabularyDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/compare-vocabulary/{cv}/{lv1}/{lv2}")
-    @ApiOperation( value = "Get the Vocabulary content of 2 different versions, in order to be compared with diff-app", hidden = true )
+    @Operation( summary = "Get the Vocabulary content of 2 different versions, in order to be compared with diff-app", hidden = true )
     public ResponseEntity<List<String>> getVocabularyComparePrev(
         HttpServletRequest request,
-        @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" )  @PathVariable String cv,
-        @ApiParam( value = "the first version e.g en-2.0" ) @PathVariable String lv1,
-        @ApiParam( value = "the second version e.g en-1.0" )@PathVariable String lv2
+        @Parameter( description = "the CV short definition/notation, e.g. AnalysisUnit" )  @PathVariable String cv,
+        @Parameter( description = "the first version e.g en-2.0" ) @PathVariable String lv1,
+        @Parameter( description = "the second version e.g en-1.0" )@PathVariable String lv2
     ) {
         log.debug("REST request to get Vocabulary comparison text from JSON files of CV {}, between version {} and {}", cv, lv1, lv2);
         LanguageVersion splitLanguageVersion1 = VersionUtils.splitLanguageVersion(lv1);
@@ -546,8 +556,10 @@ public class VocabularyResourceV2 {
     value="/vocabularies-published",
     produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @ApiOperation( value = "Get a map of all agencies with links to their published controlled vocabularies",
-        notes = "The controlled vocabulary links are relative links and must be resolved from the base URL of the server.")
+    @Operation(
+        summary = "Get a map of all agencies with links to their published controlled vocabularies",
+        description = "The controlled vocabulary links are relative links and must be resolved from the base URL of the server."
+    )
     public Map<String, Map<String, Map<String, Map<VersionNumber, URI>>>> getAllVocabularies(HttpServletRequest request) throws URISyntaxException
     {
         log.debug( "REST: Getting all Vocabularies" );

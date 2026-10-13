@@ -66,7 +66,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -2172,7 +2171,7 @@ public class VocabularyServiceImpl implements VocabularyService
 
     private static String readFileToBase64( Path path ) throws IOException
     {
-        String data = DatatypeConverter.printBase64Binary( Files.readAllBytes( path ) );
+        String data = Base64.getEncoder().encodeToString( Files.readAllBytes( path ) );
         String type = Files.probeContentType( path );
         return "data:" + type + ";base64," + data;
     }

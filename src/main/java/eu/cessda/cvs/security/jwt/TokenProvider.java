@@ -18,7 +18,7 @@ package eu.cessda.cvs.security.jwt;
 import eu.cessda.cvs.repository.UserRepository;
 import eu.cessda.cvs.security.UserDetails;
 import eu.cessda.cvs.service.dto.UserDTO;
-import io.github.jhipster.config.JHipsterProperties;
+import eu.cessda.cvs.config.JHipsterProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.JwtParser;

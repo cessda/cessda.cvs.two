@@ -15,7 +15,7 @@
  */
 package eu.cessda.cvs.aop.logging;
 
-import io.github.jhipster.config.JHipsterConstants;
+import eu.cessda.cvs.config.JHipsterConstants;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;

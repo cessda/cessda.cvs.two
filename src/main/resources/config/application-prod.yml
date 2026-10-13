@@ -16,7 +16,6 @@
 logging:
   level:
     ROOT: WARN
-    io.github.jhipster: INFO
     eu.cessda.cvs: INFO
     com.itextpdf: ERROR
 

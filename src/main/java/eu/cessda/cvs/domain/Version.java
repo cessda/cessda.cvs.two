@@ -24,7 +24,7 @@ import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.utils.VersionNumber;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Type;
+import eu.cessda.cvs.utils.VersionNumberConverter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -79,7 +79,7 @@ public class Version implements Comparable<Version>, Serializable {
     private ZonedDateTime lastModified;
 
     @Column(name = "number", length = 20)
-    @Type(type = "eu.cessda.cvs.utils.VersionNumberType")
+    @Convert(converter = VersionNumberConverter.class)
     private VersionNumber number;
 
     @Column(name = "uri")

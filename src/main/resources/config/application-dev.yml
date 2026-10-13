@@ -16,7 +16,6 @@
 logging:
   level:
     ROOT: DEBUG
-    io.github.jhipster: DEBUG
     eu.cessda.cvs: DEBUG
 
 management:

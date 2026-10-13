@@ -16,7 +16,7 @@
 package eu.cessda.cvs.web.rest.errors;
 
 import eu.cessda.cvs.service.ResourceNotFoundException;
-import io.github.jhipster.web.util.HeaderUtil;
+import eu.cessda.cvs.web.rest.utils.HeaderUtil;
 import org.apache.catalina.connector.ClientAbortException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

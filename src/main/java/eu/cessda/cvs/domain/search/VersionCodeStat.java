@@ -16,7 +16,6 @@
 package eu.cessda.cvs.domain.search;
 
 import eu.cessda.cvs.utils.VersionNumber;
-import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
@@ -34,7 +33,6 @@ public class VersionCodeStat implements Serializable {
     }
 
     @Field( type = FieldType.Keyword, store = true )
-    @Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
     private VersionNumber versionNumber;
 
     @Field( type = FieldType.Keyword, store = true )

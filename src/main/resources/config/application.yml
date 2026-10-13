@@ -97,6 +97,7 @@ spring:
     allow-bean-definition-overriding: true
   mvc:
     pathmatch:
+      # ClientForwardController maps /**/{path}, which the default PathPatternParser rejects
       matching-strategy: ANT_PATH_MATCHER
   task:
     execution:
@@ -144,17 +145,19 @@ jhipster:
     max-age: 1800
   mail:
     from: no-reply@cessda.eu
-  swagger:
-    default-include-pattern: /(v1|v2|urn)/.*
-    title: CVS API
-    description: CESSDA Vocabularies Service API Documentation
-    version: 3.6.1
-    terms-of-service-url: https://www.cessda.eu/Acceptable-Use-Policy
-    contact-name: CESSDA Support
-    contact-url:
-    contact-email: support@cessda.eu
-    license: Apache 2.0
-    license-url: http://www.apache.org/licenses/LICENSE-2.0.html
+# OpenAPI document of the public API, served at /v3/api-docs and shown by src/main/webapp/swagger-ui
+springdoc:
+  paths-to-match: /v1/**, /v2/**, /urn/**
+api-docs:
+  title: CVS API
+  description: CESSDA Vocabularies Service API Documentation
+  version: 3.6.1
+  terms-of-service-url: https://www.cessda.eu/Acceptable-Use-Policy
+  contact-name: CESSDA Support
+  contact-url:
+  contact-email: support@cessda.eu
+  license: Apache 2.0
+  license-url: http://www.apache.org/licenses/LICENSE-2.0.html
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class

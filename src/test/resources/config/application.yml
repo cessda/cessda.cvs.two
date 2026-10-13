@@ -28,7 +28,6 @@ spring:
     serialization:
       write-durations-as-timestamps: false
   jpa:
-    database-platform: io.github.jhipster.domain.util.FixedH2Dialect
     open-in-view: false
     show-sql: false
     hibernate:
@@ -80,7 +79,6 @@ server:
 logging:
   level:
     ROOT: WARN
-    io.github.jhipster: WARN
     eu.cessda.cvs: INFO
 
 jhipster:
