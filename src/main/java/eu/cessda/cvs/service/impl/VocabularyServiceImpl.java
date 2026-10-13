@@ -172,28 +172,46 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     public static BoolQueryBuilder generateMainQuery( String term, List<String> languageFields ) {
-        return generateFieldsQuery( "", term, languageFields, 10.0f, 4.0f, 2.0f );
+        // The search runs while the user types, so match the last, unfinished word of the vocabulary title as a prefix.
+        // A single character prefix matches too many titles to be useful.
+        String[] words = term.trim().split( "\\s+" );
+        boolean matchTitlePrefix = words[words.length - 1].length() > 1;
+        return generateFieldsQuery( "", term, languageFields, 10.0f, 4.0f, 2.0f, matchTitlePrefix );
     }
 
     /**
      * Generate a query over the title, definition and notation fields.
      *
      * @param fieldPrefix the prefix of the queried fields, e.g. {@code "codes."} when used inside a nested query.
+     * @param matchTitlePrefix whether to also match the last word of the term as a prefix of the title.
      */
     private static BoolQueryBuilder generateFieldsQuery( String fieldPrefix, String term, List<String> languageFields,
-                                                         float titleBoost, float definitionBoost, float notationBoost ) {
+                                                         float titleBoost, float definitionBoost, float notationBoost,
+                                                         boolean matchTitlePrefix ) {
         BoolQueryBuilder query = QueryBuilders.boolQuery();
         for ( String langIso : languageFields )
         {
             query.should( QueryBuilders.matchQuery( fieldPrefix + TITLE + langIso, term ).fuzziness( 0.7 ).boost( titleBoost ) );
             query.should( QueryBuilders.matchQuery( fieldPrefix + DEFINITION + langIso, term ).fuzziness( 0.7 ).boost( definitionBoost ) );
+            if ( matchTitlePrefix )
+            {
+                query.should( QueryBuilders.matchBoolPrefixQuery( fieldPrefix + TITLE + langIso, term ).boost( titleBoost / 2 ) );
+            }
         }
-        return query.should( QueryBuilders.wildcardQuery( fieldPrefix + NOTATION, term.toLowerCase().replace( " ", "" ) + "*" ).boost( notationBoost ) );
+        return query.should( generateNotationQuery( fieldPrefix + NOTATION, term.replace( " ", "" ) + "*" ).boost( notationBoost ) );
+    }
+
+    /**
+     * Generate a wildcard query over a notation field. Vocabulary notations are indexed as keywords,
+     * which are case-sensitive, so the query must ignore case to find notations such as {@code AnalysisUnit}.
+     */
+    private static WildcardQueryBuilder generateNotationQuery( String field, String pattern ) {
+        return QueryBuilders.wildcardQuery( field, pattern ).caseInsensitive( true );
     }
 
     public static NestedQueryBuilder generateNestedQuery( String term, List<String> languageFields, int innerHitSize ) {
         // query the code fields for all languages
-        BoolQueryBuilder query = generateFieldsQuery( CODE_PATH + ".", term, languageFields, 3.0f, 2.0f, 1.0f );
+        BoolQueryBuilder query = generateFieldsQuery( CODE_PATH + ".", term, languageFields, 3.0f, 2.0f, 1.0f, false );
 
         InnerHitBuilder innerHitBuilder = new InnerHitBuilder( CODE_PATH ).setSize( innerHitSize );
         if ( term.length() > 2 )
@@ -1255,12 +1273,12 @@ public class VocabularyServiceImpl implements VocabularyService
 
         if ( term.contains( "*" ) ) {
             boolQuery = QueryBuilders.boolQuery()
-                .should( QueryBuilders.wildcardQuery( CODE_PATH + "." + NOTATION, term.toLowerCase().replace( " ", "" ) )
+                .should( generateNotationQuery( CODE_PATH + "." + NOTATION, term.replace( " ", "" ) )
                     .boost( 2.0f ) );
         } else {
             boolQuery = QueryBuilders.boolQuery()
                 .should( QueryBuilders.matchQuery( CODE_PATH + "." + TITLE + language, term ).fuzziness( 0.7 ).boost( 1.0f ) )
-                .should( QueryBuilders.wildcardQuery( CODE_PATH + "." + NOTATION, term.toLowerCase().replace( " ", "" ) + "*" )
+                .should( generateNotationQuery( CODE_PATH + "." + NOTATION, term.replace( " ", "" ) + "*" )
                     .boost( 2.0f ) );
         }
         final NestedQueryBuilder nestedQueryBuilder = QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.Total )
