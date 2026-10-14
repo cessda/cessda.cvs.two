@@ -74,6 +74,29 @@ public class UserJWTControllerIT {
 
     @Test
     @Transactional
+    void testAuthorizeWithPasswordLongerThan72Bytes() throws Exception {
+        // a password set before new passwords were limited to 72 bytes: BCrypt only hashed its first 72 bytes
+        String password = "p".repeat(72) + "-beyond-72-bytes";
+        User user = new User();
+        user.setLogin("user-jwt-controller-long-password");
+        user.setEmail("user-jwt-controller-long-password@example.com");
+        user.setActivated(true);
+        user.setPassword(passwordEncoder.encode(password.substring(0, 72)));
+
+        userRepository.saveAndFlush(user);
+
+        LoginVM login = new LoginVM();
+        login.setUsername("user-jwt-controller-long-password");
+        login.setPassword(password);
+        mockMvc.perform(post("/api/authenticate")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(login)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id_token").isNotEmpty());
+    }
+
+    @Test
+    @Transactional
     public void testAuthorizeWithRememberMe() throws Exception {
         User user = new User();
         user.setLogin("user-jwt-controller-remember-me");

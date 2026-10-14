@@ -32,6 +32,12 @@ public class ManagedUserVM extends UserDTO {
 
     public static final int PASSWORD_MAX_LENGTH = 100;
 
+    /**
+     * BCrypt hashes at most 72 bytes of a password; the encoder rejects a longer new password. Passwords set before
+     * this limit only had their first 72 bytes hashed, so they still match and logging in with them keeps working.
+     */
+    public static final int PASSWORD_MAX_BYTES = 72;
+
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
 

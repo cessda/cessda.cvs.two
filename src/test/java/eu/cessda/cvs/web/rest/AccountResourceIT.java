@@ -652,6 +652,38 @@ class AccountResourceIT {
 
     @Test
     @Transactional
+    @WithMockUser("change-password-too-many-bytes")
+    void testChangePasswordTooManyBytes() throws Exception {
+        assertChangePasswordRejected("change-password-too-many-bytes", "p".repeat(ManagedUserVM.PASSWORD_MAX_BYTES + 1));
+    }
+
+    @Test
+    @Transactional
+    @WithMockUser("change-password-too-many-bytes-multibyte")
+    void testChangePasswordTooManyBytesInFewCharacters() throws Exception {
+        // 25 characters, but 75 bytes in UTF-8
+        assertChangePasswordRejected("change-password-too-many-bytes-multibyte", "\u20ac".repeat(25));
+    }
+
+    private void assertChangePasswordRejected(String login, String newPassword) throws Exception {
+        User user = new User();
+        String currentPassword = RandomStringUtils.secure().nextAlphanumeric(60);
+        user.setPassword(passwordEncoder.encode(currentPassword));
+        user.setLogin(login);
+        user.setEmail(login + "@example.com");
+        userRepository.saveAndFlush(user);
+
+        restAccountMockMvc.perform(post("/api/account/change-password")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(new PasswordChangeDTO(currentPassword, newPassword))))
+            .andExpect(status().isBadRequest());
+
+        User updatedUser = userRepository.findOneByLogin(login).orElseThrow();
+        assertThat(updatedUser.getPassword()).isEqualTo(user.getPassword());
+    }
+
+    @Test
+    @Transactional
     @WithMockUser("change-password-empty")
     void testChangePasswordEmpty() throws Exception {
         User user = new User();
@@ -734,6 +766,31 @@ class AccountResourceIT {
 
         User updatedUser = userRepository.findOneByLogin(user.getLogin()).orElseThrow();
         assertThat(passwordEncoder.matches(keyAndPassword.getNewPassword(), updatedUser.getPassword())).isTrue();
+    }
+
+    @Test
+    @Transactional
+    void testFinishPasswordResetTooManyBytes() throws Exception {
+        User user = new User();
+        user.setPassword(RandomStringUtils.secure().nextAlphanumeric(60));
+        user.setLogin("finish-password-reset-too-many-bytes");
+        user.setEmail("finish-password-reset-too-many-bytes@example.com");
+        user.setResetDate(Instant.now().plusSeconds(60));
+        user.setResetKey("reset key too long");
+        userRepository.saveAndFlush(user);
+
+        KeyAndPasswordVM keyAndPassword = new KeyAndPasswordVM();
+        keyAndPassword.setKey(user.getResetKey());
+        keyAndPassword.setNewPassword("p".repeat(ManagedUserVM.PASSWORD_MAX_BYTES + 1));
+
+        restAccountMockMvc.perform(
+            post("/api/account/reset-password/finish")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(TestUtil.convertObjectToJsonBytes(keyAndPassword)))
+            .andExpect(status().isBadRequest());
+
+        User updatedUser = userRepository.findOneByLogin(user.getLogin()).orElseThrow();
+        assertThat(updatedUser.getPassword()).isEqualTo(user.getPassword());
     }
 
     @Test

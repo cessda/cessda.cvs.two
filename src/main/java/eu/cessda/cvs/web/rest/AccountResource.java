@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import static eu.cessda.cvs.security.AuthoritiesConstants.USER;
@@ -235,6 +236,7 @@ public class AccountResource {
     private static boolean checkPasswordLength(String password) {
         return !StringUtils.isEmpty(password) &&
             password.length() >= ManagedUserVM.PASSWORD_MIN_LENGTH &&
-            password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH;
+            password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH &&
+            password.getBytes(StandardCharsets.UTF_8).length <= ManagedUserVM.PASSWORD_MAX_BYTES;
     }
 }
