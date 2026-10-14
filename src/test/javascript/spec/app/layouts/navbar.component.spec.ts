@@ -17,7 +17,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { JhiLanguageService } from 'ng-jhipster';
+import { LanguageService } from 'app/core/language/language.service';
 import { SessionStorageService, provideNgxWebstorage, withNgxWebstorageConfig, withSessionStorage } from 'ngx-webstorage';
 
 import { CvsTestModule } from '../../test.module';
@@ -258,7 +258,7 @@ describe('Component Tests', () => {
       });
 
       it('should store the chosen language and tell the language service', () => {
-        const languageService = TestBed.inject(JhiLanguageService) as unknown as { changeLanguageSpy?: jasmine.Spy };
+        const languageService = TestBed.inject(LanguageService) as unknown as { changeLanguageSpy?: jasmine.Spy };
         const changeLanguage = jasmine.createSpy('changeLanguage');
         (languageService as unknown as Record<string, unknown>).changeLanguage = changeLanguage;
 

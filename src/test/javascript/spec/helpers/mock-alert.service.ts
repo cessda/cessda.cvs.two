@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { JhiAlertService, JhiAlert } from 'ng-jhipster';
+import { AlertService, Alert } from 'app/core/util/alert.service';
 
 import { SpyObject } from './spyobject';
 
 export class MockAlertService extends SpyObject {
   constructor() {
-    super(JhiAlertService);
+    super(AlertService);
   }
 
-  addAlert(alertOptions: JhiAlert): JhiAlert {
+  addAlert(alertOptions: Alert): Alert {
     return alertOptions;
   }
 

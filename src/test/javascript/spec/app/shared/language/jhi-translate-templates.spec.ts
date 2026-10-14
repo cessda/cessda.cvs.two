@@ -18,12 +18,12 @@ import { join, relative } from 'path';
 
 describe('Template Tests', () => {
   describe('Elements carrying jhiTranslate', () => {
-    // JhiTranslateDirective assigns the translation to innerHTML, which discards whatever
+    // TranslateDirective assigns the translation to innerHTML, which discards whatever
     // the element already contained. A form control nested inside such an element is
     // therefore taken out of the DOM as soon as the translation arrives, leaving a field
     // that cannot be typed into. This is checked against the templates as written rather
-    // than against a rendered component, because the directive does nothing while i18n is
-    // disabled, as it is in the test configuration, and a rendered test would pass either way.
+    // than against a rendered component, because the directive does nothing without a
+    // TranslateService, as in the test configuration, and a rendered test would pass either way.
 
     const root = join(process.cwd(), 'src/main/webapp/app');
 

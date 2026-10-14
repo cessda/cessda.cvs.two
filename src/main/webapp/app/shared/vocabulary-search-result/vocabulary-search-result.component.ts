@@ -15,7 +15,8 @@
  */
 import { Component, ElementRef, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { EditorService, SearchRequest } from 'app/editor/editor.service';
-import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
+import { LanguageService } from 'app/core/language/language.service';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
@@ -47,12 +48,12 @@ const DEFAULT_PREDICATE = 'code';
 export class VocabularySearchResultComponent implements OnInit {
   private accountService = inject(AccountService);
   private loginModalService = inject(LoginModalService);
-  private languageService = inject(JhiLanguageService);
+  private languageService = inject(LanguageService);
   private homeService = inject(HomeService);
   private editorService = inject(EditorService);
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
-  private eventManager = inject(JhiEventManager);
+  private eventManager = inject(EventManager);
   private fb = inject(UntypedFormBuilder);
   private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
 

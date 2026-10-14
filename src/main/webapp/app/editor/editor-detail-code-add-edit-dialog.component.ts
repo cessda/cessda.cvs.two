@@ -18,7 +18,7 @@ import { Component, inject, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AccountService } from 'app/core/auth/account.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -41,7 +41,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   private accountService = inject(AccountService);
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
-  protected eventManager = inject(JhiEventManager);
+  protected eventManager = inject(EventManager);
   private fb = inject(FormBuilder);
   private router = inject(Router);
   private modalService = inject(NgbModal);

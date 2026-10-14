@@ -20,7 +20,7 @@ import { ActivatedRouteSnapshot, Router, Routes } from '@angular/router';
 import { EMPTY, Observable, of } from 'rxjs';
 import { HomeComponent } from './home.component';
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
-import { JhiResolvePagingParams } from 'ng-jhipster';
+import { pagingParamsResolver } from 'app/core/request/paging-params.resolver';
 import { HomeService } from 'app/home/home.service';
 import { HomeDetailComponent } from 'app/home/home-detail.component';
 import { mergeMap } from 'rxjs/operators';
@@ -77,7 +77,7 @@ export const HOME_ROUTE: Routes = [
     path: '',
     component: HomeComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams,
+      pagingParams: pagingParamsResolver,
     },
     data: {
       authorities: [],

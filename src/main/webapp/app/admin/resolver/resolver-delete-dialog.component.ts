@@ -15,7 +15,7 @@
  */
 import { Component, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 
 import { Resolver } from 'app/shared/model/resolver.model';
 import { ResolverService } from './resolver.service';
@@ -27,7 +27,7 @@ import { ResolverService } from './resolver.service';
 export class ResolverDeleteDialogComponent {
   protected resolverService = inject(ResolverService);
   activeModal = inject(NgbActiveModal);
-  protected eventManager = inject(JhiEventManager);
+  protected eventManager = inject(EventManager);
 
   resolver?: Resolver;
 

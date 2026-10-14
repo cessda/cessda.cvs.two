@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { BehaviorSubject } from 'rxjs';
 
 import { CvsTestModule } from '../../test.module';
@@ -71,7 +71,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       fixture = TestBed.createComponent(HomeDetailComponent);
       comp = fixture.componentInstance;
-      mockEventManager = TestBed.inject(JhiEventManager) as unknown as MockEventManager;
+      mockEventManager = TestBed.inject(EventManager) as unknown as MockEventManager;
 
       comp.vocabulary = vocabularyWith([slVersion, tlVersion, oldTlVersion]);
     });

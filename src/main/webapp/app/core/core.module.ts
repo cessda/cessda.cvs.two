@@ -21,7 +21,6 @@ import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { CookieService } from 'ngx-cookie-service';
 import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { provideNgxWebstorage, withLocalStorage, withNgxWebstorageConfig, withSessionStorage } from 'ngx-webstorage';
-import { JhiConfigService, JhiLanguageService, missingTranslationHandler, NgJhipsterModule, translatePartialLoader } from 'ng-jhipster';
 import locale from '@angular/common/locales/en';
 
 import moment from 'moment';
@@ -34,16 +33,11 @@ import { ErrorHandlerInterceptor } from 'app/blocks/interceptor/errorhandler.int
 import { NotificationInterceptor } from 'app/blocks/interceptor/notification.interceptor';
 
 import { fontAwesomeIcons } from './icons/font-awesome-icons';
+import { LanguageService } from './language/language.service';
+import { missingTranslationHandler, translatePartialLoader } from './language/translation.config';
 
 @NgModule({
   imports: [
-    NgJhipsterModule.forRoot({
-      // set below to true to make alerts look like toast
-      alertAsToast: false,
-      alertTimeout: 5000,
-      i18nEnabled: true,
-      defaultI18nLang: 'en',
-    }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -53,7 +47,6 @@ import { fontAwesomeIcons } from './icons/font-awesome-icons';
       missingTranslationHandler: {
         provide: MissingTranslationHandler,
         useFactory: missingTranslationHandler,
-        deps: [JhiConfigService],
       },
     }),
   ],
@@ -94,7 +87,7 @@ export class CvsCoreModule {
   constructor() {
     const iconLibrary = inject(FaIconLibrary);
     const dpConfig = inject(NgbDatepickerConfig);
-    const languageService = inject(JhiLanguageService);
+    const languageService = inject(LanguageService);
 
     registerLocaleData(locale);
     iconLibrary.addIcons(...fontAwesomeIcons);

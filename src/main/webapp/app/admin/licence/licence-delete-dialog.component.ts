@@ -15,7 +15,7 @@
  */
 import { Component, inject } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 
 import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from './licence.service';
@@ -27,7 +27,7 @@ import { LicenceService } from './licence.service';
 export class LicenceDeleteDialogComponent {
   protected licenceService = inject(LicenceService);
   activeModal = inject(NgbActiveModal);
-  protected eventManager = inject(JhiEventManager);
+  protected eventManager = inject(EventManager);
 
   licence?: Licence;
 

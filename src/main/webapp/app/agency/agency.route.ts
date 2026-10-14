@@ -15,7 +15,7 @@
  */
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, Routes } from '@angular/router';
-import { JhiResolvePagingParams } from 'ng-jhipster';
+import { pagingParamsResolver } from 'app/core/request/paging-params.resolver';
 import { EMPTY, Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 
@@ -55,7 +55,7 @@ export const agencyRoute: Routes = [
     path: '',
     component: AgencyComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams,
+      pagingParams: pagingParamsResolver,
     },
     data: {
       defaultSort: 'id,asc',

@@ -16,7 +16,8 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
-import { JhiAlert, JhiAlertService, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { Alert, AlertService } from 'app/core/util/alert.service';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { Subscription } from 'rxjs';
 
 import { AlertError } from './alert-error.model';
@@ -39,10 +40,10 @@ import { AlertError } from './alert-error.model';
   standalone: false,
 })
 export class AlertErrorComponent implements OnDestroy {
-  private alertService = inject(JhiAlertService);
-  private eventManager = inject(JhiEventManager);
+  private alertService = inject(AlertService);
+  private eventManager = inject(EventManager);
 
-  alerts: JhiAlert[] = [];
+  alerts: Alert[] = [];
   errorListener: Subscription;
   httpErrorListener: Subscription;
 
@@ -50,12 +51,12 @@ export class AlertErrorComponent implements OnDestroy {
     const eventManager = this.eventManager;
     const translateService = inject(TranslateService);
 
-    this.errorListener = eventManager.subscribe('cvsApp.error', (response: JhiEventWithContent<AlertError>) => {
+    this.errorListener = eventManager.subscribe('cvsApp.error', (response: EventWithContent<AlertError>) => {
       const errorResponse = response.content;
       this.addErrorAlert(errorResponse.message, errorResponse.key, errorResponse.params);
     });
 
-    this.httpErrorListener = eventManager.subscribe('cvsApp.httpError', (response: JhiEventWithContent<HttpErrorResponse>) => {
+    this.httpErrorListener = eventManager.subscribe('cvsApp.httpError', (response: EventWithContent<HttpErrorResponse>) => {
       const httpErrorResponse = response.content;
       switch (httpErrorResponse.status) {
         // connection refused, server not reachable
@@ -110,7 +111,7 @@ export class AlertErrorComponent implements OnDestroy {
     });
   }
 
-  setClasses(alert: JhiAlert): { [key: string]: boolean } {
+  setClasses(alert: Alert): { [key: string]: boolean } {
     const classes = { 'jhi-toast': Boolean(alert.toast) };
     if (alert.position) {
       return { ...classes, [alert.position]: true };
@@ -131,7 +132,7 @@ export class AlertErrorComponent implements OnDestroy {
   addErrorAlert(message: string, key?: string, data?: any): void {
     message = key || message;
 
-    const newAlert: JhiAlert = {
+    const newAlert: Alert = {
       type: 'danger',
       msg: message,
       params: data,

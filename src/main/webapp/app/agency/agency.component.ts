@@ -17,7 +17,7 @@ import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Agency } from 'app/shared/model/agency.model';
@@ -35,9 +35,8 @@ import { Authority } from 'app/shared/constants/authority.constants';
 export class AgencyComponent implements OnInit, OnDestroy {
   protected agencyService = inject(AgencyService);
   protected activatedRoute = inject(ActivatedRoute);
-  protected dataUtils = inject(JhiDataUtils);
   protected router = inject(Router);
-  protected eventManager = inject(JhiEventManager);
+  protected eventManager = inject(EventManager);
   protected modalService = inject(NgbModal);
 
   authorities = [Authority.ADMIN, Authority.ADMIN_CONTENT];

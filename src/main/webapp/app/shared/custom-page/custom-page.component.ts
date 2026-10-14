@@ -21,7 +21,7 @@ import { METADATA_KEY_ABOUT, METADATA_KEY_API } from 'app/shared/constants/metad
 import { HttpResponse } from '@angular/common/http';
 import { MetadataValue } from 'app/shared/model/metadata-value.model';
 import { Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { ActivatedRoute } from '@angular/router';
 import { FileUploadService } from 'app/shared/upload/file-upload.service';
 import { FileFormat } from 'app/shared/vocabulary-download/FileFormat';
@@ -35,7 +35,7 @@ import { Authority } from '../constants/authority.constants';
 export class CustomPageComponent implements OnInit, OnDestroy {
   protected editorService = inject(EditorService);
   private metadataFieldService = inject(MetadataFieldService);
-  protected eventManager = inject(JhiEventManager);
+  protected eventManager = inject(EventManager);
   protected activatedRoute = inject(ActivatedRoute);
   protected fileUploadService = inject(FileUploadService);
 

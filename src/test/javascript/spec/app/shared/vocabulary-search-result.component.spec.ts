@@ -15,7 +15,7 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { JhiLanguageService } from 'ng-jhipster';
+import { LanguageService } from 'app/core/language/language.service';
 import { of, throwError } from 'rxjs';
 
 import { CvsTestModule } from '../../test.module';
@@ -160,7 +160,7 @@ describe('Component Tests', () => {
     });
 
     it('should report the interface language the language service holds', () => {
-      (TestBed.inject(JhiLanguageService) as unknown as { currentLang: string }).currentLang = 'de';
+      (TestBed.inject(LanguageService) as unknown as { currentLang: string }).currentLang = 'de';
 
       expect(comp.getCurrentLanguage()).toBe('de');
     });

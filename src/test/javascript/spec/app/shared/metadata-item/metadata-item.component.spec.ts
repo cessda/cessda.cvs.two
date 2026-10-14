@@ -16,7 +16,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpTestingController } from '@angular/common/http/testing';
 import { FormBuilder } from '@angular/forms';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import Quill from 'quill';
 
 import { CvsTestModule } from '../../../test.module';
@@ -62,7 +62,7 @@ describe('Component Tests', () => {
       comp = fixture.componentInstance;
       service = TestBed.inject(EditorService);
       httpMock = TestBed.inject(HttpTestingController);
-      mockEventManager = TestBed.inject(JhiEventManager) as unknown as MockEventManager;
+      mockEventManager = TestBed.inject(EventManager) as unknown as MockEventManager;
     });
 
     afterEach(() => {
