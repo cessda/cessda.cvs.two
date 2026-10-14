@@ -73,7 +73,10 @@
             "scripts": [],
             "browser": "src/main/webapp/app/app.main.ts",
             "stylePreprocessorOptions": {
-              "includePaths": ["."]
+              "includePaths": ["."],
+              "sass": {
+                "silenceDeprecations": ["import"]
+              }
             },
             "polyfills": ["src/main/webapp/app/polyfills.ts"]
           },
