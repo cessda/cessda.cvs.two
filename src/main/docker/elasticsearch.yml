@@ -27,11 +27,10 @@ services:
       - 9303:9300
     environment:
       - 'ES_JAVA_OPTS=-Xms1024m -Xmx1024m'
-      - 'discovery.type=single-node'
-      # Elasticsearch 8 enables security by default; the local and test instances run without it, as 7.x did
-      - 'xpack.security.enabled=false'
+    # The settings are passed as -E flags, because Elasticsearch 8 ignores environment settings started through this
+    # wrapper. Security is disabled, as it was by default in 7.x; Elasticsearch 8 enables it by default.
     command:
       - sh
       - -c
       - './bin/elasticsearch-plugin list | grep -q analysis-icu || ./bin/elasticsearch-plugin install analysis-icu;
-        /usr/local/bin/docker-entrypoint.sh elasticsearch'
+        /usr/local/bin/docker-entrypoint.sh elasticsearch -Ediscovery.type=single-node -Expack.security.enabled=false'
