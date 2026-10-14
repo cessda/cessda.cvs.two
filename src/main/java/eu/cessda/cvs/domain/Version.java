@@ -26,6 +26,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import eu.cessda.cvs.utils.VersionNumberConverter;
 
+import org.hibernate.Length;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -99,11 +100,11 @@ public class Version implements Comparable<Version>, Serializable {
     private String notation;
 
     @Lob
-    @Column(name = "title")
+    @Column(name = "title", length = Length.LONG32)
     private String title;
 
     @Lob
-    @Column(name = "definition")
+    @Column(name = "definition", length = Length.LONG32)
     private String definition;
 
     @Column(name = "previous_version")
@@ -119,19 +120,19 @@ public class Version implements Comparable<Version>, Serializable {
     private Long publisher;
 
     @Lob
-    @Column(name = "notes")
+    @Column(name = "notes", length = Length.LONG32)
     private String notes;
 
     @Lob
-    @Column(name = "version_notes")
+    @Column(name = "version_notes", length = Length.LONG32)
     private String versionNotes;
 
     @Lob
-    @Column(name = "version_changes")
+    @Column(name = "version_changes", length = Length.LONG32)
     private String versionChanges;
 
     @Lob
-    @Column(name = "discussion_notes")
+    @Column(name = "discussion_notes", length = Length.LONG32)
     private String discussionNotes;
 
     @Column(name = "license")
@@ -141,11 +142,11 @@ public class Version implements Comparable<Version>, Serializable {
     private Long licenseId;
 
     @Lob
-    @Column(name = "citation")
+    @Column(name = "citation", length = Length.LONG32)
     private String citation;
 
     @Lob
-    @Column(name = "ddi_usage")
+    @Column(name = "ddi_usage", length = Length.LONG32)
     private String ddiUsage;
 
     @Column(name = "translate_agency")

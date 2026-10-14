@@ -20,6 +20,7 @@ import eu.cessda.cvs.domain.enumeration.ObjectType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import org.hibernate.Length;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -44,7 +45,7 @@ public class MetadataValue implements Serializable {
     private String identifier;
 
     @Lob
-    @Column(name = "value")
+    @Column(name = "value", length = Length.LONG32)
     private String value;
 
     @Enumerated(EnumType.STRING)

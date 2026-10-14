@@ -19,6 +19,7 @@ import eu.cessda.cvs.domain.enumeration.ObjectType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import org.hibernate.Length;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -49,7 +50,7 @@ public class MetadataField implements Serializable {
     private String metadataKey;
 
     @Lob
-    @Column(name = "description")
+    @Column(name = "description", length = Length.LONG32)
     private String description;
 
     @Enumerated(EnumType.STRING)

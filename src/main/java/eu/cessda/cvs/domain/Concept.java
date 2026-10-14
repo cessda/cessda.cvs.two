@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import org.hibernate.Length;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -50,11 +51,11 @@ public class Concept implements Serializable {
     private String notation;
 
     @Lob
-    @Column(name = "title")
+    @Column(name = "title", length = Length.LONG32)
     private String title;
 
     @Lob
-    @Column(name = "definition")
+    @Column(name = "definition", length = Length.LONG32)
     private String definition;
 
     @Column(name = "previous_concept")

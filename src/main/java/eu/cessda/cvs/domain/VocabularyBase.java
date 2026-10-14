@@ -24,6 +24,7 @@ import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.Mapping;
 
+import org.hibernate.Length;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -65,7 +66,7 @@ public class VocabularyBase implements Serializable {
     private String notation;
 
     @NotNull
-    @Column(name = "version_number", nullable = false)
+    @Column(name = "version_number", length = 20, nullable = false)
     @Field( type = FieldType.Keyword )
     @Convert(converter = VersionNumberConverter.class)
     private VersionNumber versionNumber;
@@ -118,12 +119,12 @@ public class VocabularyBase implements Serializable {
     private ZonedDateTime lastModified;
 
     @Lob
-    @Column(name = "notes")
+    @Column(name = "notes", length = Length.LONG32)
     @Field( type = FieldType.Text )
     private String notes;
 
     @Lob
-    @Column(name = "title_all")
+    @Column(name = "title_all", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleAll.json")
 	private String titleAll;
 
@@ -133,12 +134,12 @@ public class VocabularyBase implements Serializable {
     private String versionSq;
 
     @Lob
-    @Column(name = "title_sq")
+    @Column(name = "title_sq", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleSq.json")
 	private String titleSq;
 
     @Lob
-    @Column(name = "definition_sq")
+    @Column(name = "definition_sq", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true )
     private String definitionSq;
 
@@ -148,12 +149,12 @@ public class VocabularyBase implements Serializable {
     private String versionBs;
 
     @Lob
-    @Column(name = "title_bs")
+    @Column(name = "title_bs", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleBs.json")
 	private String titleBs;
 
     @Lob
-    @Column(name = "definition_bs")
+    @Column(name = "definition_bs", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true )
     private String definitionBs;
 
@@ -163,12 +164,12 @@ public class VocabularyBase implements Serializable {
     private String versionBg;
 
     @Lob
-    @Column(name = "title_bg")
+    @Column(name = "title_bg", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleBg.json")
 	private String titleBg;
 
     @Lob
-    @Column(name = "definition_bg")
+    @Column(name = "definition_bg", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "bulgarian", searchAnalyzer = "bulgarian" )
     private String definitionBg;
 
@@ -178,12 +179,12 @@ public class VocabularyBase implements Serializable {
     private String versionHr;
 
     @Lob
-    @Column(name = "title_hr")
+    @Column(name = "title_hr", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleHr.json")
 	private String titleHr;
 
     @Lob
-    @Column(name = "definition_hr")
+    @Column(name = "definition_hr", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true )
     private String definitionHr;
 
@@ -193,12 +194,12 @@ public class VocabularyBase implements Serializable {
     private String versionCs;
 
     @Lob
-    @Column(name = "title_cs")
+    @Column(name = "title_cs", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleCs.json")
 	private String titleCs;
 
     @Lob
-    @Column(name = "definition_cs")
+    @Column(name = "definition_cs", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "czech", searchAnalyzer = "czech" )
     private String definitionCs;
 
@@ -208,12 +209,12 @@ public class VocabularyBase implements Serializable {
     private String versionDa;
 
     @Lob
-    @Column(name = "title_da")
+    @Column(name = "title_da", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleDa.json")
 	private String titleDa;
 
     @Lob
-    @Column(name = "definition_da")
+    @Column(name = "definition_da", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "danish", searchAnalyzer = "danish" )
     private String definitionDa;
 
@@ -223,12 +224,12 @@ public class VocabularyBase implements Serializable {
     private String versionNl;
 
     @Lob
-    @Column(name = "title_nl")
+    @Column(name = "title_nl", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleNl.json")
 	private String titleNl;
 
     @Lob
-    @Column(name = "definition_nl")
+    @Column(name = "definition_nl", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "dutch", searchAnalyzer = "dutch" )
     private String definitionNl;
 
@@ -238,12 +239,12 @@ public class VocabularyBase implements Serializable {
     private String versionEn;
 
     @Lob
-    @Column(name = "title_en")
+    @Column(name = "title_en", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleEn.json")
 	private String titleEn;
 
     @Lob
-    @Column(name = "definition_en")
+    @Column(name = "definition_en", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "english", searchAnalyzer = "english" )
     private String definitionEn;
 
@@ -253,12 +254,12 @@ public class VocabularyBase implements Serializable {
     private String versionEt;
 
     @Lob
-    @Column(name = "title_et")
+    @Column(name = "title_et", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleEt.json")
 	private String titleEt;
 
     @Lob
-    @Column(name = "definition_et")
+    @Column(name = "definition_et", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true )
     private String definitionEt;
 
@@ -268,12 +269,12 @@ public class VocabularyBase implements Serializable {
     private String versionFi;
 
     @Lob
-    @Column(name = "title_fi")
+    @Column(name = "title_fi", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleFi.json")
 	private String titleFi;
 
     @Lob
-    @Column(name = "definition_fi")
+    @Column(name = "definition_fi", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" )
     private String definitionFi;
 
@@ -283,12 +284,12 @@ public class VocabularyBase implements Serializable {
     private String versionFr;
 
     @Lob
-    @Column(name = "title_fr")
+    @Column(name = "title_fr", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleFr.json")
 	private String titleFr;
 
     @Lob
-    @Column(name = "definition_fr")
+    @Column(name = "definition_fr", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "french", searchAnalyzer = "french" )
     private String definitionFr;
 
@@ -298,12 +299,12 @@ public class VocabularyBase implements Serializable {
     private String versionDe;
 
     @Lob
-    @Column(name = "title_de")
+    @Column(name = "title_de", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleDe.json")
 	private String titleDe;
 
     @Lob
-    @Column(name = "definition_de")
+    @Column(name = "definition_de", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "german", searchAnalyzer = "german" )
     private String definitionDe;
 
@@ -313,12 +314,12 @@ public class VocabularyBase implements Serializable {
     private String versionEl;
 
     @Lob
-    @Column(name = "title_el")
+    @Column(name = "title_el", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleEl.json")
 	private String titleEl;
 
     @Lob
-    @Column(name = "definition_el")
+    @Column(name = "definition_el", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "greek", searchAnalyzer = "greek" )
     private String definitionEl;
 
@@ -328,12 +329,12 @@ public class VocabularyBase implements Serializable {
     private String versionHu;
 
     @Lob
-    @Column(name = "title_hu")
+    @Column(name = "title_hu", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleHu.json")
 	private String titleHu;
 
     @Lob
-    @Column(name = "definition_hu")
+    @Column(name = "definition_hu", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
     private String definitionHu;
 
@@ -343,12 +344,12 @@ public class VocabularyBase implements Serializable {
     private String versionIt;
 
     @Lob
-    @Column(name = "title_it")
+    @Column(name = "title_it", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleIt.json")
 	private String titleIt;
 
     @Lob
-    @Column(name = "definition_it")
+    @Column(name = "definition_it", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "italian", searchAnalyzer = "italian" )
     private String definitionIt;
 
@@ -358,12 +359,12 @@ public class VocabularyBase implements Serializable {
     private String versionJa;
 
     @Lob
-    @Column(name = "title_ja")
+    @Column(name = "title_ja", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleJa.json")
 	private String titleJa;
 
     @Lob
-    @Column(name = "definition_ja")
+    @Column(name = "definition_ja", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true )
     private String definitionJa;
 
@@ -373,12 +374,12 @@ public class VocabularyBase implements Serializable {
     private String versionLt;
 
     @Lob
-    @Column(name = "title_lt")
+    @Column(name = "title_lt", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleLt.json")
 	private String titleLt;
 
     @Lob
-    @Column(name = "definition_lt")
+    @Column(name = "definition_lt", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true )
     private String definitionLt;
 
@@ -388,12 +389,12 @@ public class VocabularyBase implements Serializable {
     private String versionMk;
 
     @Lob
-    @Column(name = "title_mk")
+    @Column(name = "title_mk", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleMk.json")
 	private String titleMk;
 
     @Lob
-    @Column(name = "definition_mk")
+    @Column(name = "definition_mk", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true )
     private String definitionMk;
 
@@ -403,12 +404,12 @@ public class VocabularyBase implements Serializable {
     private String versionNo;
 
     @Lob
-    @Column(name = "title_no")
+    @Column(name = "title_no", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleNo.json")
 	private String titleNo;
 
     @Lob
-    @Column(name = "definition_no")
+    @Column(name = "definition_no", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" )
     private String definitionNo;
 
@@ -418,12 +419,12 @@ public class VocabularyBase implements Serializable {
     private String versionPl;
 
     @Lob
-    @Column(name = "title_pl")
+    @Column(name = "title_pl", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titlePl.json")
 	private String titlePl;
 
     @Lob
-    @Column(name = "definition_pl")
+    @Column(name = "definition_pl", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true )
     private String definitionPl;
 
@@ -433,12 +434,12 @@ public class VocabularyBase implements Serializable {
     private String versionPt;
 
     @Lob
-    @Column(name = "title_pt")
+    @Column(name = "title_pt", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titlePt.json")
 	private String titlePt;
 
     @Lob
-    @Column(name = "definition_pt")
+    @Column(name = "definition_pt", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" )
     private String definitionPt;
 
@@ -448,12 +449,12 @@ public class VocabularyBase implements Serializable {
     private String versionRo;
 
     @Lob
-    @Column(name = "title_ro")
+    @Column(name = "title_ro", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleRo.json")
 	private String titleRo;
 
     @Lob
-    @Column(name = "definition_ro")
+    @Column(name = "definition_ro", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "romanian", searchAnalyzer = "romanian" )
     private String definitionRo;
 
@@ -463,12 +464,12 @@ public class VocabularyBase implements Serializable {
     private String versionRu;
 
     @Lob
-    @Column(name = "title_ru")
+    @Column(name = "title_ru", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleRu.json")
 	private String titleRu;
 
     @Lob
-    @Column(name = "definition_ru")
+    @Column(name = "definition_ru", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "russian", searchAnalyzer = "russian" )
     private String definitionRu;
 
@@ -478,12 +479,12 @@ public class VocabularyBase implements Serializable {
     private String versionSr;
 
     @Lob
-    @Column(name = "title_sr")
+    @Column(name = "title_sr", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleSr.json")
 	private String titleSr;
 
     @Lob
-    @Column(name = "definition_sr")
+    @Column(name = "definition_sr", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true )
     private String definitionSr;
 
@@ -493,12 +494,12 @@ public class VocabularyBase implements Serializable {
     private String versionSk;
 
     @Lob
-    @Column(name = "title_sk")
+    @Column(name = "title_sk", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleSk.json")
 	private String titleSk;
 
     @Lob
-    @Column(name = "definition_sk")
+    @Column(name = "definition_sk", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true )
     private String definitionSk;
 
@@ -508,12 +509,12 @@ public class VocabularyBase implements Serializable {
     private String versionSl;
 
     @Lob
-    @Column(name = "title_sl")
+    @Column(name = "title_sl", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleSl.json")
 	private String titleSl;
 
     @Lob
-    @Column(name = "definition_sl")
+    @Column(name = "definition_sl", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true )
     private String definitionSl;
 
@@ -523,12 +524,12 @@ public class VocabularyBase implements Serializable {
     private String versionEs;
 
     @Lob
-    @Column(name = "title_es")
+    @Column(name = "title_es", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleEs.json")
 	private String titleEs;
 
     @Lob
-    @Column(name = "definition_es")
+    @Column(name = "definition_es", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" )
     private String definitionEs;
 
@@ -538,12 +539,12 @@ public class VocabularyBase implements Serializable {
     private String versionSv;
 
     @Lob
-    @Column(name = "title_sv")
+    @Column(name = "title_sv", length = Length.LONG32)
     @Mapping(mappingPath = "/mappings/titleSv.json")
 	private String titleSv;
 
     @Lob
-    @Column(name = "definition_sv")
+    @Column(name = "definition_sv", length = Length.LONG32)
     @Field( type = FieldType.Text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
     private String definitionSv;
 

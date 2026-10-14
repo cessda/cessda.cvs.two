@@ -18,6 +18,7 @@ package eu.cessda.cvs.domain;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import org.hibernate.Length;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -53,7 +54,7 @@ public class VocabularyChange implements Serializable {
     private String changeType;
 
     @Lob
-    @Column(name = "description")
+    @Column(name = "description", length = Length.LONG32)
     private String description;
 
     @Column(name = "user_id")

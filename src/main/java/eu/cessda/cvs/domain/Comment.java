@@ -19,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import org.hibernate.Length;
 import jakarta.persistence.*;
 
 import java.io.Serial;
@@ -42,7 +43,7 @@ public class Comment implements Serializable {
     private Long id;
 
     @Lob
-    @Column(name = "content")
+    @Column(name = "content", length = Length.LONG32)
     private String content;
 
     @Column(name = "info")

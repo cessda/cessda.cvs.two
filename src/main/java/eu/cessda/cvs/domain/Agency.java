@@ -18,6 +18,7 @@ package eu.cessda.cvs.domain;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
+import org.hibernate.Length;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
@@ -50,7 +51,7 @@ public class Agency implements Serializable {
     private String link;
 
     @Lob
-    @Column(name = "description")
+    @Column(name = "description", length = Length.LONG32)
     private String description;
 
     @Size(max = 255)
