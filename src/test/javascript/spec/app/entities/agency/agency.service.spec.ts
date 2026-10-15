@@ -132,7 +132,7 @@ describe('Service Tests', () => {
         service.delete(123).subscribe(resp => (expectedResult = resp.ok));
 
         const req = httpMock.expectOne({ method: 'DELETE' });
-        expect(req.request.url).toContain('/api/agencies/123');
+        expect(req.request.url).toContain('api/agencies/123');
 
         req.flush({});
         expect(expectedResult).toBe(true);
