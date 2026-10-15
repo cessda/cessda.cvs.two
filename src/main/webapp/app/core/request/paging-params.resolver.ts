@@ -30,7 +30,7 @@ export const pagingParamsResolver: ResolveFn<PagingParams> = (route: ActivatedRo
   const page: string = route.queryParams['page'] || '1';
   const sort: string = route.queryParams['sort'] || route.data['defaultSort'] || 'id,asc';
   return {
-    page: parseInt(page, 10),
+    page: Number.parseInt(page, 10),
     predicate: parsePredicate(sort),
     ascending: parseAscending(sort),
   };
@@ -44,5 +44,5 @@ function parseAscending(sort: string): boolean {
   let sortArray = sort.split(',');
   sortArray = sortArray.length > 1 ? sortArray : sort.split('%2C');
   // default to ascending when no direction is given
-  return sortArray.length > 1 ? sortArray[sortArray.length - 1] === 'asc' : true;
+  return sortArray.length > 1 ? sortArray.at(sortArray.length - 1) === 'asc' : true;
 }

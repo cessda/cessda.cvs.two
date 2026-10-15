@@ -20,24 +20,54 @@
   <button type="button" class="close" (click)="activeModal.dismiss('closed')">&times;</button>
 </div>
 <div class="modal-body">
-  <span class="badge badge-primary" (click)="threadDumpFilter = {}">
+  <span
+    class="badge badge-primary"
+    tabindex="0"
+    (click)="threadDumpFilter = {}"
+    (keydown.enter)="threadDumpFilter = {}"
+    (keydown.space)="threadDumpFilter = {}; $event.preventDefault()"
+  >
     All&nbsp;<span class="badge badge-pill badge-default">{{ threadStats.threadDumpAll }}</span>
   </span>&nbsp;
-  <span class="badge badge-success" (click)="threadDumpFilter = { threadState: 'RUNNABLE' }">
+  <span
+    class="badge badge-success"
+    tabindex="0"
+    (click)="threadDumpFilter = { threadState: 'RUNNABLE' }"
+    (keydown.enter)="threadDumpFilter = { threadState: 'RUNNABLE' }"
+    (keydown.space)="threadDumpFilter = { threadState: 'RUNNABLE' }; $event.preventDefault()"
+  >
     Runnable&nbsp;<span class="badge badge-pill badge-default">{{ threadStats.threadDumpRunnable }}</span>
   </span>&nbsp;
-  <span class="badge badge-info" (click)="threadDumpFilter = { threadState: 'WAITING' }">
+  <span
+    class="badge badge-info"
+    tabindex="0"
+    (click)="threadDumpFilter = { threadState: 'WAITING' }"
+    (keydown.enter)="threadDumpFilter = { threadState: 'WAITING' }"
+    (keydown.space)="threadDumpFilter = { threadState: 'WAITING' }; $event.preventDefault()"
+  >
     Waiting&nbsp;<span class="badge badge-pill badge-default">{{ threadStats.threadDumpWaiting }}</span>
   </span>&nbsp;
-  <span class="badge badge-warning" (click)="threadDumpFilter = { threadState: 'TIMED_WAITING' }">
+  <span
+    class="badge badge-warning"
+    tabindex="0"
+    (click)="threadDumpFilter = { threadState: 'TIMED_WAITING' }"
+    (keydown.enter)="threadDumpFilter = { threadState: 'TIMED_WAITING' }"
+    (keydown.space)="threadDumpFilter = { threadState: 'TIMED_WAITING' }; $event.preventDefault()"
+  >
     Timed Waiting&nbsp;<span class="badge badge-pill badge-default">{{ threadStats.threadDumpTimedWaiting }}</span>
   </span>&nbsp;
-  <span class="badge badge-danger" (click)="threadDumpFilter = { threadState: 'BLOCKED' }">
+  <span
+    class="badge badge-danger"
+    tabindex="0"
+    (click)="threadDumpFilter = { threadState: 'BLOCKED' }"
+    (keydown.enter)="threadDumpFilter = { threadState: 'BLOCKED' }"
+    (keydown.space)="threadDumpFilter = { threadState: 'BLOCKED' }; $event.preventDefault()"
+  >
     Blocked&nbsp;<span class="badge badge-pill badge-default">{{ threadStats.threadDumpBlocked }}</span>
   </span>&nbsp;
   <div class="mt-2">&nbsp;</div>
-  Filter
-  <input type="text" [(ngModel)]="threadDumpFilter" class="form-control" />
+  <label for="thread-dump-filter">Filter</label>
+  <input type="text" id="thread-dump-filter" [(ngModel)]="threadDumpFilter" class="form-control" />
   @for (entry of threadDump | pureFilter: threadDumpFilter : 'lockName' | keys; track entry.value.threadId) {
     <div class="pad">
       <h6>
