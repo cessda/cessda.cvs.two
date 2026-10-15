@@ -137,7 +137,8 @@ describe('Service Tests', () => {
         service.identity().subscribe();
 
         // Then there is a new request
-        httpMock.expectOne({ method: 'GET' });
+        const req = httpMock.expectOne({ method: 'GET' });
+        expect(req.request.url).toEqual(`${SERVER_API_URL}api/account`);
       });
 
       describe('navigateToStoredUrl', () => {
