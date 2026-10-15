@@ -26,10 +26,10 @@ import { LoginService } from 'app/core/login/login.service';
   standalone: false,
 })
 export class LoginModalComponent implements AfterViewInit {
-  private loginService = inject(LoginService);
-  private router = inject(Router);
+  private readonly loginService = inject(LoginService);
+  private readonly router = inject(Router);
   activeModal = inject(NgbActiveModal);
-  private fb = inject(FormBuilder);
+  private readonly fb = inject(FormBuilder);
 
   @ViewChild('username', { static: false })
   username?: ElementRef;

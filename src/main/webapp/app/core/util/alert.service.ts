@@ -40,12 +40,12 @@ const ALERT_TIMEOUT = 5000;
  */
 @Injectable({ providedIn: 'root' })
 export class AlertService {
-  private sanitizer = inject(DomSanitizer);
-  private ngZone = inject(NgZone);
-  private translateService = inject(TranslateService, { optional: true });
+  private readonly sanitizer = inject(DomSanitizer);
+  private readonly ngZone = inject(NgZone);
+  private readonly translateService = inject(TranslateService, { optional: true });
 
   private alertId = 0;
-  private alerts: Alert[] = [];
+  private readonly alerts: Alert[] = [];
 
   clear(): void {
     this.alerts.splice(0, this.alerts.length);

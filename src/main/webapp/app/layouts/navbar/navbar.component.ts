@@ -41,18 +41,18 @@ import { Authority } from 'app/shared/constants/authority.constants';
   standalone: false,
 })
 export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
-  private loginService = inject(LoginService);
-  private languageService = inject(LanguageService);
-  private sessionStorage = inject(SessionStorageService);
-  private accountService = inject(AccountService);
+  private readonly loginService = inject(LoginService);
+  private readonly languageService = inject(LanguageService);
+  private readonly sessionStorage = inject(SessionStorageService);
+  private readonly accountService = inject(AccountService);
   protected activatedRoute = inject(ActivatedRoute);
-  private loginModalService = inject(LoginModalService);
-  private profileService = inject(ProfileService);
+  private readonly loginModalService = inject(LoginModalService);
+  private readonly profileService = inject(ProfileService);
   protected eventManager = inject(EventManager);
-  private router = inject(Router);
-  private location = inject(Location);
-  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
-  private homeService = inject(HomeService);
+  private readonly router = inject(Router);
+  private readonly location = inject(Location);
+  private readonly vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+  private readonly homeService = inject(HomeService);
 
   readonly authorities = [Authority.ADMIN, Authority.ADMIN_TECHNICAL];
 

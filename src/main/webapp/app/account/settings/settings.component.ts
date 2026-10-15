@@ -27,9 +27,9 @@ import { LANGUAGES } from 'app/core/language/language.constants';
   standalone: false,
 })
 export class SettingsComponent implements OnInit {
-  private accountService = inject(AccountService);
-  private fb = inject(FormBuilder);
-  private languageService = inject(LanguageService);
+  private readonly accountService = inject(AccountService);
+  private readonly fb = inject(FormBuilder);
+  private readonly languageService = inject(LanguageService);
 
   account!: Account;
   success = false;

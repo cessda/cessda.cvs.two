@@ -31,7 +31,7 @@ import { FileUploadService } from 'app/shared/upload/file-upload.service';
 export class LicenceUpdateComponent implements OnInit {
   protected licenceService = inject(LicenceService);
   protected activatedRoute = inject(ActivatedRoute);
-  private fb = inject(FormBuilder);
+  private readonly fb = inject(FormBuilder);
   protected fileUploadService = inject(FileUploadService);
 
   isSaving = false;

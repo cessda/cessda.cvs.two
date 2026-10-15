@@ -33,7 +33,7 @@ import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 export class EditorDetailCodeCsvImportDialogComponent {
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
-  private router = inject(Router);
+  private readonly router = inject(Router);
   protected eventManager = inject(EventManager);
 
   @ViewChild('csvInput', { static: true }) csvInput!: ElementRef;

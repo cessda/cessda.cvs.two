@@ -27,8 +27,8 @@ import { mergeMap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class VocabularyResolve {
-  private service = inject(HomeService);
-  private router = inject(Router);
+  private readonly service = inject(HomeService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Vocabulary> {
     let notation = route.params['notation'];

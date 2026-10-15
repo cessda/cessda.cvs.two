@@ -24,7 +24,7 @@ type EntityResponseType = HttpResponse<Maintenance>;
 
 @Injectable({ providedIn: 'root' })
 export class MaintenanceService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   public maintenanceUrl = SERVER_API_URL + 'api/maintenance';
 

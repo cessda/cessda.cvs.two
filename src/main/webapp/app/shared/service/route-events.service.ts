@@ -21,8 +21,8 @@ import { Location } from '@angular/common';
 
 @Injectable()
 export class RouteEventsService {
-  private router = inject(Router);
-  private location = inject(Location);
+  private readonly router = inject(Router);
+  private readonly location = inject(Location);
 
   // save the previous route
   public previousRoutePath = new BehaviorSubject<string>('');

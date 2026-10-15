@@ -27,7 +27,7 @@ import { SortDirective } from './sort.directive';
   standalone: false,
 })
 export class SortByDirective {
-  private sortDirective = inject(SortDirective, { host: true });
+  private readonly sortDirective = inject(SortDirective, { host: true });
 
   @Input() jhiSortBy!: string;
 

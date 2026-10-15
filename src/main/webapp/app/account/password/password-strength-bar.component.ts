@@ -33,8 +33,8 @@ import { Component, ElementRef, inject, Input, Renderer2 } from '@angular/core';
   standalone: false,
 })
 export class PasswordStrengthBarComponent {
-  private renderer = inject(Renderer2);
-  private elementRef = inject(ElementRef);
+  private readonly renderer = inject(Renderer2);
+  private readonly elementRef = inject(ElementRef);
 
   colors = ['#F00', '#F90', '#FF0', '#9F0', '#0F0'];
 

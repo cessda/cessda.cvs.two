@@ -26,10 +26,10 @@ import { PasswordResetFinishService } from './password-reset-finish.service';
   standalone: false,
 })
 export class PasswordResetFinishComponent implements OnInit, AfterViewInit {
-  private passwordResetFinishService = inject(PasswordResetFinishService);
-  private loginModalService = inject(LoginModalService);
-  private route = inject(ActivatedRoute);
-  private fb = inject(FormBuilder);
+  private readonly passwordResetFinishService = inject(PasswordResetFinishService);
+  private readonly loginModalService = inject(LoginModalService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly fb = inject(FormBuilder);
 
   @ViewChild('newPassword', { static: false })
   newPassword?: ElementRef;

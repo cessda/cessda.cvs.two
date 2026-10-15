@@ -20,7 +20,7 @@ import { SERVER_API_URL } from 'app/app.constants';
 
 @Injectable({ providedIn: 'root' })
 export class PasswordResetFinishService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   save(key: string, newPassword: string) {
     return this.http.post(SERVER_API_URL + 'api/account/reset-password/finish', { key, newPassword });

@@ -20,7 +20,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: false,
 })
 export class VocabularyLanguageFromKeyPipe implements PipeTransform {
-  private vocabLanguages: Record<string, { name: string; rtl?: boolean }> = {
+  private readonly vocabLanguages: Record<string, { name: string; rtl?: boolean }> = {
     sq: { name: 'Albanian (sq)' },
     bs: { name: 'Bosnian (bs)' },
     bg: { name: 'Bulgarian (bg)' },

@@ -27,8 +27,8 @@ import { EventManager } from 'app/core/util/event-manager.service';
   standalone: false,
 })
 export class VersionCompareComponent implements OnInit, OnDestroy {
-  private homeService = inject(HomeService);
-  private editorService = inject(EditorService);
+  private readonly homeService = inject(HomeService);
+  private readonly editorService = inject(EditorService);
   protected eventManager = inject(EventManager);
 
   @Input({ required: true }) notation!: string;

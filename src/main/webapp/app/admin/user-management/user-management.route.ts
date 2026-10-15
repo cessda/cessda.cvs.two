@@ -25,7 +25,7 @@ import { UserManagementUpdateComponent } from './user-management-update.componen
 
 @Injectable({ providedIn: 'root' })
 export class UserManagementResolve {
-  private service = inject(UserService);
+  private readonly service = inject(UserService);
 
   resolve(route: ActivatedRouteSnapshot): Observable<User> {
     const id = route.params['login'];

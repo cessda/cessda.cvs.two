@@ -31,7 +31,7 @@ import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy {
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
-  private router = inject(Router);
+  private readonly router = inject(Router);
   protected eventManager = inject(EventManager);
 
   isSaving: boolean;

@@ -35,7 +35,7 @@ import Quill from 'quill';
 export class MetadataItemComponent implements OnInit {
   protected editorService = inject(EditorService);
   protected eventManager = inject(EventManager);
-  private fb = inject(FormBuilder);
+  private readonly fb = inject(FormBuilder);
 
   @Input() metadataField?: MetadataField;
   @Input() metadataValue!: MetadataValue;

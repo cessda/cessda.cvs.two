@@ -31,8 +31,8 @@ import { translationNotFoundMessage } from 'app/core/language/translation.config
   standalone: false,
 })
 export class TranslateDirective implements OnInit, OnChanges, OnDestroy {
-  private el = inject(ElementRef);
-  private translateService = inject(TranslateService, { optional: true });
+  private readonly el = inject(ElementRef);
+  private readonly translateService = inject(TranslateService, { optional: true });
 
   @Input() jhiTranslate!: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

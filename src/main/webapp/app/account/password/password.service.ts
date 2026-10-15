@@ -21,7 +21,7 @@ import { SERVER_API_URL } from 'app/app.constants';
 
 @Injectable({ providedIn: 'root' })
 export class PasswordService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   save(newPassword: string, currentPassword: string): Observable<object> {
     return this.http.post(SERVER_API_URL + 'api/account/change-password', { currentPassword, newPassword });

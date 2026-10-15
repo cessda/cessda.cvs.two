@@ -26,8 +26,8 @@ import { HealthModalComponent } from './health-modal.component';
   standalone: false,
 })
 export class HealthComponent implements OnInit {
-  private modalService = inject(NgbModal);
-  private healthService = inject(HealthService);
+  private readonly modalService = inject(NgbModal);
+  private readonly healthService = inject(HealthService);
 
   health?: Health;
 

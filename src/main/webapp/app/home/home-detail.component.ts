@@ -40,11 +40,11 @@ export class HomeDetailComponent implements OnInit {
   protected activatedRoute = inject(ActivatedRoute);
   protected router = inject(Router);
   protected homeService = inject(HomeService);
-  private fb = inject(FormBuilder);
-  private routeEventsService = inject(RouteEventsService);
-  private _ngZone = inject(NgZone);
+  private readonly fb = inject(FormBuilder);
+  private readonly routeEventsService = inject(RouteEventsService);
+  private readonly _ngZone = inject(NgZone);
   protected eventManager = inject(EventManager);
-  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+  private readonly vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
 
   @ViewChild('detailPanel', { static: true }) detailPanel!: ElementRef;
   @ViewChild('versionPanel', { static: true }) versionPanel!: ElementRef;

@@ -21,9 +21,9 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
   standalone: false,
 })
 export class ActiveMenuDirective implements OnInit {
-  private el = inject(ElementRef);
-  private renderer = inject(Renderer2);
-  private translateService = inject(TranslateService);
+  private readonly el = inject(ElementRef);
+  private readonly renderer = inject(Renderer2);
+  private readonly translateService = inject(TranslateService);
 
   @Input() jhiActiveMenu?: string;
 

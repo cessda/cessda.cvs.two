@@ -41,8 +41,8 @@ interface UnpublishedVersions {
 export class AgencyDetailDialogComponent implements OnInit {
   protected agencyService = inject(AgencyService);
   activeModal = inject(NgbActiveModal);
-  private router = inject(Router);
-  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+  private readonly router = inject(Router);
+  private readonly vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
 
   agency: Agency = createNewAgency();
   vocabStats: VocabStat[] = [];

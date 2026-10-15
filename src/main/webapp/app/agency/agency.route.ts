@@ -29,8 +29,8 @@ import { AgencyUpdateComponent } from './agency-update.component';
 
 @Injectable({ providedIn: 'root' })
 export class AgencyResolve {
-  private service = inject(AgencyService);
-  private router = inject(Router);
+  private readonly service = inject(AgencyService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Agency> | Observable<never> {
     const id = route.params['id'];

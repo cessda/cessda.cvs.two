@@ -26,7 +26,7 @@ type EntityArrayResponseType = HttpResponse<Comment[]>;
 
 @Injectable({ providedIn: 'root' })
 export class CommentService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   public resourceUrl = SERVER_API_URL + 'api/comments';
 

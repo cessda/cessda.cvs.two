@@ -39,7 +39,7 @@ export interface HealthDetails {
 
 @Injectable({ providedIn: 'root' })
 export class HealthService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   checkHealth(): Observable<Health> {
     return this.http.get<Health>(SERVER_API_URL + 'management/health');

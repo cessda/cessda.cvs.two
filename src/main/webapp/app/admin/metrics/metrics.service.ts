@@ -27,7 +27,7 @@ export type ThreadDump = { threads: Thread[] };
 
 @Injectable({ providedIn: 'root' })
 export class MetricsService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   getMetrics(): Observable<Metrics> {
     return this.http.get<Metrics>(SERVER_API_URL + 'management/jhimetrics');

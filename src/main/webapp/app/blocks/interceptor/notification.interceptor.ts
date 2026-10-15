@@ -21,7 +21,7 @@ import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class NotificationInterceptor implements HttpInterceptor {
-  private alertService = inject(AlertService);
+  private readonly alertService = inject(AlertService);
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(

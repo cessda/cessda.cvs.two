@@ -26,7 +26,7 @@ import { ThreadModalComponent } from './thread-modal.component';
   standalone: false,
 })
 export class JvmThreadsComponent implements OnInit {
-  private modalService = inject(NgbModal);
+  private readonly modalService = inject(NgbModal);
 
   @Input() threadData?: Thread[];
 

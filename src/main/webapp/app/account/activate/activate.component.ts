@@ -26,9 +26,9 @@ import { ActivateService } from './activate.service';
   standalone: false,
 })
 export class ActivateComponent implements OnInit {
-  private activateService = inject(ActivateService);
-  private loginModalService = inject(LoginModalService);
-  private route = inject(ActivatedRoute);
+  private readonly activateService = inject(ActivateService);
+  private readonly loginModalService = inject(LoginModalService);
+  private readonly route = inject(ActivatedRoute);
 
   error = false;
   success = false;

@@ -24,8 +24,8 @@ import { TranslateService } from '@ngx-translate/core';
   standalone: false,
 })
 export class ErrorComponent implements OnInit, OnDestroy {
-  private translateService = inject(TranslateService);
-  private route = inject(ActivatedRoute);
+  private readonly translateService = inject(TranslateService);
+  private readonly route = inject(ActivatedRoute);
 
   errorMessage?: string;
   errorKey?: string;

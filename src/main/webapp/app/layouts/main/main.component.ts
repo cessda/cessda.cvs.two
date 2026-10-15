@@ -27,12 +27,12 @@ import { zip } from 'rxjs';
   standalone: false,
 })
 export class MainComponent implements OnInit {
-  private accountService = inject(AccountService);
-  private titleService = inject(Title);
-  private router = inject(Router);
-  private translateService = inject(TranslateService);
+  private readonly accountService = inject(AccountService);
+  private readonly titleService = inject(Title);
+  private readonly router = inject(Router);
+  private readonly translateService = inject(TranslateService);
 
-  private renderer: Renderer2;
+  private readonly renderer: Renderer2;
 
   constructor() {
     const rootRenderer = inject(RendererFactory2);

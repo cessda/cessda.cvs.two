@@ -35,9 +35,9 @@ import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 export class EditorDetailCodeDeprecateDialogComponent {
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
-  private router = inject(Router);
+  private readonly router = inject(Router);
   protected eventManager = inject(EventManager);
-  private fb = inject(FormBuilder);
+  private readonly fb = inject(FormBuilder);
 
   versionParam!: Version;
   conceptParam!: Concept;

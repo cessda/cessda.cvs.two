@@ -28,8 +28,8 @@ import { ResolverUpdateComponent } from './resolver-update.component';
 
 @Injectable({ providedIn: 'root' })
 export class ResolverResolve {
-  private service = inject(ResolverService);
-  private router = inject(Router);
+  private readonly service = inject(ResolverService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Resolver> | Observable<never> {
     const id = route.params['id'];

@@ -25,8 +25,8 @@ import { Metrics, MetricsKey, MetricsService, Thread, ThreadDump } from './metri
   standalone: false,
 })
 export class MetricsComponent implements OnInit {
-  private metricsService = inject(MetricsService);
-  private changeDetector = inject(ChangeDetectorRef);
+  private readonly metricsService = inject(MetricsService);
+  private readonly changeDetector = inject(ChangeDetectorRef);
 
   metrics?: Metrics;
   threads?: Thread[];

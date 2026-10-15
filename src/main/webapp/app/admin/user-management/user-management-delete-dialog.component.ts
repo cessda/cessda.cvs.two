@@ -26,9 +26,9 @@ import { UserService } from 'app/core/user/user.service';
   standalone: false,
 })
 export class UserManagementDeleteDialogComponent {
-  private userService = inject(UserService);
+  private readonly userService = inject(UserService);
   activeModal = inject(NgbActiveModal);
-  private eventManager = inject(EventManager);
+  private readonly eventManager = inject(EventManager);
 
   user?: User;
 
