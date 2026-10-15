@@ -26,6 +26,6 @@ export class MetricsRequestComponent {
   @Input() updating?: boolean;
 
   filterNaN(input: number): number {
-    return isNaN(input) ? 0 : input;
+    return Number.isNaN(input) ? 0 : input;
   }
 }
