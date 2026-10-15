@@ -34,7 +34,7 @@ import { Authority } from '../constants/authority.constants';
 })
 export class CustomPageComponent implements OnInit, OnDestroy {
   protected editorService = inject(EditorService);
-  private metadataFieldService = inject(MetadataFieldService);
+  private readonly metadataFieldService = inject(MetadataFieldService);
   protected eventManager = inject(EventManager);
   protected activatedRoute = inject(ActivatedRoute);
   protected fileUploadService = inject(FileUploadService);

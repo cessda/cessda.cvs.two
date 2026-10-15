@@ -34,13 +34,13 @@ import { LicenceService } from 'app/admin/licence/licence.service';
   standalone: false,
 })
 export class AgencyUpdateComponent implements OnInit {
-  private licenceService = inject(LicenceService);
+  private readonly licenceService = inject(LicenceService);
   protected dataUtils = inject(DataUtils);
   protected eventManager = inject(EventManager);
   protected agencyService = inject(AgencyService);
   protected activatedRoute = inject(ActivatedRoute);
   protected fileUploadService = inject(FileUploadService);
-  private fb = inject(FormBuilder);
+  private readonly fb = inject(FormBuilder);
 
   isSaving = false;
   currentFileUpload: File | null = null;

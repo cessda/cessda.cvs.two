@@ -34,7 +34,7 @@ import { AlertService, Alert } from 'app/core/util/alert.service';
   standalone: false,
 })
 export class AlertComponent implements OnInit, OnDestroy {
-  private alertService = inject(AlertService);
+  private readonly alertService = inject(AlertService);
 
   alerts: Alert[] = [];
 

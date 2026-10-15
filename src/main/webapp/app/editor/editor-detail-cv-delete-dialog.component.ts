@@ -29,7 +29,7 @@ import { EventManager } from 'app/core/util/event-manager.service';
 export class EditorDetailCvDeleteDialogComponent implements OnInit {
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
-  private router = inject(Router);
+  private readonly router = inject(Router);
   protected eventManager = inject(EventManager);
 
   vocabularyParam!: Vocabulary;

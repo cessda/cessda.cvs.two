@@ -31,10 +31,10 @@ import { VocabularyLanguageFromKeyPipe } from 'app/shared/language/vocabulary-la
 export class EditorDetailCvNewVersionDialogComponent implements OnInit {
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
-  private router = inject(Router);
+  private readonly router = inject(Router);
   protected eventManager = inject(EventManager);
-  private fb = inject(FormBuilder);
-  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+  private readonly fb = inject(FormBuilder);
+  private readonly vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
 
   vocabularyParam!: Vocabulary;
   versionParam!: Version;

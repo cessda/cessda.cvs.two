@@ -21,7 +21,7 @@ import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class ErrorHandlerInterceptor implements HttpInterceptor {
-  private eventManager = inject(EventManager);
+  private readonly eventManager = inject(EventManager);
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(

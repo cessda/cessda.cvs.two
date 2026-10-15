@@ -37,12 +37,12 @@ import { ActionType } from 'app/shared/model/enumerations/action-type.model';
   standalone: false,
 })
 export class EditorDetailCvAddEditDialogComponent implements OnInit {
-  private accountService = inject(AccountService);
+  private readonly accountService = inject(AccountService);
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
   protected eventManager = inject(EventManager);
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
+  private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
 
   isSaving = false;
   isSubmitting = false;

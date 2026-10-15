@@ -35,9 +35,9 @@ import { Authority } from '../constants/authority.constants';
   standalone: false,
 })
 export class HasAnyAuthorityDirective implements OnDestroy {
-  private accountService = inject(AccountService);
-  private templateRef = inject<TemplateRef<unknown>>(TemplateRef);
-  private viewContainerRef = inject(ViewContainerRef);
+  private readonly accountService = inject(AccountService);
+  private readonly templateRef = inject<TemplateRef<unknown>>(TemplateRef);
+  private readonly viewContainerRef = inject(ViewContainerRef);
 
   private authorities: Authority[] = [];
   private authenticationSubscription: Subscription | undefined;

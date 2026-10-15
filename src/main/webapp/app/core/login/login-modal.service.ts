@@ -20,7 +20,7 @@ import { LoginModalComponent } from 'app/shared/login/login.component';
 
 @Injectable({ providedIn: 'root' })
 export class LoginModalService {
-  private modalService = inject(NgbModal);
+  private readonly modalService = inject(NgbModal);
 
   private isOpen = false;
 

@@ -28,9 +28,9 @@ type JwtToken = {
 
 @Injectable({ providedIn: 'root' })
 export class AuthServerProvider {
-  private http = inject(HttpClient);
-  private $localStorage = inject(LocalStorageService);
-  private $sessionStorage = inject(SessionStorageService);
+  private readonly http = inject(HttpClient);
+  private readonly $localStorage = inject(LocalStorageService);
+  private readonly $sessionStorage = inject(SessionStorageService);
 
   getToken(): string {
     return this.$localStorage.retrieve('authenticationToken') || this.$sessionStorage.retrieve('authenticationToken') || '';

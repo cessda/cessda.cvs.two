@@ -35,7 +35,7 @@ import { QuillModules } from 'ngx-quill';
 export class EditorDetailCvCommentItemComponent {
   protected editorService = inject(EditorService);
   protected eventManager = inject(EventManager);
-  private fb = inject(FormBuilder);
+  private readonly fb = inject(FormBuilder);
 
   @Input() account?: Account;
   @Input() comment!: Comment;

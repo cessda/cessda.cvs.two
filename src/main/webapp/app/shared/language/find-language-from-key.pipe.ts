@@ -20,7 +20,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: false,
 })
 export class FindLanguageFromKeyPipe implements PipeTransform {
-  private languages: Record<string, { name: string; rtl?: boolean }> = {
+  private readonly languages: Record<string, { name: string; rtl?: boolean }> = {
     al: { name: 'Shqip' },
     cs: { name: 'Český' },
     da: { name: 'Dansk' },

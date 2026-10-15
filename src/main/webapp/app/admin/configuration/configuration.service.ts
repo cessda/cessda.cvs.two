@@ -68,7 +68,7 @@ export interface Property {
 
 @Injectable({ providedIn: 'root' })
 export class ConfigurationService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   getBeans(): Observable<Bean[]> {
     return this.http.get<ConfigProps>(SERVER_API_URL + 'management/configprops').pipe(

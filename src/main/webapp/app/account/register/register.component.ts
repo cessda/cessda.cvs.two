@@ -28,10 +28,10 @@ import { RegisterService } from './register.service';
   standalone: false,
 })
 export class RegisterComponent implements AfterViewInit {
-  private languageService = inject(LanguageService);
-  private loginModalService = inject(LoginModalService);
-  private registerService = inject(RegisterService);
-  private fb = inject(FormBuilder);
+  private readonly languageService = inject(LanguageService);
+  private readonly loginModalService = inject(LoginModalService);
+  private readonly registerService = inject(RegisterService);
+  private readonly fb = inject(FormBuilder);
 
   @ViewChild('login', { static: false })
   login?: ElementRef;

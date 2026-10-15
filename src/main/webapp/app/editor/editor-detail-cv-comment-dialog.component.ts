@@ -35,13 +35,13 @@ import { QuillModules } from 'ngx-quill';
   standalone: false,
 })
 export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
-  private accountService = inject(AccountService);
-  private commentService = inject(CommentService);
+  private readonly accountService = inject(AccountService);
+  private readonly commentService = inject(CommentService);
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
   protected eventManager = inject(EventManager);
-  private fb = inject(FormBuilder);
-  private _ngZone = inject(NgZone);
+  private readonly fb = inject(FormBuilder);
+  private readonly _ngZone = inject(NgZone);
 
   isSaving: boolean;
   account!: Account;

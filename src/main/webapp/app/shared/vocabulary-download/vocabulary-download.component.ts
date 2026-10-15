@@ -30,11 +30,11 @@ import { FileFormat } from 'app/shared/vocabulary-download/FileFormat';
   standalone: false,
 })
 export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
-  private router = inject(Router);
-  private homeService = inject(HomeService);
-  private editorService = inject(EditorService);
+  private readonly router = inject(Router);
+  private readonly homeService = inject(HomeService);
+  private readonly editorService = inject(EditorService);
   protected eventManager = inject(EventManager);
-  private _ngZone = inject(NgZone);
+  private readonly _ngZone = inject(NgZone);
 
   @Input() appScope!: AppScope;
   @Input() versions!: Version[];

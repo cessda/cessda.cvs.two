@@ -29,8 +29,8 @@ import { EditorCvAddPopupComponent } from 'app/editor/editor-cv-add-dialog.compo
 
 @Injectable({ providedIn: 'root' })
 export class VocabularyResolve {
-  private service = inject(EditorService);
-  private router = inject(Router);
+  private readonly service = inject(EditorService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Vocabulary> | Observable<never> {
     const notation = route.params['notation'];

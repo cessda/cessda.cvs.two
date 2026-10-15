@@ -31,10 +31,10 @@ import { AgencyService } from 'app/agency/agency.service';
   standalone: false,
 })
 export class UserManagementUpdateComponent implements OnInit {
-  private userService = inject(UserService);
-  private route = inject(ActivatedRoute);
-  private agencyService = inject(AgencyService);
-  private fb = inject(FormBuilder);
+  private readonly userService = inject(UserService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly agencyService = inject(AgencyService);
+  private readonly fb = inject(FormBuilder);
 
   user!: User;
   languages = LANGUAGES;

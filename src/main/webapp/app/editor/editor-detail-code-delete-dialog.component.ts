@@ -32,7 +32,7 @@ import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 export class EditorDetailCodeDeleteDialogComponent {
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
-  private router = inject(Router);
+  private readonly router = inject(Router);
   protected eventManager = inject(EventManager);
 
   versionParam!: Version;

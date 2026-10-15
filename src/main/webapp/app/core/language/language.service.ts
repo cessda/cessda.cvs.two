@@ -23,7 +23,7 @@ const DEFAULT_LANGUAGE = 'en';
  */
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
-  private translateService = inject(TranslateService);
+  private readonly translateService = inject(TranslateService);
 
   currentLang = DEFAULT_LANGUAGE;
 

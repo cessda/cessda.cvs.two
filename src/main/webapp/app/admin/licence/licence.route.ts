@@ -28,8 +28,8 @@ import { LicenceUpdateComponent } from './licence-update.component';
 
 @Injectable({ providedIn: 'root' })
 export class LicenceResolve {
-  private service = inject(LicenceService);
-  private router = inject(Router);
+  private readonly service = inject(LicenceService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Licence> | Observable<never> {
     const id = route.params['id'];

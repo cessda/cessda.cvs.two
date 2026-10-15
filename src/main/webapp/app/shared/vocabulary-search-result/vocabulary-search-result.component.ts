@@ -46,16 +46,16 @@ const DEFAULT_PREDICATE = 'code';
   standalone: false,
 })
 export class VocabularySearchResultComponent implements OnInit {
-  private accountService = inject(AccountService);
-  private loginModalService = inject(LoginModalService);
-  private languageService = inject(LanguageService);
-  private homeService = inject(HomeService);
-  private editorService = inject(EditorService);
-  private activatedRoute = inject(ActivatedRoute);
-  private router = inject(Router);
-  private eventManager = inject(EventManager);
-  private fb = inject(UntypedFormBuilder);
-  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+  private readonly accountService = inject(AccountService);
+  private readonly loginModalService = inject(LoginModalService);
+  private readonly languageService = inject(LanguageService);
+  private readonly homeService = inject(HomeService);
+  private readonly editorService = inject(EditorService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly eventManager = inject(EventManager);
+  private readonly fb = inject(UntypedFormBuilder);
+  private readonly vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
 
   @Input() appScope!: AppScope;
   @ViewChild('filterPanels', { static: true }) filterPanels!: ElementRef;

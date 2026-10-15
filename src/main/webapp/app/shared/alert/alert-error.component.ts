@@ -40,29 +40,23 @@ import { AlertError } from './alert-error.model';
   standalone: false,
 })
 export class AlertErrorComponent implements OnDestroy {
-  private alertService = inject(AlertService);
-  private eventManager = inject(EventManager);
-  private translateService = inject(TranslateService);
+  private readonly alertService = inject(AlertService);
+  private readonly eventManager = inject(EventManager);
+  private readonly translateService = inject(TranslateService);
 
   alerts: Alert[] = [];
   errorListener: Subscription;
   httpErrorListener: Subscription;
 
   constructor() {
-    this.errorListener = this.eventManager.subscribe(
-      'cvsApp.error',
-      (response: EventWithContent<AlertError>) => {
-        const errorResponse = response.content;
-        this.addErrorAlert(errorResponse.message, errorResponse.key, errorResponse.params);
-      },
-    );
+    this.errorListener = this.eventManager.subscribe('cvsApp.error', (response: EventWithContent<AlertError>) => {
+      const errorResponse = response.content;
+      this.addErrorAlert(errorResponse.message, errorResponse.key, errorResponse.params);
+    });
 
-    this.httpErrorListener = this.eventManager.subscribe(
-      'cvsApp.httpError',
-      (response: EventWithContent<HttpErrorResponse>) => {
-        this.handleHttpError(response.content);
-      },
-    );
+    this.httpErrorListener = this.eventManager.subscribe('cvsApp.httpError', (response: EventWithContent<HttpErrorResponse>) => {
+      this.handleHttpError(response.content);
+    });
   }
 
   private handleHttpError(httpErrorResponse: HttpErrorResponse): void {
@@ -94,11 +88,7 @@ export class AlertErrorComponent implements OnDestroy {
     } else if (httpErrorResponse.error !== '' && httpErrorResponse.error.fieldErrors) {
       this.handleFieldErrors(httpErrorResponse.error.fieldErrors);
     } else if (httpErrorResponse.error !== '' && httpErrorResponse.error.message) {
-      this.addErrorAlert(
-        httpErrorResponse.error.message,
-        httpErrorResponse.error.message,
-        httpErrorResponse.error.params,
-      );
+      this.addErrorAlert(httpErrorResponse.error.message, httpErrorResponse.error.message, httpErrorResponse.error.params);
     } else {
       this.addErrorAlert(httpErrorResponse.error);
     }
@@ -122,9 +112,7 @@ export class AlertErrorComponent implements OnDestroy {
     return { errorHeader, entityKey };
   }
 
-  private handleFieldErrors(
-    fieldErrors: Array<{ message: string; field: string; objectName: string }>,
-  ): void {
+  private handleFieldErrors(fieldErrors: Array<{ message: string; field: string; objectName: string }>): void {
     for (const fieldError of fieldErrors) {
       if (['Min', 'Max', 'DecimalMin', 'DecimalMax'].includes(fieldError.message)) {
         fieldError.message = 'Size';
@@ -133,9 +121,7 @@ export class AlertErrorComponent implements OnDestroy {
       // Convert 'something[14].other[4].id' to 'something[].other[].id'
       // so translations can be written to it.
       const convertedField = fieldError.field.replace(/\[\d*\]/g, '[]');
-      const fieldName = this.translateService.instant(
-        'cvsApp.' + fieldError.objectName + '.' + convertedField,
-      );
+      const fieldName = this.translateService.instant('cvsApp.' + fieldError.objectName + '.' + convertedField);
 
       this.addErrorAlert('Error on field "' + fieldName + '"', 'error.' + fieldError.message, {
         fieldName,

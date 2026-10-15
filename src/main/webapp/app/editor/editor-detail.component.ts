@@ -56,16 +56,16 @@ import { Authority } from 'app/shared/constants/authority.constants';
   standalone: false,
 })
 export class EditorDetailComponent implements OnInit, OnDestroy {
-  private accountService = inject(AccountService);
+  private readonly accountService = inject(AccountService);
   protected activatedRoute = inject(ActivatedRoute);
   protected router = inject(Router);
   protected editorService = inject(EditorService);
-  private fb = inject(FormBuilder);
-  private routeEventsService = inject(RouteEventsService);
-  private _ngZone = inject(NgZone);
+  private readonly fb = inject(FormBuilder);
+  private readonly routeEventsService = inject(RouteEventsService);
+  private readonly _ngZone = inject(NgZone);
   protected modalService = inject(NgbModal);
   protected eventManager = inject(EventManager);
-  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+  private readonly vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
 
   @ViewChild('detailEPanel', { static: true }) detailEPanel!: ElementRef;
   @ViewChild('versionEPanel', { static: true }) versionEPanel!: ElementRef;

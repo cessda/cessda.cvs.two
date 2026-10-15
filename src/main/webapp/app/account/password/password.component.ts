@@ -27,9 +27,9 @@ import { PasswordService } from './password.service';
   standalone: false,
 })
 export class PasswordComponent implements OnInit {
-  private passwordService = inject(PasswordService);
-  private accountService = inject(AccountService);
-  private fb = inject(FormBuilder);
+  private readonly passwordService = inject(PasswordService);
+  private readonly accountService = inject(AccountService);
+  private readonly fb = inject(FormBuilder);
 
   doNotMatch = false;
   error = false;
