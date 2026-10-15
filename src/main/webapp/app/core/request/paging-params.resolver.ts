@@ -44,5 +44,5 @@ function parseAscending(sort: string): boolean {
   let sortArray = sort.split(',');
   sortArray = sortArray.length > 1 ? sortArray : sort.split('%2C');
   // default to ascending when no direction is given
-  return sortArray.length > 1 ? sortArray.at(sortArray.length - 1) === 'asc' : true;
+  return sortArray.length > 1 ? sortArray.at(-1) === 'asc' : true;
 }
