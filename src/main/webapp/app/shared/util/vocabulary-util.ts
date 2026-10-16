@@ -277,6 +277,31 @@ export default class VocabularyUtil {
     return this.compareVersionNumbers(this.getSlVersionNumber(v1), this.getSlVersionNumber(v2));
   }
 
+  /**
+   * Name the source language bundle before the one a translation belongs to, for the notice shown when a
+   * translation has no previous version to compare with. For example, with the source version history
+   * 3.0, 2.1, 2.0 the translation 2.1.1 belongs to the 2.1 bundle, so the missing one is '2.0.x'.
+   * @param slVersion the current source language version, with its older published versions in versionHistories, newest first
+   * @param version the version number of the translation
+   * @returns the bundle as 'major.minor.x', or an empty string when there is no older bundle
+   */
+  static getMissingTlVersion(slVersion: Version, version: string): string {
+    const versionHistories = slVersion.versionHistories ?? [];
+    let previousIndex = -1;
+    if (this.compareVersionNumbers(version, slVersion.number!) === 0) {
+      previousIndex = 0;
+    } else {
+      const index = versionHistories.findIndex(vh => this.compareVersionNumbers(version, vh.version!) === 0);
+      if (index >= 0) {
+        previousIndex = index + 1;
+      }
+    }
+    if (previousIndex < 0 || previousIndex >= versionHistories.length) {
+      return '';
+    }
+    return this.getSlMajorMinorVersionNumber(versionHistories[previousIndex].version!) + '.x';
+  }
+
   static getAvailableCvLanguage(versions: Version[]): string[] {
     const availableLanguages = [];
     const takenLanguages = versions.map(v => v.language);

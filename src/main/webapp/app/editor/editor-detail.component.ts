@@ -789,19 +789,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   getMissingTlVersion(version: string): string {
-    if (version.startsWith(this.getSlVersion().number!)) {
-      return this.getSlVersion().versionHistories[0].version + '.x';
-    }
-    let i = 0;
-    this.getSlVersion().versionHistories.forEach(function (vhSl, index): void {
-      if (version.startsWith(vhSl.version)) {
-        i = index + 1;
-      }
-    });
-    if (i > 0) {
-      return this.getSlVersion().versionHistories[i].version + '.x';
-    }
-    return '';
+    return VocabularyUtil.getMissingTlVersion(this.getSlVersion(), version);
   }
 
   onVersionNotesEditorCreated(quill: Quill): void {
