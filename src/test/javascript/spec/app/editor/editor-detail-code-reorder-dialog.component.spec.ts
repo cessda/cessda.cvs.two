@@ -88,6 +88,31 @@ describe('Component Tests', () => {
       });
     });
 
+    describe('preparing a code whose notation starts another notation', () => {
+      beforeEach(() => {
+        comp.versionParam = {
+          ...createNewVersion(1),
+          notation: 'AnalysisUnit',
+          concepts: conceptsOf(
+            { id: 1, notation: 'A' },
+            { id: 2, notation: 'A.1', parent: 'A' },
+            { id: 3, notation: 'AB' },
+            { id: 4, notation: 'AB.1', parent: 'AB' },
+          ),
+        };
+        comp.conceptParam = { id: 1, notation: 'A' };
+        comp.ngOnInit();
+      });
+
+      it('should move only the descendants of the code', () => {
+        expect(comp.conceptsToMove.map(c => c.notation)).toEqual(['A', 'A.1']);
+      });
+
+      it('should leave the codes that only start with the same notation in place', () => {
+        expect(comp.conceptsToPlace.map(c => c.notation)).toEqual(['AB', 'AB.1']);
+      });
+    });
+
     describe('preparing a nested code', () => {
       beforeEach(() => {
         comp.versionParam = {
