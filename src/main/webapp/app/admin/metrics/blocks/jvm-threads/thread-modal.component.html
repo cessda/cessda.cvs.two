@@ -22,7 +22,6 @@
 <div class="modal-body">
   <span
     class="badge badge-primary"
-    tabindex="0"
     (click)="threadDumpFilter = {}"
     (keydown.enter)="threadDumpFilter = {}"
     (keydown.space)="threadDumpFilter = {}; $event.preventDefault()"
@@ -31,7 +30,6 @@
   </span>&nbsp;
   <span
     class="badge badge-success"
-    tabindex="0"
     (click)="threadDumpFilter = { threadState: 'RUNNABLE' }"
     (keydown.enter)="threadDumpFilter = { threadState: 'RUNNABLE' }"
     (keydown.space)="threadDumpFilter = { threadState: 'RUNNABLE' }; $event.preventDefault()"
@@ -40,7 +38,6 @@
   </span>&nbsp;
   <span
     class="badge badge-info"
-    tabindex="0"
     (click)="threadDumpFilter = { threadState: 'WAITING' }"
     (keydown.enter)="threadDumpFilter = { threadState: 'WAITING' }"
     (keydown.space)="threadDumpFilter = { threadState: 'WAITING' }; $event.preventDefault()"
@@ -49,7 +46,6 @@
   </span>&nbsp;
   <span
     class="badge badge-warning"
-    tabindex="0"
     (click)="threadDumpFilter = { threadState: 'TIMED_WAITING' }"
     (keydown.enter)="threadDumpFilter = { threadState: 'TIMED_WAITING' }"
     (keydown.space)="threadDumpFilter = { threadState: 'TIMED_WAITING' }; $event.preventDefault()"
@@ -58,7 +54,6 @@
   </span>&nbsp;
   <span
     class="badge badge-danger"
-    tabindex="0"
     (click)="threadDumpFilter = { threadState: 'BLOCKED' }"
     (keydown.enter)="threadDumpFilter = { threadState: 'BLOCKED' }"
     (keydown.space)="threadDumpFilter = { threadState: 'BLOCKED' }; $event.preventDefault()"
