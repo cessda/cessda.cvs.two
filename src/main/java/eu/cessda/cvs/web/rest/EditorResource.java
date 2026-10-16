@@ -578,9 +578,9 @@ public class EditorResource {
         if (versionDTO.getConcepts().stream().anyMatch(c -> c.getNotation().equals(codeSnippet.getNotation()))) {
             throw new CodeAlreadyExistException(codeSnippet.getNotation());
         }
-        // set position if not available
+        // append the code at the end of the version if no position is given
         if (codeSnippet.getPosition() == null)
-            codeSnippet.setPosition( versionDTO.getConcepts().size() - 1 );
+            codeSnippet.setPosition( versionDTO.getConcepts().size() );
         // create concept by codeSnippet
         ConceptDTO newConceptDTO = new ConceptDTO(codeSnippet);
 
