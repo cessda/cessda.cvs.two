@@ -20,7 +20,7 @@ import { Vocabulary } from 'app/shared/model/vocabulary.model';
 import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared/language/vocabulary-language-from-key.pipe';
 
@@ -31,10 +31,10 @@ import { VocabularyLanguageFromKeyPipe } from 'app/shared/language/vocabulary-la
 export class EditorDetailCvNewVersionDialogComponent implements OnInit {
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
-  private router = inject(Router);
-  protected eventManager = inject(JhiEventManager);
-  private fb = inject(FormBuilder);
-  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+  private readonly router = inject(Router);
+  protected eventManager = inject(EventManager);
+  private readonly fb = inject(FormBuilder);
+  private readonly vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
 
   vocabularyParam!: Vocabulary;
   versionParam!: Version;

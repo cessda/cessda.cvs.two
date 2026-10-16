@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { JhiAlert, JhiAlertService } from 'ng-jhipster';
 
 import { CvsTestModule } from '../../../test.module';
 import { AlertComponent } from 'app/shared/alert/alert.component';
+import { Alert, AlertService } from 'app/core/util/alert.service';
 
 describe('Component Tests', () => {
   describe('Alert Component', () => {
     let comp: AlertComponent;
     let fixture: ComponentFixture<AlertComponent>;
 
-    let held: JhiAlert[];
+    let held: Alert[];
     let clear: jasmine.Spy;
 
     beforeEach(waitForAsync(() => {
@@ -34,7 +34,7 @@ describe('Component Tests', () => {
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [AlertComponent],
-        providers: [{ provide: JhiAlertService, useValue: { get: () => held, clear } }],
+        providers: [{ provide: AlertService, useValue: { get: () => held, clear } }],
       })
         .overrideTemplate(AlertComponent, '')
         .compileComponents();
@@ -50,7 +50,7 @@ describe('Component Tests', () => {
     });
 
     it('should show the alerts the service is holding', () => {
-      held = [{ type: 'success', msg: 'Saved' } as JhiAlert];
+      held = [{ type: 'success', msg: 'Saved' } as Alert];
 
       comp.ngOnInit();
 
@@ -65,23 +65,23 @@ describe('Component Tests', () => {
 
     describe('how an alert is placed', () => {
       it('should mark a toast as one', () => {
-        expect(comp.setClasses({ toast: true } as JhiAlert)).toEqual({ 'jhi-toast': true });
+        expect(comp.setClasses({ toast: true } as Alert)).toEqual({ 'jhi-toast': true });
       });
 
       it('should not mark an alert that is not a toast', () => {
-        expect(comp.setClasses({ toast: false } as JhiAlert)).toEqual({ 'jhi-toast': false });
+        expect(comp.setClasses({ toast: false } as Alert)).toEqual({ 'jhi-toast': false });
       });
 
       it('should treat a missing toast flag as not a toast', () => {
-        expect(comp.setClasses({} as JhiAlert)).toEqual({ 'jhi-toast': false });
+        expect(comp.setClasses({} as Alert)).toEqual({ 'jhi-toast': false });
       });
 
       it('should add the position the alert asks for', () => {
-        expect(comp.setClasses({ position: 'top right' } as JhiAlert)).toEqual({ 'jhi-toast': false, 'top right': true });
+        expect(comp.setClasses({ position: 'top right' } as Alert)).toEqual({ 'jhi-toast': false, 'top right': true });
       });
 
       it('should keep both when a toast asks for a position', () => {
-        expect(comp.setClasses({ toast: true, position: 'bottom left' } as JhiAlert)).toEqual({
+        expect(comp.setClasses({ toast: true, position: 'bottom left' } as Alert)).toEqual({
           'jhi-toast': true,
           'bottom left': true,
         });

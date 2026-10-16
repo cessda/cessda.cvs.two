@@ -24,8 +24,8 @@ import { PasswordResetInitService } from './password-reset-init.service';
   standalone: false,
 })
 export class PasswordResetInitComponent implements AfterViewInit {
-  private passwordResetInitService = inject(PasswordResetInitService);
-  private fb = inject(FormBuilder);
+  private readonly passwordResetInitService = inject(PasswordResetInitService);
+  private readonly fb = inject(FormBuilder);
 
   @ViewChild('email', { static: false })
   email?: ElementRef;

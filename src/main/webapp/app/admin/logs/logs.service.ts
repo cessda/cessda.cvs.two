@@ -22,7 +22,7 @@ import { Level, LoggersResponse } from './log.model';
 
 @Injectable({ providedIn: 'root' })
 export class LogsService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   changeLevel(name: string, configuredLevel: Level) {
     return this.http.post(SERVER_API_URL + 'management/loggers/' + name, { configuredLevel });

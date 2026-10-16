@@ -15,7 +15,7 @@
  */
 import { Component, ElementRef, inject, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { JhiDataUtils, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 
 import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 import { Version } from 'app/shared/model/version.model';
@@ -56,17 +56,16 @@ import { Authority } from 'app/shared/constants/authority.constants';
   standalone: false,
 })
 export class EditorDetailComponent implements OnInit, OnDestroy {
-  private accountService = inject(AccountService);
-  protected dataUtils = inject(JhiDataUtils);
+  private readonly accountService = inject(AccountService);
   protected activatedRoute = inject(ActivatedRoute);
   protected router = inject(Router);
   protected editorService = inject(EditorService);
-  private fb = inject(FormBuilder);
-  private routeEventsService = inject(RouteEventsService);
-  private _ngZone = inject(NgZone);
+  private readonly fb = inject(FormBuilder);
+  private readonly routeEventsService = inject(RouteEventsService);
+  private readonly _ngZone = inject(NgZone);
   protected modalService = inject(NgbModal);
-  protected eventManager = inject(JhiEventManager);
-  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+  protected eventManager = inject(EventManager);
+  private readonly vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
 
   @ViewChild('detailEPanel', { static: true }) detailEPanel!: ElementRef;
   @ViewChild('versionEPanel', { static: true }) versionEPanel!: ElementRef;
@@ -489,7 +488,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   private subscribeSelectConceptEvent(): void {
-    this.selectConceptSubscription = this.eventManager.subscribe('selectConcept', (response: JhiEventWithContent<Concept>) => {
+    this.selectConceptSubscription = this.eventManager.subscribe('selectConcept', (response: EventWithContent<Concept>) => {
       this.concept = response.content;
     });
     this.eventSubscriber2 = this.eventManager.subscribe('deselectConcept', () => {

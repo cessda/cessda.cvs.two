@@ -15,7 +15,7 @@
  */
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { JhiLanguageService } from 'ng-jhipster';
+import { LanguageService } from 'app/core/language/language.service';
 
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
@@ -27,9 +27,9 @@ import { LANGUAGES } from 'app/core/language/language.constants';
   standalone: false,
 })
 export class SettingsComponent implements OnInit {
-  private accountService = inject(AccountService);
-  private fb = inject(FormBuilder);
-  private languageService = inject(JhiLanguageService);
+  private readonly accountService = inject(AccountService);
+  private readonly fb = inject(FormBuilder);
+  private readonly languageService = inject(LanguageService);
 
   account!: Account;
   success = false;

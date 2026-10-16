@@ -18,11 +18,31 @@ import { RouterModule } from '@angular/router';
 import { CvsSharedModule } from 'app/shared/shared.module';
 
 import { MetricsComponent } from './metrics.component';
+import { JvmMemoryComponent } from './blocks/jvm-memory/jvm-memory.component';
+import { JvmThreadsComponent } from './blocks/jvm-threads/jvm-threads.component';
+import { ThreadModalComponent } from './blocks/jvm-threads/thread-modal.component';
+import { MetricsSystemComponent } from './blocks/metrics-system/metrics-system.component';
+import { MetricsGarbageCollectorComponent } from './blocks/metrics-garbagecollector/metrics-garbagecollector.component';
+import { MetricsRequestComponent } from './blocks/metrics-request/metrics-request.component';
+import { MetricsEndpointsRequestsComponent } from './blocks/metrics-endpoints-requests/metrics-endpoints-requests.component';
+import { MetricsCacheComponent } from './blocks/metrics-cache/metrics-cache.component';
+import { MetricsDatasourceComponent } from './blocks/metrics-datasource/metrics-datasource.component';
 
 import { metricsRoute } from './metrics.route';
 
 @NgModule({
   imports: [CvsSharedModule, RouterModule.forChild([metricsRoute])],
-  declarations: [MetricsComponent],
+  declarations: [
+    MetricsComponent,
+    JvmMemoryComponent,
+    JvmThreadsComponent,
+    ThreadModalComponent,
+    MetricsSystemComponent,
+    MetricsGarbageCollectorComponent,
+    MetricsRequestComponent,
+    MetricsEndpointsRequestsComponent,
+    MetricsCacheComponent,
+    MetricsDatasourceComponent,
+  ],
 })
 export class MetricsModule {}

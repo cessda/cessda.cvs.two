@@ -16,7 +16,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { JhiLanguageService } from 'ng-jhipster';
+import { LanguageService } from 'app/core/language/language.service';
 import { SessionStorageService } from 'ngx-webstorage';
 import { Observable, of, ReplaySubject } from 'rxjs';
 import { catchError, shareReplay, tap } from 'rxjs/operators';
@@ -29,14 +29,14 @@ import { Authority } from 'app/shared/constants/authority.constants';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
-  private languageService = inject(JhiLanguageService);
-  private sessionStorage = inject(SessionStorageService);
-  private http = inject(HttpClient);
-  private stateStorageService = inject(StateStorageService);
-  private router = inject(Router);
+  private readonly languageService = inject(LanguageService);
+  private readonly sessionStorage = inject(SessionStorageService);
+  private readonly http = inject(HttpClient);
+  private readonly stateStorageService = inject(StateStorageService);
+  private readonly router = inject(Router);
 
   private userIdentity: Account | null = null;
-  private authenticationState = new ReplaySubject<Account | null>(1);
+  private readonly authenticationState = new ReplaySubject<Account | null>(1);
   private accountCache$?: Observable<Account | null>;
 
   save(account: Account) {

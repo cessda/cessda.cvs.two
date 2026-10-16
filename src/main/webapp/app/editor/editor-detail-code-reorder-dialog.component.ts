@@ -20,7 +20,7 @@ import { Version } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
 import { Concept } from 'app/shared/model/concept.model';
 import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { CodeSnippet } from 'app/shared/model/code-snippet.model';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
@@ -31,8 +31,8 @@ import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy {
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
-  private router = inject(Router);
-  protected eventManager = inject(JhiEventManager);
+  private readonly router = inject(Router);
+  protected eventManager = inject(EventManager);
 
   isSaving: boolean;
   versionParam!: Version;
@@ -105,7 +105,7 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
     this.conceptsToPlaceTemp = clonedConcepts.filter(c => !this.conceptsToMove.includes(c));
     this.conceptsToPlace = [...this.conceptsToPlaceTemp];
 
-    this.eventSubscriber = this.eventManager.subscribe('selectReorderConcept', (response: JhiEventWithContent<Concept>) => {
+    this.eventSubscriber = this.eventManager.subscribe('selectReorderConcept', (response: EventWithContent<Concept>) => {
       this.selectedConceptToPlace = response.content;
       this.updatePreview();
     });

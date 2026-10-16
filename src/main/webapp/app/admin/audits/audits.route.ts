@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Route } from '@angular/router';
-import { JhiResolvePagingParams } from 'ng-jhipster';
+import { pagingParamsResolver } from 'app/core/request/paging-params.resolver';
 
 import { AuditsComponent } from './audits.component';
 
@@ -22,7 +22,7 @@ export const auditsRoute: Route = {
   path: '',
   component: AuditsComponent,
   resolve: {
-    pagingParams: JhiResolvePagingParams,
+    pagingParams: pagingParamsResolver,
   },
   data: {
     pageTitle: 'audits.title',

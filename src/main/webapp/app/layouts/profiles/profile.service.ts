@@ -23,9 +23,9 @@ import { ProfileInfo, InfoResponse } from './profile-info.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
-  private infoUrl = SERVER_API_URL + 'management/info';
+  private readonly infoUrl = SERVER_API_URL + 'management/info';
   private profileInfo$!: Observable<ProfileInfo>;
 
   getProfileInfo(): Observable<ProfileInfo> {

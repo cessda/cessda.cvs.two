@@ -23,7 +23,7 @@ import { ConfigurationService, Bean, PropertySource } from './configuration.serv
   standalone: false,
 })
 export class ConfigurationComponent implements OnInit {
-  private configurationService = inject(ConfigurationService);
+  private readonly configurationService = inject(ConfigurationService);
 
   allBeans!: Bean[];
   beans: Bean[] = [];

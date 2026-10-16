@@ -18,7 +18,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { EditorService } from 'app/editor/editor.service';
 import { Version } from 'app/shared/model/version.model';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
@@ -35,13 +35,13 @@ import { QuillModules } from 'ngx-quill';
   standalone: false,
 })
 export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
-  private accountService = inject(AccountService);
-  private commentService = inject(CommentService);
+  private readonly accountService = inject(AccountService);
+  private readonly commentService = inject(CommentService);
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
-  protected eventManager = inject(JhiEventManager);
-  private fb = inject(FormBuilder);
-  private _ngZone = inject(NgZone);
+  protected eventManager = inject(EventManager);
+  private readonly fb = inject(FormBuilder);
+  private readonly _ngZone = inject(NgZone);
 
   isSaving: boolean;
   account!: Account;

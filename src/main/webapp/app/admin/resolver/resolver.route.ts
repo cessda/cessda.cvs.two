@@ -16,7 +16,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router, Routes } from '@angular/router';
-import { JhiResolvePagingParams } from 'ng-jhipster';
+import { pagingParamsResolver } from 'app/core/request/paging-params.resolver';
 import { EMPTY, Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
@@ -28,8 +28,8 @@ import { ResolverUpdateComponent } from './resolver-update.component';
 
 @Injectable({ providedIn: 'root' })
 export class ResolverResolve {
-  private service = inject(ResolverService);
-  private router = inject(Router);
+  private readonly service = inject(ResolverService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Resolver> | Observable<never> {
     const id = route.params['id'];
@@ -54,7 +54,7 @@ export const resolverRoute: Routes = [
     path: '',
     component: ResolverComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams,
+      pagingParams: pagingParamsResolver,
     },
     data: {
       defaultSort: 'id,asc',

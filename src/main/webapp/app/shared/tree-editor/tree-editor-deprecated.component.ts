@@ -16,7 +16,7 @@
 import { Component, Input, OnDestroy, OnInit, inject } from '@angular/core';
 import { Concept } from 'app/shared/model/concept.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -26,7 +26,7 @@ import { Subscription } from 'rxjs';
   standalone: false,
 })
 export class TreeEditorDeprecatedComponent implements OnInit, OnDestroy {
-  protected eventManager = inject(JhiEventManager);
+  protected eventManager = inject(EventManager);
 
   @Input() parentNotation?: string;
   @Input({ required: true }) conceptList!: Concept[];
@@ -49,7 +49,7 @@ export class TreeEditorDeprecatedComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.eventSubscriber = this.eventManager.subscribe('selectConcept', (response: JhiEventWithContent<Concept>) => {
+    this.eventSubscriber = this.eventManager.subscribe('selectConcept', (response: EventWithContent<Concept>) => {
       this.activeConceptNotation = response.content.notation;
     });
     this.eventSubscriber2 = this.eventManager.subscribe('deselectConcept', () => {

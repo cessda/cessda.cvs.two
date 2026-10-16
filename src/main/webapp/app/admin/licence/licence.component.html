@@ -41,12 +41,12 @@
     <div class="table-responsive" id="entities">
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
-          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"  jhiSortBy="name"><span jhiTranslate="cvsApp.licence.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"  jhiSortBy="abbr"><span jhiTranslate="cvsApp.licence.abbr">Abbr</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"  jhiSortBy="link"><span jhiTranslate="cvsApp.licence.link">Link</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"  jhiSortBy="logoLink"><span jhiTranslate="cvsApp.licence.logoLink">Logo</span> <fa-icon icon="sort"></fa-icon></th>
+          <tr jhiSort #sort="jhiSort" [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="sort.iconFor('id')"></fa-icon></th>
+            <th scope="col"  jhiSortBy="name"><span jhiTranslate="cvsApp.licence.name">Name</span> <fa-icon [icon]="sort.iconFor('name')"></fa-icon></th>
+            <th scope="col"  jhiSortBy="abbr"><span jhiTranslate="cvsApp.licence.abbr">Abbr</span> <fa-icon [icon]="sort.iconFor('abbr')"></fa-icon></th>
+            <th scope="col"  jhiSortBy="link"><span jhiTranslate="cvsApp.licence.link">Link</span> <fa-icon [icon]="sort.iconFor('link')"></fa-icon></th>
+            <th scope="col"  jhiSortBy="logoLink"><span jhiTranslate="cvsApp.licence.logoLink">Logo</span> <fa-icon [icon]="sort.iconFor('logoLink')"></fa-icon></th>
             <th scope="col"></th>
           </tr>
         </thead>

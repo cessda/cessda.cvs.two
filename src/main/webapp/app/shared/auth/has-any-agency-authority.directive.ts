@@ -44,9 +44,9 @@ export interface AgencyAuthority {
   standalone: false,
 })
 export class HasAnyAgencyAuthorityDirective implements OnDestroy {
-  private accountService = inject(AccountService);
-  private templateRef = inject<TemplateRef<unknown>>(TemplateRef);
-  private viewContainerRef = inject(ViewContainerRef);
+  private readonly accountService = inject(AccountService);
+  private readonly templateRef = inject<TemplateRef<unknown>>(TemplateRef);
+  private readonly viewContainerRef = inject(ViewContainerRef);
 
   private agencyAuthority: AgencyAuthority | undefined = undefined;
   private authenticationSubscription?: Subscription;

@@ -16,9 +16,9 @@
 import { TestBed } from '@angular/core/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { JhiEventManager } from 'ng-jhipster';
 
 import { ErrorHandlerInterceptor } from 'app/blocks/interceptor/errorhandler.interceptor';
+import { EventManager } from 'app/core/util/event-manager.service';
 
 describe('Interceptor Tests', () => {
   describe('Error Handler Interceptor', () => {
@@ -37,7 +37,7 @@ describe('Interceptor Tests', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
         providers: [
-          { provide: JhiEventManager, useValue: { broadcast } },
+          { provide: EventManager, useValue: { broadcast } },
           { provide: HTTP_INTERCEPTORS, useClass: ErrorHandlerInterceptor, multi: true },
         ],
       });

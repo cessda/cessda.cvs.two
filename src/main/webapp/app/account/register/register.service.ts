@@ -21,7 +21,7 @@ import { User } from 'app/core/user/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class RegisterService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   save(account: User) {
     return this.http.post(SERVER_API_URL + 'api/register', account);

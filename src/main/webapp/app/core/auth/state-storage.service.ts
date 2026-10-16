@@ -18,9 +18,9 @@ import { SessionStorageService } from 'ngx-webstorage';
 
 @Injectable({ providedIn: 'root' })
 export class StateStorageService {
-  private $sessionStorage = inject(SessionStorageService);
+  private readonly $sessionStorage = inject(SessionStorageService);
 
-  private previousUrlKey = 'previousUrl';
+  private readonly previousUrlKey = 'previousUrl';
 
   storeUrl(url: string): void {
     this.$sessionStorage.store(this.previousUrlKey, url);

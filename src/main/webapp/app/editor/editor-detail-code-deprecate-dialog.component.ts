@@ -21,7 +21,7 @@ import { Router } from '@angular/router';
 import { Concept } from 'app/shared/model/concept.model';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { CodeSnippet } from 'app/shared/model/code-snippet.model';
 import { HttpResponse } from '@angular/common/http';
 import { Vocabulary } from 'app/shared/model/vocabulary.model';
@@ -35,9 +35,9 @@ import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 export class EditorDetailCodeDeprecateDialogComponent {
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
-  private router = inject(Router);
-  protected eventManager = inject(JhiEventManager);
-  private fb = inject(FormBuilder);
+  private readonly router = inject(Router);
+  protected eventManager = inject(EventManager);
+  private readonly fb = inject(FormBuilder);
 
   versionParam!: Version;
   conceptParam!: Concept;

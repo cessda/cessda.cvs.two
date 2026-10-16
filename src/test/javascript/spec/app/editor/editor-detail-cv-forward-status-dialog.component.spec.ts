@@ -16,11 +16,12 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { HttpResponse } from '@angular/common/http';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 
 import { CvsTestModule } from '../../test.module';
 import { MockActiveModal } from '../../helpers/mock-active-modal.service';
 import { MockAccountService } from '../../helpers/mock-account.service';
+import { renderQuillEditor, toolbarControls } from '../../helpers/quill-editor';
 import { EditorDetailCvForwardStatusDialogComponent } from 'app/editor/editor-detail-cv-forward-status-dialog.component';
 import { AccountService } from 'app/core/auth/account.service';
 import { LicenceService } from 'app/admin/licence/licence.service';
@@ -28,6 +29,8 @@ import { Account } from 'app/core/user/account.model';
 import { createNewVersion } from 'app/shared/model/version.model';
 import { Concept } from 'app/shared/model/concept.model';
 import { EditorService } from 'app/editor/editor.service';
+import { VocabularyChangeService } from 'app/entities/vocabulary-change/vocabulary-change.service';
+import { VocabularyChange } from 'app/shared/model/vocabulary-change.model';
 
 describe('Component Tests', () => {
   describe('Editor Detail CV Forward Status Dialog Component', () => {
@@ -214,6 +217,98 @@ describe('Component Tests', () => {
 
         expect(comp.cvForwardStatusForm.controls.versionNotes).toBeUndefined();
         expect(comp.cvForwardStatusForm.controls.versionChanges).toBeUndefined();
+      });
+    });
+    describe('the version notes and changes editors', () => {
+      let changes: Subject<HttpResponse<VocabularyChange[]>>;
+
+      const reviewOfNewVersion = (saved: { versionNotes?: string; versionChanges?: string } = {}): void => {
+        comp.versionParam = { ...createNewVersion(8), status: 'REVIEW', number: '2.1.0', previousVersion: 7, ...saved };
+        comp.isSlForm = true;
+        comp.ngOnInit();
+      };
+
+      const notesEditor = (): ReturnType<typeof renderQuillEditor> =>
+        renderQuillEditor({
+          control: comp.cvForwardStatusForm.controls.versionNotes!,
+          modules: comp.quillSimpleModule,
+          onCreated: quill => comp.onVersionNotesEditorCreated(quill),
+        });
+
+      const changesEditor = (): ReturnType<typeof renderQuillEditor> =>
+        renderQuillEditor({
+          control: comp.cvForwardStatusForm.controls.versionChanges!,
+          modules: comp.quillSimpleModule,
+          onCreated: quill => comp.onVersionChangesEditorCreated(quill),
+        });
+
+      beforeEach(() => {
+        changes = new Subject();
+        spyOn(TestBed.inject(EditorService), 'getVocabularyCompare').and.returnValue(of(new HttpResponse({ body: ['', ''] })));
+        spyOn(TestBed.inject(VocabularyChangeService), 'getByVersionId').and.returnValue(changes);
+      });
+
+      it('should come up with the simple toolbar', async () => {
+        reviewOfNewVersion();
+
+        const editor = await notesEditor();
+
+        expect(toolbarControls(editor)).toEqual([
+          'bold',
+          'italic',
+          'underline',
+          'strike',
+          'blockquote',
+          'list:ordered',
+          'list:bullet',
+          'link',
+          'clean',
+        ]);
+      });
+
+      it('should show the saved version notes', async () => {
+        reviewOfNewVersion({ versionNotes: '<p>Adds <em>two</em> codes</p>' });
+        changes.next(new HttpResponse({ body: [] }));
+
+        const editor = await notesEditor();
+
+        expect(editor.quill.getText()).toBe('Adds two codes\n');
+        expect(editor.content.querySelector('em')?.textContent).toBe('two');
+      });
+
+      it('should fill in the recorded changes once they arrive after the editor has come up', async () => {
+        reviewOfNewVersion();
+        const editor = await changesEditor();
+        expect(editor.quill.getText()).toBe('\n');
+
+        changes.next(
+          new HttpResponse({
+            body: [
+              { changeType: 'Code added', description: 'Household' },
+              { changeType: 'Code deprecated', description: 'Family' },
+            ] as VocabularyChange[],
+          }),
+        );
+
+        expect(editor.quill.getText()).toBe('Code added: Household\nCode deprecated: Family\n');
+      });
+
+      it('should prefer changes already written for the version over the recorded ones', async () => {
+        reviewOfNewVersion({ versionChanges: '<p>Hand written</p>' });
+        changes.next(new HttpResponse({ body: [{ changeType: 'Code added', description: 'Household' }] as VocabularyChange[] }));
+
+        const editor = await changesEditor();
+
+        expect(editor.quill.getText()).toBe('Hand written\n');
+      });
+
+      it('should write edited notes back to the form', async () => {
+        reviewOfNewVersion();
+        const editor = await notesEditor();
+
+        editor.type('Reviewed');
+
+        expect(comp.cvForwardStatusForm.controls.versionNotes!.value).toBe('<p>Reviewed</p>');
       });
     });
   });

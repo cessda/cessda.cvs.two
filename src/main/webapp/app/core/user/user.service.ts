@@ -23,7 +23,7 @@ import { User } from './user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   public resourceUrl = SERVER_API_URL + 'api/users';
 

@@ -24,7 +24,7 @@ import { User } from 'app/core/user/user.model';
   standalone: false,
 })
 export class UserManagementDetailComponent implements OnInit {
-  private route = inject(ActivatedRoute);
+  private readonly route = inject(ActivatedRoute);
 
   user: User | null = null;
 

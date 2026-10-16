@@ -18,7 +18,8 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
+import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 
 import { Agency, createNewAgency } from 'app/shared/model/agency.model';
 import { AgencyService } from './agency.service';
@@ -33,13 +34,13 @@ import { LicenceService } from 'app/admin/licence/licence.service';
   standalone: false,
 })
 export class AgencyUpdateComponent implements OnInit {
-  private licenceService = inject(LicenceService);
-  protected dataUtils = inject(JhiDataUtils);
-  protected eventManager = inject(JhiEventManager);
+  private readonly licenceService = inject(LicenceService);
+  protected dataUtils = inject(DataUtils);
+  protected eventManager = inject(EventManager);
   protected agencyService = inject(AgencyService);
   protected activatedRoute = inject(ActivatedRoute);
   protected fileUploadService = inject(FileUploadService);
-  private fb = inject(FormBuilder);
+  private readonly fb = inject(FormBuilder);
 
   isSaving = false;
   currentFileUpload: File | null = null;
@@ -101,8 +102,8 @@ export class AgencyUpdateComponent implements OnInit {
 
   setFileData(event: Event, field: string, isImage: boolean): void {
     this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe({
-      error: (err: JhiFileLoadError) => {
-        this.eventManager.broadcast(new JhiEventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
+      error: (err: FileLoadError) => {
+        this.eventManager.broadcast(new EventWithContent<AlertError>('cvsApp.error', { ...err, key: 'error.file.' + err.key }));
       },
     });
   }

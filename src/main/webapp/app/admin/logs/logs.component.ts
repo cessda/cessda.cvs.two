@@ -24,7 +24,7 @@ import { LogsService } from './logs.service';
   standalone: false,
 })
 export class LogsComponent implements OnInit {
-  private logsService = inject(LogsService);
+  private readonly logsService = inject(LogsService);
 
   loggers?: Log[];
   filter = '';

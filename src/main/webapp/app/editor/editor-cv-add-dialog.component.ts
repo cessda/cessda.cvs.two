@@ -18,7 +18,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { AgencyService } from 'app/agency/agency.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Agency } from 'app/shared/model/agency.model';
@@ -40,12 +40,12 @@ import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 })
 export class EditorCvAddDialogComponent implements OnInit {
   protected agencyService = inject(AgencyService);
-  private accountService = inject(AccountService);
+  private readonly accountService = inject(AccountService);
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
-  protected eventManager = inject(JhiEventManager);
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
+  protected eventManager = inject(EventManager);
+  private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
 
   isSaving: boolean;
   account!: Account;

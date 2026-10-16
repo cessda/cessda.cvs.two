@@ -18,20 +18,25 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { of, Subject } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
+import { QueryParamsNavigation } from '../../../helpers/query-params-navigation';
 import { UserManagementComponent } from 'app/admin/user-management/user-management.component';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.model';
+import { AgencyService } from 'app/agency/agency.service';
 
 describe('Component Tests', () => {
   describe('User Management Component', () => {
     let comp: UserManagementComponent;
     let fixture: ComponentFixture<UserManagementComponent>;
     let service: UserService;
+    let navigation: QueryParamsNavigation;
 
     beforeEach(waitForAsync(() => {
+      navigation = new QueryParamsNavigation();
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [UserManagementComponent],
+        providers: navigation.providers(),
       })
         .overrideTemplate(UserManagementComponent, '')
         .compileComponents();
@@ -137,6 +142,132 @@ describe('Component Tests', () => {
           expect(comp.users && comp.users[0]).toEqual(jasmine.objectContaining({ id: 123 }));
         }),
       ));
+    });
+
+    describe('paging through the users', () => {
+      let query: jasmine.Spy;
+
+      const page = (users: User[], total?: number): HttpResponse<User[]> =>
+        new HttpResponse({
+          body: users,
+          headers: total === undefined ? new HttpHeaders() : new HttpHeaders({ 'X-Total-Count': String(total) }),
+        });
+
+      const lastRequest = (): { page: number; size: number; sort: string[] } => query.calls.mostRecent().args[0];
+
+      beforeEach(() => {
+        query = spyOn(service, 'query').and.returnValue(of(page([{ id: 1 }], 87)));
+        spyOn(TestBed.inject(AgencyService), 'query').and.returnValue(of(new HttpResponse({ body: [{ id: 5, name: 'CESSDA' }] })));
+      });
+
+      it('should ask for the first page ordered by id when the URL carries nothing', () => {
+        comp.ngOnInit();
+
+        expect(lastRequest()).toEqual({ page: 0, size: 30, sort: ['id,asc'] });
+        expect(comp.page).toBe(1);
+      });
+
+      it('should ask the server for the page in the URL, counting pages from zero', () => {
+        navigation.open({ page: '3' });
+
+        comp.ngOnInit();
+
+        expect(lastRequest().page).toBe(2);
+        expect(comp.page).toBe(3);
+      });
+
+      it('should move to a clicked page through the URL alone', () => {
+        comp.ngOnInit();
+        query.calls.reset();
+
+        comp.loadPage(2);
+
+        expect(navigation.current).toEqual({ page: 2 });
+        expect(query).toHaveBeenCalledTimes(1);
+        expect(lastRequest().page).toBe(1);
+        expect(comp.page).toBe(2);
+      });
+
+      it('should come back to the first page with the URL', () => {
+        navigation.open({ page: '2' });
+        comp.ngOnInit();
+
+        navigation.open({});
+
+        expect(lastRequest().page).toBe(0);
+        expect(comp.page).toBe(1);
+      });
+
+      it('should keep the order when moving to another page', () => {
+        navigation.open({ sort: 'login,desc' });
+        comp.ngOnInit();
+
+        comp.loadPage(2);
+
+        expect(lastRequest()).toEqual({ page: 1, size: 30, sort: ['login,desc', 'id'] });
+      });
+
+      it('should put the order chosen into the URL and break ties by id', () => {
+        comp.ngOnInit();
+
+        comp.predicate = 'email';
+        comp.ascending = false;
+        comp.updateSort();
+
+        expect(navigation.current).toEqual({ sort: 'email,desc' });
+        expect(lastRequest().sort).toEqual(['email,desc', 'id']);
+      });
+
+      it('should not navigate by itself while loading', () => {
+        navigation.open({ page: '2', sort: 'login,asc' });
+
+        comp.ngOnInit();
+
+        expect(navigation.navigate).not.toHaveBeenCalled();
+        expect(query).toHaveBeenCalledTimes(1);
+      });
+
+      it('should take the number of users in all from the X-Total-Count header', () => {
+        comp.ngOnInit();
+
+        expect(comp.totalItems).toBe(87);
+      });
+
+      it('should count the users returned when the server gives no total', () => {
+        query.and.returnValue(of(page([{ id: 1 }, { id: 2 }])));
+
+        comp.ngOnInit();
+
+        expect(comp.totalItems).toBe(2);
+      });
+
+      it("should list a user's agencies in a stable order", () => {
+        query.and.returnValue(
+          of(
+            page([
+              {
+                id: 1,
+                userAgencies: [
+                  { agencyId: 5, agencyRole: 'ADMIN_TL', language: 'de' },
+                  { agencyId: 2, agencyRole: 'ADMIN' },
+                  { agencyId: 5, agencyRole: 'ADMIN_TL', language: 'cs' },
+                ],
+              },
+            ]),
+          ),
+        );
+
+        comp.ngOnInit();
+
+        expect(comp.users[0].userAgencies!.map(ua => comp.userAgencyToCompare(ua))).toEqual(['2ADMIN', '5ADMIN_TLcs', '5ADMIN_TLde']);
+      });
+
+      it('should name the agencies of the users', () => {
+        comp.ngOnInit();
+
+        expect(comp.getAgencyName(5)).toBe('CESSDA');
+        expect(comp.getAgencyName(9)).toBe('Unknown agency (9)');
+      });
     });
   });
 });

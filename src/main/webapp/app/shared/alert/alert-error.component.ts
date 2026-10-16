@@ -16,7 +16,8 @@
 import { Component, inject, OnDestroy } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TranslateService } from '@ngx-translate/core';
-import { JhiAlert, JhiAlertService, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { Alert, AlertService } from 'app/core/util/alert.service';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { Subscription } from 'rxjs';
 
 import { AlertError } from './alert-error.model';
@@ -39,78 +40,104 @@ import { AlertError } from './alert-error.model';
   standalone: false,
 })
 export class AlertErrorComponent implements OnDestroy {
-  private alertService = inject(JhiAlertService);
-  private eventManager = inject(JhiEventManager);
+  private readonly alertService = inject(AlertService);
+  private readonly eventManager = inject(EventManager);
+  private readonly translateService = inject(TranslateService);
 
-  alerts: JhiAlert[] = [];
+  alerts: Alert[] = [];
   errorListener: Subscription;
   httpErrorListener: Subscription;
 
   constructor() {
-    const eventManager = this.eventManager;
-    const translateService = inject(TranslateService);
-
-    this.errorListener = eventManager.subscribe('cvsApp.error', (response: JhiEventWithContent<AlertError>) => {
+    this.errorListener = this.eventManager.subscribe('cvsApp.error', (response: EventWithContent<AlertError>) => {
       const errorResponse = response.content;
       this.addErrorAlert(errorResponse.message, errorResponse.key, errorResponse.params);
     });
 
-    this.httpErrorListener = eventManager.subscribe('cvsApp.httpError', (response: JhiEventWithContent<HttpErrorResponse>) => {
-      const httpErrorResponse = response.content;
-      switch (httpErrorResponse.status) {
-        // connection refused, server not reachable
-        case 0:
-          this.addErrorAlert('Server not reachable', 'error.server.not.reachable');
-          break;
-
-        case 400: {
-          const arr = httpErrorResponse.headers.keys();
-          let errorHeader = null;
-          let entityKey = null;
-          arr.forEach(entry => {
-            if (entry.toLowerCase().endsWith('app-error')) {
-              errorHeader = httpErrorResponse.headers.get(entry);
-            } else if (entry.toLowerCase().endsWith('app-params')) {
-              entityKey = httpErrorResponse.headers.get(entry);
-            }
-          });
-          if (errorHeader) {
-            const entityName = translateService.instant('global.menu.entities.' + entityKey);
-            this.addErrorAlert(errorHeader, errorHeader, { entityName });
-          } else if (httpErrorResponse.error !== '' && httpErrorResponse.error.fieldErrors) {
-            const fieldErrors = httpErrorResponse.error.fieldErrors;
-            for (const fieldError of fieldErrors) {
-              if (['Min', 'Max', 'DecimalMin', 'DecimalMax'].includes(fieldError.message)) {
-                fieldError.message = 'Size';
-              }
-              // convert 'something[14].other[4].id' to 'something[].other[].id' so translations can be written to it
-              const convertedField = fieldError.field.replace(/\[\d*\]/g, '[]');
-              const fieldName = translateService.instant('cvsApp.' + fieldError.objectName + '.' + convertedField);
-              this.addErrorAlert('Error on field "' + fieldName + '"', 'error.' + fieldError.message, { fieldName });
-            }
-          } else if (httpErrorResponse.error !== '' && httpErrorResponse.error.message) {
-            this.addErrorAlert(httpErrorResponse.error.message, httpErrorResponse.error.message, httpErrorResponse.error.params);
-          } else {
-            this.addErrorAlert(httpErrorResponse.error);
-          }
-          break;
-        }
-
-        case 404:
-          this.addErrorAlert('Not found', 'error.url.not.found');
-          break;
-
-        default:
-          if (httpErrorResponse.error !== '' && httpErrorResponse.error.message) {
-            this.addErrorAlert(httpErrorResponse.error.message);
-          } else {
-            this.addErrorAlert(httpErrorResponse.error);
-          }
-      }
+    this.httpErrorListener = this.eventManager.subscribe('cvsApp.httpError', (response: EventWithContent<HttpErrorResponse>) => {
+      this.handleHttpError(response.content);
     });
   }
 
-  setClasses(alert: JhiAlert): { [key: string]: boolean } {
+  private handleHttpError(httpErrorResponse: HttpErrorResponse): void {
+    switch (httpErrorResponse.status) {
+      // Connection refused, server not reachable
+      case 0:
+        this.addErrorAlert('Server not reachable', 'error.server.not.reachable');
+        break;
+
+      case 400:
+        this.handleBadRequest(httpErrorResponse);
+        break;
+
+      case 404:
+        this.addErrorAlert('Not found', 'error.url.not.found');
+        break;
+
+      default:
+        this.handleGenericHttpError(httpErrorResponse);
+    }
+  }
+
+  private handleBadRequest(httpErrorResponse: HttpErrorResponse): void {
+    const { errorHeader, entityKey } = this.getErrorHeaders(httpErrorResponse);
+
+    if (errorHeader) {
+      const entityName = this.translateService.instant('global.menu.entities.' + entityKey);
+      this.addErrorAlert(errorHeader, errorHeader, { entityName });
+    } else if (httpErrorResponse.error !== '' && httpErrorResponse.error.fieldErrors) {
+      this.handleFieldErrors(httpErrorResponse.error.fieldErrors);
+    } else if (httpErrorResponse.error !== '' && httpErrorResponse.error.message) {
+      this.addErrorAlert(httpErrorResponse.error.message, httpErrorResponse.error.message, httpErrorResponse.error.params);
+    } else {
+      this.addErrorAlert(httpErrorResponse.error);
+    }
+  }
+
+  private getErrorHeaders(httpErrorResponse: HttpErrorResponse): {
+    errorHeader: string | null;
+    entityKey: string | null;
+  } {
+    let errorHeader: string | null = null;
+    let entityKey: string | null = null;
+
+    httpErrorResponse.headers.keys().forEach(entry => {
+      if (entry.toLowerCase().endsWith('app-error')) {
+        errorHeader = httpErrorResponse.headers.get(entry);
+      } else if (entry.toLowerCase().endsWith('app-params')) {
+        entityKey = httpErrorResponse.headers.get(entry);
+      }
+    });
+
+    return { errorHeader, entityKey };
+  }
+
+  private handleFieldErrors(fieldErrors: Array<{ message: string; field: string; objectName: string }>): void {
+    for (const fieldError of fieldErrors) {
+      if (['Min', 'Max', 'DecimalMin', 'DecimalMax'].includes(fieldError.message)) {
+        fieldError.message = 'Size';
+      }
+
+      // Convert 'something[14].other[4].id' to 'something[].other[].id'
+      // so translations can be written to it.
+      const convertedField = fieldError.field.replace(/\[\d*\]/g, '[]');
+      const fieldName = this.translateService.instant('cvsApp.' + fieldError.objectName + '.' + convertedField);
+
+      this.addErrorAlert('Error on field "' + fieldName + '"', 'error.' + fieldError.message, {
+        fieldName,
+      });
+    }
+  }
+
+  private handleGenericHttpError(httpErrorResponse: HttpErrorResponse): void {
+    if (httpErrorResponse.error !== '' && httpErrorResponse.error.message) {
+      this.addErrorAlert(httpErrorResponse.error.message);
+    } else {
+      this.addErrorAlert(httpErrorResponse.error);
+    }
+  }
+
+  setClasses(alert: Alert): { [key: string]: boolean } {
     const classes = { 'jhi-toast': Boolean(alert.toast) };
     if (alert.position) {
       return { ...classes, [alert.position]: true };
@@ -131,7 +158,7 @@ export class AlertErrorComponent implements OnDestroy {
   addErrorAlert(message: string, key?: string, data?: any): void {
     message = key || message;
 
-    const newAlert: JhiAlert = {
+    const newAlert: Alert = {
       type: 'danger',
       msg: message,
       params: data,

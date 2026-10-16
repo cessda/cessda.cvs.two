@@ -16,7 +16,7 @@
 import { Router } from '@angular/router';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { JhiDateUtils, JhiLanguageService } from 'ng-jhipster';
+import { LanguageService } from 'app/core/language/language.service';
 import { SessionStorageService, provideNgxWebstorage } from 'ngx-webstorage';
 
 import { SERVER_API_URL } from 'app/app.constants';
@@ -55,9 +55,8 @@ describe('Service Tests', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
         providers: [
-          JhiDateUtils,
           {
-            provide: JhiLanguageService,
+            provide: LanguageService,
             useClass: MockLanguageService,
           },
           {
@@ -138,7 +137,8 @@ describe('Service Tests', () => {
         service.identity().subscribe();
 
         // Then there is a new request
-        httpMock.expectOne({ method: 'GET' });
+        const req = httpMock.expectOne({ method: 'GET' });
+        expect(req.request.url).toEqual(`${SERVER_API_URL}api/account`);
       });
 
       describe('navigateToStoredUrl', () => {
@@ -259,8 +259,7 @@ describe('Service Tests', () => {
       TestBed.configureTestingModule({
         imports: [HttpClientTestingModule],
         providers: [
-          JhiDateUtils,
-          { provide: JhiLanguageService, useClass: MockLanguageService },
+          { provide: LanguageService, useClass: MockLanguageService },
           { provide: StateStorageService, useClass: MockStateStorageService },
           { provide: Router, useClass: MockRouter },
           SessionStorageService,

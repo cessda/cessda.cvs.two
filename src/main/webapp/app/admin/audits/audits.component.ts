@@ -28,10 +28,10 @@ import { AuditsService } from './audits.service';
   standalone: false,
 })
 export class AuditsComponent implements OnInit {
-  private auditsService = inject(AuditsService);
-  private activatedRoute = inject(ActivatedRoute);
-  private datePipe = inject(DatePipe);
-  private router = inject(Router);
+  private readonly auditsService = inject(AuditsService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly datePipe = inject(DatePipe);
+  private readonly router = inject(Router);
 
   audits: Audit[] = [];
   fromDate = '';

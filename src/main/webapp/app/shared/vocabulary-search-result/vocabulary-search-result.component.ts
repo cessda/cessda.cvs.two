@@ -15,7 +15,8 @@
  */
 import { Component, ElementRef, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { EditorService, SearchRequest } from 'app/editor/editor.service';
-import { JhiEventManager, JhiLanguageService } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
+import { LanguageService } from 'app/core/language/language.service';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
@@ -45,16 +46,16 @@ const DEFAULT_PREDICATE = 'code';
   standalone: false,
 })
 export class VocabularySearchResultComponent implements OnInit {
-  private accountService = inject(AccountService);
-  private loginModalService = inject(LoginModalService);
-  private languageService = inject(JhiLanguageService);
-  private homeService = inject(HomeService);
-  private editorService = inject(EditorService);
-  private activatedRoute = inject(ActivatedRoute);
-  private router = inject(Router);
-  private eventManager = inject(JhiEventManager);
-  private fb = inject(UntypedFormBuilder);
-  private vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
+  private readonly accountService = inject(AccountService);
+  private readonly loginModalService = inject(LoginModalService);
+  private readonly languageService = inject(LanguageService);
+  private readonly homeService = inject(HomeService);
+  private readonly editorService = inject(EditorService);
+  private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly eventManager = inject(EventManager);
+  private readonly fb = inject(UntypedFormBuilder);
+  private readonly vocabLangPipeKey = inject(VocabularyLanguageFromKeyPipe);
 
   @Input() appScope!: AppScope;
   @ViewChild('filterPanels', { static: true }) filterPanels!: ElementRef;
@@ -293,7 +294,7 @@ export class VocabularySearchResultComponent implements OnInit {
 
       const filters = params.get('f');
       if (filters) {
-        const activeFilters = filters.split(';', 2);
+        const activeFilters = filters.split(';');
         activeFilters.forEach(af => {
           const activeFilter = af.split(':', 2);
           if (activeFilter.length === 2) {
@@ -410,7 +411,8 @@ export class VocabularySearchResultComponent implements OnInit {
     const s = (event.target as HTMLSelectElement).value;
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: { size: s },
+      // the page left on may not exist at the new size
+      queryParams: { size: s, page: null },
       queryParamsHandling: 'merge',
     });
   }
@@ -478,6 +480,8 @@ export class VocabularySearchResultComponent implements OnInit {
       relativeTo: this.activatedRoute,
       queryParams: {
         f: activeAgg === '' ? null : activeAgg,
+        // a narrower filter may leave fewer pages than the one left on
+        page: null,
       },
       queryParamsHandling: 'merge',
     });

@@ -15,7 +15,7 @@
  */
 import { TestBed } from '@angular/core/testing';
 import { HttpHandler, HttpHeaders, HttpRequest, HttpResponse, HttpSentEvent } from '@angular/common/http';
-import { JhiAlertService } from 'ng-jhipster';
+import { AlertService } from 'app/core/util/alert.service';
 import { of } from 'rxjs';
 
 import { NotificationInterceptor } from 'app/blocks/interceptor/notification.interceptor';
@@ -34,7 +34,7 @@ describe('NotificationInterceptor', () => {
   beforeEach(() => {
     success = jest.fn();
     TestBed.configureTestingModule({
-      providers: [NotificationInterceptor, { provide: JhiAlertService, useValue: { success } }],
+      providers: [NotificationInterceptor, { provide: AlertService, useValue: { success } }],
     });
     interceptor = TestBed.inject(NotificationInterceptor);
   });

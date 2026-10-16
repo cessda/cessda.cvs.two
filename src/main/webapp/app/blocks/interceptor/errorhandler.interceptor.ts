@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 import { Injectable, inject } from '@angular/core';
-import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { HttpInterceptor, HttpRequest, HttpErrorResponse, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class ErrorHandlerInterceptor implements HttpInterceptor {
-  private eventManager = inject(JhiEventManager);
+  private readonly eventManager = inject(EventManager);
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       tap({
         error: (err: HttpErrorResponse) => {
           if (!(err.status === 401 && (err.message === '' || (err.url && err.url.includes('api/account'))))) {
-            this.eventManager.broadcast(new JhiEventWithContent('cvsApp.httpError', err));
+            this.eventManager.broadcast(new EventWithContent('cvsApp.httpError', err));
           }
         },
       }),

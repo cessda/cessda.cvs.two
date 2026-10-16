@@ -61,13 +61,13 @@
     <div class="table-responsive" id="entities">
       <table class="table table-striped" aria-describedby="page-heading">
         <thead>
-          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"  jhiSortBy="resourceId"><span jhiTranslate="cvsApp.resolver.resourceId">Resource Id</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"  jhiSortBy="resourceType"><span jhiTranslate="cvsApp.resolver.resourceType">Resource Type</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"  jhiSortBy="resourceUrl"><span jhiTranslate="cvsApp.resolver.resourceUrl">Resource Url</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"  jhiSortBy="resolverType"><span jhiTranslate="cvsApp.resolver.resolverType">Resolver Type</span> <fa-icon icon="sort"></fa-icon></th>
-            <th scope="col"  jhiSortBy="resolverURI"><span jhiTranslate="cvsApp.resolver.resolverURI">Resolver URI</span> <fa-icon icon="sort"></fa-icon></th>
+          <tr jhiSort #sort="jhiSort" [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="sort.iconFor('id')"></fa-icon></th>
+            <th scope="col"  jhiSortBy="resourceId"><span jhiTranslate="cvsApp.resolver.resourceId">Resource Id</span> <fa-icon [icon]="sort.iconFor('resourceId')"></fa-icon></th>
+            <th scope="col"  jhiSortBy="resourceType"><span jhiTranslate="cvsApp.resolver.resourceType">Resource Type</span> <fa-icon [icon]="sort.iconFor('resourceType')"></fa-icon></th>
+            <th scope="col"  jhiSortBy="resourceUrl"><span jhiTranslate="cvsApp.resolver.resourceUrl">Resource Url</span> <fa-icon [icon]="sort.iconFor('resourceUrl')"></fa-icon></th>
+            <th scope="col"  jhiSortBy="resolverType"><span jhiTranslate="cvsApp.resolver.resolverType">Resolver Type</span> <fa-icon [icon]="sort.iconFor('resolverType')"></fa-icon></th>
+            <th scope="col"  jhiSortBy="resolverURI"><span jhiTranslate="cvsApp.resolver.resolverURI">Resolver URI</span> <fa-icon [icon]="sort.iconFor('resolverURI')"></fa-icon></th>
             <th scope="col"></th>
           </tr>
         </thead>

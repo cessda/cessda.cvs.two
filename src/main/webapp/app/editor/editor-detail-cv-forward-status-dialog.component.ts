@@ -17,7 +17,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { HttpResponse } from '@angular/common/http';
 import { AccountService } from 'app/core/auth/account.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
@@ -44,14 +44,14 @@ import { ActionType } from 'app/shared/model/enumerations/action-type.model';
   standalone: false,
 })
 export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
-  private licenceService = inject(LicenceService);
-  private accountService = inject(AccountService);
+  private readonly licenceService = inject(LicenceService);
+  private readonly accountService = inject(AccountService);
   protected vocabularyChangeService = inject(VocabularyChangeService);
   protected editorService = inject(EditorService);
   activeModal = inject(NgbActiveModal);
-  protected eventManager = inject(JhiEventManager);
-  private fb = inject(FormBuilder);
-  private router = inject(Router);
+  protected eventManager = inject(EventManager);
+  private readonly fb = inject(FormBuilder);
+  private readonly router = inject(Router);
 
   licences: Licence[] = [];
   isSaving: boolean;

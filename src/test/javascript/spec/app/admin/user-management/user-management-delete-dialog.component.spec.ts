@@ -16,7 +16,7 @@
 import { ComponentFixture, TestBed, waitForAsync, inject, fakeAsync, tick } from '@angular/core/testing';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { of } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 
 import { CvsTestModule } from '../../../test.module';
 import { MockEventManager } from '../../../helpers/mock-event-manager.service';
@@ -45,7 +45,7 @@ describe('Component Tests', () => {
       fixture = TestBed.createComponent(UserManagementDeleteDialogComponent);
       comp = fixture.componentInstance;
       service = fixture.debugElement.injector.get(UserService);
-      mockEventManager = TestBed.inject(JhiEventManager) as unknown as MockEventManager;
+      mockEventManager = TestBed.inject(EventManager) as unknown as MockEventManager;
       mockActiveModal = TestBed.inject(NgbActiveModal) as unknown as MockActiveModal;
     });
 

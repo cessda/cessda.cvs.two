@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { JhiAlertService, JhiAlert } from 'ng-jhipster';
+import { AlertService, Alert } from 'app/core/util/alert.service';
 
 @Component({
   selector: 'jhi-alert',
@@ -34,15 +34,15 @@ import { JhiAlertService, JhiAlert } from 'ng-jhipster';
   standalone: false,
 })
 export class AlertComponent implements OnInit, OnDestroy {
-  private alertService = inject(JhiAlertService);
+  private readonly alertService = inject(AlertService);
 
-  alerts: JhiAlert[] = [];
+  alerts: Alert[] = [];
 
   ngOnInit(): void {
     this.alerts = this.alertService.get();
   }
 
-  setClasses(alert: JhiAlert): { [key: string]: boolean } {
+  setClasses(alert: Alert): { [key: string]: boolean } {
     const classes = { 'jhi-toast': Boolean(alert.toast) };
     if (alert.position) {
       return { ...classes, [alert.position]: true };

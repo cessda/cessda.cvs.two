@@ -22,6 +22,7 @@ import moment from 'moment';
 import { CvsTestModule } from '../../test.module';
 import { MockActiveModal } from '../../helpers/mock-active-modal.service';
 import { MockAccountService } from '../../helpers/mock-account.service';
+import { renderQuillEditor, toolbarControls } from '../../helpers/quill-editor';
 import { EditorDetailCvCommentDialogComponent } from 'app/editor/editor-detail-cv-comment-dialog.component';
 import { EditorService } from 'app/editor/editor.service';
 import { CommentService } from 'app/entities/comment/comment.service';
@@ -158,6 +159,44 @@ describe('Component Tests', () => {
 
         expect(comp.comments).toBe(fromServer);
       }));
+    });
+
+    describe('the comment editor', () => {
+      it('should come up with the comment toolbar', async () => {
+        const editor = await renderQuillEditor({ control: comp.commentForm.controls.content, modules: comp.quillModules });
+
+        expect(editor.content).not.toBeNull();
+        expect(toolbarControls(editor)).toEqual([
+          'bold',
+          'italic',
+          'underline',
+          'strike',
+          'blockquote',
+          'list:ordered',
+          'list:bullet',
+          'link',
+          'clean',
+        ]);
+      });
+
+      it('should make the comment savable once something is written', async () => {
+        const editor = await renderQuillEditor({ control: comp.commentForm.controls.content, modules: comp.quillModules });
+        expect(comp.commentForm.invalid).toBe(true);
+
+        editor.type('Approved');
+
+        expect(comp.commentForm.controls.content.value).toBe('<p>Approved</p>');
+        expect(comp.commentForm.valid).toBe(true);
+      });
+
+      it('should format the selected text from the toolbar', async () => {
+        const editor = await renderQuillEditor({ control: comp.commentForm.controls.content, modules: comp.quillModules });
+        editor.type('Approved');
+
+        editor.press('ql-bold', 0, 'Approved'.length);
+
+        expect(comp.commentForm.controls.content.value).toBe('<p><strong>Approved</strong></p>');
+      });
     });
 
     describe('parseDateTimeAgo', () => {

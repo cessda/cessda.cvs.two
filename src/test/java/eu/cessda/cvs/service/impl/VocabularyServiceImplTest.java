@@ -28,6 +28,12 @@ import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 import eu.cessda.cvs.service.mapper.VocabularyMapper;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.MatchBoolPrefixQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
+import org.elasticsearch.index.query.NestedQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.WildcardQueryBuilder;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mockito;
@@ -262,5 +268,79 @@ class VocabularyServiceImplTest
 
         // Should not throw
         assertThatCode( () -> vocabularyService.deleteCvJsonDirectoryAndContent( nonExistent ) ).doesNotThrowAnyException();
+    }
+
+    @Test
+    void shouldQueryVocabularyFieldsInMainQuery()
+    {
+        BoolQueryBuilder query = VocabularyServiceImpl.generateMainQuery( "sampling", List.of( "En", "De" ) );
+
+        assertThat( getQueriedFields( query ) ).containsExactlyInAnyOrder(
+            "match:titleEn", "match:definitionEn", "prefix:titleEn",
+            "match:titleDe", "match:definitionDe", "prefix:titleDe",
+            "wildcard:notation"
+        );
+    }
+
+    @Test
+    void shouldNotMatchTitlePrefixForSingleCharacterLastWord()
+    {
+        BoolQueryBuilder query = VocabularyServiceImpl.generateMainQuery( "analysis u", List.of( "En" ) );
+
+        assertThat( getQueriedFields( query ) ).containsExactlyInAnyOrder(
+            "match:titleEn", "match:definitionEn", "wildcard:notation"
+        );
+    }
+
+    @Test
+    void shouldQueryCodeFieldsInNestedQuery()
+    {
+        NestedQueryBuilder nestedQuery = VocabularyServiceImpl.generateNestedQuery( "sampling", List.of( "En", "De" ), 100 );
+
+        assertThat( nestedQuery.query() ).isInstanceOf( BoolQueryBuilder.class );
+        assertThat( getQueriedFields( (BoolQueryBuilder) nestedQuery.query() ) ).containsExactlyInAnyOrder(
+            "match:codes.titleEn", "match:codes.definitionEn",
+            "match:codes.titleDe", "match:codes.definitionDe",
+            "wildcard:codes.notation"
+        );
+    }
+
+    @Test
+    void shouldQueryNotationIgnoringCase()
+    {
+        BoolQueryBuilder query = VocabularyServiceImpl.generateMainQuery( "Mode Of Collection", List.of( "En" ) );
+
+        WildcardQueryBuilder notationQuery = query.should().stream()
+            .filter( WildcardQueryBuilder.class::isInstance )
+            .map( WildcardQueryBuilder.class::cast )
+            .findFirst()
+            .orElseThrow();
+        assertThat( notationQuery.value() ).isEqualTo( "ModeOfCollection*" );
+        assertThat( notationQuery.caseInsensitive() ).isTrue();
+    }
+
+    private static List<String> getQueriedFields( BoolQueryBuilder query )
+    {
+        List<String> fields = new ArrayList<>();
+        for ( QueryBuilder clause : query.should() )
+        {
+            if ( clause instanceof MatchQueryBuilder )
+            {
+                fields.add( "match:" + ( (MatchQueryBuilder) clause ).fieldName() );
+            }
+            else if ( clause instanceof MatchBoolPrefixQueryBuilder )
+            {
+                fields.add( "prefix:" + ( (MatchBoolPrefixQueryBuilder) clause ).fieldName() );
+            }
+            else if ( clause instanceof WildcardQueryBuilder )
+            {
+                fields.add( "wildcard:" + ( (WildcardQueryBuilder) clause ).fieldName() );
+            }
+            else
+            {
+                throw new AssertionError( "Unexpected query clause: " + clause );
+            }
+        }
+        return fields;
     }
 }

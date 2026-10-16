@@ -39,10 +39,26 @@ import { QuillModule } from 'ngx-quill';
 import { RouterModule } from '@angular/router';
 import { TagInputModule } from 'ngx-chips';
 import { CustomPageComponent } from 'app/shared/custom-page/custom-page.component';
+import { TranslateDirective } from './language/translate.directive';
+import { SortDirective } from './sort/sort.directive';
+import { SortByDirective } from './sort/sort-by.directive';
+import { ItemCountComponent } from './pagination/item-count.component';
+import { BooleanComponent } from './boolean/boolean.component';
+import { KeysPipe } from './pipe/keys.pipe';
+import { PureFilterPipe } from './pipe/pure-filter.pipe';
+import { OrderByPipe } from './pipe/order-by.pipe';
 
 @NgModule({
   imports: [CvsSharedLibsModule, NgxTextDiffModule, QuillModule, RouterModule, TagInputModule],
   declarations: [
+    TranslateDirective,
+    SortDirective,
+    SortByDirective,
+    ItemCountComponent,
+    BooleanComponent,
+    KeysPipe,
+    PureFilterPipe,
+    OrderByPipe,
     FindLanguageFromKeyPipe,
     VocabularyLanguageFromKeyPipe,
     LinkHttpPipe,
@@ -65,6 +81,14 @@ import { CustomPageComponent } from 'app/shared/custom-page/custom-page.componen
   ],
   exports: [
     CvsSharedLibsModule,
+    TranslateDirective,
+    SortDirective,
+    SortByDirective,
+    ItemCountComponent,
+    BooleanComponent,
+    KeysPipe,
+    PureFilterPipe,
+    OrderByPipe,
     FindLanguageFromKeyPipe,
     VocabularyLanguageFromKeyPipe,
     LinkHttpPipe,

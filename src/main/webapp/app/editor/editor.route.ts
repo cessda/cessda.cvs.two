@@ -21,7 +21,7 @@ import { mergeMap } from 'rxjs/operators';
 
 import { EditorComponent } from './editor.component';
 import { createNewVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
-import { JhiResolvePagingParams } from 'ng-jhipster';
+import { pagingParamsResolver } from 'app/core/request/paging-params.resolver';
 import { EditorService } from 'app/editor/editor.service';
 import { EditorDetailComponent } from 'app/editor/editor-detail.component';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
@@ -29,8 +29,8 @@ import { EditorCvAddPopupComponent } from 'app/editor/editor-cv-add-dialog.compo
 
 @Injectable({ providedIn: 'root' })
 export class VocabularyResolve {
-  private service = inject(EditorService);
-  private router = inject(Router);
+  private readonly service = inject(EditorService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Vocabulary> | Observable<never> {
     const notation = route.params['notation'];
@@ -56,7 +56,7 @@ export const EDITOR_ROUTE: Routes = [
     path: '',
     component: EditorComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams,
+      pagingParams: pagingParamsResolver,
     },
     data: {
       authorities: [],

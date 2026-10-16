@@ -16,7 +16,7 @@
 import { AfterViewInit, Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
-import { JhiLanguageService } from 'ng-jhipster';
+import { LanguageService } from 'app/core/language/language.service';
 
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from 'app/shared/constants/error.constants';
 import { LoginModalService } from 'app/core/login/login-modal.service';
@@ -28,10 +28,10 @@ import { RegisterService } from './register.service';
   standalone: false,
 })
 export class RegisterComponent implements AfterViewInit {
-  private languageService = inject(JhiLanguageService);
-  private loginModalService = inject(LoginModalService);
-  private registerService = inject(RegisterService);
-  private fb = inject(FormBuilder);
+  private readonly languageService = inject(LanguageService);
+  private readonly loginModalService = inject(LoginModalService);
+  private readonly registerService = inject(RegisterService);
+  private readonly fb = inject(FormBuilder);
 
   @ViewChild('login', { static: false })
   login?: ElementRef;

@@ -30,7 +30,7 @@ import { ResolverService } from './resolver.service';
 export class ResolverUpdateComponent implements OnInit {
   protected resolverService = inject(ResolverService);
   protected activatedRoute = inject(ActivatedRoute);
-  private fb = inject(FormBuilder);
+  private readonly fb = inject(FormBuilder);
 
   isSaving = false;
 

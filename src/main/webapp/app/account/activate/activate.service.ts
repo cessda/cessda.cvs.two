@@ -20,7 +20,7 @@ import { SERVER_API_URL } from 'app/app.constants';
 
 @Injectable({ providedIn: 'root' })
 export class ActivateService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   get(key: string) {
     return this.http.get(SERVER_API_URL + 'api/activate', {

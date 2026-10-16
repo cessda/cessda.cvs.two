@@ -22,8 +22,8 @@ import { SERVER_API_URL } from 'app/app.constants';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  private localStorage = inject(LocalStorageService);
-  private sessionStorage = inject(SessionStorageService);
+  private readonly localStorage = inject(LocalStorageService);
+  private readonly sessionStorage = inject(SessionStorageService);
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if (!request || !request.url || (request.url.startsWith('http') && !(SERVER_API_URL && request.url.startsWith(SERVER_API_URL)))) {

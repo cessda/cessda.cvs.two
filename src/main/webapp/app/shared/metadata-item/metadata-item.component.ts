@@ -15,7 +15,7 @@
  */
 import { ChangeDetectionStrategy, Component, Input, OnInit, inject } from '@angular/core';
 
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
@@ -34,8 +34,8 @@ import Quill from 'quill';
 })
 export class MetadataItemComponent implements OnInit {
   protected editorService = inject(EditorService);
-  protected eventManager = inject(JhiEventManager);
-  private fb = inject(FormBuilder);
+  protected eventManager = inject(EventManager);
+  private readonly fb = inject(FormBuilder);
 
   @Input() metadataField?: MetadataField;
   @Input() metadataValue!: MetadataValue;

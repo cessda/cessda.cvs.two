@@ -16,7 +16,7 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ActivatedRouteSnapshot, Router, Routes } from '@angular/router';
-import { JhiResolvePagingParams } from 'ng-jhipster';
+import { pagingParamsResolver } from 'app/core/request/paging-params.resolver';
 import { EMPTY, Observable, of } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
@@ -28,8 +28,8 @@ import { LicenceUpdateComponent } from './licence-update.component';
 
 @Injectable({ providedIn: 'root' })
 export class LicenceResolve {
-  private service = inject(LicenceService);
-  private router = inject(Router);
+  private readonly service = inject(LicenceService);
+  private readonly router = inject(Router);
 
   resolve(route: ActivatedRouteSnapshot): Observable<Licence> | Observable<never> {
     const id = route.params['id'];
@@ -54,7 +54,7 @@ export const licenceRoute: Routes = [
     path: '',
     component: LicenceComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams,
+      pagingParams: pagingParamsResolver,
     },
     data: {
       defaultSort: 'id,asc',

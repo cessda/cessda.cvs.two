@@ -25,10 +25,10 @@ import { Authority } from 'app/shared/constants/authority.constants';
 
 @Injectable({ providedIn: 'root' })
 export class UserRouteAccessService {
-  private router = inject(Router);
-  private loginModalService = inject(LoginModalService);
-  private accountService = inject(AccountService);
-  private stateStorageService = inject(StateStorageService);
+  private readonly router = inject(Router);
+  private readonly loginModalService = inject(LoginModalService);
+  private readonly accountService = inject(AccountService);
+  private readonly stateStorageService = inject(StateStorageService);
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
     const authorities = route.data['authorities'];

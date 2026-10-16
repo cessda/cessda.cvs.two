@@ -31,7 +31,7 @@ import { ProfileService } from './profile.service';
   standalone: false,
 })
 export class PageRibbonComponent implements OnInit {
-  private profileService = inject(ProfileService);
+  private readonly profileService = inject(ProfileService);
 
   ribbonEnv$?: Observable<string | undefined>;
 

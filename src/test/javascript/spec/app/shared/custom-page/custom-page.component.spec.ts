@@ -16,7 +16,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpEventType, HttpHeaderResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
-import { JhiEventManager } from 'ng-jhipster';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { BehaviorSubject, EMPTY, of, throwError } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
@@ -85,7 +85,7 @@ describe('Component Tests', () => {
     beforeEach(() => {
       metadataFieldService = TestBed.inject(MetadataFieldService);
       uploadService = TestBed.inject(FileUploadService);
-      mockEventManager = TestBed.inject(JhiEventManager) as unknown as MockEventManager;
+      mockEventManager = TestBed.inject(EventManager) as unknown as MockEventManager;
 
       findByKey = spyOn(metadataFieldService, 'findByKey').and.returnValue(of(new HttpResponse({ body: field() })));
       // the global mocks stand these in for jsdom; the download tests need to see what was handed over

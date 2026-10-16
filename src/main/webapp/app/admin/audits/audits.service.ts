@@ -28,7 +28,7 @@ export interface AuditsQuery extends Pagination {
 
 @Injectable({ providedIn: 'root' })
 export class AuditsService {
-  private http = inject(HttpClient);
+  private readonly http = inject(HttpClient);
 
   query(req: AuditsQuery): Observable<HttpResponse<Audit[]>> {
     const params: HttpParams = createRequestOption(req);
