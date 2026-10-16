@@ -58,6 +58,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
@@ -834,6 +835,50 @@ class EditorResourceTest {
         verify( versionService, times( 2 ) ).save( versionDTO );
         verify( vocabularyService, times( 2 ) ).storeChangeType( any( CodeSnippet.class ), eq( versionDTO ) );
         verify( vocabularyService, times( 2 ) ).indexEditor( vocabularyDTO );
+    }
+
+    @Test
+    void createBatchCodeShouldAppendCodesWithoutPositionToAnEmptyVersion() throws Exception {
+        VersionDTO versionDTO = version( 100L, ItemType.SL, SOURCE_LANGUAGE, Status.DRAFT, "1.0" );
+        when( versionService.findOne( 100L ) ).thenReturn( Optional.of( versionDTO ) );
+        when( versionService.save( any( VersionDTO.class ) ) ).then( AdditionalAnswers.returnsFirstArg() );
+        when( vocabularyService.findOne( VOCABULARY_ID ) ).thenReturn( Optional.of( vocabulary( versionDTO ) ) );
+
+        CodeSnippet first = codeSnippet( ActionType.CREATE_CODE, 100L );
+        first.setNotation( "A" );
+        first.setTitle( "First" );
+        CodeSnippet second = codeSnippet( ActionType.CREATE_CODE, 100L );
+        second.setNotation( "B" );
+        second.setTitle( "Second" );
+
+        mockMvc.perform( post( "/api/editors/codes/batch" ).contentType( MediaType.APPLICATION_JSON )
+                .content( json( new CodeSnippet[]{ first, second } ) ) )
+            .andExpect( status().isOk() )
+            .andExpect( jsonPath( "$", hasSize( 2 ) ) );
+
+        assertThat( versionDTO.getConcepts() ).extracting( ConceptDTO::getNotation, ConceptDTO::getPosition )
+            .containsExactly( tuple( "A", 0 ), tuple( "B", 1 ) );
+    }
+
+    @Test
+    void createBatchCodeShouldAppendCodesWithoutPositionAfterTheExistingCodes() throws Exception {
+        VersionDTO versionDTO = version( 100L, ItemType.SL, SOURCE_LANGUAGE, Status.DRAFT, "1.0" );
+        versionDTO.addConcept( concept( 1000L, 100L, "A", null, 0 ) );
+        versionDTO.addConcept( concept( 1001L, 100L, "B", null, 1 ) );
+        when( versionService.findOne( 100L ) ).thenReturn( Optional.of( versionDTO ) );
+        when( versionService.save( any( VersionDTO.class ) ) ).then( AdditionalAnswers.returnsFirstArg() );
+        when( vocabularyService.findOne( VOCABULARY_ID ) ).thenReturn( Optional.of( vocabulary( versionDTO ) ) );
+
+        CodeSnippet snippet = codeSnippet( ActionType.CREATE_CODE, 100L );
+        snippet.setNotation( "C" );
+        snippet.setTitle( "Third" );
+
+        mockMvc.perform( post( "/api/editors/codes/batch" ).contentType( MediaType.APPLICATION_JSON )
+                .content( json( new CodeSnippet[]{ snippet } ) ) )
+            .andExpect( status().isOk() );
+
+        assertThat( versionDTO.getConcepts() ).extracting( ConceptDTO::getNotation, ConceptDTO::getPosition )
+            .containsExactly( tuple( "A", 0 ), tuple( "B", 1 ), tuple( "C", 2 ) );
     }
 
     @Test
