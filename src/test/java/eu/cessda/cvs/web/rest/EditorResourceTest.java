@@ -233,7 +233,7 @@ class EditorResourceTest {
     }
 
     // ------------------------------------------------------------------------------------------
-    // GET /editors/vocabularies/{notation}/{versionNumber}
+    // Tests of the GET /editors/vocabularies/{notation}/{versionNumber} endpoint
     // ------------------------------------------------------------------------------------------
 
     @Test
@@ -333,7 +333,7 @@ class EditorResourceTest {
     }
 
     // ------------------------------------------------------------------------------------------
-    // POST /editors/vocabularies/new-version/{id}
+    // Tests of the POST /editors/vocabularies/new-version/{id} endpoint
     // ------------------------------------------------------------------------------------------
 
     @Test
@@ -372,7 +372,7 @@ class EditorResourceTest {
     }
 
     // ------------------------------------------------------------------------------------------
-    // PUT /editors/vocabularies/forward-status
+    // Tests of the PUT /editors/vocabularies/forward-status endpoint
     // ------------------------------------------------------------------------------------------
 
     @ParameterizedTest
@@ -421,7 +421,7 @@ class EditorResourceTest {
     }
 
     // ------------------------------------------------------------------------------------------
-    // GET /editors/vocabularies/compare-prev/{id}
+    // Tests of the GET /editors/vocabularies/compare-prev/{id} endpoint
     // ------------------------------------------------------------------------------------------
 
     @Test
@@ -453,7 +453,7 @@ class EditorResourceTest {
     }
 
     // ------------------------------------------------------------------------------------------
-    // DELETE /editors/vocabularies/{id}
+    // Tests of the DELETE /editors/vocabularies/{id} endpoint
     // ------------------------------------------------------------------------------------------
 
     @Test
@@ -720,7 +720,7 @@ class EditorResourceTest {
     }
 
     // ------------------------------------------------------------------------------------------
-    // POST /editors/codes/batch
+    // Tests of the POST /editors/codes/batch endpoint
     // ------------------------------------------------------------------------------------------
 
     @Test
@@ -893,7 +893,7 @@ class EditorResourceTest {
     }
 
     // ------------------------------------------------------------------------------------------
-    // POST /editors/codes/deprecate
+    // Tests of the POST /editors/codes/deprecate endpoint
     // ------------------------------------------------------------------------------------------
 
     @Test
@@ -1060,7 +1060,7 @@ class EditorResourceTest {
     }
 
     // ------------------------------------------------------------------------------------------
-    // DELETE /editors/codes/{id}
+    // Tests of the DELETE /editors/codes/{id} endpoint
     // ------------------------------------------------------------------------------------------
 
     @Test
@@ -1115,7 +1115,7 @@ class EditorResourceTest {
     }
 
     // ------------------------------------------------------------------------------------------
-    // POST /editors/codes/reorder
+    // Tests of the POST /editors/codes/reorder endpoint
     // ------------------------------------------------------------------------------------------
 
     @Test
@@ -1183,7 +1183,7 @@ class EditorResourceTest {
     }
 
     // ------------------------------------------------------------------------------------------
-    // GET /editors/download/{cv}/{v}
+    // Tests of the GET /editors/download/{cv}/{v} endpoint
     // ------------------------------------------------------------------------------------------
 
     @Test

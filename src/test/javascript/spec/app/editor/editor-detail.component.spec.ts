@@ -865,7 +865,7 @@ describe('Component Tests', () => {
         it('should stop listening when destroyed', () => {
           comp.ngOnDestroy();
 
-          expect(subscriptions.length).toBe(2);
+          expect(subscriptions).toHaveLength(2);
           expect(subscriptions.every(s => s.closed)).toBe(true);
         });
       });

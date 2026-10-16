@@ -53,6 +53,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
@@ -310,7 +311,8 @@ class VocabularyServiceImplWorkflowTest
     {
         when( vocabularyRepository.findById( VOCABULARY_ID ) ).thenReturn( Optional.empty() );
 
-        assertThatThrownBy( () -> vocabularyService.saveVocabulary( vocabularySnippet( ActionType.EDIT_CV, 100L ) ) )
+        VocabularySnippet snippet = vocabularySnippet( ActionType.EDIT_CV, 100L );
+        assertThatThrownBy( () -> vocabularyService.saveVocabulary( snippet ) )
             .isInstanceOf( EntityNotFoundException.class );
         verify( vocabularyRepository, never() ).save( any() );
     }
@@ -320,7 +322,8 @@ class VocabularyServiceImplWorkflowTest
     {
         givenStoredVocabulary( vocabulary( "1.0", version( 100L, ItemType.SL, SOURCE_LANGUAGE, Status.DRAFT, "1.0" ) ) );
 
-        assertThatThrownBy( () -> vocabularyService.saveVocabulary( vocabularySnippet( ActionType.EDIT_DDI_CV, 999L ) ) )
+        VocabularySnippet snippet = vocabularySnippet( ActionType.EDIT_DDI_CV, 999L );
+        assertThatThrownBy( () -> vocabularyService.saveVocabulary( snippet ) )
             .isInstanceOf( EntityNotFoundException.class )
             .hasMessageContaining( "999" );
         verify( vocabularyRepository, never() ).save( any() );
@@ -329,7 +332,8 @@ class VocabularyServiceImplWorkflowTest
     @Test
     void saveVocabularyShouldRejectUnsupportedActionType()
     {
-        assertThatThrownBy( () -> vocabularyService.saveVocabulary( vocabularySnippet( ActionType.DELETE_CV, 100L ) ) )
+        VocabularySnippet snippet = vocabularySnippet( ActionType.DELETE_CV, 100L );
+        assertThatThrownBy( () -> vocabularyService.saveVocabulary( snippet ) )
             .isInstanceOf( IllegalActionTypeException.class );
         verifyNoInteractions( vocabularyRepository );
     }
@@ -339,7 +343,8 @@ class VocabularyServiceImplWorkflowTest
     {
         authenticateWithAgencyRole( AgencyRole.VIEW, SOURCE_LANGUAGE );
 
-        assertThatThrownBy( () -> vocabularyService.saveVocabulary( vocabularySnippet( ActionType.EDIT_CV, 100L ) ) )
+        VocabularySnippet snippet = vocabularySnippet( ActionType.EDIT_CV, 100L );
+        assertThatThrownBy( () -> vocabularyService.saveVocabulary( snippet ) )
             .isInstanceOf( InsufficientVocabularyAuthorityException.class );
         verifyNoInteractions( vocabularyRepository, vocabularyChangeService );
     }
@@ -535,7 +540,8 @@ class VocabularyServiceImplWorkflowTest
     {
         when( versionService.findOne( 100L ) ).thenReturn( Optional.empty() );
 
-        assertThatThrownBy( () -> vocabularyService.saveCode( codeSnippet( ActionType.CREATE_CODE, 100L ) ) )
+        CodeSnippet snippet = codeSnippet( ActionType.CREATE_CODE, 100L );
+        assertThatThrownBy( () -> vocabularyService.saveCode( snippet ) )
             .isInstanceOf( EntityNotFoundException.class );
         verify( versionService, never() ).save( any() );
     }
@@ -546,7 +552,8 @@ class VocabularyServiceImplWorkflowTest
         when( versionService.findOne( 100L ) ).thenReturn( Optional.of( version( 100L, ItemType.SL, SOURCE_LANGUAGE, Status.DRAFT, "1.0" ) ) );
         when( vocabularyRepository.findById( VOCABULARY_ID ) ).thenReturn( Optional.empty() );
 
-        assertThatThrownBy( () -> vocabularyService.saveCode( codeSnippet( ActionType.CREATE_CODE, 100L ) ) )
+        CodeSnippet snippet = codeSnippet( ActionType.CREATE_CODE, 100L );
+        assertThatThrownBy( () -> vocabularyService.saveCode( snippet ) )
             .isInstanceOf( EntityNotFoundException.class );
         verify( versionService, never() ).save( any() );
     }
@@ -590,7 +597,8 @@ class VocabularyServiceImplWorkflowTest
         when( versionService.findOne( 100L ) ).thenReturn( Optional.of( versionDTO ) );
         givenStoredVocabulary( vocabulary( "1.0", versionDTO ) );
 
-        assertThatThrownBy( () -> vocabularyService.saveCode( codeSnippet( ActionType.REORDER_CODE, 100L ) ) )
+        CodeSnippet snippet = codeSnippet( ActionType.REORDER_CODE, 100L );
+        assertThatThrownBy( () -> vocabularyService.saveCode( snippet ) )
             .isInstanceOf( IllegalActionTypeException.class );
         verify( versionService, never() ).save( any() );
     }
@@ -1051,15 +1059,16 @@ class VocabularyServiceImplWorkflowTest
         Path file = vocabularyService.generateVocabularyFileDownload( NOTATION, VocabularyServiceImpl.ALL, null,
             ExportService.DownloadType.SKOS, "https://example", false );
 
-        assertThat( file.getFileName().toString() ).isEqualTo( NOTATION + "-all.rdf" );
+        assertThat( file.getFileName() ).hasToString( NOTATION + "-all.rdf" );
         Map<String, Object> map = captureExportMap( "export-ddi", ExportService.DownloadType.SKOS );
-        // without an SL URI the version URI is used as document ID
-        assertThat( map ).containsEntry( "docId", "https://vocabularies.example/TestCV?v=1.0" );
-        // without a publication date the year of the last modification is used
-        assertThat( map ).containsEntry( "year", 2019 );
-        assertThat( map ).containsEntry( "baseUrl", "https://example" );
-        // SKOS contains only the latest version of each language
-        assertThat( map ).containsEntry( "docVersion", sl.getNumber().toString() );
+        assertThat( map )
+            // without an SL URI the version URI is used as document ID
+            .containsEntry( "docId", "https://vocabularies.example/TestCV?v=1.0" )
+            // without a publication date the year of the last modification is used
+            .containsEntry( "year", 2019 )
+            .containsEntry( "baseUrl", "https://example" )
+            // SKOS contains only the latest version of each language
+            .containsEntry( "docVersion", sl.getNumber().toString() );
         assertThat( new ArrayList<Object>( (Collection<?>) map.get( "versions" ) ) ).containsExactly( sl );
     }
 
@@ -1071,7 +1080,7 @@ class VocabularyServiceImplWorkflowTest
         sl.setCanonicalUri( "urn:ddi:int.ddi.cv:TestCV:1.0" );
         VocabularyDTO vocabularyDTO = vocabulary( "1.0", sl );
         vocabularyDTO.setAgencyName( "Agency" );
-        vocabularyDTO.setPublicationDate( LocalDate.of( 2021, 3, 1 ) );
+        vocabularyDTO.setPublicationDate( LocalDate.of( 2021, Month.MARCH, 1 ) );
         givenVocabularyByNotation( vocabularyDTO );
         // the agency logo is taken from the agency and embedded as a data URI
         when( agencyRepository.getReferenceById( AGENCY_ID ) ).thenReturn( agency( "Agency" ).logopath( "logo.png" ) );
@@ -1082,8 +1091,9 @@ class VocabularyServiceImplWorkflowTest
             ExportService.DownloadType.PDF, "https://example", false );
 
         Map<String, Object> map = captureExportMap( "export", ExportService.DownloadType.PDF );
-        assertThat( map ).containsEntry( "cvUrn", "urn:ddi:int.ddi.cv:TestCV" );
-        assertThat( map ).containsEntry( "year", 2021 );
+        assertThat( map )
+            .containsEntry( "cvUrn", "urn:ddi:int.ddi.cv:TestCV" )
+            .containsEntry( "year", 2021 );
         assertThat( ( (AgencyDTO) map.get( "agency" ) ).getLogo() ).startsWith( "data:" ).endsWith( ";base64,AQID" );
         // a missing licence logo does not fail the export
         assertThat( sl.getLicenseLogo() ).isNull();
@@ -1099,8 +1109,7 @@ class VocabularyServiceImplWorkflowTest
         Path file = vocabularyService.generateVocabularyFileDownload( NOTATION, "1.0", "en-1.0",
             ExportService.DownloadType.PDF, "https://example", true );
 
-        assertThat( file ).isEqualTo( existing );
-        assertThat( file ).hasContent( "cached" );
+        assertThat( file ).isEqualTo( existing ).hasContent( "cached" );
         verifyNoInteractions( exportService, vocabularyRepository );
     }
 
@@ -1243,12 +1252,14 @@ class VocabularyServiceImplWorkflowTest
     void forwardStatusShouldReturnNotFoundForUnknownVocabularyOrVersion()
     {
         when( vocabularyRepository.findById( VOCABULARY_ID ) ).thenReturn( Optional.empty() );
-        assertThatThrownBy( () -> vocabularyService.forwardStatus( vocabularySnippet( ActionType.FORWARD_CV_SL_STATUS_REVIEW, 100L ) ) )
+        VocabularySnippet unknownVocabulary = vocabularySnippet( ActionType.FORWARD_CV_SL_STATUS_REVIEW, 100L );
+        assertThatThrownBy( () -> vocabularyService.forwardStatus( unknownVocabulary ) )
             .isInstanceOf( NotFoundException.class )
             .hasMessageContaining( "VocabularyDTO" );
 
         givenStoredVocabulary( vocabulary( "1.0", version( 100L, ItemType.SL, SOURCE_LANGUAGE, Status.DRAFT, "1.0" ) ) );
-        assertThatThrownBy( () -> vocabularyService.forwardStatus( vocabularySnippet( ActionType.FORWARD_CV_SL_STATUS_REVIEW, 999L ) ) )
+        VocabularySnippet unknownVersion = vocabularySnippet( ActionType.FORWARD_CV_SL_STATUS_REVIEW, 999L );
+        assertThatThrownBy( () -> vocabularyService.forwardStatus( unknownVersion ) )
             .isInstanceOf( NotFoundException.class )
             .hasMessageContaining( "VersionDTO" );
         verify( vocabularyRepository, never() ).save( any() );
@@ -1260,7 +1271,8 @@ class VocabularyServiceImplWorkflowTest
         VersionDTO versionDTO = version( 100L, ItemType.SL, SOURCE_LANGUAGE, Status.DRAFT, "1.0" );
         givenStoredVocabulary( vocabulary( "1.0", versionDTO ) );
 
-        assertThatThrownBy( () -> vocabularyService.forwardStatus( vocabularySnippet( ActionType.EDIT_CV, 100L ) ) )
+        VocabularySnippet snippet = vocabularySnippet( ActionType.EDIT_CV, 100L );
+        assertThatThrownBy( () -> vocabularyService.forwardStatus( snippet ) )
             .isInstanceOf( IllegalActionTypeException.class );
         assertThat( versionDTO.getStatus() ).isEqualTo( Status.DRAFT );
         verify( vocabularyRepository, never() ).save( any() );
@@ -1271,7 +1283,8 @@ class VocabularyServiceImplWorkflowTest
     {
         authenticateWithAgencyRole( AgencyRole.ADMIN_TL, SOURCE_LANGUAGE );
 
-        assertThatThrownBy( () -> vocabularyService.forwardStatus( vocabularySnippet( ActionType.FORWARD_CV_SL_STATUS_PUBLISH, 100L ) ) )
+        VocabularySnippet snippet = vocabularySnippet( ActionType.FORWARD_CV_SL_STATUS_PUBLISH, 100L );
+        assertThatThrownBy( () -> vocabularyService.forwardStatus( snippet ) )
             .isInstanceOf( InsufficientVocabularyAuthorityException.class );
         verifyNoInteractions( vocabularyRepository, versionService );
     }
