@@ -58,6 +58,7 @@ import java.nio.file.Path;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
@@ -855,8 +856,8 @@ class EditorResourceTest {
             .andExpect( status().isOk() )
             .andExpect( jsonPath( "$", hasSize( 2 ) ) );
 
-        assertThat( versionDTO.getConcepts() ).extracting( ConceptDTO::getNotation ).containsExactly( "A", "B" );
-        assertThat( versionDTO.getConcepts() ).extracting( ConceptDTO::getPosition ).containsExactly( 0, 1 );
+        assertThat( versionDTO.getConcepts() ).extracting( ConceptDTO::getNotation, ConceptDTO::getPosition )
+            .containsExactly( tuple( "A", 0 ), tuple( "B", 1 ) );
     }
 
     @Test
@@ -876,8 +877,8 @@ class EditorResourceTest {
                 .content( json( new CodeSnippet[]{ snippet } ) ) )
             .andExpect( status().isOk() );
 
-        assertThat( versionDTO.getConcepts() ).extracting( ConceptDTO::getNotation ).containsExactly( "A", "B", "C" );
-        assertThat( versionDTO.getConcepts() ).extracting( ConceptDTO::getPosition ).containsExactly( 0, 1, 2 );
+        assertThat( versionDTO.getConcepts() ).extracting( ConceptDTO::getNotation, ConceptDTO::getPosition )
+            .containsExactly( tuple( "A", 0 ), tuple( "B", 1 ), tuple( "C", 2 ) );
     }
 
     @Test
