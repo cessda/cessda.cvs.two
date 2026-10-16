@@ -693,7 +693,7 @@ public class EditorResource {
                 recordCodeDeprecatedAction(conceptNext, versionDTO, replacingConceptDTO);
             }
             // deprecate any child if exist
-            if (conceptNext.getParent() != null && conceptNext.getParent().startsWith(conceptDTO.getNotation())) {
+            if (VocabularyUtils.isDescendantOf(conceptNext.getParent(), conceptDTO.getNotation())) {
                 conceptNext.setDeprecated(true);
 
                 // store changes if not initial version
@@ -751,7 +751,7 @@ public class EditorResource {
         Iterator<ConceptDTO> conceptIterator = versionDTO.getConcepts().iterator();
         while (conceptIterator.hasNext()) {
             ConceptDTO conceptNext = conceptIterator.next();
-            if (conceptNext.getParent() != null && conceptNext.getParent().startsWith( conceptDTO.getNotation())){
+            if (VocabularyUtils.isDescendantOf(conceptNext.getParent(), conceptDTO.getNotation())){
                 conceptIterator.remove();
 
                 // store changes if not initial version
