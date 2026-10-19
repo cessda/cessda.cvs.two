@@ -14,6 +14,47 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
+## [3.7.0] - 2026-10-21
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.23474913.svg)](https://doi.org/10.5281/zenodo.23474913)
+
+### Added
+
+- [#370](https://github.com/cessda/cessda.cvs.two/issues/370) Added frontend unit tests for the editor, the public pages and the authorisation service
+- [#370](https://github.com/cessda/cessda.cvs.two/issues/370) Added assertions on the requests the editor service sends, clear three other SonarQube findings
+- [#370](https://github.com/cessda/cessda.cvs.two/issues/370) Added frontend unit tests for maintenance, the custom pages and metadata items
+- [#370](https://github.com/cessda/cessda.cvs.two/issues/370) Grouped the metadata item validation tests into parameterised tests
+- [#370](https://github.com/cessda/cessda.cvs.two/issues/370) Added frontend unit tests for the admin licence and resolver screens
+- [#370](https://github.com/cessda/cessda.cvs.two/issues/370) Parameterised the metadata item identifier validation tests
+- [PR-1135](https://github.com/cessda/cessda.cvs.two/pull/1335) Implemented a new `VersionNumber` parser
+
+### Changed
+
+- [#1176](https://github.com/cessda/cessda.cvs.two/issues/1176) Removed `ng-jhipser`, replaced functionality with own code
+- [#1242](https://github.com/cessda/cessda.cvs.two/issues/1242) Redirect clients using `application/json` and other media types to the appropriate REST API endpoints when using the URN resolver
+- [#1377](https://github.com/cessda/cessda.cvs.two/issues/1377) Document the Elasticsearch `analysis-icu` plugin requirement
+- [#1392](https://github.com/cessda/cessda.cvs.two/issues/1392) Update Elasticsearch in the `elasticsearch.yml` Docker Compose file
+- [#1459](https://github.com/cessda/cessda.cvs.two/issues/1459) Updated Matomo analytics endpoint
+- [#1479](https://github.com/cessda/cessda.cvs.two/issues/1479) Removed the unreachable selected version fallback in the editor
+- [PR-1236](https://github.com/cessda/cessda.cvs.two/pull/1236) Updated Angular to version 21
+- [PR-1135](https://github.com/cessda/cessda.cvs.two/pull/1335) Updated REST endpoint documentation
+- [PR-1135](https://github.com/cessda/cessda.cvs.two/pull/1335) Changed `VersionUtils.splitLanguageVersion()` to return a `LanguageVersion` object, rather than a `String`
+
+### Fixed
+
+- [#283](https://github.com/cessda/cessda.cvs.two/issues/283) Fixed issues identified by SonarQube static analysis
+- [#821](https://github.com/cessda/cessda.cvs.two/issues/821) Fixed not searching from the first page when starting a new search, fixed not applying the language filter
+- [#1147](https://github.com/cessda/cessda.cvs.two/issues/1147) Undo publication date update for already published TLs in the bundle
+- [#1218](https://github.com/cessda/cessda.cvs.two/issues/1218) Fixed user management sometimes resetting to the first page
+- [#1403](https://github.com/cessda/cessda.cvs.two/issues/1402) Fixed browsing a vocabulary returning 500
+- [#1406](https://github.com/cessda/cessda.cvs.two/issues/1406) Fixed tests failing if `npm run build-prod` has not been run
+- [#1411](https://github.com/cessda/cessda.cvs.two/issues/1411) Fixed administrators being unable to create a new user
+- [#1430](https://github.com/cessda/cessda.cvs.two/issues/1430) Count frontend coverage by statement, cover the route tables and the editor import preview
+- [#1434](https://github.com/cessda/cessda.cvs.two/issues/1434) Restored the Next button in the CSV import SELECT step
+- [#1455](https://github.com/cessda/cessda.cvs.two/issues/1455) Fixed search not finding vocabularies by their codes
+- [#1457](https://github.com/cessda/cessda.cvs.two/issues/1457) Fixed search not finding vocabularies until a whole word is typed, fixed not finding any vocabularies by notation if they contained special characters
+- [#1478](https://github.com/cessda/cessda.cvs.two/issues/1478) Fixed batch code import failing for an empty version, fixed misplacing codes without a position
+
 ## [3.6.1] - 2025-12-16
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17949337.svg)](https://doi.org/10.5281/zenodo.17949337)
@@ -490,6 +531,7 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Swagger UI for the APIs.
 - New set of /v2 REST APIs for searching and exporting CVs to several formats (PDF, HTML, DOCX)
 
+[3.7.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.7.0
 [3.6.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.6.1
 [3.6.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.6.0
 [3.5.2]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.5.2
