@@ -50,4 +50,24 @@ class VocabularyUtilsTest
 		final String uri6 = VocabularyUtils.generateUri( codeUri2, false, notation, version, null, code, null, agency );
 		assertThat( uri6 ).isEqualTo( "https://vocabularies.cessda.eu/vocabulary/%s_%s/%s", notation, code, version );
 	}
+
+	@Test
+	void shouldMatchOnlyRealDescendants()
+	{
+		assertThat( VocabularyUtils.isDescendantOf( "A", "A" ) ).isTrue();
+		assertThat( VocabularyUtils.isDescendantOf( "A.1", "A" ) ).isTrue();
+		assertThat( VocabularyUtils.isDescendantOf( "AB", "A" ) ).isFalse();
+		assertThat( VocabularyUtils.isDescendantOf( "AB.1", "A" ) ).isFalse();
+		assertThat( VocabularyUtils.isDescendantOf( "B.A", "A" ) ).isFalse();
+		assertThat( VocabularyUtils.isDescendantOf( null, "A" ) ).isFalse();
+	}
+
+	@Test
+	void shouldReplaceOnlyTheLeadingAncestorNotation()
+	{
+		assertThat( VocabularyUtils.replaceAncestorNotation( "A", "A", "C" ) ).isEqualTo( "C" );
+		assertThat( VocabularyUtils.replaceAncestorNotation( "A.AA", "A", "C" ) ).isEqualTo( "C.AA" );
+		assertThat( VocabularyUtils.replaceAncestorNotation( "A.AA.A", "A", "C" ) ).isEqualTo( "C.AA.A" );
+		assertThat( VocabularyUtils.replaceAncestorNotation( "AB.1", "A", "C" ) ).isEqualTo( "AB.1" );
+	}
 }

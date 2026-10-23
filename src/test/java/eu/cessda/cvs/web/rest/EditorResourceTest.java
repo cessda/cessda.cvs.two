@@ -1065,6 +1065,35 @@ class EditorResourceTest {
     }
 
     @Test
+    void deprecateCodeShouldNotDeprecateCodesWhoseNotationOnlyStartsTheSame() throws Exception {
+        VersionDTO versionDTO = version( 200L, ItemType.SL, SOURCE_LANGUAGE, Status.DRAFT, "1.1" );
+        versionDTO.setInitialVersion( 100L );
+        ConceptDTO conceptA = concept( 1000L, 200L, "A", null, 0 );
+        ConceptDTO childA1 = concept( 1001L, 200L, "A.1", "A", 1 );
+        ConceptDTO conceptAb = concept( 1002L, 200L, "AB", null, 2 );
+        ConceptDTO childAb1 = concept( 1003L, 200L, "AB.1", "AB", 3 );
+        versionDTO.addConcept( conceptA );
+        versionDTO.addConcept( childA1 );
+        versionDTO.addConcept( conceptAb );
+        versionDTO.addConcept( childAb1 );
+        VocabularyDTO vocabularyDTO = vocabulary( versionDTO );
+
+        CodeSnippet snippet = codeSnippet( ActionType.DEPRECATE_CODE, 200L );
+        snippet.setConceptId( 1000L );
+        when( conceptService.findOne( 1000L ) ).thenReturn( Optional.of( concept( 1000L, 200L, "A", null, 0 ) ) );
+        when( versionService.findOne( 200L ) ).thenReturn( Optional.of( versionDTO ) );
+        when( vocabularyService.findOne( VOCABULARY_ID ) ).thenReturn( Optional.of( vocabularyDTO ) );
+
+        mockMvc.perform( post( "/api/editors/codes/deprecate" ).contentType( MediaType.APPLICATION_JSON ).content( json( snippet ) ) )
+            .andExpect( status().isNoContent() );
+
+        assertThat( conceptA.getDeprecated() ).isTrue();
+        assertThat( childA1.getDeprecated() ).isTrue();
+        assertThat( conceptAb.getDeprecated() ).isFalse();
+        assertThat( childAb1.getDeprecated() ).isFalse();
+    }
+
+    @Test
     void deprecateCodeShouldIgnoreNegativeReplacingConceptId() throws Exception {
         VersionDTO versionDTO = version( 100L, ItemType.SL, SOURCE_LANGUAGE, Status.DRAFT, "1.0" );
         ConceptDTO conceptA = concept( 1000L, 100L, "A", null, 0 );
@@ -1157,6 +1186,25 @@ class EditorResourceTest {
         assertThat( changeCaptor.getAllValues() ).extracting( VocabularyChangeDTO::getDescription ).containsExactlyInAnyOrder( "A", "A.1" );
         verify( versionService ).save( versionDTO );
         verify( vocabularyService ).indexEditor( vocabularyDTO );
+    }
+
+    @Test
+    void deleteCodeShouldNotRemoveCodesWhoseNotationOnlyStartsTheSame() throws Exception {
+        VersionDTO versionDTO = version( 200L, ItemType.SL, SOURCE_LANGUAGE, Status.DRAFT, "1.1" );
+        versionDTO.setInitialVersion( 100L );
+        versionDTO.addConcept( concept( 1000L, 200L, "A", null, 0 ) );
+        versionDTO.addConcept( concept( 1001L, 200L, "A.1", "A", 1 ) );
+        versionDTO.addConcept( concept( 1002L, 200L, "AB", null, 2 ) );
+        versionDTO.addConcept( concept( 1003L, 200L, "AB.1", "AB", 3 ) );
+        VocabularyDTO vocabularyDTO = vocabulary( versionDTO );
+        when( conceptService.findOne( 1000L ) ).thenReturn( Optional.of( concept( 1000L, 200L, "A", null, 0 ) ) );
+        when( versionService.findOne( 200L ) ).thenReturn( Optional.of( versionDTO ) );
+        when( vocabularyService.findOne( VOCABULARY_ID ) ).thenReturn( Optional.of( vocabularyDTO ) );
+
+        mockMvc.perform( delete( "/api/editors/codes/{id}", 1000L ) )
+            .andExpect( status().isNoContent() );
+
+        assertThat( versionDTO.getConcepts() ).extracting( ConceptDTO::getNotation ).containsExactly( "AB", "AB.1" );
     }
 
     // ------------------------------------------------------------------------------------------

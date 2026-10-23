@@ -314,6 +314,36 @@ public final class VocabularyUtils
 		return generatedUri;
 	}
 
+	/**
+	 * Check whether a code is a descendant of another code. The notation of a child code is the notation
+	 * of its parent followed by {@code "."} and its own code, e.g. {@code A.1} is a child of {@code A}.
+	 *
+	 * @param parent   the parent notation of the code to check, may be {@code null}.
+	 * @param notation the notation of the possible ancestor.
+	 * @return {@code true} if the code is a child or a further descendant of {@code notation}.
+	 */
+	public static boolean isDescendantOf( String parent, String notation )
+	{
+		return parent != null && ( parent.equals( notation ) || parent.startsWith( notation + "." ) );
+	}
+
+	/**
+	 * Replace the notation of an ancestor at the start of a notation or parent notation, as needed when the
+	 * ancestor is renamed. Values that do not start with the ancestor notation are returned unchanged.
+	 *
+	 * @param value       a notation or parent notation.
+	 * @param oldNotation the notation of the ancestor before the rename.
+	 * @param newNotation the notation of the ancestor after the rename.
+	 */
+	public static String replaceAncestorNotation( String value, String oldNotation, String newNotation )
+	{
+		if ( value.equals( oldNotation ) || value.startsWith( oldNotation + "." ) )
+		{
+			return newNotation + value.substring( oldNotation.length() );
+		}
+		return value;
+	}
+
 	public static String toStrictXhtml( String text )
 	{
 		if ( text == null )
