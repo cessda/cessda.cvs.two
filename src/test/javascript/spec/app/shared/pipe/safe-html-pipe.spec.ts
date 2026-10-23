@@ -42,4 +42,8 @@ describe('SafeHtmlPipe', () => {
 
     expect(sanitizer.sanitize(SecurityContext.HTML, safe)).toContain('style="color: red"');
   });
+
+  it('should pass an empty string through', () => {
+    expect(sanitizer.sanitize(SecurityContext.HTML, pipe.transform(''))).toBe('');
+  });
 });
