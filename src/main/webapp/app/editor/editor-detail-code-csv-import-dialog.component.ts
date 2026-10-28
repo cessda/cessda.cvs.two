@@ -164,7 +164,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
       let matchedValue;
       // Once we have eliminated the delimiter, check to see
       // what kind of value was captured (quoted or unquoted):
-      if (matches[2]) {
+      if (matches[2] !== undefined) {
         // found quoted value. unescape any double quotes.
         matchedValue = matches[2].replaceAll('""', '"');
       } else {
@@ -242,13 +242,10 @@ export class EditorDetailCodeCsvImportDialogComponent {
 
           // calculate conceptPosition as last child of parent
           const conceptChildren = this.concepts.filter(c => c.parent === parentConcept.notation);
-          if (conceptChildren.length === 0) {
-            conceptPosition = parentConcept.position || 1;
-          } else {
-            conceptPosition = this.findLastChildForPosition(parentConcept).position || 1;
-            // check for equal or larger position if exist and increment to normalize
-            this.concepts.filter(c => c.position || 0 >= conceptPosition).forEach(c => (c.position = c.position || 1));
-          }
+          const lastConcept = conceptChildren.length === 0 ? parentConcept : this.findLastChildForPosition(parentConcept);
+          conceptPosition = (lastConcept.position ?? 0) + 1;
+          // move the concepts at or after the insertion point one position down
+          this.concepts.filter(c => (c.position ?? 0) >= conceptPosition).forEach(c => (c.position = (c.position ?? 0) + 1));
         }
         const newConcept: Concept = {
           notation: this.csvContents[i][0],
