@@ -434,3 +434,19 @@ describe('VocabularyUtil version of the selected language', () => {
     expect(VocabularyUtil.getVersionByLangAndNumber(vocab)).toBe(tlVersion);
   });
 });
+
+describe('VocabularyUtil two part version numbers', () => {
+  it('should read a missing patch as zero', () => {
+    expect(VocabularyUtil.parseVersionNumber('2.0').patch).toBe(0);
+    expect(VocabularyUtil.getTlVersionNumber('2.0')).toBe(0);
+  });
+
+  it('should give the source language version number in three parts', () => {
+    expect(VocabularyUtil.getSlVersionNumber('2.0')).toBe('2.0.0');
+  });
+
+  it('should compare a two part source language version as equal to a version sharing its major and minor', () => {
+    expect(VocabularyUtil.compareSlVersionNumbers('2.0', '2.0.3')).toBe(0);
+    expect(VocabularyUtil.compareSlVersionNumbers('2.0.3', '2.0')).toBe(0);
+  });
+});

@@ -161,7 +161,7 @@ export default class VocabularyUtil {
     const regex = /^([0-9]+)\.([0-9]+)(?:\.([0-9]+))?/g;
     const matches = regex.exec(vnumber);
     if (matches) {
-      return new VersionNumber(Number(matches[1]), Number(matches[2]), Number(matches[3]));
+      return new VersionNumber(Number(matches[1]), Number(matches[2]), Number(matches[3] ?? 0));
     }
     throw new Error('Invalid version number format');
   }
