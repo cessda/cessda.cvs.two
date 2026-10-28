@@ -47,7 +47,7 @@
     "@angular-eslint/eslint-plugin-template": "21.4.0",
     "@angular-eslint/schematics": "21.4.0",
     "@angular-eslint/template-parser": "21.4.0",
-    "@angular/build": "21.2.28",
+    "@angular/build": "22.2.4",
     "@angular/cli": "21.2.28",
     "@angular/compiler-cli": "21.2.25",
     "@types/babel__traverse": "7.18.1",
