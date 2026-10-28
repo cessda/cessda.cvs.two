@@ -630,9 +630,9 @@ public class VocabularyServiceImpl implements VocabularyService
 
             // check if this concept influence parent and child concepts
             for ( ConceptDTO next : versionDTO.getConcepts() ) {
-                if ( next.getParent() != null && next.getParent().startsWith( conceptDTO.getNotation() ) ) {
-                    next.setParent( next.getParent().replace( conceptDTO.getNotation(), codeSnippet.getNotation() ) );
-                    next.setNotation( next.getNotation().replace( conceptDTO.getNotation(), codeSnippet.getNotation() ) );
+                if ( VocabularyUtils.isDescendantOf( next.getParent(), conceptDTO.getNotation() ) ) {
+                    next.setParent( VocabularyUtils.replaceAncestorNotation( next.getParent(), conceptDTO.getNotation(), codeSnippet.getNotation() ) );
+                    next.setNotation( VocabularyUtils.replaceAncestorNotation( next.getNotation(), conceptDTO.getNotation(), codeSnippet.getNotation() ) );
                 }
             }
 

@@ -231,6 +231,16 @@ export default class VocabularyUtil {
     return concepts.filter(c => c.parent === notation).length > 0;
   }
 
+  /**
+   * Check whether a code is a descendant of another code. The notation of a child code is the notation
+   * of its parent followed by '.' and its own code, e.g. 'A.1' is a child of 'A'.
+   * @param parent the parent notation of the code to check
+   * @param notation the notation of the possible ancestor
+   */
+  static isDescendantOf(parent: string | null | undefined, notation: string): boolean {
+    return !!parent && (parent === notation || parent.startsWith(notation + '.'));
+  }
+
   static hasDeprecatedConcepts(concepts: Concept[]): boolean {
     return concepts.filter(c => c.deprecated === true).length > 0;
   }

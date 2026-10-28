@@ -670,6 +670,43 @@ class VocabularyServiceImplWorkflowTest
     }
 
     @Test
+    void editCodeShouldOnlyRenameRealDescendants() throws IllegalActionTypeException
+    {
+        VersionDTO versionDTO = version( 200L, ItemType.SL, SOURCE_LANGUAGE, Status.DRAFT, "1.1" );
+        versionDTO.setInitialVersion( 100L );
+        ConceptDTO conceptA = concept( 1000L, 200L, "A", null, 0 );
+        // the notation of the child repeats the parent notation, which must not be renamed
+        ConceptDTO childAa = concept( 1001L, 200L, "A.AA", "A", 1 );
+        ConceptDTO grandChild = concept( 1002L, 200L, "A.AA.A", "A.AA", 2 );
+        ConceptDTO conceptAb = concept( 1003L, 200L, "AB", null, 3 );
+        ConceptDTO childAb1 = concept( 1004L, 200L, "AB.1", "AB", 4 );
+        versionDTO.addConcept( conceptA );
+        versionDTO.addConcept( childAa );
+        versionDTO.addConcept( grandChild );
+        versionDTO.addConcept( conceptAb );
+        versionDTO.addConcept( childAb1 );
+        when( versionService.findOne( 200L ) ).thenReturn( Optional.of( versionDTO ) );
+        when( versionService.save( any( VersionDTO.class ) ) ).then( AdditionalAnswers.returnsFirstArg() );
+        givenStoredVocabulary( vocabulary( "1.1", versionDTO ) );
+
+        CodeSnippet snippet = codeSnippet( ActionType.EDIT_CODE, 200L );
+        snippet.setConceptId( 1000L );
+        snippet.setNotation( "C" );
+        snippet.setTitle( "Renamed" );
+        snippet.setChangeType( "Code value changed" );
+
+        vocabularyService.saveCode( snippet );
+
+        assertThat( childAa.getNotation() ).isEqualTo( "C.AA" );
+        assertThat( childAa.getParent() ).isEqualTo( "C" );
+        assertThat( grandChild.getNotation() ).isEqualTo( "C.AA.A" );
+        assertThat( grandChild.getParent() ).isEqualTo( "C.AA" );
+        assertThat( conceptAb.getNotation() ).isEqualTo( "AB" );
+        assertThat( childAb1.getNotation() ).isEqualTo( "AB.1" );
+        assertThat( childAb1.getParent() ).isEqualTo( "AB" );
+    }
+
+    @Test
     void editCodeInInitialVersionShouldNotRecordChange() throws IllegalActionTypeException
     {
         VersionDTO versionDTO = version( 100L, ItemType.TL, TARGET_LANGUAGE, Status.DRAFT, "1.0.1" );

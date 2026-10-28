@@ -23,6 +23,7 @@ import { Subscription } from 'rxjs';
 import { EventManager, EventWithContent } from 'app/core/util/event-manager.service';
 import { CodeSnippet } from 'app/shared/model/code-snippet.model';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
+import VocabularyUtil from 'app/shared/util/vocabulary-util';
 
 @Component({
   templateUrl: './editor-detail-code-reorder-dialog.component.html',
@@ -85,7 +86,7 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
     // normalize selected code, so the first selected element is always a root code
     this.conceptsToMove = [
       clonedConcepts.filter(c => c.notation === this.conceptParam.notation)[0],
-      ...clonedConcepts.filter(c => c.parent && c.parent.startsWith(this.conceptParam.notation)),
+      ...clonedConcepts.filter(c => VocabularyUtil.isDescendantOf(c.parent, this.conceptParam.notation)),
     ];
     // normalize selected code/code block
     const baseParent = this.conceptsToMove[0].parent;

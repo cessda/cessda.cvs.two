@@ -316,6 +316,15 @@ describe('VocabularyUtil concepts', () => {
     expect(VocabularyUtil.hasDeprecatedConcepts(concepts)).toBe(true);
     expect(VocabularyUtil.hasDeprecatedConcepts([concepts[0], concepts[1]])).toBe(false);
   });
+
+  it('should treat only codes below a notation as its descendants', () => {
+    expect(VocabularyUtil.isDescendantOf('A', 'A')).toBe(true);
+    expect(VocabularyUtil.isDescendantOf('A.1', 'A')).toBe(true);
+    expect(VocabularyUtil.isDescendantOf('AB', 'A')).toBe(false);
+    expect(VocabularyUtil.isDescendantOf('AB.1', 'A')).toBe(false);
+    expect(VocabularyUtil.isDescendantOf(undefined, 'A')).toBe(false);
+    expect(VocabularyUtil.isDescendantOf(null, 'A')).toBe(false);
+  });
 });
 
 describe('VocabularyUtil languages', () => {
