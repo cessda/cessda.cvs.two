@@ -62,12 +62,9 @@ class VocabularyResourceV2Test {
     private static final String CONTEXT_PATH = "/cvs";
 
     /**
-     * The withdrawn flag of the vocabularies that the published vocabularies endpoint currently lists.
-     * The endpoint is documented to skip withdrawn vocabularies, but its filter keeps only the withdrawn
-     * ones (see {@link #shouldListOnlyVocabulariesThatAreNotWithdrawn()}). The tests of the response shape
-     * therefore use this flag, which has to become {@code FALSE} once the filter is fixed.
+     * The withdrawn flag of the vocabularies that the published vocabularies endpoint lists.
      */
-    private static final Boolean LISTED = Boolean.TRUE;
+    private static final Boolean LISTED = Boolean.FALSE;
 
     private VocabularyService vocabularyService;
     private VocabularyResourceV2 vocabularyResource;
@@ -218,7 +215,6 @@ class VocabularyResourceV2Test {
     }
 
     @Test
-    @Disabled( "The filter keeps only withdrawn vocabularies, see VocabularyResourceV2.getAllVocabularies" )
     void shouldListOnlyVocabulariesThatAreNotWithdrawn() throws Exception {
         when( vocabularyService.findAll() ).thenReturn( List.of(
             vocabulary( AGENCY, "Active", Boolean.FALSE, publishedSlVersion( "Active", "1.0" ) ),
