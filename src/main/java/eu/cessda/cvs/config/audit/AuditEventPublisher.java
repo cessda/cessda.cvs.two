@@ -27,6 +27,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.NonNull;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 @Configuration
 public class AuditEventPublisher implements ApplicationEventPublisherAware  {
@@ -139,7 +140,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                     map.put("agency", agencies);
                 }
                 String authorities = getAuthority(userDTO);
-                if ( !agencies.isEmpty() ) {
+                if ( !authorities.isEmpty() ) {
                     map.put("roles", authorities);
                 }
                 break;
@@ -264,10 +265,10 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             } else {
                 map.put(CV_TITLE, vocabulary.getTitleAll());
             }
-            if (map.get(CV_TITLE_SL) == map.get(CV_TITLE)) {
+            if (Objects.equals(map.get(CV_TITLE_SL), map.get(CV_TITLE))) {
                 map.remove(CV_TITLE_SL);
             }
-            if (map.get(CV_TITLE_TL) == map.get(CV_TITLE)) {
+            if (Objects.equals(map.get(CV_TITLE_TL), map.get(CV_TITLE))) {
                 map.remove(CV_TITLE_TL);
             }
         }
@@ -321,10 +322,10 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
             } else {
                 map.put(CV_TITLE, vocabulary.getTitleAll());
             }
-            if (map.get(CV_TITLE_SL) == map.get(CV_TITLE)) {
+            if (Objects.equals(map.get(CV_TITLE_SL), map.get(CV_TITLE))) {
                 map.remove(CV_TITLE_SL);
             }
-            if (map.get(CV_TITLE_TL) == map.get(CV_TITLE)) {
+            if (Objects.equals(map.get(CV_TITLE_TL), map.get(CV_TITLE))) {
                 map.remove(CV_TITLE_TL);
             }
         }
@@ -455,7 +456,7 @@ public class AuditEventPublisher implements ApplicationEventPublisherAware  {
                        map.put("licence_name", licenceSnippet.getName());
                     }
                     if (licenceSnippet.getAbbr() != null) {
-                      map.put("licence_abbreviation", licenceDTO.getAbbr());
+                      map.put("licence_abbreviation", licenceSnippet.getAbbr());
                     }
                 }
                 break;
