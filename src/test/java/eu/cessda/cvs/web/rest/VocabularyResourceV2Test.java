@@ -25,11 +25,12 @@ import eu.cessda.cvs.service.dto.CodeDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VersionHistoryDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
+import eu.cessda.cvs.service.search.EsFilter;
 import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.utils.VersionNumber;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
@@ -281,7 +282,6 @@ class VocabularyResourceV2Test {
     }
 
     @Test
-    @Disabled( "The published languages are set before clearContent() resets them, see VocabularyResourceV2.searchVocabulariesJson" )
     void shouldReturnOnlyTheRequestedLanguageAsPublishedLanguageWhenSearching() throws Exception {
         mockSearchResult( searchResult() );
 
@@ -291,6 +291,22 @@ class VocabularyResourceV2Test {
                 .accept( MediaType.APPLICATION_JSON ) )
             .andExpect( status().isOk() )
             .andExpect( jsonPath( "$.vocabularies[0].languagesPublished", contains( "de" ) ) );
+    }
+
+    @Test
+    void shouldFilterTheSearchByLanguageWithoutAnAgency() throws Exception {
+        mockSearchResult( searchResult() );
+
+        mockMvc.perform( get( "/v2/search/vocabularies" )
+                .param( "lang", "de" )
+                .accept( MediaType.APPLICATION_JSON ) )
+            .andExpect( status().isOk() );
+
+        ArgumentCaptor<EsQueryResultDetail> esqCaptor = ArgumentCaptor.forClass( EsQueryResultDetail.class );
+        verify( vocabularyService ).search( esqCaptor.capture() );
+        assertThat( esqCaptor.getValue().getEsFilterByField( EsFilter.LANGS_PUB_AGG ) )
+            .map( EsFilter::getValues )
+            .hasValue( List.of( "de" ) );
     }
 
     @Test

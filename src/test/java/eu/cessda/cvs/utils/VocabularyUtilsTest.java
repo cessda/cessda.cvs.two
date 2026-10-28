@@ -15,7 +15,12 @@
  */
 package eu.cessda.cvs.utils;
 
+import eu.cessda.cvs.service.search.EsFilter;
+import eu.cessda.cvs.service.search.EsQueryResultDetail;
+import eu.cessda.cvs.service.search.SearchScope;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,5 +54,15 @@ class VocabularyUtilsTest
 		assertThat( uri5 ).isEqualTo( "https://vocabularies.cessda.eu/vocabulary/%s_%s/%s/%s", notation, code, version, language );
 		final String uri6 = VocabularyUtils.generateUri( codeUri2, false, notation, version, null, code, null, agency );
 		assertThat( uri6 ).isEqualTo( "https://vocabularies.cessda.eu/vocabulary/%s_%s/%s", notation, code, version );
+	}
+
+	@Test
+	void shouldFilterSearchByLanguageWithoutAnAgency()
+	{
+		final EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching( null, null, "de", null, SearchScope.PUBLICATIONSEARCH );
+
+		assertThat( esq.getEsFilterByField( EsFilter.LANGS_PUB_AGG ) ).map( EsFilter::getValues ).hasValue( List.of( "de" ) );
+		assertThat( esq.getEsFilterByField( EsFilter.AGENCY_AGG ) ).map( EsFilter::getValues ).hasValue( List.of() );
+		assertThat( esq.getSortLanguage() ).isEqualTo( "de" );
 	}
 }

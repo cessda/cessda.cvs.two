@@ -154,10 +154,10 @@ public class VocabularyResourceV2 {
             VocabularyDTO.cleanUpContentForApi( vocab );
             // remove other included languages
             if( lang != null ) {
-                vocab.setLanguagesPublished( new HashSet<>(Collections.singletonList(lang)));
                 String titleTemp = vocab.getTitleByLanguage(lang);
                 String defTemp = vocab.getDefinitionByLanguage(lang);
                 vocab.clearContent();
+                vocab.setLanguagesPublished( new HashSet<>(Collections.singletonList(lang)));
                 vocab.setTitleDefinition(titleTemp, defTemp, lang, false);
 
                 for (CodeDTO code : vocab.getCodes()) {
