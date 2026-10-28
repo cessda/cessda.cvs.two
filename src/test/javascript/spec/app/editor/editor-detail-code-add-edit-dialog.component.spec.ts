@@ -13,8 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ComponentFixture, fakeAsync, flush, flushMicrotasks, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { EventManager } from 'app/core/util/event-manager.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -30,8 +30,10 @@ import { EditorService } from 'app/editor/editor.service';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 import { createNewVersion } from 'app/shared/model/version.model';
+import { Concept } from 'app/shared/model/concept.model';
 import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 import { CODE_ALREADY_EXIST_TYPE } from 'app/shared/constants/error.constants';
+import { EditorDetailCvAddEditConfirmModalComponent } from 'app/editor/editor-detail-code-add-edit-confirm.component';
 
 describe('Component Tests', () => {
   describe('Editor Detail Code Add Edit Dialog Component', () => {
@@ -44,11 +46,14 @@ describe('Component Tests', () => {
     let mockAccountService: MockAccountService;
 
     const account = { login: 'admin' } as Account;
+    const modalService = { open: jest.fn() };
 
     beforeEach(waitForAsync(() => {
+      modalService.open.mockReset();
       TestBed.configureTestingModule({
         imports: [CvsTestModule],
         declarations: [EditorDetailCodeAddEditDialogComponent],
+        providers: [{ provide: NgbModal, useValue: modalService }],
       })
         .overrideTemplate(EditorDetailCodeAddEditDialogComponent, '')
         .compileComponents();
@@ -334,6 +339,206 @@ describe('Component Tests', () => {
 
         expect(comp.errorCodeExists).toBe(false);
       }));
+    });
+
+    describe('creating a code next to a selected code', () => {
+      const concepts: Concept[] = [
+        { id: 1, notation: 'A', position: 0 },
+        { id: 2, notation: 'A.X', parent: 'A', position: 1 },
+        { id: 3, notation: 'B', position: 2 },
+      ];
+      let createSpy: jest.SpyInstance;
+
+      const saveNextTo = (conceptParam: Concept, codeInsertMode: string): void => {
+        comp.conceptParam = conceptParam;
+        comp.ngOnInit();
+        comp.codeAddEditForm.patchValue({ notation: 'NEW', title: 'New code', codeInsertMode });
+        comp.save();
+        flush();
+      };
+
+      beforeEach(() => {
+        comp.isNew = true;
+        comp.isSlForm = true;
+        comp.versionParam = { ...comp.versionParam, concepts };
+        createSpy = jest.spyOn(service, 'createCode').mockReturnValue(of({} as never));
+      });
+
+      it('should insert after a root code at the next position', fakeAsync(() => {
+        saveNextTo(concepts[2], 'INSERT_AFTER');
+
+        expect(createSpy).toHaveBeenCalledWith(
+          expect.objectContaining({ notation: 'NEW', parent: undefined, position: 3, insertionRefConceptId: 3, relPosToRefConcept: 1 }),
+        );
+      }));
+
+      it('should insert before a code at its own position', fakeAsync(() => {
+        saveNextTo(concepts[2], 'INSERT_BEFORE');
+
+        expect(createSpy).toHaveBeenCalledWith(
+          expect.objectContaining({ notation: 'NEW', position: 2, insertionRefConceptId: 3, relPosToRefConcept: 0 }),
+        );
+      }));
+
+      it('should insert as a child, prefixing the notation with the selected code', fakeAsync(() => {
+        saveNextTo(concepts[0], 'INSERT_AS_CHILD');
+
+        expect(createSpy).toHaveBeenCalledWith(
+          expect.objectContaining({ notation: 'A.NEW', parent: 'A', position: 1, insertionRefConceptId: 1, changeDesc: 'A.NEW' }),
+        );
+      }));
+
+      it('should insert after a nested code as its sibling', fakeAsync(() => {
+        saveNextTo(concepts[1], 'INSERT_AFTER');
+
+        expect(createSpy).toHaveBeenCalledWith(
+          expect.objectContaining({ notation: 'A.NEW', parent: 'A', position: 2, insertionRefConceptId: 2 }),
+        );
+      }));
+    });
+
+    describe('placing the new code in the tree preview', () => {
+      const concepts: Concept[] = [
+        { id: 1, notation: 'A', position: 0 },
+        { id: 2, notation: 'A.X', parent: 'A', position: 1 },
+        { id: 3, notation: 'B', position: 2 },
+      ];
+
+      beforeEach(() => {
+        comp.isNew = true;
+        comp.isSlForm = true;
+        comp.versionParam = { ...comp.versionParam, concepts };
+      });
+
+      const previewNextTo = (conceptParam: Concept, codeInsertMode: string): void => {
+        comp.conceptParam = conceptParam;
+        comp.ngOnInit();
+        comp.codeAddEditForm.patchValue({ notation: 'NEW', codeInsertMode });
+        comp.updateTreePreview();
+        flush();
+      };
+
+      it('should show a child right below the selected code', fakeAsync(() => {
+        previewNextTo(concepts[0], 'INSERT_AS_CHILD');
+
+        expect(comp.conceptsToPlace).toHaveLength(4);
+        expect(comp.conceptsToPlace[1]).toEqual({ notation: 'A.NEW', parent: 'A', status: 'TO_BE_INSERTED', position: 1 });
+      }));
+
+      it('should show a sibling of a nested code under the same parent', fakeAsync(() => {
+        previewNextTo(concepts[1], 'INSERT_AFTER');
+
+        expect(comp.conceptsToPlace[2]).toEqual({ notation: 'A.NEW', parent: 'A', status: 'TO_BE_INSERTED', position: 2 });
+      }));
+
+      it('should show a code inserted before another one at the position of that code', fakeAsync(() => {
+        previewNextTo(concepts[2], 'INSERT_BEFORE');
+
+        expect(comp.conceptsToPlace[2]).toEqual({ notation: 'NEW', parent: undefined, status: 'TO_BE_INSERTED', position: 2 });
+        expect(comp.conceptsToPlace[3].notation).toBe('B');
+      }));
+
+      it('should leave the list of codes to choose from untouched', fakeAsync(() => {
+        previewNextTo(concepts[0], 'INSERT_AS_CHILD');
+
+        expect(comp.conceptsToPlaceTemp).toHaveLength(3);
+        expect(concepts).toHaveLength(3);
+      }));
+
+      it('should scroll the new code into view once the preview is drawn', fakeAsync(() => {
+        const placeholder = document.createElement('div');
+        placeholder.className = 'to-be-inserted';
+        placeholder.scrollIntoView = jest.fn();
+        document.body.appendChild(placeholder);
+
+        comp.conceptParam = concepts[0];
+        comp.ngOnInit();
+        tick(500);
+
+        expect(placeholder.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
+        placeholder.remove();
+      }));
+
+      it('should do nothing when the preview is off', () => {
+        comp.isNew = false;
+        comp.conceptParam = concepts[0];
+        comp.ngOnInit();
+
+        comp.updateTreePreview();
+
+        expect(comp.conceptsToPlace).toHaveLength(0);
+      });
+    });
+
+    describe('confirming a change', () => {
+      let updateSpy: jest.SpyInstance;
+
+      const confirmModalAnswering = (answer: string): void => {
+        modalService.open.mockReturnValue({ result: Promise.resolve(answer) } as unknown as NgbModalRef);
+      };
+
+      beforeEach(() => {
+        comp.isNew = false;
+        comp.isSlForm = true;
+        comp.versionParam = { ...comp.versionParam, id: 7, initialVersion: 3 };
+        comp.conceptParam = { id: 9, notation: 'Individual', title: 'Individual' };
+        comp.ngOnInit();
+        updateSpy = jest.spyOn(service, 'updateCode').mockReturnValue(of({} as never));
+      });
+
+      it('should ask for confirmation before saving a changed code value', fakeAsync(() => {
+        confirmModalAnswering('sure');
+        comp.codeAddEditForm.patchValue({ changeType: 'Code value changed' });
+
+        comp.confirmChange();
+        flushMicrotasks();
+
+        expect(modalService.open).toHaveBeenCalledWith(EditorDetailCvAddEditConfirmModalComponent);
+        expect(updateSpy).toHaveBeenCalledWith(
+          expect.objectContaining({ actionType: ActionType.EDIT_CODE, changeType: 'Code value changed', changeDesc: 'Individual' }),
+        );
+      }));
+
+      it('should not save when the confirmation is not given', fakeAsync(() => {
+        confirmModalAnswering('cancel');
+        comp.codeAddEditForm.patchValue({ changeType: 'Code value changed' });
+
+        comp.confirmChange();
+        flushMicrotasks();
+
+        expect(modalService.open).toHaveBeenCalled();
+        expect(updateSpy).not.toHaveBeenCalled();
+      }));
+
+      it('should save any other kind of change straight away', () => {
+        comp.codeAddEditForm.patchValue({ changeType: 'Typo correction' });
+
+        comp.confirmChange();
+
+        expect(modalService.open).not.toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalledWith(expect.objectContaining({ changeType: 'Typo correction' }));
+      });
+
+      it('should not ask for confirmation while the form is invalid', () => {
+        comp.codeAddEditForm.patchValue({ changeType: 'Code value changed', title: '' });
+
+        comp.confirmChange();
+
+        expect(modalService.open).not.toHaveBeenCalled();
+        expect(updateSpy).not.toHaveBeenCalled();
+        expect(comp.isSubmitting).toBe(true);
+      });
+
+      it('should save straight away when no change reason is asked for', () => {
+        comp.versionParam = { ...comp.versionParam, initialVersion: 7 };
+        comp.ngOnInit();
+
+        comp.confirmChange();
+
+        expect(comp.codeAddEditForm.controls.changeType).toBeUndefined();
+        expect(modalService.open).not.toHaveBeenCalled();
+        expect(updateSpy).toHaveBeenCalledWith(expect.objectContaining({ changeType: undefined, changeDesc: undefined }));
+      });
     });
   });
 });

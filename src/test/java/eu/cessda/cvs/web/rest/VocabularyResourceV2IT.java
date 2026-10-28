@@ -217,6 +217,18 @@ class VocabularyResourceV2IT {
 
     @Test
     @Transactional
+    void searchVocabulariesWithoutLanguageTest() throws Exception {
+        restMockMvc.perform(get("/v2/search/vocabularies?query=" + EditorResourceIT.INIT_TITLE_EN +
+            "&agency=" + EditorResourceIT.INIT_AGENCY_NAME)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.vocabularies.[0].notation").value(EditorResourceIT.INIT_TITLE_EN))
+            .andExpect(jsonPath("$.vocabularies.[0].withdrawn").doesNotExist());
+    }
+
+    @Test
+    @Transactional
     void searchCodesTest() throws Exception {
         restMockMvc.perform(get("/v2/search/codes?query=" + EditorResourceIT.INIT_CODE_NOTATION +
             "&agency=" + EditorResourceIT.INIT_AGENCY_NAME + "&lang=" + EditorResourceIT.SOURCE_LANGUAGE +

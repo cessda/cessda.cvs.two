@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ElementRef } from '@angular/core';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { NavigationEnd, NavigationStart } from '@angular/router';
 import { LanguageService } from 'app/core/language/language.service';
 import { of, throwError } from 'rxjs';
 
@@ -28,6 +30,8 @@ import { CvResult } from 'app/shared/model/cv-result.model';
 import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 import { HomeService } from 'app/home/home.service';
 import { EditorService, SearchRequest } from 'app/editor/editor.service';
+import { EventManager } from 'app/core/util/event-manager.service';
+import { AccountService } from 'app/core/auth/account.service';
 
 describe('Component Tests', () => {
   describe('Vocabulary Search Result Component', () => {
@@ -120,6 +124,10 @@ describe('Component Tests', () => {
       it('should match a language version against the vocabulary bundle', () => {
         expect(comp.isLangVersionInBundle(vocabulary(), 'en')).toBe(true);
         expect(comp.isLangVersionInBundle(vocabulary(), 'de')).toBe(false);
+      });
+
+      it('should find no status for a language the vocabulary lacks', () => {
+        expect(comp.isVersionContains(vocabulary(), 'sk', 'DRAFT')).toBe(false);
       });
 
       it('should honour an explicitly given bundle', () => {
@@ -419,6 +427,262 @@ describe('Component Tests', () => {
         expect(editorSearch).toHaveBeenCalled();
         expect(search).not.toHaveBeenCalled();
       });
+
+      it('should select the source language of a result that has none selected and keep a selected one', () => {
+        const unselected = createNewVocabulary({ notation: 'AnalysisUnit', sourceLanguage: 'de', selectedLang: undefined });
+        const selected = createNewVocabulary({ notation: 'TimeMethod', sourceLanguage: 'en', selectedLang: 'fi' });
+        search.and.returnValue(of(new HttpResponse({ body: result({ vocabularies: [unselected, selected] }) })));
+
+        comp.ngOnInit();
+
+        expect(comp.vocabularies.map(v => v.selectedLang)).toEqual(['de', 'fi']);
+      });
+
+      it('should tell the rest of the page when searching starts and stops', () => {
+        const eventManager = TestBed.inject(EventManager) as unknown as { broadcastSpy: jasmine.Spy };
+
+        comp.ngOnInit();
+
+        expect(eventManager.broadcastSpy.calls.allArgs()).toEqual([
+          [{ name: 'onSearching', content: true }],
+          [{ name: 'onSearching', content: false }],
+        ]);
+      });
+
+      it('should offer the statuses found as filters and mark the active ones, ignoring other fields', () => {
+        navigation.open({ f: 'status:PUBLISHED' });
+        search.and.returnValue(
+          of(
+            new HttpResponse({
+              body: result({
+                aggrs: [
+                  { type: 'terms', field: 'statuses', values: ['PUBLISHED'], buckets: [{ k: 'PUBLISHED', v: 8 }], filteredBuckets: [] },
+                  { type: 'terms', field: 'languages', values: [], buckets: [{ k: 'en', v: 8 }], filteredBuckets: [] },
+                ],
+              }),
+            }),
+          ),
+        );
+
+        comp.ngOnInit();
+
+        expect(comp.aggStatusBucket).toEqual([{ k: 'PUBLISHED', v: 8, value: 'PUBLISHED', display: 'PUBLISHED (8)' }]);
+        expect(comp.searchForm.value.aggStatus).toEqual(comp.aggStatusBucket);
+        expect(comp.aggAgencyBucket).toEqual([]);
+      });
+
+      it('should keep the sort direction given with a relevance sort', () => {
+        navigation.open({ q: 'unit', sort: 'relevance,asc' });
+
+        comp.ngOnInit();
+
+        expect(comp.predicate).toBe('relevance');
+        expect(comp.ascending).toBe(true);
+      });
+
+      it('should ignore filters it cannot read', () => {
+        navigation.open({ f: 'agency;unknown:x;language:de' });
+
+        comp.ngOnInit();
+
+        expect(comp.activeAggAgency).toEqual([]);
+        expect(comp.activeAggLanguage).toEqual(['de']);
+        expect(lastRequest().f).toBe('agency;unknown:x;language:de');
+      });
+
+      it('should keep the ascending order when the sort names no direction', () => {
+        navigation.open({ sort: 'title' });
+
+        comp.ngOnInit();
+
+        expect(comp.predicate).toBe('title');
+        expect(comp.ascending).toBe(true);
+        expect(lastRequest().sort).toEqual(['title,asc']);
+      });
+
+      it('should leave the filters alone when removing one that is not active', () => {
+        navigation.open({ f: 'agency:CESSDA;status:PUBLISHED' });
+        comp.ngOnInit();
+
+        comp.onRemoveStatus({ k: 'DRAFT' });
+
+        expect(navigation.current).toEqual({ f: 'agency:CESSDA;status:PUBLISHED' });
+      });
+
+      it('should remove an agency filter', () => {
+        navigation.open({ f: 'agency:CESSDA,UKDS;language:de', page: '2' });
+        comp.ngOnInit();
+
+        comp.onRemoveAgency({ k: 'CESSDA' });
+
+        expect(navigation.current).toEqual({ f: 'agency:UKDS;language:de' });
+      });
+
+      it('should drop the filter parameter once the last filter is removed', () => {
+        navigation.open({ f: 'agency:CESSDA' });
+        comp.ngOnInit();
+
+        comp.onRemoveAgency({ k: 'CESSDA' });
+
+        expect(navigation.current).toEqual({});
+      });
+
+      it('should join the language and status filters', () => {
+        navigation.open({ f: 'language:de' });
+        comp.ngOnInit();
+
+        comp.onAddStatus({ k: 'DRAFT' });
+
+        expect(navigation.current).toEqual({ f: 'language:de;status:DRAFT' });
+      });
+
+      describe('a new query', () => {
+        beforeEach(() => {
+          navigation.open({ q: 'old', f: 'agency:CESSDA;status:PUBLISHED', page: '3', size: '50' });
+          comp.ngOnInit();
+        });
+
+        it('should sort a query by relevance and start at the first page', () => {
+          comp.search('unit');
+
+          expect(navigation.navigate).toHaveBeenCalledWith(
+            [],
+            jasmine.objectContaining({
+              queryParams: { page: null, q: 'unit', sort: ['relevance'] },
+              queryParamsHandling: 'merge',
+            }),
+          );
+          expect(lastRequest()).toEqual(jasmine.objectContaining({ q: 'unit', page: 0, sort: ['relevance'] }));
+        });
+
+        it('should sort an empty query by code in ascending order', () => {
+          comp.ascending = false;
+
+          comp.search('');
+
+          expect(comp.predicate).toBe('code');
+          expect(navigation.navigate).toHaveBeenCalledWith(
+            [],
+            jasmine.objectContaining({ queryParams: { page: null, q: null, sort: ['code,asc'] } }),
+          );
+        });
+
+        it('should remember the language picked with the query', () => {
+          comp.search('unit', 'de');
+
+          expect(comp.activeAggLanguage).toEqual(['de']);
+        });
+      });
+
+      describe('in the editor, for a user who is not an administrator', () => {
+        let accountService: Record<string, unknown>;
+
+        beforeEach(() => {
+          comp.appScope = AppScope.EDITOR;
+          spyOn(TestBed.inject(EditorService), 'search').and.returnValue(of(new HttpResponse({ body: result() })));
+          accountService = TestBed.inject(AccountService) as unknown as Record<string, unknown>;
+          accountService.isAdmin = (): boolean => false;
+          accountService.getUserAgencies = (): string[] => ['CESSDA'];
+        });
+
+        it('should count as a language administrator', () => {
+          expect(comp.isLanguageAdmin()).toBe(true);
+        });
+
+        it('should always filter by the agencies of the user', () => {
+          comp.ngOnInit();
+
+          comp.onAddStatus({ k: 'DRAFT' });
+
+          expect(navigation.current).toEqual({ f: 'agency:CESSDA;status:DRAFT' });
+        });
+
+        it('should filter by the agencies of the user and the language picked', () => {
+          navigation.open({ f: 'language:de' });
+          comp.ngOnInit();
+
+          comp.onAddStatus({ k: 'DRAFT' });
+
+          expect(navigation.current).toEqual({ f: 'agency:CESSDA;language:de;status:DRAFT' });
+        });
+
+        it('should filter by every agency offered when the user belongs to none', () => {
+          accountService.getUserAgencies = (): string[] => [];
+          comp.aggAgencyBucket = [
+            { k: 'CESSDA', v: 1, value: 'CESSDA' },
+            { k: 'UKDS', v: 1, value: 'UKDS' },
+          ];
+          comp.ngOnInit();
+
+          comp.clearFilterAndReload();
+
+          expect(navigation.current).toEqual({ f: 'agency:CESSDA,UKDS;' });
+        });
+
+        it('should not filter by agency when neither the user nor the results have one', () => {
+          accountService.getUserAgencies = (): string[] => [];
+          comp.ngOnInit();
+
+          comp.clearFilterAndReload();
+
+          expect(navigation.current).toEqual({});
+        });
+
+        it('should not count an administrator as a language administrator', () => {
+          accountService.isAdmin = (): boolean => true;
+
+          expect(comp.isLanguageAdmin()).toBe(false);
+        });
+      });
+
+      it('should scroll to the top once a navigation ends, and only then', () => {
+        const scrollTo = jest.spyOn(window, 'scrollTo').mockImplementation(() => undefined);
+        comp.ngOnInit();
+
+        navigation.events.next(new NavigationStart(1, '/?page=2'));
+        expect(scrollTo).not.toHaveBeenCalled();
+
+        navigation.events.next(new NavigationEnd(1, '/?page=2', '/?page=2'));
+        expect(scrollTo).toHaveBeenCalledWith(0, 0);
+        scrollTo.mockRestore();
+      });
+    });
+
+    describe('the filter panel', () => {
+      let panel: HTMLDivElement;
+
+      beforeEach(() => {
+        panel = document.createElement('div');
+        comp.filterPanels = new ElementRef(panel);
+      });
+
+      it('should show a panel that has not been toggled yet', () => {
+        comp.toggleFilterPanelHidden();
+
+        expect(panel.style.display).toBe('block');
+        expect(comp.isFilterCollapse).toBe(false);
+      });
+
+      it('should hide a shown panel and show it again', () => {
+        panel.style.display = 'block';
+
+        comp.toggleFilterPanelHidden();
+        expect(panel.style.display).toBe('none');
+        expect(comp.isFilterCollapse).toBe(true);
+
+        comp.toggleFilterPanelHidden();
+        expect(panel.style.display).toBe('block');
+        expect(comp.isFilterCollapse).toBe(false);
+      });
+    });
+
+    it('should open the login dialog', () => {
+      const loginModalService = { open: jest.fn() };
+      (comp as unknown as { loginModalService: typeof loginModalService }).loginModalService = loginModalService;
+
+      comp.login();
+
+      expect(loginModalService.open).toHaveBeenCalled();
     });
   });
 });

@@ -342,3 +342,95 @@ describe('VocabularyUtil languages', () => {
     expect(() => VocabularyUtil.getVersionNumberByLangIso(vocab, 'xx')).toThrow(TypeError);
   });
 });
+
+describe('VocabularyUtil fields of every supported language', () => {
+  const languages = Object.keys(LanguageIso).filter(key => Number.isNaN(Number(key)));
+  const suffix = (lang: string): string => lang.charAt(0).toUpperCase() + lang.slice(1);
+  const vocabularyIn = (lang: string): Vocabulary =>
+    Object.assign(createNewVocabulary(), {
+      [`title${suffix(lang)}`]: `title ${lang}`,
+      [`definition${suffix(lang)}`]: `definition ${lang}`,
+      [`version${suffix(lang)}`]: `1.0-${lang}`,
+    });
+
+  it('should cover all the languages of the enumeration', () => {
+    expect(languages).toHaveLength(28);
+  });
+
+  it.each(languages)('should read the title, definition and version in %s', lang => {
+    expect(VocabularyUtil.getTitleDefByLangIso(vocabularyIn(lang), lang)).toEqual([`title ${lang}`, `definition ${lang}`, `1.0-${lang}`]);
+  });
+
+  it.each(languages)('should read the version number in %s', lang => {
+    expect(VocabularyUtil.getVersionNumberByLangIso(vocabularyIn(lang), lang)).toBe(`1.0-${lang}`);
+  });
+
+  it('should fall back on English for the title of an unknown language', () => {
+    expect(VocabularyUtil.getTitleDefByLangIso(vocabularyIn('en'), 'xx')).toEqual(['title en', 'definition en', '1.0-en']);
+  });
+});
+
+describe('VocabularyUtil source language version comparison', () => {
+  it('should compare the source language parts of two version numbers', () => {
+    expect(VocabularyUtil.compareSlVersionNumbers('1.0.0', '2.0.0')).toBeLessThan(0);
+    expect(VocabularyUtil.compareSlVersionNumbers('2.1.0', '2.0.0')).toBeGreaterThan(0);
+    expect(VocabularyUtil.compareSlVersionNumbers('2.0.1', '2.0.3')).toBeLessThan(0);
+  });
+
+  it('should treat a source language version like any patch of the same release', () => {
+    expect(VocabularyUtil.compareSlVersionNumbers('2.0.0', '2.0.3')).toBe(0);
+  });
+
+  it('should reject a version number it cannot parse', () => {
+    expect(() => VocabularyUtil.compareSlVersionNumbers('latest', '2.0.0')).toThrow('Invalid version number format');
+  });
+});
+
+describe('VocabularyUtil unique version languages', () => {
+  type Scope = Parameters<typeof VocabularyUtil.getUniqueVersionLangs>[1];
+  const editor = 'EDITOR' as Scope;
+  const publication = 'PUBLICATION' as Scope;
+  const version = (language: string, versionNumber: string): Version => ({ ...createNewVersion(), language, number: versionNumber });
+
+  const versions = (): Version[] => [
+    version('en', '2.0'),
+    version('fi', '2.0.1'),
+    version('de', '2.0.1'),
+    version('fi', '2.0'),
+    version('sk', '1.0.1'),
+    version('cs', '1.0.1'),
+  ];
+
+  it('should list each language once in the editor, source language first and the rest in enumeration order', () => {
+    expect(VocabularyUtil.getUniqueVersionLangs(versions(), editor)).toEqual(['en', 'cs', 'de', 'fi', 'sk']);
+  });
+
+  it('should sort the languages of the current version and append those only found in older versions', () => {
+    expect(VocabularyUtil.getUniqueVersionLangs(versions(), publication)).toEqual(['en', 'de', 'fi', 'sk', 'cs']);
+  });
+
+  it('should not repeat an older language that the current version also has', () => {
+    expect(VocabularyUtil.getUniqueVersionLangs([version('en', '2.0.0'), version('en', '1.0.0')], publication)).toEqual(['en']);
+  });
+});
+
+describe('VocabularyUtil languages sorted by name', () => {
+  it('should put the source language first and sort the rest by their English names', () => {
+    // Finnish, French and German sort by name, not by their codes
+    expect(VocabularyUtil.sortLangByName(['de', 'fr', 'en', 'fi'], 'en')).toEqual(['en', 'fi', 'fr', 'de']);
+  });
+
+  it('should sort every language by name when there is no source language', () => {
+    expect(VocabularyUtil.sortLangByName(['sv', 'cs', 'da'], null)).toEqual(['cs', 'da', 'sv']);
+  });
+});
+
+describe('VocabularyUtil version of the selected language', () => {
+  it('should fall back on the first version in the selected language without a version number', () => {
+    const slVersion: Version = { ...createNewVersion(1), language: 'en', number: '2.0.0' };
+    const tlVersion: Version = { ...createNewVersion(2), language: 'de', number: '2.0.1' };
+    const vocab = createNewVocabulary({ selectedLang: 'de', selectedVersion: undefined, versions: [slVersion, tlVersion] });
+
+    expect(VocabularyUtil.getVersionByLangAndNumber(vocab)).toBe(tlVersion);
+  });
+});

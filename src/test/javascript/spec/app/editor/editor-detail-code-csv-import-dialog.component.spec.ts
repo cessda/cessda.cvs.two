@@ -14,14 +14,23 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ElementRef } from '@angular/core';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { of, throwError } from 'rxjs';
 
 import { CvsTestModule } from '../../test.module';
 import { MockActiveModal } from '../../helpers/mock-active-modal.service';
+import { MockEventManager } from '../../helpers/mock-event-manager.service';
+import { MockRouter } from '../../helpers/mock-route.service';
 import { EditorDetailCodeCsvImportDialogComponent } from 'app/editor/editor-detail-code-csv-import-dialog.component';
+import { EditorService } from 'app/editor/editor.service';
+import { EventManager } from 'app/core/util/event-manager.service';
 import { createNewVocabulary } from 'app/shared/model/vocabulary.model';
 import { createNewVersion } from 'app/shared/model/version.model';
 import { Concept } from 'app/shared/model/concept.model';
+import { ActionType } from 'app/shared/model/enumerations/action-type.model';
 
 describe('Component Tests', () => {
   describe('Editor Detail Code CSV Import Dialog Component', () => {
@@ -354,6 +363,296 @@ describe('Component Tests', () => {
         comp.fillIsRowImported();
 
         expect(comp.markedRows).toEqual([false, false]);
+      });
+    });
+
+    describe('parseCSVToArray edge cases', () => {
+      it('should keep empty unquoted fields as empty strings', () => {
+        expect(comp.parseCSVToArray('a,,c')).toEqual([['a', '', 'c']]);
+      });
+
+      it('should ignore surrounding blank lines and whitespace', () => {
+        expect(comp.parseCSVToArray('\n  a,b\nc,d\n\n')).toEqual([
+          ['a', 'b'],
+          ['c', 'd'],
+        ]);
+      });
+
+      it('should keep a line break that sits inside a quoted field', () => {
+        const rows = comp.parseCSVToArray('a,b\n"first line\nsecond line",c');
+
+        expect(rows).toEqual([
+          ['a', 'b'],
+          ['first line\nsecond line', 'c'],
+        ]);
+      });
+
+      it('should accept a bare carriage return as a row separator', () => {
+        expect(comp.parseCSVToArray('a,b\rc,d')).toEqual([
+          ['a', 'b'],
+          ['c', 'd'],
+        ]);
+      });
+    });
+
+    describe('selecting a file', () => {
+      // a stand-in for the browser FileReader, so a test can decide when the file has been read
+      class FakeFileReader {
+        result: string | null = null;
+        onload: (() => void) | null = null;
+        readAsText = jest.fn();
+
+        finishReading(text: string): void {
+          this.result = text;
+          this.onload?.();
+        }
+      }
+
+      let reader: FakeFileReader;
+      const file = new File([''], 'codes.csv', { type: 'text/csv' });
+      const fileInput = (files: File[] | null): EventTarget => ({ files }) as unknown as EventTarget;
+
+      beforeEach(() => {
+        reader = new FakeFileReader();
+        jest.spyOn(window, 'FileReader').mockImplementation(() => reader as unknown as FileReader);
+        comp.isSlForm = true;
+      });
+
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      it('should read the selected file as UTF-8 text', () => {
+        comp.onFileSelect(fileInput([file]));
+
+        expect(reader.readAsText).toHaveBeenCalledWith(file, 'UTF-8');
+      });
+
+      it('should do nothing more when the input has no files', () => {
+        comp.onFileSelect(fileInput(null));
+
+        expect(reader.readAsText).not.toHaveBeenCalled();
+        expect(comp.csvImportWorkflow).toBe('UPLOAD');
+      });
+
+      it('should show the parsed rows, all marked for import, and move on to the select stage', () => {
+        comp.importAll = false;
+        comp.isImportError = true;
+
+        comp.onFileSelect(fileInput([file]));
+        reader.finishReading('notation,title,definition\nIndividual,Individual,A person\nFamily,Family,A household');
+
+        expect(comp.csvHeaders).toEqual(['notation', 'title', 'definition']);
+        expect(comp.csvContents).toEqual([
+          ['Individual', 'Individual', 'A person'],
+          ['Family', 'Family', 'A household'],
+        ]);
+        expect(comp.markedRows).toEqual([true, true]);
+        expect(comp.importAll).toBe(true);
+        expect(comp.isImportError).toBe(false);
+        expect(comp.csvImportWorkflow).toBe('SELECT');
+      });
+
+      it('should flag an error and stay on the upload stage when the file has no usable rows', () => {
+        comp.onFileSelect(fileInput([file]));
+        reader.finishReading('notation,title,definition');
+
+        expect(comp.csvContents).toHaveLength(0);
+        expect(comp.isImportError).toBe(true);
+        expect(comp.csvImportWorkflow).toBe('UPLOAD');
+      });
+
+      it('should start from a copy of the codes already in the version', () => {
+        const existing: Concept = { notation: 'Individual', title: 'Individual', position: 1 };
+        comp.versionParam = { ...comp.versionParam, concepts: [existing] };
+        comp.codeSnippets = [{ notation: 'Stale' }];
+
+        comp.onFileSelect(fileInput([file]));
+
+        expect(comp.concepts).toEqual([existing]);
+        expect(comp.concepts[0]).not.toBe(existing);
+        expect(comp.codeSnippets).toHaveLength(0);
+      });
+    });
+
+    describe('moving between stages', () => {
+      const heading = (): HTMLHeadingElement => ({ scrollIntoView: jest.fn() }) as unknown as HTMLHeadingElement;
+
+      it('should go back to the upload stage and clear the file input', () => {
+        comp.csvImportWorkflow = 'SELECT';
+        comp.csvInput = new ElementRef({ value: 'codes.csv' });
+        const element = heading();
+
+        comp.backToUploadStage(element);
+
+        expect(comp.csvImportWorkflow).toBe('UPLOAD');
+        expect(comp.csvInput.nativeElement.value).toBe('');
+        expect(element.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+      });
+
+      it('should go back to the select stage', () => {
+        comp.csvImportWorkflow = 'IMPORT';
+        const element = heading();
+
+        comp.backToSelectStage(element);
+
+        expect(comp.csvImportWorkflow).toBe('SELECT');
+        expect(element.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth', block: 'start', inline: 'nearest' });
+      });
+    });
+
+    describe('code snippets built by the preview', () => {
+      const heading = (): HTMLHeadingElement => ({ scrollIntoView: jest.fn() }) as unknown as HTMLHeadingElement;
+
+      it('should create a new code with its position and change log entry', () => {
+        comp.versionParam = { ...comp.versionParam, id: 5, concepts: [{ notation: 'Individual', position: 1 }] };
+        comp.csvContents = [['Individual.Child', 'A child', 'The first child']];
+        comp.markedRows = [true];
+
+        comp.createCodePreview(heading());
+
+        expect(comp.codeSnippets).toEqual([
+          {
+            actionType: ActionType.CREATE_CODE,
+            versionId: 5,
+            notation: 'Individual.Child',
+            parent: 'Individual',
+            title: 'A child',
+            definition: 'The first child',
+            position: 1,
+            changeType: 'Code added',
+            changeDesc: 'Individual.Child',
+          },
+        ]);
+      });
+
+      it('should add a translation to a code that already exists', () => {
+        comp.versionParam = {
+          ...comp.versionParam,
+          concepts: [{ id: 11, versionId: 5, notation: 'Individual', position: 1 }],
+        };
+        comp.csvContents = [['Individual', 'Osoba', 'Jednotlivec']];
+        comp.markedRows = [true];
+
+        comp.createCodePreview(heading());
+
+        expect(comp.codeSnippets).toEqual([
+          {
+            actionType: ActionType.ADD_TL_CODE,
+            conceptId: 11,
+            notation: 'Individual',
+            versionId: 5,
+            title: 'Osoba',
+            definition: 'Jednotlivec',
+          },
+        ]);
+      });
+
+      it('should fall back to position one for the first child of a parent without a position', () => {
+        comp.versionParam = { ...comp.versionParam, concepts: [{ notation: 'Individual' }] };
+        comp.csvContents = [['Individual.Child', 'A child', 'The first child']];
+        comp.markedRows = [true];
+
+        comp.createCodePreview(heading());
+
+        expect(comp.codeSnippets[0]).toEqual(expect.objectContaining({ parent: 'Individual', position: 1 }));
+      });
+
+      it('should pick the child with the highest position even when it is listed first', () => {
+        comp.versionParam = {
+          ...comp.versionParam,
+          concepts: [
+            { notation: 'Individual', position: 1 },
+            { notation: 'Individual.Second', parent: 'Individual', position: 7 },
+            { notation: 'Individual.First', parent: 'Individual', position: 2 },
+          ],
+        };
+        comp.csvContents = [['Individual.Third', 'A third', 'Added last']];
+        comp.markedRows = [true];
+
+        comp.createCodePreview(heading());
+
+        expect(comp.codeSnippets[0]).toEqual(expect.objectContaining({ notation: 'Individual.Third', position: 7 }));
+      });
+    });
+
+    describe('importing', () => {
+      let service: EditorService;
+
+      beforeEach(() => {
+        service = TestBed.inject(EditorService);
+        comp.codeSnippets = [{ notation: 'Individual', title: 'Individual' }];
+      });
+
+      it('should send the previewed snippets as one batch and show the result', () => {
+        const imported: Concept[] = [{ notation: 'Individual', title: 'Individual' }];
+        const spy = jest.spyOn(service, 'createBatchCode').mockReturnValue(
+          of(
+            new HttpResponse({
+              body: imported,
+              headers: new HttpHeaders({ 'import-status': '1 code imported' }),
+            }),
+          ),
+        );
+
+        comp.doCsvImport();
+
+        expect(spy).toHaveBeenCalledWith([{ notation: 'Individual', title: 'Individual' }]);
+        expect(comp.resultInfo).toBe('1 code imported');
+        expect(comp.resultBody).toEqual(imported);
+        expect(comp.isSaving).toBe(false);
+        expect(comp.csvImportWorkflow).toBe('RESULT');
+      });
+
+      it('should cope with a response that has neither a status header nor a body', () => {
+        jest.spyOn(service, 'createBatchCode').mockReturnValue(of(new HttpResponse<Concept[]>({ body: null })));
+
+        comp.doCsvImport();
+
+        expect(comp.resultInfo).toBe('');
+        expect(comp.resultBody).toEqual([]);
+        expect(comp.csvImportWorkflow).toBe('RESULT');
+      });
+
+      it('should stop saving and stay on the current stage when the import fails', () => {
+        comp.csvImportWorkflow = 'IMPORT';
+        jest.spyOn(service, 'createBatchCode').mockReturnValue(throwError(() => new HttpErrorResponse({ status: 500 })));
+
+        comp.doCsvImport();
+
+        expect(comp.isSaving).toBe(false);
+        expect(comp.csvImportWorkflow).toBe('IMPORT');
+      });
+    });
+
+    describe('closing after a successful import', () => {
+      let mockRouter: MockRouter;
+      let mockActiveModal: MockActiveModal;
+      let mockEventManager: MockEventManager;
+
+      beforeEach(() => {
+        mockRouter = TestBed.inject(Router) as unknown as MockRouter;
+        mockActiveModal = TestBed.inject(NgbActiveModal) as unknown as MockActiveModal;
+        mockEventManager = TestBed.inject(EventManager) as unknown as MockEventManager;
+      });
+
+      it('should return to the source language vocabulary', () => {
+        comp.isSlForm = true;
+
+        comp.onCloseSuccess();
+
+        expect(mockRouter.navigateSpy).toHaveBeenCalledWith(['/editor/vocabulary/AnalysisUnit']);
+        expect(mockActiveModal.dismissSpy).toHaveBeenCalledWith(true);
+        expect(mockEventManager.broadcastSpy).toHaveBeenCalledWith('deselectConcept');
+      });
+
+      it('should return to the vocabulary in the language of the translation', () => {
+        comp.isSlForm = false;
+
+        comp.onCloseSuccess();
+
+        expect(mockRouter.navigateSpy).toHaveBeenCalledWith(['/editor/vocabulary/AnalysisUnit'], { queryParams: { lang: 'en' } });
+        expect(mockActiveModal.dismissSpy).toHaveBeenCalledWith(true);
       });
     });
   });
