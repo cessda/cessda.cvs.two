@@ -60,11 +60,6 @@
                 "input": "src/main/webapp/content/",
                 "output": "content"
               },
-              {
-                "glob": "*",
-                "input": "src/main/webapp/i18n/",
-                "output": "i18n"
-              },
               "src/main/webapp/favicon.ico",
               "src/main/webapp/manifest.webapp",
               "src/main/webapp/robots.txt"
