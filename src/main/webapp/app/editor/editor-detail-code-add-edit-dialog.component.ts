@@ -264,8 +264,8 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
               this.save();
             }
           })
-          .catch(err => {
-            throw err;
+          .catch(() => {
+            // dismissing the confirmation means the change is not confirmed, so the dialog stays open
           });
       } else {
         this.save();
@@ -293,7 +293,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   protected subscribeToSaveResponse(result: Observable<HttpResponse<Concept>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      response => this.processError(response),
+      response => this.onSaveError(response),
     );
   }
 
@@ -308,14 +308,10 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     this.eventManager.broadcast('deselectConcept');
   }
 
-  protected onSaveError(): void {
+  protected onSaveError(response: HttpErrorResponse): void {
     this.isSaving = false;
-  }
-
-  private processError(response: HttpErrorResponse): void {
-    if (response.status === 400 && response.error.type === CODE_ALREADY_EXIST_TYPE) {
+    if (response.status === 400 && response.error?.type === CODE_ALREADY_EXIST_TYPE) {
       this.errorCodeExists = true;
-      this.isSaving = false;
     }
   }
 

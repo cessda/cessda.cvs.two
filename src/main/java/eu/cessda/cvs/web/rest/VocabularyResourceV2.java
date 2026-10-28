@@ -555,7 +555,7 @@ public class VocabularyResourceV2 {
 
         // Get all vocabularies that are not withdrawn, sorted by notation
         var vocabularies = vocabularyService.findAll().stream()
-            .filter( voc -> Boolean.TRUE.equals( voc.isWithdrawn() ) )
+            .filter( voc -> !Boolean.TRUE.equals( voc.isWithdrawn() ) )
             .sorted( Comparator.comparing( VocabularyDTO::getNotation ) )
             .collect( Collectors.toList() );
 
