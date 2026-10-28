@@ -216,7 +216,12 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
       }
     }
     this.lastSearch = query;
-    this.sessionStorage.store('lastSearch', this.lastSearch);
+    // undefined would be stored as the text "undefined", which cannot be parsed back
+    if (query === undefined) {
+      this.sessionStorage.clear('lastSearch');
+    } else {
+      this.sessionStorage.store('lastSearch', query);
+    }
   }
 
   /**
