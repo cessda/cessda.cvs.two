@@ -59,17 +59,17 @@ public final class VocabularyUtils
 			Pageable pageable,
 			SearchScope searchScope )
 	{
-		String filter = null;
+		StringBuilder filter = new StringBuilder();
 		if ( agency != null )
 		{
-			filter = "agency:" + agency + ";";
+			filter.append( "agency:" ).append( agency ).append( ';' );
 		}
 		if ( lang != null )
 		{
-			filter += "language:" + lang;
+			filter.append( "language:" ).append( lang );
 		}
 
-		return VocabularyUtils.prepareEsQuerySearching( query, filter, pageable, searchScope );
+		return VocabularyUtils.prepareEsQuerySearching( query, filter.toString(), pageable, searchScope );
 	}
 
 	public static EsQueryResultDetail prepareEsQuerySearching( String q, String f, Pageable pageable, SearchScope searchScope )
