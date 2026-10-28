@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { ComponentFixture, TestBed, fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+import { ElementRef } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { BehaviorSubject, Subject, Subscription, of } from 'rxjs';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { LanguageService } from 'app/core/language/language.service';
@@ -28,6 +30,10 @@ import { AccountService } from 'app/core/auth/account.service';
 import { LoginService } from 'app/core/login/login.service';
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared/language/vocabulary-language-from-key.pipe';
+import { HomeService } from 'app/home/home.service';
+import { ProfileService } from 'app/layouts/profiles/profile.service';
+import { ProfileInfo } from 'app/layouts/profiles/profile-info.model';
+import { EventManager } from 'app/core/util/event-manager.service';
 
 describe('Component Tests', () => {
   describe('Navbar Component', () => {
@@ -310,6 +316,236 @@ describe('Component Tests', () => {
 
       it('should name an ordinary language', () => {
         expect(comp.getLangFormatted('de')).toBe('German (de)');
+      });
+    });
+
+    describe('the languages offered for searching', () => {
+      let homeService: HomeService;
+
+      beforeEach(() => {
+        homeService = TestBed.inject(HomeService);
+      });
+
+      it('should offer the published languages sorted by name, English first and all languages last', () => {
+        const spy = jest
+          .spyOn(homeService, 'getAvailableLanguagesIsos')
+          .mockReturnValue(of(new HttpResponse({ body: ['fi', 'de', 'en'] })));
+
+        comp.loadLanguages();
+
+        expect(spy).toHaveBeenCalledWith({ s: 'PUBLISHED' });
+        expect(comp.searchLangs).toEqual(['en', 'fi', 'de', '_all']);
+      });
+
+      it('should offer the languages of every workflow status in the editor', () => {
+        const spy = jest.spyOn(homeService, 'getAvailableLanguagesIsos').mockReturnValue(of(new HttpResponse<string[]>({ body: null })));
+        comp.isEditorSearch = true;
+
+        comp.loadLanguages();
+
+        expect(spy).toHaveBeenCalledWith({ s: 'DRAFT;REVIEW;READY_TO_TRANSLATE;READY_TO_PUBLISH;PUBLISHED;' });
+        expect(comp.searchLangs).toEqual(['en', '_all']);
+      });
+
+      it('should reload the languages when navigating into and out of the editor', () => {
+        const spy = jest.spyOn(homeService, 'getAvailableLanguagesIsos').mockReturnValue(of(new HttpResponse({ body: ['en'] })));
+        const location = TestBed.inject(Location) as unknown as { path: () => string };
+        const events = mockRouter.events as unknown as Subject<unknown>;
+        let path = '/editor/vocabulary/AnalysisUnit';
+        location.path = (): string => path;
+
+        events.next({});
+        expect(comp.isEditorSearch).toBe(true);
+        expect(spy).toHaveBeenCalledTimes(1);
+
+        events.next({});
+        expect(spy).toHaveBeenCalledTimes(1);
+
+        path = '/vocabulary/AnalysisUnit';
+        events.next({});
+        expect(comp.isEditorSearch).toBe(false);
+        expect(spy).toHaveBeenCalledTimes(2);
+      });
+    });
+
+    describe('reading the search from the address', () => {
+      it('should pick the language filtered by', () => {
+        queryParams.next({ q: 'unit', f: 'agency:CESSDA;language:de;status:PUBLISHED' });
+
+        expect(comp.currentSearch).toBe('unit');
+        expect(comp.currentLang).toBe('de');
+      });
+
+      it('should fall back on English for a language it does not offer', () => {
+        comp.currentLang = 'de';
+
+        queryParams.next({ f: 'language:xx' });
+
+        expect(comp.currentLang).toBe('en');
+      });
+
+      it('should keep the language when the filters name none', () => {
+        comp.currentLang = 'fi';
+
+        queryParams.next({ f: 'agency:CESSDA;malformed' });
+
+        expect(comp.currentLang).toBe('fi');
+      });
+
+      it('should take the last search from the address when none was stored', () => {
+        queryParams.next({ q: 'unit' });
+
+        expect(comp.lastSearch).toBe('unit');
+      });
+
+      it('should prefer the last search stored in the session', () => {
+        sessionStorage.store('lastSearch', 'stored');
+        queryParams.next({ q: 'unit' });
+
+        const other = TestBed.createComponent(NavbarComponent).componentInstance;
+
+        expect(other.lastSearch).toBe('stored');
+        expect(other.currentSearch).toBe('unit');
+      });
+    });
+
+    describe('the search box', () => {
+      let input: HTMLInputElement;
+      let select: HTMLSelectElement;
+      let searchSpy: jest.SpyInstance;
+      let onSearching: ((event: { content: boolean }) => void) | undefined;
+      let eventManager: Record<string, unknown>;
+
+      const type = (value: string, key: string): void => {
+        input.value = value;
+        input.dispatchEvent(new KeyboardEvent('keyup', { key }));
+      };
+
+      beforeEach(() => {
+        input = document.createElement('input');
+        select = document.createElement('select');
+        comp.searchInput = new ElementRef(input);
+        comp.searchLang = new ElementRef(select);
+        jest
+          .spyOn(TestBed.inject(ProfileService), 'getProfileInfo')
+          .mockReturnValue(of({ activeProfiles: ['prod'], inProduction: true, swaggerEnabled: true }));
+        eventManager = TestBed.inject(EventManager) as unknown as Record<string, unknown>;
+        eventManager.subscribe = jest.fn((_name: string, callback: (event: { content: boolean }) => void) => {
+          onSearching = callback;
+          return new Subscription();
+        });
+        eventManager.destroy = jest.fn();
+        searchSpy = jest.spyOn(comp, 'search').mockImplementation(() => undefined);
+      });
+
+      afterEach(() => {
+        jest.restoreAllMocks();
+      });
+
+      it('should read the profile', () => {
+        comp.ngOnInit();
+
+        expect(comp.inProduction).toBe(true);
+        expect(comp.swaggerEnabled).toBe(true);
+      });
+
+      it('should search once typing pauses', fakeAsync(() => {
+        comp.ngOnInit();
+
+        type('un', 'n');
+        tick(200);
+        type('unit', 't');
+        tick(499);
+        expect(searchSpy).not.toHaveBeenCalled();
+
+        tick(1);
+        expect(searchSpy).toHaveBeenCalledTimes(1);
+        expect(searchSpy).toHaveBeenCalledWith('unit');
+        expect(comp.isSearching).toBe(true);
+      }));
+
+      it('should not repeat the last search unless Enter is pressed', fakeAsync(() => {
+        comp.lastSearch = 'unit';
+        comp.ngOnInit();
+
+        type('unit', 'ArrowLeft');
+        tick(500);
+        expect(searchSpy).not.toHaveBeenCalled();
+
+        type('unit', 'Enter');
+        tick(500);
+        expect(searchSpy).toHaveBeenCalledWith('unit');
+      }));
+
+      it('should search right away when text is pasted', () => {
+        comp.ngOnInit();
+
+        input.value = 'pasted';
+        input.dispatchEvent(new Event('paste'));
+
+        expect(searchSpy).toHaveBeenCalledWith('pasted');
+        expect(comp.isSearching).toBe(true);
+      });
+
+      it('should search again when another language is picked', () => {
+        comp.ngOnInit();
+        comp.currentSearch = 'unit';
+
+        select.dispatchEvent(new Event('change'));
+
+        expect(searchSpy).toHaveBeenCalledWith('unit');
+      });
+
+      it('should follow the searching state broadcast by the search results', () => {
+        comp.ngOnInit();
+
+        expect(eventManager.subscribe).toHaveBeenCalledWith('onSearching', expect.any(Function));
+        onSearching?.({ content: true });
+        expect(comp.isSearching).toBe(true);
+        onSearching?.({ content: false });
+        expect(comp.isSearching).toBe(false);
+      });
+
+      it('should stop listening on destroy', () => {
+        comp.ngOnInit();
+
+        comp.ngOnDestroy();
+
+        expect(eventManager.destroy).toHaveBeenCalledWith(comp.eventSubscriber);
+      });
+
+      it('should have nothing to stop when it was never initialised', () => {
+        comp.ngOnDestroy();
+
+        expect(eventManager.destroy).not.toHaveBeenCalled();
+      });
+
+      it('should focus the search box once the view is ready', fakeAsync(() => {
+        const focus = jest.spyOn(input, 'focus');
+
+        comp.ngAfterViewInit();
+        tick();
+
+        expect(focus).toHaveBeenCalled();
+      }));
+
+      it('should not fail when there is no search box to focus', fakeAsync(() => {
+        comp.searchInput = undefined as unknown as ElementRef<HTMLInputElement>;
+
+        comp.ngAfterViewInit();
+
+        expect(() => tick()).not.toThrow();
+      }));
+
+      it('should treat a profile that does not say otherwise as not in production', () => {
+        jest
+          .spyOn(TestBed.inject(ProfileService), 'getProfileInfo')
+          .mockReturnValue(of({ activeProfiles: [], swaggerEnabled: false } as unknown as ProfileInfo));
+
+        comp.ngOnInit();
+
+        expect(comp.inProduction).toBe(false);
+        expect(comp.swaggerEnabled).toBe(false);
       });
     });
   });
