@@ -187,11 +187,15 @@ export class AgencyUpdateComponent implements OnInit {
     this.fileUploadService
       .uploadAgencyImage(this.currentFileUpload)
       .pipe(FileUploadService.uploadFileHandler)
-      .subscribe(status => {
-        this.progress.percentage = status.progress;
-        if (status.location) {
-          this.currentImage = status.location.split('/').pop();
-        }
+      .subscribe({
+        next: status => {
+          this.progress.percentage = status.progress;
+          if (status.location) {
+            this.currentImage = status.location.split('/').pop();
+          }
+        },
+        // ErrorHandlerInterceptor shows the error, only the progress bar has to go
+        error: () => (this.currentFileUpload = null),
       });
   }
 

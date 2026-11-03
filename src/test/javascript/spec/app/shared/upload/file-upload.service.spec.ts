@@ -104,32 +104,41 @@ describe('Service Tests', () => {
       expect(result.error).toBeUndefined();
     });
 
-    it('should report the location returned in the response headers', () => {
+    it('should report the location returned in the response', () => {
       const headers = new HttpHeaders({ location: '/content/images/agency/logo.png' });
-      const result = handle(new HttpHeaderResponse({ headers }));
+      const result = handle(new HttpResponse({ status: 201, headers }));
 
       expect(result.values).toEqual([{ progress: 100, location: '/content/images/agency/logo.png' }]);
     });
 
-    it('should ignore events other than progress and response headers', () => {
-      const result = handle({ type: HttpEventType.Sent }, new HttpResponse({ body: 'done' }));
+    it('should ignore events other than progress and the response', () => {
+      const headers = new HttpHeaders({ location: '/content/images/agency/logo.png' });
+      const result = handle({ type: HttpEventType.Sent }, new HttpHeaderResponse({ status: 201, headers }));
 
       expect(result.values).toEqual([]);
       expect(result.error).toBeUndefined();
     });
 
-    it('should fail when the response headers carry no location', () => {
-      const result = handle(new HttpHeaderResponse({ headers: new HttpHeaders() }));
+    it('should not fail on the headers of an error response, so the error itself gets through', () => {
+      const result = handle(new HttpHeaderResponse({ status: 500, headers: new HttpHeaders() }));
+
+      expect(result.values).toEqual([]);
+      expect(result.error).toBeUndefined();
+    });
+
+    it('should fail when the response carries no location', () => {
+      const result = handle(new HttpResponse({ status: 201, headers: new HttpHeaders() }));
 
       expect(result.values).toEqual([]);
       expect(result.error).toBeInstanceOf(TypeError);
       expect(result.error?.message).toBe('No location returned from server');
     });
 
-    it('should fail on a progress event without a total size', () => {
+    it('should skip a progress event without a total size', () => {
       const result = handle({ type: HttpEventType.UploadProgress, loaded: 1 });
 
-      expect(result.error).toBeInstanceOf(TypeError);
+      expect(result.values).toEqual([]);
+      expect(result.error).toBeUndefined();
     });
   });
 });
