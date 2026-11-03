@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { HttpEventType, HttpHeaderResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEventType, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 
@@ -215,13 +215,23 @@ describe('Component Tests', () => {
 
       it('should take the stored name from the location the server returns', () => {
         spyOn(uploadService, 'uploadAgencyImage').and.returnValue(
-          of(new HttpHeaderResponse({ headers: new HttpHeaders({ location: 'https://cvs/agency/logo-1.png' }) }) as never),
+          of(new HttpResponse({ status: 201, headers: new HttpHeaders({ location: 'https://cvs/agency/logo-1.png' }) }) as never),
         );
 
         comp.selectFile(fileEvent(new File([''], 'logo.png')));
 
         expect(comp.currentImage).toBe('logo-1.png');
         expect(comp.progress.percentage).toBe(100);
+      });
+
+      it('should drop the progress bar and keep the logo when the upload fails', () => {
+        comp.currentImage = 'cessda.png';
+        spyOn(uploadService, 'uploadAgencyImage').and.returnValue(throwError(() => new HttpErrorResponse({ status: 500 })));
+
+        comp.selectFile(fileEvent(new File([''], 'logo.png')));
+
+        expect(comp.currentFileUpload).toBeNull();
+        expect(comp.currentImage).toBe('cessda.png');
       });
 
       it('should remember the file it is uploading', () => {

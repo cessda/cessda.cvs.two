@@ -94,24 +94,29 @@ export class CustomPageComponent implements OnInit, OnDestroy {
     this.fileUploadService
       .uploadFile(this.currentFileUpload)
       .pipe(FileUploadService.uploadFileHandler)
-      .subscribe(status => {
-        this.progress.percentage = status.progress;
-        if (status.location) {
-          this.uploadFileStatus = 'Uploading complete, extracting DOCX to HTML... Please wait!';
-          const fileName = status.location.split('/').pop();
-          if (!fileName) {
-            throw new TypeError('File name not returned from server!');
+      .subscribe({
+        next: status => {
+          this.progress.percentage = status.progress;
+          if (status.location) {
+            this.uploadFileStatus = 'Uploading complete, extracting DOCX to HTML... Please wait!';
+            const fileName = status.location.split('/').pop();
+            if (!fileName) {
+              throw new TypeError('File name not returned from server!');
+            }
+            this.fileUploadService.convertDocsToHtml(fileName).subscribe({
+              next: response => {
+                this.uploadFileStatus = 'Docx contents is extracted. See the results:';
+                this.uploadFileName = response.body?.message || fileName;
+              },
+              error: () => {
+                this.uploadFileStatus = 'There is a problem!. Please try again later';
+              },
+            });
           }
-          this.fileUploadService.convertDocsToHtml(fileName).subscribe({
-            next: response => {
-              this.uploadFileStatus = 'Docx contents is extracted. See the results:';
-              this.uploadFileName = response.body?.message || fileName;
-            },
-            error: () => {
-              this.uploadFileStatus = 'There is a problem!. Please try again later';
-            },
-          });
-        }
+        },
+        error: () => {
+          this.uploadFileStatus = 'There is a problem!. Please try again later';
+        },
       });
   }
 
