@@ -488,6 +488,7 @@ public class VocabularyResourceIT extends TestUtil {
             .license(UPDATED_LICENSE)
             .licenseId(UPDATED_LICENSE_ID)
             .uri(UPDATED_URI + "[VOCABULARY]")
+            .uriCode(UPDATED_URI + "[VOCABULARY]_[CODE]")
             .canonicalUri(UPDATED_CANONICAL_URI);
 
         AgencyDTO agencyDTO = agencyMapper.toDto(updatedAgency);

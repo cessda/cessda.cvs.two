@@ -213,32 +213,36 @@ public class AgencyResourceIT extends TestUtil {
     @Test
     @Transactional
     void createAgencyWithoutNameOrLink() throws Exception {
-        assertCreateRejected( agency.name( " " ) );
-        assertCreateRejected( createEntity().link( null ) );
+        var jwt = login();
+        assertCreateRejected( jwt, agency.name( " " ) );
+        assertCreateRejected( jwt, createEntity().link( null ) );
     }
 
     @Test
     @Transactional
     void createAgencyWithoutUris() throws Exception {
-        assertCreateRejected( agency.uri( null ) );
-        assertCreateRejected( createEntity().uriCode( "" ) );
-        assertCreateRejected( createEntity().canonicalUri( null ) );
+        var jwt = login();
+        assertCreateRejected( jwt, agency.uri( null ) );
+        assertCreateRejected( jwt, createEntity().uriCode( "" ) );
+        assertCreateRejected( jwt, createEntity().canonicalUri( null ) );
     }
 
     @Test
     @Transactional
     void createAgencyWithUrisMissingPlaceholders() throws Exception {
+        var jwt = login();
         // without [VOCABULARY] the URIs of the agency's vocabularies cannot be generated
-        assertCreateRejected( agency.uri( "https://a.example/[VERSION]" ) );
-        assertCreateRejected( createEntity().uriCode( "https://a.example/[VOCABULARY]/[VERSION]" ) );
-        assertCreateRejected( createEntity().uriCode( "https://a.example/[CODE]/[VERSION]" ) );
+        assertCreateRejected( jwt, agency.uri( "https://a.example/[VERSION]" ) );
+        assertCreateRejected( jwt, createEntity().uriCode( "https://a.example/[VOCABULARY]/[VERSION]" ) );
+        assertCreateRejected( jwt, createEntity().uriCode( "https://a.example/[CODE]/[VERSION]" ) );
     }
 
-    private void assertCreateRejected( Agency invalidAgency ) throws Exception {
+    // takes the token, as TestUtil.login creates its user and can only be called once per test
+    private void assertCreateRejected( String jwt, Agency invalidAgency ) throws Exception {
         int databaseSizeBeforeCreate = agencyRepository.findAll().size();
 
         restAgencyMockMvc.perform(post("/api/agencies")
-            .header("Authorization", login())
+            .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(agencyMapper.toDto(invalidAgency))))
             .andExpect(status().isBadRequest());
