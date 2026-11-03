@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { HttpEventType, HttpHeaderResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEventType, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 
@@ -181,12 +181,22 @@ describe('Component Tests', () => {
 
       it('should take the stored name from the location the server returns', () => {
         spyOn(uploadService, 'uploadLicenseImage').and.returnValue(
-          of(new HttpHeaderResponse({ headers: new HttpHeaders({ location: 'https://cvs/licence/cc-by-2.png' }) }) as never),
+          of(new HttpResponse({ status: 201, headers: new HttpHeaders({ location: 'https://cvs/licence/cc-by-2.png' }) }) as never),
         );
 
         comp.selectFile(fileEvent(fileList([new File([''], 'cc.png')])));
 
         expect(comp.currentImage).toBe('cc-by-2.png');
+      });
+
+      it('should drop the progress bar and keep the logo when the upload fails', () => {
+        comp.currentImage = 'cc-by.png';
+        spyOn(uploadService, 'uploadLicenseImage').and.returnValue(throwError(() => new HttpErrorResponse({ status: 413 })));
+
+        comp.selectFile(fileEvent(fileList([new File([''], 'cc.png')])));
+
+        expect(comp.currentFileUpload).toBeNull();
+        expect(comp.currentImage).toBe('cc-by.png');
       });
 
       it('should upload nothing when no file was chosen', () => {

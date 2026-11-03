@@ -73,18 +73,24 @@ export class FileUploadService {
     return this.http.request(req);
   }
 
+  /**
+   * Turns the events of an upload into its progress and, once the server accepts the file, its
+   * location. The location is read from the final response only: the response headers are also
+   * reported for an error response, and failing on those would cancel the request before
+   * ErrorHandlerInterceptor could show the error.
+   */
   static uploadFileHandler = pipe(
-    filter<HttpEvent<unknown>>(event => event.type === HttpEventType.UploadProgress || event.type === HttpEventType.ResponseHeader),
+    filter<HttpEvent<unknown>>(
+      event => (event.type === HttpEventType.UploadProgress && !!event.total) || event.type === HttpEventType.Response,
+    ),
     map(event => {
-      if (event.type === HttpEventType.UploadProgress && event.total) {
-        // Respond to a progress event
-        const progress = Math.round((event.loaded / event.total) * 100);
-        return { progress: progress };
-      } else if (event.type === HttpEventType.ResponseHeader) {
-        const location = event.headers.get('location');
-        if (location) {
-          return { progress: 100, location: location };
-        }
+      if (event.type === HttpEventType.UploadProgress) {
+        return { progress: Math.round((event.loaded / event.total!) * 100) };
+      }
+
+      const location = (event as HttpResponse<unknown>).headers.get('location');
+      if (location) {
+        return { progress: 100, location: location };
       }
 
       throw new TypeError('No location returned from server');
