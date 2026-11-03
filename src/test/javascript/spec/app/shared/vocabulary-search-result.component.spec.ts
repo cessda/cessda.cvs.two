@@ -518,6 +518,26 @@ describe('Component Tests', () => {
         expect(navigation.current).toEqual({ f: 'agency:UKDS;language:de' });
       });
 
+      it('should remove every occurrence of a repeated agency filter', () => {
+        navigation.open({ f: 'agency:CESSDA,CESSDA,UKDS' });
+        comp.ngOnInit();
+
+        comp.onRemoveAgency({ k: 'CESSDA' });
+
+        expect(comp.activeAggAgency).toEqual(['UKDS']);
+        expect(navigation.current).toEqual({ f: 'agency:UKDS' });
+      });
+
+      it('should remove every occurrence of a repeated status filter', () => {
+        navigation.open({ f: 'status:DRAFT,DRAFT,PUBLISHED' });
+        comp.ngOnInit();
+
+        comp.onRemoveStatus({ k: 'DRAFT' });
+
+        expect(comp.activeAggStatus).toEqual(['PUBLISHED']);
+        expect(navigation.current).toEqual({ f: 'status:PUBLISHED' });
+      });
+
       it('should drop the filter parameter once the last filter is removed', () => {
         navigation.open({ f: 'agency:CESSDA' });
         comp.ngOnInit();
@@ -534,44 +554,6 @@ describe('Component Tests', () => {
         comp.onAddStatus({ k: 'DRAFT' });
 
         expect(navigation.current).toEqual({ f: 'language:de;status:DRAFT' });
-      });
-
-      describe('a new query', () => {
-        beforeEach(() => {
-          navigation.open({ q: 'old', f: 'agency:CESSDA;status:PUBLISHED', page: '3', size: '50' });
-          comp.ngOnInit();
-        });
-
-        it('should sort a query by relevance and start at the first page', () => {
-          comp.search('unit');
-
-          expect(navigation.navigate).toHaveBeenCalledWith(
-            [],
-            jasmine.objectContaining({
-              queryParams: { page: null, q: 'unit', sort: ['relevance'] },
-              queryParamsHandling: 'merge',
-            }),
-          );
-          expect(lastRequest()).toEqual(jasmine.objectContaining({ q: 'unit', page: 0, sort: ['relevance'] }));
-        });
-
-        it('should sort an empty query by code in ascending order', () => {
-          comp.ascending = false;
-
-          comp.search('');
-
-          expect(comp.predicate).toBe('code');
-          expect(navigation.navigate).toHaveBeenCalledWith(
-            [],
-            jasmine.objectContaining({ queryParams: { page: null, q: null, sort: ['code,asc'] } }),
-          );
-        });
-
-        it('should remember the language picked with the query', () => {
-          comp.search('unit', 'de');
-
-          expect(comp.activeAggLanguage).toEqual(['de']);
-        });
       });
 
       describe('in the editor, for a user who is not an administrator', () => {
@@ -616,7 +598,15 @@ describe('Component Tests', () => {
 
           comp.clearFilterAndReload();
 
-          expect(navigation.current).toEqual({ f: 'agency:CESSDA,UKDS;' });
+          expect(navigation.current).toEqual({ f: 'agency:CESSDA,UKDS' });
+        });
+
+        it('should filter by the agencies of the user alone without a trailing separator', () => {
+          comp.ngOnInit();
+
+          comp.clearFilterAndReload();
+
+          expect(navigation.current).toEqual({ f: 'agency:CESSDA' });
         });
 
         it('should not filter by agency when neither the user nor the results have one', () => {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { ComponentFixture, TestBed, waitForAsync, inject, fakeAsync, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync, inject, fakeAsync, flush, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -272,6 +272,23 @@ describe('Component Tests', () => {
         expect(comp.selectedAgencyId).toBe(1);
       });
 
+      it('should keep the default agency selected when there are no agencies', fakeAsync(() => {
+        const agencyService = TestBed.inject(AgencyService);
+        jest.spyOn(agencyService, 'query').mockReturnValue(of(new HttpResponse({ body: [] })));
+
+        comp.ngOnInit();
+
+        expect(() => flush()).not.toThrow();
+        expect(comp.agencies).toHaveLength(0);
+        expect(comp.selectedAgencyId).toBe(1);
+      }));
+
+      it('should name an agency by its id when it is not among the loaded agencies', () => {
+        comp.agencies = agencies;
+
+        expect(comp.getAgencyName(99)).toBe('99');
+      });
+
       it('should name an agency by its id while the agencies are not loaded', () => {
         comp.agencies = [];
 
@@ -364,6 +381,28 @@ describe('Component Tests', () => {
 
         expect(confirmSpy).toHaveBeenCalledWith(expect.stringContaining('delete agency role GESIS: ADMIN_CONTENT?'));
         expect(comp.user.userAgencies).toEqual([kept]);
+      });
+
+      it('should add a role for an agency that is not among the loaded agencies', () => {
+        comp.user = { id: 9 };
+        comp.selectedAgencyId = 99;
+        comp.selectedAgencyRole = 'ADMIN';
+        comp.selectedLanguage = '';
+
+        comp.saveAgencyRole();
+
+        expect(confirmSpy).toHaveBeenCalledWith(expect.stringContaining('add agency role 99: ADMIN?'));
+        expect(comp.user.userAgencies).toEqual([{ userId: 9, agencyRole: 'ADMIN', agencyId: 99, agencyName: '99', language: undefined }]);
+      });
+
+      it('should delete a role of an agency that is not among the loaded agencies', () => {
+        const role: UserAgency = { agencyId: 99, agencyRole: 'ADMIN' };
+        comp.user = { id: 9, userAgencies: [role] };
+
+        comp.deleteAgencyRole(role);
+
+        expect(confirmSpy).toHaveBeenCalledWith(expect.stringContaining('delete agency role 99: ADMIN?'));
+        expect(comp.user.userAgencies).toHaveLength(0);
       });
 
       it('should do nothing when the user has no roles', () => {

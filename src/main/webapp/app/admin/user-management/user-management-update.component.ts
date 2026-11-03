@@ -97,7 +97,7 @@ export class UserManagementUpdateComponent implements OnInit {
       })
       .subscribe((res: HttpResponse<Agency[]>) => {
         this.agencies = res.body || [];
-        this.selectedAgencyId = this.agencies[0].id || 1;
+        this.selectedAgencyId = this.agencies[0]?.id || 1;
       });
   }
 
@@ -106,10 +106,7 @@ export class UserManagementUpdateComponent implements OnInit {
   }
 
   getAgencyName(agencyId: number): string {
-    if (this.agencies.length === 0) {
-      return agencyId + '';
-    }
-    return this.agencies.filter(a => a.id === agencyId)[0].name!;
+    return this.agencies.find(a => a.id === agencyId)?.name ?? agencyId + '';
   }
 
   previousState(): void {

@@ -83,8 +83,6 @@ describe('Component Tests', () => {
       isAuthenticatedSpy = jasmine.createSpy('isAuthenticated').and.returnValue(false);
       (mockAccountService as unknown as Record<string, unknown>).isAuthenticated = isAuthenticatedSpy;
 
-      // clearing a search stores undefined, which cannot be read back - wipe it before the
-      // constructor reads it
       sessionStorage.clear('lastSearch');
 
       fixture = TestBed.createComponent(NavbarComponent);
@@ -203,6 +201,16 @@ describe('Component Tests', () => {
 
         expect(comp.currentSearch).toBeUndefined();
         expect(comp.lastSearch).toBeUndefined();
+      });
+
+      it('should leave nothing in the session that cannot be read back when cleared', () => {
+        comp.search('unit');
+
+        comp.clear();
+
+        expect(window.sessionStorage.getItem('jhi-lastsearch')).toBeNull();
+        const other = TestBed.createComponent(NavbarComponent).componentInstance;
+        expect(other.lastSearch).toBeUndefined();
       });
     });
 

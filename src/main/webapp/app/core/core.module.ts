@@ -15,7 +15,7 @@
  */
 import { LOCALE_ID, NgModule, inject } from '@angular/core';
 import { DatePipe, registerLocaleData } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { CookieService } from 'ngx-cookie-service';
@@ -42,7 +42,6 @@ import { missingTranslationHandler, translatePartialLoader } from './language/tr
       loader: {
         provide: TranslateLoader,
         useFactory: translatePartialLoader,
-        deps: [HttpClient],
       },
       missingTranslationHandler: {
         provide: MissingTranslationHandler,

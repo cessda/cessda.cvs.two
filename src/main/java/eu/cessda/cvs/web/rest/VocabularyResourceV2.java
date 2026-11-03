@@ -154,10 +154,10 @@ public class VocabularyResourceV2 {
             VocabularyDTO.cleanUpContentForApi( vocab );
             // remove other included languages
             if( lang != null ) {
-                vocab.setLanguagesPublished( new HashSet<>(Collections.singletonList(lang)));
                 String titleTemp = vocab.getTitleByLanguage(lang);
                 String defTemp = vocab.getDefinitionByLanguage(lang);
                 vocab.clearContent();
+                vocab.setLanguagesPublished( new HashSet<>(Collections.singletonList(lang)));
                 vocab.setTitleDefinition(titleTemp, defTemp, lang, false);
 
                 for (CodeDTO code : vocab.getCodes()) {
@@ -555,7 +555,7 @@ public class VocabularyResourceV2 {
 
         // Get all vocabularies that are not withdrawn, sorted by notation
         var vocabularies = vocabularyService.findAll().stream()
-            .filter( voc -> Boolean.TRUE.equals( voc.isWithdrawn() ) )
+            .filter( voc -> !Boolean.TRUE.equals( voc.isWithdrawn() ) )
             .sorted( Comparator.comparing( VocabularyDTO::getNotation ) )
             .collect( Collectors.toList() );
 

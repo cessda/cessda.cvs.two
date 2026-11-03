@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { HttpEventType, HttpHeaderResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpEventType, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { EventManager } from 'app/core/util/event-manager.service';
 import { BehaviorSubject, EMPTY, of, throwError } from 'rxjs';
@@ -235,7 +235,7 @@ describe('Component Tests', () => {
 
       it('should convert the file the server stored, taken from the location it returns', () => {
         spyOn(uploadService, 'uploadFile').and.returnValue(
-          of(new HttpHeaderResponse({ headers: new HttpHeaders({ location: '/api/upload/file/about.docx' }) }) as never),
+          of(new HttpResponse({ status: 201, headers: new HttpHeaders({ location: '/api/upload/file/about.docx' }) }) as never),
         );
         const convert = spyOn(uploadService, 'convertDocsToHtml').and.returnValue(
           of(new HttpResponse({ body: { message: 'about.html' } })),
@@ -249,7 +249,7 @@ describe('Component Tests', () => {
 
       it('should take the extracted name from the response', () => {
         spyOn(uploadService, 'uploadFile').and.returnValue(
-          of(new HttpHeaderResponse({ headers: new HttpHeaders({ location: '/api/upload/file/about.docx' }) }) as never),
+          of(new HttpResponse({ status: 201, headers: new HttpHeaders({ location: '/api/upload/file/about.docx' }) }) as never),
         );
         spyOn(uploadService, 'convertDocsToHtml').and.returnValue(of(new HttpResponse({ body: { message: 'extracted.html' } })));
 
@@ -261,7 +261,7 @@ describe('Component Tests', () => {
 
       it('should fall back to the uploaded name when the response carries none', () => {
         spyOn(uploadService, 'uploadFile').and.returnValue(
-          of(new HttpHeaderResponse({ headers: new HttpHeaders({ location: '/api/upload/file/about.docx' }) }) as never),
+          of(new HttpResponse({ status: 201, headers: new HttpHeaders({ location: '/api/upload/file/about.docx' }) }) as never),
         );
         spyOn(uploadService, 'convertDocsToHtml').and.returnValue(of(new HttpResponse<{ message: string }>({ body: null })));
 
@@ -272,12 +272,22 @@ describe('Component Tests', () => {
 
       it('should report a problem when the conversion fails', () => {
         spyOn(uploadService, 'uploadFile').and.returnValue(
-          of(new HttpHeaderResponse({ headers: new HttpHeaders({ location: '/api/upload/file/about.docx' }) }) as never),
+          of(new HttpResponse({ status: 201, headers: new HttpHeaders({ location: '/api/upload/file/about.docx' }) }) as never),
         );
         spyOn(uploadService, 'convertDocsToHtml').and.returnValue(throwError(() => new Error('nope')));
 
         comp.selectFile(fileEvent(new File([''], 'about.docx')));
 
+        expect(comp.uploadFileStatus).toBe('There is a problem!. Please try again later');
+      });
+
+      it('should report a problem when the upload fails', () => {
+        spyOn(uploadService, 'uploadFile').and.returnValue(throwError(() => new HttpErrorResponse({ status: 500 })));
+        const convert = spyOn(uploadService, 'convertDocsToHtml');
+
+        comp.selectFile(fileEvent(new File([''], 'about.docx')));
+
+        expect(convert).not.toHaveBeenCalled();
         expect(comp.uploadFileStatus).toBe('There is a problem!. Please try again later');
       });
     });

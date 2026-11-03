@@ -174,28 +174,6 @@ export class VocabularySearchResultComponent implements OnInit {
     this.eventManager.broadcast({ name: 'onSearching', content: false });
   }
 
-  search(query: string, pred?: string): void {
-    if (query) {
-      this.predicate = 'relevance';
-    } else {
-      this.ascending = true;
-      this.predicate = 'code';
-    }
-    this.clearFilter();
-    if (pred) {
-      this.activeAggLanguage.push(pred);
-    }
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParams: {
-        page: null,
-        q: query === '' ? null : query,
-        sort: VocabularySearchResultComponent.sort(this.predicate, this.ascending),
-      },
-      queryParamsHandling: 'merge',
-    });
-  }
-
   isLanguageAdmin(): boolean {
     return this.appScope === AppScope.EDITOR && !this.accountService.isAdmin();
   }
@@ -215,7 +193,7 @@ export class VocabularySearchResultComponent implements OnInit {
     }
 
     if (this.activeAggAgency.length > 0) {
-      return 'agency:' + this.activeAggAgency.join(',') + ';';
+      return 'agency:' + this.activeAggAgency.join(',');
     } else {
       return '';
     }
@@ -432,11 +410,7 @@ export class VocabularySearchResultComponent implements OnInit {
   }
 
   onRemoveAgency(removedItem: TagModel): void {
-    this.activeAggAgency.forEach((item, index) => {
-      if (item === (removedItem as TagModelClass)['k']) {
-        this.activeAggAgency.splice(index, 1);
-      }
-    });
+    this.activeAggAgency = this.activeAggAgency.filter(item => item !== (removedItem as TagModelClass)['k']);
     this.buildFilterAndRefreshSearch();
   }
 
@@ -446,11 +420,7 @@ export class VocabularySearchResultComponent implements OnInit {
   }
 
   onRemoveStatus(removedItem: TagModel): void {
-    this.activeAggStatus.forEach((item, index) => {
-      if (item === (removedItem as TagModelClass)['k']) {
-        this.activeAggStatus.splice(index, 1);
-      }
-    });
+    this.activeAggStatus = this.activeAggStatus.filter(item => item !== (removedItem as TagModelClass)['k']);
     this.buildFilterAndRefreshSearch();
   }
 
@@ -464,13 +434,13 @@ export class VocabularySearchResultComponent implements OnInit {
       activeAgg = 'agency:' + this.activeAggAgency.join(',');
     }
     if (this.activeAggLanguage.length > 0) {
-      if (this.activeAggAgency.length > 0 && !this.isLanguageAdmin()) {
+      if (this.activeAggAgency.length > 0) {
         activeAgg += ';';
       }
       activeAgg += 'language:' + this.activeAggLanguage.join(',');
     }
     if (this.activeAggStatus.length > 0) {
-      if ((this.activeAggAgency.length > 0 && !this.isLanguageAdmin()) || this.activeAggLanguage.length > 0) {
+      if (this.activeAggAgency.length > 0 || this.activeAggLanguage.length > 0) {
         activeAgg += ';';
       }
       activeAgg += 'status:' + this.activeAggStatus.join(',');

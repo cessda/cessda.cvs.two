@@ -339,6 +339,16 @@ describe('Component Tests', () => {
 
         expect(comp.errorCodeExists).toBe(false);
       }));
+
+      it('should leave the saving state when saving fails for another reason', fakeAsync(() => {
+        spyOn(service, 'createCode').and.returnValue(throwError(new HttpErrorResponse({ status: 500, error: { type: 'something-else' } })));
+
+        comp.save();
+        tick();
+
+        expect(comp.isSaving).toBe(false);
+        expect(comp.errorCodeExists).toBe(false);
+      }));
     });
 
     describe('creating a code next to a selected code', () => {
@@ -508,6 +518,17 @@ describe('Component Tests', () => {
 
         expect(modalService.open).toHaveBeenCalled();
         expect(updateSpy).not.toHaveBeenCalled();
+      }));
+
+      it('should neither save nor fail when the confirmation is dismissed', fakeAsync(() => {
+        modalService.open.mockReturnValue({ result: Promise.reject(new Error('dismissed')) } as unknown as NgbModalRef);
+        comp.codeAddEditForm.patchValue({ changeType: 'Code value changed' });
+
+        comp.confirmChange();
+
+        expect(() => flushMicrotasks()).not.toThrow();
+        expect(updateSpy).not.toHaveBeenCalled();
+        expect(mockActiveModal.dismissSpy).not.toHaveBeenCalled();
       }));
 
       it('should save any other kind of change straight away', () => {

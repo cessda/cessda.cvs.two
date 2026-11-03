@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { HttpClient } from '@angular/common/http';
 import { MissingTranslationHandler, MissingTranslationHandlerParams, TranslateLoader } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { from, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export const translationNotFoundMessage = 'translation-not-found';
 
@@ -25,8 +25,20 @@ export class MissingTranslationHandlerImpl implements MissingTranslationHandler 
   }
 }
 
-export function translatePartialLoader(http: HttpClient): TranslateLoader {
-  return new TranslateHttpLoader(http, 'i18n/', '.json');
+/**
+ * Loads the translations from lazy chunks of the bundle. The chunks are named after a hash of
+ * their content, so a changed translation gets a new URL and is never served from a stale cache.
+ */
+export class BundledTranslateLoader implements TranslateLoader {
+  getTranslation(lang: string): Observable<Record<string, unknown>> {
+    return from(import(`../../../i18n/${lang}.json`)).pipe(
+      map((translations: { default: Record<string, unknown> }) => translations.default),
+    );
+  }
+}
+
+export function translatePartialLoader(): TranslateLoader {
+  return new BundledTranslateLoader();
 }
 
 export function missingTranslationHandler(): MissingTranslationHandler {

@@ -261,14 +261,14 @@ describe('Component Tests', () => {
         expect(comp.concepts[1]).toEqual(expect.objectContaining({ notation: 'Family', parent: undefined, position: 1, visible: false }));
       });
 
-      it('should hang a child off its parent, taking the parent position when it is the first child', () => {
+      it('should hang a child off its parent, right after the parent when it is the first child', () => {
         withConcepts([{ notation: 'Individual', position: 4 }]);
         comp.csvContents = [['Individual.Child', 'A child', 'The first child']];
         comp.markedRows = [true];
 
         comp.createCodePreview(heading());
 
-        expect(comp.concepts[1]).toEqual(expect.objectContaining({ notation: 'Individual.Child', parent: 'Individual', position: 4 }));
+        expect(comp.concepts[1]).toEqual(expect.objectContaining({ notation: 'Individual.Child', parent: 'Individual', position: 5 }));
       });
 
       it('should place a further child after the last child of the parent', () => {
@@ -283,7 +283,7 @@ describe('Component Tests', () => {
         comp.createCodePreview(heading());
 
         const added = comp.concepts.find(c => c.notation === 'Individual.Third');
-        expect(added).toEqual(expect.objectContaining({ parent: 'Individual', position: 7 }));
+        expect(added).toEqual(expect.objectContaining({ parent: 'Individual', position: 8 }));
       });
 
       it('should follow the tree down to the last descendant when the last child has children of its own', () => {
@@ -297,7 +297,7 @@ describe('Component Tests', () => {
 
         comp.createCodePreview(heading());
 
-        expect(comp.concepts.find(c => c.notation === 'Individual.Second')?.position).toBe(9);
+        expect(comp.concepts.find(c => c.notation === 'Individual.Second')?.position).toBe(10);
       });
 
       it('should skip a child whose parent is not there', () => {
@@ -519,7 +519,7 @@ describe('Component Tests', () => {
             parent: 'Individual',
             title: 'A child',
             definition: 'The first child',
-            position: 1,
+            position: 2,
             changeType: 'Code added',
             changeDesc: 'Individual.Child',
           },
@@ -572,7 +572,7 @@ describe('Component Tests', () => {
 
         comp.createCodePreview(heading());
 
-        expect(comp.codeSnippets[0]).toEqual(expect.objectContaining({ notation: 'Individual.Third', position: 7 }));
+        expect(comp.codeSnippets[0]).toEqual(expect.objectContaining({ notation: 'Individual.Third', position: 8 }));
       });
     });
 
@@ -653,6 +653,81 @@ describe('Component Tests', () => {
 
         expect(mockRouter.navigateSpy).toHaveBeenCalledWith(['/editor/vocabulary/AnalysisUnit'], { queryParams: { lang: 'en' } });
         expect(mockActiveModal.dismissSpy).toHaveBeenCalledWith(true);
+      });
+    });
+
+    describe('empty quoted fields', () => {
+      it('should parse an empty quoted field as an empty string', () => {
+        expect(comp.parseCSVToArray('"X","",""')).toEqual([['X', '', '']]);
+      });
+
+      it('should skip a row whose quoted title is empty instead of failing', () => {
+        comp.isSlForm = true;
+        const rows = comp.parseCSVToArray('notation,title,definition\n"X","",""\nIndividual,Individual,A person');
+
+        expect(comp.getDataRecordsArrayFromCSVFile(rows)).toEqual([['Individual', 'Individual', 'A person']]);
+      });
+    });
+
+    describe('positions of codes added under a parent', () => {
+      const heading = (): HTMLHeadingElement => ({ scrollIntoView: jest.fn() }) as unknown as HTMLHeadingElement;
+      const positionOf = (notation: string): number | undefined => comp.concepts.find(c => c.notation === notation)?.position;
+
+      it('should insert after the last child and move the following codes down', () => {
+        comp.versionParam = {
+          ...comp.versionParam,
+          concepts: [
+            { notation: 'Individual', position: 0 },
+            { notation: 'Individual.First', parent: 'Individual', position: 1 },
+            { notation: 'Family', position: 2 },
+          ],
+        };
+        comp.csvContents = [['Individual.Second', 'A second', 'Added after the first child']];
+        comp.markedRows = [true];
+
+        comp.createCodePreview(heading());
+
+        expect(positionOf('Individual.First')).toBe(1);
+        expect(positionOf('Individual.Second')).toBe(2);
+        expect(positionOf('Family')).toBe(3);
+      });
+
+      it('should move the following codes down when adding the first child', () => {
+        comp.versionParam = {
+          ...comp.versionParam,
+          concepts: [
+            { notation: 'Individual', position: 0 },
+            { notation: 'Family', position: 1 },
+          ],
+        };
+        comp.csvContents = [['Individual.Child', 'A child', 'The first child']];
+        comp.markedRows = [true];
+
+        comp.createCodePreview(heading());
+
+        expect(positionOf('Individual')).toBe(0);
+        expect(positionOf('Individual.Child')).toBe(1);
+        expect(positionOf('Family')).toBe(2);
+      });
+
+      it('should give children imported together their own consecutive positions', () => {
+        comp.versionParam = {
+          ...comp.versionParam,
+          concepts: [
+            { notation: 'Individual', position: 0 },
+            { notation: 'Family', position: 1 },
+          ],
+        };
+        comp.csvContents = [
+          ['Individual.First', 'A first', 'The first child'],
+          ['Individual.Second', 'A second', 'The second child'],
+        ];
+        comp.markedRows = [true, true];
+
+        comp.createCodePreview(heading());
+
+        expect(comp.codeSnippets.map(s => s.position)).toEqual([1, 2]);
+        expect(positionOf('Family')).toBe(3);
       });
     });
   });
