@@ -15,7 +15,7 @@
  */
 import { Component, OnInit, inject } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { DataUtils, FileLoadError } from 'app/core/util/data-util.service';
@@ -27,6 +27,18 @@ import { AlertError } from 'app/shared/alert/alert-error.model';
 import { FileUploadService } from 'app/shared/upload/file-upload.service';
 import { Licence } from 'app/shared/model/licence.model';
 import { LicenceService } from 'app/admin/licence/licence.service';
+
+/**
+ * Requires the placeholders the backend replaces when it generates the URIs of the agency's
+ * vocabularies. Reports the missing ones as `placeholders`.
+ */
+export function placeholdersValidator(...placeholders: string[]): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const value: string = control.value ?? '';
+    const missing = placeholders.filter(p => !value.includes(p));
+    return value && missing.length ? { placeholders: missing.join(', ') } : null;
+  };
+}
 
 @Component({
   selector: 'jhi-agency-update',
@@ -59,6 +71,7 @@ export class AgencyUpdateComponent implements OnInit {
       nonNullable: true,
       validators: [
         Validators.required,
+        Validators.maxLength(255),
         Validators.pattern(
           '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
         ),
@@ -66,9 +79,13 @@ export class AgencyUpdateComponent implements OnInit {
     }),
     description: new FormControl<string | null>(null),
     licenseId: new FormControl<number | null>(null),
-    uri: new FormControl<string | null>(null, [Validators.maxLength(255)]),
-    uriCode: new FormControl<string | null>(null, [Validators.maxLength(255)]),
-    canonicalUri: new FormControl<string | null>(null, [Validators.maxLength(255)]),
+    uri: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(255), placeholdersValidator('[VOCABULARY]')]),
+    uriCode: new FormControl<string | null>(null, [
+      Validators.required,
+      Validators.maxLength(255),
+      placeholdersValidator('[VOCABULARY]', '[CODE]'),
+    ]),
+    canonicalUri: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(255)]),
   });
 
   ngOnInit(): void {
@@ -113,6 +130,11 @@ export class AgencyUpdateComponent implements OnInit {
   }
 
   save(): void {
+    // the errors of untouched fields are hidden, show them all instead of saving
+    if (this.editForm.invalid) {
+      this.editForm.markAllAsTouched();
+      return;
+    }
     this.isSaving = true;
     const agency = this.createFromForm();
     agency.logopath = this.currentImage;
@@ -126,17 +148,15 @@ export class AgencyUpdateComponent implements OnInit {
   private createFromForm(): Agency {
     const agency = createNewAgency({
       id: this.editForm.controls.id.value || undefined,
-      name: this.editForm.controls.name.value,
-      link: this.editForm.controls.link.value,
+      name: this.editForm.controls.name.value.trim(),
+      link: this.editForm.controls.link.value.trim(),
       description: this.editForm.controls.description.value || undefined,
       licenseId: this.editForm.controls.licenseId.value || undefined,
-      uri: this.editForm.controls.uri.value || undefined,
-      uriCode: this.editForm.controls.uriCode.value || undefined,
-      canonicalUri: this.editForm.controls.canonicalUri.value || undefined,
+      uri: this.editForm.controls.uri.value?.trim() || undefined,
+      uriCode: this.editForm.controls.uriCode.value?.trim() || undefined,
+      canonicalUri: this.editForm.controls.canonicalUri.value?.trim() || undefined,
     });
-    if (agency.licenseId) {
-      agency.license = this.licences.filter(l => l.id === agency.licenseId)[0].name;
-    }
+    agency.license = this.licences.find(l => l.id === agency.licenseId)?.name;
     return agency;
   }
 

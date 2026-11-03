@@ -19,6 +19,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.cessda.cvs.domain.Agency;
 
 import javax.persistence.Lob;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
@@ -32,12 +34,14 @@ public class AgencyDTO implements Serializable {
 
     private Long id;
 
+    @NotBlank
     @Size(max = 240)
     private String name;
 
     @Lob
     private String description;
 
+    @NotBlank
     @Size(max = 255)
     private String link;
 
@@ -52,12 +56,19 @@ public class AgencyDTO implements Serializable {
 
     private Long licenseId;
 
+    // VocabularyUtils.generateUri needs the placeholders to build the URIs of the agency's vocabularies
+    @NotBlank
+    @Pattern(regexp = ".*\\[VOCABULARY\\].*", message = "must contain [VOCABULARY]")
     @Size(max = 255)
     private String uri;
 
+    @NotBlank
+    @Pattern(regexp = "(?=.*\\[VOCABULARY\\])(?=.*\\[CODE\\]).*", message = "must contain [VOCABULARY] and [CODE]")
     @Size(max = 255)
     private String uriCode;
 
+    // the prefix of the canonical URI of each new version
+    @NotBlank
     @Size(max = 255)
     private String canonicalUri;
 

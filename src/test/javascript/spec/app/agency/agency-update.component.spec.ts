@@ -13,8 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpEventType, HttpHeaderResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, of, throwError } from 'rxjs';
 
@@ -46,9 +48,9 @@ describe('Component Tests', () => {
       link: 'https://www.cessda.eu',
       description: 'The consortium',
       licenseId: 2,
-      uri: 'https://vocabularies.cessda.eu',
-      uriCode: 'urn:code',
-      canonicalUri: 'https://vocabularies.cessda.eu/canonical',
+      uri: 'https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]?v=[VERSION]',
+      uriCode: 'https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]_[CODE]?v=[VERSION]',
+      canonicalUri: 'urn:ddi:int.cessda.cv:',
       logopath: 'cessda.png',
     });
 
@@ -127,6 +129,27 @@ describe('Component Tests', () => {
         comp.editForm.patchValue({ link: 'www.cessda.eu' });
         expect(comp.editForm.controls.link.valid).toBe(true);
       });
+
+      it('should require the URIs the vocabularies are built from', () => {
+        comp.editForm.patchValue({ uri: '', uriCode: null, canonicalUri: '' });
+
+        expect(comp.editForm.controls.uri.errors).toEqual({ required: true });
+        expect(comp.editForm.controls.uriCode.errors).toEqual({ required: true });
+        expect(comp.editForm.controls.canonicalUri.errors).toEqual({ required: true });
+      });
+
+      it('should name the placeholders a URI is missing', () => {
+        comp.editForm.patchValue({ uri: 'https://cessda.eu/[VERSION]', uriCode: 'https://cessda.eu/[VERSION]' });
+
+        expect(comp.editForm.controls.uri.errors).toEqual({ placeholders: '[VOCABULARY]' });
+        expect(comp.editForm.controls.uriCode.errors).toEqual({ placeholders: '[VOCABULARY], [CODE]' });
+      });
+
+      it('should accept URIs with their placeholders', () => {
+        comp.updateForm(existing);
+
+        expect(comp.editForm.valid).toBe(true);
+      });
     });
 
     describe('saving', () => {
@@ -143,7 +166,7 @@ describe('Component Tests', () => {
       });
 
       it('should create an agency that has no id yet', () => {
-        routeData.next({ agency: createNewAgency({ name: 'GESIS', link: 'https://www.gesis.org' }) });
+        routeData.next({ agency: createNewAgency({ ...existing, id: undefined, name: 'GESIS', link: 'https://www.gesis.org' }) });
         comp.ngOnInit();
         const spy = spyOn(service, 'create').and.returnValue(of(new HttpResponse({ body: existing })));
 
@@ -177,6 +200,39 @@ describe('Component Tests', () => {
 
         // the name is never looked up, so the property does not appear on the agency at all
         expect(spy.calls.mostRecent().args[0].license).toBeUndefined();
+      });
+
+      it('should save without a licence the list does not hold', () => {
+        const spy = spyOn(service, 'update').and.returnValue(of(new HttpResponse({ body: existing })));
+        comp.editForm.patchValue({ licenseId: 99 });
+
+        comp.save();
+
+        expect(spy).toHaveBeenCalled();
+        expect(spy.calls.mostRecent().args[0].license).toBeUndefined();
+      });
+
+      it('should trim the texts before saving', () => {
+        const spy = spyOn(service, 'update').and.returnValue(of(new HttpResponse({ body: existing })));
+        comp.editForm.patchValue({ name: ' CESSDA ', uri: ' ' + existing.uri, canonicalUri: 'urn:ddi:int.cessda.cv: ' });
+
+        comp.save();
+
+        expect(spy).toHaveBeenCalledWith(
+          jasmine.objectContaining({ name: 'CESSDA', uri: existing.uri, canonicalUri: 'urn:ddi:int.cessda.cv:' }),
+        );
+      });
+
+      it('should show every error instead of saving an incomplete form', () => {
+        const spy = spyOn(service, 'update');
+        comp.editForm.patchValue({ name: '', uri: '' });
+
+        comp.save();
+
+        expect(spy).not.toHaveBeenCalled();
+        expect(comp.isSaving).toBe(false);
+        expect(comp.editForm.controls.name.touched).toBe(true);
+        expect(comp.editForm.controls.uri.touched).toBe(true);
       });
 
       it('should stop saving and go back once the server accepts it', () => {
@@ -248,6 +304,39 @@ describe('Component Tests', () => {
       comp.previousState();
 
       expect(back).toHaveBeenCalled();
+    });
+    describe('the licence select', () => {
+      beforeEach(() => {
+        TestBed.resetTestingModule();
+        TestBed.configureTestingModule({
+          imports: [CvsTestModule, ReactiveFormsModule],
+          declarations: [AgencyUpdateComponent],
+          providers: [{ provide: ActivatedRoute, useValue: { data: routeData } }],
+          schemas: [NO_ERRORS_SCHEMA],
+        });
+        fixture = TestBed.createComponent(AgencyUpdateComponent);
+        comp = fixture.componentInstance;
+        spyOn(TestBed.inject(LicenceService), 'query').and.returnValue(of(new HttpResponse({ body: licences })));
+        fixture.detectChanges();
+      });
+
+      it('should hand over the chosen licence as its numeric id', () => {
+        const select: HTMLSelectElement = fixture.nativeElement.querySelector('#field_licenseId');
+
+        select.selectedIndex = [...select.options].findIndex(o => o.textContent === 'CC BY 4.0');
+        select.dispatchEvent(new Event('change'));
+
+        expect(comp.editForm.controls.licenseId.value).toBe(1);
+      });
+
+      it('should offer to remove the licence', () => {
+        const select: HTMLSelectElement = fixture.nativeElement.querySelector('#field_licenseId');
+
+        select.selectedIndex = 0;
+        select.dispatchEvent(new Event('change'));
+
+        expect(comp.editForm.controls.licenseId.value).toBeNull();
+      });
     });
   });
 });
