@@ -24,7 +24,6 @@ import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.service.dto.*;
 import eu.cessda.cvs.utils.VersionNumber;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.boot.actuate.audit.AuditEvent;
@@ -236,7 +235,6 @@ class AuditEventPublisherTest {
     }
 
     @Test
-    @Disabled( "Roles are only added when the user has agencies, see AuditEventPublisher" )
     void shouldPublishTheRolesOfAUserWithoutAgencies() {
         auditEventPublisher.publish( AUDIT_USER, user( null, Collections.singleton( "ROLE_ADMIN" ) ), null, "USER_CREATED" );
 
@@ -399,7 +397,6 @@ class AuditEventPublisherTest {
     }
 
     @Test
-    @Disabled( "Strings compared with ==, see AuditEventPublisher" )
     void shouldRemoveTheDuplicateSourceTitleWhenTheTextsAreEqual() {
         VocabularyDTO vocabularyDTO = vocabulary( TITLE, copyOf( TITLE ) );
 
@@ -411,7 +408,6 @@ class AuditEventPublisherTest {
     }
 
     @Test
-    @Disabled( "Strings compared with ==, see AuditEventPublisher" )
     void shouldRemoveTheDuplicateSourceTitleOfAForwardedVocabularyWhenTheTextsAreEqual() {
         VocabularyDTO vocabularyDTO = vocabulary( TITLE, copyOf( TITLE ) );
 
@@ -670,5 +666,30 @@ class AuditEventPublisherTest {
         auditEventPublisher.publish( AUDIT_USER, null, version(), null, "FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE", false );
 
         verify( eventPublisher, never() ).publishEvent( any( AuditApplicationEvent.class ) );
+    }
+
+    // ------------------------------------------------------------------------------------------
+    // Licence events
+    // ------------------------------------------------------------------------------------------
+
+    private static LicenceDTO licence( String name, String link, String abbr ) {
+        LicenceDTO licenceDTO = new LicenceDTO();
+        licenceDTO.setName( name );
+        licenceDTO.setLink( link );
+        licenceDTO.setAbbr( abbr );
+        return licenceDTO;
+    }
+
+    @Test
+    void shouldPublishTheSnippetDetailsWhenALicenceIsUpdated() {
+        LicenceDTO licenceDTO = licence( "Old licence", "https://example.com/old", "OLD" );
+        LicenceDTO licenceSnippet = licence( "New licence", "https://example.com/new", "NEW" );
+
+        auditEventPublisher.publish( AUDIT_USER, licenceDTO, licenceSnippet, "UPDATE_LICENCE" );
+
+        assertThat( publishedData() )
+            .containsEntry( "licence_name", "New licence" )
+            .containsEntry( "licence_link", "https://example.com/new" )
+            .containsEntry( "licence_abbreviation", "NEW" );
     }
 }
