@@ -62,6 +62,12 @@
                   This field is required.
                 </small>
               }
+              @if (editForm.controls.link.errors?.maxlength) {
+                <small class="form-text text-danger"
+                  jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
+                  This field cannot be longer than 255 characters.
+                </small>
+              }
               @if (editForm.controls.link.errors?.pattern) {
                 <small class="form-text text-danger"
                   >
@@ -111,14 +117,15 @@
           <div class="form-group">
             <label class="form-control-label" for="field_licenseId">License</label>
             <select class="form-control w-auto sk-select" id="field_licenseId" name="licenseId" formControlName="licenseId">
-              @for (licence of licences; track licence; let i = $index) {
-                <option [value]="licence.id">{{licence.name}}</option>
+              <option [ngValue]="null"></option>
+              @for (licence of licences; track licence.id) {
+                <option [ngValue]="licence.id">{{licence.name}}</option>
               }
             </select>
           </div>
 
           <div class="form-group">
-            <label class="form-control-label" jhiTranslate="cvsApp.agency.uri" for="field_uri">Uri</label>
+            <label class="form-control-label label-required" jhiTranslate="cvsApp.agency.uri" for="field_uri">Uri</label>
             <input type="text" class="form-control" name="uri" id="field_uri" formControlName="uri"/>
             <small>
               <span>Note: Please use the following patterns, to configure the URI</span><br/>
@@ -130,6 +137,17 @@
             </small>
             @if (editForm.controls.uri.invalid && (editForm.controls.uri.dirty || editForm.controls.uri.touched)) {
               <div>
+                @if (editForm.controls.uri.errors?.required) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="entity.validation.required">
+                    This field is required.
+                  </small>
+                }
+                @if (editForm.controls.uri.errors?.placeholders) {
+                  <small class="form-text text-danger">
+                    Missing {{ editForm.controls.uri.errors?.placeholders }}.
+                  </small>
+                }
                 @if (editForm.controls.uri.errors?.maxlength) {
                   <small class="form-text text-danger"
                     jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
@@ -141,8 +159,8 @@
           </div>
 
           <div class="form-group">
-            <label class="form-control-label" for="field_uri_code">Uri Code</label>
-            <input type="text" class="form-control" name="uri" id="field_uri_code" formControlName="uriCode"/>
+            <label class="form-control-label label-required" for="field_uri_code">Uri Code</label>
+            <input type="text" class="form-control" name="uriCode" id="field_uri_code" formControlName="uriCode"/>
             <small>
               <span>Note: Please use the similar patterns as URI, with one additional required pattern:</span><br/>
               <span>- [CODE] ~ This pattern is required and it will be replaced by code hash.</span><br/>
@@ -151,6 +169,17 @@
             </small>
             @if (editForm.controls.uriCode.invalid && (editForm.controls.uriCode.dirty || editForm.controls.uriCode.touched)) {
               <div>
+                @if (editForm.controls.uriCode.errors?.required) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="entity.validation.required">
+                    This field is required.
+                  </small>
+                }
+                @if (editForm.controls.uriCode.errors?.placeholders) {
+                  <small class="form-text text-danger">
+                    Missing {{ editForm.controls.uriCode.errors?.placeholders }}.
+                  </small>
+                }
                 @if (editForm.controls.uriCode.errors?.maxlength) {
                   <small class="form-text text-danger"
                     jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
@@ -162,11 +191,17 @@
           </div>
 
           <div class="form-group">
-            <label class="form-control-label" jhiTranslate="cvsApp.agency.canonicalUri" for="field_canonicalUri">Canonical Uri</label>
+            <label class="form-control-label label-required" jhiTranslate="cvsApp.agency.canonicalUri" for="field_canonicalUri">Canonical Uri</label>
             <input type="text" class="form-control" name="canonicalUri" id="field_canonicalUri"
               formControlName="canonicalUri"/>
             @if (editForm.controls.canonicalUri.invalid && (editForm.controls.canonicalUri.dirty || editForm.controls.canonicalUri.touched)) {
               <div>
+                @if (editForm.controls.canonicalUri.errors?.required) {
+                  <small class="form-text text-danger"
+                    jhiTranslate="entity.validation.required">
+                    This field is required.
+                  </small>
+                }
                 @if (editForm.controls.canonicalUri.errors?.maxlength) {
                   <small class="form-text text-danger"
                     jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
@@ -183,7 +218,7 @@
             <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
           </button>
 
-          <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+          <button type="submit" id="save-entity" [disabled]="isSaving" class="btn btn-primary">
             <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
           </button>
         </div>

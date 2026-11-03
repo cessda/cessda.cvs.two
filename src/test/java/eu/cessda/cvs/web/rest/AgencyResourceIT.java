@@ -73,11 +73,11 @@ public class AgencyResourceIT extends TestUtil {
     private static final Long DEFAULT_LICENSE_ID = 1L;
     private static final Long UPDATED_LICENSE_ID = 2L;
 
-    private static final String DEFAULT_URI = "AAAAAAAAAA";
-    private static final String UPDATED_URI = "BBBBBBBBBB";
+    private static final String DEFAULT_URI = "https://a.example/[VOCABULARY]/[VERSION]";
+    private static final String UPDATED_URI = "https://b.example/[VOCABULARY]/[VERSION]";
 
-    private static final String DEFAULT_URI_CODE = "AAAAAAAAAA";
-    private static final String UPDATED_URI_CODE = "BBBBBBBBBB";
+    private static final String DEFAULT_URI_CODE = "https://a.example/[VOCABULARY]_[CODE]/[VERSION]";
+    private static final String UPDATED_URI_CODE = "https://b.example/[VOCABULARY]_[CODE]/[VERSION]";
 
     private static final String DEFAULT_CANONICAL_URI = "AAAAAAAAAA";
     private static final String UPDATED_CANONICAL_URI = "BBBBBBBBBB";
@@ -182,7 +182,7 @@ public class AgencyResourceIT extends TestUtil {
         assertThat(testAgency.getLicense()).isEqualTo(DEFAULT_LICENSE);
         assertThat(testAgency.getLicenseId()).isEqualTo(DEFAULT_LICENSE_ID);
         assertThat(testAgency.getUri()).isEqualTo(DEFAULT_URI);
-        assertThat(testAgency.getUri()).isEqualTo(DEFAULT_URI_CODE);
+        assertThat(testAgency.getUriCode()).isEqualTo(DEFAULT_URI_CODE);
         assertThat(testAgency.getCanonicalUri()).isEqualTo(DEFAULT_CANONICAL_URI);
     }
 
@@ -208,6 +208,46 @@ public class AgencyResourceIT extends TestUtil {
         // Validate the Agency in the database
         List<Agency> agencyList = agencyRepository.findAll();
         assertThat(agencyList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    void createAgencyWithoutNameOrLink() throws Exception {
+        var jwt = login();
+        assertCreateRejected( jwt, agency.name( " " ) );
+        assertCreateRejected( jwt, createEntity().link( null ) );
+    }
+
+    @Test
+    @Transactional
+    void createAgencyWithoutUris() throws Exception {
+        var jwt = login();
+        assertCreateRejected( jwt, agency.uri( null ) );
+        assertCreateRejected( jwt, createEntity().uriCode( "" ) );
+        assertCreateRejected( jwt, createEntity().canonicalUri( null ) );
+    }
+
+    @Test
+    @Transactional
+    void createAgencyWithUrisMissingPlaceholders() throws Exception {
+        var jwt = login();
+        // without [VOCABULARY] the URIs of the agency's vocabularies cannot be generated
+        assertCreateRejected( jwt, agency.uri( "https://a.example/[VERSION]" ) );
+        assertCreateRejected( jwt, createEntity().uriCode( "https://a.example/[VOCABULARY]/[VERSION]" ) );
+        assertCreateRejected( jwt, createEntity().uriCode( "https://a.example/[CODE]/[VERSION]" ) );
+    }
+
+    // takes the token, as TestUtil.login creates its user and can only be called once per test
+    private void assertCreateRejected( String jwt, Agency invalidAgency ) throws Exception {
+        int databaseSizeBeforeCreate = agencyRepository.findAll().size();
+
+        restAgencyMockMvc.perform(post("/api/agencies")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(agencyMapper.toDto(invalidAgency))))
+            .andExpect(status().isBadRequest());
+
+        assertThat(agencyRepository.findAll()).hasSize(databaseSizeBeforeCreate);
     }
 
 

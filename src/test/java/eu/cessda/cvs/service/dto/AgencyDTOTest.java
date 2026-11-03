@@ -18,9 +18,61 @@ package eu.cessda.cvs.service.dto;
 import eu.cessda.cvs.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import java.util.function.Consumer;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AgencyDTOTest {
+
+    private static final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
+    private static AgencyDTO validAgency() {
+        AgencyDTO agencyDTO = new AgencyDTO();
+        agencyDTO.setName( "CESSDA" );
+        agencyDTO.setLink( "https://www.cessda.eu/" );
+        agencyDTO.setUri( "https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]?v=[VERSION]" );
+        agencyDTO.setUriCode( "https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]_[CODE]?v=[VERSION]" );
+        agencyDTO.setCanonicalUri( "urn:ddi:int.cessda.cv:" );
+        return agencyDTO;
+    }
+
+    private static String invalidProperty( Consumer<AgencyDTO> change ) {
+        AgencyDTO agencyDTO = validAgency();
+        change.accept( agencyDTO );
+        return validator.validate( agencyDTO ).stream()
+            .map( ConstraintViolation::getPropertyPath )
+            .map( Object::toString )
+            .findFirst()
+            .orElse( null );
+    }
+
+    @Test
+    void shouldAcceptACompleteAgency() {
+        assertThat( validator.validate( validAgency() ) ).isEmpty();
+    }
+
+    @Test
+    void shouldRequireTheNameAndLink() {
+        assertThat( invalidProperty( a -> a.setName( " " ) ) ).isEqualTo( "name" );
+        assertThat( invalidProperty( a -> a.setLink( null ) ) ).isEqualTo( "link" );
+    }
+
+    @Test
+    void shouldRequireTheUris() {
+        assertThat( invalidProperty( a -> a.setUri( null ) ) ).isEqualTo( "uri" );
+        assertThat( invalidProperty( a -> a.setUriCode( "" ) ) ).isEqualTo( "uriCode" );
+        assertThat( invalidProperty( a -> a.setCanonicalUri( null ) ) ).isEqualTo( "canonicalUri" );
+    }
+
+    @Test
+    void shouldRequireThePlaceholdersInTheUris() {
+        assertThat( invalidProperty( a -> a.setUri( "https://a.example/[VERSION]" ) ) ).isEqualTo( "uri" );
+        assertThat( invalidProperty( a -> a.setUriCode( "https://a.example/[VOCABULARY]/[VERSION]" ) ) ).isEqualTo( "uriCode" );
+        assertThat( invalidProperty( a -> a.setUriCode( "https://a.example/[CODE]/[VERSION]" ) ) ).isEqualTo( "uriCode" );
+    }
 
     @Test
     public void dtoEqualsVerifier() throws Exception {
