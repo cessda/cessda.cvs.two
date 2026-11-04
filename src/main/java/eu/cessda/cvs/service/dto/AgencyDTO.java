@@ -15,12 +15,13 @@
  */
 package eu.cessda.cvs.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.cessda.cvs.domain.Agency;
 
 import javax.persistence.Lob;
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
@@ -56,14 +57,13 @@ public class AgencyDTO implements Serializable {
 
     private Long licenseId;
 
-    // VocabularyUtils.generateUri needs the placeholders to build the URIs of the agency's vocabularies
+    // VocabularyUtils.generateUri needs the placeholders to build the URIs of the agency's vocabularies,
+    // see isUriWithPlaceholders and isUriCodeWithPlaceholders
     @NotBlank
-    @Pattern(regexp = ".*\\[VOCABULARY\\].*", message = "must contain [VOCABULARY]")
     @Size(max = 255)
     private String uri;
 
     @NotBlank
-    @Pattern(regexp = "(?=.*\\[VOCABULARY\\])(?=.*\\[CODE\\]).*", message = "must contain [VOCABULARY] and [CODE]")
     @Size(max = 255)
     private String uriCode;
 
@@ -180,6 +180,19 @@ public class AgencyDTO implements Serializable {
 
     public void setDeletable(Boolean deletable) {
         this.deletable = deletable;
+    }
+
+    // a missing URI is reported by @NotBlank
+    @JsonIgnore
+    @AssertTrue(message = "the URI must contain [VOCABULARY]")
+    public boolean isUriWithPlaceholders() {
+        return uri == null || uri.contains("[VOCABULARY]");
+    }
+
+    @JsonIgnore
+    @AssertTrue(message = "the URI code must contain [VOCABULARY] and [CODE]")
+    public boolean isUriCodeWithPlaceholders() {
+        return uriCode == null || (uriCode.contains("[VOCABULARY]") && uriCode.contains("[CODE]"));
     }
 
     @Override

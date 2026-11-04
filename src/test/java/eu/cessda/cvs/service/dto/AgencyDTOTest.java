@@ -69,9 +69,9 @@ public class AgencyDTOTest {
 
     @Test
     void shouldRequireThePlaceholdersInTheUris() {
-        assertThat( invalidProperty( a -> a.setUri( "https://a.example/[VERSION]" ) ) ).isEqualTo( "uri" );
-        assertThat( invalidProperty( a -> a.setUriCode( "https://a.example/[VOCABULARY]/[VERSION]" ) ) ).isEqualTo( "uriCode" );
-        assertThat( invalidProperty( a -> a.setUriCode( "https://a.example/[CODE]/[VERSION]" ) ) ).isEqualTo( "uriCode" );
+        assertThat( invalidProperty( a -> a.setUri( "https://a.example/[VERSION]" ) ) ).isEqualTo( "uriWithPlaceholders" );
+        assertThat( invalidProperty( a -> a.setUriCode( "https://a.example/[VOCABULARY]/[VERSION]" ) ) ).isEqualTo( "uriCodeWithPlaceholders" );
+        assertThat( invalidProperty( a -> a.setUriCode( "https://a.example/[CODE]/[VERSION]" ) ) ).isEqualTo( "uriCodeWithPlaceholders" );
     }
 
     @Test

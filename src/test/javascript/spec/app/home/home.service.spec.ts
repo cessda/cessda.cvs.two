@@ -101,13 +101,19 @@ describe('Service Tests', () => {
       it('should keep a two part version unchanged', () => {
         service.getVocabularyFile('TopicClassification', { v: '4.2' }).subscribe();
 
-        httpMock.expectOne(r => r.url === 'content/vocabularies/TopicClassification/4.2/TopicClassification_4.2.json').flush({});
+        const req = httpMock.expectOne(r => r.url === 'content/vocabularies/TopicClassification/4.2/TopicClassification_4.2.json');
+
+        expect(req.request.method).toBe('GET');
+        req.flush({});
       });
 
       it('should keep a version without dots unchanged', () => {
         service.getVocabularyFile('TopicClassification', { v: 'draft' }).subscribe();
 
-        httpMock.expectOne(r => r.url === 'content/vocabularies/TopicClassification/draft/TopicClassification_draft.json').flush({});
+        const req = httpMock.expectOne(r => r.url === 'content/vocabularies/TopicClassification/draft/TopicClassification_draft.json');
+
+        expect(req.request.method).toBe('GET');
+        req.flush({});
       });
     });
 
@@ -135,7 +141,10 @@ describe('Service Tests', () => {
       it('should keep a two part version unchanged', () => {
         service.getVocabulary('TopicClassification', { v: '4.2' }).subscribe();
 
-        httpMock.expectOne(r => r.url === 'v2/vocabularies/TopicClassification/4.2').flush({});
+        const req = httpMock.expectOne(r => r.url === 'v2/vocabularies/TopicClassification/4.2');
+
+        expect(req.request.method).toBe('GET');
+        req.flush({});
       });
     });
 
