@@ -36,8 +36,17 @@ export function placeholdersValidator(...placeholders: string[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
     const value: string = control.value ?? '';
     const missing = placeholders.filter(p => !value.includes(p));
-    return value && missing.length ? { placeholders: missing.join(', ') } : null;
+    // a blank value is reported as missing by notBlankValidator
+    return value.trim() && missing.length ? { placeholders: missing.join(', ') } : null;
   };
+}
+
+/**
+ * Like `Validators.required`, but also treats a text of only spaces as missing, as the backend's
+ * `@NotBlank` does, so it is reported on the field instead of by the server.
+ */
+export function notBlankValidator(control: AbstractControl): ValidationErrors | null {
+  return Validators.required(control) ?? (typeof control.value === 'string' && !control.value.trim() ? { required: true } : null);
 }
 
 @Component({
@@ -66,11 +75,11 @@ export class AgencyUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: new FormControl<number | null>(null),
-    name: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.maxLength(240)] }),
+    name: new FormControl('', { nonNullable: true, validators: [notBlankValidator, Validators.maxLength(240)] }),
     link: new FormControl('', {
       nonNullable: true,
       validators: [
-        Validators.required,
+        notBlankValidator,
         Validators.maxLength(255),
         Validators.pattern(
           '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})',
@@ -79,13 +88,13 @@ export class AgencyUpdateComponent implements OnInit {
     }),
     description: new FormControl<string | null>(null),
     licenseId: new FormControl<number | null>(null),
-    uri: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(255), placeholdersValidator('[VOCABULARY]')]),
+    uri: new FormControl<string | null>(null, [notBlankValidator, Validators.maxLength(255), placeholdersValidator('[VOCABULARY]')]),
     uriCode: new FormControl<string | null>(null, [
-      Validators.required,
+      notBlankValidator,
       Validators.maxLength(255),
       placeholdersValidator('[VOCABULARY]', '[CODE]'),
     ]),
-    canonicalUri: new FormControl<string | null>(null, [Validators.required, Validators.maxLength(255)]),
+    canonicalUri: new FormControl<string | null>(null, [notBlankValidator, Validators.maxLength(255)]),
   });
 
   ngOnInit(): void {

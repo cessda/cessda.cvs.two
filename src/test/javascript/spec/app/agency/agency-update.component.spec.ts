@@ -138,6 +138,27 @@ describe('Component Tests', () => {
         expect(comp.editForm.controls.canonicalUri.errors).toEqual({ required: true });
       });
 
+      it('should treat a field of only spaces as missing, as the server does', () => {
+        comp.editForm.patchValue({ name: '  ', link: ' ', uri: '   ', uriCode: ' ', canonicalUri: '  ' });
+
+        expect(comp.editForm.controls.name.errors).toEqual({ required: true });
+        expect(comp.editForm.controls.link.errors?.required).toBe(true);
+        expect(comp.editForm.controls.uri.errors).toEqual({ required: true });
+        expect(comp.editForm.controls.uriCode.errors).toEqual({ required: true });
+        expect(comp.editForm.controls.canonicalUri.errors).toEqual({ required: true });
+      });
+
+      it('should not send a form with a field of only spaces', () => {
+        comp.ngOnInit();
+        const spy = spyOn(service, 'update');
+        comp.editForm.patchValue({ canonicalUri: '  ' });
+
+        comp.save();
+
+        expect(spy).not.toHaveBeenCalled();
+        expect(comp.editForm.controls.canonicalUri.touched).toBe(true);
+      });
+
       it('should name the placeholders a URI is missing', () => {
         comp.editForm.patchValue({ uri: 'https://cessda.eu/[VERSION]', uriCode: 'https://cessda.eu/[VERSION]' });
 
