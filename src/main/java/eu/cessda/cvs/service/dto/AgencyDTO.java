@@ -182,17 +182,17 @@ public class AgencyDTO implements Serializable {
         this.deletable = deletable;
     }
 
-    // a missing URI is reported by @NotBlank
+    // a missing or blank URI is reported by @NotBlank only
     @JsonIgnore
     @AssertTrue(message = "the URI must contain [VOCABULARY]")
     public boolean isUriWithPlaceholders() {
-        return uri == null || uri.contains("[VOCABULARY]");
+        return uri == null || uri.isBlank() || uri.contains("[VOCABULARY]");
     }
 
     @JsonIgnore
     @AssertTrue(message = "the URI code must contain [VOCABULARY] and [CODE]")
     public boolean isUriCodeWithPlaceholders() {
-        return uriCode == null || (uriCode.contains("[VOCABULARY]") && uriCode.contains("[CODE]"));
+        return uriCode == null || uriCode.isBlank() || (uriCode.contains("[VOCABULARY]") && uriCode.contains("[CODE]"));
     }
 
     @Override
