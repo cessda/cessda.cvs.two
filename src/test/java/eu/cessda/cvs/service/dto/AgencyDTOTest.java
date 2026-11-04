@@ -21,7 +21,9 @@ import org.junit.jupiter.api.Test;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,14 +41,14 @@ public class AgencyDTOTest {
         return agencyDTO;
     }
 
-    private static String invalidProperty( Consumer<AgencyDTO> change ) {
+    // all of them, as the validator reports violations in no particular order
+    private static Set<String> invalidProperties( Consumer<AgencyDTO> change ) {
         AgencyDTO agencyDTO = validAgency();
         change.accept( agencyDTO );
         return validator.validate( agencyDTO ).stream()
             .map( ConstraintViolation::getPropertyPath )
             .map( Object::toString )
-            .findFirst()
-            .orElse( null );
+            .collect( Collectors.toSet() );
     }
 
     @Test
@@ -56,22 +58,22 @@ public class AgencyDTOTest {
 
     @Test
     void shouldRequireTheNameAndLink() {
-        assertThat( invalidProperty( a -> a.setName( " " ) ) ).isEqualTo( "name" );
-        assertThat( invalidProperty( a -> a.setLink( null ) ) ).isEqualTo( "link" );
+        assertThat( invalidProperties( a -> a.setName( " " ) ) ).containsExactly( "name" );
+        assertThat( invalidProperties( a -> a.setLink( null ) ) ).containsExactly( "link" );
     }
 
     @Test
     void shouldRequireTheUris() {
-        assertThat( invalidProperty( a -> a.setUri( null ) ) ).isEqualTo( "uri" );
-        assertThat( invalidProperty( a -> a.setUriCode( "" ) ) ).isEqualTo( "uriCode" );
-        assertThat( invalidProperty( a -> a.setCanonicalUri( null ) ) ).isEqualTo( "canonicalUri" );
+        assertThat( invalidProperties( a -> a.setUri( null ) ) ).containsExactly( "uri" );
+        assertThat( invalidProperties( a -> a.setUriCode( "" ) ) ).containsExactly( "uriCode" );
+        assertThat( invalidProperties( a -> a.setCanonicalUri( null ) ) ).containsExactly( "canonicalUri" );
     }
 
     @Test
     void shouldRequireThePlaceholdersInTheUris() {
-        assertThat( invalidProperty( a -> a.setUri( "https://a.example/[VERSION]" ) ) ).isEqualTo( "uriWithPlaceholders" );
-        assertThat( invalidProperty( a -> a.setUriCode( "https://a.example/[VOCABULARY]/[VERSION]" ) ) ).isEqualTo( "uriCodeWithPlaceholders" );
-        assertThat( invalidProperty( a -> a.setUriCode( "https://a.example/[CODE]/[VERSION]" ) ) ).isEqualTo( "uriCodeWithPlaceholders" );
+        assertThat( invalidProperties( a -> a.setUri( "https://a.example/[VERSION]" ) ) ).containsExactly( "uriWithPlaceholders" );
+        assertThat( invalidProperties( a -> a.setUriCode( "https://a.example/[VOCABULARY]/[VERSION]" ) ) ).containsExactly( "uriCodeWithPlaceholders" );
+        assertThat( invalidProperties( a -> a.setUriCode( "https://a.example/[CODE]/[VERSION]" ) ) ).containsExactly( "uriCodeWithPlaceholders" );
     }
 
     @Test
