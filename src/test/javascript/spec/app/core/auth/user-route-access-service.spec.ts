@@ -74,6 +74,8 @@ describe('Service Tests', () => {
         expect(mockRouter.navigateSpy).not.toHaveBeenCalled();
         expect(loginModalService.open).not.toHaveBeenCalled();
         expect(mockStateStorageService.storeUrlSpy).not.toHaveBeenCalled();
+        // there is nothing to check the authorities against
+        expect(hasAnyAuthoritySpy).not.toHaveBeenCalled();
       });
 
       it('should still resolve the identity so a server-side login is picked up', async () => {
