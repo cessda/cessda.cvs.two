@@ -352,18 +352,6 @@ export class HomeDetailComponent implements OnInit {
   }
 
   getMissingTlVersion(version: string): string {
-    if (VocabularyUtil.compareVersionNumbers(version, this.getSlVersion().number!) === 0) {
-      return VocabularyUtil.getSlMajorMinorVersionNumber(this.getSlVersion().versionHistories[0].version!) + '.x';
-    }
-    let i = 0;
-    this.getSlVersion().versionHistories?.forEach(function (vhSl, index): void {
-      if (VocabularyUtil.compareVersionNumbers(version, vhSl.version!) === 0) {
-        i = index + 1;
-      }
-    });
-    if (i > 0) {
-      return VocabularyUtil.getSlMajorMinorVersionNumber(this.getSlVersion().versionHistories[i].version!) + '.x';
-    }
-    return '';
+    return VocabularyUtil.getMissingTlVersion(this.getSlVersion(), version);
   }
 }

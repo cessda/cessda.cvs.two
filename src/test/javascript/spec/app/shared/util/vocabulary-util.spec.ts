@@ -230,6 +230,42 @@ describe('VocabularyUtil comparison', () => {
   });
 });
 
+describe('VocabularyUtil missing translation bundle', () => {
+  const history = (...versions: string[]): Version['versionHistories'] =>
+    versions.map((version, i) => ({ id: i, version, date: '', note: '', changes: '' }));
+  const slVersion = (number: string, ...versions: string[]): Version => ({
+    ...createNewVersion(1),
+    itemType: 'SL',
+    number,
+    versionHistories: history(...versions),
+  });
+
+  it('should name the latest older bundle for a translation of the current source version', () => {
+    expect(VocabularyUtil.getMissingTlVersion(slVersion('3.0.0', '2.1.0', '2.0.0', '1.0.0'), '3.0.1')).toBe('2.1.x');
+  });
+
+  it('should name the bundle before the one the translation belongs to', () => {
+    expect(VocabularyUtil.getMissingTlVersion(slVersion('3.0.0', '2.1.0', '2.0.0', '1.0.0'), '2.1.1')).toBe('2.0.x');
+  });
+
+  it('should name nothing for a translation of the oldest bundle', () => {
+    expect(VocabularyUtil.getMissingTlVersion(slVersion('3.0.0', '2.1.0', '2.0.0', '1.0.0'), '1.0.1')).toBe('');
+  });
+
+  it('should name nothing for a translation of the current source version without an older bundle', () => {
+    expect(VocabularyUtil.getMissingTlVersion(slVersion('1.0.0'), '1.0.1')).toBe('');
+  });
+
+  it('should compare version numbers rather than text', () => {
+    // 1.10.1 starts with the text 1.1, but belongs to the 1.10 bundle
+    expect(VocabularyUtil.getMissingTlVersion(slVersion('2.0.0', '1.10.0', '1.1.0', '1.0.0'), '1.10.1')).toBe('1.1.x');
+  });
+
+  it('should name nothing for a version outside every bundle', () => {
+    expect(VocabularyUtil.getMissingTlVersion(slVersion('3.0.0', '2.1.0', '2.0.0'), '7.0.1')).toBe('');
+  });
+});
+
 describe('VocabularyUtil vocabulary versions', () => {
   const slVersion: Version = { ...createNewVersion(1), itemType: 'SL', language: 'en', number: '2.0.0' };
   const tlVersion: Version = { ...createNewVersion(2), itemType: 'TL', language: 'de', number: '2.0.1' };
