@@ -77,3 +77,34 @@ describe('Server validation messages', () => {
     expect(missing).toEqual([]);
   });
 });
+
+// A BadRequestAlertException or ForbiddenAlertException reaches AlertErrorComponent as 'error.<errorKey>',
+// in the error header and in the message, so every error key the server throws needs a message.
+describe('Server alert messages', () => {
+  const root = process.cwd();
+  const en = JSON.parse(readFileSync(join(root, 'src/main/webapp/i18n/en.json'), 'utf-8'));
+  const javaDir = join(root, 'src/main/java/eu/cessda/cvs');
+  const javaFiles = (dir: string): string[] =>
+    readdirSync(dir, { withFileTypes: true }).flatMap(e => (e.isDirectory() ? javaFiles(join(dir, e.name)) : e.name.endsWith('.java') ? [join(dir, e.name)] : []));
+
+  // the last string argument of 'new BadRequestAlertException(..., "key")' or of the super(...) call in a subclass
+  const errorKeys = javaFiles(javaDir).flatMap(file => {
+    const source = readFileSync(file, 'utf-8');
+    const subclass = /extends (BadRequestAlertException|ForbiddenAlertException)\b/.test(source);
+    const calls = [...source.matchAll(/new (?:BadRequestAlertException|ForbiddenAlertException)\(([^;]*)\);/g)].map(m => m[1]);
+    if (subclass) {
+      calls.push(...[...source.matchAll(/super\(([^;]*)\);/g)].map(m => m[1]));
+    }
+    return calls.map(args => /"([^"]+)"\s*$/.exec(args)?.[1]).filter((key): key is string => !!key);
+  });
+
+  it('should find the error keys of the code and authority exceptions', () => {
+    expect(errorKeys).toEqual(expect.arrayContaining(['codeexists', 'insufficientvocabularyauthority', 'idexists']));
+  });
+
+  it('should have a message for every error key', () => {
+    const missing = [...new Set(errorKeys)].filter(key => typeof en.error[key] !== 'string');
+
+    expect(missing).toEqual([]);
+  });
+});
