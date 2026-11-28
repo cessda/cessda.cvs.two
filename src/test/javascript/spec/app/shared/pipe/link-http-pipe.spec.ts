@@ -22,6 +22,7 @@ describe('LinkHttpPipe', () => {
     { name: 'leave an http link alone', href: 'http://cessda.eu', expected: 'http://cessda.eu' },
     { name: 'leave an https link alone', href: 'https://cessda.eu', expected: 'https://cessda.eu' },
     { name: 'prefix a bare host', href: 'cessda.eu', expected: 'http://cessda.eu' },
+    { name: 'prefix a host that merely starts with http', href: 'httpbin.org', expected: 'http://httpbin.org' },
     { name: 'prefix a protocol it does not know', href: 'ftp://cessda.eu', expected: 'http://ftp://cessda.eu' },
     { name: 'prefix an empty string', href: '', expected: 'http://' },
   ])('should $name', ({ href, expected }) => {
